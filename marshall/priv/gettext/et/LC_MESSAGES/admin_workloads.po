@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Toimingud"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Kas arhiveerida see virtuaalmasin?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Kustuta"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Üksikasjad"
@@ -64,7 +64,7 @@ msgstr "Elutsükli taotlus lisatud järjekorda."
 msgid "Lifecycle request was rejected."
 msgstr "Elutsükli taotlus lükati tagasi."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Teisalda"
@@ -84,7 +84,7 @@ msgstr "Teisaldamistaotlus lisatud järjekorda."
 msgid "Relocation request was rejected."
 msgstr "Teisaldamistaotlus lükati tagasi."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Muuda suurust"
@@ -94,7 +94,7 @@ msgstr "Muuda suurust"
 msgid "Shape"
 msgstr "Konfiguratsioon"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Käivita"
@@ -104,12 +104,12 @@ msgstr "Käivita"
 msgid "State"
 msgstr "Olek"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Peata"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Terminal"

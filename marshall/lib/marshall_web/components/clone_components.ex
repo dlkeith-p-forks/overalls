@@ -42,8 +42,8 @@ defmodule MarshallWeb.CloneComponents do
           cancel?: boolean()
         }
 
-  attr :id, :string, required: true
-  attr :clone, :map, required: true
+  attr(:id, :string, required: true)
+  attr(:clone, :map, required: true)
 
   # @cc [owner:ghuntley,label:product] clone-publication-navigation
   # Open clone MUST be rendered only with a publication receipt, including while
@@ -150,7 +150,12 @@ defmodule MarshallWeb.CloneComponents do
       progress = presentation(request)
 
       position =
-        if request.queue_position, do: " Queue position #{request.queue_position}.", else: ""
+        if request.queue_position,
+          do:
+            " " <>
+              dgettext("machines", "Queue position %{value1}", value1: request.queue_position) <>
+              ".",
+          else: ""
 
       "#{request.name}: #{progress.label}.#{position} #{progress.source} #{progress.failure}"
     end)

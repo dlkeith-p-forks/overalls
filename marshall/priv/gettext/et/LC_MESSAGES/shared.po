@@ -35,20 +35,20 @@ msgid "A reference for the system, its configuration, and its operation."
 msgstr "Teatmik süsteemi, selle seadistuse ja toimimise kohta."
 
 #: lib/marshall_web/components/layouts.ex:337
-#: lib/marshall_web/components/layouts.ex:443
+#: lib/marshall_web/components/layouts.ex:444
 #, elixir-autogen, elixir-format
 msgid "AI usage"
 msgstr "Tehisintellekti kasutus"
 
 #: lib/marshall_web/components/layouts.ex:416
-#: lib/marshall_web/components/layouts.ex:461
+#: lib/marshall_web/components/layouts.ex:462
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "Juurdepääsu haldus"
 
 #: lib/marshall_web/components/layouts.ex:241
 #: lib/marshall_web/components/layouts.ex:329
-#: lib/marshall_web/components/layouts.ex:449
+#: lib/marshall_web/components/layouts.ex:450
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Konto"
@@ -75,8 +75,8 @@ msgid "Administration"
 msgstr "Haldus"
 
 #: lib/marshall_web/components/layouts.ex:245
-#: lib/marshall_web/components/layouts.ex:507
-#: lib/marshall_web/components/layouts.ex:508
+#: lib/marshall_web/components/layouts.ex:509
+#: lib/marshall_web/components/layouts.ex:510
 #: lib/marshall_web/controllers/docs_html/show.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Appearance"
@@ -89,7 +89,7 @@ msgid "Attempting to reconnect"
 msgstr "Uuesti ühendamine"
 
 #: lib/marshall_web/components/layouts.ex:418
-#: lib/marshall_web/components/layouts.ex:462
+#: lib/marshall_web/components/layouts.ex:463
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "Audit"
@@ -141,17 +141,17 @@ msgstr "Sisukord"
 msgid "Control room"
 msgstr "Juhtimiskeskus"
 
-#: lib/marshall_web/components/layouts.ex:441
+#: lib/marshall_web/components/layouts.ex:442
 #, elixir-autogen, elixir-format
 msgid "Control room · %{section}"
 msgstr "Juhtimiskeskus · %{section}"
 
-#: lib/marshall_web/components/layouts.ex:438
+#: lib/marshall_web/components/layouts.ex:439
 #, elixir-autogen, elixir-format
 msgid "Control room · AI usage"
 msgstr "Juhtimiskeskus · tehisintellekti kasutus"
 
-#: lib/marshall_web/components/layouts.ex:511
+#: lib/marshall_web/components/layouts.ex:513
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr "Tume"
@@ -188,8 +188,8 @@ msgstr "Masinapargi tehisintellekti kasutus"
 msgid "Git mirrors"
 msgstr "Giti peeglid"
 
-#: lib/marshall_web/components/layouts.ex:431
-#: lib/marshall_web/components/layouts.ex:454
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:455
 #, elixir-autogen, elixir-format
 msgid "Git repositories"
 msgstr "Giti hoidlad"
@@ -221,14 +221,14 @@ msgstr "Käsiraamatu sisukord"
 msgid "Home"
 msgstr "Avaleht"
 
-#: lib/marshall_web/components/layouts.ex:430
-#: lib/marshall_web/components/layouts.ex:453
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:454
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "Integratsioonid"
 
 #: lib/marshall_web/components/layouts.ex:410
-#: lib/marshall_web/components/layouts.ex:458
+#: lib/marshall_web/components/layouts.ex:459
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "Tööd"
@@ -238,7 +238,7 @@ msgstr "Tööd"
 msgid "LLM index"
 msgstr "LLM-i register"
 
-#: lib/marshall_web/components/layouts.ex:510
+#: lib/marshall_web/components/layouts.ex:512
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr "Hele"
@@ -248,8 +248,8 @@ msgstr "Hele"
 msgid "Machine readable"
 msgstr "Masinloetav"
 
-#: lib/marshall_web/components/layouts.ex:429
-#: lib/marshall_web/components/layouts.ex:452
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:453
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Masinad"
@@ -280,7 +280,7 @@ msgid "Menu"
 msgstr "Menüü"
 
 #: lib/marshall_web/components/layouts.ex:408
-#: lib/marshall_web/components/layouts.ex:456
+#: lib/marshall_web/components/layouts.ex:457
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "Sõlme hooldus"
@@ -301,14 +301,14 @@ msgstr "Toimingud"
 msgid "Overalls"
 msgstr "Overalls"
 
-#: lib/marshall_web/components/layouts.ex:427
-#: lib/marshall_web/components/layouts.ex:450
+#: lib/marshall_web/components/layouts.ex:428
+#: lib/marshall_web/components/layouts.ex:451
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "Ülevaade"
 
 #: lib/marshall_web/components/layouts.ex:411
-#: lib/marshall_web/components/layouts.ex:459
+#: lib/marshall_web/components/layouts.ex:460
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "Platvormi olek"
@@ -353,13 +353,13 @@ msgstr "Allikas"
 msgid "Source code"
 msgstr "Lähtekood"
 
-#: lib/marshall_web/components/layouts.ex:509
+#: lib/marshall_web/components/layouts.ex:511
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Süsteem"
 
-#: lib/marshall_web/components/layouts.ex:432
-#: lib/marshall_web/components/layouts.ex:455
+#: lib/marshall_web/components/layouts.ex:433
+#: lib/marshall_web/components/layouts.ex:456
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "Meeskonnad"
@@ -369,8 +369,8 @@ msgstr "Meeskonnad"
 msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
 msgstr "See muudatus vajab uut pääsuvõtme kinnitust. Kinnitus kehtib 15 minutit."
 
-#: lib/marshall_web/components/layouts.ex:428
-#: lib/marshall_web/components/layouts.ex:451
+#: lib/marshall_web/components/layouts.ex:429
+#: lib/marshall_web/components/layouts.ex:452
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "Vestlused"
@@ -381,7 +381,7 @@ msgid "Time zone"
 msgstr "Ajavöönd"
 
 #: lib/marshall_web/components/layouts.ex:415
-#: lib/marshall_web/components/layouts.ex:460
+#: lib/marshall_web/components/layouts.ex:461
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Kasutajad"
@@ -402,13 +402,13 @@ msgid "Welcome to Overalls. Make yourself at home."
 msgstr "Tere tulemast Overallsi. Tunne end nagu kodus."
 
 #: lib/marshall_web/components/layouts.ex:409
-#: lib/marshall_web/components/layouts.ex:457
+#: lib/marshall_web/components/layouts.ex:458
 #, elixir-autogen, elixir-format
 msgid "Workloads"
 msgstr "Töökoormused"
 
 #: lib/marshall_web/components/layouts.ex:283
-#: lib/marshall_web/components/layouts.ex:463
+#: lib/marshall_web/components/layouts.ex:465
 #, elixir-autogen, elixir-format
 msgid "Workspace"
 msgstr "Tööruum"
@@ -428,7 +428,7 @@ msgstr "Tööruumi navigeerimine"
 msgid "Your account"
 msgstr "Sinu konto"
 
-#: lib/marshall_web/components/layouts.ex:425
+#: lib/marshall_web/components/layouts.ex:426
 #, elixir-autogen, elixir-format
 msgid "Your workspace"
 msgstr "Sinu tööruum"
@@ -442,3 +442,9 @@ msgstr "sulge"
 #, elixir-autogen, elixir-format
 msgid "← All sections"
 msgstr "← Kõik jaotised"
+
+#: lib/marshall_web/components/layouts.ex:419
+#: lib/marshall_web/components/layouts.ex:464
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM-i provisjonimine"

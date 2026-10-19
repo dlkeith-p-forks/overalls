@@ -21,7 +21,7 @@ msgid_plural "%{user} · %{count} viewing"
 msgstr[0] "%{user} · %{count} kişi görüntülüyor"
 msgstr[1] "%{user} · %{count} kişi görüntülüyor"
 
-#: lib/marshall_web/components/workspace_components.ex:255
+#: lib/marshall_web/components/workspace_components.ex:259
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
 msgstr "%{value1} vCPU · %{value2} GiB bellek · %{value3} GiB disk · %{value4}"
@@ -31,7 +31,7 @@ msgstr "%{value1} vCPU · %{value2} GiB bellek · %{value3} GiB disk · %{value4
 msgid "+ New"
 msgstr "+ Yeni"
 
-#: lib/marshall_web/live/terminal_live.ex:722
+#: lib/marshall_web/live/terminal_live.ex:723
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -41,17 +41,17 @@ msgstr "A+"
 msgid "Access"
 msgstr "Erişim"
 
-#: lib/marshall_web/live/terminal_live.ex:789
+#: lib/marshall_web/live/terminal_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "Hesap e-postası"
 
-#: lib/marshall_web/live/terminal_live.ex:796
+#: lib/marshall_web/live/terminal_live.ex:797
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "Görüntülemeye izin ver"
 
-#: lib/marshall_web/components/workspace_components.ex:413
+#: lib/marshall_web/components/workspace_components.ex:417
 #, elixir-autogen, elixir-format
 msgid "Already installed"
 msgstr "Zaten yüklü"
@@ -72,23 +72,23 @@ msgstr "Android ekran alanı"
 msgid "Android display is unavailable."
 msgstr "Android ekranı kullanılamıyor."
 
-#: lib/marshall_web/live/terminal_live.ex:717
+#: lib/marshall_web/live/terminal_live.ex:718
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
 
-#: lib/marshall_web/components/workspace_components.ex:436
+#: lib/marshall_web/components/workspace_components.ex:440
 #: lib/marshall_web/live/terminal_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "Önyükleme günlüğü"
 
-#: lib/marshall_web/live/terminal_live.ex:802
+#: lib/marshall_web/live/terminal_live.ex:803
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "İptal et"
 
-#: lib/marshall_web/live/terminal_live.ex:757
+#: lib/marshall_web/live/terminal_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "Aramayı kapat"
@@ -103,50 +103,50 @@ msgstr "Oturumu kapat"
 msgid "Close terminal %{value1}"
 msgstr "%{value1} terminalini kapat"
 
-#: lib/marshall_web/components/workspace_components.ex:381
+#: lib/marshall_web/components/workspace_components.ex:385
 #, elixir-autogen, elixir-format
 msgid "Connect from your computer"
 msgstr "Bilgisayarınızdan bağlanın"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:695
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "Bağlanıyor…"
 
-#: lib/marshall_web/components/workspace_components.ex:273
-#: lib/marshall_web/components/workspace_components.ex:400
-#: lib/marshall_web/components/workspace_components.ex:410
-#: lib/marshall_web/components/workspace_components.ex:421
+#: lib/marshall_web/components/workspace_components.ex:277
+#: lib/marshall_web/components/workspace_components.ex:404
+#: lib/marshall_web/components/workspace_components.ex:414
+#: lib/marshall_web/components/workspace_components.ex:425
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Kopyala"
 
-#: lib/marshall_web/components/workspace_components.ex:399
+#: lib/marshall_web/components/workspace_components.ex:403
 #, elixir-autogen, elixir-format
 msgid "Copy Linux and macOS install command"
 msgstr "Linux ve macOS kurulum komutunu kopyala"
 
-#: lib/marshall_web/components/workspace_components.ex:420
+#: lib/marshall_web/components/workspace_components.ex:424
 #, elixir-autogen, elixir-format
 msgid "Copy SSH command"
 msgstr "SSH komutunu kopyala"
 
-#: lib/marshall_web/components/workspace_components.ex:409
+#: lib/marshall_web/components/workspace_components.ex:413
 #, elixir-autogen, elixir-format
 msgid "Copy Windows PowerShell install command"
 msgstr "Windows PowerShell kurulum komutunu kopyala"
 
-#: lib/marshall_web/components/workspace_components.ex:272
+#: lib/marshall_web/components/workspace_components.ex:276
 #, elixir-autogen, elixir-format
 msgid "Copy machine ID"
 msgstr "Makine kimliğini kopyala"
 
-#: lib/marshall_web/components/workspace_components.ex:550
+#: lib/marshall_web/components/workspace_components.ex:554
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "Müşteri"
 
-#: lib/marshall_web/live/terminal_live.ex:716
+#: lib/marshall_web/live/terminal_live.ex:717
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "Terminal yazı boyutunu küçült"
@@ -166,8 +166,8 @@ msgstr "Siliniyor"
 msgid "Display relay ticket issued."
 msgstr "Ekran aktarma bileti verildi."
 
-#: lib/marshall_web/live/terminal_live.ex:727
-#: lib/marshall_web/live/terminal_live.ex:729
+#: lib/marshall_web/live/terminal_live.ex:728
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "Tam ekrana geç"
@@ -177,42 +177,42 @@ msgstr "Tam ekrana geç"
 msgid "Failed"
 msgstr "Başarısız"
 
-#: lib/marshall_web/live/terminal_live.ex:742
+#: lib/marshall_web/live/terminal_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "Terminal geçmişinde bul"
 
-#: lib/marshall_web/live/terminal_live.ex:764
+#: lib/marshall_web/live/terminal_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "Önyükleme çıktısını izle"
 
-#: lib/marshall_web/components/workspace_components.ex:265
+#: lib/marshall_web/components/workspace_components.ex:269
 #, elixir-autogen, elixir-format
 msgid "ID"
 msgstr "Kimlik"
 
-#: lib/marshall_web/live/terminal_live.ex:721
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "Terminal yazı boyutunu büyüt"
 
-#: lib/marshall_web/components/workspace_components.ex:390
+#: lib/marshall_web/components/workspace_components.ex:394
 #, elixir-autogen, elixir-format
 msgid "Install and connect"
 msgstr "Kur ve bağlan"
 
-#: lib/marshall_web/components/workspace_components.ex:385
+#: lib/marshall_web/components/workspace_components.ex:389
 #, elixir-autogen, elixir-format
 msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
 msgstr "Overalls'ı kurar, SSH'ı yapılandırır ve bu makineye bağlanır. Windows'ta kurucu ayrıca OpenSSH 9.6 veya üstünü kurar ve yönetici onayıyla varsayılan ssh yapar."
 
-#: lib/marshall_web/components/workspace_components.ex:392
+#: lib/marshall_web/components/workspace_components.ex:396
 #, elixir-autogen, elixir-format
 msgid "Linux / macOS"
 msgstr "Linux / macOS"
 
-#: lib/marshall_web/components/workspace_components.ex:271
+#: lib/marshall_web/components/workspace_components.ex:275
 #, elixir-autogen, elixir-format
 msgid "Machine ID"
 msgstr "Makine kimliği"
@@ -242,7 +242,7 @@ msgstr "Makine başlatılamadı. Makine durumunu ve önyükleme günlüğünü d
 msgid "Machine workspace"
 msgstr "Makine çalışma alanı"
 
-#: lib/marshall_web/live/terminal_live.ex:752
+#: lib/marshall_web/live/terminal_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "Sonraki eşleşme"
@@ -257,15 +257,15 @@ msgstr "Görüntülenebilir paylaşılan terminal yok."
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "Açık terminal yok. Kişisel kabuğunuzu açmak için Yeni'yi seçin."
 
-#: lib/marshall_web/components/workspace_components.ex:287
-#: lib/marshall_web/components/workspace_components.ex:297
-#: lib/marshall_web/components/workspace_components.ex:476
-#: lib/marshall_web/components/workspace_components.ex:484
+#: lib/marshall_web/components/workspace_components.ex:291
+#: lib/marshall_web/components/workspace_components.ex:301
+#: lib/marshall_web/components/workspace_components.ex:480
+#: lib/marshall_web/components/workspace_components.ex:488
 #, elixir-autogen, elixir-format
 msgid "Open VS Code"
 msgstr "VS Code'u aç"
 
-#: lib/marshall_web/components/workspace_components.ex:475
+#: lib/marshall_web/components/workspace_components.ex:479
 #, elixir-autogen, elixir-format
 msgid "Open VS Code for %{value1}"
 msgstr "%{value1} için VS Code'u aç"
@@ -280,7 +280,8 @@ msgstr "Ekranı aç"
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr "Terminal açılıyor; bağlantı kesildiyse aynı istek kurtarılıyor."
 
-#: lib/marshall_web/components/workspace_components.ex:334
+#: lib/marshall_web/components/workspace_components.ex:338
+#: lib/marshall_web/live/admin/workloads_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "Duraklat"
@@ -295,7 +296,7 @@ msgstr "Duraklatıldı"
 msgid "Pending"
 msgstr "Bekliyor"
 
-#: lib/marshall_web/components/workspace_components.ex:208
+#: lib/marshall_web/components/workspace_components.ex:212
 #, elixir-autogen, elixir-format
 msgid "Pinned"
 msgstr "Sabitlendi"
@@ -312,12 +313,12 @@ msgstr "Konuk hesabınız hazırlanıyor…"
 msgid "Preparing your terminal…"
 msgstr "Terminaliniz hazırlanıyor…"
 
-#: lib/marshall_web/live/terminal_live.ex:747
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "Önceki eşleşme"
 
-#: lib/marshall_web/live/terminal_live.ex:772
+#: lib/marshall_web/live/terminal_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "Salt okunur önyükleme konsolu"
@@ -332,12 +333,12 @@ msgstr "Salt okunur ana makine önyükleme günlüğü. Konuk terminalinin hazı
 msgid "Reconnecting to the terminal service…"
 msgstr "Terminal hizmetine yeniden bağlanılıyor…"
 
-#: lib/marshall_web/live/terminal_live.ex:705
+#: lib/marshall_web/live/terminal_live.ex:706
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "Bu tarayıcıda yeniden adlandır"
 
-#: lib/marshall_web/live/terminal_live.ex:704
+#: lib/marshall_web/live/terminal_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "Terminali yeniden adlandır"
@@ -347,7 +348,8 @@ msgstr "Terminali yeniden adlandır"
 msgid "Request control"
 msgstr "Denetim iste"
 
-#: lib/marshall_web/components/workspace_components.ex:325
+#: lib/marshall_web/components/workspace_components.ex:329
+#: lib/marshall_web/live/admin/workloads_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "Makineyi devam ettir"
@@ -363,7 +365,7 @@ msgstr "Devam ettiriliyor"
 msgid "Resuming machine; waiting for capacity…"
 msgstr "Makine devam ettiriliyor; kapasite bekleniyor…"
 
-#: lib/marshall_web/live/terminal_live.ex:799
+#: lib/marshall_web/live/terminal_live.ex:800
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "İptal et"
@@ -373,27 +375,27 @@ msgstr "İptal et"
 msgid "Running"
 msgstr "Çalışıyor"
 
-#: lib/marshall_web/components/workspace_components.ex:443
+#: lib/marshall_web/components/workspace_components.ex:447
 #, elixir-autogen, elixir-format
 msgid "SSH connection details are temporarily unavailable."
 msgstr "SSH bağlantı ayrıntıları geçici olarak kullanılamıyor."
 
-#: lib/marshall_web/components/workspace_components.ex:439
+#: lib/marshall_web/components/workspace_components.ex:443
 #, elixir-autogen, elixir-format
 msgid "SSH connection requires write access to this machine."
 msgstr "SSH bağlantısı bu makineye yazma erişimi gerektirir."
 
-#: lib/marshall_web/live/terminal_live.ex:711
+#: lib/marshall_web/live/terminal_live.ex:712
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "Ara (Ctrl+F)"
 
-#: lib/marshall_web/live/terminal_live.ex:710
+#: lib/marshall_web/live/terminal_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "Terminal geçmişinde ara"
 
-#: lib/marshall_web/live/terminal_live.ex:734
+#: lib/marshall_web/live/terminal_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "Terminal geçmişinde ara"
@@ -408,7 +410,7 @@ msgstr "Ayarlar"
 msgid "Share terminal %{value1}"
 msgstr "%{value1} terminalini paylaş"
 
-#: lib/marshall_web/live/terminal_live.ex:780
+#: lib/marshall_web/live/terminal_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "Bu terminali paylaş"
@@ -418,12 +420,12 @@ msgstr "Bu terminali paylaş"
 msgid "Share view"
 msgstr "Görünümü paylaş"
 
-#: lib/marshall_web/components/workspace_components.ex:551
+#: lib/marshall_web/components/workspace_components.ex:555
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "Standart"
 
-#: lib/marshall_web/components/workspace_components.ex:315
+#: lib/marshall_web/components/workspace_components.ex:319
 #, elixir-autogen, elixir-format
 msgid "Start machine"
 msgstr "Makineyi başlat"
@@ -433,7 +435,7 @@ msgstr "Makineyi başlat"
 msgid "Starting"
 msgstr "Başlatılıyor"
 
-#: lib/marshall_web/components/workspace_components.ex:344
+#: lib/marshall_web/components/workspace_components.ex:348
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Durdur"
@@ -526,13 +528,13 @@ msgstr "Terminal açılamadı."
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr "Bu makine durdurulmuş. Terminalinizi açmak için başlatın. Dosyalarınız saklanır."
 
-#: lib/marshall_web/components/workspace_components.ex:352
-#: lib/marshall_web/components/workspace_components.ex:526
+#: lib/marshall_web/components/workspace_components.ex:356
+#: lib/marshall_web/components/workspace_components.ex:530
 #, elixir-autogen, elixir-format
 msgid "This machine's image does not support the current browser editor."
 msgstr "Bu makinenin imajı mevcut tarayıcı düzenleyicisini desteklemiyor."
 
-#: lib/marshall_web/components/workspace_components.ex:427
+#: lib/marshall_web/components/workspace_components.ex:431
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
 msgstr "Bu makinenin imajında henüz konuk aracıları yok: SSH, tarayıcı terminali ve aracılar kullanılamıyor. Şunu kullanın:"
@@ -542,7 +544,7 @@ msgstr "Bu makinenin imajında henüz konuk aracıları yok: SSH, tarayıcı ter
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr "Bu makinenin imajında terminal aracısı yok, bu yüzden tarayıcı terminali kullanılamıyor."
 
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Etkileşim için yazın"
@@ -558,38 +560,38 @@ msgid "Unavailable"
 msgstr "Kullanılamıyor"
 
 #: lib/marshall_web/components/workspace_components.ex:88
-#: lib/marshall_web/components/workspace_components.ex:553
+#: lib/marshall_web/components/workspace_components.ex:557
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: lib/marshall_web/components/workspace_components.ex:441
+#: lib/marshall_web/components/workspace_components.ex:445
 #, elixir-autogen, elixir-format
 msgid "Use the browser terminal for this Inception environment."
 msgstr "Bu Inception ortamı için tarayıcı terminalini kullanın."
 
-#: lib/marshall_web/components/workspace_components.ex:359
+#: lib/marshall_web/components/workspace_components.ex:363
 #, elixir-autogen, elixir-format
 msgid "VS Code is temporarily unavailable for this machine."
 msgstr "VS Code bu makine için geçici olarak kullanılamıyor."
 
-#: lib/marshall_web/components/workspace_components.ex:532
+#: lib/marshall_web/components/workspace_components.ex:536
 #, elixir-autogen, elixir-format
 msgid "VS Code is temporarily unavailable."
 msgstr "VS Code geçici olarak kullanılamıyor."
 
-#: lib/marshall_web/components/workspace_components.ex:535
+#: lib/marshall_web/components/workspace_components.ex:539
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "VS Code bu makine için kullanılamıyor."
 
-#: lib/marshall_web/components/workspace_components.ex:357
-#: lib/marshall_web/components/workspace_components.ex:529
+#: lib/marshall_web/components/workspace_components.ex:361
+#: lib/marshall_web/components/workspace_components.ex:533
 #, elixir-autogen, elixir-format
 msgid "VS Code requires a running machine."
 msgstr "VS Code çalışan makine gerektirir."
 
-#: lib/marshall_web/live/terminal_live.ex:782
+#: lib/marshall_web/live/terminal_live.ex:783
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr "Makine operatörleri için bile yalnızca görüntüleme. Alıcının bu makineye zaten erişimi olmalıdır."
@@ -604,7 +606,7 @@ msgstr "Ekran aktarması bekleniyor."
 msgid "Waiting for the machine to start…"
 msgstr "Makinenin başlaması bekleniyor…"
 
-#: lib/marshall_web/components/workspace_components.ex:402
+#: lib/marshall_web/components/workspace_components.ex:406
 #, elixir-autogen, elixir-format
 msgid "Windows"
 msgstr "Windows"
@@ -634,22 +636,22 @@ msgstr "Önceki kabuğunuz kapandı. Başka terminal açmak için Yeni'yi seçin
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "Makine çalışır ve hazır olduğunda terminaliniz açılacak."
 
-#: lib/marshall_web/live/terminal_live.ex:712
+#: lib/marshall_web/live/terminal_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "bul"
 
-#: lib/marshall_web/live/terminal_live.ex:730
+#: lib/marshall_web/live/terminal_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "dolu"
 
-#: lib/marshall_web/live/terminal_live.ex:706
+#: lib/marshall_web/live/terminal_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "yeniden adlandır"
 
-#: lib/marshall_web/components/workspace_components.ex:437
+#: lib/marshall_web/components/workspace_components.ex:441
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "salt okunur ana makine konsolunu görüntülemek için."

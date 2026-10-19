@@ -29,7 +29,7 @@ msgstr "30 päeva"
 msgid "7 days"
 msgstr "7 päeva"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:473
+#: lib/marshall_web/live/admin/jobs_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "Kinnitatud"
@@ -59,7 +59,7 @@ msgstr "Arhiveeritud"
 msgid "Archived history · retry unavailable"
 msgstr "Arhiveeritud ajalugu · uuesti proovimine pole saadaval"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:424
+#: lib/marshall_web/live/admin/jobs_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "Katse"
@@ -76,18 +76,18 @@ msgid "Background work run by Oban. A successful job may have dispatched work wh
 msgstr "Obani käitatav taustatöö. Edukas töö võis käivitada tegevusi, mille tegelik tulemus on veel ootel; jälgi seotud toimingut kuni selle lõpuni."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
-#: lib/marshall_web/live/admin/jobs_live.ex:475
+#: lib/marshall_web/live/admin/jobs_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "Tühistatud"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:422
+#: lib/marshall_web/live/admin/jobs_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "Captured"
 msgstr "Salvestatud"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:406
-#: lib/marshall_web/live/admin/jobs_live.ex:474
+#: lib/marshall_web/live/admin/jobs_live.ex:418
+#: lib/marshall_web/live/admin/jobs_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "Valmis"
@@ -102,12 +102,12 @@ msgstr "Arvud hõlmavad praegusi ja hiljuti säilitatud toortöid. Loend sisalda
 msgid "Created"
 msgstr "Loodud"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:477
+#: lib/marshall_web/live/admin/jobs_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "Tühjendatud"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:476
+#: lib/marshall_web/live/admin/jobs_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "Tühjendamine"
@@ -117,7 +117,7 @@ msgstr "Tühjendamine"
 msgid "Duration"
 msgstr "Kestus"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:468
+#: lib/marshall_web/live/admin/jobs_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "Tühjendamiskampaania"
@@ -127,7 +127,7 @@ msgstr "Tühjendamiskampaania"
 msgid "Exact worker name"
 msgstr "Täpne töötaja nimi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:417
+#: lib/marshall_web/live/admin/jobs_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "Execution history"
 msgstr "Käivituste ajalugu"
@@ -207,28 +207,28 @@ msgstr "Ükski töö ei vasta neile filtritele."
 msgid "Older jobs →"
 msgstr "Vanemad tööd →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:455
+#: lib/marshall_web/live/admin/jobs_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Older transitions →"
 msgstr "Vanemad olekumuutused →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:411
+#: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Open machine →"
 msgstr "Ava masin →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:466
+#: lib/marshall_web/live/admin/jobs_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Operation"
 msgstr "Toiming"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:397
+#: lib/marshall_web/live/admin/jobs_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Operation state"
 msgstr "Toimingu olek"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:407
-#: lib/marshall_web/live/admin/jobs_live.ex:472
+#: lib/marshall_web/live/admin/jobs_live.ex:419
+#: lib/marshall_web/live/admin/jobs_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Ootel"
@@ -259,27 +259,27 @@ msgstr "Järjekorras"
 msgid "Recorded failures"
 msgstr "Salvestatud tõrked"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:390
+#: lib/marshall_web/live/admin/jobs_live.ex:402
 #, elixir-autogen, elixir-format
 msgid "Related record"
 msgstr "Seotud kirje"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:467
+#: lib/marshall_web/live/admin/jobs_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "Relocation"
 msgstr "Ümberpaigutamine"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:403
+#: lib/marshall_web/live/admin/jobs_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Relocation complete"
 msgstr "Teisaldamine lõpetatud"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:478
+#: lib/marshall_web/live/admin/jobs_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "Jätkatud"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:479
+#: lib/marshall_web/live/admin/jobs_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "Kasutuselt kõrvaldatud"
@@ -316,7 +316,7 @@ msgstr "Ajastatud / järgmine katse"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:263
 #: lib/marshall_web/live/admin/jobs_live.ex:303
-#: lib/marshall_web/live/admin/jobs_live.ex:423
+#: lib/marshall_web/live/admin/jobs_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "Olek"
@@ -342,8 +342,8 @@ msgid "This job is unavailable or its history has expired."
 msgstr "See töö pole saadaval või selle ajalugu on aegunud."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:189
-#: lib/marshall_web/live/admin/jobs_live.ex:469
-#: lib/marshall_web/live/admin/jobs_live.ex:480
+#: lib/marshall_web/live/admin/jobs_live.ex:481
+#: lib/marshall_web/live/admin/jobs_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Teadmata"
@@ -364,7 +364,7 @@ msgstr "Ootel"
 msgid "Worker"
 msgstr "Töötaja"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:442
+#: lib/marshall_web/live/admin/jobs_live.ex:454
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "katse %{attempt} · %{count} salvestatud tõrget"

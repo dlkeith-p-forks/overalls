@@ -132,6 +132,16 @@ Machine and consumer verification are in progress. The
 source/test evidence and remaining acceptance gaps. This accepted decision is
 not a claim of completed implementation or deployment.
 
+Lilly's [trusted driver configuration](../../../lilly/lib/lilly/vm/config.ex)
+defaults exact checkpoint image qualification to an empty list. The
+[admission predicate](../../../protocol/lib/overalls_protocol/native_admission.ex)
+requires that exact content-addressed identity for both pause and resume;
+Linux kernel shape alone does not qualify an image. The native fixture's explicit
+candidate ID is separate from recorded production artifact qualification.
+The authenticated host inventory carries that qualification independently of
+physical checkpoint compatibility. Marshall checks it for pause, restored
+capacity, memory relocation selection and the final destination handoff fence.
+
 ## Open questions
 
 None. Exact-image and physical-fleet qualification remain verification work.

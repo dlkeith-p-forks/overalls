@@ -320,6 +320,11 @@ defmodule Marshall.Compute.RelocationCapacity do
       host.enabled and host.maintenance_mode == mode and
         match?({:ok, _}, OverallsProtocol.TransferSSH.endpoint(host.transfer_endpoint)) and
         host.architecture == vm.architecture and host.inventory["execution_ready"] == true and
+        (vm.desired_state == :stopped or
+           OverallsProtocol.NativeAdmission.checkpoint_qualified?(
+             vm.image_id,
+             host.inventory["checkpoint_image_ids"]
+           )) and
         Marshall.Compute.HostLiveness.capacity_fresh?(host.reported_at, now)
 
   defp fresh_pool?(pool, now),

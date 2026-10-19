@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "செயல்கள்"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "இந்த மெய்நிகர் இயந்திரத்தைக் காப்பகப்படுத்தவா?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "நீக்கு"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "விவரங்கள்"
@@ -64,7 +64,7 @@ msgstr "வாழ்க்கைச் சுழற்சிக் கோரி�
 msgid "Lifecycle request was rejected."
 msgstr "வாழ்க்கைச் சுழற்சிக் கோரிக்கை மறுக்கப்பட்டது."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "நகர்த்து"
@@ -84,7 +84,7 @@ msgstr "இடமாற்றக் கோரிக்கை வரிசைய�
 msgid "Relocation request was rejected."
 msgstr "இடமாற்றக் கோரிக்கை மறுக்கப்பட்டது."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "அளவை மாற்று"
@@ -94,7 +94,7 @@ msgstr "அளவை மாற்று"
 msgid "Shape"
 msgstr "வடிவம்"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "தொடங்கு"
@@ -104,12 +104,12 @@ msgstr "தொடங்கு"
 msgid "State"
 msgstr "நிலை"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "நிறுத்து"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "முனையம்"

@@ -264,6 +264,11 @@ with subtest("native OpenSSH reaches the per-user guest account with the registe
             source.wait_for_unit("overalls-request-audi-ssh-exporter.service")
             source.wait_until_succeeds("test -s /run/overalls-request-audi-ssh-source/slo.json")
     ssh_root = "/var/lib/fleet-audi"
+    # @cc [owner:ghuntley,label:verification;security] fleet-ssh-independent-trust-setup
+    # The SSH journey MUST install its verified control-plane trust independently
+    # of the browser journey, which focused native scenarios may omit.
+    client.succeed(f"install -d -m 700 -o tester -g users {ssh_root}")
+    client.succeed(f"install -m 644 {root}/ca.crt {ssh_root}/ca.crt")
     client.succeed("install -d -m 700 -o tester -g users /home/tester/.ssh")
     client.succeed("sudo -u tester ssh-keygen -q -t ed25519 -N '' -f /home/tester/.ssh/id_ed25519")
     platform_public = client.succeed("cat /home/tester/.ssh/id_ed25519.pub").strip()

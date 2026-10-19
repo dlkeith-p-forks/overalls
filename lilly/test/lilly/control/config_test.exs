@@ -25,6 +25,29 @@ defmodule Lilly.Control.ConfigTest do
     assert loaded.client.host_id == @id
     assert loaded.transfer_bytes_per_second == 67_108_864
     assert loaded.local_transfer_bytes_per_second == 1_073_741_824
+    assert loaded.execution.checkpoint_image_ids == []
+    qualified_id = "sha256:" <> String.duplicate("a", 64)
+    qualified = put_in(config, ["execution", "checkpoint_image_ids"], [qualified_id])
+    File.write!(path, JSON.encode!(qualified))
+    assert {:ok, qualified_loaded} = Config.load(path)
+    assert qualified_loaded.execution.checkpoint_image_ids == [qualified_id]
+
+    for invalid <- [
+          nil,
+          qualified_id,
+          ["linux"],
+          [qualified_id, qualified_id],
+          Enum.map(1..257, fn n ->
+            "sha256:" <> String.pad_leading(Integer.to_string(n, 16), 64, "0")
+          end)
+        ] do
+      File.write!(
+        path,
+        JSON.encode!(put_in(config, ["execution", "checkpoint_image_ids"], invalid))
+      )
+
+      assert {:error, :invalid_runtime_configuration} = Config.load(path)
+    end
 
     for invalid_rate <- [0, -1, 1_073_741_825, "1024", nil] do
       File.write!(

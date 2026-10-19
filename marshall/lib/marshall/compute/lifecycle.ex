@@ -66,6 +66,15 @@ defmodule Marshall.Compute.Lifecycle do
     )
   end
 
+  @doc "Trusted SCIM cleanup pauses an inactive user's machine before the grace deadline."
+  @spec pause_for_scim(String.t(), String.t(), String.t()) :: {:ok, term()} | {:error, term()}
+  def pause_for_scim(user_id, vm_id, request_key) do
+    execute(
+      %{vm_id: vm_id, kind: :pause, idempotency_key: request_key},
+      %{actor: %Marshall.Accounts.User{id: user_id}, scim_id: user_id}
+    )
+  end
+
   @doc "Narrow durable wake for a prompt under fresh VM write authority."
   # @cc [owner:ghuntley,label:security;recovery] lifecycle-agent-wake-narrow
   # Prompt admission MUST retain current write authority and durable demand in
@@ -326,6 +335,13 @@ defmodule Marshall.Compute.Lifecycle do
     end
   end
 
+  defp authorize!(vm, %{scim_id: id}) do
+    case Marshall.Accounts.Security.current(id) do
+      %{id: ^id, active: false, deleted_at: nil} when vm.owner_id == id -> :ok
+      _ -> Ledger.rollback(:forbidden)
+    end
+  end
+
   defp authorize!(vm, %{actor: actor}),
     do: Marshall.Access.Authorization.require!(vm, actor, "manage")
 
@@ -356,8 +372,12 @@ defmodule Marshall.Compute.Lifecycle do
   defp reserve_pause!(host, vm, reservation) do
     unless vm.observed_state in [:running, :paused], do: Ledger.rollback(:workload_not_stable)
 
-    unless OverallsProtocol.ImageManifest.id?(host.inventory["checkpoint_compatibility"]),
-      do: Ledger.rollback(:checkpoint_unavailable)
+    unless OverallsProtocol.ImageManifest.id?(host.inventory["checkpoint_compatibility"]) and
+             OverallsProtocol.NativeAdmission.checkpoint_qualified?(
+               vm.image_id,
+               host.inventory["checkpoint_image_ids"]
+             ),
+           do: Ledger.rollback(:checkpoint_unavailable)
 
     [pool] = Ledger.read!(Marshall.Compute.StoragePool, id: vm.pool_id)
     needed = 2 * OverallsProtocol.VMShape.checkpoint_bytes(vm.memory_bytes)

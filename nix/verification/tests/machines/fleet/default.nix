@@ -1148,6 +1148,9 @@ let
       protectedCidrs = [ "11.0.0.2/32" "${hosts.${if name == "l1" then "l2" else "l1"}.ip}/32" ];
       guestCpuCores = 6;
       guestMemoryMiB = fixtureGuestMemoryMiB;
+      # Candidate admission is confined to these disposable memory-continuation,
+      # relocation and evacuation tests; it never promotes a production image.
+      checkpointImageIds = lib.optionals (suspension || relocation || maintenanceEvacuation) [ guestImageId ];
       images = [ { path = "${guest}"; } ]
         ++ lib.optionals ubuntu [ { path = "${nixosGuest}"; } ];
       pools = [{

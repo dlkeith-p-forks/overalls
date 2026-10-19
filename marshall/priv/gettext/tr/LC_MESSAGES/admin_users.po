@@ -21,7 +21,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} sahip olunan makine"
 msgstr[1] "%{count} sahip olunan makine"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Hesap sayfaları"
@@ -66,7 +66,7 @@ msgstr "Yönetici erişimi değiştirilemedi."
 msgid "Could not revoke browser sessions."
 msgstr "Tarayıcı oturumları iptal edilemedi."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Kullanıcıyı ve makineleri sil"
@@ -81,7 +81,7 @@ msgstr "E-posta adresi"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Bu dağıtımdaki tüm hesaplar. Giriş yapmış kullanıcılar bu sayfayı okuyabilir; değişiklikler yakın zamanda geçiş anahtarı doğrulamış bir yönetici gerektirir."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Bu hesaba tüm filoyu ve makineleri yönetme erişimi verilsin mi?"
@@ -106,42 +106,42 @@ msgstr "Çok faktörlü doğrulama etkin"
 msgid "MFA not enrolled"
 msgstr "Çok faktörlü doğrulama kaydı yok"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Yönetici yap"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Sonraki sayfa →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Bu sayfada hesap yok."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Bu hesap ve başkalarıyla paylaşılanlar dahil sahip olduğu TÜM makineler kalıcı olarak silinsin mi?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Yöneticiyi kaldır"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Bu hesabın yönetici erişimi kaldırılsın mı?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Çok faktörlü doğrulamayı sıfırla"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Bu kullanıcının çok faktörlü doğrulaması sıfırlanıp tüm tarayıcı oturumları iptal edilsin mi? Yeni bir geçiş anahtarı kaydetmeleri gerekir."
@@ -151,17 +151,17 @@ msgstr "Bu kullanıcının çok faktörlü doğrulaması sıfırlanıp tüm tara
 msgid "Send invitation"
 msgstr "Davet gönder"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Her yerden çıkış yap"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Bu hesap tüm tarayıcı oturumlarından çıkarılsın mı?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Bu hesabı ve %{count} makinesini silmek için e-postayı yazın"
@@ -186,7 +186,7 @@ msgstr "Geçiş anahtarıyla doğrula · yönetim erişimi 15 dakika geçerlidir
 msgid "· Your account"
 msgstr "· Hesabınız"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← İlk sayfa"
@@ -196,7 +196,7 @@ msgstr "← İlk sayfa"
 msgid "Deleted"
 msgstr "Silindi"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "Makineler siliniyor"
@@ -206,7 +206,7 @@ msgstr "Makineler siliniyor"
 msgid "Retrying machine cleanup"
 msgstr "Makine temizliği yeniden deneniyor"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Kullanılamıyor"

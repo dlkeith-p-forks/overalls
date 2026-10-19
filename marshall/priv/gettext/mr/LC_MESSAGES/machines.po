@@ -24,7 +24,7 @@ msgstr " आणि वाढत आहे"
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} सेकंद%{suffix}"
 
-#: lib/marshall_web/live/resize_live.ex:311
+#: lib/marshall_web/live/resize_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
@@ -33,12 +33,12 @@ msgstr "%{value1} CPU"
 #: lib/marshall_web/live/machines_live.ex:1043
 #: lib/marshall_web/live/overview_live.ex:315
 #: lib/marshall_web/live/overview_live.ex:320
-#: lib/marshall_web/live/resize_live.ex:317
+#: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
 msgstr "%{value1} GiB"
 
-#: lib/marshall_web/live/resize_live.ex:314
+#: lib/marshall_web/live/resize_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
@@ -49,7 +49,9 @@ msgstr "%{value1} MiB"
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
+#: lib/marshall_web/live/admin/workloads_live.ex:159
 #: lib/marshall_web/live/machines_live.ex:782
+#: lib/marshall_web/live/overview_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB डिस्क"
@@ -59,20 +61,20 @@ msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB डिस्क"
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB मेमरी · %{value3} GiB डिस्क"
 
-#: lib/marshall_web/live/resize_live.ex:355
-#: lib/marshall_web/live/resize_live.ex:468
+#: lib/marshall_web/live/resize_live.ex:360
+#: lib/marshall_web/live/resize_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} CPU"
 msgstr "%{value1} → %{value2} CPU"
 
-#: lib/marshall_web/live/resize_live.ex:371
-#: lib/marshall_web/live/resize_live.ex:480
+#: lib/marshall_web/live/resize_live.ex:376
+#: lib/marshall_web/live/resize_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} GiB"
 msgstr "%{value1} → %{value2} GiB"
 
-#: lib/marshall_web/live/resize_live.ex:361
-#: lib/marshall_web/live/resize_live.ex:474
+#: lib/marshall_web/live/resize_live.ex:366
+#: lib/marshall_web/live/resize_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
@@ -137,7 +139,7 @@ msgstr ""
 "प्रशासकीय पडताळणीची मुदत संपली. फ्लीट कार्यभारातून मशीन निवडा आणि पुन्हा "
 "उघडण्यासाठी पासकी पडताळा."
 
-#: lib/marshall_web/live/resize_live.ex:278
+#: lib/marshall_web/live/resize_live.ex:283
 #, elixir-autogen, elixir-format
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr ""
@@ -156,24 +158,24 @@ msgstr "सर्व राखलेल्या प्रती हटवल्
 msgid "Allows"
 msgstr "परवानगी देते"
 
-#: lib/marshall_web/components/clone_components.ex:364
+#: lib/marshall_web/components/clone_components.ex:369
 #, elixir-autogen, elixir-format
 msgid "Another copy or move is using this host's transfer slot. Retry when it finishes."
 msgstr ""
 "दुसरी प्रत किंवा स्थलांतर या होस्टची हस्तांतरण जागा वापरत आहे. ते पूर्ण "
 "झाल्यावर पुन्हा प्रयत्न करा."
 
-#: lib/marshall_web/live/resize_live.ex:632
+#: lib/marshall_web/live/resize_live.ex:642
 #, elixir-autogen, elixir-format
 msgid "Apply the new sizes"
 msgstr "नवीन आकार लागू करा"
 
-#: lib/marshall_web/live/resize_live.ex:639
+#: lib/marshall_web/live/resize_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Apply the new sizes while stopped"
 msgstr "थांबलेल्या स्थितीत नवीन आकार लागू करा"
 
-#: lib/marshall_web/live/resize_live.ex:566
+#: lib/marshall_web/live/resize_live.ex:571
 #, elixir-autogen, elixir-format
 msgid "Applying the new CPU, memory and disk sizes on the host."
 msgstr "होस्टवर नवीन CPU, मेमरी आणि डिस्क आकार लागू करत आहे."
@@ -183,7 +185,7 @@ msgstr "होस्टवर नवीन CPU, मेमरी आणि डि
 msgid "Back to overview"
 msgstr "आढाव्याकडे परत"
 
-#: lib/marshall_web/components/clone_components.ex:202
+#: lib/marshall_web/components/clone_components.ex:207
 #, elixir-autogen, elixir-format
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "डिस्क सुरक्षितपणे टिपण्यासाठी स्रोत थोडा वेळ थांबवत आहे."
@@ -197,10 +199,10 @@ msgstr ""
 
 #: lib/marshall_web/live/machines_live.ex:1036
 #: lib/marshall_web/live/overview_live.ex:311
-#: lib/marshall_web/live/resize_live.ex:310
-#: lib/marshall_web/live/resize_live.ex:354
-#: lib/marshall_web/live/resize_live.ex:442
-#: lib/marshall_web/live/resize_live.ex:467
+#: lib/marshall_web/live/resize_live.ex:315
+#: lib/marshall_web/live/resize_live.ex:359
+#: lib/marshall_web/live/resize_live.ex:447
+#: lib/marshall_web/live/resize_live.ex:472
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
@@ -210,7 +212,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/resize_live.ex:302
+#: lib/marshall_web/live/resize_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr ""
@@ -234,7 +236,7 @@ msgstr ""
 msgid "Cancel move"
 msgstr "स्थलांतर रद्द करा"
 
-#: lib/marshall_web/live/resize_live.ex:404
+#: lib/marshall_web/live/resize_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Cancel resize"
 msgstr "आकारबदल रद्द करा"
@@ -244,19 +246,19 @@ msgstr "आकारबदल रद्द करा"
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "रद्द करण्याची विनंती केली. पुनर्प्राप्तीनंतर स्वच्छता सुरू राहू शकते."
 
-#: lib/marshall_web/live/resize_live.ex:537
-#: lib/marshall_web/live/resize_live.ex:589
-#: lib/marshall_web/live/resize_live.ex:603
+#: lib/marshall_web/live/resize_live.ex:542
+#: lib/marshall_web/live/resize_live.ex:594
+#: lib/marshall_web/live/resize_live.ex:608
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "रद्द"
 
-#: lib/marshall_web/components/clone_components.ex:318
+#: lib/marshall_web/components/clone_components.ex:323
 #, elixir-autogen, elixir-format
 msgid "Cancelled before the snapshot started."
 msgstr "स्नॅपशॉट सुरू होण्यापूर्वी रद्द."
 
-#: lib/marshall_web/live/resize_live.ex:536
+#: lib/marshall_web/live/resize_live.ex:541
 #, elixir-autogen, elixir-format
 msgid "Cancelling"
 msgstr "रद्द करत आहे"
@@ -266,19 +268,19 @@ msgstr "रद्द करत आहे"
 msgid "Cancelling and restoring the source"
 msgstr "रद्द करून स्रोत पुनर्संचयित करत आहे"
 
-#: lib/marshall_web/components/clone_components.ex:244
+#: lib/marshall_web/components/clone_components.ex:249
 #, elixir-autogen, elixir-format
 msgid "Cancelling clone"
 msgstr "क्लोन रद्द करत आहे"
 
-#: lib/marshall_web/live/resize_live.ex:553
+#: lib/marshall_web/live/resize_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "Cancelling: waiting for the stop to confirm, then restarting with the current sizes."
 msgstr ""
 "रद्द करत आहे: थांबण्याची पुष्टी झाल्यावर सध्याच्या आकारांसह पुन्हा सुरू "
 "करेल."
 
-#: lib/marshall_web/live/resize_live.ex:560
+#: lib/marshall_web/live/resize_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "रद्द करत आहे: थांबण्याच्या पुष्टीची वाट पाहत आहे; आकार बदलणार नाहीत."
@@ -293,7 +295,7 @@ msgstr "रद्द करत आहे…"
 msgid "Capacity is checked again when you create a machine."
 msgstr "मशीन तयार करताना क्षमता पुन्हा तपासली जाते."
 
-#: lib/marshall_web/components/clone_components.ex:208
+#: lib/marshall_web/components/clone_components.ex:213
 #, elixir-autogen, elixir-format
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "स्रोत डिस्क टिपत आहे. स्नॅपशॉट तयार झाल्यावर प्रत करणे सुरू होते."
@@ -328,12 +330,12 @@ msgstr "तुमच्या वातावरणासाठी प्रत�
 msgid "Choose your environment"
 msgstr "वातावरण निवडा"
 
-#: lib/marshall_web/components/clone_components.ex:252
+#: lib/marshall_web/components/clone_components.ex:257
 #, elixir-autogen, elixir-format
 msgid "Clone cancelled"
 msgstr "क्लोन रद्द"
 
-#: lib/marshall_web/components/clone_components.ex:236
+#: lib/marshall_web/components/clone_components.ex:241
 #, elixir-autogen, elixir-format
 msgid "Clone complete"
 msgstr "क्लोन पूर्ण"
@@ -343,7 +345,7 @@ msgstr "क्लोन पूर्ण"
 msgid "Clone machine"
 msgstr "मशीन क्लोन करा"
 
-#: lib/marshall_web/components/clone_components.ex:257
+#: lib/marshall_web/components/clone_components.ex:262
 #, elixir-autogen, elixir-format
 msgid "Clone needs attention"
 msgstr "क्लोनकडे लक्ष देणे आवश्यक"
@@ -374,12 +376,12 @@ msgstr "क्लोनचे टप्पे"
 msgid "Comment"
 msgstr "टिप्पणी"
 
-#: lib/marshall_web/live/resize_live.ex:535
+#: lib/marshall_web/live/resize_live.ex:540
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "पूर्ण"
 
-#: lib/marshall_web/live/resize_live.ex:308
+#: lib/marshall_web/live/resize_live.ex:313
 #, elixir-autogen, elixir-format
 msgid "Confirmed resources"
 msgstr "पुष्टी केलेली संसाधने"
@@ -395,12 +397,12 @@ msgstr "जोडा"
 msgid "Connect an integration ↗"
 msgstr "एकत्रीकरण जोडा ↗"
 
-#: lib/marshall_web/components/clone_components.ex:281
+#: lib/marshall_web/components/clone_components.ex:286
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "प्रत करत आहे"
 
-#: lib/marshall_web/components/clone_components.ex:215
+#: lib/marshall_web/components/clone_components.ex:220
 #, elixir-autogen, elixir-format
 msgid "Copying files"
 msgstr "फाइल्सची प्रत करत आहे"
@@ -435,14 +437,14 @@ msgstr "मशीन तयार करा"
 msgid "Create your first machine"
 msgstr "तुमचे पहिले मशीन तयार करा"
 
-#: lib/marshall_web/components/clone_components.ex:216
+#: lib/marshall_web/components/clone_components.ex:221
 #, elixir-autogen, elixir-format
 msgid "Creating an independent disk from the snapshot. Source recovery proceeds separately."
 msgstr ""
 "स्नॅपशॉटमधून स्वतंत्र डिस्क तयार करत आहे. स्रोत पुनर्प्राप्ती स्वतंत्रपणे "
 "पुढे जाते."
 
-#: lib/marshall_web/components/clone_components.ex:223
+#: lib/marshall_web/components/clone_components.ex:228
 #, elixir-autogen, elixir-format
 msgid "Creating cloned machine"
 msgstr "क्लोन मशीन तयार करत आहे"
@@ -535,9 +537,9 @@ msgstr "मशीनचे थेट अधिकार"
 
 #: lib/marshall_web/live/machines_live.ex:1042
 #: lib/marshall_web/live/overview_live.ex:319
-#: lib/marshall_web/live/resize_live.ex:316
-#: lib/marshall_web/live/resize_live.ex:370
-#: lib/marshall_web/live/resize_live.ex:479
+#: lib/marshall_web/live/resize_live.ex:321
+#: lib/marshall_web/live/resize_live.ex:375
+#: lib/marshall_web/live/resize_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Disk"
 msgstr "डिस्क"
@@ -547,7 +549,7 @@ msgstr "डिस्क"
 msgid "Disk (GiB)"
 msgstr "डिस्क (GiB)"
 
-#: lib/marshall_web/live/resize_live.ex:459
+#: lib/marshall_web/live/resize_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "डिस्क (GiB) — कमाल 500 GiB"
@@ -607,12 +609,12 @@ msgstr "फाइल्स आणि जतन केलेली ओळखम�
 msgid "Find your people ↗"
 msgstr "तुमचा संघ शोधा ↗"
 
-#: lib/marshall_web/components/clone_components.ex:282
+#: lib/marshall_web/components/clone_components.ex:287
 #, elixir-autogen, elixir-format
 msgid "Finishing"
 msgstr "पूर्ण करत आहे"
 
-#: lib/marshall_web/components/clone_components.ex:228
+#: lib/marshall_web/components/clone_components.ex:233
 #, elixir-autogen, elixir-format
 msgid "Finishing up"
 msgstr "शेवटची तयारी"
@@ -632,7 +634,7 @@ msgstr "वाढण्यासाठी जागा द्या"
 msgid "Grant, change or remove access"
 msgstr "प्रवेश द्या, बदला किंवा काढा"
 
-#: lib/marshall_web/live/resize_live.ex:640
+#: lib/marshall_web/live/resize_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Grow the filesystem on next boot"
 msgstr "पुढील बूटवेळी फाइलसिस्टम वाढवा"
@@ -707,9 +709,9 @@ msgstr "नाव तयार करण्यासाठी रिकामे
 msgid "Leave blank to generate a name."
 msgstr "नाव तयार करण्यासाठी रिकामे ठेवा."
 
-#: lib/marshall_web/live/resize_live.ex:584
-#: lib/marshall_web/live/resize_live.ex:598
-#: lib/marshall_web/live/resize_live.ex:614
+#: lib/marshall_web/live/resize_live.ex:589
+#: lib/marshall_web/live/resize_live.ex:603
+#: lib/marshall_web/live/resize_live.ex:619
 #, elixir-autogen, elixir-format
 msgid "Leave stopped"
 msgstr "थांबलेले ठेवा"
@@ -787,15 +789,15 @@ msgstr ""
 
 #: lib/marshall_web/live/machines_live.ex:1039
 #: lib/marshall_web/live/overview_live.ex:314
-#: lib/marshall_web/live/resize_live.ex:313
-#: lib/marshall_web/live/resize_live.ex:360
-#: lib/marshall_web/live/resize_live.ex:473
+#: lib/marshall_web/live/resize_live.ex:318
+#: lib/marshall_web/live/resize_live.ex:365
+#: lib/marshall_web/live/resize_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Memory"
 msgstr "मेमरी"
 
 #: lib/marshall_web/live/machines_live.ex:963
-#: lib/marshall_web/live/resize_live.ex:450
+#: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "मेमरी (MiB)"
@@ -827,7 +829,7 @@ msgid "Move to another host"
 msgstr "दुसऱ्या होस्टवर हलवा"
 
 #: lib/marshall_web/components/clone_components.ex:135
-#: lib/marshall_web/live/resize_live.ex:337
+#: lib/marshall_web/live/resize_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Needs attention"
 msgstr "लक्ष देणे आवश्यक"
@@ -837,7 +839,7 @@ msgstr "लक्ष देणे आवश्यक"
 msgid "New machine name (optional)"
 msgstr "नवीन मशीन नाव (ऐच्छिक)"
 
-#: lib/marshall_web/live/resize_live.ex:417
+#: lib/marshall_web/live/resize_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "New sizes"
 msgstr "नवीन आकार"
@@ -966,7 +968,9 @@ msgstr "आढावा"
 msgid "Owner"
 msgstr "मालक"
 
-#: lib/marshall_web/live/resize_live.ex:538
+#: lib/marshall_web/components/clone_components.ex:406
+#: lib/marshall_web/live/resize_live.ex:257
+#: lib/marshall_web/live/resize_live.ex:543
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "प्रलंबित"
@@ -976,7 +980,7 @@ msgstr "प्रलंबित"
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "हे मशीन आणि डिस्क कायम काढा. हे मागे घेता येत नाही."
 
-#: lib/marshall_web/components/clone_components.ex:377
+#: lib/marshall_web/components/clone_components.ex:382
 #, elixir-autogen, elixir-format
 msgid "Permission to clone this machine is no longer available."
 msgstr "हे मशीन क्लोन करण्याची परवानगी आता उपलब्ध नाही."
@@ -992,27 +996,27 @@ msgstr "वैयक्तिक"
 msgid "Phase"
 msgstr "टप्पा"
 
-#: lib/marshall_web/live/resize_live.ex:319
+#: lib/marshall_web/live/resize_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Power"
 msgstr "वीज"
 
-#: lib/marshall_web/live/resize_live.ex:376
+#: lib/marshall_web/live/resize_live.ex:381
 #, elixir-autogen, elixir-format
 msgid "Power afterwards"
 msgstr "नंतरची वीज स्थिती"
 
-#: lib/marshall_web/components/clone_components.ex:279
+#: lib/marshall_web/components/clone_components.ex:284
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "तयारी करत आहे"
 
-#: lib/marshall_web/components/clone_components.ex:195
+#: lib/marshall_web/components/clone_components.ex:200
 #, elixir-autogen, elixir-format
 msgid "Preparing clone"
 msgstr "क्लोनची तयारी"
 
-#: lib/marshall_web/components/clone_components.ex:196
+#: lib/marshall_web/components/clone_components.ex:201
 #, elixir-autogen, elixir-format
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "स्नॅपशॉटपूर्वी जागा तयार करून स्रोत तपासत आहे."
@@ -1054,12 +1058,13 @@ msgstr ""
 "प्रोफाइल प्रवेश आणि एजंट वैशिष्ट्ये ठरवतात. मशीन एकमेकांपासून वेगळी राहतात."
 
 #: lib/marshall_web/components/clone_components.ex:64
+#: lib/marshall_web/components/clone_components.ex:156
 #, elixir-autogen, elixir-format
 msgid "Queue position %{value1}"
 msgstr "रांगेतील स्थान %{value1}"
 
-#: lib/marshall_web/components/clone_components.ex:187
-#: lib/marshall_web/components/clone_components.ex:278
+#: lib/marshall_web/components/clone_components.ex:192
+#: lib/marshall_web/components/clone_components.ex:283
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "रांगेत"
@@ -1109,7 +1114,7 @@ msgstr "रीफ्रेश करत आहे…"
 msgid "Registered email"
 msgstr "नोंदणीकृत ईमेल"
 
-#: lib/marshall_web/components/clone_components.ex:224
+#: lib/marshall_web/components/clone_components.ex:229
 #, elixir-autogen, elixir-format
 msgid "Registering the copied disk as your private machine."
 msgstr "प्रत केलेली डिस्क तुमचे खासगी मशीन म्हणून नोंदवत आहे."
@@ -1124,7 +1129,7 @@ msgstr "मशीन स्थलांतरित करा"
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "स्थलांतराची विनंती केली. गंतव्य आपोआप निवडले जाते."
 
-#: lib/marshall_web/live/resize_live.ex:380
+#: lib/marshall_web/live/resize_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "थांबलेले राहील; पुढील बूटवेळी फाइलसिस्टम वाढेल"
@@ -1140,7 +1145,7 @@ msgstr "प्रवेश काढा"
 msgid "Requesting cancellation…"
 msgstr "रद्द करण्याची विनंती करत आहे…"
 
-#: lib/marshall_web/live/resize_live.ex:508
+#: lib/marshall_web/live/resize_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "Requesting resize…"
 msgstr "आकारबदलाची विनंती करत आहे…"
@@ -1161,11 +1166,12 @@ msgid "Requesting…"
 msgstr "विनंती करत आहे…"
 
 #: lib/marshall_web/live/machines_live.ex:1028
+#: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "आकार बदला"
 
-#: lib/marshall_web/live/resize_live.ex:512
+#: lib/marshall_web/live/resize_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "Resize and restart"
 msgstr "आकार बदलून रीस्टार्ट करा"
@@ -1180,19 +1186,19 @@ msgstr "आकारबदल रद्द केला."
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "आकारबदल स्वीकारता आला नाही. आकार आणि सध्याची मशीन स्थिती तपासा."
 
-#: lib/marshall_web/live/resize_live.ex:334
+#: lib/marshall_web/live/resize_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "आकारबदल सुरू आहे"
 
 #: lib/marshall_web/live/resize_live.ex:12
-#: lib/marshall_web/live/resize_live.ex:300
-#: lib/marshall_web/live/resize_live.ex:513
+#: lib/marshall_web/live/resize_live.ex:305
+#: lib/marshall_web/live/resize_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Resize machine"
 msgstr "मशीनचा आकार बदला"
 
-#: lib/marshall_web/live/resize_live.ex:384
+#: lib/marshall_web/live/resize_live.ex:389
 #, elixir-autogen, elixir-format
 msgid "Resize needs attention. Confirmed disk growth is retained. Retry resumes the recorded phase."
 msgstr ""
@@ -1204,12 +1210,12 @@ msgstr ""
 msgid "Resize requested."
 msgstr "आकारबदलाची विनंती केली."
 
-#: lib/marshall_web/live/resize_live.ex:343
+#: lib/marshall_web/live/resize_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Resize stages"
 msgstr "आकारबदल टप्पे"
 
-#: lib/marshall_web/live/resize_live.ex:532
+#: lib/marshall_web/live/resize_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Resizing"
 msgstr "आकार बदलत आहे"
@@ -1221,29 +1227,29 @@ msgstr "आकार बदलत आहे"
 msgid "Resources"
 msgstr "संसाधने"
 
-#: lib/marshall_web/live/resize_live.ex:613
+#: lib/marshall_web/live/resize_live.ex:618
 #, elixir-autogen, elixir-format
 msgid "Restart"
 msgstr "रीस्टार्ट करा"
 
-#: lib/marshall_web/live/resize_live.ex:583
-#: lib/marshall_web/live/resize_live.ex:597
+#: lib/marshall_web/live/resize_live.ex:588
+#: lib/marshall_web/live/resize_live.ex:602
 #, elixir-autogen, elixir-format
 msgid "Restart unchanged"
 msgstr "बदल न करता रीस्टार्ट करा"
 
-#: lib/marshall_web/live/resize_live.ex:633
+#: lib/marshall_web/live/resize_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "Restart with the new resources"
 msgstr "नवीन संसाधनांसह रीस्टार्ट करा"
 
-#: lib/marshall_web/live/resize_live.ex:378
+#: lib/marshall_web/live/resize_live.ex:383
 #, elixir-autogen, elixir-format
 msgid "Restarted"
 msgstr "रीस्टार्ट झाले"
 
-#: lib/marshall_web/live/resize_live.ex:533
-#: lib/marshall_web/live/resize_live.ex:534
+#: lib/marshall_web/live/resize_live.ex:538
+#: lib/marshall_web/live/resize_live.ex:539
 #, elixir-autogen, elixir-format
 msgid "Restarting"
 msgstr "रीस्टार्ट करत आहे"
@@ -1264,12 +1270,12 @@ msgstr ""
 msgid "Retry destination boot"
 msgstr "गंतव्य बूट पुन्हा करा"
 
-#: lib/marshall_web/live/resize_live.ex:396
+#: lib/marshall_web/live/resize_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "Retry resize"
 msgstr "आकारबदल पुन्हा करा"
 
-#: lib/marshall_web/live/resize_live.ex:285
+#: lib/marshall_web/live/resize_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "मशीन पुन्हा उघडण्यासाठी फ्लीट कार्यभारांकडे परत जा आणि पासकी पडताळा →"
@@ -1302,7 +1308,7 @@ msgstr "वाढण्यासाठी जागा"
 msgid "Root disk (GiB)"
 msgstr "मूळ डिस्क (GiB)"
 
-#: lib/marshall_web/live/resize_live.ex:321
+#: lib/marshall_web/live/resize_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "चालू"
@@ -1352,17 +1358,17 @@ msgstr "एजंटांसाठी संक्षिप्त वर्ण�
 msgid "Sign in if needed, then Overalls will create your machine."
 msgstr "गरज असल्यास साइन इन करा, मग Overalls मशीन तयार करेल."
 
-#: lib/marshall_web/components/clone_components.ex:280
+#: lib/marshall_web/components/clone_components.ex:285
 #, elixir-autogen, elixir-format
 msgid "Snapshot"
 msgstr "स्नॅपशॉट"
 
-#: lib/marshall_web/components/clone_components.ex:315
+#: lib/marshall_web/components/clone_components.ex:320
 #, elixir-autogen, elixir-format
 msgid "Snapshot did not start."
 msgstr "स्नॅपशॉट सुरू झाला नाही."
 
-#: lib/marshall_web/components/clone_components.ex:312
+#: lib/marshall_web/components/clone_components.ex:317
 #, elixir-autogen, elixir-format
 msgid "Snapshot has not started."
 msgstr "स्नॅपशॉट अजून सुरू झालेला नाही."
@@ -1372,17 +1378,17 @@ msgstr "स्नॅपशॉट अजून सुरू झालेला �
 msgid "Source machine"
 msgstr "स्रोत मशीन"
 
-#: lib/marshall_web/components/clone_components.ex:326
+#: lib/marshall_web/components/clone_components.ex:331
 #, elixir-autogen, elixir-format
 msgid "Source recovery follows the snapshot."
 msgstr "स्नॅपशॉटनंतर स्रोत पुनर्प्राप्ती होते."
 
-#: lib/marshall_web/components/clone_components.ex:306
+#: lib/marshall_web/components/clone_components.ex:311
 #, elixir-autogen, elixir-format
 msgid "Source recovery needs attention."
 msgstr "स्रोत पुनर्प्राप्तीकडे लक्ष देणे आवश्यक."
 
-#: lib/marshall_web/components/clone_components.ex:309
+#: lib/marshall_web/components/clone_components.ex:314
 #, elixir-autogen, elixir-format
 msgid "Source recovery retry requested."
 msgstr "स्रोत पुनर्प्राप्ती पुन्हा करण्याची विनंती केली."
@@ -1392,17 +1398,17 @@ msgstr "स्रोत पुनर्प्राप्ती पुन्ह�
 msgid "Source restored; destination cleanup pending"
 msgstr "स्रोत पुनर्संचयित; गंतव्य स्वच्छता बाकी"
 
-#: lib/marshall_web/components/clone_components.ex:303
+#: lib/marshall_web/components/clone_components.ex:308
 #, elixir-autogen, elixir-format
 msgid "Source returned to its original power state."
 msgstr "स्रोत मूळ वीज स्थितीत परतला."
 
-#: lib/marshall_web/components/clone_components.ex:300
+#: lib/marshall_web/components/clone_components.ex:305
 #, elixir-autogen, elixir-format
 msgid "Source was kept stopped, matching its state when this request began."
 msgstr "विनंती सुरू होताना होता तसा स्रोत थांबलेला ठेवला."
 
-#: lib/marshall_web/components/clone_components.ex:323
+#: lib/marshall_web/components/clone_components.ex:328
 #, elixir-autogen, elixir-format
 msgid "Source was stopped when this request began."
 msgstr "ही विनंती सुरू झाली तेव्हा स्रोत थांबलेला होता."
@@ -1418,7 +1424,7 @@ msgstr "प्रमाणित"
 msgid "Starting"
 msgstr "सुरू करत आहे"
 
-#: lib/marshall_web/live/resize_live.ex:569
+#: lib/marshall_web/live/resize_live.ex:574
 #, elixir-autogen, elixir-format
 msgid "Starting the machine with its new resources."
 msgstr "नवीन संसाधनांसह मशीन सुरू करत आहे."
@@ -1434,46 +1440,47 @@ msgstr "स्थिती"
 msgid "Stay in the loop"
 msgstr "ताज्या घडामोडी जाणून घ्या"
 
-#: lib/marshall_web/components/clone_components.ex:385
+#: lib/marshall_web/components/clone_components.ex:390
 #, elixir-autogen, elixir-format
 msgid "Step %{value1} is waiting on the host: %{value2}"
 msgstr "टप्पा %{value1} होस्टची वाट पाहत आहे: %{value2}"
 
-#: lib/marshall_web/live/resize_live.ex:587
-#: lib/marshall_web/live/resize_live.ex:601
+#: lib/marshall_web/live/resize_live.ex:592
+#: lib/marshall_web/live/resize_live.ex:606
+#: lib/marshall_web/live/resize_live.ex:622
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "थांबवा"
 
-#: lib/marshall_web/live/resize_live.ex:631
+#: lib/marshall_web/live/resize_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "Stop the machine"
 msgstr "मशीन थांबवा"
 
-#: lib/marshall_web/live/resize_live.ex:322
+#: lib/marshall_web/live/resize_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "थांबलेले"
 
 #: lib/marshall_web/live/machines_live.ex:637
-#: lib/marshall_web/live/resize_live.ex:531
+#: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
 msgstr "थांबवत आहे"
 
-#: lib/marshall_web/components/clone_components.ex:201
+#: lib/marshall_web/components/clone_components.ex:206
 #, elixir-autogen, elixir-format
 msgid "Stopping source for snapshot"
 msgstr "स्नॅपशॉटसाठी स्रोत थांबवत आहे"
 
-#: lib/marshall_web/components/clone_components.ex:245
+#: lib/marshall_web/components/clone_components.ex:250
 #, elixir-autogen, elixir-format
 msgid "Stopping the copy and removing temporary resources. Source recovery is tracked separately."
 msgstr ""
 "प्रत थांबवून तात्पुरती संसाधने काढत आहे. स्रोत पुनर्प्राप्ती स्वतंत्रपणे "
 "पाहिली जाते."
 
-#: lib/marshall_web/live/resize_live.ex:549
+#: lib/marshall_web/live/resize_live.ex:554
 #, elixir-autogen, elixir-format
 msgid "Stopping the machine so its resources can change safely."
 msgstr "संसाधने सुरक्षितपणे बदलण्यासाठी मशीन थांबवत आहे."
@@ -1493,7 +1500,7 @@ msgstr "सदस्यत्व घ्या"
 msgid "Switching placement"
 msgstr "वाटप बदलत आहे"
 
-#: lib/marshall_web/components/clone_components.ex:207
+#: lib/marshall_web/components/clone_components.ex:212
 #, elixir-autogen, elixir-format
 msgid "Taking snapshot"
 msgstr "स्नॅपशॉट घेत आहे"
@@ -1540,13 +1547,13 @@ msgstr ""
 "खाते आधी नोंदलेले असावे. भूमिका जतन केल्याने त्या व्यक्तीची थेट मशीन भूमिका "
 "बदलते; थेट अधिकार काढण्यासाठी प्रवेश काढा निवडा."
 
-#: lib/marshall_web/components/clone_components.ex:229
+#: lib/marshall_web/components/clone_components.ex:234
 #, elixir-autogen, elixir-format
 msgid "The clone can be opened. Finalizing its power state and cleaning up temporary resources."
 msgstr ""
 "क्लोन उघडता येतो. वीज स्थिती पूर्ण करून तात्पुरती संसाधने साफ करत आहे."
 
-#: lib/marshall_web/components/clone_components.ex:339
+#: lib/marshall_web/components/clone_components.ex:344
 #, elixir-autogen, elixir-format
 msgid "The clone could not start. Open it to review its status and power controls."
 msgstr "क्लोन सुरू झाला नाही. स्थिती आणि वीज नियंत्रणे पाहण्यासाठी उघडा."
@@ -1563,7 +1570,7 @@ msgstr ""
 msgid "The default machine image is not available right now."
 msgstr "नेहमीची मशीन प्रतिमा सध्या उपलब्ध नाही."
 
-#: lib/marshall_web/live/resize_live.ex:543
+#: lib/marshall_web/live/resize_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "The last step did not finish. Retry resumes from the recorded phase without repeating completed work."
 msgstr ""
@@ -1580,7 +1587,7 @@ msgstr "मशीन तयार करता आले नाही. पुन
 msgid "The machine could not be updated. Refresh and try again."
 msgstr "मशीन अद्ययावत करता आले नाही. रीफ्रेश करून पुन्हा प्रयत्न करा."
 
-#: lib/marshall_web/live/resize_live.ex:424
+#: lib/marshall_web/live/resize_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr ""
@@ -1609,7 +1616,7 @@ msgstr "मालकाचा प्रवेश बदलता येत न�
 msgid "The pin could not be changed. Refresh and try again."
 msgstr "पिन बदलता आला नाही. रीफ्रेश करून पुन्हा प्रयत्न करा."
 
-#: lib/marshall_web/components/clone_components.ex:371
+#: lib/marshall_web/components/clone_components.ex:376
 #, elixir-autogen, elixir-format
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr ""
@@ -1620,13 +1627,13 @@ msgstr ""
 msgid "The request could not be completed. Check the values and try again."
 msgstr "विनंती पूर्ण करता आली नाही. मूल्ये तपासून पुन्हा प्रयत्न करा."
 
-#: lib/marshall_web/components/clone_components.ex:391
+#: lib/marshall_web/components/clone_components.ex:396
 #, elixir-autogen, elixir-format
 msgid "The request encountered a problem. Use the available actions to recover or cancel it."
 msgstr ""
 "विनंतीला समस्या आली. पुनर्प्राप्ती किंवा रद्द करण्यासाठी उपलब्ध कृती वापरा."
 
-#: lib/marshall_web/live/resize_live.ex:573
+#: lib/marshall_web/live/resize_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "आकारबदल पूर्ण झाला; हे पृष्ठ पुष्टी केलेल्या आकारांसह रीफ्रेश होते."
@@ -1643,24 +1650,24 @@ msgstr ""
 msgid "The selected image needs more memory or disk space."
 msgstr "निवडलेल्या प्रतिमेला अधिक मेमरी किंवा डिस्क जागा हवी."
 
-#: lib/marshall_web/components/clone_components.ex:335
+#: lib/marshall_web/components/clone_components.ex:340
 #, elixir-autogen, elixir-format
 msgid "The source could not restart. Retry to request source recovery."
 msgstr ""
 "स्रोत रीस्टार्ट झाला नाही. स्रोत पुनर्प्राप्ती मागण्यासाठी पुन्हा प्रयत्न "
 "करा."
 
-#: lib/marshall_web/components/clone_components.ex:360
+#: lib/marshall_web/components/clone_components.ex:365
 #, elixir-autogen, elixir-format
 msgid "The source host is unavailable. Retry once it is available."
 msgstr "स्रोत होस्ट उपलब्ध नाही. उपलब्ध झाल्यावर पुन्हा प्रयत्न करा."
 
-#: lib/marshall_web/components/clone_components.ex:380
+#: lib/marshall_web/components/clone_components.ex:385
 #, elixir-autogen, elixir-format
 msgid "The source machine was deleted before this request began."
 msgstr "ही विनंती सुरू होण्यापूर्वी स्रोत मशीन हटवले गेले."
 
-#: lib/marshall_web/components/clone_components.ex:354
+#: lib/marshall_web/components/clone_components.ex:359
 #, elixir-autogen, elixir-format
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr ""
@@ -1676,7 +1683,7 @@ msgstr "सध्या नवीन मशीनसाठी पुरेशी
 msgid "There is not enough available capacity for this machine."
 msgstr "या मशीनसाठी पुरेशी उपलब्ध क्षमता नाही."
 
-#: lib/marshall_web/components/clone_components.ex:346
+#: lib/marshall_web/components/clone_components.ex:351
 #, elixir-autogen, elixir-format
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "या प्रतीसाठी पुरेशी क्षमता नाही. जागा झाल्यावर पुन्हा प्रयत्न करा."
@@ -1711,7 +1718,7 @@ msgstr "हे मशीन हटवत आहे आणि पिन करत
 msgid "This machine is being deleted."
 msgstr "हे मशीन हटवत आहे."
 
-#: lib/marshall_web/live/resize_live.ex:292
+#: lib/marshall_web/live/resize_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "This machine is unavailable or you no longer have management access."
 msgstr "हे मशीन उपलब्ध नाही किंवा व्यवस्थापन प्रवेश उरलेला नाही."
@@ -1731,7 +1738,7 @@ msgstr "या मशीनचा होस्ट सध्या उपलब�
 msgid "This repository link could not be launched. Open the link again."
 msgstr "या रिपॉझिटरी दुव्यावरून सुरू करता आले नाही. दुवा पुन्हा उघडा."
 
-#: lib/marshall_web/components/clone_components.ex:258
+#: lib/marshall_web/components/clone_components.ex:263
 #, elixir-autogen, elixir-format
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "ही विनंती पूर्ण झाली नाही. खालील समस्या आणि उपलब्ध कृती पहा."
@@ -1741,7 +1748,7 @@ msgstr "ही विनंती पूर्ण झाली नाही. ख
 msgid "This request has already been used. Refresh before trying again."
 msgstr "ही विनंती आधी वापरली आहे. पुन्हा प्रयत्नाआधी रीफ्रेश करा."
 
-#: lib/marshall_web/components/clone_components.ex:253
+#: lib/marshall_web/components/clone_components.ex:258
 #, elixir-autogen, elixir-format
 msgid "This request has ended without publishing a clone."
 msgstr "क्लोन प्रकाशित न करता ही विनंती संपली."
@@ -1784,7 +1791,7 @@ msgstr "अद्ययावत"
 msgid "Updates automatically"
 msgstr "आपोआप अद्ययावत होते"
 
-#: lib/marshall_web/live/resize_live.ex:434
+#: lib/marshall_web/live/resize_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Use current machine state, keeping these sizes"
 msgstr "हे आकार ठेवून सध्याची मशीन स्थिती वापरा"
@@ -1806,31 +1813,31 @@ msgstr "सर्व पहा →"
 msgid "Viewer"
 msgstr "दर्शक"
 
-#: lib/marshall_web/components/clone_components.ex:188
+#: lib/marshall_web/components/clone_components.ex:193
 #, elixir-autogen, elixir-format
 msgid "Waiting for its turn. Each copy takes a fresh snapshot when processing begins."
 msgstr ""
 "क्रमाची वाट पाहत आहे. प्रक्रिया सुरू होताना प्रत्येक प्रत नवीन स्नॅपशॉट "
 "घेते."
 
-#: lib/marshall_web/components/clone_components.ex:328
+#: lib/marshall_web/components/clone_components.ex:333
 #, elixir-autogen, elixir-format
 msgid "Waiting for source recovery confirmation."
 msgstr "स्रोत पुनर्प्राप्ती पुष्टीची वाट पाहत आहे."
 
-#: lib/marshall_web/components/clone_components.ex:162
+#: lib/marshall_web/components/clone_components.ex:167
 #, elixir-autogen, elixir-format
 msgid "Waiting for the host's transfer slot; another copy or move is using it."
 msgstr ""
 "होस्टच्या हस्तांतरण जागेची वाट पाहत आहे; दुसरी प्रत किंवा स्थलांतर ती वापरत "
 "आहे."
 
-#: lib/marshall_web/components/clone_components.ex:169
+#: lib/marshall_web/components/clone_components.ex:174
 #, elixir-autogen, elixir-format
 msgid "Waiting for the previous copy of this machine to release its snapshot."
 msgstr "या मशीनची मागील प्रत स्नॅपशॉट सोडण्याची वाट पाहत आहे."
 
-#: lib/marshall_web/components/clone_components.ex:320
+#: lib/marshall_web/components/clone_components.ex:325
 #, elixir-autogen, elixir-format
 msgid "Waiting for the source to stop."
 msgstr "स्रोत थांबण्याची वाट पाहत आहे."
@@ -1856,7 +1863,7 @@ msgstr "वेब अॅप"
 msgid "Web apps only"
 msgstr "फक्त वेब अॅप"
 
-#: lib/marshall_web/live/resize_live.ex:486
+#: lib/marshall_web/live/resize_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "What happens"
 msgstr "काय होते"
@@ -1897,12 +1904,12 @@ msgstr "मशीन थांबले तरी डिस्क राखल�
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "मशीन थांबले तरी डिस्क तुमच्याकडे राहते."
 
-#: lib/marshall_web/live/resize_live.ex:500
+#: lib/marshall_web/live/resize_live.ex:505
 #, elixir-autogen, elixir-format
 msgid "Your machine will remain stopped. Disk filesystem growth completes on its next boot."
 msgstr "मशीन थांबलेले राहील. पुढील बूटवेळी डिस्क फाइलसिस्टम वाढ पूर्ण होईल."
 
-#: lib/marshall_web/live/resize_live.ex:495
+#: lib/marshall_web/live/resize_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "संसाधने बदलताना मशीन थांबून रीस्टार्ट होईल. खंड अपेक्षित आहे."
@@ -1912,12 +1919,12 @@ msgstr "संसाधने बदलताना मशीन थांबू
 msgid "Your machines"
 msgstr "तुमची मशीन"
 
-#: lib/marshall_web/components/clone_components.ex:237
+#: lib/marshall_web/components/clone_components.ex:242
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created and temporary resources have been cleaned up."
 msgstr "खासगी प्रत तयार झाली आणि तात्पुरती संसाधने साफ झाली."
 
-#: lib/marshall_web/components/clone_components.ex:176
+#: lib/marshall_web/components/clone_components.ex:181
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr ""
@@ -1950,79 +1957,79 @@ msgstr "← पहिले पृष्ठ"
 msgid "← Machines"
 msgstr "← मशीन"
 
-#: lib/marshall_web/live/resize_live.ex:273
+#: lib/marshall_web/live/resize_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "← सेटिंग्ज"
 
-#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/components/clone_components.ex:405
 #: lib/marshall_web/live/resize_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "Current"
 msgstr "सध्याचा टप्पा"
 
-#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/components/clone_components.ex:404
 #: lib/marshall_web/live/resize_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Done"
 msgstr "पूर्ण"
 
-#: lib/marshall_web/components/clone_components.ex:417
+#: lib/marshall_web/components/clone_components.ex:422
 #, elixir-autogen, elixir-format
 msgid "a snapshot mount could not be released yet."
 msgstr "स्नॅपशॉट माउंट अद्याप मुक्त करता आला नाही."
 
-#: lib/marshall_web/components/clone_components.ex:433
+#: lib/marshall_web/components/clone_components.ex:438
 #, elixir-autogen, elixir-format
 msgid "cleanup on the host did not finish yet."
 msgstr "होस्टवरील स्वच्छतेचे काम अद्याप पूर्ण झाले नाही."
 
-#: lib/marshall_web/components/clone_components.ex:436
+#: lib/marshall_web/components/clone_components.ex:441
 #, elixir-autogen, elixir-format
 msgid "the copied disk could not be prepared yet."
 msgstr "कॉपी केलेली डिस्क अद्याप तयार करता आली नाही."
 
-#: lib/marshall_web/components/clone_components.ex:420
+#: lib/marshall_web/components/clone_components.ex:425
 #, elixir-autogen, elixir-format
 msgid "the disk copy did not finish; it resumes automatically."
 msgstr "डिस्कची प्रत तयार झाली नाही; प्रक्रिया आपोआप पुन्हा सुरू होईल."
 
-#: lib/marshall_web/components/clone_components.ex:439
+#: lib/marshall_web/components/clone_components.ex:444
 #, elixir-autogen, elixir-format
 msgid "the host could not confirm the step yet."
 msgstr "होस्टला अद्याप या टप्प्याची पुष्टी करता आली नाही."
 
-#: lib/marshall_web/components/clone_components.ex:429
+#: lib/marshall_web/components/clone_components.ex:434
 #, elixir-autogen, elixir-format
 msgid "the hosts could not connect; the host retries automatically."
 msgstr "होस्ट एकमेकांशी जोडले जाऊ शकले नाहीत; होस्ट आपोआप पुन्हा प्रयत्न करतो."
 
-#: lib/marshall_web/components/clone_components.ex:408
+#: lib/marshall_web/components/clone_components.ex:413
 #, elixir-autogen, elixir-format
 msgid "the machine is mid-operation; the host retries automatically."
 msgstr "मशीनवर दुसरी प्रक्रिया सुरू आहे; होस्ट आपोआप पुन्हा प्रयत्न करतो."
 
-#: lib/marshall_web/components/clone_components.ex:411
+#: lib/marshall_web/components/clone_components.ex:416
 #, elixir-autogen, elixir-format
 msgid "the source changed state; it continues once the source settles."
 msgstr "स्रोताची स्थिती बदलली आहे; स्रोत स्थिर झाल्यावर प्रक्रिया पुढे जाईल."
 
-#: lib/marshall_web/components/clone_components.ex:414
+#: lib/marshall_web/components/clone_components.ex:419
 #, elixir-autogen, elixir-format
 msgid "the source snapshot could not be prepared or released yet."
 msgstr "स्रोताचा स्नॅपशॉट अद्याप तयार किंवा मुक्त करता आला नाही."
 
-#: lib/marshall_web/components/clone_components.ex:405
+#: lib/marshall_web/components/clone_components.ex:410
 #, elixir-autogen, elixir-format
 msgid "the storage pool is busy; the host retries automatically."
 msgstr "स्टोरेज पूल व्यस्त आहे; होस्ट आपोआप पुन्हा प्रयत्न करतो."
 
-#: lib/marshall_web/components/clone_components.ex:426
+#: lib/marshall_web/components/clone_components.ex:431
 #, elixir-autogen, elixir-format
 msgid "the transfer permit lapsed; it is renewed automatically."
 msgstr "हस्तांतरण परवान्याची मुदत संपली; त्याचे आपोआप नूतनीकरण होते."
 
-#: lib/marshall_web/components/clone_components.ex:423
+#: lib/marshall_web/components/clone_components.ex:428
 #, elixir-autogen, elixir-format
 msgid "the transfer stream was interrupted; it resumes automatically."
 msgstr "हस्तांतरणाचा प्रवाह खंडित झाला; प्रक्रिया आपोआप पुन्हा सुरू होईल."

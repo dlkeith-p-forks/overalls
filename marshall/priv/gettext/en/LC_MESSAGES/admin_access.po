@@ -109,6 +109,7 @@ msgid "Invalid administrative request."
 msgstr "Invalid administrative request."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
+#: lib/marshall_web/live/admin/scim_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr ""
@@ -349,3 +350,53 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "start this node evacuation"
 msgstr ""
+
+#: lib/marshall_web/live/admin/scim_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Configure directory provisioning, identity lifecycle and managed teams."
+msgstr "Configure directory provisioning, identity lifecycle and managed teams."
+
+#: lib/marshall_web/live/admin/scim_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Copy this bearer token now. It will not be shown again."
+msgstr "Copy this bearer token now. It will not be shown again."
+
+#: lib/marshall_web/live/admin/scim_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM"
+msgstr "Disable SCIM"
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Enable SCIM and generate token"
+msgstr "Enable SCIM and generate token"
+
+#: lib/marshall_web/live/admin/scim_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration"
+msgstr "SCIM configuration"
+
+#: lib/marshall_web/live/admin/scim_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration could not be updated."
+msgstr "SCIM configuration could not be updated."
+
+#: lib/marshall_web/live/admin/scim_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration updated."
+msgstr "SCIM configuration updated."
+
+#: lib/marshall_web/live/admin/scim_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "SCIM is disabled."
+msgstr "SCIM is disabled."
+
+#: lib/marshall_web/live/admin/scim_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "SCIM is enabled."
+msgstr "SCIM is enabled."
+
+#: lib/marshall_web/live/admin/scim_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM provisioning"

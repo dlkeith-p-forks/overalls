@@ -40,6 +40,9 @@ let
   ] ++ lib.optionals (application == "marshall") [
     ../../../../marshall/assets
     ../../../../marshall/priv
+    # Marshall's SCIM integration is vendored in-tree and referenced by path
+    # from mix.exs; retain the source in release closures.
+    ../../../../vendor/ash_scim
   ] ++ lib.optionals (application == "audi") [ ../../../../audi/priv ]
     ++ lib.optionals (application == "susan") [ ../../../../susan/priv ]
     ++ lib.optionals (application == "porsche") [ ../../../../porsche/priv ];

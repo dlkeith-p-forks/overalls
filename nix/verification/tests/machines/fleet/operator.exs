@@ -1230,6 +1230,7 @@ defmodule FleetOperator do
   # Transient host_not_ready responses may be retried for at most thirty seconds.
   # Every attempt MUST use production enrollment validation; other failures MUST
   # fail immediately. The fixture MUST NOT change report timestamps or freshness.
+  @spec enable_host(String.t(), boolean(), integer()) :: map()
   defp enable_host(id, enabled, deadline) do
     case Enrollment.set_enabled(id, enabled) do
       {:ok, result} ->
@@ -1237,6 +1238,7 @@ defmodule FleetOperator do
 
       {:error, :host_not_ready} when enabled ->
         if System.monotonic_time(:millisecond) >= deadline do
+          IO.puts(:stderr, "FLEET_HOST_NOT_READY " <> JSON.encode!(host_readiness(id)))
           raise "Fleet host is not ready"
         end
 
@@ -1249,6 +1251,65 @@ defmodule FleetOperator do
         raise "Fleet enable failed"
     end
   end
+
+  # @cc [owner:ghuntley,label:verification;security] fleet-host-refusal-closed-observation
+  # A refused admission MAY expose only current readiness/freshness booleans and
+  # a report age clamped to one day. Diagnostic reads MUST NOT change authority,
+  # report timestamps or deadlines, or print host records and database errors.
+  @spec host_readiness(String.t()) :: %{
+          observation_available: boolean(),
+          execution_ready: boolean(),
+          report_present: boolean(),
+          fresh: boolean(),
+          age_ms: integer() | nil
+        }
+  defp host_readiness(id) do
+    now = Ledger.now()
+
+    case Ledger.read!(Host, id: id) do
+      [host] ->
+        reported = host.reported_at
+
+        %{
+          observation_available: true,
+          execution_ready: host.inventory["execution_ready"] == true,
+          report_present: not is_nil(reported),
+          fresh: Marshall.Compute.HostLiveness.capacity_fresh?(reported, now),
+          age_ms:
+            if(reported,
+              do:
+                reported
+                |> then(&DateTime.diff(now, &1, :millisecond))
+                |> max(-86_400_000)
+                |> min(86_400_000),
+              else: nil
+            )
+        }
+
+      _ ->
+        unavailable_readiness()
+    end
+  rescue
+    _ -> unavailable_readiness()
+  catch
+    :exit, _ -> unavailable_readiness()
+  end
+
+  @spec unavailable_readiness() :: %{
+          observation_available: false,
+          execution_ready: false,
+          report_present: false,
+          fresh: false,
+          age_ms: nil
+        }
+  defp unavailable_readiness,
+    do: %{
+      observation_available: false,
+      execution_ready: false,
+      report_present: false,
+      fresh: false,
+      age_ms: nil
+    }
 
   @type admission_pool_observation :: %{
           index: pos_integer(),

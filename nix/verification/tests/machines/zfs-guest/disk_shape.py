@@ -26,7 +26,14 @@ def create_guest_pool() -> tuple[int, int, int, int, int]:
     base = max(minimum, 3 * 1024**3)
     grown = base + 1024**3
     quota = 2 * base
-    assert quota < 31 * 1024**3, "image fixture exceeds the bounded 32 GiB backing mirror"
+    if android_fixture:
+        # Android's SDK closure advertises a 32 GiB minimum disk. Keep the
+        # fixture bounded while allowing the two-disk mirror to hold it.
+        assert quota < 95 * 1024**3, (
+            "Android image fixture exceeds the bounded 96 GiB backing mirror"
+        )
+    else:
+        assert quota < 31 * 1024**3, "image fixture exceeds the bounded 32 GiB backing mirror"
     storage.succeed(f"zfs create -o mountpoint=/pool -o quota={quota} tank/lilly")
     # Lilly runs as `lilly` (ADR-0182): hand the new pool over, as the
     # boot-time ownership unit does for pools that exist at boot.

@@ -14,28 +14,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/integrations_live.ex:351
+#: lib/marshall_web/live/integrations_live.ex:353
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "**** (chỉ ghi)"
 
-#: lib/marshall_web/live/integrations_live.ex:376
+#: lib/marshall_web/live/integrations_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Thao tác"
 
-#: lib/marshall_web/live/integrations_live.ex:421
+#: lib/marshall_web/live/integrations_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "Thêm tích hợp"
 
 #: lib/marshall_web/live/integrations_live.ex:288
-#: lib/marshall_web/live/integrations_live.ex:415
+#: lib/marshall_web/live/integrations_live.ex:417
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "Gắn"
 
-#: lib/marshall_web/live/integrations_live.ex:412
+#: lib/marshall_web/live/integrations_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "Gắn máy theo ID"
@@ -45,18 +45,18 @@ msgstr "Gắn máy theo ID"
 msgid "Awaiting GitHub authorization"
 msgstr "Đang chờ GitHub cấp quyền"
 
-#: lib/marshall_web/live/integrations_live.ex:456
+#: lib/marshall_web/live/integrations_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "Cơ bản người dùng:mật khẩu"
 
-#: lib/marshall_web/live/integrations_live.ex:450
+#: lib/marshall_web/live/integrations_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "Mã thông báo Bearer"
 
-#: lib/marshall_web/live/integrations_live.ex:334
-#: lib/marshall_web/live/integrations_live.ex:436
+#: lib/marshall_web/live/integrations_live.ex:336
+#: lib/marshall_web/live/integrations_live.ex:438
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Bình luận"
@@ -102,13 +102,13 @@ msgstr "Không thể xóa tích hợp này."
 msgid "Could not save this integration. Check the name, HTTPS target and header values."
 msgstr "Không thể lưu tích hợp này. Kiểm tra tên, đích HTTPS và giá trị tiêu đề."
 
-#: lib/marshall_web/live/integrations_live.ex:445
+#: lib/marshall_web/live/integrations_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "Thông tin xác thực"
 
 #: lib/marshall_web/live/integrations_live.ex:279
-#: lib/marshall_web/live/integrations_live.ex:393
+#: lib/marshall_web/live/integrations_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "Tách"
@@ -148,12 +148,12 @@ msgstr "Đã kết nối GitHub."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "Không thể kết nối GitHub. Hãy thử lại trong mục Tích hợp."
 
-#: lib/marshall_web/live/integrations_live.ex:441
+#: lib/marshall_web/live/integrations_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "Đích HTTPS"
 
-#: lib/marshall_web/live/integrations_live.ex:344
+#: lib/marshall_web/live/integrations_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "Thông tin xác thực được chèn"
@@ -183,13 +183,13 @@ msgstr "Tích hợp tạm thời không khả dụng."
 msgid "Invalid request."
 msgstr "Yêu cầu không hợp lệ."
 
-#: lib/marshall_web/live/integrations_live.ex:374
+#: lib/marshall_web/live/integrations_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Máy"
 
 #: lib/marshall_web/live/integrations_live.ex:276
-#: lib/marshall_web/live/integrations_live.ex:413
+#: lib/marshall_web/live/integrations_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "UUID máy"
@@ -209,17 +209,17 @@ msgstr "Đã tách máy."
 msgid "Machines excluded from your GitHub identity"
 msgstr "Các máy không sử dụng danh tính GitHub của bạn"
 
-#: lib/marshall_web/live/integrations_live.ex:355
+#: lib/marshall_web/live/integrations_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "Máy có quyền truy cập"
 
-#: lib/marshall_web/live/integrations_live.ex:431
+#: lib/marshall_web/live/integrations_live.ex:433
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "Tên"
 
-#: lib/marshall_web/live/integrations_live.ex:423
+#: lib/marshall_web/live/integrations_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr "Đặt tên điểm cuối và trỏ tới API HTTPS, hoặc đánh dấu là kết nối ngang hàng với máy khác. Bí mật chỉ ghi: được lưu để chèn và không bao giờ hiển thị lại."
@@ -229,12 +229,12 @@ msgstr "Đặt tên điểm cuối và trỏ tới API HTTPS, hoặc đánh dấ
 msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
 msgstr "Điểm cuối có tên mà máy truy cập tại https://NAME.integration.internal. Thông tin xác thực được chèn ở biên và không bao giờ có thể đọc từ máy."
 
-#: lib/marshall_web/live/integrations_live.ex:360
+#: lib/marshall_web/live/integrations_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "Không có liên kết gắn rõ ràng. Máy của thành viên nhóm hiện tại có quyền truy cập."
 
-#: lib/marshall_web/live/integrations_live.ex:347
+#: lib/marshall_web/live/integrations_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "Không có tiêu đề được chèn."
@@ -244,32 +244,33 @@ msgstr "Không có tiêu đề được chèn."
 msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
 msgstr "Chưa có tích hợp. Thêm bên dưới để cấp cho máy kết nối có tên tới API hoặc máy khác."
 
-#: lib/marshall_web/live/integrations_live.ex:365
+#: lib/marshall_web/live/integrations_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "Không máy nào có quyền truy cập. Gắn máy để dùng tích hợp này."
 
-#: lib/marshall_web/live/integrations_live.ex:329
+#: lib/marshall_web/live/integrations_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Chủ sở hữu"
 
-#: lib/marshall_web/live/integrations_live.ex:493
+#: lib/marshall_web/live/integrations_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "Tích hợp ngang hàng"
 
-#: lib/marshall_web/live/integrations_live.ex:326
+#: lib/marshall_web/live/integrations_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "Máy ngang hàng"
 
-#: lib/marshall_web/live/integrations_live.ex:498
+#: lib/marshall_web/live/integrations_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "ID máy ngang hàng"
 
-#: lib/marshall_web/live/integrations_live.ex:332
+#: lib/marshall_web/live/integrations_live.ex:311
+#: lib/marshall_web/live/integrations_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "Tích hợp cá nhân"
@@ -284,72 +285,73 @@ msgstr "Cần kết nối lại"
 msgid "Refreshing GitHub connection"
 msgstr "Đang làm mới kết nối GitHub"
 
-#: lib/marshall_web/live/integrations_live.ex:317
+#: lib/marshall_web/live/integrations_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Xóa"
 
-#: lib/marshall_web/live/integrations_live.ex:314
+#: lib/marshall_web/live/integrations_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "Xóa tích hợp này?"
 
-#: lib/marshall_web/live/integrations_live.ex:499
+#: lib/marshall_web/live/integrations_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "Bắt buộc đối với tích hợp ngang hàng"
 
-#: lib/marshall_web/live/integrations_live.ex:475
+#: lib/marshall_web/live/integrations_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "Định tuyến, quyền sở hữu của nhóm và kết nối ngang hàng"
 
-#: lib/marshall_web/live/integrations_live.ex:505
+#: lib/marshall_web/live/integrations_live.ex:507
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "Lưu tích hợp"
 
-#: lib/marshall_web/live/integrations_live.ex:437
+#: lib/marshall_web/live/integrations_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
 msgstr "Mô tả ngắn cho phần phản ánh của máy khách"
 
-#: lib/marshall_web/live/integrations_live.ex:463
+#: lib/marshall_web/live/integrations_live.ex:465
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "Tên tiêu đề cố định"
 
-#: lib/marshall_web/live/integrations_live.ex:469
+#: lib/marshall_web/live/integrations_live.ex:471
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "Giá trị tiêu đề cố định"
 
-#: lib/marshall_web/live/integrations_live.ex:481
+#: lib/marshall_web/live/integrations_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "Bỏ tiền tố"
 
-#: lib/marshall_web/live/integrations_live.ex:339
+#: lib/marshall_web/live/integrations_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "Bỏ tiền tố"
 
-#: lib/marshall_web/live/integrations_live.ex:323
+#: lib/marshall_web/live/integrations_live.ex:325
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "Đích"
 
-#: lib/marshall_web/live/integrations_live.ex:331
+#: lib/marshall_web/live/integrations_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "Nhóm %{team}"
 
-#: lib/marshall_web/live/integrations_live.ex:486
+#: lib/marshall_web/live/integrations_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "ID nhóm"
 
-#: lib/marshall_web/live/integrations_live.ex:487
+#: lib/marshall_web/live/integrations_live.ex:310
+#: lib/marshall_web/live/integrations_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "Tích hợp thuộc sở hữu nhóm"
@@ -364,12 +366,12 @@ msgstr "Tạm thời không khả dụng"
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "Các máy của bạn tự động sử dụng danh tính GitHub đã kết nối. Cộng tác viên sử dụng máy dùng chung có thể sử dụng quyền GitHub của chủ sở hữu máy. Các máy đã tách vẫn có quyền truy cập ẩn danh vào tài nguyên công khai trên GitHub."
 
-#: lib/marshall_web/live/integrations_live.ex:432
+#: lib/marshall_web/live/integrations_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "example-integration"
 
-#: lib/marshall_web/live/integrations_live.ex:464
+#: lib/marshall_web/live/integrations_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"

@@ -62,13 +62,33 @@ defmodule OverallsProtocol.NativeAdmission do
   @reviewed_identities @images ++ @bundles
 
   # @cc [owner:ghuntley,label:security;recovery] checkpoint-native-qualification-is-independent
-  # Snapshot continuation MUST require separately recorded exact native image
-  # qualification. Cold-boot admission or a candidate kernel test alone MUST NOT
-  # grant pause/resume to firmware guests. Only the qualified Linux kernel/device
-  # path is enabled until immutable native artifacts receive acceptance evidence.
-  @spec checkpoint_admitted?(term()) :: boolean()
-  def checkpoint_admitted?(%{guest_agents: :linux, boot_kind: :kernel}), do: true
-  def checkpoint_admitted?(_), do: false
+  # Memory continuation MUST require a validated Linux kernel identity whose exact
+  # content-addressed image ID appears in the trusted local qualification list.
+  # Missing qualification MUST refuse; cold-boot admission grants no continuation.
+  # Callers MUST validate identities through ImageManifest or WorkloadBundle first.
+  @spec checkpoint_admitted?(term(), [String.t()]) :: boolean()
+  def checkpoint_admitted?(identity, qualified_image_ids \\ [])
+
+  def checkpoint_admitted?(%{guest_agents: :linux, boot_kind: :kernel} = identity, ids)
+      when is_list(ids) do
+    id = Map.get(identity, :image_id, Map.get(identity, :id))
+    checkpoint_qualified?(id, ids)
+  end
+
+  def checkpoint_admitted?(_, _), do: false
+
+  # @cc [owner:ghuntley,label:security;recovery] checkpoint-reported-qualification-exact
+  # Qualification MUST bind an exact canonical image ID in a bounded distinct
+  # trusted list. Missing/invalid lists MUST refuse; qualifying supersets remain valid.
+  @spec checkpoint_qualified?(term(), term()) :: boolean()
+  def checkpoint_qualified?(image_id, ids),
+    do: ImageManifest.id?(image_id) and checkpoint_image_ids?(ids) and image_id in ids
+
+  @spec checkpoint_image_ids?(term()) :: boolean()
+  def checkpoint_image_ids?(ids) when is_list(ids) and length(ids) <= 256,
+    do: Enum.all?(ids, &ImageManifest.id?/1) and Enum.uniq(ids) == ids
+
+  def checkpoint_image_ids?(_), do: false
 
   @doc "The production manifest whose exact bytes have recorded native acceptance evidence."
   @spec reviewed_manifest() :: map()
@@ -98,7 +118,7 @@ defmodule OverallsProtocol.NativeAdmission do
     do: identity in @reviewed_identities
 
   def admitted?(%{guest_agents: agents})
-      when agents in [:linux, :none, :windows_v1, :windows_editor_v1],
+      when agents in [:linux, :linux_android_v1, :none, :windows_v1, :windows_editor_v1],
       do: true
 
   def admitted?(_), do: false

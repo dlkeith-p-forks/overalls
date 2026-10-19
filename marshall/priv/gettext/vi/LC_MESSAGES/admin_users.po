@@ -20,7 +20,7 @@ msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} máy sở hữu"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Trang tài khoản"
@@ -65,7 +65,7 @@ msgstr "Không thể thay đổi quyền quản trị."
 msgid "Could not revoke browser sessions."
 msgstr "Không thể thu hồi các phiên trình duyệt."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Xóa người dùng và máy"
@@ -80,7 +80,7 @@ msgstr "Địa chỉ email"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Mọi tài khoản trong bản triển khai này. Người dùng đã đăng nhập có thể đọc trang; thay đổi cần quản trị viên vừa xác minh khóa truy cập."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Cấp quyền quản trị toàn bộ đội và mọi máy cho tài khoản này?"
@@ -105,42 +105,42 @@ msgstr "Đã bật MFA"
 msgid "MFA not enrolled"
 msgstr "Chưa đăng ký MFA"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Đặt làm quản trị viên"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Trang tiếp →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Không có tài khoản trên trang này."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Xóa vĩnh viễn tài khoản này và TẤT CẢ máy họ sở hữu, kể cả máy chia sẻ với người khác?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Xóa quản trị viên"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Xóa quyền quản trị viên của tài khoản này?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Đặt lại MFA"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Đặt lại MFA của người dùng này và thu hồi mọi phiên trình duyệt? Họ phải đăng ký khóa truy cập thay thế."
@@ -150,17 +150,17 @@ msgstr "Đặt lại MFA của người dùng này và thu hồi mọi phiên tr
 msgid "Send invitation"
 msgstr "Gửi lời mời"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Đăng xuất ở mọi nơi"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Đăng xuất tài khoản này khỏi mọi phiên trình duyệt?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Nhập email để xóa tài khoản này và %{count} máy của tài khoản"
@@ -185,7 +185,7 @@ msgstr "Xác minh bằng khóa truy cập · quyền quản trị có hiệu l�
 msgid "· Your account"
 msgstr "· Tài khoản của bạn"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Trang đầu"
@@ -195,7 +195,7 @@ msgstr "← Trang đầu"
 msgid "Deleted"
 msgstr "Đã xóa"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "Đang xóa máy"
@@ -205,7 +205,7 @@ msgstr "Đang xóa máy"
 msgid "Retrying machine cleanup"
 msgstr "Đang thử dọn dẹp máy lại"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Không khả dụng"

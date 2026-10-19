@@ -529,6 +529,10 @@ Recorded native execution passed: the submission history took337.69seconds
 within a1036.30-second machine script, with composed driver static checks passed.
 A timeout or disconnection alone is insufficient evidence of the
 intended daemon loss; the scenario observes actual process retirement.
+
+The maintenance worker also submits idempotent pause intents for every running
+machine owned by an inactive SCIM user before the grace deadline. Compute's
+existing lifecycle coordinator remains the authority for the pause operation.
 Initial provisioning, guest data continuity, power loss and hosted
 faults remain separate gaps.
 
@@ -551,3 +555,17 @@ waiter property and exec-marker control passed in a fresh127-second native packa
 with three library properties and six integration checks, rustfmt and Clippy.
 This verifies local lock/intent ordering, not journal/systemd/Firecracker recovery.
 See the [waiting-intent review](repo:docs/architecture/reviews/2026-10-05-launch-guard-waiting-intent.md).
+
+Memory-preserving restore has a distinct preboot observation. Firecracker installs
+its main-thread seccomp filter during snapshot load, so Lilly first requires the
+exact unconfigured API state and the expected preboot process status while still
+checking jail, namespace, UID/GID, capabilities, no-new-privileges, limits and
+unit identity. After snapshot load, paused and running observations require the
+configured seccomp filter before execution can resume.
+
+Lilly's trusted `services.lilly.checkpointImageIds` configuration admits exact
+content-addressed Linux kernel image IDs for memory operations. Its empty default
+refuses pause and resume while preserving ordinary boot admission. Authenticated
+host reports carry bounded qualification IDs, and Marshall checks the VM's exact
+image before pause, restored capacity admission, memory relocation and final
+handoff.

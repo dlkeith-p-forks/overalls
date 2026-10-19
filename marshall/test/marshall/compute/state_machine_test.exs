@@ -2,7 +2,7 @@ defmodule Marshall.Compute.StateMachineTest do
   use ExUnit.Case, async: true
   import Hegel
   import Hegel.Gen
-  alias Marshall.Compute.{CloneRequest, Operation, ReadinessRequest, ResizeRequest}
+  alias Marshall.Compute.{CloneRequest, Operation, ReadinessRequest, ResizeRequest, WakeRequest}
   alias Marshall.Authorization.SystemActor
 
   # checkpoint models an available paused restore, not mapped checkpoint
@@ -66,6 +66,36 @@ defmodule Marshall.Compute.StateMachineTest do
     assert change(request, :fence).valid?
     refute change(%{request | phase: :stopping}, :complete).valid?
     refute change(%{request | phase: :complete}, :restart).valid?
+  end
+
+  # @cc [owner:ghuntley,label:recovery;verification] wake-terminal-history
+  # Generated histories MUST exercise the actual Ash transition changeset and
+  # refuse every advance from a terminal wake receipt, including new demand.
+  property "wake histories preserve terminal receipts while capacity demand can advance" do
+    active = [:pending, :waiting_capacity, :relocating, :resuming]
+    terminal = [:ready, :failed, :cancelled]
+    statuses = active ++ terminal
+    initial = draw("initial wake status", member_of(statuses))
+    targets = draw("wake targets", list_of(member_of(statuses), min_length: 1, max_length: 60))
+
+    Enum.reduce(targets, initial, fn target, state ->
+      allowed? = state in active and target != :pending
+
+      changeset =
+        change(struct(WakeRequest, status: state), :advance, %{
+          status: target,
+          finished_at: if(target in terminal, do: ~U[2026-10-19 00:00:00.000000Z])
+        })
+
+      assert changeset.valid? == allowed?
+
+      if allowed? do
+        assert Ash.Changeset.get_attribute(changeset, :status) == target
+        target
+      else
+        state
+      end
+    end)
   end
 
   property "operation histories obey terminal completion and allow late cancelled evidence" do

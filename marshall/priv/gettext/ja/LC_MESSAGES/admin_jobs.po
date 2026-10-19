@@ -29,7 +29,7 @@ msgstr "30日"
 msgid "7 days"
 msgstr "7日間"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:473
+#: lib/marshall_web/live/admin/jobs_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "確認済み"
@@ -59,7 +59,7 @@ msgstr "アーカイブ済み"
 msgid "Archived history · retry unavailable"
 msgstr "アーカイブされた履歴・再試行はできません"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:424
+#: lib/marshall_web/live/admin/jobs_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "試み"
@@ -78,18 +78,18 @@ msgstr ""
 "によって実行されるバックグラウンド作業。成功したジョブは、物理的な結果がまだ保留中の作業をディスパッチしている可能性があります。関連する操作に従って完了してください。"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
-#: lib/marshall_web/live/admin/jobs_live.ex:475
+#: lib/marshall_web/live/admin/jobs_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "キャンセル"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:422
+#: lib/marshall_web/live/admin/jobs_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "Captured"
 msgstr "捕らえられた"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:406
-#: lib/marshall_web/live/admin/jobs_live.ex:474
+#: lib/marshall_web/live/admin/jobs_live.ex:418
+#: lib/marshall_web/live/admin/jobs_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "完了"
@@ -106,12 +106,12 @@ msgstr ""
 msgid "Created"
 msgstr "作成されました"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:477
+#: lib/marshall_web/live/admin/jobs_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "ドレイン完了"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:476
+#: lib/marshall_web/live/admin/jobs_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "ドレイン中"
@@ -121,7 +121,7 @@ msgstr "ドレイン中"
 msgid "Duration"
 msgstr "間隔"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:468
+#: lib/marshall_web/live/admin/jobs_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "避難運動"
@@ -131,7 +131,7 @@ msgstr "避難運動"
 msgid "Exact worker name"
 msgstr "正確な作業者名"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:417
+#: lib/marshall_web/live/admin/jobs_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "Execution history"
 msgstr "実行履歴"
@@ -211,28 +211,28 @@ msgstr "これらのフィルターに一致する求人はありません。"
 msgid "Older jobs →"
 msgstr "昔の仕事→"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:455
+#: lib/marshall_web/live/admin/jobs_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Older transitions →"
 msgstr "古いトランジション →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:411
+#: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Open machine →"
 msgstr "マシンを開く →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:466
+#: lib/marshall_web/live/admin/jobs_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Operation"
 msgstr "操作"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:397
+#: lib/marshall_web/live/admin/jobs_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Operation state"
 msgstr "動作状態"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:407
-#: lib/marshall_web/live/admin/jobs_live.ex:472
+#: lib/marshall_web/live/admin/jobs_live.ex:419
+#: lib/marshall_web/live/admin/jobs_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "保留中"
@@ -263,27 +263,27 @@ msgstr "キューに入れられました"
 msgid "Recorded failures"
 msgstr "記録された失敗"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:390
+#: lib/marshall_web/live/admin/jobs_live.ex:402
 #, elixir-autogen, elixir-format
 msgid "Related record"
 msgstr "関連記録"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:467
+#: lib/marshall_web/live/admin/jobs_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "Relocation"
 msgstr "移行"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:403
+#: lib/marshall_web/live/admin/jobs_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Relocation complete"
 msgstr "移転完了"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:478
+#: lib/marshall_web/live/admin/jobs_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "再開済み"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:479
+#: lib/marshall_web/live/admin/jobs_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "廃止済み"
@@ -320,7 +320,7 @@ msgstr "スケジュールされた/次回の再試行"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:263
 #: lib/marshall_web/live/admin/jobs_live.ex:303
-#: lib/marshall_web/live/admin/jobs_live.ex:423
+#: lib/marshall_web/live/admin/jobs_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "州"
@@ -346,8 +346,8 @@ msgid "This job is unavailable or its history has expired."
 msgstr "このジョブは利用できないか、履歴の有効期限が切れています。"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:189
-#: lib/marshall_web/live/admin/jobs_live.ex:469
-#: lib/marshall_web/live/admin/jobs_live.ex:480
+#: lib/marshall_web/live/admin/jobs_live.ex:481
+#: lib/marshall_web/live/admin/jobs_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
@@ -368,7 +368,7 @@ msgstr "待っている"
 msgid "Worker"
 msgstr "ワーカー"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:442
+#: lib/marshall_web/live/admin/jobs_live.ex:454
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "試行 %{attempt} · %{count} は失敗を記録しました"

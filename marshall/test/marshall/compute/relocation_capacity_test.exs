@@ -30,6 +30,31 @@ defmodule Marshall.Compute.RelocationCapacityTest do
     %{source: source, destination: destination, vm: vm, owner: owner}
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] relocation-destination-exact-qualification
+  # A qualified source MUST NOT interrupt execution or reserve a destination
+  # lacking this exact image; a qualifying superset MUST remain admissible.
+  test "memory relocation refuses an unqualified destination and accepts a qualifying superset",
+       c do
+    [destination] = Ledger.read!(Host, id: c.destination.host.id)
+    other_id = "sha256:" <> String.duplicate("f", 64)
+
+    Ledger.update!(destination, :report, %{
+      inventory: Map.put(destination.inventory, "checkpoint_image_ids", [other_id])
+    })
+
+    assert {:error, :insufficient_capacity} = reserve(c)
+    assert_unchanged(c)
+    assert [unchanged] = Ledger.read!(VirtualMachine, id: c.vm.id)
+    assert unchanged.desired_state == :running and unchanged.generation == c.vm.generation
+
+    Ledger.update!(destination, :report, %{
+      inventory: Map.put(destination.inventory, "checkpoint_image_ids", [other_id, c.vm.image_id])
+    })
+
+    assert {:ok, relocation} = reserve(c)
+    assert relocation.destination_host_id == destination.id
+  end
+
   test "public relocation selects automatically and replays without new holds or jobs", c do
     request = %{vm_id: c.vm.id, idempotency_key: Ash.UUID.generate()}
     assert {:ok, relocation} = Compute.relocate(request, actor: c.owner)
@@ -293,6 +318,15 @@ defmodule Marshall.Compute.RelocationCapacityTest do
        context do
     Ledger.intent!(context.vm, %{desired_state: :stopped})
     Ledger.update!(context.vm, :observe, %{observed_state: :stopped})
+
+    for fixture <- [context.source, context.destination] do
+      [host] = Ledger.read!(Host, id: fixture.host.id)
+
+      Ledger.update!(host, :report, %{
+        inventory: Map.put(host.inventory, "checkpoint_image_ids", [])
+      })
+    end
+
     [source] = Ledger.read!(Reservation, placement_id: context.vm.current_placement_id)
     Ledger.update!(source, :release_compute, %{})
 

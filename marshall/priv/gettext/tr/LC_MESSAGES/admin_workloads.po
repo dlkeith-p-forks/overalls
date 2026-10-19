@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "İşlemler"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Bu sanal makine arşivlensin mi?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Sil"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Ayrıntılar"
@@ -64,7 +64,7 @@ msgstr "Yaşam döngüsü isteği kuyruğa alındı."
 msgid "Lifecycle request was rejected."
 msgstr "Yaşam döngüsü isteği reddedildi."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Taşı"
@@ -84,7 +84,7 @@ msgstr "Taşıma isteği kuyruğa alındı."
 msgid "Relocation request was rejected."
 msgstr "Taşıma isteği reddedildi."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Boyutlandır"
@@ -94,7 +94,7 @@ msgstr "Boyutlandır"
 msgid "Shape"
 msgstr "Şekil"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Başlat"
@@ -104,12 +104,12 @@ msgstr "Başlat"
 msgid "State"
 msgstr "Durum"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Durdur"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Uçbirim"

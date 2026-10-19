@@ -29,7 +29,7 @@ msgstr "30일"
 msgid "7 days"
 msgstr "7일"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:473
+#: lib/marshall_web/live/admin/jobs_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "확인됨"
@@ -59,7 +59,7 @@ msgstr "보관됨"
 msgid "Archived history · retry unavailable"
 msgstr "보관된 기록 · 재시도 불가"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:424
+#: lib/marshall_web/live/admin/jobs_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "시도"
@@ -78,18 +78,18 @@ msgstr ""
 "작업을 따르세요."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
-#: lib/marshall_web/live/admin/jobs_live.ex:475
+#: lib/marshall_web/live/admin/jobs_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "취소"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:422
+#: lib/marshall_web/live/admin/jobs_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "Captured"
 msgstr "캡처됨"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:406
-#: lib/marshall_web/live/admin/jobs_live.ex:474
+#: lib/marshall_web/live/admin/jobs_live.ex:418
+#: lib/marshall_web/live/admin/jobs_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "완벽한"
@@ -106,12 +106,12 @@ msgstr ""
 msgid "Created"
 msgstr "생성됨"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:477
+#: lib/marshall_web/live/admin/jobs_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "드레인 완료"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:476
+#: lib/marshall_web/live/admin/jobs_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "드레인 중"
@@ -121,7 +121,7 @@ msgstr "드레인 중"
 msgid "Duration"
 msgstr "지속"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:468
+#: lib/marshall_web/live/admin/jobs_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "피난 캠페인"
@@ -131,7 +131,7 @@ msgstr "피난 캠페인"
 msgid "Exact worker name"
 msgstr "정확한 작업자 이름"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:417
+#: lib/marshall_web/live/admin/jobs_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "Execution history"
 msgstr "실행 이력"
@@ -211,28 +211,28 @@ msgstr "이 필터와 일치하는 채용정보가 없습니다."
 msgid "Older jobs →"
 msgstr "이전 직업 →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:455
+#: lib/marshall_web/live/admin/jobs_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Older transitions →"
 msgstr "이전 전환 →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:411
+#: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Open machine →"
 msgstr "기계 열기 →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:466
+#: lib/marshall_web/live/admin/jobs_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Operation"
 msgstr "작업"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:397
+#: lib/marshall_web/live/admin/jobs_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Operation state"
 msgstr "작동상태"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:407
-#: lib/marshall_web/live/admin/jobs_live.ex:472
+#: lib/marshall_web/live/admin/jobs_live.ex:419
+#: lib/marshall_web/live/admin/jobs_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "보류 중"
@@ -263,27 +263,27 @@ msgstr "대기 중"
 msgid "Recorded failures"
 msgstr "기록된 실패"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:390
+#: lib/marshall_web/live/admin/jobs_live.ex:402
 #, elixir-autogen, elixir-format
 msgid "Related record"
 msgstr "관련 기록"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:467
+#: lib/marshall_web/live/admin/jobs_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "Relocation"
 msgstr "재배치"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:403
+#: lib/marshall_web/live/admin/jobs_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Relocation complete"
 msgstr "이전 완료"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:478
+#: lib/marshall_web/live/admin/jobs_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "재개됨"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:479
+#: lib/marshall_web/live/admin/jobs_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "사용 종료됨"
@@ -320,7 +320,7 @@ msgstr "예약됨/다음 재시도"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:263
 #: lib/marshall_web/live/admin/jobs_live.ex:303
-#: lib/marshall_web/live/admin/jobs_live.ex:423
+#: lib/marshall_web/live/admin/jobs_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "상태"
@@ -346,8 +346,8 @@ msgid "This job is unavailable or its history has expired."
 msgstr "이 작업을 사용할 수 없거나 해당 기록이 만료되었습니다."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:189
-#: lib/marshall_web/live/admin/jobs_live.ex:469
-#: lib/marshall_web/live/admin/jobs_live.ex:480
+#: lib/marshall_web/live/admin/jobs_live.ex:481
+#: lib/marshall_web/live/admin/jobs_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "알려지지 않은"
@@ -368,7 +368,7 @@ msgstr "대기 중"
 msgid "Worker"
 msgstr "노동자"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:442
+#: lib/marshall_web/live/admin/jobs_live.ex:454
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "%{attempt} 시도 · %{count} 기록된 실패"

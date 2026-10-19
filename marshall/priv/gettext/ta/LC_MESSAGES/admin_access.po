@@ -109,6 +109,7 @@ msgid "Invalid administrative request."
 msgstr "செல்லாத நிர்வாகக் கோரிக்கை."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
+#: lib/marshall_web/live/admin/scim_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "செல்லாத கோரிக்கை."
@@ -349,3 +350,53 @@ msgstr "இந்தக் கணக்கை எங்கிருந்து�
 #, elixir-autogen, elixir-format
 msgid "start this node evacuation"
 msgstr "இந்த முனை வெளியேற்றத்தைத் தொடங்கு"
+
+#: lib/marshall_web/live/admin/scim_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Configure directory provisioning, identity lifecycle and managed teams."
+msgstr "அடைவு வழங்கல், அடையாள வாழ்க்கைச் சுழற்சி மற்றும் நிர்வகிக்கப்படும் அணிகளை உள்ளமைக்கவும்."
+
+#: lib/marshall_web/live/admin/scim_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Copy this bearer token now. It will not be shown again."
+msgstr "இந்த பேரர் டோக்கனை இப்போது நகலெடுக்கவும். இது மீண்டும் காட்டப்படாது."
+
+#: lib/marshall_web/live/admin/scim_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM"
+msgstr "SCIM ஐ முடக்கு"
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Enable SCIM and generate token"
+msgstr "SCIM ஐ இயக்கி டோக்கனை உருவாக்கு"
+
+#: lib/marshall_web/live/admin/scim_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration"
+msgstr "SCIM உள்ளமைவு"
+
+#: lib/marshall_web/live/admin/scim_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration could not be updated."
+msgstr "SCIM உள்ளமைவைப் புதுப்பிக்க முடியவில்லை."
+
+#: lib/marshall_web/live/admin/scim_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration updated."
+msgstr "SCIM உள்ளமைவு புதுப்பிக்கப்பட்டது."
+
+#: lib/marshall_web/live/admin/scim_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "SCIM is disabled."
+msgstr "SCIM முடக்கப்பட்டுள்ளது."
+
+#: lib/marshall_web/live/admin/scim_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "SCIM is enabled."
+msgstr "SCIM இயக்கப்பட்டுள்ளது."
+
+#: lib/marshall_web/live/admin/scim_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM வழங்கல்"

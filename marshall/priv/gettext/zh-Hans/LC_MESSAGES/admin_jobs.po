@@ -29,7 +29,7 @@ msgstr "30 天"
 msgid "7 days"
 msgstr "7 天"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:473
+#: lib/marshall_web/live/admin/jobs_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "已确认"
@@ -59,7 +59,7 @@ msgstr "已归档"
 msgid "Archived history · retry unavailable"
 msgstr "已归档历史 · 无法重试"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:424
+#: lib/marshall_web/live/admin/jobs_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "尝试"
@@ -76,18 +76,18 @@ msgid "Background work run by Oban. A successful job may have dispatched work wh
 msgstr "由 Oban 执行的后台工作。成功的任务可能已派发工作，但实际结果仍未确定；请跟踪相关操作以确认完成。"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
-#: lib/marshall_web/live/admin/jobs_live.ex:475
+#: lib/marshall_web/live/admin/jobs_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "已取消"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:422
+#: lib/marshall_web/live/admin/jobs_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "Captured"
 msgstr "已捕获"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:406
-#: lib/marshall_web/live/admin/jobs_live.ex:474
+#: lib/marshall_web/live/admin/jobs_live.ex:418
+#: lib/marshall_web/live/admin/jobs_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "完成"
@@ -102,12 +102,12 @@ msgstr "统计包括当前和最近保留的原始任务。列表包含最多 30
 msgid "Created"
 msgstr "已创建"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:477
+#: lib/marshall_web/live/admin/jobs_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "已完成排空"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:476
+#: lib/marshall_web/live/admin/jobs_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "正在排空"
@@ -117,7 +117,7 @@ msgstr "正在排空"
 msgid "Duration"
 msgstr "持续时间"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:468
+#: lib/marshall_web/live/admin/jobs_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "疏散批次"
@@ -127,7 +127,7 @@ msgstr "疏散批次"
 msgid "Exact worker name"
 msgstr "精确工作进程名"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:417
+#: lib/marshall_web/live/admin/jobs_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "Execution history"
 msgstr "执行历史"
@@ -207,28 +207,28 @@ msgstr "没有符合筛选条件的任务。"
 msgid "Older jobs →"
 msgstr "更早的任务 →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:455
+#: lib/marshall_web/live/admin/jobs_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Older transitions →"
 msgstr "更早的状态转换 →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:411
+#: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Open machine →"
 msgstr "打开机器 →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:466
+#: lib/marshall_web/live/admin/jobs_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Operation"
 msgstr "操作"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:397
+#: lib/marshall_web/live/admin/jobs_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Operation state"
 msgstr "操作状态"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:407
-#: lib/marshall_web/live/admin/jobs_live.ex:472
+#: lib/marshall_web/live/admin/jobs_live.ex:419
+#: lib/marshall_web/live/admin/jobs_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "待处理"
@@ -259,27 +259,27 @@ msgstr "已排队"
 msgid "Recorded failures"
 msgstr "已记录的失败"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:390
+#: lib/marshall_web/live/admin/jobs_live.ex:402
 #, elixir-autogen, elixir-format
 msgid "Related record"
 msgstr "相关记录"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:467
+#: lib/marshall_web/live/admin/jobs_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "Relocation"
 msgstr "迁移"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:403
+#: lib/marshall_web/live/admin/jobs_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Relocation complete"
 msgstr "迁移已完成"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:478
+#: lib/marshall_web/live/admin/jobs_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "已恢复"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:479
+#: lib/marshall_web/live/admin/jobs_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "已退役"
@@ -316,7 +316,7 @@ msgstr "已调度 / 下次重试"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:263
 #: lib/marshall_web/live/admin/jobs_live.ex:303
-#: lib/marshall_web/live/admin/jobs_live.ex:423
+#: lib/marshall_web/live/admin/jobs_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "状态"
@@ -342,8 +342,8 @@ msgid "This job is unavailable or its history has expired."
 msgstr "此任务不可用，或其历史已过期。"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:189
-#: lib/marshall_web/live/admin/jobs_live.ex:469
-#: lib/marshall_web/live/admin/jobs_live.ex:480
+#: lib/marshall_web/live/admin/jobs_live.ex:481
+#: lib/marshall_web/live/admin/jobs_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
@@ -364,7 +364,7 @@ msgstr "等待中"
 msgid "Worker"
 msgstr "工作进程"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:442
+#: lib/marshall_web/live/admin/jobs_live.ex:454
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "尝试 %{attempt} · 已记录 %{count} 次失败"

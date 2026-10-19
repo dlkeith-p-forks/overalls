@@ -46,7 +46,9 @@ msgstr ""
 msgid "%{value1} vCPU"
 msgstr ""
 
+#: lib/marshall_web/live/admin/workloads_live.ex:159
 #: lib/marshall_web/live/machines_live.ex:782
+#: lib/marshall_web/live/overview_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr ""
@@ -146,7 +148,7 @@ msgstr ""
 msgid "Allows"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:364
+#: lib/marshall_web/components/clone_components.ex:369
 #, elixir-autogen, elixir-format
 msgid "Another copy or move is using this host's transfer slot. Retry when it finishes."
 msgstr ""
@@ -171,7 +173,7 @@ msgstr ""
 msgid "Back to overview"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:202
+#: lib/marshall_web/components/clone_components.ex:207
 #, elixir-autogen, elixir-format
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr ""
@@ -234,7 +236,7 @@ msgstr ""
 msgid "Cancelled"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:318
+#: lib/marshall_web/components/clone_components.ex:323
 #, elixir-autogen, elixir-format
 msgid "Cancelled before the snapshot started."
 msgstr ""
@@ -249,7 +251,7 @@ msgstr ""
 msgid "Cancelling and restoring the source"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:244
+#: lib/marshall_web/components/clone_components.ex:249
 #, elixir-autogen, elixir-format
 msgid "Cancelling clone"
 msgstr ""
@@ -274,7 +276,7 @@ msgstr ""
 msgid "Capacity is checked again when you create a machine."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:208
+#: lib/marshall_web/components/clone_components.ex:213
 #, elixir-autogen, elixir-format
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr ""
@@ -309,12 +311,12 @@ msgstr ""
 msgid "Choose your environment"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:252
+#: lib/marshall_web/components/clone_components.ex:257
 #, elixir-autogen, elixir-format
 msgid "Clone cancelled"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:236
+#: lib/marshall_web/components/clone_components.ex:241
 #, elixir-autogen, elixir-format
 msgid "Clone complete"
 msgstr ""
@@ -324,7 +326,7 @@ msgstr ""
 msgid "Clone machine"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:257
+#: lib/marshall_web/components/clone_components.ex:262
 #, elixir-autogen, elixir-format
 msgid "Clone needs attention"
 msgstr ""
@@ -375,12 +377,12 @@ msgstr ""
 msgid "Connect an integration ↗"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:281
+#: lib/marshall_web/components/clone_components.ex:286
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:215
+#: lib/marshall_web/components/clone_components.ex:220
 #, elixir-autogen, elixir-format
 msgid "Copying files"
 msgstr ""
@@ -412,12 +414,12 @@ msgstr ""
 msgid "Create your first machine"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:216
+#: lib/marshall_web/components/clone_components.ex:221
 #, elixir-autogen, elixir-format
 msgid "Creating an independent disk from the snapshot. Source recovery proceeds separately."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:223
+#: lib/marshall_web/components/clone_components.ex:228
 #, elixir-autogen, elixir-format
 msgid "Creating cloned machine"
 msgstr ""
@@ -578,12 +580,12 @@ msgstr ""
 msgid "Find your people ↗"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:282
+#: lib/marshall_web/components/clone_components.ex:287
 #, elixir-autogen, elixir-format
 msgid "Finishing"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:228
+#: lib/marshall_web/components/clone_components.ex:233
 #, elixir-autogen, elixir-format
 msgid "Finishing up"
 msgstr ""
@@ -925,7 +927,7 @@ msgstr ""
 msgid "Owner"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:401
+#: lib/marshall_web/components/clone_components.ex:406
 #: lib/marshall_web/live/resize_live.ex:257
 #: lib/marshall_web/live/resize_live.ex:543
 #, elixir-autogen, elixir-format
@@ -937,7 +939,7 @@ msgstr ""
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:377
+#: lib/marshall_web/components/clone_components.ex:382
 #, elixir-autogen, elixir-format
 msgid "Permission to clone this machine is no longer available."
 msgstr ""
@@ -963,17 +965,17 @@ msgstr ""
 msgid "Power afterwards"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:279
+#: lib/marshall_web/components/clone_components.ex:284
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:195
+#: lib/marshall_web/components/clone_components.ex:200
 #, elixir-autogen, elixir-format
 msgid "Preparing clone"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:196
+#: lib/marshall_web/components/clone_components.ex:201
 #, elixir-autogen, elixir-format
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr ""
@@ -1012,12 +1014,13 @@ msgid "Profiles choose access and agent features. Machines remain isolated from 
 msgstr ""
 
 #: lib/marshall_web/components/clone_components.ex:64
+#: lib/marshall_web/components/clone_components.ex:156
 #, elixir-autogen, elixir-format
 msgid "Queue position %{value1}"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:187
-#: lib/marshall_web/components/clone_components.ex:278
+#: lib/marshall_web/components/clone_components.ex:192
+#: lib/marshall_web/components/clone_components.ex:283
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr ""
@@ -1067,7 +1070,7 @@ msgstr ""
 msgid "Registered email"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:224
+#: lib/marshall_web/components/clone_components.ex:229
 #, elixir-autogen, elixir-format
 msgid "Registering the copied disk as your private machine."
 msgstr ""
@@ -1308,17 +1311,17 @@ msgstr ""
 msgid "Sign in if needed, then Overalls will create your machine."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:280
+#: lib/marshall_web/components/clone_components.ex:285
 #, elixir-autogen, elixir-format
 msgid "Snapshot"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:315
+#: lib/marshall_web/components/clone_components.ex:320
 #, elixir-autogen, elixir-format
 msgid "Snapshot did not start."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:312
+#: lib/marshall_web/components/clone_components.ex:317
 #, elixir-autogen, elixir-format
 msgid "Snapshot has not started."
 msgstr ""
@@ -1328,17 +1331,17 @@ msgstr ""
 msgid "Source machine"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:326
+#: lib/marshall_web/components/clone_components.ex:331
 #, elixir-autogen, elixir-format
 msgid "Source recovery follows the snapshot."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:306
+#: lib/marshall_web/components/clone_components.ex:311
 #, elixir-autogen, elixir-format
 msgid "Source recovery needs attention."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:309
+#: lib/marshall_web/components/clone_components.ex:314
 #, elixir-autogen, elixir-format
 msgid "Source recovery retry requested."
 msgstr ""
@@ -1348,17 +1351,17 @@ msgstr ""
 msgid "Source restored; destination cleanup pending"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:303
+#: lib/marshall_web/components/clone_components.ex:308
 #, elixir-autogen, elixir-format
 msgid "Source returned to its original power state."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:300
+#: lib/marshall_web/components/clone_components.ex:305
 #, elixir-autogen, elixir-format
 msgid "Source was kept stopped, matching its state when this request began."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:323
+#: lib/marshall_web/components/clone_components.ex:328
 #, elixir-autogen, elixir-format
 msgid "Source was stopped when this request began."
 msgstr ""
@@ -1390,7 +1393,7 @@ msgstr ""
 msgid "Stay in the loop"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:385
+#: lib/marshall_web/components/clone_components.ex:390
 #, elixir-autogen, elixir-format
 msgid "Step %{value1} is waiting on the host: %{value2}"
 msgstr ""
@@ -1418,12 +1421,12 @@ msgstr ""
 msgid "Stopping"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:201
+#: lib/marshall_web/components/clone_components.ex:206
 #, elixir-autogen, elixir-format
 msgid "Stopping source for snapshot"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:245
+#: lib/marshall_web/components/clone_components.ex:250
 #, elixir-autogen, elixir-format
 msgid "Stopping the copy and removing temporary resources. Source recovery is tracked separately."
 msgstr ""
@@ -1448,7 +1451,7 @@ msgstr ""
 msgid "Switching placement"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:207
+#: lib/marshall_web/components/clone_components.ex:212
 #, elixir-autogen, elixir-format
 msgid "Taking snapshot"
 msgstr ""
@@ -1493,12 +1496,12 @@ msgstr ""
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:229
+#: lib/marshall_web/components/clone_components.ex:234
 #, elixir-autogen, elixir-format
 msgid "The clone can be opened. Finalizing its power state and cleaning up temporary resources."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:339
+#: lib/marshall_web/components/clone_components.ex:344
 #, elixir-autogen, elixir-format
 msgid "The clone could not start. Open it to review its status and power controls."
 msgstr ""
@@ -1553,7 +1556,7 @@ msgstr ""
 msgid "The pin could not be changed. Refresh and try again."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:371
+#: lib/marshall_web/components/clone_components.ex:376
 #, elixir-autogen, elixir-format
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr ""
@@ -1563,7 +1566,7 @@ msgstr ""
 msgid "The request could not be completed. Check the values and try again."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:391
+#: lib/marshall_web/components/clone_components.ex:396
 #, elixir-autogen, elixir-format
 msgid "The request encountered a problem. Use the available actions to recover or cancel it."
 msgstr ""
@@ -1583,22 +1586,22 @@ msgstr ""
 msgid "The selected image needs more memory or disk space."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:335
+#: lib/marshall_web/components/clone_components.ex:340
 #, elixir-autogen, elixir-format
 msgid "The source could not restart. Retry to request source recovery."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:360
+#: lib/marshall_web/components/clone_components.ex:365
 #, elixir-autogen, elixir-format
 msgid "The source host is unavailable. Retry once it is available."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:380
+#: lib/marshall_web/components/clone_components.ex:385
 #, elixir-autogen, elixir-format
 msgid "The source machine was deleted before this request began."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:354
+#: lib/marshall_web/components/clone_components.ex:359
 #, elixir-autogen, elixir-format
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr ""
@@ -1613,7 +1616,7 @@ msgstr ""
 msgid "There is not enough available capacity for this machine."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:346
+#: lib/marshall_web/components/clone_components.ex:351
 #, elixir-autogen, elixir-format
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr ""
@@ -1668,7 +1671,7 @@ msgstr ""
 msgid "This repository link could not be launched. Open the link again."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:258
+#: lib/marshall_web/components/clone_components.ex:263
 #, elixir-autogen, elixir-format
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr ""
@@ -1678,7 +1681,7 @@ msgstr ""
 msgid "This request has already been used. Refresh before trying again."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:253
+#: lib/marshall_web/components/clone_components.ex:258
 #, elixir-autogen, elixir-format
 msgid "This request has ended without publishing a clone."
 msgstr ""
@@ -1742,27 +1745,27 @@ msgstr ""
 msgid "Viewer"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:188
+#: lib/marshall_web/components/clone_components.ex:193
 #, elixir-autogen, elixir-format
 msgid "Waiting for its turn. Each copy takes a fresh snapshot when processing begins."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:328
+#: lib/marshall_web/components/clone_components.ex:333
 #, elixir-autogen, elixir-format
 msgid "Waiting for source recovery confirmation."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:162
+#: lib/marshall_web/components/clone_components.ex:167
 #, elixir-autogen, elixir-format
 msgid "Waiting for the host's transfer slot; another copy or move is using it."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:169
+#: lib/marshall_web/components/clone_components.ex:174
 #, elixir-autogen, elixir-format
 msgid "Waiting for the previous copy of this machine to release its snapshot."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:320
+#: lib/marshall_web/components/clone_components.ex:325
 #, elixir-autogen, elixir-format
 msgid "Waiting for the source to stop."
 msgstr ""
@@ -1843,12 +1846,12 @@ msgstr ""
 msgid "Your machines"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:237
+#: lib/marshall_web/components/clone_components.ex:242
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created and temporary resources have been cleaned up."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:176
+#: lib/marshall_web/components/clone_components.ex:181
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr ""
@@ -1884,74 +1887,74 @@ msgstr ""
 msgid "← Settings"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/components/clone_components.ex:405
 #: lib/marshall_web/live/resize_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "Current"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/components/clone_components.ex:404
 #: lib/marshall_web/live/resize_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Done"
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:417
+#: lib/marshall_web/components/clone_components.ex:422
 #, elixir-autogen, elixir-format
 msgid "a snapshot mount could not be released yet."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:433
+#: lib/marshall_web/components/clone_components.ex:438
 #, elixir-autogen, elixir-format
 msgid "cleanup on the host did not finish yet."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:436
+#: lib/marshall_web/components/clone_components.ex:441
 #, elixir-autogen, elixir-format
 msgid "the copied disk could not be prepared yet."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:420
+#: lib/marshall_web/components/clone_components.ex:425
 #, elixir-autogen, elixir-format
 msgid "the disk copy did not finish; it resumes automatically."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:439
+#: lib/marshall_web/components/clone_components.ex:444
 #, elixir-autogen, elixir-format
 msgid "the host could not confirm the step yet."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:429
+#: lib/marshall_web/components/clone_components.ex:434
 #, elixir-autogen, elixir-format
 msgid "the hosts could not connect; the host retries automatically."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:408
+#: lib/marshall_web/components/clone_components.ex:413
 #, elixir-autogen, elixir-format
 msgid "the machine is mid-operation; the host retries automatically."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:411
+#: lib/marshall_web/components/clone_components.ex:416
 #, elixir-autogen, elixir-format
 msgid "the source changed state; it continues once the source settles."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:414
+#: lib/marshall_web/components/clone_components.ex:419
 #, elixir-autogen, elixir-format
 msgid "the source snapshot could not be prepared or released yet."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:405
+#: lib/marshall_web/components/clone_components.ex:410
 #, elixir-autogen, elixir-format
 msgid "the storage pool is busy; the host retries automatically."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:426
+#: lib/marshall_web/components/clone_components.ex:431
 #, elixir-autogen, elixir-format
 msgid "the transfer permit lapsed; it is renewed automatically."
 msgstr ""
 
-#: lib/marshall_web/components/clone_components.ex:423
+#: lib/marshall_web/components/clone_components.ex:428
 #, elixir-autogen, elixir-format
 msgid "the transfer stream was interrupted; it resumes automatically."
 msgstr ""

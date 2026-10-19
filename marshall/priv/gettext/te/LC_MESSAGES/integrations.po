@@ -14,28 +14,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/integrations_live.ex:351
+#: lib/marshall_web/live/integrations_live.ex:353
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "**** (రాయడానికి మాత్రమే)"
 
-#: lib/marshall_web/live/integrations_live.ex:376
+#: lib/marshall_web/live/integrations_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "చర్యలు"
 
-#: lib/marshall_web/live/integrations_live.ex:421
+#: lib/marshall_web/live/integrations_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "అనుసంధానాన్ని చేర్చు"
 
 #: lib/marshall_web/live/integrations_live.ex:288
-#: lib/marshall_web/live/integrations_live.ex:415
+#: lib/marshall_web/live/integrations_live.ex:417
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "జతచేయి"
 
-#: lib/marshall_web/live/integrations_live.ex:412
+#: lib/marshall_web/live/integrations_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "IDతో యంత్రాన్ని జతచేయి"
@@ -45,18 +45,18 @@ msgstr "IDతో యంత్రాన్ని జతచేయి"
 msgid "Awaiting GitHub authorization"
 msgstr "GitHub అనుమతి కోసం వేచి ఉంది"
 
-#: lib/marshall_web/live/integrations_live.ex:456
+#: lib/marshall_web/live/integrations_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "Basic వినియోగదారు:పాస్‌వర్డ్"
 
-#: lib/marshall_web/live/integrations_live.ex:450
+#: lib/marshall_web/live/integrations_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "Bearer టోకెన్"
 
-#: lib/marshall_web/live/integrations_live.ex:334
-#: lib/marshall_web/live/integrations_live.ex:436
+#: lib/marshall_web/live/integrations_live.ex:336
+#: lib/marshall_web/live/integrations_live.ex:438
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "వ్యాఖ్య"
@@ -104,13 +104,13 @@ msgstr ""
 "ఈ అనుసంధానాన్ని సేవ్ చేయలేకపోయాం. పేరు, HTTPS గమ్యం, హెడర్ విలువలను తనిఖీ "
 "చేయండి."
 
-#: lib/marshall_web/live/integrations_live.ex:445
+#: lib/marshall_web/live/integrations_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "ప్రామాణీకరణ ఆధారాలు"
 
 #: lib/marshall_web/live/integrations_live.ex:279
-#: lib/marshall_web/live/integrations_live.ex:393
+#: lib/marshall_web/live/integrations_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "విడదీయి"
@@ -150,12 +150,12 @@ msgstr "GitHub కనెక్ట్ అయింది."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "GitHub కనెక్ట్ చేయలేకపోయింది. Integrations నుండి మళ్లీ ప్రయత్నించండి."
 
-#: lib/marshall_web/live/integrations_live.ex:441
+#: lib/marshall_web/live/integrations_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "HTTPS గమ్యం"
 
-#: lib/marshall_web/live/integrations_live.ex:344
+#: lib/marshall_web/live/integrations_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "ఇంజెక్ట్ చేసిన ఆధారాలు"
@@ -185,13 +185,13 @@ msgstr "అనుసంధానాలు తాత్కాలికంగా �
 msgid "Invalid request."
 msgstr "చెల్లని అభ్యర్థన."
 
-#: lib/marshall_web/live/integrations_live.ex:374
+#: lib/marshall_web/live/integrations_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "యంత్రం"
 
 #: lib/marshall_web/live/integrations_live.ex:276
-#: lib/marshall_web/live/integrations_live.ex:413
+#: lib/marshall_web/live/integrations_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "యంత్ర UUID"
@@ -211,17 +211,17 @@ msgstr "యంత్రం విడదీయబడింది."
 msgid "Machines excluded from your GitHub identity"
 msgstr "మీ GitHub గుర్తింపు నుండి మినహాయించిన మెషీన్‌లు"
 
-#: lib/marshall_web/live/integrations_live.ex:355
+#: lib/marshall_web/live/integrations_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "ప్రాప్యత ఉన్న యంత్రాలు"
 
-#: lib/marshall_web/live/integrations_live.ex:431
+#: lib/marshall_web/live/integrations_live.ex:433
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "పేరు"
 
-#: lib/marshall_web/live/integrations_live.ex:423
+#: lib/marshall_web/live/integrations_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr ""
@@ -236,12 +236,12 @@ msgstr ""
 "యంత్రాలు https://NAME.integration.internal వద్ద చేరుకునే పేరున్న "
 "ఎండ్‌పాయింట్లు. ఆధారాలు అంచు వద్ద ఇంజెక్ట్ అవుతాయి, యంత్రం నుంచి చదవలేరు."
 
-#: lib/marshall_web/live/integrations_live.ex:360
+#: lib/marshall_web/live/integrations_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "స్పష్టమైన జతలు లేవు. ప్రస్తుత బృంద సభ్యుల యంత్రాలకు ప్రాప్యత ఉంది."
 
-#: lib/marshall_web/live/integrations_live.ex:347
+#: lib/marshall_web/live/integrations_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "ఇంజెక్ట్ చేసిన హెడర్లు లేవు."
@@ -253,32 +253,33 @@ msgstr ""
 "అనుసంధానాలు ఇంకా లేవు. యంత్రాలకు API లేదా మరో యంత్రంతో పేరున్న కనెక్షన్ "
 "ఇవ్వడానికి క్రింద చేర్చండి."
 
-#: lib/marshall_web/live/integrations_live.ex:365
+#: lib/marshall_web/live/integrations_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "ఏ యంత్రానికీ ప్రాప్యత లేదు. అనుసంధానానికి యంత్రాన్ని జతచేయండి."
 
-#: lib/marshall_web/live/integrations_live.ex:329
+#: lib/marshall_web/live/integrations_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "యజమాని"
 
-#: lib/marshall_web/live/integrations_live.ex:493
+#: lib/marshall_web/live/integrations_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "పీర్ అనుసంధానం"
 
-#: lib/marshall_web/live/integrations_live.ex:326
+#: lib/marshall_web/live/integrations_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "పీర్ యంత్రం"
 
-#: lib/marshall_web/live/integrations_live.ex:498
+#: lib/marshall_web/live/integrations_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "పీర్ యంత్ర ID"
 
-#: lib/marshall_web/live/integrations_live.ex:332
+#: lib/marshall_web/live/integrations_live.ex:311
+#: lib/marshall_web/live/integrations_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "వ్యక్తిగత అనుసంధానం"
@@ -293,72 +294,73 @@ msgstr "మళ్లీ కనెక్ట్ చేయాలి"
 msgid "Refreshing GitHub connection"
 msgstr "GitHub కనెక్షన్‌ను నవీకరిస్తోంది"
 
-#: lib/marshall_web/live/integrations_live.ex:317
+#: lib/marshall_web/live/integrations_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "తొలగించు"
 
-#: lib/marshall_web/live/integrations_live.ex:314
+#: lib/marshall_web/live/integrations_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "ఈ అనుసంధానాన్ని తొలగించాలా?"
 
-#: lib/marshall_web/live/integrations_live.ex:499
+#: lib/marshall_web/live/integrations_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "పీర్ అనుసంధానాలకు అవసరం"
 
-#: lib/marshall_web/live/integrations_live.ex:475
+#: lib/marshall_web/live/integrations_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "రూటింగ్, బృంద యాజమాన్యం, పీర్ కనెక్షన్లు"
 
-#: lib/marshall_web/live/integrations_live.ex:505
+#: lib/marshall_web/live/integrations_live.ex:507
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "అనుసంధానం సేవ్ చేయి"
 
-#: lib/marshall_web/live/integrations_live.ex:437
+#: lib/marshall_web/live/integrations_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
 msgstr "గెస్ట్ ప్రతిబింబం కోసం సంక్షిప్త వివరణ"
 
-#: lib/marshall_web/live/integrations_live.ex:463
+#: lib/marshall_web/live/integrations_live.ex:465
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "స్థిర హెడర్ పేరు"
 
-#: lib/marshall_web/live/integrations_live.ex:469
+#: lib/marshall_web/live/integrations_live.ex:471
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "స్థిర హెడర్ విలువ"
 
-#: lib/marshall_web/live/integrations_live.ex:481
+#: lib/marshall_web/live/integrations_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "ఉపసర్గ తొలగించు"
 
-#: lib/marshall_web/live/integrations_live.ex:339
+#: lib/marshall_web/live/integrations_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "ఉపసర్గ తొలగిస్తుంది"
 
-#: lib/marshall_web/live/integrations_live.ex:323
+#: lib/marshall_web/live/integrations_live.ex:325
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "గమ్యం"
 
-#: lib/marshall_web/live/integrations_live.ex:331
+#: lib/marshall_web/live/integrations_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "బృందం %{team}"
 
-#: lib/marshall_web/live/integrations_live.ex:486
+#: lib/marshall_web/live/integrations_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "బృంద ID"
 
-#: lib/marshall_web/live/integrations_live.ex:487
+#: lib/marshall_web/live/integrations_live.ex:310
+#: lib/marshall_web/live/integrations_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "బృంద యాజమాన్య అనుసంధానం"
@@ -373,12 +375,12 @@ msgstr "తాత్కాలికంగా అందుబాటులో ల�
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "మీ మెషీన్‌లు కనెక్ట్ చేసిన GitHub గుర్తింపును స్వయంచాలకంగా ఉపయోగిస్తాయి. భాగస్వామ్య మెషీన్ వాడే సహకారులు దాని యజమాని GitHub అనుమతులను ఉపయోగించవచ్చు. వేరుచేసిన మెషీన్‌లకు అనామక పబ్లిక్ GitHub యాక్సెస్ కొనసాగుతుంది."
 
-#: lib/marshall_web/live/integrations_live.ex:432
+#: lib/marshall_web/live/integrations_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "example-integration"
 
-#: lib/marshall_web/live/integrations_live.ex:464
+#: lib/marshall_web/live/integrations_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"

@@ -257,6 +257,11 @@ defmodule Marshall.Compute.RelocationCoordinator do
       Marshall.Compute.Evacuations.source_allowed?(host, relocation) and
         host.architecture == vm.architecture and
         host.inventory["execution_ready"] == true and
+        (vm.desired_state == :stopped or
+           OverallsProtocol.NativeAdmission.checkpoint_qualified?(
+             vm.image_id,
+             host.inventory["checkpoint_image_ids"]
+           )) and
         (vm.current_checkpoint == nil or
            host.inventory["checkpoint_compatibility"] == vm.current_checkpoint["compatibility"]) and
         Marshall.Compute.HostLiveness.capacity_fresh?(host.reported_at, now)
@@ -273,6 +278,11 @@ defmodule Marshall.Compute.RelocationCoordinator do
       host.enabled and host.maintenance_mode == :normal and
         host.architecture == vm.architecture and
         host.inventory["execution_ready"] == true and
+        (vm.desired_state == :stopped or
+           OverallsProtocol.NativeAdmission.checkpoint_qualified?(
+             vm.image_id,
+             host.inventory["checkpoint_image_ids"]
+           )) and
         (vm.current_checkpoint == nil or
            host.inventory["checkpoint_compatibility"] == vm.current_checkpoint["compatibility"]) and
         Marshall.Compute.HostLiveness.capacity_fresh?(host.reported_at, now)

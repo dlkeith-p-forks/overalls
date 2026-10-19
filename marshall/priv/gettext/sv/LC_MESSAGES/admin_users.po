@@ -21,7 +21,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} ägd maskin"
 msgstr[1] "%{count} ägda maskiner"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Kontosidor"
@@ -66,7 +66,7 @@ msgstr "Administratörsbehörigheten kunde inte ändras."
 msgid "Could not revoke browser sessions."
 msgstr "Webbläsarsessionerna kunde inte återkallas."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Radera användare och maskiner"
@@ -81,7 +81,7 @@ msgstr "E-postadress"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Alla konton i den här installationen. Inloggade användare kan läsa sidan; ändringar kräver en administratör med en nyligen verifierad passnyckel."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Ge kontot behörighet att administrera hela flottan och alla maskiner?"
@@ -106,42 +106,42 @@ msgstr "Flerfaktorsautentisering aktiverad"
 msgid "MFA not enrolled"
 msgstr "Flerfaktorsautentisering inte registrerad"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Gör till administratör"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Nästa sida →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Inga konton på den här sidan."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Radera kontot och ALLA dess maskiner permanent, inklusive maskiner som delas med andra?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Ta bort administratör"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Ta bort kontots administratörsbehörighet?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Återställ flerfaktorsautentisering"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Återställ användarens flerfaktorsautentisering och återkalla alla webbläsarsessioner? Användaren måste registrera en ny passnyckel."
@@ -151,17 +151,17 @@ msgstr "Återställ användarens flerfaktorsautentisering och återkalla alla we
 msgid "Send invitation"
 msgstr "Skicka inbjudan"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Logga ut överallt"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Logga ut kontot från alla webbläsarsessioner?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Skriv e-postadressen för att radera kontot och dess %{count} maskiner"
@@ -186,7 +186,7 @@ msgstr "Verifiera med passnyckel · administrativ åtkomst gäller i 15 minuter 
 msgid "· Your account"
 msgstr "· Ditt konto"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Första sidan"
@@ -196,7 +196,7 @@ msgstr "← Första sidan"
 msgid "Deleted"
 msgstr "Borttagen"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "Tar bort maskiner"
@@ -206,7 +206,7 @@ msgstr "Tar bort maskiner"
 msgid "Retrying machine cleanup"
 msgstr "Försöker rensa maskinerna igen"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Inte tillgänglig"
