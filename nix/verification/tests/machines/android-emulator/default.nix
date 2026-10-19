@@ -22,6 +22,9 @@ hw.gpu.mode = swiftshader_indirect
 hw.keyboard = yes
 hw.cpu.ncore = 4
 hw.ramSize = 4096
+hw.lcd.width = 480
+hw.lcd.height = 800
+hw.lcd.density = 160
 CONFIG
     fi
     exec ${sdkRoot}/emulator/emulator -avd overalls-test \
