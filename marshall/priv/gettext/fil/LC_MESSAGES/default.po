@@ -7511,3 +7511,13 @@ msgstr "Humiling ng kontrol"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Hindi nahanap ang dokumentasyon"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Canvas ng display ng Android"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Naghihintay sa relay ng display."

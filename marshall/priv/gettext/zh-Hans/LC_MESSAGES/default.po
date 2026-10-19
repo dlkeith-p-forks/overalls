@@ -7520,3 +7520,13 @@ msgstr "请求控制"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "未找到文档"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android 显示画布"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "正在等待显示中继。"

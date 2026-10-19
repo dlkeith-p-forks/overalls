@@ -7513,3 +7513,13 @@ msgstr "கட்டுப்பாட்டைக் கோரவும்"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "ஆவணங்கள் கிடைக்கவில்லை"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android காட்சி வரைபரப்பு"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "காட்சித் தொடர் இணைப்புக்காகக் காத்திருக்கிறது."

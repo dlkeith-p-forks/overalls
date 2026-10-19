@@ -7731,3 +7731,13 @@ msgstr "नियंत्रणाची विनंती करा"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "दस्तऐवज सापडले नाहीत"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android डिस्प्ले कॅनव्हास"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "डिस्प्ले रिलेची प्रतीक्षा करत आहे."

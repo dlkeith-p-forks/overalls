@@ -7912,3 +7912,13 @@ msgstr "Pedir controlo"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Documentação não encontrada"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Área de apresentação do Android"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "A aguardar o retransmissor de ecrã."

@@ -7510,3 +7510,13 @@ msgstr "Request control"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Documentation not found"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android display canvas"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Waiting for display relay."

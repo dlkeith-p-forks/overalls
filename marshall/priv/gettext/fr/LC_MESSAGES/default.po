@@ -7923,3 +7923,13 @@ msgstr "Demander le contrôle"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Documentation introuvable"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Zone d’affichage Android"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "En attente du relais d’affichage."

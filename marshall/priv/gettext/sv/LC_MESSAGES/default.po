@@ -4932,7 +4932,7 @@ msgstr "Standard"
 #: lib/marshall_web/live/admin/workloads_live.ex:195
 #, elixir-autogen, elixir-format
 msgid "Start"
-msgstr "Start"
+msgstr "Starta"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
 #, elixir-autogen, elixir-format
@@ -7510,3 +7510,13 @@ msgstr "Begär kontroll"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Dokumentationen hittades inte"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android-skärmens rityta"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Väntar på bildskärmsreläet."

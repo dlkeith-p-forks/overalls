@@ -7505,3 +7505,13 @@ msgstr "Minta kendali"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Dokumentasi tidak ditemukan"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Kanvas tampilan Android"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Menunggu relai tampilan."
