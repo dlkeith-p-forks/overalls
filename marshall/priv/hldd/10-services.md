@@ -446,6 +446,8 @@ records source/tests and remaining provider/native gaps.
 
 Repeated bootstrap polls from the same current executor and fence preserve the
 unstarted attempt; replacement authority cannot complete its predecessor.
+One-shot bootstrap renewal failures use closed numeric exit categories described
+in [monitoring](#monitoring), preserving refusal without retry or added authority.
 
 OAuth form navigation permits the fixed `https://github.com` origin, including
 the same-origin start POST's redirect. Script, connection and frame sources

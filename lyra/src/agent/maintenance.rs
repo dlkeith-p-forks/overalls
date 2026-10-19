@@ -165,6 +165,14 @@ fn transition(
 }
 
 pub(super) fn poll(host: &impl Host, lease: &LeaseRequest<'_>) -> Result<bool, AgentError> {
+    poll_observed(host, lease, &mut |_| {})
+}
+
+fn poll_observed(
+    host: &impl Host,
+    lease: &LeaseRequest<'_>,
+    failed: &mut impl FnMut(super::RpcFailure),
+) -> Result<bool, AgentError> {
     let claim: Claim = rpc("maintenance/claim", lease)?;
     let Some(job) = claim.maintenance else {
         return Ok(false);
@@ -180,7 +188,7 @@ pub(super) fn poll(host: &impl Host, lease: &LeaseRequest<'_>) -> Result<bool, A
             authority = false;
         }
         if authority && heartbeat_at.elapsed() >= Duration::from_secs(2) {
-            authority = rpc::<Value, _>("heartbeat", lease).is_ok();
+            authority = super::rpc_observed::<Value, _>("heartbeat", lease, failed).is_ok();
             heartbeat_at = Instant::now();
         }
         authority
@@ -593,11 +601,18 @@ pub fn bootstrap_invocation() -> Option<i32> {
         executor_id: &arguments[1],
         fence_epoch: epoch,
     };
-    Some(if reconcile().is_ok() && poll(&Bootstrap, &lease).is_ok() {
-        0
-    } else {
-        1
-    })
+    // Closed renewal diagnostics change only the nonzero exit category. They
+    // never retry a refused request or authorize continued installation.
+    let mut failure = None;
+    Some(
+        if reconcile().is_ok()
+            && poll_observed(&Bootstrap, &lease, &mut |value| failure = Some(value)).is_ok()
+        {
+            0
+        } else {
+            failure.map_or(1, super::RpcFailure::diagnostic_code)
+        },
+    )
 }
 
 pub(super) fn reconcile() -> io::Result<()> {

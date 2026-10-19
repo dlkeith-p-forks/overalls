@@ -415,3 +415,29 @@ disconnect/reconnect with an exact new exchange count and persisted exclusion,
 and Windows shared-writer identity via the actual member terminal account.
 The final disconnect oracle counts a new revocation, excluding the earlier
 reconnect revocation. These assertions are present; runtime results are pending.
+
+### Closed bootstrap renewal diagnostics
+
+The Lyra HTTP/RPC observer changes only the one-shot retained-tool bootstrap's
+nonzero exit category when its heartbeat renewal fails. Existing unobserved
+request/RPC callers retain their no-op observer, request bounds and refusal flow.
+The bootstrap reports fixed HTTPS stage/error categories as 80–109, request
+encoding as 110 and response JSON decoding as 111. Other invocation errors remain
+1 and malformed invocation remains 64. An acknowledged poll returns 0; its
+maintenance row still owns the installation outcome. Claim, transition,
+artifact transfer and reconciliation failures are not given these renewal codes.
+No URL, error text, identifiers, credentials, payload or tool output enters the
+observation. A refused renewal still removes authority and aborts installation;
+there is no retry, new wire field, durable state or authority. This preserves
+ADR-0100's executor fencing and ADR-0202's retained-tool custody, with no new
+architectural decision or native image qualification.
+
+The focused Linux-host run passed **7 HTTP tests** and **10 maintenance tests**,
+including the generated last-healthy-generation property, followed by
+`cargo clippy --lib --tests -- -D warnings`
+(`/tmp/github-native-renewal-stage-final-check.log`). Contract discovery and
+format checks passed (`/tmp/github-native-renewal-stage-contracts.log`). The
+invalid-request regression checks unchanged refusal and closed numeric mapping.
+These results do not establish a native TLS failure cause, OmniOS artifact
+delivery, candidate attribution qualification or promoted-image acceptance;
+the separate native diagnostic and candidate runs remain pending.

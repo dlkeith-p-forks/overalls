@@ -31,12 +31,20 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   ]
 
   @big 1_099_511_627_776
+  @type fixture :: %{
+          host: Marshall.Compute.Host.t(),
+          pool: Marshall.Compute.StoragePool.t(),
+          epoch: pos_integer(),
+          report: OverallsProtocol.report(),
+          user: Marshall.Accounts.User.t(),
+          sequence: pos_integer()
+        }
 
   setup tags do
     if tags[:hegel_case_sandbox], do: :ok, else: workspace_fixture()
   end
 
-  @spec workspace_fixture() :: map()
+  @spec workspace_fixture() :: fixture()
   defp workspace_fixture do
     fixture = host_fixture()
     fixture |> Map.put(:user, user()) |> Map.put(:sequence, 1) |> refresh()
@@ -276,7 +284,7 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   end
 
   # Re-reports generous capacity with a fresh sample so generated admissions fit.
-  @spec refresh(map()) :: map()
+  @spec refresh(fixture()) :: fixture()
   defp refresh(fixture) do
     [pool] = fixture.report.pools
 

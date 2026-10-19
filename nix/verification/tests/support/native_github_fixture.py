@@ -80,6 +80,12 @@ class GitHub:
     bootstrap_started: bool = False
     bootstrap_completed: bool = False
     bootstrap_failed: bool = False
+    # Current one-shot worker renewal diagnostics only: 80 + stage*6 + kind.
+    # Stages 0..4: validation, client construction, send, status-or-length, body.
+    # Kinds 0..5: timeout, unexpected EOF, connection, invalid input/data,
+    # permission, other. 110=RPC encoding; 111=JSON decoding. 0=success;
+    # 1=other failure; 64=invalid invocation. Historical workers may return 1.
+    # A diagnostic code remains a failure, never permission to retry/continue.
     bootstrap_exit_code: int | None = None
     maintenance_failure: str | None = None
     outcome: str | None = None

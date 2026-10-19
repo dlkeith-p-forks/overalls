@@ -1,5 +1,23 @@
 # Monitoring and troubleshooting
 
+## Retained GitHub tool bootstrap diagnostics
+
+The one-shot retained-tool bootstrap reports a heartbeat renewal failure through
+a closed numeric exit category. Codes 80–109 identify a fixed HTTPS stage and
+error category; 110 identifies request encoding and 111 response JSON decoding.
+Other invocation errors remain 1 and malformed invocation remains 64. An
+acknowledged poll returns 0; the maintenance row owns the installation outcome.
+The [HTTP observer](repo:lyra/src/http.rs) and
+[bootstrap](repo:lyra/src/agent/maintenance.rs) expose no URL, error text,
+identifiers, credentials, payload or tool output. A failed renewal still withdraws
+installation authority; the diagnostic adds no retry or execution permission.
+
+Seven HTTP tests and ten maintenance tests, including generated maintenance
+histories, passed on the Linux host; Clippy and contract checks also passed.
+These checks establish bounded refusal and mapping behavior, not the cause of
+native TLS or retained-image transfer failures. Native runtime acceptance remains
+separate in the [GitHub review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+
 ## Editor transition evidence
 
 Marshall's Control room audit accepts `kind=editor` and exposes bounded redacted
