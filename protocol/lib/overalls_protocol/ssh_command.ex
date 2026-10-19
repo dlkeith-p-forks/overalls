@@ -816,7 +816,7 @@ defmodule OverallsProtocol.SSHCommand do
 
   defp arguments_valid?(name, [machine, session])
        when name in ["terminal kill", "terminal attach"],
-    do: machine?(machine) and OverallsProtocol.uuid?(session)
+       do: machine?(machine) and OverallsProtocol.uuid?(session)
 
   defp arguments_valid?("help", []), do: true
   defp arguments_valid?("help", args), do: Map.has_key?(@commands, Enum.join(args, " "))

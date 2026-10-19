@@ -14,6 +14,7 @@ import 'package:mila/features/session.dart';
 import 'package:mila/features/sign_in_screen.dart';
 import 'package:mila/features/terminal/terminal_controller.dart';
 import 'package:mila/transport/fake_porsche.dart';
+import 'package:mila_core/mila_core.dart';
 import 'package:mila_transport/mila_transport.dart';
 
 const String _host = 'overalls.example';
@@ -82,6 +83,18 @@ FakeThread _seedThread(FakeDeployment fake) {
   fake.threads[_thread] = thread;
   return thread;
 }
+
+/// The received lines that parse as [name] with exactly [arguments], whatever
+/// the option order the encoder chose.
+Iterable<String> _invocations(List<String> lines, String name, List<String> arguments) =>
+    lines.where((line) {
+      final parsed = parseCommandLine(line);
+      return parsed != null &&
+          parsed.name == name &&
+          parsed.arguments.length == arguments.length &&
+          Iterable<int>.generate(arguments.length)
+              .every((i) => parsed.arguments[i] == arguments[i]);
+    });
 
 void main() {
   group('terminal', () {
@@ -167,7 +180,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Why does CI fail?'), findsOneWidget);
       expect(find.text('A missing import.'), findsOneWidget);
-      expect(app.fake.received.where((l) => l.startsWith('thread read $_thread 2 ')), hasLength(1));
+      expect(_invocations(app.fake.received, 'thread read', [_thread, '2']), hasLength(1));
       expect(thread.readSequence, 2);
       await _leave(tester, app);
     });
@@ -182,7 +195,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(app.fake.payloads, [secret]);
       expect(app.fake.received.any((l) => l.contains('hunter2')), isFalse);
-      expect(app.fake.received.where((l) => l.startsWith('thread prompt $_thread ')), hasLength(1));
+      expect(_invocations(app.fake.received, 'thread prompt', [_thread, '-']), hasLength(1));
       await _leave(tester, app);
     });
 
@@ -212,7 +225,7 @@ void main() {
       await tester.tap(find.byKey(const Key('answer-send')));
       await tester.pumpAndSettle();
       expect(
-        app.fake.received.where((l) => l.startsWith('thread answer $_thread $_question ')),
+        _invocations(app.fake.received, 'thread answer', [_thread, _question, '-']),
         hasLength(1),
       );
       expect(jsonDecode(app.fake.payloads.single), {
@@ -223,7 +236,7 @@ void main() {
       await tester.tap(find.byKey(const Key('plan-approve')));
       await tester.pumpAndSettle();
       expect(
-        app.fake.received.where((l) => l.startsWith('thread plan approve $_thread $_plan ')),
+        _invocations(app.fake.received, 'thread plan approve', [_thread, _plan]),
         hasLength(1),
       );
       expect(thread.mode, 'work');
@@ -262,7 +275,7 @@ void main() {
 
       await tester.tap(find.byKey(const Key('web-visibility-0')));
       await tester.pumpAndSettle();
-      final sets = app.fake.received.where((l) => l.startsWith('web set $_box '));
+      final sets = _invocations(app.fake.received, 'web set', [_box]);
       expect(sets, hasLength(1));
       expect(sets.single, contains('--public'));
       expect(sets.single, contains('--revision=1'));

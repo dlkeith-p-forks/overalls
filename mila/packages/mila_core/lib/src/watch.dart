@@ -118,7 +118,9 @@ WatchEvent decodeWatchLine(String line) {
   }
   if (value is! Map<String, Object?>) throw const WatchFormatException('not an object');
   if (value['version'] != 1) throw const WatchFormatException('version');
-  if (value.containsKey('status')) {
+  // Notices always name an event; only a line without one is a Porsche
+  // reply envelope (a session notice may carry its own `status`).
+  if (!value.containsKey('event') && value.containsKey('status')) {
     final reply = decodeReply(value);
     return switch (reply) {
       ErrorReply(:final error) => WatchRefused(error),

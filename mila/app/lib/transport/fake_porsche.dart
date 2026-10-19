@@ -315,8 +315,9 @@ final class _FakeSession implements PorscheSession {
     _fake.received.add(line);
     final parsed = parseCommandLine(line)!;
     final terminal = _fake.terminals[parsed.arguments[1]];
-    if (terminal == null || !_fake.approved)
+    if (terminal == null || !_fake.approved) {
       throw const ConnectException(ConnectFailure.unreachable);
+    }
     final cursor = parsed.options['cursor'];
     final channel = FakeAttach(
       terminal,
@@ -581,8 +582,9 @@ final class _FakeSession implements PorscheSession {
           return (PorscheExit.invalid, error('not_found'));
         }
         final answers = jsonDecode(text());
-        if (answers is! Map<String, Object?>)
+        if (answers is! Map<String, Object?>) {
           return (PorscheExit.invalid, error('invalid_answers'));
+        }
         t
           ..question = null
           ..add('questions_answered', {});

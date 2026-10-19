@@ -5,7 +5,6 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mila_core/mila_core.dart';
-import 'package:mila_transport/mila_transport.dart';
 
 import '../mutation.dart';
 import '../session.dart';

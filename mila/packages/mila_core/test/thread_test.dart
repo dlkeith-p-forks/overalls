@@ -163,7 +163,7 @@ void main() {
             'kind': 'assistant',
             'body': {'text': 'hi'},
           },
-          {'sequence': 8, 'kind': 'from_the_future', 'body': {}},
+          {'sequence': 8, 'kind': 'from_the_future', 'body': <String, Object?>{}},
         ],
         'next_after': 8,
       },

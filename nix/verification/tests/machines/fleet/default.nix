@@ -1424,15 +1424,15 @@ assert !executorLoss || (agent && galileo && audi && agentCli && !ubuntu);
 # The combined sharing journey MUST run on the Audi-enabled real guest image;
 # the variant flag cannot stand alone.
 assert !sharingSurfaces || audi;
+# @cc [owner:ghuntley,label:verification] porsche-terminal-fleet-scope
+# The SSH attach journey MUST compose real key approval and authorized Porsche
+# dispatch, then a personal-terminal guest, and stop before VM lifecycle.
+assert !porscheTerminal || (porsche && terminal && !otelPorsche && !porscheLifecycleOnly && !userSshJourney && builtins.length porscheScenarioParts == 2);
 # @cc [owner:ghuntley,label:verification] porsche-lifecycle-native-scope
 # The focused variant MUST retain the complete existing Porsche lifecycle,
 # enrollment and real-guest prerequisites on two provisioners; it MAY omit only
 # the unrelated browser/terminal scenarios after the Porsche fragment.
 # NixOS and Ubuntu variants MUST have distinct driver identities.
-# @cc [owner:ghuntley,label:verification] porsche-terminal-fleet-scope
-# The SSH attach journey MUST compose real key approval and authorized Porsche
-# dispatch, then a personal-terminal guest, and stop before VM lifecycle.
-assert !porscheTerminal || (porsche && terminal && !otelPorsche && !porscheLifecycleOnly && !userSshJourney && builtins.length porscheScenarioParts == 2);
 assert !porscheLifecycleOnly || (porsche && !terminal && !userSshJourney && !cloning && !otelAudiSsh);
 # @cc [owner:ghuntley,label:verification;security] coding-clis-native-stack
 # Coding-client variants MUST exercise the production native guest packages

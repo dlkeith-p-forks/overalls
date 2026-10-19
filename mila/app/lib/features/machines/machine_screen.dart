@@ -4,7 +4,6 @@ import 'package:mila_core/mila_core.dart';
 import 'package:mila_transport/mila_transport.dart';
 
 import '../../l10n/app_localizations.dart';
-import '../../ui/tokens.dart';
 import '../../ui/widgets.dart';
 import '../labels.dart';
 import 'machine_tabs.dart';
