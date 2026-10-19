@@ -80,7 +80,7 @@ CONFIG
         trap 'kill "$xvfb_pid" 2>/dev/null || true' EXIT
         exec ${sdkRoot}/emulator/emulator \
           -avd ${avdName} -no-accel -gpu swiftshader_indirect \
-          -no-boot-anim -no-snapshot -ports 5554,5555
+          -no-boot-anim -no-snapshot -skip-adb-auth -ports 5554,5555
       ''}";
     };
   };
