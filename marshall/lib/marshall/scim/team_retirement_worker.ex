@@ -29,6 +29,8 @@ defmodule Marshall.Scim.TeamRetirementWorker do
          DateTime.compare(team.scim_retirement_deadline, now) == :gt do
       {:snooze, 300}
     else
+      Marshall.Scim.TeamCleanup.revoke!(team)
+
       VirtualMachine
       |> Ash.Query.filter(team_id == ^team.id and desired_state != :deleted)
       |> Ash.read!(actor: SystemActor.compute())
@@ -43,6 +45,7 @@ defmodule Marshall.Scim.TeamRetirementWorker do
         |> Ash.read!(actor: SystemActor.compute())
 
       if remaining == [] do
+        Marshall.Scim.TeamCleanup.revoke!(team)
         Ledger.archive!(team, :archive)
         :ok
       else

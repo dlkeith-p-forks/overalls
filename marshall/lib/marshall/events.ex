@@ -1245,6 +1245,11 @@ defmodule Marshall.Events do
     metadata: [team_id: :uuid]
   )
 
+  defevent("scim.team_authority_revoked",
+    message: "SCIM team authority revoked",
+    metadata: [team_id: :uuid]
+  )
+
   defevent("scim.request_refused",
     level: :warning,
     message: "SCIM request refused",
