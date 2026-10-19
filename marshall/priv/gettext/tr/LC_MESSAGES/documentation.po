@@ -838,3 +838,8 @@ msgstr "Dağıtımınız teslim kayıtlarını yedi gün saklar ve denetim geçm
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` tek bir cihaz için bildirimleri duraklatır veya sürdürür. `device rm` cihazı kalıcı olarak iptal eder; Mila, bildirimlere bir sonraki izin verişinizde yeniden kaydolur. Hesabınızı silmek veya emekliye ayırmak tüm cihazlarını iptal eder."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Belgeler bulunamadı"

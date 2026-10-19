@@ -1553,3 +1553,58 @@ msgstr "・%{value1}推論・%{value2}"
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ 選択・実行する・エスケープ・閉じる"
+
+#: lib/marshall_web/thread_commands.ex:21
+#, elixir-autogen, elixir-format
+msgid "Choose or manage reusable instructions"
+msgstr "再利用可能な指示を選択または管理する"
+
+#: lib/marshall_web/thread_commands.ex:30
+#, elixir-autogen, elixir-format
+msgid "Command help"
+msgstr "コマンドのヘルプ"
+
+#: lib/marshall_web/thread_commands.ex:22
+#, elixir-autogen, elixir-format
+msgid "Context"
+msgstr "コンテキスト"
+
+#: lib/marshall_web/thread_commands.ex:15
+#, elixir-autogen, elixir-format
+msgid "Explore the task and agree on a plan"
+msgstr "タスクを調査し、計画を合意する"
+
+#: lib/marshall_web/thread_commands.ex:17
+#, elixir-autogen, elixir-format
+msgid "Implement and verify changes"
+msgstr "変更を実装し検証する"
+
+#: lib/marshall_web/thread_commands.ex:23
+#, elixir-autogen, elixir-format
+msgid "Inspect the working directory and loaded sources"
+msgstr "作業ディレクトリと読み込まれたソースを確認する"
+
+#: lib/marshall_web/thread_commands.ex:31
+#, elixir-autogen, elixir-format
+msgid "Learn the composer shortcuts"
+msgstr "入力欄のショートカットを学ぶ"
+
+#: lib/marshall_web/thread_commands.ex:29
+#, elixir-autogen, elixir-format
+msgid "Manage access to the thread and its machine"
+msgstr "スレッドとそのマシンへのアクセスを管理する"
+
+#: lib/marshall_web/thread_commands.ex:27
+#, elixir-autogen, elixir-format
+msgid "Open the editor for this thread's machine"
+msgstr "このスレッドのマシンのエディターを開く"
+
+#: lib/marshall_web/thread_commands.ex:25
+#, elixir-autogen, elixir-format
+msgid "Open this thread's machine terminal"
+msgstr "このスレッドのマシンのターミナルを開く"
+
+#: lib/marshall_web/thread_commands.ex:19
+#, elixir-autogen, elixir-format
+msgid "Summarize older context for the next turn"
+msgstr "次のターンに向けて以前のコンテキストを要約する"

@@ -49,24 +49,28 @@ defmodule Lilly.VM.ActorFailureSettledTest do
 
         reason = draw("reason", member_of([:execution_failed, :crashed]))
         run = boot(context.tmp_dir)
-        before = drive_failure(run, reason)
-        assert before.sequence == 1
 
-        run =
-          Enum.reduce(events, run, fn event, run ->
-            step(event, run, reason)
-          end)
+        try do
+          before = drive_failure(run, reason)
+          assert before.sequence == 1
 
-        # A delete is a newer command and drives at once, even from a settled failure.
-        delete = %{newer(run.command) | kind: :delete}
-        {:ok, :stored} = Store.accept(run.store, delete)
-        Actor.reconcile(run.actor)
-        assert_receive {:execute, worker, ^delete, _}, 2000
-        send(worker, {:result, {:ok, observation(:deleted, :none)}})
-        id = delete.placement_id
-        actor = run.actor
-        assert_receive {:vm_actor_outcome, ^id, ^actor, %{state: :deleted}}, 2000
-        stop_supervised!(id)
+          run =
+            Enum.reduce(events, run, fn event, run ->
+              step(event, run, reason)
+            end)
+
+          # A delete is a newer command and drives at once, even from a settled failure.
+          delete = %{newer(run.command) | kind: :delete}
+          {:ok, :stored} = Store.accept(run.store, delete)
+          Actor.reconcile(run.actor)
+          assert_receive {:execute, worker, ^delete, _}, 2000
+          send(worker, {:result, {:ok, observation(:deleted, :none)}})
+          id = delete.placement_id
+          actor = run.actor
+          assert_receive {:vm_actor_outcome, ^id, ^actor, %{state: :deleted}}, 2000
+        after
+          stop_case(run.command.placement_id)
+        end
       end,
       test_cases: 100
     )
@@ -100,8 +104,7 @@ defmodule Lilly.VM.ActorFailureSettledTest do
 
   defp step(:restart, run, reason) do
     id = run.command.placement_id
-    stop_supervised!(id)
-    flush_executions()
+    stop_case(id)
     actor = start_supervised!({Actor, run.options}, id: id)
     assert_receive {:vm_actor_ready, ^id, ^actor, pending}, 2000
     run = %{run | actor: actor}
@@ -173,11 +176,20 @@ defmodule Lilly.VM.ActorFailureSettledTest do
     %{actor: actor, command: command, store: store, options: options}
   end
 
-  # A stopped actor's in-flight timer tick may have started work it killed.
-  @spec flush_executions() :: :ok
-  defp flush_executions do
+  # Synchronously stop this case's producer before removing only its queued
+  # executions. An execution from any live worker remains an oracle failure.
+  @spec stop_case(String.t()) :: :ok
+  defp stop_case(id) do
+    assert stop_supervised(id) in [:ok, {:error, :not_found}]
+    drain_stopped_executions(id)
+  end
+
+  @spec drain_stopped_executions(String.t()) :: :ok
+  defp drain_stopped_executions(id) do
     receive do
-      {:execute, _, _, _} -> flush_executions()
+      {:execute, worker, %{placement_id: ^id}, _} ->
+        refute Process.alive?(worker), "stopped actor retained a live executor"
+        drain_stopped_executions(id)
     after
       0 -> :ok
     end

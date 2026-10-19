@@ -198,3 +198,23 @@ msgstr "· आपका खाता"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← पहला पेज"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "हटाया गया"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "मशीनें हटाई जा रही हैं"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "मशीन की सफ़ाई फिर से की जा रही है"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "अनुपलब्ध"

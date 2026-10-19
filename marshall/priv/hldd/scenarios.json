@@ -2,65 +2,6 @@
   "version": 1,
   "scenarios": [
     {
-      "id": "android-display",
-      "journey": "Open an Android machine display as a viewer or controller and observe generation fencing",
-      "layers": [
-        "identity",
-        "authorization",
-        "transport",
-        "execution",
-        "isolation",
-        "recovery"
-      ],
-      "boundary": "A signed short-lived ticket binds the current actor, Android capability, machine and execution generation. One shared relay fans out RFB bytes to viewers and forwards input only from its controller.",
-      "denial": "Foreign, stale, expired, non-Android and second-controller requests are refused; host-stream or emulator loss closes the display channel. A future host output sequence closes its Android channel and notifies its generation-bound owner rather than silently dropping bytes.",
-      "scope": "Typed protocol, relay and browser-hook evidence exists; composed Firecracker, Lilly ingress and authenticated browser acceptance remain partial.",
-      "status": "partial",
-      "gaps": "No recorded production Firecracker image boot with the relay and no recorded real /machines/:id browser journey.",
-      "preferred_gap": "Run the production Android image through Firecracker, connect Marshall and Lilly, and record viewer/controller, stale-generation and host-loss assertions.",
-      "evidence": [
-        {
-          "kind": "property",
-          "path": "protocol/test/android_emulator_state_machine_property_test.exs",
-          "assertion": "generations and boot identity fencing",
-          "scope": "BEAM state model only; no native VM or browser claim.",
-          "execution": "present"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/android/display_relay_test.exs",
-          "assertion": "allows viewers, fences one controller and sequences frames",
-          "scope": "Relay process state only; no host transport claim.",
-          "execution": "present"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/browser/android_display_test.mjs",
-          "assertion": "replaces its canvas on reconnect",
-          "scope": "Browser hook fixture only; no authenticated browser journey claim.",
-          "execution": "present"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/terminal/host_stream_android_test.exs",
-          "assertion": "a future Android output sequence closes the channel and notifies its owner",
-          "scope": "Codec and BEAM host-stream callback state: future sequence yields close control, generation-bound owner notice and removed channel. Passed within the 11-test focused host-stream run in 61.6 seconds, seed 452775, with eight maximum cases and existing 100-case property budgets unchanged. No authenticated native display stream or browser journey.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
-          "record_assertion": "11 tests in 61.6 seconds with seed"
-        },
-        {
-          "kind": "machine",
-          "path": "nix/verification/tests/machines/android-emulator/default.nix",
-          "assertion": "PNG screencap through the real adb client",
-          "scope": "Recorded standalone NixOS software-emulator fixture: API 34 AVD, APK compiled against API 36, authenticated ADB, PNG screencap and marker persistence across emulator restart. The 4-core/4-GiB AVD runs inside an 8-vCPU/8-GiB test VM. No production API 36 image, Firecracker transport, TAP firewall, Lilly ticket authority or browser journey claim.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
-          "record_assertion": "The fixture was executed through"
-        }
-      ]
-    },
-    {
       "id": "localization",
       "journey": "Select a language, reset to the browser default, and use LTR/RTL human surfaces",
       "layers": [
@@ -73,8 +14,36 @@
       "scope": "ADR-0201 presentation boundaries with historical bounded BEAM/LiveView execution, latest strict 28-locale catalog/data/document checks and a recorded Bombadil settings journey across all 28 locales and 112 theme/viewport combinations. Locale persistence after reload, browser-language reset and repeated saves from a fragment passed on the immutable compiled runtime identified by the browser receipt. Latest Porsche notification-guidance assertions preserve command tokens and decoded JSON; they do not extend native SSH or browser acceptance. All-route browser, native Porsche and independent linguistic acceptance remain partial.",
       "status": "partial",
       "gaps": "Independent native-speaker review remains incomplete despite strict catalog coverage and structural Markdown checks. The recorded synthetic browser fixture establishes only its settings journey and observed layout; packaged NixOS account-language/Porsche journeys, all-route and cross-browser bidi/shaping behavior and native Porsche protocol journeys remain unestablished.",
-      "preferred_gap": "Add generated negotiation and isolation properties and packaged NixOS account-language/Porsche journeys; broaden browser routes and engines and obtain independent native-speaker review. Preserve the separate native and linguistic evidence boundaries.",
+      "preferred_gap": "Execute the new generated negotiation/isolation properties and packaged NixOS account-language/Porsche journey; broaden browser engines and record representative script rendering. Independent native-speaker review remains optional for release and separate from structural coverage.",
       "evidence": [
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall_web/locale_property_test.exs",
+          "assertion": "interleaved request histories isolate both locale backends and reset stale state",
+          "scope": "Generated supported locale pairs and bounded interleaved request histories check quality negotiation, explicit override, fallback, formatter state and direction. Present but not yet executed at the requested commit-before-tests publication boundary; no account authorization or native browser claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/locale_catalog_check_test.exs",
+          "assertion": "empty, whitespace, copied and fuzzy translations fail by default",
+          "scope": "Actual checker subprocess fixtures distinguish enforcing and report-only execution, partial plurals, fuzzy forms, English fallback and exact invariant reviews. New current-source execution remains pending; no linguistic-quality claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/localization_remaining_ui_test.exs",
+          "assertion": "Japanese and Arabic pin labels preserve state, payload and untrusted names",
+          "scope": "Product-authored pin names, twelve clone failure explanations and accessible stage labels use native catalogs while mixed-script bindings remain escaped and machine state stays literal. Present with execution pending; no real-browser shaping or native guest claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/localization/default.nix",
+          "assertion": "Porsche derives human language from durable account authority and preserves JSON",
+          "scope": "Packaged Marshall settings and public-guide/English-handbook browser routes plus trusted real Porsche SSH human help and JSON for all 28 locales. Ordinary owned control-plane machine fixtures establish no guest execution or isolation. Check is present; native execution remains pending at publication.",
+          "execution": "present"
+        },
         {
           "kind": "manual",
           "path": "docs/architecture/reviews/2026-10-19-localization-browser-evidence.json",
@@ -181,99 +150,6 @@
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
           "record_assertion": "The latest Porsche test phase passed 140 of 141 tests"
-        }
-      ]
-    },
-    {
-      "id": "android-software-guest-display",
-      "journey": "Select the Android software guest profile and attach a generation-bound display controller or viewer",
-      "layers": [
-        "identity",
-        "authorization",
-        "transport",
-        "execution",
-        "isolation",
-        "storage",
-        "recovery"
-      ],
-      "boundary": "The explicit linux-android-v1 declaration participates in version-4 image identity and projects Android SDK, ADB, emulator and display flags. ADR-0206 requires the NixOS Firecracker guest, software rendering, persistent AVD state and private ADB/display transport. Marshall checks login/ticket claims separately from its shared machine-and-generation relay; controller and viewer roles remain distinct. Source and pure models are not evidence that these layers compose in a native browser journey.",
-      "denial": "Unsupported manifest versions, profiles, image kinds and malformed artifacts refuse Android qualification. Malformed tickets and mismatched machine, generation or mode refuse. The relay model refuses a second controller, stale-generation frames and input from a viewer. A future host output sequence closes its channel and notifies the generation-bound owner. Native expired-login, foreign-owner, stale-execution and transport refusal remain unverified as a composed journey.",
-      "scope": "Source-backed image codec, capability and in-memory relay boundaries, an independent generated lifecycle model, and a recorded standalone NixOS software-emulator run. Each bounded execution retains its own source and assertion scope; no native Firecracker display, real browser or production acceptance follows from the models or standalone fixture.",
-      "status": "partial",
-      "gaps": "No recorded native Firecracker guest-to-browser display journey establishes current login/owner authorization, authenticated transport, controller/viewer enforcement, stale-execution fencing, AVD storage continuity, restart recovery or physical isolation. The standalone emulator fixture is not the deployed Marshall/Lilly composition.",
-      "preferred_gap": "Add a packaged Marshall/Lilly Firecracker browser journey covering readiness, controller/viewer and foreign/stale refusal, AVD retention and bounded recovery. Keep the recorded standalone API34 emulator, pure-property and production native evidence separate.",
-      "evidence": [
-        {
-          "kind": "unit",
-          "path": "protocol/test/image_manifest_test.exs",
-          "assertion": "Android guest profile is explicit, identity-bound and preserved by serialization",
-          "scope": "Version-4 acceptance, JSON round trip, distinct identity and four capability flags; a separate test refuses wrong versions, profiles, image kinds and malformed artifacts. Passed within the latest isolated 418-test protocol gate, seed 778386, with current source hashes matching the validated snapshot. Pure image-codec evidence.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
-          "record_assertion": "all 418 tests passed in"
-        },
-        {
-          "kind": "property",
-          "path": "protocol/test/android_emulator_state_machine_property_test.exs",
-          "assertion": "lifecycle commands preserve lease and boot fencing",
-          "scope": "Two hundred generated histories in an independent lifecycle/lease model check ownership, monotonic generations, boot identity and rejected-command purity. Passed within the latest isolated 418-test protocol gate, seed 778386, with current source hashes matching the validated snapshot. It does not execute an emulator, ADB or a production transport adapter.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
-          "record_assertion": "all 418 tests passed in"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/android/display_registry_test.exs",
-          "assertion": "shares one relay per machine generation",
-          "scope": "In-memory registry reuse for one machine/generation and separation of a later generation, using a unique test key and exact relay PID cleanup. Passed within the eight-test Android target, seed 183005; no restart or distributed registry claim.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
-          "record_assertion": "all eight Marshall Android tests passed in"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/android/display_relay_test.exs",
-          "assertion": "allows viewers, fences one controller and sequences frames",
-          "scope": "BEAM relay roles, one-controller refusal, frame sequencing, stale-generation refusal and viewer-input refusal passed within the eight-test Android target, seed 183005. No authenticated native stream.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
-          "record_assertion": "all eight Marshall Android tests passed in"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/android/display_tickets_test.exs",
-          "assertion": "claim matching fences machine, generation and mode",
-          "scope": "Malformed-token and exact claim-field refusal passed within the eight-test Android target, seed 183005. These pure checks do not establish positive signed-ticket issuance, current-login expiry or foreign-owner refusal through the browser socket.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
-          "record_assertion": "all eight Marshall Android tests passed in"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/terminal/host_stream_android_test.exs",
-          "assertion": "a future Android output sequence closes the channel and notifies its owner",
-          "scope": "Future sequence yields close control, generation-bound owner notice and removed channel in the BEAM callback fixture. Passed within the 11-test focused host-stream run in 61.6 seconds, seed 452775. The fixture normalizes WebSock reply iodata before decoding. No Lilly transport, native guest, browser or isolation claim.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
-          "record_assertion": "11 tests in 61.6 seconds with seed"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/browser/android_display_test.mjs",
-          "assertion": "Android display gives noVNC an empty target and replaces its canvas on reconnect",
-          "scope": "Simulated RFB client checks target replacement, disconnect on reconnect and viewer/controller configuration. The Node unit passed 1/1; it is not a real browser or native display stream.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
-          "record_assertion": "The display-hook unit passed (1/1)"
-        },
-        {
-          "kind": "machine",
-          "path": "nix/verification/tests/machines/android-emulator/default.nix",
-          "assertion": "android-test-emulator.service",
-          "scope": "Recorded standalone NixOS fixture runs a software-rendered API34 AVD with acceleration disabled, builds its APK against API36, authenticates ADB, checks PNG screencap and retains its marker across emulator restart. The four-core/4GiB AVD runs inside an eight-vCPU/8GiB test VM. No production API36 guest, TAP firewall, Lilly authority, Firecracker composition or browser journey is established.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
-          "record_assertion": "The fixture was executed through"
         }
       ]
     },
@@ -4757,7 +4633,7 @@
       "denial": "Reject unauthorized admission and Customer sharing, egress and agent execution even when a user selects Customer explicitly.",
       "scope": "Generated browser draft/default/reload histories and SSH semantic-input retry histories; native ordinary-user creation and profile enforcement journey. Campaign 015 separately checks the packaged standalone browser helper with pinned ty; recorded native execution retains its original source and scope.",
       "status": "partial",
-      "gaps": "The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun.",
+      "gaps": "The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun. Current explicit Audi startup after Ziggy/Galileo readiness passed static and actual composed-driver typing checks; corrected fixture runtime remains pending.",
       "preferred_gap": "Add native unauthorized creation and owner guest-SSH cases; retain separate packet/tool and complete legacy feature-matrix acceptance after campaign 011's shared trust fixture repair.",
       "evidence": [
         {
@@ -10451,20 +10327,29 @@
         "recovery"
       ],
       "boundary": "Incoming/outgoing peers share a process-owned budget and must retire when that accounting incarnation dies; a successor cannot retain live unaccounted peers.",
-      "denial": "Old peer owners must terminate after budget death. The replacement starts empty and admits exactly the requested replacement pairs while the synthetic host stream remains alive.",
+      "denial": "Old peer owners must terminate after budget death, refusing subsequent old-socket application traffic. The replacement starts empty and admits exactly the requested replacement pairs while the synthetic host stream remains alive.",
       "scope": "Generated one to three real verified-TLS peer pairs and persistent attachments through production signed current-location proof validation. Exact owner retirement, successor occupancy and fresh pair admission are checked; host stream/replies are synthetic.",
       "status": "partial",
-      "gaps": "No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Wrong-budget-PID mutant was caught at old owner retirement and restored four-check execution passed; full Marshall gate/typing remain pending.",
+      "gaps": "Current configured100-case abortive-close property passed in the12-test selection,seed656999; the earlier three-case result remains historical. Two unrelated real15-second silence properties hit the pinned engine health limit. No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Full Marshall gate and typing remain separate.",
       "preferred_gap": "Finish restored/full component verification, then repeat budget-incarnation loss with native guest attachments and independent nodes.",
       "evidence": [
         {
           "kind": "property",
           "path": "marshall/test/marshall/terminal/remote_test.exs",
           "assertion": "budget restart retires live TLS peers and admits exact replacement pairs",
-          "scope": "Current merged frontend: three generated real verified-TLS budget restart histories through the production peer-proof API, with synthetic host stream and attachments. Part of the passing 17-test focused rerun; no disabled-shrinking or native claim.",
+          "scope": "Historical three-case frontend capture: real verified-TLS budget restart histories through peer-proof API, with synthetic host stream and attachments. Part of the earlier 17-test rerun; does not qualify current 100-case fixture and abortive-close repair.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
           "record_assertion": "The three-file focused rerun passed all 17 tests"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/terminal/remote_test.exs",
+          "assertion": "budget restart retires live TLS peers and admits exact replacement pairs",
+          "scope": "Current 100-case loopback verified-TLS histories isolate each budget supervisor and sandbox. Original two-second old-owner termination, stale-socket refusal, successor occupancy and synthetic host-stream survival remain; no native/fleet claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "the configured 100-case budget property passed"
         }
       ]
     },
@@ -13057,9 +12942,27 @@
       "denial": "Refuse old flush, workspace and terminal authority after restart. Refuse incomplete filesystem checks, corrupt or missing retained bytes, an unobserved SIGKILL, reused boot identity or unclean final exit; incomplete histories cannot publish a receipt.",
       "scope": "Seven host boundary checks and the composed NixOS driver passed. An initial FreeBSD crash run exposed scheduled-only libc sync and lost acknowledged home/marker bytes. The corrected native UFS suspension/resume flush passed the final reviewed image 5022d714 crash variant in 224 seconds: observed SIGKILL, same-disk/new-MMDS/new-boot restart, exact retained bytes, stale-authority refusal, native UFS snapshot background fsck, all eight crash checks, both complete service oracles and final clean exit. The source-qualified OmniOS image then passed the crash variant with image SHA-256 d47a84fd726276865bea26812c2a3624b88144eda87926e2dd6dbd5dccb98bc8, kernel c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21, firmware 261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2 and VMM ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68. Its immutable crash receipt records SIGKILL, fresh MMDS/boot identity, stale-authority refusal, exact retained bytes, completed zero-error ZFS scrub and clean shutdown; both image families retain native_admission=false. Final unchanged OmniOS 45983 disk separately passed the same-disk process-SIGKILL runner with endings sigkill,clean, fresh authority/boot identity, exact retained bytes and native ZFS integrity checks.",
       "status": "partial",
-      "gaps": "Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven; both native crash receipts retain admission false, while exact sealed FreeBSD activation is recorded separately.",
+      "gaps": "Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven. Current-VMM crash scenarios subsequently passed for exact Git-identity-capable FreeBSD 0150b6d1 and OmniOS 679f5f8b; their immutable runtime receipts retain admission false. Separate signed publication and additive source activation passed only for FreeBSD. The earlier incomplete FreeBSD crash attempt remains historical without an established failure cause. OmniOS current-VMM isolation failed during boot0 shutdown-send and prevents complete matrix qualification or new admission.",
       "preferred_gap": "Test interrupted writes and expansion, physical stable-media and host recovery, direct isolation and fleet recovery separately against exact image/kernel/VMM provenance.",
       "evidence": [
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/default.nix",
+          "assertion": "The crash variant MUST observe a first-boot VMM SIGKILL, restart the same",
+          "scope": "Exact FreeBSD 0150b6d1 passed the unchanged current-VMM crash scenario in 234.31 script seconds, with both complete 26-check service boots, observed SIGKILL then clean exit, fresh authority, retained bytes and native filesystem verification. Its full matrix and separate publication/source activation do not establish physical host recovery or a Marshall-owned fleet journey.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM FreeBSD qualification and additive activation"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/default.nix",
+          "assertion": "The crash variant MUST observe a first-boot VMM SIGKILL, restart the same",
+          "scope": "Exact OmniOS 679f5f8b passed the unchanged current-VMM crash scenario in 394.69 script seconds, with complete 26-check service boots, all eight crash checks, observed SIGKILL then clean exit, fresh authority, retained bytes and completed zero-error ZFS scrub. Separate isolation failure leaves full matrix qualification and admission incomplete.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM OmniOS qualification"
+        },
         {
           "kind": "machine",
           "execution": "recorded",
@@ -13077,6 +12980,15 @@
           "scope": "Seven host checks validate retained data, filesystem-result and source/mode boundaries without crashing or recovering a native guest.",
           "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
           "record_assertion": "Seven host boundary checks passed."
+        },
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_crash_recovery_test.py",
+          "assertion": "test_fsck_exit_status_is_closed_and_bounded",
+          "scope": "Eight current Linux-host boundary tests passed, including exact decimal fsck status parsing and malformed/oversized refusal, with pinned Ruff and ty. No native filesystem or corrected crash-journey pass.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "**8 host crash-boundary tests passed**"
         },
         {
           "kind": "manual",
@@ -13127,12 +13039,39 @@
         "recovery"
       ],
       "boundary": "A compiled pure protocol registry qualifies only complete reviewed FreeBSD and OmniOS manifests or portable descriptors. Marshall binds identity to its durable image row before allocation; Lilly repeats admission before launch. Promotion independently hashes actual artifacts and assembly plus all five native scenario evidence sets. Signed recursive-NAR substitution establishes publication custody separately from runtime readiness.",
-      "denial": "Refuse missing, altered, foreign, stock or unapproved native identity before allocation or launch, including source-bearing requests. Names, kernel digest and image ID alone cannot qualify an image. Only exact reviewed FreeBSD d141e426 and OmniOS 98b23b identities qualify; unqualified capability rows, editor, Inception and unrelated rebuilt candidates remain disabled. Missing or replayed evidence/publication refuses.",
+      "denial": "Refuse missing, altered, foreign, stock or unapproved native identity before allocation or launch, including source-bearing requests. Names, kernel digest and image ID alone cannot qualify an image. Exact historical FreeBSD d141e426 and OmniOS 98b23b identities remain admitted; newly selected FreeBSD 0150b6d1 is additive. Old Git capability relabelling and new Git capability deletion refuse. Unqualified capability rows, editor, Inception and unrelated rebuilt candidates remain disabled. Missing or replayed evidence/publication refuses.",
       "scope": "The sealed FreeBSD disk5022d714/image d141e426 retains its five recorded native service/growth/policy/daemon-recovery/SIGKILL-recovery results. Exact identity, artifact publication and consumer refusal have separate bounded tests; adding the new registry does not reclassify older candidate receipts or establish a Marshall-driven native guest journey. Complete Marshall and Lilly gates passed on clean589ff7fe5 with 1690 and 610 checks respectively, both with zero-error forced Dialyzer. Public trusted-NAR verification and fresh-store substitution passed separately. These records predate later source/test changes. The current promotion gate requires exact named service oracles: the immutable FreeBSD 22 and OmniOS 25 including workspace ownership and executor withdrawal/cancellation. Current verifier units and the sealed FreeBSD package build passed. A separate live promoted-FreeBSD subset passed ordinary create, exact-OS personal-account CLI SSH and orderly stop; restart and repeat exact-OS CLI SSH also passed; final cleanup returned deleted receipts for the owned subset. Exact OmniOS disk 45983bb7/image 98b23b now binds all five direct host-KVM scenario sets to a signed immutable no-reference candidate NAR. Independent Dungarees substitution/content/signature verification, exact promotion build and six dual-family focused checks including 64 generated substitutions passed. Full exact-source protocol precommit passed 302 tests, Covenant 14/14 and Dialyzer with zero errors/skips. Both OmniOS package aliases now select the exact immutable promotion, yielding seven source-selected catalog rows. The catalog evaluation, promotion gate and actual unchanged promoted package build passed; selected-release host builds, deployment and live CLI acceptance remain separate. Both selected-release host builds and healthy exact deployment passed. The exact OmniOS 16 GiB image separately passed ordinary create, strict CLI SSH identity, terminal stopped, restart, repeated strict CLI identity and terminal deleted cleanup after a narrowly corrected release-label oracle; the original failed oracle is retained. Fresh 122228 then independently passed the full seven-stage lifecycle with a separate current-owner stopped checkpoint and completed deletion; its exact receipts and final healthy d0eaddbc9 catalog observation are bound in the matrix review.",
       "status": "partial",
       "gaps": "The final frozen 132bc28b5 Protocol/Marshall/Lilly/Porsche gates retain their exact source scope. Later imported Porsche and Lilly test changes have separate targeted passing executions, without transferring the full-gate claim to changed test source. Fresh exact OmniOS 122228 adds an independent current-owner stopped checkpoint and completed deletion to a second ordinary lifecycle; the original 091638 observation remains unchanged. All-enabled-capability/revocation, independent physical absence, shell-supervisor death, direct native-peer/jail isolation, repeated reset/DMA stress, physical power loss and relocation remain gaps. Owner stopped-state checkpoints do not establish physical absence.",
-      "preferred_gap": "Run a NixOS machine journey through ordinary Marshall admission and Lilly launch using the exact promoted artifact, exercise its seven enabled capabilities and false editor/Inception surfaces, and reject changed manifests, stale portable identity and revoked execution. Preserve the existing native and generated refusal scopes separately.",
+      "preferred_gap": "Run an ordinary Marshall/Lilly journey through newly selected FreeBSD 0150b6d1, all enabled capabilities and false editor/Inception surfaces, plus a catalog-free retained native restart. Keep old promotion staging until original provisioning settles. Complete and separately review OmniOS current-runtime qualification/publication before changing its selection; preserve historical execution scopes.",
       "evidence": [
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "all-boots-current-mmds-git-config-and-commit-attribution",
+          "scope": "Exact FreeBSD 0150b6d1 passed all five unchanged scenarios serially against current VMM f0d9275b, retaining 26 exact service checks and complete supporting boot/endings coverage. Production structural verification and the selected package gate passed independently. Synthetic private authority only; no new live deployment or Marshall-owned fleet journey.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM FreeBSD qualification and additive activation"
+        },
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "protocol/test/native_admission_test.exs",
+          "assertion": "Git identity selection preserves immutable legacy admission without relabelling",
+          "scope": "Nine focused checks passed additive old/new manifest and portable-bundle admission, changed-identity refusal, old Git capability absence and new exact capability requirement. Native checkpoint remains false. Pure policy checks do not boot a retained native machine.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM FreeBSD qualification and additive activation"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-promotion/freebsd-14.3-db752667-f0d9275b.nix",
+          "assertion": "sha256-Kp+Yf4qE/ewDYSM15H7dLkvpYSU8GftQHOgpzBzhckg=",
+          "scope": "Public signed-cache verification and independent initially empty-store substitution reproduced the exact FreeBSD candidate NAR. Content/signature checks and production verification of fresh-downloaded disk, firmware and hash-bound receipts passed before additive source admission/default selection. No live deployment claim.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM FreeBSD qualification and additive activation"
+        },
         {
           "kind": "manual",
           "execution": "recorded",
@@ -13329,11 +13268,29 @@
       ],
       "boundary": "Marshall owns executor fences and transitions; the guest uses only verified private HTTPS. Native exec_command forwards the existing lease/stop callback before spawn and during authority polling. A separate scoped collector owns the child, concurrently bounds both output streams and enforces the 20-second deadline independently of a blocking lease RPC.",
       "denial": "A refused pre-spawn callback must create no child. Running refusal must cancel the separate process group, reap the direct child and discard output; execute must not publish a result under the failed lease. Missing/failed private authority and supervisor stop fail closed without logging command bytes.",
-      "scope": "The production native callback wiring and scoped cancellation/deadline collector are implemented. All six local real-process command tests passed, including no-spawn refusal, running cancellation/reaping/output suppression and a blocked lease RPC. The current source-qualified OmniOS service receipt records heartbeat withdrawal before the command deadline, process-group death with no result, and fresh-fence completion on both clean boots. Exact current-payload FreeBSD lease-withdrawal execution remains unrecorded.",
+      "scope": "The production native callback wiring and scoped cancellation/deadline collector are implemented. All six local real-process command tests passed, including no-spawn refusal, running cancellation/reaping/output suppression and a blocked lease RPC. Historical source-qualified OmniOS service evidence is retained. Fresh FreeBSD image 0150b6d1 passed all five exact-artifact scenarios against current VMM f0d9275b with executor withdrawal/cancellation and fresh-fence completion on every boot. Exact OmniOS 679f5f8b passed current-VMM services, growth, crash and daemon recovery with the same executor boundary on each complete service boot. Its isolation boot 0 reached those checks before shutdown-send failed; that incomplete scenario adds no complete receipt. Old-VMM results retain their separate scope.",
       "status": "partial",
-      "gaps": "No fresh FreeBSD exact-image machine history withdraws a real executor lease while a command is running; the OmniOS receipt covers that boundary on the current source-qualified image. Deliberate descendants escaping the process group are outside this cleanup guarantee. Local Linux process tests cannot establish native host isolation or revocation timing.",
+      "gaps": "The historical OmniOS matrix failed services at clean-shutdown subprocess-timeout, crash at readiness-withheld protocol, and recovery/isolation at unchanged outer exit 124 bounds. Current-VMM isolation then failed boot 0's 20-second SSH shutdown-send request before the separate VMM wait; cleanup completed but no second boot or complete isolation receipt exists. Its cause is unestablished. Marshall-owned native fleet execution and production rollout remain open. Deliberate descendants escaping the process group are outside this cleanup guarantee. Local process tests and isolated synthetic native authority cannot establish physical host isolation or live control-plane revocation timing.",
       "preferred_gap": "Run a NixOS machine history on each current native image: observe a started command, withdraw its actual lease or supervisor stop authority, prove its managed process group terminates and no result commits, then admit a fresh fence. Preserve bounded output and command-deadline checks during an unavailable lease endpoint.",
       "evidence": [
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "executor-whole-group-death-no-result-and-fresh-fence-completion",
+          "scope": "Current-VMM FreeBSD 0150b6d1 passed all five unchanged scenarios with executor withdrawal/cancellation and fresh-fence completion on every boot. Synthetic authority and exact immutable native artifacts; no live Marshall revocation or physical host isolation guarantee.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM FreeBSD qualification and additive activation"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "executor-whole-group-death-no-result-and-fresh-fence-completion",
+          "scope": "Current-VMM OmniOS 679f5f8b passed services, growth, crash and daemon recovery with the executor checks on every complete service boot. Isolation failed after boot 0's executor checks at shutdown-send and produced no complete scenario receipt. No admission, live control-plane revocation or physical host isolation guarantee.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM OmniOS qualification"
+        },
         {
           "kind": "unit",
           "execution": "recorded",
@@ -13360,6 +13317,33 @@
           "scope": "Local real-process fixture blocks the authority callback longer than the short child budget and checks the command cannot reach a later side effect; no native guest or actual network outage.",
           "record": "docs/architecture/reviews/2026-10-17-native-image-admission.md",
           "record_assertion": "passed all six local real-process command tests"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "executor-whole-group-death-no-result-and-fresh-fence-completion",
+          "scope": "Fresh exact FreeBSD 0150b6d1 passed all five nested-NixOS scenarios with 26 exact service checks, including running lease withdrawal, process-group cancellation and fresh-fence completion on every boot. Isolated synthetic private authority; no Marshall fleet or live GitHub claim.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The fresh FreeBSD candidate passed all five exact-artifact scenarios."
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_service_runner.py",
+          "assertion": "executor-current-heartbeat-withdrawal-before-command-deadline",
+          "scope": "Fresh exact OmniOS 679f5f8b passed direct host-KVM services with both boot epochs, all 26 checks and exact running payload verification. The later nested-NixOS graph passed growth but failed four other targets; these direct-service observations remain independently scoped.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The fresh OmniOS candidate passed direct two-boot services and exact payload verification."
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "executor-whole-group-death-no-result-and-fresh-fence-completion",
+          "scope": "Fresh exact OmniOS 679f5f8b passed the growth target across three complete service boots with all 26 checks, including executor withdrawal and fresh-fence completion. Isolated synthetic private authority and VMM 9815649a; no current merged-runtime, full matrix, Marshall fleet or live GitHub claim.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The later OmniOS graph passed growth and failed four other targets."
         }
       ]
     },
@@ -13373,11 +13357,29 @@
         "storage",
         "recovery"
       ],
-      "scope": "Account preference, codec and immutable snapshot property coverage; guest acceptance remains separately recorded.",
+      "scope": "Account preference, codec and immutable snapshot property coverage; exact FreeBSD 0150b6d1 passed all five current-VMM native scenarios with current-MMDS Git configuration and actual commit attribution on every boot. Exact OmniOS 679f5f8b passed current-VMM services, growth, crash and daemon recovery with the same attribution checks; isolation reached boot 0 attribution before shutdown-send failed. No complete isolation receipt exists. Historical direct-service, old-VMM and partial-failure results remain recorded separately.",
       "status": "partial",
-      "gaps": "Production rollout and complete cross-OS native Git commit acceptance remain unrecorded.",
+      "gaps": "Production rollout and complete cross-OS native Git commit acceptance remain unrecorded. OmniOS current-VMM isolation failed at boot 0 shutdown-send; complete matrix qualification, publication and new admission remain absent. FreeBSD 0150b6d1 has all-five current-VMM qualification, signed publication/fresh-store verification and additive source admission/default selection, preserving old manifests/bundles and staging. Older approved disks still refuse new Git-identity-bearing allocations. Native receipts do not establish a new Marshall-owned fleet or live provider journey.",
       "preferred_gap": "Run real guest commits under managed login accounts after setting custom identity and after reboot; retain native and property scopes separately.",
       "evidence": [
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "all-boots-current-mmds-git-config-and-commit-attribution",
+          "scope": "Exact FreeBSD 0150b6d1 repeated all five unchanged scenarios against current VMM f0d9275b, retaining epoch-distinct current-MMDS configuration, actual personal-user commits and previous-boot refusal. Separate signed publication and additive source activation passed. No new live fleet journey.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM FreeBSD qualification and additive activation"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "all-boots-current-mmds-git-config-and-commit-attribution",
+          "scope": "Exact OmniOS 679f5f8b passed current-VMM services, growth, crash and daemon recovery with actual current-MMDS Git configuration and personal-user commit attribution on all complete service boots. Isolation reached boot 0 attribution before shutdown-send failed, producing no complete isolation receipt. No new admission or live fleet journey.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current-VMM OmniOS qualification"
+        },
         {
           "kind": "property",
           "path": "marshall/test/marshall/compute/git_identity_test.exs",
@@ -13412,6 +13414,42 @@
           "assertion": "fn current_identity_is_effective_without_a_repository",
           "scope": "Local real Git consumes a generated system include with no repository; no guest image.",
           "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "all-boots-current-mmds-git-config-and-commit-attribution",
+          "scope": "Fresh FreeBSD 0150b6d1 passed all five exact-artifact scenarios with 26 exact named checks, epoch-distinct personal-user Git configuration/actual commit attribution and previous-boot refusal. All receipts retain false admission. This does not establish publication, registry admission, Marshall allocation or live GitHub.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The fresh FreeBSD candidate passed all five exact-artifact scenarios."
+        },
+        {
+          "kind": "manual",
+          "path": "nix/verification/tests/support/native_service_runner.py",
+          "assertion": "native current-boot Git attribution verified boot=",
+          "scope": "Inspected the 1ab4f04e FreeBSD crash-variant log: both current-MMDS personal Git configuration and actual commit attribution checkpoints passed, followed by complete executor withdrawal/fresh-fence completion on each boot. The enclosing crash oracle failed; no complete qualification, promotion, Marshall admission or live GitHub result.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "**Both native boot attribution checkpoints passed.**"
+        },
+        {
+          "kind": "manual",
+          "path": "nix/verification/tests/support/native_service_runner.py",
+          "assertion": "native-current-boot-git-attribution-verified",
+          "scope": "Fresh exact OmniOS 679f5f8b passed current-MMDS Git configuration and actual commit attribution on direct host-KVM boots at epochs 7/8, all 26 service checks, exact running payload verification and independently observed clean shutdown. This direct execution predates separate nested qualification and does not qualify its matrix; later current-VMM results are recorded independently.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The fresh OmniOS candidate passed direct two-boot services and exact payload verification."
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/guest/native-promotion/test_verify.exs",
+          "assertion": "refuses missing, substituted, duplicated or extra capable",
+          "scope": "The 23-test host promotion gate passed historical 22/25-oracle preservation, explicit-v1 26-oracle requirements, malformed-capability refusal and refusal to admit a structurally complete unregistered candidate. Actual FreeBSD bytes/five-scenario receipts passed separate structural verification. No publication or runtime admission.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "gate passed **23 tests**"
         },
         {
           "kind": "unit",
@@ -13716,6 +13754,293 @@
       ],
       "denial": "Malformed or foreign host bindings, stale execution, stopped or retired machines, expired or revoked Peach credentials and disallowed profiles must refuse without returning a retained projection or secret header values",
       "boundary": "Audi supplies the trusted local execution binding; Peach uses its dedicated host credential; Marshall alone derives current machine and integration authority"
+    },
+    {
+      "id": "github-com-owner-integration",
+      "journey": "Connect a personal GitHub account and use managed gh, Git and LFS through the VM owner identity",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "Marshall owns encrypted OAuth credentials and scheduled rotation; Galileo admits owner-bound requests at com-github.integration.internal using current execution and generation leases. Shared VM writers exercise the owner identity.",
+      "denial": "Foreign or stale execution and generation authority cannot redeem capabilities; detach and disconnect withdraw authenticated admission. Guests cannot select credential recipients. Fresh anonymous requests carry no OAuth bearer.",
+      "scope": "ADR-0202 owner integration; controlled packaged edge execution is recorded separately from real fleet OAuth, retained images and live GitHub acceptance.",
+      "status": "partial",
+      "gaps": "The controlled edge fixture substitutes Marshall and Lilly authority. Full browser OAuth, scheduled rotation, shared-writer delegation, detach persistence across relocation, seven-family retained updates and live provider consent require separately recorded acceptance. GitHub's dated primary documentation supports OAuth App offline_access and rotating pairs; it does not establish a grant or rotation by the registered Overalls app. Unknown rotation results require reconnect.",
+      "preferred_gap": "Run the real github-integration-fleet journey and platform variants, including current relocation, reconnect and Windows shared-writer assertions; then qualify live GitHub and restore behavior.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/github/provider_wire_test.exs",
+          "assertion": "documented OAuth App authorization, exchange and refresh preserve the rotating grant",
+          "scope": "Five focused provider tests passed, including three production Req request/response fixtures covering the fixed OAuth origin, PKCE/scopes, documented rotating bearer pair, incomplete/non-expiring/non-bearer refusals and no replay after redirect/transient failure. Req.Test only: no socket, TLS, live provider effects, registered-app consent or full Marshall gate.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Provider Req fixture execution: **5 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "audi/test/private_dns_test.exs",
+          "assertion": "real UDP and TCP listeners serve the same private address",
+          "scope": "Focused five-test Audi execution passed real UDP/TCP AAAA-then-A questions for the GitHub integration. Valid integration AAAA returns authoritative NODATA with its SOA and the next A question retains the fixed private address; malformed, deep and foreign names retain refusals. The later clean five-test execution also passed with warnings as errors. This BEAM socket fixture does not establish guest resolver-cache timing, TLS or the composed fleet journey, whose replay failed separately.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Private integration AAAA resolution repair"
+        },
+        {
+          "kind": "property",
+          "path": "audi/test/private_dns_test.exs",
+          "assertion": "integration labels answer from a closed lowercase charset only",
+          "scope": "Clean focused Audi execution passed five tests with warnings as errors, including 100 generated labels checking AAAA and A for every label. Valid names retain authoritative NODATA/address behavior; malformed names retain refusal. BEAM DNS model only, without guest resolver-cache timing, TLS or composed fleet acceptance.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Private integration AAAA resolution repair"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/github-integration/driver.py",
+          "assertion": "withdrawing a current lease closes the same real upstream without retry",
+          "scope": "Packaged Galileo and managed clients with controlled provider and substituted control authority; no fleet/browser OAuth claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Controlled packaged edge check: **passed**"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/github/state_machine_test.exs",
+          "assertion": "connection histories cannot publish before refresh or resurrect after disconnect",
+          "scope": "Generated BEAM/database connection histories passed in the current focused 53-test run; no native isolation, fleet OAuth or live provider claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current Marshall focused verification passed **53 tests**"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/github-integration-fleet/driver.py",
+          "assertion": "current_invocation != previous_invocation",
+          "scope": "Real owner detach followed by authorized stop/start and changed native execution; test present, execution pending.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/github-integration-fleet/driver.py",
+          "assertion": "assert destination_host.name != source_host.name",
+          "scope": "Detached real VM relocation requires completed destination placement, increased execution epoch and inactive source unit; guest remains anonymous and the exclusion persists. Presence only; no passing run yet.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/github-integration-fleet/driver.py",
+          "assertion": "github_browser(\"reconnect\")",
+          "scope": "Real browser disconnect and new OAuth exchange increase the owner provider exchange count exactly once while exclusion persists; detached guest remains anonymous and independent owner2 remains connected until explicit reattachment. Runtime pending.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/github-integration-fleet/browser.py",
+          "assertion": "github-fleet-shared-owner-identity",
+          "scope": "Browser shared writer uses the VM owner identity through managed gh in a live personal terminal. Linux checks nonroot sudo; Windows checks the durable member username and installed managed gh. Both remain runtime-pending.",
+          "execution": "present"
+        }
+      ]
+    },
+    {
+      "id": "github-com-retained-native-tools",
+      "journey": "Upgrade retained native GitHub clients and preserve exact completed-workspace ownership across reboot",
+      "layers": [
+        "authorization",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "Current placement and executor fences select immutable tool artifacts. Native setup validates completed immutable source and owned checkout before replacing legacy wildcard Git trust with a durable exact include; its journal restores original configuration on failure.",
+      "denial": "Pending or corrupt source refuses trust migration. Unrelated root-owned repositories must remain refused after upgrade. An absent source preserves historical policy and grants no claim that tightening happened.",
+      "scope": "ADR-0202 retained tool delivery with ADR-0128 shared checkout ownership; Linux-host setup tests and actual retained native programs are distinct evidence.",
+      "status": "partial",
+      "gaps": "FreeBSD boot 0 and boot 1 managed API, push, LFS and exact ownership checks passed under synthetic authority with independently certified clean shutdown between boots; the enclosing 270s check still failed historical executor withdrawn-group observation. OmniOS has not published a tool generation. Neither full retained native check passes. Newly selected FreeBSD 0150b6d1 separately has current-VMM qualification and allocation Git identity capability; selected OmniOS still lacks that capability. Those new-candidate results do not establish retained-tool upgrade, live fleet admission or absent-source later migration.",
+      "preferred_gap": "Record both published-image retained checks with actual bootstrap, strict unrelated-root refusal, managed gh/Git/LFS and a second boot; then qualify native fleet admission separately.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "lyra/src/agent/maintenance.rs",
+          "assertion": "retained_native_policy_is_exact_durable_and_preserves_unrelated_settings",
+          "scope": "Linux-host setup journal, exact Git include, settings preservation and rollback; no native platform or isolation guarantee.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "/work/native-services/github-tools-receipt.json",
+          "scope": "Published retained native images with synthetic tool and executor authority; current passing execution not yet recorded.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/agents/bootstrap_test.exs",
+          "assertion": "retained executor bootstrap survives replacement and refuses stale receipts without turns",
+          "scope": "Current-executor bootstrap idempotency and stale-receipt refusal in generated BEAM/database histories; no native runtime qualification.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current Marshall focused verification passed **53 tests**"
+        }
+      ]
+    },
+    {
+      "id": "android-display",
+      "journey": "Open an Android machine display as a viewer or controller and observe generation fencing",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "recovery"
+      ],
+      "boundary": "A signed short-lived ticket binds the current actor, Android capability, machine and execution generation. One shared relay fans out RFB bytes to viewers and forwards input only from its controller.",
+      "denial": "Foreign, stale, expired, non-Android and second-controller requests are refused; host-stream or emulator loss closes the display channel. A future host output sequence closes its Android channel and notifies its generation-bound owner rather than silently dropping bytes.",
+      "scope": "Typed protocol, relay and browser-hook evidence exists; composed Firecracker, Lilly ingress and authenticated browser acceptance remain partial.",
+      "status": "partial",
+      "gaps": "No recorded production Firecracker image boot with the relay and no recorded real /machines/:id browser journey.",
+      "preferred_gap": "Run the production Android image through Firecracker, connect Marshall and Lilly, and record viewer/controller, stale-generation and host-loss assertions.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "protocol/test/android_emulator_state_machine_property_test.exs",
+          "assertion": "generations and boot identity fencing",
+          "scope": "BEAM state model only; no native VM or browser claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/android/display_relay_test.exs",
+          "assertion": "allows viewers, fences one controller and sequences frames",
+          "scope": "Relay process state only; no host transport claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/browser/android_display_test.mjs",
+          "assertion": "replaces its canvas on reconnect",
+          "scope": "Browser hook fixture only; no authenticated browser journey claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/terminal/host_stream_android_test.exs",
+          "assertion": "a future Android output sequence closes the channel and notifies its owner",
+          "scope": "Codec and BEAM host-stream callback state: future sequence yields close control, generation-bound owner notice and removed channel. Passed within the 11-test focused host-stream run in 61.6 seconds, seed 452775, with eight maximum cases and existing 100-case property budgets unchanged. No authenticated native display stream or browser journey.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
+          "record_assertion": "11 tests in 61.6 seconds with seed"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/android-emulator/default.nix",
+          "assertion": "PNG screencap through the real adb client",
+          "scope": "Recorded standalone NixOS software-emulator fixture: API 34 AVD, APK compiled against API 36, authenticated ADB, PNG screencap and marker persistence across emulator restart. The 4-core/4-GiB AVD runs inside an 8-vCPU/8-GiB test VM. No production API 36 image, Firecracker transport, TAP firewall, Lilly ticket authority or browser journey claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
+          "record_assertion": "The fixture was executed through"
+        }
+      ]
+    },
+    {
+      "id": "android-software-guest-display",
+      "journey": "Select the Android software guest profile and attach a generation-bound display controller or viewer",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "The explicit linux-android-v1 declaration participates in version-4 image identity and projects Android SDK, ADB, emulator and display flags. ADR-0206 requires the NixOS Firecracker guest, software rendering, persistent AVD state and private ADB/display transport. Marshall checks login/ticket claims separately from its shared machine-and-generation relay; controller and viewer roles remain distinct. Source and pure models are not evidence that these layers compose in a native browser journey.",
+      "denial": "Unsupported manifest versions, profiles, image kinds and malformed artifacts refuse Android qualification. Malformed tickets and mismatched machine, generation or mode refuse. The relay model refuses a second controller, stale-generation frames and input from a viewer. A future host output sequence closes its channel and notifies the generation-bound owner. Native expired-login, foreign-owner, stale-execution and transport refusal remain unverified as a composed journey.",
+      "scope": "Source-backed image codec, capability and in-memory relay boundaries, an independent generated lifecycle model, and a recorded standalone NixOS software-emulator run. Each bounded execution retains its own source and assertion scope; no native Firecracker display, real browser or production acceptance follows from the models or standalone fixture.",
+      "status": "partial",
+      "gaps": "No recorded native Firecracker guest-to-browser display journey establishes current login/owner authorization, authenticated transport, controller/viewer enforcement, stale-execution fencing, AVD storage continuity, restart recovery or physical isolation. The standalone emulator fixture is not the deployed Marshall/Lilly composition.",
+      "preferred_gap": "Add a packaged Marshall/Lilly Firecracker browser journey covering readiness, controller/viewer and foreign/stale refusal, AVD retention and bounded recovery. Keep the recorded standalone API34 emulator, pure-property and production native evidence separate.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "protocol/test/image_manifest_test.exs",
+          "assertion": "Android guest profile is explicit, identity-bound and preserved by serialization",
+          "scope": "Version-4 acceptance, JSON round trip, distinct identity and four capability flags; a separate test refuses wrong versions, profiles, image kinds and malformed artifacts. Passed within the latest isolated 418-test protocol gate, seed 778386, with current source hashes matching the validated snapshot. Pure image-codec evidence.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
+          "record_assertion": "all 418 tests passed in"
+        },
+        {
+          "kind": "property",
+          "path": "protocol/test/android_emulator_state_machine_property_test.exs",
+          "assertion": "lifecycle commands preserve lease and boot fencing",
+          "scope": "Two hundred generated histories in an independent lifecycle/lease model check ownership, monotonic generations, boot identity and rejected-command purity. Passed within the latest isolated 418-test protocol gate, seed 778386, with current source hashes matching the validated snapshot. It does not execute an emulator, ADB or a production transport adapter.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
+          "record_assertion": "all 418 tests passed in"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/android/display_registry_test.exs",
+          "assertion": "shares one relay per machine generation",
+          "scope": "In-memory registry reuse for one machine/generation and separation of a later generation, using a unique test key and exact relay PID cleanup. Passed within the eight-test Android target, seed 183005; no restart or distributed registry claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
+          "record_assertion": "all eight Marshall Android tests passed in"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/android/display_relay_test.exs",
+          "assertion": "allows viewers, fences one controller and sequences frames",
+          "scope": "BEAM relay roles, one-controller refusal, frame sequencing, stale-generation refusal and viewer-input refusal passed within the eight-test Android target, seed 183005. No authenticated native stream.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
+          "record_assertion": "all eight Marshall Android tests passed in"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/android/display_tickets_test.exs",
+          "assertion": "claim matching fences machine, generation and mode",
+          "scope": "Malformed-token and exact claim-field refusal passed within the eight-test Android target, seed 183005. These pure checks do not establish positive signed-ticket issuance, current-login expiry or foreign-owner refusal through the browser socket.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
+          "record_assertion": "all eight Marshall Android tests passed in"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/terminal/host_stream_android_test.exs",
+          "assertion": "a future Android output sequence closes the channel and notifies its owner",
+          "scope": "Future sequence yields close control, generation-bound owner notice and removed channel in the BEAM callback fixture. Passed within the 11-test focused host-stream run in 61.6 seconds, seed 452775. The fixture normalizes WebSock reply iodata before decoding. No Lilly transport, native guest, browser or isolation claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
+          "record_assertion": "11 tests in 61.6 seconds with seed"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/browser/android_display_test.mjs",
+          "assertion": "Android display gives noVNC an empty target and replaces its canvas on reconnect",
+          "scope": "Simulated RFB client checks target replacement, disconnect on reconnect and viewer/controller configuration. The Node unit passed 1/1; it is not a real browser or native display stream.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
+          "record_assertion": "The display-hook unit passed (1/1)"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/android-emulator/default.nix",
+          "assertion": "android-test-emulator.service",
+          "scope": "Recorded standalone NixOS fixture runs a software-rendered API34 AVD with acceleration disabled, builds its APK against API36, authenticates ADB, checks PNG screencap and retains its marker across emulator restart. The four-core/4GiB AVD runs inside an eight-vCPU/8GiB test VM. No production API36 guest, TAP firewall, Lilly authority, Firecracker composition or browser journey is established.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
+          "record_assertion": "The fixture was executed through"
+        }
+      ]
     },
     {
       "id": "mila-sign-in-device-key",
@@ -14410,7 +14735,7 @@
       "denial": "A payload command without stdin, an oversized or empty payload, a busy thread, a stale proposal or question, invalid answers and a stranger's thread refuse with closed reasons before any turn is admitted; a reused request id with different text is idempotency_conflict.",
       "scope": "BEAM tests of protocol grammar (Hegel), Marshall dispatch against the real Threads, Agents and Planning domains, Porsche channel/runner custody, and one real SSH + Porsche + HTTPS control journey.",
       "status": "partial",
-      "gaps": "Committed-hint delivery to a watch is not exercised end to end; the fleet has no model provider, so turns are only shown queuing.",
+      "gaps": "Committed-hint delivery to a watch is not exercised end to end; the fleet has no model provider, so turns only queue and fixture actions stand in for the model's question and plan tool calls.",
       "preferred_gap": "Run the thread journey on a fleet with a model fixture and a committed hint.",
       "evidence": [
         {

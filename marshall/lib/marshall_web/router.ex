@@ -110,6 +110,7 @@ defmodule MarshallWeb.Router do
       live "/admin/access", Admin.AccessLive, :index
       live "/admin/workloads", Admin.WorkloadsLive, :index
       live "/admin/operations", Admin.OperationsLive, :index
+      live "/admin/scim", Admin.ScimLive, :index
       live "/usage", InferenceLive, :index
       live "/integrations", IntegrationsLive, :index
       live "/git", GitLive, :index
@@ -159,7 +160,13 @@ defmodule MarshallWeb.Router do
     auth_routes(AuthController, Marshall.Accounts.User, path: "/auth")
 
     sign_out_route(AuthController, "/sign-out",
-      overrides: [MarshallWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+      on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
+      on_mount: [{MarshallWeb.SignOutOverrides, :locale}],
+      overrides: [
+        MarshallWeb.SignOutOverrides,
+        MarshallWeb.AuthOverrides,
+        AshAuthentication.Phoenix.Overrides.Default
+      ]
     )
 
     # Remove these if you'd like to use your own authentication views

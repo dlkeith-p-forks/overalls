@@ -192,8 +192,12 @@ defmodule MarshallWeb.WorkspaceComponents do
       phx-value-id={@vm.id}
       phx-value-pinned={to_string(@pinned)}
       aria-pressed={to_string(@pinned)}
-      aria-label={"#{if @pinned, do: "Unpin", else: "Pin"} #{@vm.name}"}
-    >{if @pinned, do: "Unpin", else: "Pin"}</button>
+      aria-label={
+        if @pinned,
+          do: dgettext("terminal", "Unpin %{name}", name: @vm.name),
+          else: dgettext("terminal", "Pin %{name}", name: @vm.name)
+      }
+    >{if @pinned, do: dgettext("terminal", "Unpin"), else: dgettext("terminal", "Pin")}</button>
     """
   end
 

@@ -387,3 +387,9 @@ msgstr "← 첫 페이지"
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← 채용정보"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:389
+#: lib/marshall_web/live/admin/jobs_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "An execution attempt failed. Raw exception details are excluded from administrative history."
+msgstr "실행 시도가 실패했습니다. 원본 예외 세부 정보는 관리 기록에서 제외됩니다."

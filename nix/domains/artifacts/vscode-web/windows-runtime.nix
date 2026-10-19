@@ -1,6 +1,6 @@
 { pkgs
-, nodeVersion ? "24.19.0"
-, nodeSha256 ? "sha256-V/cas2UueX2ErN3HnIHMn/HG3bKhl0zbg/AP7pv/THM="
+, nodeVersion ? "24.21.0"
+, nodeSha256 ? "sha256-FY92hbRN5R9sDfHRU1JsvNPhvHOajfxgdyHO913p5UE="
 , ripgrepVersion ? "15.1.0"
 , ripgrepSha256 ? "sha256-EkUQuUtrqjOA0FH99GUOqoCjAsh21hHp26Cy4Y2HSTo="
 }:

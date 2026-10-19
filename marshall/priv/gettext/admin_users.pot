@@ -18,7 +18,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] ""
 msgstr[1] ""
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr ""
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Could not revoke browser sessions."
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr ""
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr ""
@@ -103,42 +103,42 @@ msgstr ""
 msgid "MFA not enrolled"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr ""
@@ -148,17 +148,17 @@ msgstr ""
 msgid "Send invitation"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr ""
@@ -183,7 +183,27 @@ msgstr ""
 msgid "· Your account"
 msgstr ""
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
+msgstr ""
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr ""
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr ""
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr ""
+
+#: lib/marshall_web/live/admin/users_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
 msgstr ""

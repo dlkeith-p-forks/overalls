@@ -1,5 +1,6 @@
 defmodule Marshall.Agents.ExecutorSessionTest do
   use Marshall.DataCase, async: false
+  import Marshall.ComputeFixtures
 
   alias Marshall.Agents.{
     AuditEvent,
@@ -11,18 +12,59 @@ defmodule Marshall.Agents.ExecutorSessionTest do
     Turn
   }
 
-  alias Marshall.Compute.{HostReports, Ledger}
+  alias Marshall.Compute
+  alias Marshall.Compute.{Host, HostReports, Ledger, Operation, Outcomes}
   alias Marshall.Inference.Credentials
 
-  # @cc [owner:ghuntley,label:verification;security] executor-rpc-live-host-fixture
-  # Host-authenticated executor RPCs MUST use a real provisioner-control session
-  # and its accepted execution report. A capacity-only HostReports connection
-  # with no current session MUST NOT stand in for live host authority or make
-  # the legacy executor's bootstrap claim bypass that authority check.
+  # @cc [owner:ghuntley,label:verification;security] executor-rpc-current-host-fixture
+  # Authenticated bootstrap claims MUST exercise a real current provisioner
+  # session and fresh report, not bypass host-liveness authority with seeded fields.
   setup do
-    fixture = Marshall.TerminalFixtures.terminal_fixture()
-    actor = fixture.owner
-    vm = fixture.vm
+    fixture = host_fixture()
+    {:ok, credential} = Marshall.Compute.Credentials.rotate(fixture.host.id, 3600)
+
+    {:ok, session} =
+      Marshall.Compute.ProvisionerControl.open_execution(credential.token, %{
+        session_id: Ash.UUID.generate(),
+        machine_id: fixture.host.machine_id
+      })
+
+    {:ok, _} =
+      Marshall.Compute.ProvisionerControl.exchange_execution(credential.token, %{
+        session_id: session["session_id"],
+        epoch: session["epoch"],
+        report: fixture.report,
+        acknowledgements: [],
+        outcomes: []
+      })
+
+    actor = user()
+    {:ok, vm} = Compute.provision(request(), actor: actor)
+    [operation] = Ledger.read!(Operation, vm_id: vm.id)
+
+    event = %{
+      id: Ash.UUID.generate(),
+      vm_id: vm.id,
+      placement_id: operation.placement_id,
+      execution_epoch: operation.execution_epoch,
+      operation_id: operation.id,
+      generation: operation.generation,
+      sequence: 1,
+      state: :running,
+      compute_empty: false,
+      disk_present: true,
+      cleanup_complete: false,
+      reason: :none
+    }
+
+    {:ok, parsed} =
+      OverallsProtocol.Execution.outcome(OverallsProtocol.Execution.encode_outcome(event))
+
+    {:ok, _} =
+      Ledger.transaction(fn ->
+        Ledger.lock!(Host, vm.host_id)
+        Outcomes.ingest_locked!(vm.host_id, [parsed])
+      end)
 
     [root] = Ledger.read!(Root, vm_id: vm.id)
     [thread] = Ledger.read!(Thread, root_id: root.id)
@@ -37,7 +79,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
     %{
       actor: actor,
       binding: binding,
-      connection: fixture.connection,
+      connection_epoch: session["epoch"],
       root: root,
       thread: thread,
       vm: vm
@@ -176,7 +218,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
                "status" => "other"
              })
 
-    assert {:ok, :ok} = HostReports.disconnect(c.vm.host_id, c.connection.epoch)
+    assert {:ok, :ok} = HostReports.disconnect(c.vm.host_id, c.connection_epoch)
 
     assert {:error, :unauthorized} =
              ExecutorRPC.request(token, "claim", %{

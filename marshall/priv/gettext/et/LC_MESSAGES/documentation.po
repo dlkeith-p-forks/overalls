@@ -844,3 +844,8 @@ msgstr "Teie juurutus hoiab edastuskirjeid seitse päeva ja salvestab oma auditi
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` peatab või jätkab ühe seadme märguandeid. `device rm` tühistab seadme jäädavalt; Mila registreerib selle uuesti, kui järgmine kord märguanded lubate. Konto kustutamine või kasutusest kõrvaldamine tühistab kõik selle seadmed."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Dokumentatsiooni ei leitud"

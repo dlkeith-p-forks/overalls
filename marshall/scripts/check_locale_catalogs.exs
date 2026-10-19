@@ -1,7 +1,7 @@
 Code.require_file("locale_catalog_review.exs", __DIR__)
 
 defmodule Marshall.LocaleCatalogCheck do
-  @moduledoc "Checks catalog identity and reports translation gaps without counting source copies as translations."
+  @moduledoc "Enforces catalog completeness; --report-only diagnoses translation gaps without accepting them as coverage."
   @type counts :: %{
           total: non_neg_integer(),
           empty: non_neg_integer(),
@@ -16,9 +16,18 @@ defmodule Marshall.LocaleCatalogCheck do
   # Every policy locale MUST have every extracted domain. Empty and source-equal
   # entries and fuzzy flags MUST be reported separately; none establishes translated
   # coverage. Exact per-form reviews MAY satisfy invariant-text coverage, but MUST
-  # remain separately counted. A copied plural form MUST remain a strict gap. Duplicate or obsolete identities MUST never silently mask messages.
+  # remain separately counted. Default and --strict execution MUST reject non-English
+  # gaps and fuzzy entries in every locale; only --report-only MAY report gaps
+  # without failing. Structural errors and invalid reviews MUST always fail.
+  # English empty/source-equal fallback MUST remain permitted. A copied plural
+  # form MUST remain a strict gap. Duplicate or obsolete identities MUST never
+  # silently mask messages.
   @spec run([String.t()]) :: :ok
   def run(args) do
+    unless args in [[], ["--strict"], ["--report-only"]],
+      do: raise(ArgumentError, "Expected no arguments, --strict, or --report-only")
+
+    strict? = args != ["--report-only"]
     root = Path.expand("../priv/gettext", __DIR__)
     locales = Marshall.Localization.supported_locales()
     domains = Path.wildcard(Path.join(root, "*.pot"))
@@ -101,8 +110,8 @@ defmodule Marshall.LocaleCatalogCheck do
 
         {if(locale == "en",
            do: 0,
-           else: counts.empty + counts.unreviewed_source_equal_forms + counts.fuzzy
-         ), counts.invalid, observations}
+           else: counts.empty + counts.unreviewed_source_equal_forms
+         ) + counts.fuzzy, counts.invalid, observations}
       end
 
     observations = Enum.reduce(results, %{}, fn {_, _, forms}, acc -> Map.merge(acc, forms) end)
@@ -111,7 +120,7 @@ defmodule Marshall.LocaleCatalogCheck do
     if Enum.any?(results, fn {_missing, invalid, _observations} -> invalid > 0 end),
       do: raise("Catalog placeholder or documentation structure errors remain")
 
-    if "--strict" in args and
+    if strict? and
          Enum.any?(results, fn {missing, _invalid, _observations} -> missing > 0 end),
        do: raise("Untranslated catalog entries remain; see empty and source_equal counts above")
 
@@ -166,7 +175,8 @@ defmodule Marshall.LocaleCatalogCheck do
     {%{
        total: counts.total + 1,
        empty:
-         counts.empty + if(Enum.any?(values, fn {_, value} -> value == "" end), do: 1, else: 0),
+         counts.empty +
+           if(Enum.any?(values, fn {_, value} -> String.trim(value) == "" end), do: 1, else: 0),
        source_equal:
          counts.source_equal +
            if(all_source_equal, do: 1, else: 0),

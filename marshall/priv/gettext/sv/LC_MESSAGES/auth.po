@@ -130,3 +130,14 @@ msgstr "Ditt lösenord har återställts"
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "Din inloggning är inte längre giltig. Begär en ny inloggningslänk."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "Är du säker på att du vill logga ut?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "Logga ut"

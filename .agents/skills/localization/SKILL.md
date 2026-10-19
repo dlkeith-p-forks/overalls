@@ -13,6 +13,7 @@ Use this skill whenever changing a user-facing string, adding a locale, changing
 
 - Inventory human-facing text across HEEx, LiveView modules, mailers, browser JavaScript, CLI/SSH presentation, and public documentation before editing. Keep logs, telemetry, protocol field names, command names, JSON keys, and other machine contracts language-neutral unless the task explicitly changes them.
 - Include plain-text HTTP refusal and sign-in guidance in the human-string audit. Preserve successful installer scripts, downloads, checksums, raw files, CSV fields, JSON and redirect/session keys as machine contracts; keep status codes, privacy and session-free public routes unchanged.
+- Inspect accessible names, screen-reader state text, third-party component overrides, command descriptions, missing-data fallbacks and prose interpolated into translated messages. Extraction cannot discover raw strings that never call a native translation API. Configure vendor accessibility copy through its public API; never translate terminal bytes or patch vendored assets.
 - Find existing Gettext domains, locale configuration, catalog generation, interpolation conventions, and tests. Preserve established domains and identifiers; use stable source identifiers supplied by Localize/Gettext rather than ad-hoc atoms or translated strings.
 - Localize public `/docs/*` prose only. Never extract `priv/hldd` into catalogs or translate handbook chapter titles, bodies or generated command-reference prose. Reader controls remain localized; English handbook contents declare `lang="en"` and `dir="ltr"`.
 - Treat translations as typed interfaces: every placeholder, plural/select variable, markup boundary, and format option must remain valid in every locale. Validate external locale tags before using them.
@@ -53,6 +54,8 @@ Put a message in the domain owning its rendering call. Equal English wording in 
 
 - Add focused tests for canonicalization, quality-weighted browser negotiation, fallback, persistence/reset, authorization and cross-session isolation, direction, and malformed input.
 - Test every catalog for syntax, coverage, nonempty messages where required, placeholder/plural parity, and compilability. Test representative long and mixed-script strings.
+- Run `mix localization.catalogs` as an enforcing gate: default execution and `--strict` reject untranslated non-English forms, whitespace-only forms, fuzzy entries and unreviewed source copies. `--report-only` is a diagnostic command, not passing completeness evidence; it still rejects malformed catalogs and invalid exact reviews. Retain negative entrypoint tests so CI cannot silently become report-only.
+- The reusable Bombadil probe is `marshall/scripts/localization_browser/run.py PRIVATE_CONTEXT NEW_OUTPUT_DIRECTORY`. Use an isolated loopback fixture with owner-private context and output; never publish login URLs, tokens or raw traces. The packaged `localization-account-porsche` NixOS check exercises ordinary account settings and trusted Porsche SSH. Record executed language, route, theme, viewport and machine-control coverage separately from test presence.
 - Verify bundled font integrity and coverage of catalog text and locale autonyms.
   Use Bombadil for new browser checks of representative native script shaping,
   missing glyphs, long strings, both themes, LTR/RTL and mobile/desktop layout.

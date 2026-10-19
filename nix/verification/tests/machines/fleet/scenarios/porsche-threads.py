@@ -158,3 +158,41 @@ with subtest("Porsche thread, web and watch commands drive Marshall domains"):
     assert lines and lines[0].get("event") == "watching"
     assert lines[0].get("threads") == [thread_id]
     assert any(line.get("event") == "heartbeat" for line in lines)
+
+    # The fleet has no model provider; the operator stands in for the model's
+    # question and plan tool calls, and Porsche carries the answer and approval.
+    question_id = str(
+        operator(
+            m1, dict(action="thread-question", owner_id=users["owner_id"], thread_id=thread_id)
+        )["question_id"]
+    )
+    pending = porsche_threads_object(
+        porsche_threads_result(porsche_threads_json(f"thread show {thread_id}")).get(
+            "pending_question"
+        )
+    )
+    assert pending is not None and pending.get("id") == question_id
+    refused = porsche_threads_run(
+        f"thread answer {thread_id} {question_id} - --request-id {uuid.uuid4()}",
+        '{"approach":{"selected":"Third","text":""}}',
+    )
+    assert refused["returncode"] == 2 and "invalid_answers" in refused["stdout"]
+    answered = porsche_threads_result(
+        porsche_threads_json(
+            f"thread answer {thread_id} {question_id} - --request-id {uuid.uuid4()}",
+            '{"approach":{"selected":"First","text":""}}',
+        )
+    )
+    assert answered.get("status") == "answered"
+    assert (
+        sql(f"SELECT status FROM agent_planning_questions WHERE id='{question_id}'") == "answered"
+    )
+
+    plan_id = str(operator(m1, dict(action="thread-proposal", thread_id=thread_id))["plan_id"])
+    approved = porsche_threads_result(
+        porsche_threads_json(
+            f"thread plan approve {thread_id} {plan_id} --request-id {uuid.uuid4()}"
+        )
+    )
+    assert approved.get("collaboration_mode") == "work"
+    assert isinstance(approved.get("turn_id"), str)

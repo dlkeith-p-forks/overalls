@@ -18,9 +18,11 @@ import subprocess
 import threading
 import time
 from collections.abc import Callable
+from contextlib import ExitStack
 from dataclasses import dataclass
 from functools import partial
 from pathlib import Path
+from typing import Literal
 
 import native_control as control
 import native_git_fixture as git_fixture
@@ -36,6 +38,68 @@ SSH_LOGIN_EVENT = (
 )
 MAX_SERIAL_VERIFICATION = 4 * 1024 * 1024
 ILLUMOS_SYNC_MARKER = b"syncing file systems... done"
+FailureCategory = Literal[
+    "subprocess-timeout", "subprocess", "protocol", "io", "invalid", "runtime"
+]
+Phase = Literal[
+    "shutdown-send",
+    "shutdown-vmm-wait",
+    "authority-server-stop",
+    "authority-dns-stop",
+    "authority-thread-join",
+    "authority-dns-thread-join",
+    "authority-thread-check",
+    "authority-server-close",
+    "authority-dns-close",
+    "vmm-cleanup",
+    "growth-finalize",
+    "receipt-image-digest",
+    "receipt-firmware-digest",
+    "receipt-vmm-digest",
+    "service-receipt-write",
+    "github-receipt-write",
+]
+
+
+class PhaseFailure(RuntimeError):
+    def __init__(self, phase: Phase, category: FailureCategory) -> None:
+        super().__init__("native service phase failed")
+        self.phase = phase
+        self.category = category
+
+
+def failure_category(error: Exception) -> FailureCategory:
+    if isinstance(error, PhaseFailure):
+        return error.category
+    if isinstance(error, subprocess.TimeoutExpired):
+        return "subprocess-timeout"
+    if isinstance(error, subprocess.SubprocessError):
+        return "subprocess"
+    if isinstance(error, services.ProtocolError):
+        return "protocol"
+    if isinstance(error, OSError):
+        return "io"
+    if isinstance(error, ValueError):
+        return "invalid"
+    return "runtime"
+
+
+def run_phase[T](phase: Phase, operation: Callable[[], T]) -> T:
+    """@cc [owner:ghuntley,label:verification;security] native-closed-phase-diagnostics
+    Phase diagnostics MUST contain only fixed phase/state/category values, never
+    operation arguments, results or exception text. A failed operation MUST remain
+    failed under its own phase after successful cleanup. Existing operation and
+    outer deadlines MUST remain unchanged; progress MUST NOT imply acceptance.
+    """
+    print(f"native service phase={phase} state=started", flush=True)
+    try:
+        result = operation()
+    except PhaseFailure:
+        raise
+    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
+        raise PhaseFailure(phase, failure_category(error)) from None
+    print(f"native service phase={phase} state=complete", flush=True)
+    return result
 
 
 @dataclass(frozen=True)
@@ -210,6 +274,44 @@ def wait_clean_shutdown(process: subprocess.Popen[bytes], platform: Platform, se
         raise RuntimeError("native OmniOS shutdown evidence was incomplete")
 
 
+def clean_shutdown(context: BootContext) -> None:
+    """@cc [owner:ghuntley,label:verification;recovery] native-shutdown-phase-oracles
+    Shutdown MUST retain the bounded SSH request before the zero-exit/sync oracle.
+    Only SSH status zero or 255 with empty stdout MAY reach the unchanged 60-second
+    VMM wait. Distinct fixed phases MUST NOT turn a timeout into successful exit.
+    """
+
+    def send() -> None:
+        result = ssh(
+            context.fixture,
+            context.work / "known_hosts",
+            f"{context.platform.sudo} -n {context.platform.shutdown} >/dev/null 2>&1",
+            network=context.network,
+            shutdown_diagnostics=True,
+        )
+        if result.returncode not in (0, 255) or result.stdout:
+            raise RuntimeError("native SSH shutdown request failed")
+
+    run_phase("shutdown-send", send)
+    run_phase(
+        "shutdown-vmm-wait",
+        partial(
+            wait_clean_shutdown, context.process, context.platform, context.work / "serial.log"
+        ),
+    )
+
+
+def cleanup_vm(process: subprocess.Popen[bytes]) -> None:
+    """Retain the bounded terminate/wait/kill cleanup independently from shutdown evidence."""
+    if process.poll() is None:
+        process.terminate()
+        try:
+            process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=10)
+
+
 def ssh(
     fixture: Path,
     known_hosts: Path,
@@ -220,6 +322,7 @@ def ssh(
     options: tuple[str, ...] = (),
     network: Network = DEFAULT_NETWORK,
     timeout: float = 20,
+    shutdown_diagnostics: bool = False,
 ) -> subprocess.CompletedProcess[bytes]:
     """Run fixed synthetic probes without emitting commands or output."""
     if not 0 < timeout <= 20:
@@ -250,18 +353,50 @@ def ssh(
         "-o",
         "HostKeyAlgorithms=ssh-ed25519-cert-v01@openssh.com",
         "-o",
-        "LogLevel=ERROR",
+        "LogLevel=DEBUG1" if shutdown_diagnostics else "LogLevel=ERROR",
         *options,
         f"{user}@{network.address}",
     ]
     if command is not None:
         arguments.append(command)
-    result = subprocess.run(
-        arguments, stdin=subprocess.DEVNULL, capture_output=True, check=False, timeout=timeout
-    )
+    try:
+        result = subprocess.run(
+            arguments, stdin=subprocess.DEVNULL, capture_output=True, check=False, timeout=timeout
+        )
+    except subprocess.TimeoutExpired as error:
+        if shutdown_diagnostics:
+            shutdown_ssh_stage(error.stderr)
+        raise
+    if shutdown_diagnostics:
+        shutdown_ssh_stage(result.stderr)
+        # Debug lines remain ephemeral input to the closed projection. Preserve
+        # the original output bound for actual SSH errors and remote output.
+        result.stderr = b"\n".join(
+            line for line in result.stderr.splitlines() if not line.startswith(b"debug1: ")
+        )
     if len(result.stdout) > 4096 or len(result.stderr) > 4096:
         raise RuntimeError("native SSH probe exceeded its output bound")
     return result
+
+
+def shutdown_ssh_stage(stderr: bytes | str | None) -> None:
+    """@cc [owner:ghuntley,label:verification;security] native-shutdown-ssh-closed-stage
+    SSH diagnostic bytes MUST remain ephemeral and project only a fixed stage.
+    They MUST NOT enter output, artifacts or exceptions exposed to the driver.
+    This projection MUST NOT grant shutdown acceptance or alter any deadline.
+    """
+    body = stderr if isinstance(stderr, bytes) else b""
+    stage = "unobserved"
+    for marker, label in (
+        (b"debug1: Connection established.", "connected"),
+        (b"debug1: Server host certificate:", "host-certificate"),
+        (b"Authenticated to ", "authenticated"),
+        (b"debug1: Sending command:", "command-sent"),
+        (b"debug1: Exit status ", "exit-status"),
+    ):
+        if marker in body:
+            stage = label
+    print(f"native service shutdown ssh_stage={stage}", flush=True)
 
 
 def success(result: subprocess.CompletedProcess[bytes], expected: bytes) -> None:
@@ -414,6 +549,14 @@ def wait_executor(process: subprocess.Popen[bytes], authority: control.Authority
     while not authority.snapshot().execution_completed:
         alive(process)
         if time.monotonic() >= deadline:
+            print(
+                "native executor fixed deadline: "
+                + " ".join(
+                    f"{event}={authority.count(event)}"
+                    for event in ("register", "claim", "started", "completed")
+                ),
+                flush=True,
+            )
             raise RuntimeError("native fixed execution deadline exceeded")
         time.sleep(0.25)
     if any(authority.count(event) < 1 for event in ("register", "claim", "started", "completed")):
@@ -539,6 +682,7 @@ def executor_withdrawal(context: BootContext) -> None:
     403 and with no cancelled result attempts, then complete a strictly newer
     fence. Observations MUST never kill the group or log PIDs, arguments or output.
     """
+    print("native executor phase=ordinary-completion", flush=True)
     wait_executor(context.process, context.authority)
     root = control.LEASE_PROBE_ROOT
     prepare = f"set -eu; test ! -e {root}; umask 077; mkdir {root}; printf native-lease-prepared"
@@ -551,6 +695,7 @@ def executor_withdrawal(context: BootContext) -> None:
         ),
         b"native-lease-prepared",
     )
+    print("native executor phase=withdrawal-start", flush=True)
     context.authority.arm_withdrawal()
     awaiting = time.monotonic() + 30
     while context.authority.snapshot().started_at is None:
@@ -558,6 +703,7 @@ def executor_withdrawal(context: BootContext) -> None:
         if time.monotonic() >= awaiting:
             raise RuntimeError("native withdrawal command did not start")
         time.sleep(0.1)
+    print("native executor phase=live-group-observation", flush=True)
     identity: tuple[int, int] | None = None
     while identity is None:
         alive(context.process)
@@ -569,6 +715,7 @@ def executor_withdrawal(context: BootContext) -> None:
             identity = (observed.parent, observed.descendant)
         else:
             time.sleep(0.1)
+    print("native executor phase=withdrawn-group-observation", flush=True)
     context.authority.request_withdrawal()
     while True:
         alive(context.process)
@@ -588,6 +735,7 @@ def executor_withdrawal(context: BootContext) -> None:
             context.authority.confirm_group_dead()
             break
         time.sleep(0.1)
+    print("native executor phase=fresh-fence-completion", flush=True)
     awaiting = time.monotonic() + 90
     while True:
         alive(context.process)
@@ -617,30 +765,44 @@ def git_ownership_refused(result: subprocess.CompletedProcess[bytes]) -> None:
         or result.stdout
         or b"detected dubious ownership in repository" not in result.stderr
     ):
+        print(
+            f"native ownership refusal mismatch: status={result.returncode} "
+            f"stdout_bytes={len(result.stdout)} stderr_bytes={len(result.stderr)} "
+            f"dubious_ownership={b'detected dubious ownership in repository' in result.stderr}",
+            flush=True,
+        )
         raise RuntimeError("native unrelated repository ownership was not refused")
 
 
-def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
+def checkout(
+    context: BootContext, repository: git_fixture.Repository, *, retained_upgrade: bool = False
+) -> None:
     """@cc [owner:ghuntley,label:verification;security] native-workspace-actual-checkout
     Checkout evidence MUST deliver the source through the boot-bound receiver,
     wait for the actual native Git operation, and verify its commit, shallow
     metadata and fixture file digests through the managed SSH account. A source
     acceptance or a done marker alone MUST NOT establish checkout evidence.
-    Managed-user Git MUST succeed for that exact checkout and MUST reject an
-    unrelated root-owned repository with Git's actual dubious-ownership refusal.
+    Managed-user Git MUST succeed for that exact checkout. For current images,
+    this call MUST additionally run checkout_ownership. Retained images defer
+    that strict oracle until their real updater completes; the caller MUST run
+    checkout_ownership before issuing any retained acceptance receipt.
     """
+    print("native workspace phase=source-delivery", flush=True)
     services.workspace(context.uds, context.boot.binding, repository.source())
     probe = partial(ssh, context.fixture, context.work / "known_hosts", network=context.network)
     deadline = time.monotonic() + 90
+    print("native workspace phase=checkout-completion", flush=True)
     while True:
         alive(context.process)
         status = probe('test "$(cat /run/overalls-workspace/status)" = done')
         if status.returncode == 0 and not status.stdout:
             break
         if time.monotonic() >= deadline:
+            print("native workspace outcome=completion-deadline", flush=True)
             raise RuntimeError("native workspace checkout deadline exceeded")
         time.sleep(0.5)
     root = "/workspace/unpublished-fixture"
+    print("native workspace phase=commit-and-shallow-verification", flush=True)
     success(
         probe(
             f"set -eu; test -f {root}/.git/shallow; test -w {root}; "
@@ -652,10 +814,23 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
         # Names originate only from the closed local fixture, never a request.
         if name not in git_fixture.FILES:
             raise RuntimeError("invalid native checkout fixture manifest")
+        print("native workspace phase=manifest-verification", flush=True)
         result = probe(f"set -eu; test -w {root}/{name}; cat {root}/{name}")
         if result.returncode != 0 or hashlib.sha256(result.stdout).hexdigest() != expected:
             raise RuntimeError("native workspace checkout bytes differ from the fixture")
+    if not retained_upgrade:
+        checkout_ownership(context)
+
+
+def checkout_ownership(context: BootContext) -> None:
+    """@cc [owner:ghuntley,label:verification;security] native-upgraded-checkout-ownership
+    Managed-user Git MUST reject an unrelated root-owned repository with its
+    actual dubious-ownership refusal after current setup or a real retained
+    upgrade. A transport error, success, or unrelated Git error MUST NOT pass.
+    """
+    probe = partial(ssh, context.fixture, context.work / "known_hosts", network=context.network)
     unrelated = "/workspace/native-unrelated-root-repository"
+    print("native workspace phase=unrelated-repository-preparation", flush=True)
     prepare = (
         f"set -eu; test ! -e {unrelated}; umask 022; mkdir {unrelated}; "
         f"{context.platform.git} -C {unrelated} init --quiet; printf native-unrelated-repository"
@@ -665,6 +840,14 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
         b"native-unrelated-repository",
     )
     try:
+        print("native workspace phase=unrelated-ownership-refusal", flush=True)
+        safe_directories = probe(f"{context.platform.git} config --get-all safe.directory")
+        print(
+            "native workspace ownership policy: "
+            f"all_repositories={b'*' in safe_directories.stdout.splitlines()} "
+            f"workspace_wildcard={b'/workspace/*' in safe_directories.stdout.splitlines()}",
+            flush=True,
+        )
         git_ownership_refused(probe(f"{context.platform.git} -C {unrelated} status --porcelain"))
     finally:
         cleanup = f"rm -rf {unrelated}"
@@ -675,7 +858,37 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
             raise RuntimeError("native unrelated repository cleanup failed")
 
 
-def metadata(path: Path, binding: services.Binding, network: Network) -> None:
+def git_attribution(context: BootContext) -> None:
+    """@cc [owner:ghuntley,label:verification;security] native-current-boot-git-attribution
+    A capable candidate MUST expose this boot's MMDS public name/email through
+    effective personal-user Git configuration and an actual commit without
+    author overrides on every boot. Epoch-distinct values MUST replace the
+    previous boot's attribution; this synthetic attribution grants no authority.
+    """
+    epoch = context.boot.binding.execution_epoch
+    name = f"Native Fixture {epoch}"
+    email = f"native-{epoch}@fixture.test"
+    git = context.platform.git
+    command = (
+        "set -eu; test $(id -u) = 200000; "
+        f'test "$({git} config user.name)" = {shlex.quote(name)}; '
+        f'test "$({git} config user.email)" = {shlex.quote(email)}; '
+        f'root="$HOME/native-attribution-{epoch}"; mkdir "$root"; '
+        f'{git} -C "$root" init -q; '
+        f'{git} -C "$root" commit -q --allow-empty -m attribution; '
+        f'test "$({git} -C "$root" log -1 --format=%an)" = {shlex.quote(name)}; '
+        f'test "$({git} -C "$root" log -1 --format=%ae)" = {shlex.quote(email)}; '
+        "printf native-current-boot-git-attribution-verified"
+    )
+    success(
+        ssh(context.fixture, context.work / "known_hosts", command, network=context.network),
+        b"native-current-boot-git-attribution-verified",
+    )
+
+
+def metadata(
+    path: Path, binding: services.Binding, network: Network, *, git_identity: bool = False
+) -> None:
     path.write_text(
         json.dumps(
             {
@@ -688,6 +901,17 @@ def metadata(path: Path, binding: services.Binding, network: Network) -> None:
                     "prefix_length": 32,
                     "gateway": network.gateway,
                     "mac": network.mac,
+                    **(
+                        {
+                            "git_identity": {
+                                "version": 1,
+                                "name": f"Native Fixture {binding.execution_epoch}",
+                                "email": f"native-{binding.execution_epoch}@fixture.test",
+                            }
+                        }
+                        if git_identity
+                        else {}
+                    ),
                 }
             }
         ),
@@ -727,35 +951,102 @@ def github_tools(context: BootContext, generation: int) -> dict[str, object]:
         if complete:
             break
         if time.monotonic() >= deadline:
+            with authority._lock:
+                print(
+                    "native retained GitHub deadline: "
+                    f"bootstrap_started={plugin.bootstrap_started} "
+                    f"bootstrap_completed={plugin.bootstrap_completed} "
+                    f"bootstrap_failed={plugin.bootstrap_failed} "
+                    f"bootstrap_exit_code={plugin.bootstrap_exit_code} "
+                    f"bootstrap_artifact_fetches={authority.count('github_bootstrap_artifact')} "
+                    f"tool_artifact_fetches={authority.count('github_tool_artifact')} "
+                    f"gh_fetches={authority.count('github_tool_artifact_gh')} "
+                    f"lfs_fetches={authority.count('github_tool_artifact_git-lfs')} "
+                    f"config_fetches={authority.count('github_tool_artifact_github.gitconfig')} "
+                    f"streams_completed={authority.count('github_artifact_stream_completed')} "
+                    f"streams_failed={authority.count('github_artifact_stream_failed')} "
+                    f"stream_failure_categories={[(category.value, authority.count(f'github_artifact_stream_failed_{category.value}')) for category in control.ArtifactStreamFailure]} "
+                    f"registrations={authority.count('register')} "
+                    f"heartbeat_requests={authority.count('heartbeat_request')} "
+                    f"heartbeats_accepted={authority.count('heartbeat')} "
+                    f"heartbeat_responses_sent={authority.count('heartbeat_response_sent')} "
+                    f"heartbeat_responses_failed={authority.count('heartbeat_response_failed')} "
+                    f"heartbeat_response_failure_categories={[(category.value, authority.count(f'heartbeat_response_failed_{category.value}')) for category in control.ArtifactStreamFailure]} "
+                    f"transport_stages={[(event.value, authority.count(event.value)) for event in control.TransportEvent]} "
+                    f"transport_during_artifact={[(event.value, authority.count(event.value + '_during_artifact')) for event in (control.TransportEvent.ACCEPTED, control.TransportEvent.HANDSHAKE_STARTED, control.TransportEvent.HANDSHAKE_SUCCEEDED, control.TransportEvent.HEARTBEAT_HEADERS, control.TransportEvent.HEARTBEAT_RESPONSE)]} "
+                    f"transport_gauges={[(gauge, authority.count(gauge)) for gauge in ('transport_handlers_active', 'transport_handlers_highwater', 'transport_artifacts_active', 'transport_artifacts_highwater')]} "
+                    f"maintenance_started={plugin.started} "
+                    f"maintenance_start_count={authority.count('github_tools_started')} "
+                    f"maintenance_completed={plugin.completed} "
+                    f"maintenance_failure={plugin.maintenance_failure}",
+                    flush=True,
+                )
+            for name, argument in (("gh", "--version"), ("git-lfs", "version")):
+                executable = (
+                    f"/var/lib/overalls/github-tools/generations/{plugin.generation}/{name}"
+                )
+                probe = ssh(
+                    context.fixture,
+                    context.work / "known_hosts",
+                    f"test -x {executable} && {executable} {argument} >/dev/null 2>&1",
+                    network=context.network,
+                )
+                print(
+                    f"native staged GitHub health: tool={name} status={probe.returncode}",
+                    flush=True,
+                )
             raise RuntimeError("native retained GitHub bootstrap did not complete")
         time.sleep(0.1)
     branch = f"native-github-{generation}"
     command = (
-        "set -eu; test $(id -u) = 200000; "
+        "set -eu; phase=preserved-config; "
+        'trap \'printf "native-github-phase=%s\\n" "$phase" >&2\' EXIT; '
+        "test $(id -u) = 200000; "
         'test "$(cat "$HOME/github-preserved")" = github-preserved; '
         f'test "$({context.platform.git} config --global fixture.preserved)" = retained; '
+        "phase=cli-version; "
         "gh --version | head -1 | grep -q 'gh version 2.102.0'; "
+        "phase=cli-api; "
         'test "$(gh api user --jq .login)" = native-fixture; '
+        "phase=secret-refusal; "
         "if gh auth token >/dev/null 2>&1; then exit 1; fi; "
         'test ! -e "$HOME/.config/gh/hosts.yml"; test ! -e "$HOME/.git-credentials"; '
+        "phase=initial-clone; "
         f'work="$HOME/github-{generation}"; mkdir "$work"; cd "$work"; '
         f"{context.platform.git} clone -q https://github.com{git_fixture.PREFIX} original; "
         f"cd original; {context.platform.git} checkout -q -b {branch}; "
+        "phase=lfs-commit; "
         f"{context.platform.git} lfs install --local >/dev/null; "
         f"{context.platform.git} lfs track '*.dat' >/dev/null; "
         "printf 'native-github-lfs-proof\\n' > proof.dat; "
         f"{context.platform.git} add .gitattributes proof.dat; "
         f"{context.platform.git} -c user.name=Native -c user.email=native@fixture.test commit -q -m proof; "
-        f"{context.platform.git} push -q origin {branch}; cd ..; "
+        "phase=push; "
+        f"{context.platform.git} push -q origin {branch} >/dev/null; cd ..; "
+        "phase=lfs-clone; "
         f"{context.platform.git} clone -q --branch {branch} https://github.com{git_fixture.PREFIX} verified; "
+        f"{context.platform.git} -C verified lfs install --local >/dev/null; "
+        f"{context.platform.git} -C verified lfs pull >/dev/null; "
         'test "$(cat verified/proof.dat)" = native-github-lfs-proof; '
         'test ! -e "$HOME/.config/gh/hosts.yml"; test ! -e "$HOME/.git-credentials"; '
         "printf native-github-tools-verified"
     )
-    success(
-        ssh(context.fixture, context.work / "known_hosts", command, network=context.network),
-        b"native-github-tools-verified",
-    )
+    result = ssh(context.fixture, context.work / "known_hosts", command, network=context.network)
+    if result.returncode != 0:
+        for phase in (
+            "preserved-config",
+            "cli-version",
+            "cli-api",
+            "secret-refusal",
+            "initial-clone",
+            "lfs-commit",
+            "push",
+            "lfs-clone",
+        ):
+            if result.stderr.endswith(f"native-github-phase={phase}\n".encode()):
+                print(f"native retained GitHub failed phase={phase}", flush=True)
+                break
+    success(result, b"native-github-tools-verified")
     with authority._lock:
         return {"generation": plugin.generation, "outcome": plugin.outcome}
 
@@ -786,6 +1077,11 @@ def run(
     The default MUST disable the Firecracker API. Only an explicitly enabled
     test oracle MAY receive the private Unix API socket; no TCP control or
     production control endpoint may be introduced.
+    Retained GitHub checks MUST complete their workflow on both clean boots
+    before the unchanged final-boot cancellation oracle. The first shutdown
+    MUST use independent certified SSH and observed clean VMM exit, never the
+    cancellation command. A failed final oracle MUST prevent success receipts;
+    retained receipts MUST NOT claim cancellation coverage on every boot.
     """
     platform = Platform(os_name)
     if (github_tools_release is None) != (github_executor_release is None):
@@ -876,14 +1172,20 @@ def run(
     stage = "boot"
     process: subprocess.Popen[bytes] | None = None
     try:
-        for generation in range(3 if growth else 2):
+        boot_count = 3 if growth else 2
+        for generation in range(boot_count):
             growth_observation: growth_oracle.Guest | None = None
             if growth_check is not None:
                 growth_check.before_boot(generation)
             binding = services.Binding(
                 "dddddddd-dddd-4ddd-8ddd-000000000201", 7 + generation, secrets.token_hex(32)
             )
-            metadata(metadata_path, binding, network)
+            metadata(
+                metadata_path,
+                binding,
+                network,
+                git_identity=manifest.get("git_identity_version") == 1,
+            )
             for path in work.glob("v.sock*"):
                 path.unlink()
             prepare_api_socket(api, process)
@@ -931,12 +1233,15 @@ def run(
                         authority.github = github_fixture.GitHub(
                             github_tools_release, github_executor_release, os_name + "-amd64"
                         )
-                    with (
-                        control.Server(
+                    with ExitStack() as authority_scope:
+                        server = control.Server(
                             ("169.254.254.1", 443), context, authority, repository=repository
-                        ) as server,
-                        git_fixture.DNSServer(("1.1.1.1", 53), frozenset({network.address})) as dns,
-                    ):
+                        )
+                        authority_scope.callback(
+                            run_phase, "authority-server-close", server.server_close
+                        )
+                        dns = git_fixture.DNSServer(("1.1.1.1", 53), frozenset({network.address}))
+                        authority_scope.callback(run_phase, "authority-dns-close", dns.server_close)
                         thread = threading.Thread(target=server.serve_forever, daemon=True)
                         dns_thread = threading.Thread(target=dns.serve_forever, daemon=True)
                         thread.start()
@@ -967,6 +1272,20 @@ def run(
                                 )
                             stage = "workspace-refusals"
                             services.workspace_refusals(uds, binding)
+                            if generation and manifest.get("git_identity_version") == 1:
+                                services.refused(
+                                    uds,
+                                    1031,
+                                    services.encode(
+                                        {
+                                            "version": 1,
+                                            **boots[0].binding.fields(),
+                                            "nonce": secrets.token_hex(32),
+                                            "source": repository.source(),
+                                        }
+                                    )
+                                    + b"\n",
+                                )
                             stage = "terminal-control"
                             services.terminal(uds, binding)
                             stage = "ssh"
@@ -998,18 +1317,34 @@ def run(
                                 uds, boot, fixture, work, network, platform, process, authority, api
                             )
                             stage = "workspace-checkout"
-                            checkout(boot_context, repository)
+                            checkout(
+                                boot_context,
+                                repository,
+                                retained_upgrade=authority.github is not None,
+                            )
                             print("native service workspace checkout verified", flush=True)
+                            if manifest.get("git_identity_version") == 1:
+                                stage = "git-attribution"
+                                git_attribution(boot_context)
+                                print(
+                                    f"native current-boot Git attribution verified boot={generation}",
+                                    flush=True,
+                                )
                             stage = "terminal-session"
                             services.terminal_session(uds, binding, platform.name)
                             print("native service managed PTY verified", flush=True)
-                            stage = "executor"
-                            executor_withdrawal(boot_context)
-                            print("native service fenced execution verified", flush=True)
                             if authority.github is not None:
                                 stage = "retained-github-tools"
                                 github_observations.append(github_tools(boot_context, generation))
-                                print("native retained GitHub tools verified", flush=True)
+                                checkout_ownership(boot_context)
+                                print(
+                                    f"native retained GitHub tools verified boot={generation}",
+                                    flush=True,
+                                )
+                            if authority.github is None or generation == boot_count - 1:
+                                stage = "executor"
+                                executor_withdrawal(boot_context)
+                                print("native service fenced execution verified", flush=True)
                             stage = "retained-home"
                             retained_command = (
                                 'test "$(cat "$HOME/native-retained")" = native-home-retained'
@@ -1052,40 +1387,34 @@ def run(
                                 boot_endings.append("sigkill")
                             else:
                                 stage = "clean-shutdown"
-                                shutdown = ssh(
-                                    fixture,
-                                    work / "known_hosts",
-                                    f"{platform.sudo} -n {platform.shutdown} >/dev/null 2>&1",
-                                    network=network,
-                                )
-                                if shutdown.returncode not in (0, 255) or shutdown.stdout:
-                                    raise RuntimeError("native SSH shutdown request failed")
-                                wait_clean_shutdown(process, platform, work / "serial.log")
+                                clean_shutdown(boot_context)
                                 boot_endings.append("clean")
+                                print(
+                                    f"native service clean shutdown verified boot={generation}",
+                                    flush=True,
+                                )
                             if growth_check is not None:
                                 stage = "offline-growth-verification"
                                 if growth_observation is None:
                                     raise RuntimeError("native growth observation is missing")
                                 growth_check.after_shutdown(growth_observation)
                         finally:
-                            server.shutdown()
-                            dns.shutdown()
-                            thread.join(timeout=5)
-                            dns_thread.join(timeout=5)
+                            run_phase("authority-server-stop", server.shutdown)
+                            run_phase("authority-dns-stop", dns.shutdown)
+                            run_phase("authority-thread-join", partial(thread.join, timeout=5))
+                            run_phase(
+                                "authority-dns-thread-join", partial(dns_thread.join, timeout=5)
+                            )
                             if thread.is_alive() or dns_thread.is_alive():
-                                raise RuntimeError("native isolated authority did not stop")
+                                raise PhaseFailure("authority-thread-check", "runtime")
                 finally:
-                    if process.poll() is None:
-                        process.terminate()
-                        try:
-                            process.wait(timeout=10)
-                        except subprocess.TimeoutExpired:
-                            process.kill()
-                            process.wait(timeout=10)
+                    run_phase("vmm-cleanup", partial(cleanup_vm, process))
         if len(set(host_keys)) != len(boots):
             raise RuntimeError("native restart retained its SSH host key")
         if growth_check is not None:
-            growth_check.finish([boot.boot_id for boot in boots])
+            run_phase(
+                "growth-finalize", partial(growth_check.finish, [boot.boot_id for boot in boots])
+            )
         receipt = {
             "version": 1,
             "os": platform.name,
@@ -1093,9 +1422,9 @@ def run(
             "boot_endings": boot_endings,
             "kernel_sha256": expected,
             "trust_bundle_digest": trust_digest,
-            "image_sha256": digest(image / "disk.raw"),
-            "firmware_sha256": digest(firmware),
-            "vmm_sha256": digest(vmm),
+            "image_sha256": run_phase("receipt-image-digest", partial(digest, image / "disk.raw")),
+            "firmware_sha256": run_phase("receipt-firmware-digest", partial(digest, firmware)),
+            "vmm_sha256": run_phase("receipt-vmm-digest", partial(digest, vmm)),
             "checks": [
                 "mmdsv2-current-boot-kernel",
                 "assigned-address-reachable",
@@ -1127,7 +1456,11 @@ def run(
                 "ssh-host-key-rotated-across-abrupt-restart"
                 if crash_first_boot
                 else "ssh-host-key-rotated-across-clean-reboot",
-                "all-boots-complete-service-oracles",
+                (
+                    "all-boots-core-services-and-final-boot-executor-withdrawal"
+                    if github_tools_release is not None
+                    else "all-boots-complete-service-oracles"
+                ),
             ],
             "native_admission": False,
             "scope": (
@@ -1136,37 +1469,56 @@ def run(
                 else "native services with synthetic HTTPS/SSH/Git/DNS authority and clean reboot; no native isolation or crash recovery acceptance"
             ),
         }
-        (work / "service-receipt.json").write_text(
-            json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+        if manifest.get("git_identity_version") == 1:
+            checks = receipt["checks"]
+            if not isinstance(checks, list):
+                raise RuntimeError("invalid native service receipt checks")
+            checks.append("all-boots-current-mmds-git-config-and-commit-attribution")
+        run_phase(
+            "service-receipt-write",
+            partial(
+                (work / "service-receipt.json").write_text,
+                json.dumps(receipt, sort_keys=True, indent=2) + "\n",
+                encoding="utf-8",
+            ),
         )
         if github_observations:
-            (work / "github-tools-receipt.json").write_text(
-                json.dumps(
-                    {
-                        "version": 1,
-                        "platform": os_name + "-amd64",
-                        "native_admission": False,
-                        "boots": github_observations,
-                        "checks": [
-                            "retained-executor-fixed-bootstrap-and-fenced-artifact",
-                            "verified-atomic-managed-generation",
-                            "personal-uid-managed-gh-version-and-broker-api",
-                            "personal-uid-git-clone-branch-commit-push",
-                            "personal-uid-lfs-upload-and-download-exact-bytes",
-                            "token-command-refused-and-no-cli-credential-store",
-                            "home-and-existing-git-config-retained",
-                            "clean-reboot-already-current-generation",
-                        ],
-                        "scope": "actual retained native guest programs with isolated synthetic authority; Marshall SQL authorization and production native admission require separate evidence",
-                    },
-                    sort_keys=True,
-                    indent=2,
-                )
-                + "\n",
-                encoding="utf-8",
+            run_phase(
+                "github-receipt-write",
+                partial(
+                    (work / "github-tools-receipt.json").write_text,
+                    json.dumps(
+                        {
+                            "version": 1,
+                            "platform": os_name + "-amd64",
+                            "native_admission": False,
+                            "boots": github_observations,
+                            "checks": [
+                                "retained-executor-fixed-bootstrap-and-fenced-artifact",
+                                "verified-atomic-managed-generation",
+                                "personal-uid-managed-gh-version-and-broker-api",
+                                "personal-uid-git-clone-branch-commit-push",
+                                "personal-uid-lfs-upload-and-download-exact-bytes",
+                                "token-command-refused-and-no-cli-credential-store",
+                                "home-and-existing-git-config-retained",
+                                "clean-reboot-already-current-generation",
+                            ],
+                            "scope": "actual retained native guest programs with isolated synthetic authority; Marshall SQL authorization and production native admission require separate evidence",
+                        },
+                        sort_keys=True,
+                        indent=2,
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                ),
             )
-    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError):
-        print(f"native service verification failed at stage {stage}", flush=True)
+    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
+        category = failure_category(error)
+        if isinstance(error, PhaseFailure):
+            stage = error.phase
+        print(
+            f"native service verification failed at stage {stage} category={category}", flush=True
+        )
         raise RuntimeError("native service verification failed") from None
     finally:
         metadata_path.unlink(missing_ok=True)

@@ -21,7 +21,10 @@ Linux and Windows image builders MUST declare git_identity_version 1 only when
 the current Git identity writer, system configuration include and enabled workspace
 service are installed in the image. Images without that service MUST omit the
 capability. Existing immutable native artifacts MUST NOT acquire it without a
-separately rebuilt, reviewed and admitted exact image.
+separately rebuilt, reviewed and admitted exact image. New native candidates MAY
+explicitly declare version 1 only with source-v2, the current attribution writer
+and system include in the enabled native payload; their declaration MUST NOT
+change promoted pins or imply native admission before exact qualification.
 
 @cc [owner:ghuntley,label:build;security] native-agent-payload
 FreeBSD and illumos image builders MAY copy a reviewed native-agent payload only

@@ -195,3 +195,23 @@ msgstr "· Tu cuenta"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Primera página"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Eliminado"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "Eliminando máquinas"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "Reintentando la limpieza de las máquinas"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "No disponible"

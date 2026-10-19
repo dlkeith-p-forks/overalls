@@ -653,3 +653,23 @@ msgstr "palitan ang pangalan"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "upang tingnan ang console ng host na para lamang sa pagbasa."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "I-pin"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "I-pin ang %{name}"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Alisin ang pin"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "Alisin ang pin ng %{name}"

@@ -1556,3 +1556,58 @@ msgstr "· suy luận %{value1} · %{value2}"
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ chọn · Enter chạy · Escape đóng"
+
+#: lib/marshall_web/thread_commands.ex:21
+#, elixir-autogen, elixir-format
+msgid "Choose or manage reusable instructions"
+msgstr "Chọn hoặc quản lý hướng dẫn có thể tái sử dụng"
+
+#: lib/marshall_web/thread_commands.ex:30
+#, elixir-autogen, elixir-format
+msgid "Command help"
+msgstr "Trợ giúp lệnh"
+
+#: lib/marshall_web/thread_commands.ex:22
+#, elixir-autogen, elixir-format
+msgid "Context"
+msgstr "Ngữ cảnh"
+
+#: lib/marshall_web/thread_commands.ex:15
+#, elixir-autogen, elixir-format
+msgid "Explore the task and agree on a plan"
+msgstr "Tìm hiểu nhiệm vụ và thống nhất kế hoạch"
+
+#: lib/marshall_web/thread_commands.ex:17
+#, elixir-autogen, elixir-format
+msgid "Implement and verify changes"
+msgstr "Thực hiện và xác minh các thay đổi"
+
+#: lib/marshall_web/thread_commands.ex:23
+#, elixir-autogen, elixir-format
+msgid "Inspect the working directory and loaded sources"
+msgstr "Kiểm tra thư mục làm việc và các nguồn đã tải"
+
+#: lib/marshall_web/thread_commands.ex:31
+#, elixir-autogen, elixir-format
+msgid "Learn the composer shortcuts"
+msgstr "Tìm hiểu các phím tắt của trình soạn tin nhắn"
+
+#: lib/marshall_web/thread_commands.ex:29
+#, elixir-autogen, elixir-format
+msgid "Manage access to the thread and its machine"
+msgstr "Quản lý quyền truy cập vào luồng và máy của luồng"
+
+#: lib/marshall_web/thread_commands.ex:27
+#, elixir-autogen, elixir-format
+msgid "Open the editor for this thread's machine"
+msgstr "Mở trình soạn thảo cho máy của luồng này"
+
+#: lib/marshall_web/thread_commands.ex:25
+#, elixir-autogen, elixir-format
+msgid "Open this thread's machine terminal"
+msgstr "Mở thiết bị đầu cuối của máy trong luồng này"
+
+#: lib/marshall_web/thread_commands.ex:19
+#, elixir-autogen, elixir-format
+msgid "Summarize older context for the next turn"
+msgstr "Tóm tắt ngữ cảnh cũ cho lượt tiếp theo"

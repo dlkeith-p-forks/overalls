@@ -17,10 +17,10 @@ defmodule Marshall.Mailer.SMTPTest do
         implicit: "generated implicit post-DATA timeout histories preserve retry identity",
         starttls: "generated starttls post-DATA timeout histories preserve retry identity"
       ] do
-    # Full exploration includes up to 200 real post-DATA stalls, each bounded by
-    # the unchanged 13s assertion. Retain finite headroom for TLS and quiet windows.
-    @tag :hegel_case_sandbox
-    @tag timeout: 3_600_000
+    # 100 cases retain up to two real ten-second uncertain attempts each.
+    # Budget 26 seconds per case for their asserted deadlines, plus setup,
+    # final/rejected delivery and cleanup headroom; no exploration is reduced.
+    @tag timeout: 3_600_000, hegel_case_sandbox: true
     # @cc [owner:ghuntley,label:verification;recovery] smtp-uncertain-owner-history
     # Actual accepted-but-unacknowledged DATA MUST time out and close its client
     # connection, preserving pending ciphertext. All retries MUST retain decoded
@@ -345,6 +345,7 @@ defmodule Marshall.Mailer.SMTPTest do
     Overalls.HegelFixtures.start_fixture!({Marshall.SMTPFixture, opts}, id: make_ref())
   end
 
+  @spec configure(pid(), String.t(), keyword()) :: :ok
   defp configure(server, mode, options \\ []) do
     env = %{
       "MARSHALL_SMTP_HOST" => "localhost",

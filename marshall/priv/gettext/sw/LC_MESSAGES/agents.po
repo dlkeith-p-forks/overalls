@@ -1551,3 +1551,58 @@ msgstr "· ufikiri wa %{value1} · %{value2}"
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ chagua · Enter tekeleza · Escape funga"
+
+#: lib/marshall_web/thread_commands.ex:21
+#, elixir-autogen, elixir-format
+msgid "Choose or manage reusable instructions"
+msgstr "Chagua au dhibiti maagizo yanayotumika tena"
+
+#: lib/marshall_web/thread_commands.ex:30
+#, elixir-autogen, elixir-format
+msgid "Command help"
+msgstr "Msaada wa amri"
+
+#: lib/marshall_web/thread_commands.ex:22
+#, elixir-autogen, elixir-format
+msgid "Context"
+msgstr "Muktadha"
+
+#: lib/marshall_web/thread_commands.ex:15
+#, elixir-autogen, elixir-format
+msgid "Explore the task and agree on a plan"
+msgstr "Chunguza kazi na ukubaliane kuhusu mpango"
+
+#: lib/marshall_web/thread_commands.ex:17
+#, elixir-autogen, elixir-format
+msgid "Implement and verify changes"
+msgstr "Tekeleza na uhakikishe mabadiliko"
+
+#: lib/marshall_web/thread_commands.ex:23
+#, elixir-autogen, elixir-format
+msgid "Inspect the working directory and loaded sources"
+msgstr "Kagua saraka ya kazi na vyanzo vilivyopakiwa"
+
+#: lib/marshall_web/thread_commands.ex:31
+#, elixir-autogen, elixir-format
+msgid "Learn the composer shortcuts"
+msgstr "Jifunze njia za mkato za kihariri cha ujumbe"
+
+#: lib/marshall_web/thread_commands.ex:29
+#, elixir-autogen, elixir-format
+msgid "Manage access to the thread and its machine"
+msgstr "Dhibiti ufikiaji wa mazungumzo na mashine yake"
+
+#: lib/marshall_web/thread_commands.ex:27
+#, elixir-autogen, elixir-format
+msgid "Open the editor for this thread's machine"
+msgstr "Fungua kihariri cha mashine ya mazungumzo haya"
+
+#: lib/marshall_web/thread_commands.ex:25
+#, elixir-autogen, elixir-format
+msgid "Open this thread's machine terminal"
+msgstr "Fungua terminali ya mashine ya mazungumzo haya"
+
+#: lib/marshall_web/thread_commands.ex:19
+#, elixir-autogen, elixir-format
+msgid "Summarize older context for the next turn"
+msgstr "Fupisha muktadha wa zamani kwa zamu inayofuata"

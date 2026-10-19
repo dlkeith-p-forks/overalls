@@ -1928,3 +1928,82 @@ msgstr "← الآلات"
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "← الإعدادات"
+
+#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/live/resize_live.ex:256
+#, elixir-autogen, elixir-format
+msgid "Current"
+msgstr "الخطوة الحالية"
+
+#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/live/resize_live.ex:255
+#, elixir-autogen, elixir-format
+msgid "Done"
+msgstr "مكتمل"
+
+#: lib/marshall_web/components/clone_components.ex:417
+#, elixir-autogen, elixir-format
+msgid "a snapshot mount could not be released yet."
+msgstr "تعذر حتى الآن إلغاء تركيب اللقطة."
+
+#: lib/marshall_web/components/clone_components.ex:433
+#, elixir-autogen, elixir-format
+msgid "cleanup on the host did not finish yet."
+msgstr "لم يكتمل التنظيف على المضيف بعد."
+
+#: lib/marshall_web/components/clone_components.ex:436
+#, elixir-autogen, elixir-format
+msgid "the copied disk could not be prepared yet."
+msgstr "تعذر حتى الآن تجهيز القرص المنسوخ."
+
+#: lib/marshall_web/components/clone_components.ex:420
+#, elixir-autogen, elixir-format
+msgid "the disk copy did not finish; it resumes automatically."
+msgstr "لم يكتمل نسخ القرص؛ يُستأنف تلقائيًا."
+
+#: lib/marshall_web/components/clone_components.ex:439
+#, elixir-autogen, elixir-format
+msgid "the host could not confirm the step yet."
+msgstr "لم يتمكن المضيف من تأكيد الخطوة بعد."
+
+#: lib/marshall_web/components/clone_components.ex:429
+#, elixir-autogen, elixir-format
+msgid "the hosts could not connect; the host retries automatically."
+msgstr "تعذر الاتصال بين المضيفين؛ يعيد المضيف المحاولة تلقائيًا."
+
+#: lib/marshall_web/components/clone_components.ex:408
+#, elixir-autogen, elixir-format
+msgid "the machine is mid-operation; the host retries automatically."
+msgstr "الجهاز ينفّذ عملية أخرى؛ يعيد المضيف المحاولة تلقائيًا."
+
+#: lib/marshall_web/components/clone_components.ex:411
+#, elixir-autogen, elixir-format
+msgid "the source changed state; it continues once the source settles."
+msgstr "تغيرت حالة المصدر؛ يستمر العمل بعد استقرار حالته."
+
+#: lib/marshall_web/components/clone_components.ex:414
+#, elixir-autogen, elixir-format
+msgid "the source snapshot could not be prepared or released yet."
+msgstr "تعذر حتى الآن إعداد لقطة المصدر أو تحريرها."
+
+#: lib/marshall_web/components/clone_components.ex:405
+#, elixir-autogen, elixir-format
+msgid "the storage pool is busy; the host retries automatically."
+msgstr "مجمع التخزين مشغول؛ يعيد المضيف المحاولة تلقائيًا."
+
+#: lib/marshall_web/components/clone_components.ex:426
+#, elixir-autogen, elixir-format
+msgid "the transfer permit lapsed; it is renewed automatically."
+msgstr "انتهت صلاحية تصريح النقل؛ يُجدد تلقائيًا."
+
+#: lib/marshall_web/components/clone_components.ex:423
+#, elixir-autogen, elixir-format
+msgid "the transfer stream was interrupted; it resumes automatically."
+msgstr "انقطع تدفق النقل؛ يُستأنف تلقائيًا."
+
+#: lib/marshall_web/live/resize_live.ex:625
+#: lib/marshall_web/live/resize_live.ex:644
+#: lib/marshall_web/live/resize_live.ex:651
+#, elixir-autogen, elixir-format
+msgid "Confirm"
+msgstr "تأكيد"

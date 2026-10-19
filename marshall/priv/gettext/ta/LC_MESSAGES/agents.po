@@ -1551,3 +1551,58 @@ msgstr "· %{value1} பகுத்தறிதல் · %{value2}"
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ தேர்ந்தெடு · Enter இயக்கு · Escape மூடு"
+
+#: lib/marshall_web/thread_commands.ex:21
+#, elixir-autogen, elixir-format
+msgid "Choose or manage reusable instructions"
+msgstr "மீண்டும் பயன்படுத்தக்கூடிய வழிமுறைகளைத் தேர்ந்தெடுக்கவும் அல்லது நிர்வகிக்கவும்"
+
+#: lib/marshall_web/thread_commands.ex:30
+#, elixir-autogen, elixir-format
+msgid "Command help"
+msgstr "கட்டளை உதவி"
+
+#: lib/marshall_web/thread_commands.ex:22
+#, elixir-autogen, elixir-format
+msgid "Context"
+msgstr "சூழல்"
+
+#: lib/marshall_web/thread_commands.ex:15
+#, elixir-autogen, elixir-format
+msgid "Explore the task and agree on a plan"
+msgstr "பணியை ஆராய்ந்து ஒரு திட்டத்திற்கு ஒப்புக்கொள்ளுங்கள்"
+
+#: lib/marshall_web/thread_commands.ex:17
+#, elixir-autogen, elixir-format
+msgid "Implement and verify changes"
+msgstr "மாற்றங்களைச் செயல்படுத்திச் சரிபார்க்கவும்"
+
+#: lib/marshall_web/thread_commands.ex:23
+#, elixir-autogen, elixir-format
+msgid "Inspect the working directory and loaded sources"
+msgstr "பணி அடைவு மற்றும் ஏற்றப்பட்ட மூலங்களை ஆய்வு செய்யவும்"
+
+#: lib/marshall_web/thread_commands.ex:31
+#, elixir-autogen, elixir-format
+msgid "Learn the composer shortcuts"
+msgstr "செய்தி எழுதும் குறுக்குவழிகளைக் கற்றுக்கொள்ளவும்"
+
+#: lib/marshall_web/thread_commands.ex:29
+#, elixir-autogen, elixir-format
+msgid "Manage access to the thread and its machine"
+msgstr "திரி மற்றும் அதன் கணினிக்கான அணுகலை நிர்வகிக்கவும்"
+
+#: lib/marshall_web/thread_commands.ex:27
+#, elixir-autogen, elixir-format
+msgid "Open the editor for this thread's machine"
+msgstr "இந்தத் திரியின் கணினி திருத்தியைத் திறக்கவும்"
+
+#: lib/marshall_web/thread_commands.ex:25
+#, elixir-autogen, elixir-format
+msgid "Open this thread's machine terminal"
+msgstr "இந்தத் திரியின் கணினி முனையத்தைத் திறக்கவும்"
+
+#: lib/marshall_web/thread_commands.ex:19
+#, elixir-autogen, elixir-format
+msgid "Summarize older context for the next turn"
+msgstr "அடுத்த சுற்றுக்குப் பழைய சூழலைச் சுருக்கவும்"

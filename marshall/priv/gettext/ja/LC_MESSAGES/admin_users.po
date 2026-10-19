@@ -190,3 +190,23 @@ msgstr "· あなたのアカウント"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← 最初のページ"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "削除済み"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "マシンを削除中"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "マシンのクリーンアップを再試行中"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "利用不可"

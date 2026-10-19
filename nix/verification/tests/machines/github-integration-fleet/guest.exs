@@ -92,9 +92,17 @@ defmodule GitHubFleetGuest do
   end
 
   @spec commands(String.t(), String.t()) :: [String.t()]
+  # @cc [owner:ghuntley,label:verification;privacy] github-guest-closed-api-boundaries
+  # Connected identity MUST make one actual API attempt after tool/DNS checks.
+  # Failure codes 80/81/82/83 identify tool/DNS/API/identity boundaries only;
+  # API output MUST remain private and MUST NOT enter failure receipts.
   defp commands("connected", owner) do
     [
-      "test \"$(gh api user --jq .login)\" = owner-#{owner}",
+      "if ! command -v gh >/dev/null 2>&1; then (exit 80); " <>
+        "elif ! getent hosts com-github.integration.internal >/dev/null 2>&1; then (exit 81); " <>
+        "else github_identity=$(gh api user --jq .login 2>/dev/null); github_api_exit=$?; " <>
+        "if test \"$github_api_exit\" != 0; then (exit 82); " <>
+        "elif test \"$github_identity\" != owner-#{owner}; then (exit 83); fi; fi",
       "test \"$(gh api repos/owner/private --jq .private)\" = true",
       "test \"$(gh api user/orgs --jq '.[0].login')\" = fixture-org"
     ]
@@ -115,6 +123,24 @@ defmodule GitHubFleetGuest do
       "printf 'real fleet push\\n' >/root/github-private/fleet.txt && git -C /root/github-private add fleet.txt",
       "git -C /root/github-private -c user.name=Fixture -c user.email=fixture@example.test commit -m fleet",
       "git -C /root/github-private push origin fleet-feature"
+    ]
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] github-fleet-lfs-real-transfer
+  # Linux LFS MUST upload through the managed client and fetch again after both
+  # fixture checkout and local object cache are removed. Fixed synthetic content
+  # MUST match after checkout; no provider authority may enter the guest.
+  defp commands("lfs", _owner) do
+    [
+      "git -C /root/github-private lfs install --local",
+      "git -C /root/github-private lfs track '*.fleet-lfs'",
+      "printf 'real fleet LFS transfer\\n' >/root/github-private/payload.fleet-lfs && git -C /root/github-private add .gitattributes payload.fleet-lfs",
+      "git -C /root/github-private -c user.name=Fixture -c user.email=fixture@example.test commit -m fleet-lfs",
+      "git -C /root/github-private push origin fleet-feature",
+      "rm -rf /root/github-private/.git/lfs/objects && rm /root/github-private/payload.fleet-lfs",
+      "git -C /root/github-private lfs fetch origin fleet-feature",
+      "git -C /root/github-private lfs checkout",
+      "test \"$(cat /root/github-private/payload.fleet-lfs)\" = 'real fleet LFS transfer'"
     ]
   end
 

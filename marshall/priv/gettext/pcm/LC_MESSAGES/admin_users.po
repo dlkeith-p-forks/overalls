@@ -190,3 +190,23 @@ msgstr "· Your own account"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Di first page"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Dem don delete am"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "Dey delete machines"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "Dey try clean di machines again"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "E no dey available"

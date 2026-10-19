@@ -460,24 +460,57 @@ fn valid_identifier(id: &str) -> bool {
         })
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum RpcFailure {
+    Encode,
+    Request(http::RequestFailure),
+    Decode,
+}
+
+impl RpcFailure {
+    fn diagnostic_code(self) -> i32 {
+        match self {
+            Self::Encode => 110,
+            Self::Decode => 111,
+            Self::Request(failure) => failure.diagnostic_code(),
+        }
+    }
+}
+
 fn rpc<Response: DeserializeOwned, Body: Serialize>(
     route: &str,
     body: &Body,
 ) -> Result<Response, AgentError> {
-    let payload = serde_json::to_vec(body).map_err(|_| AgentError)?;
+    rpc_observed(route, body, &mut |_| {})
+}
+
+fn rpc_observed<Response: DeserializeOwned, Body: Serialize>(
+    route: &str,
+    body: &Body,
+    failed: &mut impl FnMut(RpcFailure),
+) -> Result<Response, AgentError> {
+    let payload = serde_json::to_vec(body).map_err(|_| {
+        failed(RpcFailure::Encode);
+        AgentError
+    })?;
     if payload.len() > 12_288 {
+        failed(RpcFailure::Encode);
         return Err(AgentError);
     }
-    let bytes = http::request(
+    let bytes = http::request_observed(
         &format!("{ORIGIN}{route}"),
         Method::POST,
         Some(&payload),
         None,
         16_384,
         Duration::from_secs(10),
+        &mut |failure| failed(RpcFailure::Request(failure)),
     )
     .map_err(|_| AgentError)?;
-    serde_json::from_slice(&bytes).map_err(|_| AgentError)
+    serde_json::from_slice(&bytes).map_err(|_| {
+        failed(RpcFailure::Decode);
+        AgentError
+    })
 }
 
 #[cfg(test)]

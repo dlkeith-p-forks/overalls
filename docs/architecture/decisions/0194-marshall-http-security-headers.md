@@ -68,6 +68,12 @@ Observed before this decision:
    form. It permits no unrestricted `https:` source; scripts, connections and
    the other directives retain their original restrictions.
 
+   [ADR-0202](0202-github-com-owner-integration.md) additionally permits the
+   fixed `https://github.com` form destination for the CSRF-protected OAuth
+   start POST and its provider redirect. Browsers can apply `form-action` to
+   that redirect even though the initial POST is same-origin. No wildcard,
+   arbitrary HTTPS destination or additional script/connection origin is allowed.
+
    `put_secure_browser_headers` is removed from both pipelines. The only
    relaxation is `'unsafe-inline'` in `style-src`, required by xterm.js and
    Mermaid's `setAttribute("style")` calls, which a nonce cannot cover.
@@ -243,4 +249,6 @@ applications remain same-site with the control plane.
 [ADR-0161](0161-monospace-web-presentation.md),
 [ADR-0181](0181-public-proxy-http01-ingress.md);
 [ADR-0205](0205-overview-newsletter.md) amends the form-action clause only;
+[ADR-0202](0202-github-com-owner-integration.md) adds the fixed GitHub OAuth
+form origin without changing other directives;
 [review 2026-10-18](../reviews/2026-10-18-marshall-security-headers.md).

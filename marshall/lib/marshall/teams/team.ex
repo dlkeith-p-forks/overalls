@@ -11,7 +11,7 @@ defmodule Marshall.Teams.Team do
     domain: Marshall.Teams,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Marshall.Authorization.AshAuthorizer],
-    extensions: [AshArchival.Resource, AshPaperTrail.Resource]
+    extensions: [AshArchival.Resource, AshPaperTrail.Resource, AshScim.Group]
 
   postgres do
     table "teams"
@@ -33,6 +33,16 @@ defmodule Marshall.Teams.Team do
     version_extensions authorizers: [Marshall.Authorization.AshAuthorizer]
   end
 
+  scim do
+    map :displayName, attribute: :name
+    map :externalId, attribute: :scim_external_id
+
+    multivalued :members do
+      relationship :members
+      map :value, attribute: :user_id
+    end
+  end
+
   actions do
     defaults [:read]
     read :history
@@ -41,7 +51,24 @@ defmodule Marshall.Teams.Team do
       accept [:name, :created_by_id]
     end
 
+    create :scim_create do
+      accept [:name, :scim_external_id]
+      primary? true
+      change Marshall.Teams.ScimCreate
+    end
+
+    update :scim_update do
+      accept [:name, :scim_external_id]
+      primary? true
+      require_atomic? false
+    end
+
     destroy :archive
+
+    update :mark_retiring do
+      accept [:management_mode]
+      require_atomic? false
+    end
 
     # @cc [owner:ghuntley,label:product] team-name-input-storage-parity
     # Public creation input and persisted names MUST share the same 1..63 ASCII
@@ -92,6 +119,14 @@ defmodule Marshall.Teams.Team do
     attribute :name, :string,
       allow_nil?: false,
       constraints: @name_constraints
+
+    attribute :scim_external_id, :string, allow_nil?: true, public?: true
+
+    attribute :management_mode, :atom,
+      allow_nil?: false,
+      default: :native,
+      constraints: [one_of: [:native, :scim_managed, :retiring, :handoff_pending]],
+      public?: true
 
     create_timestamp :inserted_at
     update_timestamp :updated_at

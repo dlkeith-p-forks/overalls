@@ -1882,3 +1882,82 @@ msgstr "← இயந்திரங்கள்"
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "← அமைப்புகள்"
+
+#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/live/resize_live.ex:256
+#, elixir-autogen, elixir-format
+msgid "Current"
+msgstr "தற்போதைய படி"
+
+#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/live/resize_live.ex:255
+#, elixir-autogen, elixir-format
+msgid "Done"
+msgstr "முடிந்தது"
+
+#: lib/marshall_web/components/clone_components.ex:417
+#, elixir-autogen, elixir-format
+msgid "a snapshot mount could not be released yet."
+msgstr "ஸ்னாப்ஷாட் மவுண்ட்டை இன்னும் விடுவிக்க முடியவில்லை."
+
+#: lib/marshall_web/components/clone_components.ex:433
+#, elixir-autogen, elixir-format
+msgid "cleanup on the host did not finish yet."
+msgstr "ஹோஸ்ட்டில் சுத்தப்படுத்தும் பணி இன்னும் முடியவில்லை."
+
+#: lib/marshall_web/components/clone_components.ex:436
+#, elixir-autogen, elixir-format
+msgid "the copied disk could not be prepared yet."
+msgstr "நகலெடுக்கப்பட்ட வட்டை இன்னும் தயாரிக்க முடியவில்லை."
+
+#: lib/marshall_web/components/clone_components.ex:420
+#, elixir-autogen, elixir-format
+msgid "the disk copy did not finish; it resumes automatically."
+msgstr "வட்டு நகலெடுப்பு முடியவில்லை; அது தானாக மீண்டும் தொடரும்."
+
+#: lib/marshall_web/components/clone_components.ex:439
+#, elixir-autogen, elixir-format
+msgid "the host could not confirm the step yet."
+msgstr "ஹோஸ்ட்டால் இந்தப் படியை இன்னும் உறுதிப்படுத்த முடியவில்லை."
+
+#: lib/marshall_web/components/clone_components.ex:429
+#, elixir-autogen, elixir-format
+msgid "the hosts could not connect; the host retries automatically."
+msgstr "ஹோஸ்ட்களால் இணைக்க முடியவில்லை; ஹோஸ்ட் தானாக மீண்டும் முயல்கிறது."
+
+#: lib/marshall_web/components/clone_components.ex:408
+#, elixir-autogen, elixir-format
+msgid "the machine is mid-operation; the host retries automatically."
+msgstr "கணினியில் வேறு செயல்பாடு நடைபெறுகிறது; ஹோஸ்ட் தானாக மீண்டும் முயல்கிறது."
+
+#: lib/marshall_web/components/clone_components.ex:411
+#, elixir-autogen, elixir-format
+msgid "the source changed state; it continues once the source settles."
+msgstr "மூலத்தின் நிலை மாறியுள்ளது; நிலை சீரானதும் பணி தொடரும்."
+
+#: lib/marshall_web/components/clone_components.ex:414
+#, elixir-autogen, elixir-format
+msgid "the source snapshot could not be prepared or released yet."
+msgstr "மூல ஸ்னாப்ஷாட்டை இன்னும் தயாரிக்கவோ விடுவிக்கவோ முடியவில்லை."
+
+#: lib/marshall_web/components/clone_components.ex:405
+#, elixir-autogen, elixir-format
+msgid "the storage pool is busy; the host retries automatically."
+msgstr "சேமிப்பகத் தொகுப்பு பயன்பாட்டில் உள்ளது; ஹோஸ்ட் தானாக மீண்டும் முயல்கிறது."
+
+#: lib/marshall_web/components/clone_components.ex:426
+#, elixir-autogen, elixir-format
+msgid "the transfer permit lapsed; it is renewed automatically."
+msgstr "பரிமாற்ற அனுமதியின் காலம் முடிந்தது; அது தானாகப் புதுப்பிக்கப்படும்."
+
+#: lib/marshall_web/components/clone_components.ex:423
+#, elixir-autogen, elixir-format
+msgid "the transfer stream was interrupted; it resumes automatically."
+msgstr "பரிமாற்ற ஓட்டம் தடைப்பட்டது; அது தானாக மீண்டும் தொடரும்."
+
+#: lib/marshall_web/live/resize_live.ex:625
+#: lib/marshall_web/live/resize_live.ex:644
+#: lib/marshall_web/live/resize_live.ex:651
+#, elixir-autogen, elixir-format
+msgid "Confirm"
+msgstr "உறுதிப்படுத்து"

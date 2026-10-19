@@ -130,3 +130,14 @@ msgstr "كلمة السر بتاعتك اتغيّرت بنجاح"
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "تسجيل دخولك مبقاش صالح. اطلب رابط دخول جديد."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "متأكد إنك عايز تسجّل الخروج؟"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "تسجيل الخروج"

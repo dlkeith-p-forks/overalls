@@ -322,6 +322,12 @@ sequences from its attempt count plus fixed offsets up to 340, so successive
 commands reused sequences, and the spool correctly stored an identical body
 once. Each command now reserves a disjoint 400-sequence block from the
 workload ledger.
+The 60-minute repository-origin run `87b10ca4372b6665c886027b4fd22872-65-0`
+recorded one unexpected Enrico container exit: the restart case relaunched the
+release during a network partition, it exited before readiness, and the
+container supervisor ended the container. Production's unit restarts Enrico
+after 5 s and allows a 90 s stop, so the supervisor now mirrors both while the
+restart result stays uncertain.
 The sequence space is finite: the modulo allocator reuses a 400-value block
 after 2,499 reservations. The added unit test checks only the first three
 reservations across new client instances; it does not establish uniqueness
@@ -950,6 +956,16 @@ retain the complete mutation matrix and generated exploration. Measured aggregat
 budgets can reach three hours; each individual boot retains a 30-second deadline
 and a five-second forced-termination allowance.
 
+The pinned native engine's default slow-input check counts full callback wall
+time, including fixture setup and real network waits, until ten valid examples
+are reached; its early-run threshold is thirty seconds. Extending ExUnit's
+aggregate timeout does not change this check. Real fifteen-second silence
+histories can therefore fail the health check despite bounded, fast generators.
+Keep case counts, real operation deadlines and existing health policies intact;
+a fixture repair alone is not evidence that the complete consumer gate passes.
+The [GitHub closure review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
+records the current fixture repairs and unresolved full-suite execution.
+
 The frontend preserves original BEAM failures when the native engine reports a
 flaky run. Its native installer stages and atomically renames the shared library:
 compilation must not truncate an inode mapped into another running BEAM. The
@@ -1400,3 +1416,8 @@ Certificate-specific verification includes
 issuance tests. The current decision is
 [unified host CA](repo:docs/architecture/decisions/0124-unified-ssh-host-ca.md);
 [operations](repo:docs/operations/porsche-operations.md) describes trust and renewal.
+
+Version-4 kernel manifest validation independently checks optional explicit Linux
+or Android agents and editor descriptors, retaining the agent declaration in
+immutable identity. The generated Android image catalog entry grants no native
+acceptance; the focused composition/refusal property is BEAM-only evidence.

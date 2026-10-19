@@ -8,7 +8,7 @@ defmodule Marshall.Accounts.User do
     domain: Marshall.Accounts,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshAuthentication]
+    extensions: [AshAuthentication, AshScim.User]
 
   authentication do
     add_ons do
@@ -48,8 +48,37 @@ defmodule Marshall.Accounts.User do
     repo Marshall.Repo
   end
 
+  scim do
+    map :userName, attribute: :email
+    map :externalId, attribute: :scim_external_id
+    map :active, attribute: :active
+
+    multivalued :emails do
+      mirror_primary_to :email
+      map :primary, value: true
+      map :type, value: "work"
+    end
+  end
+
   actions do
     defaults [:read]
+
+    create :scim_create do
+      accept [:email, :active, :scim_external_id]
+      primary? true
+    end
+
+    update :scim_update do
+      accept [:email, :active, :scim_external_id]
+      primary? true
+      require_atomic? false
+      change Marshall.Accounts.ScimLifecycle
+    end
+
+    destroy :scim_destroy do
+      primary? true
+    end
+
     read :internal_lookup
 
     # @cc [owner:ghuntley,label:security] account-git-preferences-self-only
@@ -230,6 +259,7 @@ defmodule Marshall.Accounts.User do
       # before account creation/upsert, regardless of when the token was issued.
       # Email spelling MUST NOT select or replace a guest execution identity.
       validate Marshall.Accounts.EligibleEmail
+      validate Marshall.Accounts.ScimMagicLinkDisabled
 
       change {AshAuthentication.Strategy.RememberMe.MaybeGenerateTokenChange,
               strategy_name: :remember_me}
@@ -248,12 +278,17 @@ defmodule Marshall.Accounts.User do
       # Requests MUST reject malformed mailboxes before token issuance or email
       # enqueue; domains and Linux-name eligibility MUST NOT restrict access.
       validate Marshall.Accounts.EligibleEmail
+      validate Marshall.Accounts.ScimMagicLinkDisabled
 
       run AshAuthentication.Strategy.MagicLink.Request
     end
   end
 
   policies do
+    bypass AshScim.Checks.AshScimInteraction do
+      authorize_if always()
+    end
+
     policy action([:assign_administrator, :security_state, :store_time_zone, :store_locale]) do
       authorize_if Marshall.Accounts.Checks.InternalLookup
     end
@@ -315,6 +350,10 @@ defmodule Marshall.Accounts.User do
     attribute :mfa_reset_required, :boolean, allow_nil?: false, default: false
     attribute :mfa_generation, :integer, allow_nil?: false, default: 0
     attribute :deleted_at, :utc_datetime_usec
+
+    attribute :active, :boolean, allow_nil?: false, default: true, public?: true
+    attribute :scim_external_id, :string, allow_nil?: true, public?: true
+    attribute :scim_retirement_deadline, :utc_datetime_usec, allow_nil?: true, public?: false
 
     attribute :administrator, :boolean, allow_nil?: false, default: false
 

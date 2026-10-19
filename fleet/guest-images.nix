@@ -1,8 +1,10 @@
 { overallsPackages }:
 # @cc [owner:ghuntley,label:deployment] fleet-shared-guest-artifacts
-# Worker staging and control-plane registration MUST consume this same image
-# list with the same deployment package set, including platform public roots
-# and the current immutable browser-editor capability in both guest families.
+# Selected catalog entries MUST be staged identically on every worker using this
+# deployment package set, including platform public roots and current editor
+# capability. Explicit retained-native staging may additionally preserve exact
+# historical images for in-flight provisioning; it MUST NOT change this selection
+# or grant a historical image new capabilities.
 [
   { name = "NixOS"; package = overallsPackages.guest; }
   { name = "Ubuntu 26.04 LTS"; package = overallsPackages.ubuntuGuest; }

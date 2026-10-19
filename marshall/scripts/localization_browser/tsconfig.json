@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@antithesishq/bombadil/internal": ["./node_modules/@antithesishq/bombadil/dist/internal.d.ts"]
+    }
+  },
+  "include": ["probe.ts"]
+}

@@ -250,3 +250,13 @@ msgstr "టెర్మినల్‌లు లేవు"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— ఈ వీక్షణకు ముందున్న అవుట్‌పుట్ స్క్రోల్‌బ్యాక్ విండోలో లేదు —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "టెర్మినల్ ఇన్‌పుట్"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "చదివి వినిపించడానికి అవుట్‌పుట్ చాలా ఎక్కువగా ఉంది; చదవడానికి వరుసలకు స్వయంగా వెళ్లండి"

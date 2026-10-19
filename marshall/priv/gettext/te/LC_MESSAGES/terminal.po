@@ -669,3 +669,23 @@ msgstr "పేరు మార్చు"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "చదవడానికి మాత్రమే హోస్ట్ కన్సోల్ చూడటానికి."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "పిన్ చేయండి"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "%{name}ను పిన్ చేయండి"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "పిన్ తీసివేయండి"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "%{name} పిన్ తీసివేయండి"

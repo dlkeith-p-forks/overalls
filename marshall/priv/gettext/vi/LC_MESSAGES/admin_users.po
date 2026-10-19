@@ -189,3 +189,23 @@ msgstr "· Tài khoản của bạn"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Trang đầu"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Đã xóa"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "Đang xóa máy"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "Đang thử dọn dẹp máy lại"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Không khả dụng"

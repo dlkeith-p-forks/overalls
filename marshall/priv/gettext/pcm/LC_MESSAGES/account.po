@@ -59,6 +59,7 @@ msgstr "Your account"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Add Overalls name as contributor for commits"
 msgid "Commit attribution"
 msgstr "Commit attribution label"
 

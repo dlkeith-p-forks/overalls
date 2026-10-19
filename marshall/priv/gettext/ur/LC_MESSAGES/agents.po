@@ -1551,3 +1551,58 @@ msgstr "· %{value1} استدلال · %{value2}"
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ منتخب کریں · Enter چلائیں · Escape بند کریں"
+
+#: lib/marshall_web/thread_commands.ex:21
+#, elixir-autogen, elixir-format
+msgid "Choose or manage reusable instructions"
+msgstr "دوبارہ استعمال کے قابل ہدایات منتخب یا منظم کریں"
+
+#: lib/marshall_web/thread_commands.ex:30
+#, elixir-autogen, elixir-format
+msgid "Command help"
+msgstr "کمانڈ کی مدد"
+
+#: lib/marshall_web/thread_commands.ex:22
+#, elixir-autogen, elixir-format
+msgid "Context"
+msgstr "سیاق"
+
+#: lib/marshall_web/thread_commands.ex:15
+#, elixir-autogen, elixir-format
+msgid "Explore the task and agree on a plan"
+msgstr "کام کا جائزہ لیں اور منصوبے پر اتفاق کریں"
+
+#: lib/marshall_web/thread_commands.ex:17
+#, elixir-autogen, elixir-format
+msgid "Implement and verify changes"
+msgstr "تبدیلیاں نافذ کریں اور تصدیق کریں"
+
+#: lib/marshall_web/thread_commands.ex:23
+#, elixir-autogen, elixir-format
+msgid "Inspect the working directory and loaded sources"
+msgstr "کام کی ڈائریکٹری اور لوڈ کردہ ماخذ دیکھیں"
+
+#: lib/marshall_web/thread_commands.ex:31
+#, elixir-autogen, elixir-format
+msgid "Learn the composer shortcuts"
+msgstr "پیغام لکھنے کے شارٹ کٹ سیکھیں"
+
+#: lib/marshall_web/thread_commands.ex:29
+#, elixir-autogen, elixir-format
+msgid "Manage access to the thread and its machine"
+msgstr "تھریڈ اور اس کی مشین تک رسائی منظم کریں"
+
+#: lib/marshall_web/thread_commands.ex:27
+#, elixir-autogen, elixir-format
+msgid "Open the editor for this thread's machine"
+msgstr "اس تھریڈ کی مشین کا ایڈیٹر کھولیں"
+
+#: lib/marshall_web/thread_commands.ex:25
+#, elixir-autogen, elixir-format
+msgid "Open this thread's machine terminal"
+msgstr "اس تھریڈ کی مشین کا ٹرمینل کھولیں"
+
+#: lib/marshall_web/thread_commands.ex:19
+#, elixir-autogen, elixir-format
+msgid "Summarize older context for the next turn"
+msgstr "اگلی باری کے لیے پرانے سیاق کا خلاصہ بنائیں"

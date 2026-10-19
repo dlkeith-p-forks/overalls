@@ -144,8 +144,12 @@ defmodule Marshall.Terminal.PeerSocket do
   def handle_info({:DOWN, ref, :process, _, _}, %{monitor: ref} = state),
     do: {:stop, :normal, state}
 
+  # @cc [owner:ghuntley,label:security;recovery] peer-budget-loss-aborts-transport
+  # Lost budget authority MUST abort the transport, not enter a graceful closing
+  # state whose WebSock callbacks may still accept application traffic. Admission
+  # under the successor budget MUST NOT revive an old incarnation's connection.
   def handle_info({:DOWN, ref, :process, _, _}, %{budget_monitor: ref} = state),
-    do: {:stop, :normal, state}
+    do: {:stop, :peer_budget_lost, state}
 
   def handle_info({:terminal_budget_lost, budget}, %{budget: budget} = state),
     do: {:stop, :normal, state}

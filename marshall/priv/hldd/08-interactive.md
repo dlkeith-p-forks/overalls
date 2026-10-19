@@ -23,6 +23,14 @@ transport reset does not preserve established sockets.
 SSH key rename descriptions, confirmation and refusal flashes, and administrative verification/refusal messages use the active locale catalog. Translation does not change ownership checks, recent-passkey requirements or accepted mutation outcomes. English date-only month/day output follows bundled CLDR ordering (`Oct 18`); the UTC provenance remains unchanged.
 
 Catalogs are maintained per language and feature using native Gettext domains.
+The ordinary catalog gate rejects missing, fuzzy and unreviewed English-copy
+forms; diagnostic `--report-only` execution does not establish completeness.
+Human state labels, command descriptions, sign-out confirmation, terminal
+screen-reader announcements and clone failure guidance use their owning feature
+catalogs. Machine state attributes, command tokens, JSON and terminal bytes
+retain their language-neutral values. The authentication library still owns
+sign-out submission and CSRF protection; translated confirmation alone never
+revokes the current login.
 The public `/docs/*` guides are translated. This handbook's chapter titles,
 contents and command reference remain English in every language, with an
 explicit English left-to-right content boundary; reader controls follow the
@@ -561,6 +569,13 @@ Generated [owner-death histories](repo:marshall/test/marshall/terminal/peer_budg
 saturate limits of two to eight slots, kill owners without explicit release and
 verify exact reclamation and replacement admission. This checks local monitor
 accounting; it does not exercise distributed sockets or partitions.
+
+Peers monitor the exact budget incarnation that admitted them. Its death aborts
+incoming transport and retires outgoing peers before successor admissions;
+graceful WebSocket closing is insufficient because it can still dispatch
+application callbacks. The loopback TLS restart history requires exact old-owner
+termination and successor slots while preserving the synthetic host stream.
+It does not establish native guest survival or independent-node recovery.
 
 Lilly's host stream and the Marshall peer hop now use the shared active-once
 WebSocket connection (ADR-0142); neither polls its socket. The terminal codec,
@@ -1582,8 +1597,10 @@ a controller ticket is granted. It does not use a foreign iframe or external
 resource.
 
 The `/android-display` WebSocket upgrade verifies the browser login, signed
-machine ticket, actor binding, mode and generation before creating a relay
-process; failed upgrades return a generic refusal without machine disclosure.
+machine ticket, actor binding, mode and generation before obtaining the shared
+relay from the machine-and-generation registry. Sockets for that generation
+share controller custody; failed upgrades return a generic refusal without
+machine disclosure.
 
 Display tickets and WebSocket upgrades bind the signed emulator generation; a
 browser-supplied generation mismatch is refused before relay creation.

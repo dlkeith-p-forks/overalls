@@ -828,3 +828,8 @@ msgstr "您的部署会将投递记录保留七天，并且在审计历史中只
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` 暂停或恢复单个设备的通知。`device rm` 永久撤销该设备；下次您允许通知时，Mila 会重新注册。删除或停用您的账户会撤销其所有设备。"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "未找到文档"

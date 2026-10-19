@@ -383,3 +383,9 @@ msgstr "← முதல் பக்கம்"
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← பணிகள்"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:389
+#: lib/marshall_web/live/admin/jobs_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "An execution attempt failed. Raw exception details are excluded from administrative history."
+msgstr "செயலாக்க முயற்சி தோல்வியடைந்தது. மூல விதிவிலக்கு விவரங்கள் நிர்வாக வரலாற்றில் சேர்க்கப்படுவதில்லை."

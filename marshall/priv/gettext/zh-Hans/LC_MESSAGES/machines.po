@@ -1886,3 +1886,82 @@ msgstr "← 机器"
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "← 设置"
+
+#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/live/resize_live.ex:256
+#, elixir-autogen, elixir-format
+msgid "Current"
+msgstr "当前步骤"
+
+#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/live/resize_live.ex:255
+#, elixir-autogen, elixir-format
+msgid "Done"
+msgstr "已完成"
+
+#: lib/marshall_web/components/clone_components.ex:417
+#, elixir-autogen, elixir-format
+msgid "a snapshot mount could not be released yet."
+msgstr "尚未能卸载快照。"
+
+#: lib/marshall_web/components/clone_components.ex:433
+#, elixir-autogen, elixir-format
+msgid "cleanup on the host did not finish yet."
+msgstr "主机上的清理尚未完成。"
+
+#: lib/marshall_web/components/clone_components.ex:436
+#, elixir-autogen, elixir-format
+msgid "the copied disk could not be prepared yet."
+msgstr "尚未能准备复制的磁盘。"
+
+#: lib/marshall_web/components/clone_components.ex:420
+#, elixir-autogen, elixir-format
+msgid "the disk copy did not finish; it resumes automatically."
+msgstr "磁盘复制未完成；会自动恢复。"
+
+#: lib/marshall_web/components/clone_components.ex:439
+#, elixir-autogen, elixir-format
+msgid "the host could not confirm the step yet."
+msgstr "主机尚未能确认此步骤。"
+
+#: lib/marshall_web/components/clone_components.ex:429
+#, elixir-autogen, elixir-format
+msgid "the hosts could not connect; the host retries automatically."
+msgstr "主机之间无法连接；主机会自动重试。"
+
+#: lib/marshall_web/components/clone_components.ex:408
+#, elixir-autogen, elixir-format
+msgid "the machine is mid-operation; the host retries automatically."
+msgstr "机器正在执行其他操作；主机会自动重试。"
+
+#: lib/marshall_web/components/clone_components.ex:411
+#, elixir-autogen, elixir-format
+msgid "the source changed state; it continues once the source settles."
+msgstr "源机器的状态已改变；状态稳定后会继续。"
+
+#: lib/marshall_web/components/clone_components.ex:414
+#, elixir-autogen, elixir-format
+msgid "the source snapshot could not be prepared or released yet."
+msgstr "尚未能准备或释放源快照。"
+
+#: lib/marshall_web/components/clone_components.ex:405
+#, elixir-autogen, elixir-format
+msgid "the storage pool is busy; the host retries automatically."
+msgstr "存储池正忙；主机会自动重试。"
+
+#: lib/marshall_web/components/clone_components.ex:426
+#, elixir-autogen, elixir-format
+msgid "the transfer permit lapsed; it is renewed automatically."
+msgstr "传输许可已过期；会自动续期。"
+
+#: lib/marshall_web/components/clone_components.ex:423
+#, elixir-autogen, elixir-format
+msgid "the transfer stream was interrupted; it resumes automatically."
+msgstr "传输流已中断；会自动恢复。"
+
+#: lib/marshall_web/live/resize_live.ex:625
+#: lib/marshall_web/live/resize_live.ex:644
+#: lib/marshall_web/live/resize_live.ex:651
+#, elixir-autogen, elixir-format
+msgid "Confirm"
+msgstr "确认"

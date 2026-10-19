@@ -57,7 +57,7 @@
     # Windows firecracker disk, ADR-0173) so sealed templates never evict each other.
     imageTemplates.budgetBytes = 96 * 1024 * 1024 * 1024;
     images = map (image: { path = toString image.package; })
-      (import ../../guest-images.nix { inherit overallsPackages; });
+      (import ../../staged-guest-images.nix { inherit overallsPackages; });
     protectedCidrs = [ "136.243.69.35/32" "136.243.69.32/32" "136.243.69.55/32" ];
     ingress.enable = true;
   };

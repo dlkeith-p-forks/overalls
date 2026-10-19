@@ -685,3 +685,23 @@ msgstr "umbenennen"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "um die schreibgeschützte Hostkonsole anzusehen."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "Anheften"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "%{name} anheften"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Lösen"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "%{name} lösen"

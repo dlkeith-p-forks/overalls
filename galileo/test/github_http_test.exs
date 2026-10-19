@@ -398,6 +398,172 @@ defmodule Galileo.GitHub.HTTPTest do
     refute_receive {:origin_request, _, _, _}, 0
   end
 
+  # @cc [owner:ghuntley,label:verification;security] github-binary-capability-framing
+  # A GET capability MUST preserve binary bytes and content length through the
+  # verified TLS transport, use only action authority, and open one attempt.
+  test "verified TLS capability GET preserves binary framing and action authority", context do
+    body = :binary.copy(<<0, 255, 128, 13, 10, 1>>, 16_384)
+
+    responder = fn conn ->
+      conn
+      |> put_resp_header("content-type", "application/octet-stream")
+      |> put_resp_header("content-length", Integer.to_string(byte_size(body)))
+      |> put_resp_header("set-cookie", "storage-secret")
+      |> send_resp(200, body)
+    end
+
+    origin =
+      start_supervised!(
+        {Bandit,
+         plug: {Galileo.GitHubOrigin, {self(), responder}},
+         scheme: :https,
+         ip: {127, 0, 0, 1},
+         port: 0,
+         startup_log: false,
+         certfile: Path.join(@fixtures, "localhost.pem"),
+         keyfile: Path.join(@fixtures, "localhost.key")}
+      )
+
+    {:ok, {_, port}} = ThousandIsland.listener_info(origin)
+
+    transfer = %{
+      url: "https://github-cloud.s3.amazonaws.com/object?sig=synthetic-download",
+      headers: [{"authorization", "RemoteAuth synthetic-download"}],
+      method: "GET",
+      object: %{
+        oid: Base.encode16(:crypto.hash(:sha256, body), case: :lower),
+        size: byte_size(body),
+        repository: "/o/r.git/info/lfs"
+      },
+      ttl: 60_000
+    }
+
+    assert {:ok, path} =
+             Capabilities.mint_transfer(transfer, binding(), lease(), context.capabilities)
+
+    stream = fn authorization, options ->
+      assert authorization.target == "https://github-cloud.s3.amazonaws.com"
+      assert authorization.headers == transfer.headers
+      assert Keyword.fetch!(options, :path) == "/object"
+      assert Keyword.fetch!(options, :query) == "?sig=synthetic-download"
+
+      Galileo.Upstream.stream(
+        %{authorization | target: "https://localhost:#{port}"},
+        Keyword.put(options, :transport_opts, cacertfile: Path.join(@fixtures, "ca.pem"))
+      )
+    end
+
+    result =
+      Galileo.HTTP.call(
+        request("GET", path, "")
+        |> put_req_header("authorization", "Bearer guest"),
+        config(control(), context.capabilities, stream)
+      )
+
+    assert result.status == 200
+    assert result.resp_body == body
+    assert get_resp_header(result, "content-length") == [Integer.to_string(byte_size(body))]
+    assert get_resp_header(result, "set-cookie") == []
+    assert_receive {:origin_request, "GET", "/object", headers}
+    assert {"authorization", "RemoteAuth synthetic-download"} in headers
+    refute {"authorization", "Bearer synthetic-owner"} in headers
+    refute {"authorization", "Bearer guest"} in headers
+    refute_receive {:origin_request, _, _, _}, 100
+    assert_receive {:closed, %{"id" => @lease}}
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] github-capability-withdrawal
+  # Withdrawal during a binary GET MUST terminate the existing frontend stream,
+  # close its lease once, and never replay the storage request.
+  test "withdrawal cuts off a partial TLS capability download without replay", context do
+    owner = self()
+
+    responder = fn conn ->
+      conn =
+        conn
+        |> put_resp_header("content-type", "application/octet-stream")
+        |> put_resp_header("content-length", "6")
+        |> send_chunked(200)
+
+      {:ok, conn} = chunk(conn, <<0, 255, 128>>)
+      send(owner, {:storage_stream, self()})
+
+      receive do
+        :release -> conn
+      after
+        2000 -> conn
+      end
+    end
+
+    origin =
+      start_supervised!(
+        {Bandit,
+         plug: {Galileo.GitHubOrigin, {owner, responder}},
+         scheme: :https,
+         ip: {127, 0, 0, 1},
+         port: 0,
+         startup_log: false,
+         certfile: Path.join(@fixtures, "localhost.pem"),
+         keyfile: Path.join(@fixtures, "localhost.key")}
+      )
+
+    {:ok, {_, port}} = ThousandIsland.listener_info(origin)
+
+    assert {:ok, path} =
+             Capabilities.mint(
+               "https://release-assets.githubusercontent.com/object?sig=synthetic",
+               binding(),
+               lease(),
+               context.capabilities
+             )
+
+    control =
+      Galileo.ControlStub.start(fn
+        "galileo.github.authorize", _ ->
+          {:ok,
+           %{
+             "target" => "https://api.github.com",
+             "strip_prefix" => nil,
+             "headers" => [["authorization", "Bearer synthetic-owner"]],
+             "ttl" => 500,
+             "lease" => GitHub.encode_lease(lease())
+           }}
+
+        "galileo.github.renew", _ ->
+          send(owner, :withdrawn)
+          {:error, "unauthorized"}
+
+        "galileo.github.close", _ ->
+          send(owner, :lease_closed)
+          {:ok, %{"closed" => true}}
+      end)
+
+    stream = fn authorization, options ->
+      assert authorization.headers == []
+
+      Galileo.Upstream.stream(
+        %{authorization | target: "https://localhost:#{port}"},
+        Keyword.put(options, :transport_opts, cacertfile: Path.join(@fixtures, "ca.pem"))
+      )
+    end
+
+    assert catch_exit(
+             Galileo.HTTP.call(
+               request("GET", path, ""),
+               config(control, context.capabilities, stream)
+             )
+           ) == :shutdown
+
+    assert_receive {:storage_stream, handler}
+    send(handler, :release)
+    assert_receive :withdrawn
+    assert_receive :lease_closed
+    refute_receive :lease_closed, 0
+    assert_receive {:origin_request, "GET", "/object", _}
+    refute_receive {:origin_request, _, _, _}, 100
+    assert Process.get({Galileo.GitHub.HTTP, :response}) == nil
+  end
+
   @spec emit(keyword(), pos_integer(), [{String.t(), String.t()}], binary()) :: map()
   defp emit(options, status, headers, body) do
     consume = Keyword.fetch!(options, :consume)

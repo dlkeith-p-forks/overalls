@@ -41,6 +41,12 @@ defmodule Marshall.Teams.TeamMember do
       accept [:team_id, :user_id, :role, :recorded_by_id]
     end
 
+    create :scim_record do
+      accept [:team_id, :user_id, :role]
+      primary? true
+      change Marshall.Teams.ScimMembership
+    end
+
     update :replace_role do
       accept [:role, :recorded_by_id]
     end

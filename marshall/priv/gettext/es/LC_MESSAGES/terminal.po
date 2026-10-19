@@ -674,3 +674,23 @@ msgstr "renombrar"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "para ver la consola del host de solo lectura."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "Fijar"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "Fijar %{name}"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Desfijar"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "Desfijar %{name}"

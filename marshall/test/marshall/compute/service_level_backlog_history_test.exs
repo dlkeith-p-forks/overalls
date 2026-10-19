@@ -42,8 +42,11 @@ defmodule Marshall.Compute.ServiceLevelBacklogHistoryTest do
     future_first = draw("future_first", boolean())
     family = draw("family", member_of([:operation, :workflow]))
 
+    isolated_backlog_history(family, overdue, future_first)
+  end
+
+  test "fixed operation and workflow deadline boundaries preserve publication invariants" do
     for {kind, expired, first} <- [
-          {family, overdue, future_first},
           {:operation, 0, true},
           {:operation, 99, true},
           {:operation, 100, false},
@@ -55,18 +58,27 @@ defmodule Marshall.Compute.ServiceLevelBacklogHistoryTest do
           {:workflow, 101, true},
           {:workflow, 102, false}
         ] do
-      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
-
-      try do
-        :ok = backlog_history(kind, expired, first)
-      after
-        :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
-      end
+      isolated_backlog_history(kind, expired, first)
     end
   end
 
   @type family :: :operation | :workflow
   @type attempt :: ServiceLevelAttempt.t() | WorkflowServiceLevelAttempt.t()
+
+  # @cc [owner:ghuntley,label:verification;accounting] backlog-history-exploration-budget
+  # All one hundred generated histories MUST retain their real database oracles.
+  # The ten deterministic boundary histories MUST execute once as an exhaustive
+  # ordinary test, not be redundantly repeated inside every generated history.
+  @spec isolated_backlog_history(family(), 0..102, boolean()) :: :ok
+  defp isolated_backlog_history(kind, expired, first) do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+
+    try do
+      :ok = backlog_history(kind, expired, first)
+    after
+      :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
+    end
+  end
 
   @spec backlog_history(family(), 0..102, boolean()) :: :ok
   defp backlog_history(kind, expired, future_first) do

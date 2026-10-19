@@ -2454,7 +2454,7 @@ defmodule MarshallWeb.ThreadsLive do
             <%= if @context_available do %>
               <dl class="kv">
                 <dt>{dgettext("agents", "Status")}</dt><dd>
-                  {skill_value(@context_info, :status, "Ready")}
+                  {context_status_label(skill_value(@context_info, :status, nil))}
                 </dd><dt>
                   {dgettext("agents", "Working directory")}
                 </dt><dd class="break">
@@ -2723,11 +2723,16 @@ defmodule MarshallWeb.ThreadsLive do
   defp dialog_title(:skills), do: dgettext("agents", "Skills")
   defp dialog_title(:help), do: dgettext("agents", "Composer help")
 
+  @spec context_status_label(term()) :: String.t()
+  defp context_status_label(:pending), do: dgettext("agents", "Pending")
+  defp context_status_label(:ready), do: dgettext("agents", "Ready")
+  defp context_status_label(_), do: dgettext("agents", "Unknown")
+
   @spec context_usage(map(), atom()) :: String.t()
   defp context_usage(info, key) do
     case skill_value(skill_value(info, :usage, %{}), key) do
       value when is_integer(value) -> Integer.to_string(value)
-      _ -> "Unknown"
+      _ -> dgettext("agents", "Unknown")
     end
   end
 

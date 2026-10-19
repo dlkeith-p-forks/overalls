@@ -73,8 +73,10 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   database-recovery-active-silent = import ./machines/database-recovery { pkgs = testPkgs; inherit packages; activeHolder = true; faultMode = "silent"; };
   database-recovery-active-asymmetric = import ./machines/database-recovery { pkgs = testPkgs; inherit packages; activeHolder = true; faultMode = "asymmetric"; };
   teams-browser = import ./machines/teams service;
+  scim = import ./machines/scim service;
   installer-trust = import ./machines/installer-trust service;
   admin-account-browser = import ./machines/admin-account service;
+  localization-account-porsche = import ./machines/localization service;
   control-room-browser = import ./machines/control-room service;
   credential-self-service-browser = import ./machines/credential-self-service service;
   job-history-browser = import ./machines/job-history service;
@@ -188,6 +190,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   native-reset-probes = import ./evaluation/native-reset-probes.nix { pkgs = buildPkgs; inherit packages; };
   native-freebsd-reset = import ./machines/native-reset { pkgs = testPkgs; inherit packages; };
   android-emulator-software = import ./machines/android-emulator { pkgs = testPkgs; inherit packages; };
+  android-guest-unit = import ./evaluation/android-guest.nix { pkgs = buildPkgs; inherit packages; };
   native-freebsd-transport = import ./machines/native-transport { pkgs = testPkgs; inherit packages; };
   native-freebsd-services = import ./machines/native-services { pkgs = testPkgs; inherit packages; };
   github-tools-freebsd-retained = import ./machines/native-services {

@@ -249,3 +249,13 @@ msgstr "Нет терминалов"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— вывод до этого представления отсутствует в истории прокрутки —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "Ввод терминала"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "Слишком много вывода для озвучивания; переходите по строкам вручную, чтобы прочитать его"

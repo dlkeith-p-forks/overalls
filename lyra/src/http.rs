@@ -4,6 +4,50 @@ use reqwest::{redirect::Policy, Method, StatusCode, Url};
 use std::io::{self, Read};
 use std::time::Duration;
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum RequestStage {
+    Validation,
+    Client,
+    Send,
+    Status,
+    Body,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct RequestFailure {
+    pub stage: RequestStage,
+    pub kind: io::ErrorKind,
+}
+
+impl RequestFailure {
+    pub(crate) fn diagnostic_code(self) -> i32 {
+        let stage = match self.stage {
+            RequestStage::Validation => 0,
+            RequestStage::Client => 1,
+            RequestStage::Send => 2,
+            RequestStage::Status => 3,
+            RequestStage::Body => 4,
+        };
+        let kind = match self.kind {
+            io::ErrorKind::TimedOut => 0,
+            io::ErrorKind::UnexpectedEof => 1,
+            io::ErrorKind::ConnectionReset
+            | io::ErrorKind::ConnectionAborted
+            | io::ErrorKind::BrokenPipe
+            | io::ErrorKind::NotConnected => 2,
+            io::ErrorKind::InvalidData | io::ErrorKind::InvalidInput => 3,
+            io::ErrorKind::PermissionDenied => 4,
+            _ => 5,
+        };
+        80 + stage * 6 + kind
+    }
+}
+
+struct Observation<'a> {
+    expected: Option<StatusCode>,
+    failed: &'a mut dyn FnMut(RequestFailure),
+}
+
 fn valid_https(url: &str) -> bool {
     let Ok(parsed) = Url::parse(url) else {
         return false;
@@ -76,7 +120,33 @@ pub fn request(
     maximum: usize,
     timeout: Duration,
 ) -> io::Result<Vec<u8>> {
-    request_with_status(url, method, body, bearer, maximum, timeout, None)
+    request_observed(url, method, body, bearer, maximum, timeout, &mut |_| {})
+}
+
+// @cc [owner:ghuntley,label:security] lyra-closed-http-failure-observation
+// Observation MUST contain only fixed stages and ErrorKind categories, never
+// error text or request data. It MUST NOT alter request bounds or failure flow.
+pub(crate) fn request_observed(
+    url: &str,
+    method: Method,
+    body: Option<&[u8]>,
+    bearer: Option<&str>,
+    maximum: usize,
+    timeout: Duration,
+    failed: &mut impl FnMut(RequestFailure),
+) -> io::Result<Vec<u8>> {
+    request_with_status(
+        url,
+        method,
+        body,
+        bearer,
+        maximum,
+        timeout,
+        Observation {
+            expected: None,
+            failed,
+        },
+    )
 }
 
 pub fn request_exact(
@@ -92,7 +162,10 @@ pub fn request_exact(
         None,
         maximum,
         timeout,
-        Some(expected),
+        Observation {
+            expected: Some(expected),
+            failed: &mut |_| {},
+        },
     )
 }
 
@@ -143,12 +216,21 @@ fn request_with_status(
     bearer: Option<&str>,
     maximum: usize,
     timeout: Duration,
-    expected: Option<StatusCode>,
+    observation: Observation<'_>,
 ) -> io::Result<Vec<u8>> {
     if !valid_https(url) || maximum == 0 || timeout.is_zero() {
+        (observation.failed)(RequestFailure {
+            stage: RequestStage::Validation,
+            kind: io::ErrorKind::InvalidInput,
+        });
         return Err(io::Error::other("invalid HTTPS request"));
     }
-    let client = client(url, timeout)?;
+    let client = client(url, timeout).inspect_err(|error| {
+        (observation.failed)(RequestFailure {
+            stage: RequestStage::Client,
+            kind: error.kind(),
+        })
+    })?;
     let mut outbound = client.request(method, url);
     if let Some(secret) = bearer {
         outbound = outbound
@@ -160,17 +242,36 @@ fn request_with_status(
             .header(CONTENT_TYPE, "application/json")
             .body(bytes.to_vec());
     }
-    let response = outbound
-        .send()
-        .map_err(|_| io::Error::other("HTTPS request failed"))?;
-    if !accepted_status(response.status(), expected)
+    let response = outbound.send().map_err(|error| {
+        (observation.failed)(RequestFailure {
+            stage: RequestStage::Send,
+            kind: if error.is_timeout() {
+                io::ErrorKind::TimedOut
+            } else if error.is_connect() {
+                io::ErrorKind::ConnectionAborted
+            } else {
+                io::ErrorKind::Other
+            },
+        });
+        io::Error::other("HTTPS request failed")
+    })?;
+    if !accepted_status(response.status(), observation.expected)
         || response
             .content_length()
             .is_some_and(|length| length > maximum as u64)
     {
+        (observation.failed)(RequestFailure {
+            stage: RequestStage::Status,
+            kind: io::ErrorKind::PermissionDenied,
+        });
         return Err(io::Error::other("HTTPS response unavailable"));
     }
-    bounded_body(response, maximum)
+    bounded_body(response, maximum).inspect_err(|error| {
+        (observation.failed)(RequestFailure {
+            stage: RequestStage::Body,
+            kind: error.kind(),
+        })
+    })
 }
 
 fn bounded_body(reader: impl Read, maximum: usize) -> io::Result<Vec<u8>> {
@@ -189,6 +290,55 @@ fn bounded_body(reader: impl Read, maximum: usize) -> io::Result<Vec<u8>> {
 mod tests {
     use super::*;
     use hegel::{generators as gs, TestCase};
+
+    #[test]
+    fn failure_observation_is_closed_and_preserves_refusal() {
+        let mut failures = Vec::new();
+        let error = request_observed(
+            "http://invalid.test/private-data",
+            Method::GET,
+            None,
+            None,
+            16,
+            Duration::from_secs(1),
+            &mut |failure| failures.push(failure),
+        )
+        .unwrap_err();
+        assert_eq!(error.kind(), io::ErrorKind::Other);
+        assert_eq!(error.to_string(), "invalid HTTPS request");
+        assert_eq!(
+            failures,
+            vec![RequestFailure {
+                stage: RequestStage::Validation,
+                kind: io::ErrorKind::InvalidInput
+            }]
+        );
+        assert_eq!(failures[0].diagnostic_code(), 83);
+        assert_eq!(
+            RequestFailure {
+                stage: RequestStage::Send,
+                kind: io::ErrorKind::TimedOut
+            }
+            .diagnostic_code(),
+            92
+        );
+        assert_eq!(
+            RequestFailure {
+                stage: RequestStage::Body,
+                kind: io::ErrorKind::UnexpectedEof
+            }
+            .diagnostic_code(),
+            105
+        );
+        assert_eq!(
+            RequestFailure {
+                stage: RequestStage::Body,
+                kind: io::ErrorKind::BrokenPipe
+            }
+            .diagnostic_code(),
+            106
+        );
+    }
 
     #[test]
     fn only_verified_https_origins_are_accepted() {

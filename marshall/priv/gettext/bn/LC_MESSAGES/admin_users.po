@@ -190,3 +190,23 @@ msgstr "· আপনার অ্যাকাউন্ট"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← প্রথম পৃষ্ঠা"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "মুছে ফেলা হয়েছে"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "মেশিন মুছে ফেলা হচ্ছে"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "মেশিন পরিষ্কারের পুনরায় চেষ্টা চলছে"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "পাওয়া যাচ্ছে না"

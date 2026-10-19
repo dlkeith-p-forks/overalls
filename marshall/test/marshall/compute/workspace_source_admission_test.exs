@@ -34,8 +34,21 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   ]
 
   @big 1_099_511_627_776
+  @type fixture :: %{
+          host: Marshall.Compute.Host.t(),
+          pool: Marshall.Compute.StoragePool.t(),
+          epoch: pos_integer(),
+          report: OverallsProtocol.report(),
+          user: Marshall.Accounts.User.t(),
+          sequence: pos_integer()
+        }
 
-  setup do
+  setup tags do
+    if tags[:hegel_case_sandbox], do: :ok, else: workspace_fixture()
+  end
+
+  @spec workspace_fixture() :: fixture()
+  defp workspace_fixture do
     fixture = host_fixture()
     fixture |> Map.put(:user, user()) |> Map.put(:sequence, 1) |> refresh()
   end
@@ -44,12 +57,17 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   # Generated admissions MUST return the original VM for the same key and source,
   # conflict for the same key with any other source (including none), and refuse
   # a source on a profile without egress without creating any allocation.
-  test "the workspace source joins idempotent admission identity", c do
+  # Each history MUST own its sandbox so earlier generated admissions cannot
+  # consume the next history's measured capacity.
+  @tag hegel_case_sandbox: true
+  test "the workspace source joins idempotent admission identity" do
     Hegel.check(
       fn ->
         first = draw("first", member_of([nil | @sources]))
         second = draw("second", member_of([nil | @sources]))
         profile = draw("profile", member_of([:standard, :oss]))
+        isolate_property_case()
+        c = workspace_fixture()
         refresh(Map.put(c, :sequence, System.unique_integer([:positive, :monotonic]) + 1))
         key = Ash.UUID.generate()
         first_source = source(first)
