@@ -27,6 +27,8 @@ wrapper removes inherited GitHub settings, supplies only module values and loads
 the secret through a systemd credential. Partial module configuration fails
 evaluation; the runtime independently validates complete values and callback
 syntax. No callback-host equality with the configured Marshall origin is implied.
+The Overalls fleet's placeholder bundle is SOPS-encrypted and nonfunctional;
+replace its client ID and secret before production OAuth use.
 
 `services.marshall.githubToolsRelease` and `services.ziggy.githubToolsRelease`
 select the same immutable public client release. Marshall receives
