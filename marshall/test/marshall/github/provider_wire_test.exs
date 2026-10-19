@@ -1,5 +1,7 @@
 defmodule Marshall.GitHub.ProviderWireTest do
   use ExUnit.Case, async: false
+  import Hegel
+  import Hegel.Gen
   alias Marshall.GitHub.{Grant, Provider}
 
   @client_id "synthetic-oauth-client"
@@ -136,6 +138,31 @@ defmodule Marshall.GitHub.ProviderWireTest do
       assert_receive {:token_attempt, ^status}
       refute_receive {:token_attempt, ^status}, 0
     end
+  end
+
+  # @cc [owner:ghuntley,label:verification;protocol] oauth-grant-shape-property
+  # Every generated removal of a documented OAuth response field MUST be rejected
+  # by the production grant decoder. Bearer authority is checked at the provider
+  # boundary by the fixed-response example above. This exercises the mock provider boundary without claiming
+  # live GitHub consent or transport behavior.
+  property "generated OAuth response mutations never establish a grant", test_cases: 100 do
+    mutation =
+      draw(
+        "mutation",
+        member_of([
+          "access_token",
+          "refresh_token",
+          "expires_in",
+          "refresh_token_expires_in",
+          "scope"
+        ])
+      )
+
+    response = documented_grant("property")
+
+    mutated = Map.delete(response, mutation)
+
+    assert {:error, :invalid_response} = Grant.decode(mutated)
   end
 
   @spec documented_grant(String.t()) :: %{String.t() => String.t() | pos_integer()}
