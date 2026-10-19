@@ -12,7 +12,7 @@ defmodule Marshall.Android.DisplaySocket do
       }) do
     with {:ok, _expiry} <- Marshall.Accounts.Login.present(login_jti, actor.id),
          true <- claim.actor_id == actor.id,
-         {:ok, relay} <- Marshall.Android.DisplayRelay.start_link(generation),
+         {:ok, relay} <- Marshall.Android.DisplayRegistry.relay({claim.machine_id, generation}),
          :ok <- Marshall.Android.DisplayRelay.attach(relay, self(), mode) do
       {:ok, %{relay: relay, generation: generation, mode: mode}}
     else

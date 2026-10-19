@@ -56,7 +56,7 @@ msgstr ""
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
+msgid "Commit attribution"
 msgstr ""
 
 #: lib/marshall_web/live/account_live.ex:801
@@ -163,11 +163,6 @@ msgstr ""
 #: lib/marshall_web/live/account_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Git identity"
-msgstr ""
-
-#: lib/marshall_web/live/account_live.ex:836
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 msgstr ""
 
 #: lib/marshall_web/live/account_live.ex:267
@@ -344,7 +339,7 @@ msgstr ""
 msgid "SSH keys are temporarily unavailable."
 msgstr ""
 
-#: lib/marshall_web/live/account_live.ex:842
+#: lib/marshall_web/live/account_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
 msgstr ""
@@ -412,11 +407,6 @@ msgstr ""
 #: lib/marshall_web/live/account_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
-msgstr ""
-
-#: lib/marshall_web/live/account_live.ex:830
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
 msgstr ""
 
 #: lib/marshall_web/live/account_live.ex:482

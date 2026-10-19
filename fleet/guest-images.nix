@@ -8,6 +8,7 @@
   { name = "Ubuntu 26.04 LTS"; package = overallsPackages.ubuntuGuest; }
   { name = "Arch Linux"; package = overallsPackages.archGuest; }
   { name = "AlmaLinux"; package = overallsPackages.almaLinuxGuest; }
+  { name = "Android SDK (NixOS)"; package = overallsPackages.androidGuest; }
 ]
 # Only separately promoted native packages enter the catalog. Source receipts,
 # staging images and assembly kits retain false admission flags; the promoted
