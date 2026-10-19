@@ -23,6 +23,11 @@
     encryptedFile = "${../../../secrets/overalls-cachix.enc.json}";
     outputs.token = { format = "raw"; secrets = [ "CACHIX_AUTH_TOKEN" ]; };
   };
+  services.marshall.integrations.github = {
+    clientId = "placeholder-github-client-id";
+    clientSecretFile = "/run/overalls-secrets/github-oauth-placeholder/secret";
+    redirectUri = "https://ghuntley.dev/auth/github-com/callback";
+  };
   systemd.services.cachix-watch-store-agent = {
     requires = [ "overalls-secrets-cachix.service" ];
     after = [ "overalls-secrets-cachix.service" ];

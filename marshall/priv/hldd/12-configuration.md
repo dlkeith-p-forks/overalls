@@ -21,12 +21,14 @@ does not establish live reachability, cache hit rate or physical rollout.
 
 ## GitHub OAuth deployment inputs
 
-NixOS exposes `services.marshall.github.clientId`, `clientSecretFile` and
+NixOS exposes `services.marshall.integrations.github.clientId`, `clientSecretFile` and
 `redirectUri`, all defaulting to `null`. Configure all three or none. The unit
 wrapper removes inherited GitHub settings, supplies only module values and loads
 the secret through a systemd credential. Partial module configuration fails
 evaluation; the runtime independently validates complete values and callback
 syntax. No callback-host equality with the configured Marshall origin is implied.
+The Overalls fleet's placeholder bundle is SOPS-encrypted and nonfunctional;
+replace its client ID and secret before production OAuth use.
 
 `services.marshall.githubToolsRelease` and `services.ziggy.githubToolsRelease`
 select the same immutable public client release. Marshall receives

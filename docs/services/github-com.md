@@ -80,7 +80,7 @@ Marshall's `form-action` policy permits the fixed `https://github.com` origin
 for the authorization POST redirect. It permits no arbitrary HTTPS form target;
 scripts, connections and frames retain their same-origin restrictions.
 
-On NixOS, set `services.marshall.github.clientId`, `clientSecretFile` and
+On NixOS, set `services.marshall.integrations.github.clientId`, `clientSecretFile` and
 `redirectUri` together. Their defaults are `null`; partial configuration fails a
 module assertion. The unit wrapper removes inherited GitHub settings and
 selects only module-configured values. `clientSecretFile` enters a systemd

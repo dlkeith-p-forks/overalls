@@ -73,6 +73,7 @@ defmodule Marshall.EditorFixture do
     {:ok, image} = Images.register(manifest, "editor-test-image")
     machine = "sha256:" <> Base.encode16(:crypto.strong_rand_bytes(32), case: :lower)
     source = ComputeFixtures.host_fixture(%{machine_id: machine})
+
     checkpoint_image_ids =
       if platform == :linux,
         do: Enum.uniq([image.id | source.report.inventory["checkpoint_image_ids"]]),

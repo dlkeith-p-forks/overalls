@@ -194,7 +194,13 @@ defmodule MarshallWeb.OverviewLive do
                   >
                     <div>
                       <.link navigate={~p"/machines/#{vm.id}"} class="machine-name">{vm.name}</.link><p>
-                        {dgettext("machines", "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk", value1: vm.vcpu, value2: gib(vm.memory_bytes), value3: gib(vm.disk_bytes))} · {if vm.owner,
+                        {dgettext(
+                          "machines",
+                          "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk",
+                          value1: vm.vcpu,
+                          value2: gib(vm.memory_bytes),
+                          value3: gib(vm.disk_bytes)
+                        )} · {if vm.owner,
                           do: dgettext("machines", "Personal"),
                           else: dgettext("machines", "Shared")}
                       </p>
