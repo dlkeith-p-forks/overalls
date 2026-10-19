@@ -14258,8 +14258,8 @@
       "denial": "An unknown or another machine's session exits 1 (not_found); attach without a pty exits 2 before any ticket is requested; a browser ticket on the gateway route, or an SSH ticket on the browser route, closes 4003.",
       "scope": "BEAM end-to-end through a real Porsche listener, control link and TLS FleetEndpoint against a fake host stream; Porsche relay against a fake gateway; the native fleet journey on a real guest is implemented but not yet recorded passing.",
       "status": "partial",
-      "gaps": "No recorded native run of the porsche-terminal-fleet journey; Mila does not yet drive attach.",
-      "preferred_gap": "Record a passing porsche-terminal-fleet run.",
+      "gaps": "The recorded journey attaches from the OpenSSH client; Mila's terminal view is covered by unit and transport tests only.",
+      "preferred_gap": "Drive the Mila terminal view against a provisioned guest in a fleet machine test.",
       "evidence": [
         {
           "kind": "unit",
@@ -14280,7 +14280,9 @@
           "path": "nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py",
           "assertion": "Porsche SSH attach shares the browser terminal session",
           "scope": "Real OpenSSH client through Porsche into the personal session opened by TerminalLive's production call on a real guest.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`porsche-terminal-fleet` passed"
         }
       ]
     },
@@ -14295,8 +14297,8 @@
       "denial": "Typed input on a read-only attach never reaches the session, even if Marshall granted rw.",
       "scope": "BEAM end-to-end and Porsche relay tests plus a Hegel credit model; native guest effect not yet recorded.",
       "status": "partial",
-      "gaps": "No recorded native run.",
-      "preferred_gap": "Record a passing porsche-terminal-fleet run.",
+      "gaps": "Recorded for one read-only OpenSSH viewer; Mila's read-only mode is covered by unit tests only.",
+      "preferred_gap": "Drive read-only attach from Mila in a fleet machine test.",
       "evidence": [
         {
           "kind": "property",
@@ -14317,7 +14319,9 @@
           "path": "nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py",
           "assertion": "read-only SSH attach input never reaches the guest",
           "scope": "Guest shell output proves read-only input was never evaluated.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`porsche-terminal-fleet` passed"
         }
       ]
     },
@@ -14333,8 +14337,8 @@
       "denial": "A revoked key or closed SSH session cannot keep reading or writing the terminal beyond the 5-second recheck.",
       "scope": "BEAM end-to-end bound under 6.5 s including teardown; the native 5-second bound from commit is implemented in the fleet journey but not yet recorded.",
       "status": "partial",
-      "gaps": "No recorded native run; latency while an SSH client stalls output is unmeasured.",
-      "preferred_gap": "Record a passing porsche-terminal-fleet run.",
+      "gaps": "Revocation latency while an SSH client stalls output is unmeasured.",
+      "preferred_gap": "Measure revocation latency with a stalled SSH client.",
       "evidence": [
         {
           "kind": "unit",
@@ -14348,7 +14352,9 @@
           "path": "nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py",
           "assertion": "SSH key revocation closes a live attach within five seconds",
           "scope": "Production key removal through the fixture operator; exit time compared with the post-commit wall clock.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`porsche-terminal-fleet` passed"
         }
       ]
     },
@@ -14363,8 +14369,8 @@
       "denial": "No journal on any fleet machine contains typed or echoed attach bytes.",
       "scope": "Captured-log assertions in the Porsche relay test; native journal scan implemented but not yet recorded.",
       "status": "partial",
-      "gaps": "No recorded native run.",
-      "preferred_gap": "Record a passing porsche-terminal-fleet run.",
+      "gaps": "Recorded for the fleet journals only; device-side logs are outside the test.",
+      "preferred_gap": "Inspect Mila device logs in a device-farm run.",
       "evidence": [
         {
           "kind": "unit",
@@ -14378,7 +14384,9 @@
           "path": "nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py",
           "assertion": "no SSH attach terminal bytes reach any journal",
           "scope": "journalctl scan of every Marshall, provisioner and client machine for a random marker.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`porsche-terminal-fleet` passed"
         }
       ]
     },
