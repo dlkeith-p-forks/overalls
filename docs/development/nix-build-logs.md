@@ -4,9 +4,9 @@ The native implementation now lives in the public
 [ghuntley/nix-compact](https://github.com/ghuntley/nix-compact) repository.
 This repository consumes its pinned flake through `flake.lock` and `devenv.lock`.
 
-- [Standalone usage and flake interfaces](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/README.md)
-- [Logging, retrieval, retention and replay manual](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/MANUAL.md)
-- [Implementation design and verification boundaries](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/DESIGN.md)
+- [Standalone usage and flake interfaces](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/README.md)
+- [Logging, retrieval, retention and replay manual](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/MANUAL.md)
+- [Implementation design and verification boundaries](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/DESIGN.md)
 
 `devenv shell` uses the standalone package factory with this repository's pinned
 development package set. The fleet's NixOS adapter uses the stable host package
