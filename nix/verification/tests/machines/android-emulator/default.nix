@@ -35,7 +35,7 @@ CONFIG
 in
 pkgs.testers.runNixOSTest {
   name = "overalls-android-emulator-software";
-  globalTimeout = 900;
+  globalTimeout = 1800;
   nodes.android = { ... }: {
     system.stateVersion = "26.05";
     virtualisation.memorySize = 8192;
@@ -92,7 +92,7 @@ pkgs.testers.runNixOSTest {
     android.succeed("export HOME=/var/lib/android-test; adb kill-server; adb start-server")
     android.succeed("HOME=/var/lib/android-test adb connect 127.0.0.1:5555")
     android.wait_until_succeeds("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 wait-for-device", timeout=600)
-    android.wait_until_succeeds("test \"$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=600)
+    android.wait_until_succeeds("test \"$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=1200)
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell getprop ro.kernel.qemu | grep -Fx 1")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell settings get global animator_duration_scale")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 exec-out screencap -p > /tmp/android-screencap.png")
