@@ -14,8 +14,7 @@ defmodule Marshall.Android.DisplaySocket do
          true <- claim.actor_id == actor.id,
          {:ok, relay} <- Marshall.Android.DisplayRelay.start_link(generation),
          :ok <- Marshall.Android.DisplayRelay.attach(relay, self(), mode) do
-      {:push, {:text, Jason.encode!(%{op: "ready", generation: generation, mode: mode})},
-       %{relay: relay, generation: generation, mode: mode}}
+      {:ok, %{relay: relay, generation: generation, mode: mode}}
     else
       _ -> {:stop, :unauthorized, %{}}
     end
