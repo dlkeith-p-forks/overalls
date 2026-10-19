@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2026 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
+version = 1
+
+# The demo Phoenix app contains a mix of generator-emitted scaffolding and
+# hand-written code. Rather than annotate every file individually, we
+# declare blanket coverage here so REUSE compliance checks pass.
+[[annotations]]
+path = "demo/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Zach Daniel"
+SPDX-License-Identifier = "MIT"
+
+# Auto-generated DSL reference docs are emitted by `mix spark.cheat_sheets`
+# without a header. Cover them in bulk rather than rewriting on every
+# regeneration.
+[[annotations]]
+path = "documentation/dsls/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Zach Daniel"
+SPDX-License-Identifier = "MIT"

@@ -73,6 +73,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   database-recovery-active-silent = import ./machines/database-recovery { pkgs = testPkgs; inherit packages; activeHolder = true; faultMode = "silent"; };
   database-recovery-active-asymmetric = import ./machines/database-recovery { pkgs = testPkgs; inherit packages; activeHolder = true; faultMode = "asymmetric"; };
   teams-browser = import ./machines/teams service;
+  scim = import ./machines/scim service;
   installer-trust = import ./machines/installer-trust service;
   admin-account-browser = import ./machines/admin-account service;
   localization-account-porsche = import ./machines/localization service;
