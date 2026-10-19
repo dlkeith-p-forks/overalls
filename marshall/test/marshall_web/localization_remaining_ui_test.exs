@@ -30,8 +30,15 @@ defmodule MarshallWeb.LocalizationRemainingUITest do
 
         document = LazyHTML.from_fragment(html)
         assert LazyHTML.query(document, "button") |> LazyHTML.text() |> String.trim() == expected
-        assert document |> LazyHTML.query("button") |> LazyHTML.attribute("aria-pressed") == [to_string(pinned)]
-        assert document |> LazyHTML.query("button") |> LazyHTML.attribute("phx-value-id") == ["machine-123"]
+
+        assert document |> LazyHTML.query("button") |> LazyHTML.attribute("aria-pressed") == [
+                 to_string(pinned)
+               ]
+
+        assert document |> LazyHTML.query("button") |> LazyHTML.attribute("phx-value-id") == [
+                 "machine-123"
+               ]
+
         [label] = document |> LazyHTML.query("button") |> LazyHTML.attribute("aria-label")
         assert label =~ name
         if locale == "ar", do: assert(label =~ "\u2068#{name}\u2069")

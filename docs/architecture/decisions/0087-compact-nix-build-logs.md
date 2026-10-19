@@ -109,15 +109,15 @@ one derivation. Log parsing must bound memory, depth and rendering expansion.
 
 ## Implementation evidence
 
-- The [native package override](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/default.nix)
-  compiles the [logger and command adapter](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/native.hh)
+- The [native package override](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/package/default.nix)
+  compiles the [logger and command adapter](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/package/native.hh)
   into Nix's CLI component, preserving daemon libraries and wire protocols.
-- The [archive](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/archive.hh),
-  [classifier](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/classify.hh),
-  [presenter](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/session.hh) and
-  [reader](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/reader.hh) implement local capture,
+- The [archive](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/package/archive.hh),
+  [classifier](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/package/classify.hh),
+  [presenter](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/package/session.hh) and
+  [reader](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/package/reader.hh) implement local capture,
   stable references, budgeted presentation and bounded retrieval.
-- The [Hegel properties](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/property-test.cc) pass
+- The [Hegel properties](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/package/property-test.cc) pass
   1,000 generated core cases and 50 real-build cases in each pinned-input
   native check (`nix/domains/artifacts/nix-compact/native-check.nix` at overalls revision `9fe1e493`, repository deleted). Runtime checks
   cover JSON/path stdout, TTY/raw formats, startup and mid-write capture fallback,
@@ -140,7 +140,7 @@ one derivation. Log parsing must bound memory, depth and rendering expansion.
 - The [guide](../../development/nix-build-logs.md) documents invocation/reader budgets, local
   evidence, opt-outs and retention. The [completion review](../reviews/2026-09-21-compact-nix-build-logs.md)
   maps requirements to tests and records operational boundaries. The
-  [upstream contracts](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/CONTRACTS) define the corresponding
+  [upstream contracts](https://github.com/ghuntley/nix-compact/blob/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede/package/CONTRACTS) define the corresponding
   implementation obligations; structural validation alone is not runtime proof.
 - The consumer adapters (`nix/domains/artifacts/nix-compact/default.nix` at overalls revision `9fe1e493`, repository deleted) and
   [lock resolver](../../../nix/domains/artifacts/nix-compact/source.nix) delegate to the

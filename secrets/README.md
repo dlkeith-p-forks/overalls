@@ -76,6 +76,12 @@ to the authenticated overalls host and ghuntley recovery recipient.
 
 ## Marshall application keys
 
+`overalls-github-oauth-placeholder.enc.json` contains a SOPS-encrypted
+nonfunctional GitHub OAuth client-secret placeholder for the Overalls fleet.
+The fleet wires it through the `github-oauth-placeholder` secret bundle and
+uses a placeholder client ID; replace both the client ID and secret before
+enabling GitHub OAuth in production.
+
 [`marshall-bootstrap.enc.json`](marshall-bootstrap.enc.json) contains the shared
 `SECRET_KEY_BASE`, `TOKEN_SIGNING_SECRET` and `MARSHALL_CLOAK_KEYS` values under
 `overalls-marshall.production`. The two signing secrets each contain 64 random
