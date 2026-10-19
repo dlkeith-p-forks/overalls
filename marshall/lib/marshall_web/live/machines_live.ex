@@ -598,7 +598,13 @@ defmodule MarshallWeb.MachinesLive do
   defp valid_cursor(value), do: if(OverallsProtocol.uuid?(value), do: value)
 
   defp image_options(images, selected) do
-    options = Enum.map(images, &{&1.name, &1.id})
+    options =
+      Enum.map(images, fn image ->
+        name =
+          if Map.get(image, :android, false), do: gettext("Android (API 36)"), else: image.name
+
+        {name, image.id}
+      end)
 
     if is_binary(selected) and selected != "" and not Enum.any?(images, &(&1.id == selected)),
       do: [{dgettext("machines", "Selected image unavailable"), selected} | options],

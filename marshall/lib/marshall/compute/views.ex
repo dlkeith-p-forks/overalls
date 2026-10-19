@@ -342,9 +342,13 @@ defmodule Marshall.Compute.Views do
       Ledger.read!(Image, enabled: true)
       |> Enum.filter(&(&1.id in ids))
       |> Enum.sort_by(&{&1.name, &1.id})
-      |> Enum.map(
-        &Map.take(&1, [:id, :name, :architecture, :minimum_memory_bytes, :minimum_disk_bytes])
-      )
+      |> Enum.map(fn image ->
+        Map.put(
+          Map.take(image, [:id, :name, :architecture, :minimum_memory_bytes, :minimum_disk_bytes]),
+          :android,
+          Image.guest_capabilities(image).android_sdk
+        )
+      end)
 
     %{images: images, available: available, sampled_at: now, capacity_known: known}
   end
