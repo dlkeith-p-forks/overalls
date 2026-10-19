@@ -213,7 +213,7 @@ flowchart LR
 | [`Marshall.Scim`](repo:marshall/lib/marshall/scim.ex) | `Marshall.Scim.Configuration` |
 | [`Marshall.Teams`](repo:marshall/lib/marshall/teams.ex) | `Marshall.Teams.Team`, `Marshall.Teams.TeamMember`, `Marshall.Teams.Transfer` |
 | [`Marshall.Terminal`](repo:marshall/lib/marshall/terminal.ex) | `Marshall.Terminal.Event`, `Marshall.Terminal.Grant`, `Marshall.Terminal.Location`, `Marshall.Terminal.Opening`, `Marshall.Terminal.Session`, `Marshall.Terminal.Ticket` |
-| [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Generation`, `Marshall.Threads.Grant`, `Marshall.Threads.ReadMarker`, `Marshall.Threads.Thread` |
+| [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Generation`, `Marshall.Threads.Grant`, `Marshall.Threads.ReadMarker`, `Marshall.Threads.ScimArchiveProjection`, `Marshall.Threads.Thread` |
 | [`Susan.Audit`](repo:susan/lib/susan/audit.ex) | `Susan.Audit.AuditEntry` |
 | [`Susan.Relay`](repo:susan/lib/susan/relay.ex) | `Susan.Relay.DeliveryReceipt`, `Susan.Relay.InstallIdentity`, `Susan.Relay.KeyDenial`, `Susan.Relay.UnregisteredToken` |
 <!-- hldd:view:end -->

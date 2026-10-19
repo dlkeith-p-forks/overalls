@@ -17,6 +17,7 @@ defmodule Marshall.Accounts.ScimFinalize do
           |> Ash.read_one!(actor: SystemActor.compute())
 
         if user && is_nil(user.deleted_at) do
+          archive_threads!(user.id)
           Marshall.Accounts.AccountLifecycle.revoke_tokens!(user.id)
 
           Ledger.update!(user, :security_state, %{
@@ -31,6 +32,27 @@ defmodule Marshall.Accounts.ScimFinalize do
         :ok
       end,
       SystemActor.compute()
+    )
+
+    :ok
+  end
+
+  @spec archive_threads!(String.t()) :: :ok
+  defp archive_threads!(user_id) do
+    now = Ledger.now()
+
+    Ecto.Adapters.SQL.query!(
+      Marshall.Repo,
+      """
+      INSERT INTO scim_thread_archive_projections
+        (id, thread_id, creator_id, title, objective, archived_at, reason, inserted_at, updated_at)
+      SELECT gen_random_uuid(), id, creator_id, title, objective, $2, 'scim_retirement', $2, $2
+      FROM threads
+      WHERE creator_id = $1
+      ON CONFLICT (thread_id) DO NOTHING
+      """,
+      [user_id, now],
+      log: false
     )
 
     :ok
