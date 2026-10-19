@@ -1299,3 +1299,368 @@ ADR, handbook, generated-reference, coverage and topology gates check
 documentation consistency only. Remaining gate results are recorded at
 completion; the open runtime requirements above remain open regardless of
 those results.
+
+## Forward callback and generated-fixture repairs
+
+The `7c323f197` checkpoint was pushed with the startup-mail and Customer
+private-service repairs. A read-only production observation at **22:32:58 UTC
+on 2026-10-18** subsequently found Overalls healthy at `98bd5da6` and Dungarees
+healthy at `ccad2528`, with no updater failure on either host. Both reports were
+about one second old and carried all six inventory keys, at sequences 92 and
+416 respectively. Unexpired route counts were zero on Overalls and six on
+Dungarees. Marshall had started at 22:31:27 UTC. Separate local and remote
+checks at 22:32:05 and 22:32:29 UTC found Lilly and Audi DNS/gateway readiness
+true. These public-field observations are retained in the tool transcript;
+no manual restart or production mutation was used.
+The ordinary Windows CLI then passed through the normal Overalls proxy in
+**0.636 seconds**, exit zero, checking the fixed marker with strict certificate
+trust. This establishes that observed activation, inventory convergence and
+ordinary Windows routing path; it does not qualify browser/editor access,
+native isolation, recovery or the complete guest OS matrix.
+
+The later Marshall Covenant run passed **35 of 36 tests**, seed **336541**, in
+**3.9 seconds** (`/tmp/osmatrix-marshall-forward-contracts-types.log`). Its
+callback replay failure exposed a deterministic nullable-attempt guard: a
+successful connection clears its active attempt ID, then strict `and` received
+`nil` and the exception became `unavailable`. The forward guard explicitly
+requires a non-nil attempt before the unchanged state, login, generation, phase
+and expiry checks. Existing Covenant, fixed callback and generated replay
+assertions retain `invalid_callback` and passed in the focused timing run
+below. This restores ADR-0202 and ADR-0186 without changing authority or protocol.
+
+The earlier Pins property failure followed a SQL sandbox owner exceeding its
+120-second ownership limit; Teams' HTTP history exceeded the default aggregate
+60-second ExUnit timeout. The fixture repair creates a sandbox for each
+generated case and replay before its gateway, host and account rows, then
+releases that owner before the next case.
+All three Pins runners and both generated Teams runners retain their full
+100-case budgets and existing state/refusal oracles. Fixed Teams tests retain
+their ordinary sandbox setup. The focused timing-only run passed **23 tests**,
+seed **52647**, in **419.4 seconds**, including the callback Covenant and
+history regressions, all three Pins properties, both Teams generated tests and
+sandbox regressions (`/tmp/osmatrix-forward-followup-regressions.log`). It
+measured Teams' full HTTP history at **30.5206 seconds** and Pins' full
+ordered-set history at **276.0067 seconds**. The pinned Mix
+runner implicitly enables `--trace` for `--slowest 8`
+(`/tmp/osmatrix-test-help.log`), so this execution does not qualify finite
+ExUnit deadlines. Only the Pins ordered-set history now has a finite
+**600,000-millisecond** aggregate timeout, approximately twice its measured
+duration; the other Pins tests retain the 300,000-millisecond module timeout,
+each generated case retains its 120,000-millisecond SQL ownership deadline,
+and Teams retains the 60,000-millisecond default. These are test-isolation and
+bounded test-budget repairs under ADR-0191. The required complete Marshall
+`mix precommit` gate, without `--trace` or `--slowest`, remains pending and
+will verify these tests with their finite deadlines. No production failure or
+native guarantee follows from the test-fixture repairs.
+
+The Windows browser probe reached HTTP 200, the workbench and its native
+command, then failed its existing workspace-equality assertion: the `folder`
+query held a Windows filesystem path that Code OSS parsed as URI scheme `c`.
+The probe now sends `/C:/workspace/overalls-editor-acceptance-<run-id>`, a path
+under the configured remote authority. The exact workspace and native command
+assertions remain unchanged. This corrects probe input syntax; it changes no
+production authorization surface or editor admission contract. The rebuilt
+harness is
+`/nix/store/nm4yzal1g32fp4msplfha6xi42l148jr-overalls-windows-editor-acceptance-harness-0.1.0`
+(`/tmp/windows-editor-harness-uri-build.log`). Whole-repository Python Ruff
+formatting, Ruff and ty gates passed in the pinned environment
+(`/tmp/windows-editor-python-gates.log`). The native retry ended at an SSH EOF
+before readiness (`/tmp/windows-editor-native-browser-uri.log`); it is not a
+browser pass. The stock-fixture probe also remains separate from qualification
+of the exact immutable candidate image.
+
+The stable forced Marshall Dialyzer run exited **2** with **50 total errors,
+35 skipped and zero unnecessary skips**, leaving **15 findings**: one prompt
+pattern match, one GitHub guard and 13 generated Gettext opaque-call findings
+(`/tmp/osmatrix-marshall-stable-forward-types.log`). Its compiled scope is the
+pre-pull checkpoint. An earlier attempt lost a compiled `Collectable` input
+during overlapping compilation. No typing pass or complete Marshall gate is
+recorded for this diff.
+
+The merged Marshall catalog checker exited zero with **invalid=0** in every
+reported catalog (`/tmp/osmatrix-incoming-marshall-catalogs.log`); empty and
+source-equal documentation entries remain explicitly incomplete. Porsche's
+catalog regression passed **3 tests**, seed **691955**, in **0.05 seconds**
+(`/tmp/osmatrix-porsche-catalogs-retry.log`). These results establish bounded
+catalog/template checks, not linguistic review, packaged browser or native
+Porsche acceptance.
+
+## Trunk integration through `c89335a2a`
+
+The `a22c3ca7` callback, generated-fixture and browser-probe checkpoint was
+committed before the requested normal pull. The pull adds substantive Android
+source under accepted, partial ADR-0206, alongside catalog translations,
+localized SSH-key and administrative flashes, canonical GitHub ADR links and a
+suspension fixture that owns its VM and route. The GitHub non-nil attempt guard
+survives; incoming `Ash.Error.Invalid` handling and broad callback exception
+classification now return `invalid_callback`. This changes failure
+classification, not authorization. It does not establish that infrastructure
+failures are distinguishable from invalid callback state.
+
+The Android additions comprise a software-emulator guest recipe and machine
+fixture, a `linux_android_v1` capability row, relay-preface and bounded-stream
+codecs, Lilly's display connector, signed Marshall display tickets, relay state
+and workspace controls with a browser-hook source. The upstream
+[Android review](2026-10-18-android-firecracker.md) retains partial status and
+open native Firecracker and authenticated-display acceptance. These additions
+do not qualify another production guest image or widen the recorded native
+editor matrix. The constructed version-4 Linux artifact does not yet carry the
+new Android capability identity through admission; the hook is not registered
+in the main application and its `/android-display` endpoint is not connected.
+Lilly's TCP target also does not establish a working path to the guest's
+loopback RFB/vsock bridge.
+
+Read-only review found concrete source defects pending forward repair: the
+viewer branch of `DisplayRelay.handle_call/3` returns its updated state as the
+reply while retaining the old state, contrary to its new `:ok` assertion and
+multiple-viewer contract. The hook's full-canvas RGBA size exceeds its own
+bounded-frame maximum, and its input header uses generation and kind zero,
+which the protocol codec refuses. The stream module also has malformed
+`@cc` label metadata. These are source findings, not observed runtime results.
+The incoming handbook's generation-change revocation statement describes an
+intended obligation; the relay has no rollover API or lifecycle integration.
+Generation rollover, lease expiry/reacquisition, browser rendering, native
+transport and persistent emulator acceptance remain unverified. The Hegel
+lifecycle property uses a standalone model, and the emulator fixture uses its
+own service rather than the production image/relay path.
+
+The checkpoint's 23-test timing run, Python static/build results and public
+rollout/ordinary-CLI observations retain their original scope. The forced
+Marshall typing process started before the pull and covers its compiled
+checkpoint only; it cannot verify the incoming Android or localization source.
+No merged full Marshall, Lilly or protocol gate is recorded. Shared protocol
+changes require the library and both consumer gates. Incoming Hegel and NixOS
+machine tests are present; their presence is not a recorded passing execution.
+The upstream Porsche 108-test/zero-Dialyzer result remains explicitly at
+`1f79f63e6`, and translation additions establish neither linguistic review nor
+all-locale browser acceptance.
+
+## Additional trunk integration through `2d598e3e2`
+
+The next normal pull adds an Android display WebSocket adapter and authenticated
+upgrade route, hook registration, and bounded GitHub `Link` response headers
+for the existing private-endpoint rewrite path. The preceding disconnected
+hook/endpoint findings describe `c89335a2a`; the new source advances that
+plumbing without establishing native integration or passing browser evidence.
+Read-only inspection finds that the hook registration still lacks its module
+import, so browser initialization requires a forward repair. The new socket
+adapter also does not establish current machine generation, claim-mode binding
+or a shared machine controller lease. Earlier viewer, framing, artifact and
+transport gaps remain open. These are source findings, not executed results.
+
+The GitHub allowlist regression assertion is present, with no new execution
+record. No new Android test or native/browser acceptance result accompanies
+this range. Earlier checkpoint test/type evidence retains its original scope;
+merged consumer gates and the normal finite-deadline Marshall gate remain
+pending. No deployment or native capability qualification is inferred from the
+pull.
+
+After merge `2ce5d0c4`, the application imports `AndroidDisplay` from its
+existing module before referencing it in the hook registry. This closes the
+missing-import source finding without changing authorization, display
+contracts or accepted architecture; ADR-0161 and partial ADR-0206 remain
+unchanged. Startup smoke and the broader feature qualification retain separate
+evidence scopes.
+
+## Additional trunk integration through `31002e49f`
+
+The next pull adds signed-generation equality at the Android WebSocket upgrade,
+generation propagation in the browser-hook interface, and a bounded host-stream
+bridge with two regression tests present. It also sends the terminal empty
+chunk for Galileo's existing GitHub streaming response. The `910e1622` browser
+hook import repair survives. These are source changes; the earlier missing
+claim-generation binding is historical, while current machine authority,
+shared controller lease, native transport and browser acceptance remain open.
+No new merged gate or native execution result is recorded.
+
+## Forward verification repairs after trunk integration
+
+The next forward patch addresses the recorded typing and relay findings while
+preserving accepted decisions. Prompt audit selection now matches the returned
+`WakeRequest` shape, and GitHub admission removes a redundant nullable-user
+check after `Security.lock_user!/1`; deleted-user and current-login refusals
+remain. Explicit `>=` and `<=` comparisons in the Android socket's bounded
+integer guard preserve the same accepted interval. These restore existing typed
+contracts rather than changing authority under ADR-0002, ADR-0199 or ADR-0202.
+
+`MarshallWeb.GettextPlural` uses the official Gettext plural callbacks. Generated
+backend code retains the plain locale/header context, while runtime callbacks
+reconstruct the Expo opaque value through `Gettext.Plural.init/1`. Explicit
+catalog rules, Arabic's six categories, missing-header territory fallback and
+full generated headers are retained. Three semantic regressions are present,
+including an explicit English header whose zero case differs from the built-in
+rule. Every plural selection reparses its header; there is no runtime cache,
+new dependency, catalog change or added Dialyzer exclusion. Runtime and typing
+results for this adapter remain pending; ADR-0201 is unchanged.
+
+The Android viewer attachment now replies `:ok` while retaining the monitored
+viewer in relay state. Its regression processes are supervised for cleanup.
+The stream contract's label metadata and adjacent Nix contract block separation
+are repaired without changing frame limits or emulator flags. These close the
+specific source defects identified above; shared controller custody, current
+machine generation, artifact admission, native transport and browser rendering
+still require separate implementation and acceptance under partial ADR-0206.
+
+The native-admission regression now asserts the exact 13-key capability map:
+seven previously qualified native capabilities remain true, while editor,
+Inception and all four Android flags remain false. This replaces the old
+assumption that every non-editor/non-Inception capability must be true; the
+raw and wrong-image refusal assertions remain. No capability is widened.
+Lilly's two incoming Android network modules and their target test receive
+formatting changes only.
+The initial protocol run has reported two failures against the older loaded
+capability assertion, and Lilly's first gate stopped on formatting; final-source
+reruns remain pending.
+
+The Windows browser fixture now accepts a broker receipt whose SYSTEM-only
+allow entries are inherited from its protected SYSTEM-only parent. It still
+checks SYSTEM ownership, effective foreign allows, reparse points and unsafe
+ancestors, and includes disposable inherited-receipt admission and foreign
+Administrators-read refusal oracles. This changes fixture validation only;
+the product custody script, Rust broker and original installed broker remain
+unchanged. The rebuilt harness is
+`/nix/store/16rgky75dbqrifks2nj9qlc0jkns785q-overalls-windows-editor-acceptance-harness-0.1.0`
+(`/tmp/windows-editor-harness-receipt-build.log`). The native receipt check
+passed the disposable inheritance/foreign-read refusal oracles and the real
+inherited receipt, with `broker_unchanged=true`
+(`/tmp/windows-editor-receipt-native-cases2.log` and
+`/tmp/windows-editor-receipt-native-cases-result.json`). The foreign-read case
+requires the exact `fixture_receipt_foreign_access` refusal. These receipt
+checks establish neither PTY nor browser/recovery acceptance.
+
+The Lilly Windows machine fixture adds explicit `editorCandidate` mode, which
+requires agents and provisions four GiB guest RAM within a 6,144-MiB host
+budget. That mode requires the exact version-7 `windows-editor-v1` manifest and
+version-4 bundle editor descriptor at first start and restart. Ordinary
+version-5/bundle-2 Windows expectations remain separate. The exact candidate
+run is pending; its intended scope is trust, bounded readiness, root ConPTY,
+workspace transfer, a new boot UUID and cleanup. It does not establish ordinary
+CLI, browser-editor acceptance, image promotion or physical isolation.
+
+The earlier asset build exited zero
+(`/tmp/osmatrix-merged-browser-assets.log`), but its mixed compile/source scope
+predates this forward patch and includes the earlier range-step warning.
+It establishes asset construction for that scope only. Protocol, Lilly and
+Galileo gates and focused Marshall checks are in progress; no new full gate,
+forced typing, native candidate or complete browser pass is recorded here.
+
+### Stock Windows browser stage and broker restart failure
+
+The latest stock-fixture `native_browser` stage passed: the workbench and native
+extension command ran, the saved-file oracle passed, a real PowerShell PTY
+appeared in xterm, and the exact worker snapshot matched. The subsequent
+automatic broker-restart stage failed after 100 seconds
+(`/tmp/windows-editor-native-browser-network.log`). The task remained enabled
+with its original restart settings, but no broker/listener returned and its
+last result was `0xFFFFFFFF`; scheduler history was disabled. The worker-loss
+stage was not run. Restoring the unchanged original task was cleanup, recorded
+with `definition_unchanged=true` and `automatic_recovery=false`
+(`/tmp/windows-editor-broker-cleanup-restore-result.json`). It is not recovery
+acceptance.
+
+The forward `start-editor.ps1` repair preserves native success as zero and maps
+every nonzero native result, including `-1`, to task failure one; exception
+failure remains one. Custody checks and scheduler settings are unchanged. The
+pinned PowerShell parser passed (`/tmp/windows-editor-launcher-parse.log`).
+Whether this normalization repairs the observed automatic restart remains a
+hypothesis pending native execution. The exact immutable candidate currently
+under Lilly qualification still contains the old launcher; stock-fixture
+browser results and this source change do not qualify that image or establish
+browser recovery, worker-loss recovery or production promotion.
+
+## Additional trunk integration through `351b160de`
+
+The reviewed incoming range is `589530ab..351b160de`. The resolved merge keeps
+the forward callback, property-fixture, browser-path, typed plural adapter and
+verification repairs recorded above. It takes the incoming explicit `>=` and
+`<=` comparisons for the Android socket integer bounds and the shared terminal
+string byte-length bounds. Both preserve their existing inclusive intervals
+and malformed-input refusals; no wire schema, capability or authorization
+contract changes. ADR-0002, ADR-0012 and partial ADR-0206 remain unchanged.
+
+The Android software-emulator machine fixture explicitly supplies the pinned
+JDK through `JAVA_HOME` and checks the actual emulator command line through
+`pgrep`, retaining its no-acceleration and software-rendering assertions. The
+suspension composition now takes only Audi enrollment/bootstrap before the
+first guest HTTP scenario, then runs its own VM and route journey. This removes
+the unrelated Audi guest/SSH journey from that fixture. Its native continuation,
+paused-cgroup absence and interrupted-capture cleanup assertions remain present;
+this merge does not record a passing Android or suspension machine execution.
+
+At forward checkpoint `6b6f04c8`, the focused Marshall run passed **28 tests**
+with normal finite deadlines, seed **327352**, in **12.9 seconds**
+(`/tmp/osmatrix-type-repair-focused.log`). It covers Gettext plural and
+interpolation semantics, Prompt and wake-property behavior, GitHub authorization
+and Android relay state. Formatting also passed
+(`/tmp/osmatrix-type-repair-format.log`). These are checkpoint-scoped results;
+they do not establish merged-source full-suite, forced typing, native Android,
+browser recovery or exact Windows candidate acceptance. The corrected protocol
+assertion has received formatting only; its final-source gate and both consumer
+gates remain pending.
+
+No domain ownership, deployment placement or accepted architectural decision
+changes. The frozen handbook already describes the relevant partial Android,
+native editor, controller-custody and recovery boundaries; the checkpoint result
+does not close those gaps. No handbook chapter or scenario-status change is
+needed for these contract-preserving repairs and bounded evidence updates.
+
+## Localization integration through `ee597fc1e`
+
+The merge adds the `1e36beb3e` localization patch while retaining this branch's
+typed plural adapter, callback and generated-fixture repairs, Windows fixtures
+and handbook reference history. Human HTTP refusals now use the existing
+Gettext integration; their status, newline, generic redaction and privacy
+branches remain. Successful scripts, downloads, manifests, checksums, trust
+JSON, CSV and raw Git bytes keep their machine format. Porsche translates
+reviewed outer labels, statuses and refusal guidance while its JSON branch,
+identifiers, unknown keys and nested values retain their existing representation
+and escaping. The pin guidance retains literal `unpin MACHINE` in all catalogs.
+No authority, protocol schema, domain ownership or placement decision changes;
+ADR-0201 and ADR-0161 remain partial.
+
+Successful account-language persistence now pushes `locale-updated`, and the
+typed application listener reloads the document. The new JavaScript regression
+uses a simulated event target; it does not establish real browser root language,
+direction or repeated-save acceptance. The incoming
+[localization review](2026-10-18-localization.md) explicitly retains the earlier
+all-English browser trace as no language-transition evidence. Its Porsche
+110-test/zero-Dialyzer result predates five wording corrections; those have
+source/catalog review only. The new controller evidence remains `present` in
+the scenario ledger. No linguistic, packaged-browser or native SSH acceptance
+is inferred from these source changes or historical results.
+
+The incoming 3,800-identity documentation extraction excludes this branch's
+retained newer handbook reference text. Reconciliation of generated messages,
+POT and all locale catalogs against the final handbook remains pending;
+untranslated prose retains English fallback. It is deferred while the existing
+Marshall gate runs its compiled `572a0ebc6` checkpoint. That gate cannot establish
+acceptance of these newly merged source/catalog changes. The known duplicate
+original and rewritten GitHub `Link` projection remains a separately recorded
+source discrepancy, not a passing hostname-redaction claim.
+
+Galileo's pending-version refusal property receives a finite 300,000-ms aggregate
+timeout after the old full gate exceeded 60 seconds. Its CI profile still runs
+100 cases, each covering six verified TLS combinations and a 50-ms no-replay
+window, for 600 connections and 30 seconds of quiet windows. Version refusal,
+transient draining classification, peer-observed pending requests and no-replay
+assertions are unchanged. The rerun is pending; no fresh full-gate pass is
+recorded. The three Android/terminal source edits accompanying this merge are
+formatting only and preserve their template identifiers and authority checks.
+
+The stock Windows fixture remains blocked after launcher exit normalization:
+new browser connections were refused before navigation with broker reason
+`custody`. A SYSTEM read-only discriminator could not open the exact named job
+(`job_open=false`, error 2), while the previously inspected receipt root remained
+live (`/tmp/windows-editor-job-custody-result.json`). This is a custody observation,
+not proof of why the job disappeared or of a recovery repair. The earlier first
+browser/PTY/save stage retains its scope; automatic restart, worker-loss recovery
+and immutable-candidate promotion remain unaccepted. Handbook 17 stays unchanged;
+its explicit native/editor/recovery gaps remain accurate.
+
+The Windows Lilly fixture raises only observation, stop and delete command
+budgets to a finite 1,800 seconds, matching its existing refusal probe. Every
+invocation still verifies the full 64-GiB image; no digest check is skipped.
+The exact candidate's first image/manifest/refusal phase took 1,071.11 seconds,
+which motivates this verification budget without establishing lifecycle success.
+The already-running immutable derivation retains its older driver and remains
+in placement/start qualification; exact native lifecycle acceptance is pending.

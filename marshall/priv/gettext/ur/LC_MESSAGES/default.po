@@ -7413,3 +7413,111 @@ msgstr "پروڈکشن، پروجیکٹ-نام"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "آپ ہی کے جیسا وقت"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "تفصیل"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH کلید کا نام بدل دیا گیا۔"
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "اس کلید کا نام نہیں بدل سکے۔ زیادہ سے زیادہ 128 حروف استعمال کریں۔"
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "انتظامی تبدیلیوں کے لیے منتظم ہونا ضروری ہے۔"
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "انتظامی تبدیلیاں مجاز نہیں ہیں۔"
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "پہلے موجودہ تصدیق مکمل کریں یا منسوخ کریں۔"
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "غلط انتظامی درخواست۔"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:34
+#: lib/marshall_web/controllers/editor_controller.ex:52
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "سائن ان دستیاب نہیں"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:76
+#, elixir-autogen, elixir-format
+msgid "Installer trust unavailable"
+msgstr "انسٹالر کی قابلِ اعتماد ہونے کی جانچ دستیاب نہیں"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:89
+#, elixir-autogen, elixir-format
+msgid "SSH trust unavailable"
+msgstr "SSH کی قابلِ اعتماد ہونے کی جانچ دستیاب نہیں"
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#, elixir-autogen, elixir-format
+msgid "This repository link could not be launched. Open the link again."
+msgstr "اس ریپوزٹری لنک سے آغاز نہیں ہو سکا۔ لنک دوبارہ کھولیں۔"
+
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:51
+#, elixir-autogen, elixir-format
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "یہ آغاز مکمل نہیں ہو سکا۔ سائن ان کریں اور لنک دوبارہ کھولیں۔"
+
+#: lib/marshall_web/live/terminal_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "ڈسپلے ریلے ٹکٹ جاری کر دیا گیا۔"
+
+#: lib/marshall_web/live/terminal_live.ex:83
+#: lib/marshall_web/live/terminal_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android ڈسپلے دستیاب نہیں۔"
+
+#: lib/marshall_web/live/terminal_live.ex:618
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Android ڈسپلے"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "سافٹ ویئر سے رینڈر کیا گیا Android ڈسپلے مشین کا ریلے استعمال کرتا ہے۔"
+
+#: lib/marshall_web/live/terminal_live.ex:622
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "ڈسپلے کھولیں"
+
+#: lib/marshall_web/live/terminal_live.ex:625
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "کنٹرول کی درخواست کریں"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "دستاویزات نہیں ملیں"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android ڈسپلے کینوس"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "ڈسپلے ریلے کا انتظار کیا جا رہا ہے۔"

@@ -1,3 +1,5 @@
+Code.require_file("locale_catalog_review.exs", __DIR__)
+
 defmodule Marshall.LocaleCatalogCheck do
   @moduledoc "Checks catalog identity and reports translation gaps without counting source copies as translations."
   @type counts :: %{
@@ -5,20 +7,25 @@ defmodule Marshall.LocaleCatalogCheck do
           empty: non_neg_integer(),
           source_equal: non_neg_integer(),
           invalid: non_neg_integer(),
-          fuzzy: non_neg_integer()
+          fuzzy: non_neg_integer(),
+          reviewed_source_equal: non_neg_integer(),
+          unreviewed_source_equal_forms: non_neg_integer()
         }
 
   # @cc [owner:ghuntley,label:verification] catalog-coverage-honesty
   # Every policy locale MUST have every extracted domain. Empty and source-equal
   # entries and fuzzy flags MUST be reported separately; none establishes translated
-  # coverage. Duplicate or obsolete identities MUST never silently mask messages.
+  # coverage. Exact per-form reviews MAY satisfy invariant-text coverage, but MUST
+  # remain separately counted. A copied plural form MUST remain a strict gap. Duplicate or obsolete identities MUST never silently mask messages.
   @spec run([String.t()]) :: :ok
   def run(args) do
     root = Path.expand("../priv/gettext", __DIR__)
     locales = Marshall.Localization.supported_locales()
     domains = Path.wildcard(Path.join(root, "*.pot"))
 
-    gaps =
+    reviews = Marshall.LocaleCatalogReview.load!(Path.join(root, "reviewed_source_equal.json"))
+
+    results =
       for locale <- locales, template <- domains do
         domain = Path.basename(template, ".pot")
         path = Path.join([root, locale, "LC_MESSAGES", domain <> ".po"])
@@ -49,32 +56,56 @@ defmodule Marshall.LocaleCatalogCheck do
         unless MapSet.new(Map.keys(expected)) == MapSet.new(Map.keys(actual)),
           do: raise("Catalog message identities differ: #{path}")
 
-        counts =
+        {counts, observations} =
           Enum.reduce(
             catalog.messages,
-            %{total: 0, empty: 0, source_equal: 0, invalid: 0, fuzzy: 0},
-            fn message, counts -> count(message, counts, domain) end
+            {%{
+               total: 0,
+               empty: 0,
+               source_equal: 0,
+               invalid: 0,
+               fuzzy: 0,
+               reviewed_source_equal: 0,
+               unreviewed_source_equal_forms: 0
+             }, %{}},
+            fn message, {counts, observations} ->
+              {next, forms} = count(message, counts, domain, locale, reviews)
+              {next, Map.merge(observations, forms)}
+            end
           )
 
         IO.puts(
-          "#{locale}/#{domain}: total=#{counts.total} empty=#{counts.empty} source_equal=#{counts.source_equal} fuzzy=#{counts.fuzzy} invalid=#{counts.invalid}"
+          "#{locale}/#{domain}: total=#{counts.total} empty=#{counts.empty} source_equal=#{counts.source_equal} reviewed_source_equal=#{counts.reviewed_source_equal} unreviewed_source_equal_forms=#{counts.unreviewed_source_equal_forms} fuzzy=#{counts.fuzzy} invalid=#{counts.invalid}"
         )
 
-        {if(locale == "en", do: 0, else: counts.empty + counts.source_equal + counts.fuzzy),
-         counts.invalid}
+        {if(locale == "en",
+           do: 0,
+           else: counts.empty + counts.unreviewed_source_equal_forms + counts.fuzzy
+         ), counts.invalid, observations}
       end
 
-    if Enum.any?(gaps, fn {_missing, invalid} -> invalid > 0 end),
+    observations = Enum.reduce(results, %{}, fn {_, _, forms}, acc -> Map.merge(acc, forms) end)
+    Marshall.LocaleCatalogReview.validate!(reviews, observations)
+
+    if Enum.any?(results, fn {_missing, invalid, _observations} -> invalid > 0 end),
       do: raise("Catalog placeholder or documentation structure errors remain")
 
-    if "--strict" in args and Enum.any?(gaps, fn {missing, _invalid} -> missing > 0 end),
-      do: raise("Untranslated catalog entries remain; see empty and source_equal counts above")
+    if "--strict" in args and
+         Enum.any?(results, fn {missing, _invalid, _observations} -> missing > 0 end),
+       do: raise("Untranslated catalog entries remain; see empty and source_equal counts above")
 
     :ok
   end
 
-  @spec count(Expo.Message.t(), counts(), String.t()) :: counts()
-  defp count(message, counts, domain) do
+  @spec count(
+          Expo.Message.t(),
+          counts(),
+          String.t(),
+          String.t(),
+          Marshall.LocaleCatalogReview.reviews()
+        ) ::
+          {counts(), Marshall.LocaleCatalogReview.observations()}
+  defp count(message, counts, domain, locale, reviews) do
     sources =
       case message do
         %Expo.Message.Plural{} ->
@@ -87,14 +118,14 @@ defmodule Marshall.LocaleCatalogCheck do
     values =
       case message.msgstr do
         entries when is_map(entries) ->
-          Enum.map(entries, fn {_index, value} -> IO.iodata_to_binary(value) end)
+          Enum.map(entries, fn {index, value} -> {index, IO.iodata_to_binary(value)} end)
 
         value ->
-          [IO.iodata_to_binary(value)]
+          [{0, IO.iodata_to_binary(value)}]
       end
 
     invalid =
-      Enum.any?(values, fn translated ->
+      Enum.any?(values, fn {_index, translated} ->
         translated != "" and
           (placeholders(translated) != placeholders(hd(sources)) or
              (domain == "documentation" and
@@ -103,13 +134,27 @@ defmodule Marshall.LocaleCatalogCheck do
 
     if invalid, do: IO.puts("  INVALID translation structure: #{inspect(hd(sources))}")
 
-    %{
-      total: counts.total + 1,
-      empty: counts.empty + if(Enum.any?(values, &(&1 == "")), do: 1, else: 0),
-      source_equal: counts.source_equal + if(Enum.all?(values, &(&1 in sources)), do: 1, else: 0),
-      invalid: counts.invalid + if(invalid, do: 1, else: 0),
-      fuzzy: counts.fuzzy + if("fuzzy" in List.flatten(message.flags), do: 1, else: 0)
-    }
+    fuzzy = "fuzzy" in List.flatten(message.flags)
+
+    observations =
+      Marshall.LocaleCatalogReview.observe("marshall", locale, domain, message, invalid)
+
+    all_source_equal = Enum.all?(values, fn {_, value} -> value in sources end)
+    unreviewed = Marshall.LocaleCatalogReview.unreviewed_forms(reviews, observations)
+
+    {%{
+       total: counts.total + 1,
+       empty:
+         counts.empty + if(Enum.any?(values, fn {_, value} -> value == "" end), do: 1, else: 0),
+       source_equal:
+         counts.source_equal +
+           if(all_source_equal, do: 1, else: 0),
+       invalid: counts.invalid + if(invalid, do: 1, else: 0),
+       fuzzy: counts.fuzzy + if(fuzzy, do: 1, else: 0),
+       reviewed_source_equal:
+         counts.reviewed_source_equal + if(all_source_equal and unreviewed == 0, do: 1, else: 0),
+       unreviewed_source_equal_forms: counts.unreviewed_source_equal_forms + unreviewed
+     }, observations}
   end
 
   @spec placeholders(String.t()) :: MapSet.t(String.t())

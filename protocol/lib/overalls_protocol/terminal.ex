@@ -600,7 +600,11 @@ defmodule OverallsProtocol.Terminal do
   defp decode(value, {:one_of, values}), do: checked(value, value in values)
 
   defp decode(value, {:string, minimum, maximum}),
-    do: checked(value, is_binary(value) and byte_size(value) in minimum..maximum)
+    do:
+      checked(
+        value,
+        is_binary(value) and byte_size(value) >= minimum and byte_size(value) <= maximum
+      )
 
   defp decode(value, {:bytes, minimum, maximum}) when is_binary(value) do
     case Base.decode64(value) do

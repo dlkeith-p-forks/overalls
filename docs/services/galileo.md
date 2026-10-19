@@ -3,7 +3,7 @@
 Canonical guest endpoint: `https://<name>.integration.internal`.
 The built-in [GitHub.com provider](github-com.md) uses
 `https://com-github.integration.internal` with per-owner OAuth authority under
-[ADR-0198](../architecture/decisions/0198-github-com-owner-integration.md).
+[ADR-0202](../architecture/decisions/0202-github-com-owner-integration.md).
 Its implicit owner eligibility and persistent detach are specific to that
 provider; the generic attachment policy below remains unchanged.
 Architecture: [ADR-0080](../architecture/decisions/0080-named-edge-integrations.md)

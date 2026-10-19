@@ -48,7 +48,12 @@ defmodule MarshallWeb.AccountLiveTest do
       assert has_element?(view, "#git-settings #git-settings-form #save-git-settings")
       assert has_element?(view, "#profile #profile-account")
       assert has_element?(view, "#profile #time-zone-form")
-      assert has_element?(view, "#profile #git-settings #git-settings-form")
+
+      assert has_element?(
+               view,
+               "section#profile ~ section#security ~ section#ssh-keys ~ section#git-settings #git-settings-form"
+             )
+
       assert has_element?(view, "#security #verification-status")
       assert has_element?(view, "#security #passkey-ceremony #add-passkey")
       assert has_element?(view, "#security #passkey-ceremony #verify-passkey")
@@ -113,13 +118,17 @@ defmodule MarshallWeb.AccountLiveTest do
       refute has_element?(view, "#clear-language")
 
       view |> form("#language-form", language: %{locale: "ja"}) |> render_submit()
-      assert_redirect(view, "/settings#profile")
+      assert_push_event(view, "locale-updated", %{})
+      assert saved_locale(owner.id) == "ja"
+
+      view |> form("#language-form", language: %{locale: "ja"}) |> render_submit()
+      assert_push_event(view, "locale-updated", %{})
       assert saved_locale(owner.id) == "ja"
 
       {:ok, view, _} = live(signed_in(conn, owner), ~p"/settings")
       assert has_element?(view, "#language-form option[value=ja][selected]")
       view |> element("#clear-language") |> render_click()
-      assert_redirect(view, "/settings#profile")
+      assert_push_event(view, "locale-updated", %{})
       assert saved_locale(owner.id) == nil
     end
 
@@ -472,6 +481,30 @@ defmodule MarshallWeb.AccountLiveTest do
       view |> element("#remove-ssh-key-#{record.id}") |> render_click()
       assert has_element?(view, "#ssh-keys-empty")
       assert {:ok, []} = SSH.list_keys(%{}, actor: owner)
+    end
+
+    # @cc [owner:ghuntley,label:verification] localized-key-rename
+    # SSH key rename labels and outcomes MUST follow the negotiated locale
+    # without changing the key fingerprint or accepting an overlong description.
+    test "SSH key rename labels and outcomes follow the browser language", %{conn: conn} do
+      owner = user()
+      text = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, 46::256>>)
+      {:ok, key} = SSH.add_key(%{public_key: text, label: "Laptop"}, actor: owner)
+      conn = conn |> signed_in(owner) |> put_req_header("accept-language", "ja")
+      {:ok, view, _} = live(conn, ~p"/settings")
+      assert has_element?(view, "label[for='ssh-key-label-#{key.id}']", "説明")
+
+      view |> form("#rename-ssh-key-#{key.id}", %{label: "Work"}) |> render_submit()
+      assert has_element?(view, "#flash-info", "SSH鍵の名前を変更しました。")
+
+      view
+      |> form("#rename-ssh-key-#{key.id}", %{label: String.duplicate("x", 129)})
+      |> render_submit()
+
+      assert has_element?(view, "#flash-error", "この鍵の名前を変更できませんでした。128文字以内にしてください。")
+      assert {:ok, [saved]} = SSH.list_keys(%{}, actor: owner)
+      assert saved.label == "Work"
+      assert saved.fingerprint == key.fingerprint
     end
 
     test "a user renames their key's description without changing its identity", %{conn: conn} do

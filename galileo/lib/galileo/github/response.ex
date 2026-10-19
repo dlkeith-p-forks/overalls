@@ -20,7 +20,9 @@ defmodule Galileo.GitHub.Response do
   @spec headers([{String.t(), String.t()}], context()) ::
           {:ok, [{String.t(), String.t()}]} | {:error, :invalid_response}
   def headers(headers, context) do
-    Enum.reduce_while(headers, {:ok, GitHub.response_headers(headers)}, fn
+    safe = GitHub.response_headers(headers) |> content_length_policy(context)
+
+    Enum.reduce_while(headers, {:ok, safe}, fn
       {"location", value}, {:ok, safe} ->
         case location(value, context) do
           {:ok, value} -> {:cont, {:ok, [{"location", value} | safe]}}
@@ -37,6 +39,13 @@ defmodule Galileo.GitHub.Response do
         {:cont, result}
     end)
   end
+
+  @spec content_length_policy([{String.t(), String.t()}], context()) ::
+          [{String.t(), String.t()}]
+  defp content_length_policy(headers, %{route: %{kind: :capability}}), do: headers
+
+  defp content_length_policy(headers, _context),
+    do: List.keydelete(headers, "content-length", 0)
 
   @spec location(String.t(), context()) :: {:ok, String.t()} | {:error, :invalid_response}
   def location(value, context) do

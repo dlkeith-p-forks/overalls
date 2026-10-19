@@ -23,3 +23,14 @@ export function t(message, bindings = {}) {
   return translated.replace(/%\{([^}]+)\}/g, (placeholder, key) =>
     Object.hasOwn(bindings, key) ? String(bindings[key]) : placeholder);
 }
+
+/**
+ * @cc [owner:ghuntley,label:product] locale-change-reloads-document
+ * A saved or cleared language MUST reload the whole document so the server
+ * renders root language/direction, including repeated saves and fragment URLs.
+ * @param {{addEventListener: (event: string, listener: () => void) => void, location: {reload: () => void}}} browser
+ * @returns {void}
+ */
+export function installLocaleReload(browser) {
+  browser.addEventListener("phx:locale-updated", () => browser.location.reload());
+}

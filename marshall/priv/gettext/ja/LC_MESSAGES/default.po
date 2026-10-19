@@ -7458,3 +7458,111 @@ msgstr "本番環境, プロジェクト名"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "あなたと同じ時刻"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "説明"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH鍵の名前を変更しました。"
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "この鍵の名前を変更できませんでした。128文字以内にしてください。"
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "管理上の変更には管理者権限が必要です。"
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "管理上の変更は許可されていません。"
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "現在の検証を完了するかキャンセルしてから続けてください。"
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "管理リクエストが無効です。"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:34
+#: lib/marshall_web/controllers/editor_controller.ex:52
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "サインインを利用できません"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:76
+#, elixir-autogen, elixir-format
+msgid "Installer trust unavailable"
+msgstr "インストーラーの信頼性を確認できません"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:89
+#, elixir-autogen, elixir-format
+msgid "SSH trust unavailable"
+msgstr "SSHの信頼性を確認できません"
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#, elixir-autogen, elixir-format
+msgid "This repository link could not be launched. Open the link again."
+msgstr "このリポジトリリンクから起動できませんでした。リンクをもう一度開いてください。"
+
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:51
+#, elixir-autogen, elixir-format
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "起動を完了できませんでした。サインインしてリンクをもう一度開いてください。"
+
+#: lib/marshall_web/live/terminal_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "画面中継チケットを発行しました。"
+
+#: lib/marshall_web/live/terminal_live.ex:83
+#: lib/marshall_web/live/terminal_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Androidの画面を利用できません。"
+
+#: lib/marshall_web/live/terminal_live.ex:618
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Androidの画面"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "ソフトウェアで描画されるAndroidの画面は、マシンの中継機能を使用します。"
+
+#: lib/marshall_web/live/terminal_live.ex:622
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "画面を開く"
+
+#: lib/marshall_web/live/terminal_live.ex:625
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "操作権を要求"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "ドキュメントが見つかりません"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android 画面の描画領域"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "画面中継を待機しています。"

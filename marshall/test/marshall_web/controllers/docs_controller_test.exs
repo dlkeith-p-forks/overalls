@@ -5,6 +5,24 @@ defmodule MarshallWeb.DocsControllerTest do
   alias Marshall.Documentation
   alias OverallsProtocol.SSHCommand
 
+  # @cc [owner:ghuntley,label:verification] public-docs-title-extraction
+  # Every public page title MUST have a documentation catalog identity even
+  # when its runtime Gettext lookup receives a dynamically selected title.
+  test "every public page title has an extracted documentation identity" do
+    identities =
+      :marshall
+      |> Application.app_dir("priv/gettext/documentation.pot")
+      |> Expo.PO.parse_file!()
+      |> Map.fetch!(:messages)
+      |> Enum.map(fn message -> IO.iodata_to_binary(message.msgid) end)
+      |> MapSet.new()
+
+    for page <- Documentation.pages("en") do
+      assert MapSet.member?(identities, page.title),
+             "Missing extracted documentation title: #{page.title}"
+    end
+  end
+
   # @cc [owner:ghuntley,label:verification] public-docs-language-direction
   # Public documentation MUST expose the negotiated language and its explicit
   # direction without requiring a session or authentication.

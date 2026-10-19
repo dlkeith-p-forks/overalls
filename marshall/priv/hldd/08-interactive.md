@@ -20,6 +20,8 @@ transport reset does not preserve established sockets.
 
 [ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
 
+SSH key rename descriptions, confirmation and refusal flashes, and administrative verification/refusal messages use the active locale catalog. Translation does not change ownership checks, recent-passkey requirements or accepted mutation outcomes. English date-only month/day output follows bundled CLDR ordering (`Oct 18`); the UTC provenance remains unchanged.
+
 ## Inline privileged browser actions
 
 The accepted ADR-0160 flow keeps a requested administrator mutation on its current
@@ -1269,4 +1271,52 @@ changes apply to newly created machines.
 
 Public documentation applies validated browser language negotiation without a login or session cookie. Its standalone HTML declares the negotiated `lang` and explicit `dir`, including RTL for Arabic and Urdu. Controller regression coverage checks English, Arabic, Urdu and Japanese; this does not establish visual bidi correctness or translation completeness.
 
+Plain-text HTTP refusal messages use the negotiated locale for repository launch,
+installer/download and trust failures, editor/sign-in failures, inference/raw Git
+access and missing documentation. Status codes, final newlines and generic
+redaction remain unchanged. Successful installer scripts, archives, manifests,
+checksums, trust JSON, CSV fields and raw Git bytes retain their machine format.
+Public documentation and download routes negotiate without creating sessions.
+Plain-text responses carry no HTML direction attribute; HTML RTL and native
+browser acceptance remain separate verification boundaries.
+
 Porsche catalog verification compares all 25 terminal catalogs with the extracted message inventory and checks placeholders. The recorded full Porsche gate at `1f79f63e6` passed 108 tests and Dialyzer with zero errors. This establishes bounded BEAM/catalog behavior; native SSH onboarding, visual bidi behavior and native-language quality still require separate acceptance.
+
+Porsche's human result renderer translates receipt labels, known receipt statuses
+and reviewed refusal guidance, including pinning limits and protected owner
+access. Command syntax such as `unpin MACHINE`, request/operation identifiers,
+unknown keys, nested result data and all JSON output retain their literal machine
+representation. A translated refusal does not change retry eligibility or grant
+authority; inspect current machine/request state before repeating a mutation.
+
+## Android display authority
+
+Android-capable machines may mint a short-lived, machine- and actor-bound display
+claim through Marshall. The guest relay remains responsible for current emulator
+generation and controller-lease checks; a viewer claim cannot send input. Claims
+are refused for images without the `android_display` capability and do not expose
+ADB or RFB through a public browser route.
+
+The machine workspace exposes Android display controls only when the image's
+`android_display` capability is present. Viewer and controller ticket requests
+remain authenticated LiveView events; the browser relay must still enforce
+current generation and controller lease before opening RFB.
+
+The Android relay state machine permits read-only viewers and one controller,
+advances frame sequence numbers monotonically, and revokes controller authority
+when its process exits or the emulator generation changes.
+
+The Android display hook uses a same-origin WebSocket URL supplied by the page,
+keeps viewer input disabled, and sends controller key/pointer frames only after
+a controller ticket is granted. It does not use a foreign iframe or external
+resource.
+
+The `/android-display` WebSocket upgrade verifies the browser login, signed
+machine ticket, actor binding, mode and generation before creating a relay
+process; failed upgrades return a generic refusal without machine disclosure.
+
+Display tickets and WebSocket upgrades bind the signed emulator generation; a
+browser-supplied generation mismatch is refused before relay creation.
+
+The host-stream adapter drops stale Android frames before relay publication and
+routes input only from controller-authorized sockets back toward Lilly.

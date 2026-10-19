@@ -1,4 +1,6 @@
-{ pkgs, packages, guest ? packages.windowsGuest, agents ? false }:
+{ pkgs, packages, guest ? packages.windowsGuest, agents ? false, editorCandidate ? false }:
+assert builtins.isBool agents && builtins.isBool editorCandidate;
+assert !editorCandidate || agents;
 # @cc [owner:ghuntley,label:verification;isolation] windows-lilly-guest-reachable-without-agents
 # This machine test MUST place the Windows image through the real Lilly driver
 # (jailer, seccomp, network guard, ZFS dataset) on nested KVM and pass only when
@@ -14,8 +16,14 @@
 # boot UUID. The agents composition also reads the closed agentd startup line
 # from the live guest's EFI log; it proves the Windows executor task launches,
 # without claiming a Marshall context turn or provider transport.
+
+# @cc [owner:ghuntley,label:verification;security] windows-lilly-explicit-editor-candidate
+# Only explicit editorCandidate mode MAY admit windows-editor-v1 and its
+# version-7 manifest/version-4 bundle. That mode MUST use at least 4 GiB guest
+# RAM, retain the exact image editor descriptor through restart, and leave
+# ordinary Windows expectations and production image selection unchanged.
 pkgs.testers.runNixOSTest {
-  name = if agents then "overalls-windows-lilly-guest-agents" else "overalls-windows-lilly-guest";
+  name = if editorCandidate then "overalls-windows-lilly-editor-candidate" else if agents then "overalls-windows-lilly-guest-agents" else "overalls-windows-lilly-guest";
   requiredFeatures.nested-kvm = true;
   # Windows under nested KVM is slow; the image build happens before the test.
   globalTimeout = 14400;
@@ -46,7 +54,7 @@ pkgs.testers.runNixOSTest {
       credentialFile = "/run/windows-test-credential.json";
       egressInterface = "eth1";
       guestCpuCores = 2;
-      guestMemoryMiB = 3072;
+      guestMemoryMiB = if editorCandidate then 6144 else 3072;
       pools = [{
         id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
         path = "/pool";
@@ -68,7 +76,8 @@ pkgs.testers.runNixOSTest {
         mkdir -p "$RELEASE_TMP"
         export WINDOWS_ACTION="$1"
         export WINDOWS_GENERATION="''${2:-1}"
-        export WINDOWS_AGENTS="${if agents then "windows-v1" else "none"}"
+        export WINDOWS_AGENTS="${if editorCandidate then "windows-editor-v1" else if agents then "windows-v1" else "none"}"
+        export WINDOWS_EDITOR_CANDIDATE="${if editorCandidate then "true" else "false"}"
         export WINDOWS_GUEST_IMAGE="${guest}"
         export WINDOWS_GUEST_TRUST_ROOTS="${lib.concatStringsSep "," (map (path: toString (pkgs.runCommand "windows-fixture-guest-root.pem" {} ''cp ${path} "$out"'')) config.services.lilly.guestTrustRoots)}"
         export WINDOWS_RELEASE_METADATA="${packages.lilly}/overalls-release.json"
@@ -78,5 +87,6 @@ pkgs.testers.runNixOSTest {
   };
   testScript = ''
     agents = ${if agents then "True" else "False"}
+    editor_candidate = ${if editorCandidate then "True" else "False"}
   '' + builtins.readFile ./driver.py;
 }

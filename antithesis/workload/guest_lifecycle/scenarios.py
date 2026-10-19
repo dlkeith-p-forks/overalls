@@ -25,6 +25,9 @@ from guest_lifecycle.witness import GuestIdentity, GuestSpec, GuestWitness, Gues
 LOG = logging.getLogger(__name__)
 # Uncertain final stops are resubmitted with one key before the slot is abandoned.
 RELEASE_ATTEMPTS = 5
+# A lost stop/start reply is resubmitted with its original key, which Marshall
+# deduplicates, before the cycle is left unexercised.
+LIFECYCLE_ATTEMPTS = 3
 # Marshall withholds capacity whose last accepted Lilly report is older than its
 # 5 s freshness window, which injected faults routinely exceed; the cycle polls
 # for a usable catalog instead of judging one instant.
@@ -52,11 +55,16 @@ class ObservedMismatch:
     vm: VmView
 
 
-def _reject_mismatch() -> None:
-    always(
-        False,
-        "Completed guest lifecycle outcome matches current VM state and execution identity",
-    )
+def _submit(operator: ComputeLifecycleOperator, vm_id: UUID, kind: str) -> OperatorReply | None:
+    """Submit one stop/start, resubmitting an uncertain reply with the same key."""
+    key = uuid4()
+    for attempt in range(LIFECYCLE_ATTEMPTS):
+        if attempt:
+            time.sleep(5)
+        reply = operator.lifecycle(vm_id, kind, key)
+        if reply.state is State.OBSERVED and reply.value is not None:
+            return reply.value
+    return None
 
 
 def _object(reply: OperatorReply) -> dict[str, object] | None:
@@ -115,13 +123,20 @@ def _sample(
             stage = "operation_pending"
             time.sleep(1)
             continue
-        if (
-            operation.kind != expected_kind
-            or vm.observed_state != operation.outcome.state
-            or vm.placement_id != operation.placement_id
-            or vm.execution_epoch != operation.execution_epoch
-            or vm.generation != operation.generation
-        ):
+        # Evaluated for every completed outcome, so a healthy run records the
+        # property as held rather than never reached.
+        consistent = (
+            operation.kind == expected_kind
+            and vm.observed_state == operation.outcome.state
+            and vm.placement_id == operation.placement_id
+            and vm.execution_epoch == operation.execution_epoch
+            and vm.generation == operation.generation
+        )
+        always(
+            consistent,
+            "Completed guest lifecycle outcome matches current VM state and execution identity",
+        )
+        if not consistent:
             return ObservedMismatch(operation, vm)
         if operation.outcome.state != expected_state:
             return None
@@ -239,7 +254,6 @@ def run_physical_boot_cycle() -> int:
     try:
         first = _sample(operator, witness, vm_id, provision_operation, "provision", "running", 240)
         if isinstance(first, ObservedMismatch):
-            _reject_mismatch()
             return 1
         if first is None:
             LOG.info("Guest lifecycle initial boot unexercised")
@@ -255,12 +269,12 @@ def run_physical_boot_cycle() -> int:
             return 1
         reachable("Accepted provision reached a real QEMU guest boot and port 1024 readiness")
 
-        stop_reply = operator.lifecycle(vm_id, "stop", uuid4())
-        if stop_reply.state is not State.OBSERVED or stop_reply.value is None:
+        stop_reply = _submit(operator, vm_id, "stop")
+        if stop_reply is None:
             LOG.info("Guest lifecycle stop uncertain")
             return 0
         try:
-            stop_id = lifecycle_id(stop_reply.value, vm_id, "stop")
+            stop_id = lifecycle_id(stop_reply, vm_id, "stop")
         except (ValueError, TypeError):
             return 0
         stopped = _sample(
@@ -274,7 +288,6 @@ def run_physical_boot_cycle() -> int:
             (first.operation.execution_epoch, first.operation.generation),
         )
         if isinstance(stopped, ObservedMismatch):
-            _reject_mismatch()
             return 1
         if stopped is None:
             LOG.info("Guest lifecycle completed stop unexercised")
@@ -287,17 +300,16 @@ def run_physical_boot_cycle() -> int:
             return 1
         reachable("Accepted stop has independently absent QEMU and retained qcow2 hash")
 
-        start_reply = operator.lifecycle(vm_id, "start", uuid4())
-        if start_reply.state is not State.OBSERVED or start_reply.value is None:
+        start_reply = _submit(operator, vm_id, "start")
+        if start_reply is None:
             LOG.info("Guest lifecycle fresh start uncertain")
             return 0
         try:
-            start_id = lifecycle_id(start_reply.value, vm_id, "start")
+            start_id = lifecycle_id(start_reply, vm_id, "start")
         except (ValueError, TypeError):
             return 0
         restarted = _sample(operator, witness, vm_id, start_id, "start", "running", 240)
         if isinstance(restarted, ObservedMismatch):
-            _reject_mismatch()
             return 1
         if restarted is None:
             LOG.info("Guest lifecycle restarted boot unexercised")

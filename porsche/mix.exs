@@ -68,6 +68,7 @@ defmodule Porsche.MixProject do
         "format --check-formatted",
         "test --warnings-as-errors",
         "covenant.check --no-run",
+        "gettext.extract --check-up-to-date",
         "dialyzer --force-check"
       ]
     ]

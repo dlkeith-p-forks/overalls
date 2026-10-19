@@ -96,6 +96,9 @@ let
   otelAudiSshScenarioParts = lib.splitString
     "\n    # @cc [owner:ghuntley,label:verification] audi-native-slo-journey-boundary"
     audiScenario;
+  suspensionAudiSshSetup = builtins.head (lib.splitString
+    "\n    # @cc [owner:ghuntley,label:verification] audi-native-slo-journey-boundary"
+    (lib.elemAt (lib.splitString "\nwith subtest(\"native OpenSSH reaches" audiScenario) 1));
   # Clone-matrix variants overlap several full-shape source, temporary copy and
   # destination reservations, so their sparse fixtures get a larger dataset quota.
   # Every fixture also retains a sealed template per configured image (ADR-0130);
@@ -1933,30 +1936,19 @@ assert editorFamily == null || (editor && !ubuntu
             client.execute("systemctl reset-failed audi-slo-held.service")
         assert process_snapshot(vm) == audi_slo_guest_before
       ''
-      else if suspension then ''
-    storage_budget = ${toString storageBudget}
-    storage_images = "${storage}"
-    qemu_img = "${pkgs.qemu_kvm}/bin/qemu-img"
-    host_bindings = ${builtins.toJSON hosts}
-    fixture_guest_memory_bytes = ${toString (fixtureGuestMemoryMiB * 1024 * 1024)}
-    ubuntu_enabled = False
-    porsche_enabled = False
-    cloning_enabled = False
-    relocation_enabled = True
-    audi_enabled = True
-    galileo_enabled = False
-    ssh_private_enabled = False
-    agent_enabled = False
-  '' + lib.concatMapStringsSep "\n" builtins.readFile [
-    ./driver.py
-    ../../support/transfer.py
-    ../../support/guest-diagnostics.py
-    ./helpers.py
-    ./scenarios/bootstrap.py
-    ./scenarios/enrollment.py
-    ./scenarios/boot-trust-services.py
-  ] + builtins.head (lib.splitString "with subtest(\"real guest HTTP" audiScenario)
-    + builtins.readFile ./scenarios/suspension.py
+      else if suspension then
+        builtins.head (lib.splitString "\nwith subtest(\"real guest HTTP reaches" audiScenario)
+          + "\n" + ''
+            vm = provision_when_available(m1, "standard")
+            await_running(vm["vm_id"])
+            route = operator(
+                m1,
+                dict(action="audi-policy", owner_id=users["owner_id"], vm_id=vm["vm_id"], visibility="public"),
+            )
+            hostname = str(route["label"]) + ".apps.example.test"
+          ''
+          + suspensionAudiSshSetup
+        + builtins.readFile ./scenarios/suspension.py
       else if ubuntu && audi then builtins.readFile ./scenarios/audi.py
         + lib.optionalString relocation (builtins.readFile ./scenarios/audi-relocation.py)
       else if ubuntu then builtins.readFile ./scenarios/relocation.py

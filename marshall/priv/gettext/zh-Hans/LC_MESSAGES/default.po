@@ -7422,3 +7422,111 @@ msgstr "生产环境, 项目名称"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "与您时间相同"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "描述"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH 密钥已重命名。"
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "无法重命名此密钥。请使用不超过 128 个字符的名称。"
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "管理更改需要管理员权限。"
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "管理更改未经授权。"
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "请先完成或取消当前验证。"
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "无效的管理请求。"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:34
+#: lib/marshall_web/controllers/editor_controller.ex:52
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "无法登录"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:76
+#, elixir-autogen, elixir-format
+msgid "Installer trust unavailable"
+msgstr "无法验证安装程序的可信性"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:89
+#, elixir-autogen, elixir-format
+msgid "SSH trust unavailable"
+msgstr "无法验证SSH的可信性"
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#, elixir-autogen, elixir-format
+msgid "This repository link could not be launched. Open the link again."
+msgstr "无法通过此仓库链接启动。请重新打开链接。"
+
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:51
+#, elixir-autogen, elixir-format
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "无法完成此次启动。请登录后重新打开链接。"
+
+#: lib/marshall_web/live/terminal_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "已签发显示中继票据。"
+
+#: lib/marshall_web/live/terminal_live.ex:83
+#: lib/marshall_web/live/terminal_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android显示不可用。"
+
+#: lib/marshall_web/live/terminal_live.ex:618
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Android显示"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "由软件渲染的Android显示使用机器中继。"
+
+#: lib/marshall_web/live/terminal_live.ex:622
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "打开显示"
+
+#: lib/marshall_web/live/terminal_live.ex:625
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "请求控制"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "未找到文档"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android 显示画布"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "正在等待显示中继。"

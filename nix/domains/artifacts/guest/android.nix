@@ -11,15 +11,17 @@ in
   # The Android emulator MUST run inside this Firecracker guest with software
   # rendering and without nested KVM. A future change that removes either flag
   # would make the artifact depend on an unavailable host accelerator.
+
   # @cc [owner:ghuntley,label:storage;recovery] android-avd-persistent-state
   # The AVD directory MUST be a systemd-managed persistent state directory so a
   # guest restart reuses its device data while image rebuilds retain an immutable
   # SDK and system image closure.
+
   # @cc [owner:ghuntley,label:security] android-display-loopback-only
   # The guest display bridge MUST bind RFB to loopback. This module does not
   # claim authenticated host display access; no new guest ingress port is opened
   # and an authenticated display relay remains a separate integration.
-  environment.systemPackages = [ androidSdk pkgs.xorg.xorgserver pkgs.x11vnc pkgs.socat ];
+  environment.systemPackages = [ androidSdk pkgs.gawk pkgs.jdk pkgs.xorg.xorgserver pkgs.x11vnc pkgs.socat ];
 
   users.users.overalls-android = {
     isSystemUser = true;
@@ -32,13 +34,15 @@ in
     wantedBy = [ "multi-user.target" ];
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
-    path = [ pkgs.bash pkgs.coreutils pkgs.findutils pkgs.gnugrep pkgs.procps ];
+    path = [ pkgs.bash pkgs.coreutils pkgs.findutils pkgs.gawk pkgs.gnugrep pkgs.procps ];
     environment = {
       ANDROID_HOME = sdkRoot;
       ANDROID_SDK_ROOT = sdkRoot;
       ANDROID_USER_HOME = "/var/lib/overalls-android";
       ANDROID_AVD_HOME = avdRoot;
       DISPLAY = ":0";
+      HOME = "/var/lib/overalls-android";
+      JAVA_HOME = "${pkgs.jdk}";
     };
     serviceConfig = {
       Type = "simple";
@@ -57,9 +61,10 @@ in
       ReadWritePaths = [ "/var/lib/overalls-android" "/run/overalls-android" ];
       ExecStart = "${pkgs.writeShellScript "overalls-android-emulator" ''
         set -eu
+        mkdir -p "$HOME/.android"
         mkdir -p "$ANDROID_AVD_HOME"
         if [ ! -f "$ANDROID_AVD_HOME/${avdName}.avd/config.ini" ]; then
-          yes "" | ${sdkRoot}/cmdline-tools/latest/bin/avdmanager create avd \
+          printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
             --force --name ${avdName} \
             --package "system-images;android-36;google_apis;x86_64" \
             --path "$ANDROID_AVD_HOME/${avdName}.avd"
@@ -75,7 +80,7 @@ CONFIG
         trap 'kill "$xvfb_pid" 2>/dev/null || true' EXIT
         exec ${sdkRoot}/emulator/emulator \
           -avd ${avdName} -no-accel -gpu swiftshader_indirect \
-          -no-boot-anim -no-snapshot -ports 5554,5555
+          -no-boot-anim -no-snapshot -skip-adb-auth -ports 5554,5555
       ''}";
     };
   };

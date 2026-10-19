@@ -33,6 +33,7 @@ defmodule WindowsLillyFixture do
     {:ok, image} = Image.load(System.fetch_env!("WINDOWS_GUEST_IMAGE"))
     {:ok, agents} = OverallsProtocol.GuestAgents.parse(System.fetch_env!("WINDOWS_AGENTS"))
     true = image.manifest.boot_kind == :firmware and image.manifest.guest_agents == agents
+    memory_bytes = image_mode!(image, agents, System.fetch_env!("WINDOWS_EDITOR_CANDIDATE"))
     id = "dddddddd-dddd-4ddd-8ddd-000000000201"
 
     {:ok, spec} =
@@ -43,7 +44,7 @@ defmodule WindowsLillyFixture do
         profile: :customer,
         slot: 203,
         vcpu: 2,
-        memory_bytes: 2_147_483_648,
+        memory_bytes: memory_bytes,
         disk_bytes: image.manifest.minimum_disk_bytes
       })
 
@@ -93,7 +94,7 @@ defmodule WindowsLillyFixture do
         {:ok, boot} = Boot.read(directory)
         true = boot.generation == generation and boot.execution_epoch == 1
         guest_branch(agents, config, pool, spec, generation, directory)
-        bundle_shape(pool, spec, agents)
+        bundle_shape(pool, spec, agents, image)
         jail_shape(pool, spec, boot, agents)
         summary(config, spec, agents, directory)
 
@@ -101,6 +102,7 @@ defmodule WindowsLillyFixture do
         :ok = start(config, pool, image, spec, generation, deadline(120_000))
         await(fn -> Observation.running?(config, pool, spec) end, deadline(30_000))
         guest_branch(agents, config, pool, spec, generation, directory)
+        bundle_shape(pool, spec, agents, image)
         summary(config, spec, agents, directory)
 
       "observe" ->
@@ -126,19 +128,60 @@ defmodule WindowsLillyFixture do
     :ok
   end
 
+  @spec image_mode!(Image.t(), OverallsProtocol.GuestAgents.t(), String.t()) :: pos_integer()
+  defp image_mode!(
+         %Image{manifest: %{guest_agents: :windows_editor_v1} = manifest},
+         :windows_editor_v1,
+         "true"
+       ) do
+    %{"version" => 7, "os" => "windows", "guest_agents" => "windows-editor-v1"} =
+      manifest.manifest
+
+    true = manifest.minimum_memory_bytes <= 4_294_967_296
+    true = manifest.minimum_disk_bytes == 68_719_476_736
+    true = manifest.workspace_source_version == 2
+    {:ok, _} = OverallsProtocol.EditorRelease.decode(manifest.manifest["editor"])
+    4_294_967_296
+  end
+
+  defp image_mode!(%Image{manifest: manifest}, agents, "false")
+       when agents in [:none, :windows_v1] do
+    %{"version" => 5} = manifest.manifest
+    2_147_483_648
+  end
+
+  @spec guest_branch(
+          OverallsProtocol.GuestAgents.t(),
+          Config.t(),
+          Pool.t(),
+          Spec.t(),
+          pos_integer(),
+          Path.t()
+        ) :: :ok
   defp guest_branch(:none, config, pool, spec, generation, directory),
     do: agentless(config, pool, spec, generation, directory)
 
   defp guest_branch(:windows_v1, config, pool, spec, generation, directory),
-    do: attested(config, pool, spec, generation, directory)
+    do: attested(:windows_v1, config, pool, spec, generation, directory)
+
+  defp guest_branch(:windows_editor_v1, config, pool, spec, generation, directory),
+    do: attested(:windows_editor_v1, config, pool, spec, generation, directory)
 
   # The windows-v1 branch: the guest's trust daemon installs the delivered roots
   # and answers the installed receipt bound to this boot; its readiness daemon
   # answers the ready line within the agent set's budget; both carry the same
   # guest boot UUID, which provisioning records.
-  defp attested(config, pool, spec, generation, directory) do
+  @spec attested(
+          :windows_v1 | :windows_editor_v1,
+          Config.t(),
+          Pool.t(),
+          Spec.t(),
+          pos_integer(),
+          Path.t()
+        ) :: :ok
+  defp attested(agents, config, pool, spec, generation, directory) do
     options = [execution_epoch: 1, generation: generation]
-    {:ok, :windows_v1} = Driver.guest_agents(pool, spec)
+    {:ok, ^agents} = Driver.guest_agents(pool, spec)
     {:ok, boot} = Boot.read(directory)
     :ok = await_ok(fn -> Driver.trust(config, pool, spec, options) end, deadline(900_000))
 
@@ -232,7 +275,12 @@ defmodule WindowsLillyFixture do
     if :binary.match(body, marker) != :nomatch do
       :ok
     else
-      keep = binary_part(body, byte_size(body) - min(byte_size(body), 4096), min(byte_size(body), 4096))
+      keep =
+        binary_part(
+          body,
+          byte_size(body) - min(byte_size(body), 4096),
+          min(byte_size(body), 4096)
+        )
 
       case :gen_tcp.recv(socket, 0, 1000) do
         {:ok, bytes} -> wait(socket, marker, until, keep <> bytes)
@@ -283,7 +331,8 @@ defmodule WindowsLillyFixture do
     :ok
   end
 
-  defp bundle_shape(pool, spec, agents) do
+  @spec bundle_shape(Pool.t(), Spec.t(), OverallsProtocol.GuestAgents.t(), Image.t()) :: :ok
+  defp bundle_shape(pool, spec, agents, image) do
     dataset = ZFSDataset.directory(pool, spec)
     {:ok, names} = File.ls(dataset)
     ["boot-bundle.json", "firmware", "rootfs.ext4"] = Enum.sort(names)
@@ -291,8 +340,19 @@ defmodule WindowsLillyFixture do
     true = bundle.boot_kind == :firmware and bundle.guest_agents == agents and bundle.pci
     wire = OverallsProtocol.GuestAgents.wire(agents)
 
-    %{"version" => 2, "boot" => "firmware", "pci" => true, "guest_agents" => ^wire} =
-      dataset |> Path.join("boot-bundle.json") |> File.read!() |> JSON.decode!()
+    encoded = dataset |> Path.join("boot-bundle.json") |> File.read!() |> JSON.decode!()
+    %{"boot" => "firmware", "pci" => true, "guest_agents" => ^wire} = encoded
+
+    case agents do
+      :windows_editor_v1 ->
+        %{"version" => 4, "os" => "windows", "editor" => editor} = encoded
+        true = editor == image.manifest.manifest["editor"]
+        true = bundle.editor == image.manifest.editor
+
+      ordinary when ordinary in [:none, :windows_v1] ->
+        %{"version" => 2} = encoded
+        false = Map.has_key?(encoded, "editor")
+    end
 
     {:ok, %File.Stat{size: 4_194_304, mode: mode}} = File.stat(Path.join(dataset, "firmware"))
     true = Bitwise.band(mode, 0o777) == 0o444

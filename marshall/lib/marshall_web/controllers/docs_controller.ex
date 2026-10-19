@@ -30,7 +30,9 @@ defmodule MarshallWeb.DocsController do
         |> render(:show, page: page, pages: Documentation.pages(), layout: false)
 
       :error ->
-        conn |> put_resp_content_type("text/plain") |> send_resp(404, "Documentation not found\n")
+        conn
+        |> put_resp_content_type("text/plain")
+        |> send_resp(404, gettext("Documentation not found") <> "\n")
     end
   end
 

@@ -307,6 +307,15 @@ production quota values or the archive-quota branch. The hint-loss anchor
 cannot fire under hosted faults: Oban reports `:isolated` only after 120 s with
 no notifier ping, beyond any recorded timeline. Its evidence is emulated, not
 native.
+The 60-minute run `c5b8084588217cfe23b52086caf9e624-65-0` exposed two harness
+defects. QEMU's default 1 GiB TCG translation cache plus the 1536 MiB guest
+exceeded the VM container's 3 GiB limit under archive pressure; the cgroup
+killed QEMU (exit 137), and later traces commands failed their readiness
+prerequisite. The recorder VM now caps the cache at 256 MiB. The one-new-batch
+checks also compared an acknowledged batch with the bridge's archive copy,
+which republishes about every 0.2 s; they now wait up to 5 s for that copy, and
+a lost-reply batch no longer re-synchronizes the next check. No product
+behavior changed.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
@@ -414,6 +423,12 @@ placement. Operator `image_unavailable` refusals (a stale host image report
 between catalog and provision) are retried like `insufficient_capacity`, each
 catalog read is bounded to 30 s within a 180 s window, and an expired sample
 logs its last unmet step.
+Run `766b5d3778010731ec34ab191bf48f7c-65-0` reached consistent completed
+provisions, yet reported the outcome/VM consistency property as never hit: the
+driver evaluated it only when a contradiction occurred. It now evaluates that
+assertion for every completed outcome it samples, and resubmits a stop or start
+whose reply was lost with the same deduplicated request key up to three times
+instead of abandoning the cycle after one lost reply.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The
@@ -1204,6 +1219,57 @@ pinned transfer-file run passed five tests in 1.1 seconds; the matrix review
 binds its log digest. The earlier frozen 610-test gate does not verify this
 changed test source. No production runtime, native transfer or recovery
 behavior changes.
+
+The later `7c323f197` forward checkpoint retains separate rollout and test
+evidence. Marshall's Covenant run passed 35 of 36 tests and exposed a callback
+replay guard exception; the explicit non-nil attempt repair preserves all
+state/login/generation/expiry fences. Pins and Teams generated fixtures now
+create a fresh SQL sandbox and authority rows per case and replay, retaining
+their 100-case budgets and refusal oracles. The focused timing-only run passed
+23 tests, seed 52647, in 419.4 seconds, including the callback, Pins, Teams and
+sandbox regressions. It measured the full Teams HTTP history at 30.5206 seconds
+and Pins ordered-set history at 276.0067 seconds. Mix implicitly enables
+`--trace` for `--slowest 8`, so these results
+do not qualify finite ExUnit deadlines. The ordered-set history alone now has
+a 600,000-millisecond aggregate timeout; other Pins tests retain the
+300,000-millisecond module timeout, each case retains its 120,000-millisecond
+SQL ownership deadline, and Teams retains its 60,000-millisecond default.
+The required full Marshall `mix precommit` gate without trace/slowest remains
+pending and will verify these tests with their finite deadlines. The
+[matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
+records the exact failure scope, successful Marshall catalog structure check
+and separate three-test Porsche catalog run. The 22:32:58 UTC production
+observation subsequently found both hosts healthy with fresh six-key inventory,
+and ordinary Windows CLI routing passed through the normal proxy with strict
+certificate trust. These observations do not qualify browser/editor access or
+the full native OS matrix. Documentation translation completeness, linguistic
+review, isolation and recovery acceptance remain separate; no accepted ADR or
+deployment boundary changes.
+
+The later forward verification patch preserves the existing authority and
+localization decisions. The Gettext plural adapter keeps plain locale/header
+context in generated code and reconstructs the opaque plural value through
+Gettext's API at runtime, preserving explicit catalog rules and locale fallback
+at the cost of parsing on each plural selection. Viewer attachment retains its
+monitored relay state; typed guard and contract-syntax repairs preserve the
+existing limits. Native-admission regressions assert the exact 13-key map,
+retaining seven qualified native capabilities while editor, Inception and all
+four Android flags remain false. Lilly's incoming network changes are
+formatting only. The Windows browser fixture accepts inherited SYSTEM-only
+receipt grants only beneath a protected SYSTEM-only parent, retaining foreign
+access, reparse and ancestor refusals without changing product custody. An
+explicit Lilly editor-candidate fixture uses four GiB guest RAM and checks the
+exact version-7 image/version-4 bundle editor descriptor through restart;
+ordinary Windows expectations and production selection remain separate.
+The rebuilt receipt fixture passed native inherited-receipt admission and
+foreign-read refusal checks with the installed broker unchanged; this is
+separate from PTY, browser or recovery acceptance. Adapter regressions, full
+consumer gates and exact candidate native execution remain pending. The
+earlier mixed-source asset
+build does not verify this forward patch or complete browser behavior. The
+[matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
+records the source scope and remaining native, controller-lease, isolation and
+recovery gaps; partial ADR-0206 and ADR-0200 acceptance are unchanged.
 
 ## Keeping this handbook current
 

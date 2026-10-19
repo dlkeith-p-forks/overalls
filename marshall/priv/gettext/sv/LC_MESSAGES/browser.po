@@ -214,7 +214,7 @@ msgstr "just nu"
 #: lib/marshall_web/browser_messages.ex:79
 #, elixir-autogen, elixir-format
 msgid "● live"
-msgstr "● live"
+msgstr "● aktiv"
 
 #: lib/marshall_web/browser_messages.ex:80
 #, elixir-autogen, elixir-format

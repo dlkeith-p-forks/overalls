@@ -171,6 +171,7 @@ defmodule Marshall.MixProject do
         "monospace.check",
         "localization.data",
         "localization.catalogs",
+        "gettext.extract --check-up-to-date",
         "dialyzer --force-check"
       ]
     ]

@@ -29,7 +29,17 @@ defmodule MarshallWeb.SSHApprovalLiveTest do
     assert redirected_to(conn) == "/sign-in"
     assert get_session(conn, :return_to) == c.pending.approval_path
     assert {:ok, %{status: "pending"}} = status(c)
-    assert get(c.conn, "/ssh/approve/not-a-token").status == 404
+
+    for {locale, message} <- [{"en", "Unavailable"}, {"ar", "غير متاح"}, {"ja", "利用不可"}] do
+      refusal =
+        build_conn()
+        |> put_req_header("accept-language", locale)
+        |> get("/ssh/approve/not-a-token")
+
+      assert response(refusal, 404) == message
+      assert get_resp_header(refusal, "content-language") == [locale]
+      refute get_session(refusal, :return_to)
+    end
   end
 
   test "viewing the fingerprint does not approve; an explicit click binds the signed-in owner",

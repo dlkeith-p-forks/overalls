@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {t} from "../../assets/js/localization.js";
+import {installLocaleReload, t} from "../../assets/js/localization.js";
 
 test("server catalog changes language without changing source keys", () => {
   const previous = globalThis.document;
@@ -18,4 +18,20 @@ test("malformed or non-string catalog values fall back to source", () => {
     assert.equal(t("Hello"), "Hello");
   }
   globalThis.document = previous;
+});
+
+test("language saves reload the document for fragment URLs and repeated events", () => {
+  for (const href of ["http://localhost/settings", "http://localhost/settings#profile"]) {
+    const events = new EventTarget();
+    let reloads = 0;
+    const browser = {
+      addEventListener: events.addEventListener.bind(events),
+      location: {href, reload: () => { reloads += 1; }},
+    };
+    installLocaleReload(browser);
+    events.dispatchEvent(new Event("phx:locale-updated"));
+    events.dispatchEvent(new Event("phx:locale-updated"));
+    assert.equal(reloads, 2);
+    assert.equal(browser.location.href, href);
+  }
 });
