@@ -178,7 +178,7 @@ def main() -> None:
             expect(reader.get_by_role("button", name=action, exact=True)).to_have_count(0)
         visit(reader, "/git")
         reader.get_by_role("link", name="github/fixture/sample", exact=True).click()
-        reader.get_by_role("link", name="📄 hello.txt", exact=True).click()
+        reader.get_by_role("link", name="hello.txt", exact=True).click()
         expect(reader.locator("pre")).to_have_text("first")
         first_raw = reader.get_by_role("link", name="Download raw file").get_attribute("href")
         assert first_raw is not None and first in first_raw
@@ -197,7 +197,7 @@ def main() -> None:
         )
         assert download(reader, first_raw) == (200, "first")
         visit(reader, REPOSITORY)
-        reader.get_by_role("link", name="📄 hello.txt", exact=True).click()
+        reader.get_by_role("link", name="hello.txt", exact=True).click()
         expect(reader.locator("pre")).to_have_text("second")
         second_raw = reader.get_by_role("link", name="Download raw file").get_attribute("href")
         assert second_raw is not None and second in second_raw

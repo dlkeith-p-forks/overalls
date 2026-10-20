@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent changes; no architecture or documented behavior impact from this Mila change.
+Catalogued event call correction preserves existing message-board purge behavior and logging contract.
