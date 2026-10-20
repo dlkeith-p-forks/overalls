@@ -5,6 +5,10 @@ tribuchet build scheduler for itself and Dungarees, which delegates over a
 `grpc://` store; the two hosts substitute from each other over `grpc://`,
 superseding ADR-0086 for them while other hosts stay cache-only.
 
+[ADR-0249](0249-mila-rust-core-native-clients.md) moves Mila's shared protocol,
+cryptography and state logic into Rust crates with thin Swift, Kotlin, GTK4 and
+WinUI clients; implementation remains partial while native parity is built.
+
 [ADR-0247](0247-sops-operator-source-grant.md) restores Geoffrey Huntley's
 operator source as a reviewed fleet-wide grant whose address lives only in the
 fleet-addresses SOPS document.
@@ -1054,3 +1058,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0246](0246-panterloons-control-plane-deployment.md) | accepted | partial | Panterloons control-plane deployment |
 | [ADR-0247](0247-sops-operator-source-grant.md) | accepted | partial | SOPS-held operator source grant |
 | [ADR-0248](0248-fleet-build-scheduling.md) | accepted | partial | Fleet build scheduling through a tribuchet hub and grpc:// stores |
+| [ADR-0249](0249-mila-rust-core-native-clients.md) | accepted | partial | Mila Rust core with native platform clients |
