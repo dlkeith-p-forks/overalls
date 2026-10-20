@@ -141,6 +141,15 @@ jobs:
               -destination "id=$device" CODE_SIGNING_ALLOWED=NO
           '
 
+  apple-native:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Swift native package tests
+        working-directory: mila/native/apple
+        run: swift test
+
   windows:
     needs: source-bundle
     runs-on: windows-2025
