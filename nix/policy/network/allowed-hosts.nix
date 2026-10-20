@@ -16,4 +16,8 @@
     name = "panterloonsPrimary";
     comment = "Panterloons fleet host";
   };
+  geoffreyHuntley = {
+    name = "geoffreyHuntley";
+    comment = "Geoffrey Huntley operator access";
+  };
 }

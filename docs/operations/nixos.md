@@ -250,9 +250,9 @@ daemon starts. Tailnet policy still controls whether clients may use the route.
 
 `nix/policy/network/allowed-hosts.nix` separately defines named public IPv4 sources that may
 connect to every TCP and UDP port on fleet hosts, explicitly including HTTP 80
-and HTTPS 443. Overalls' and Dungarees' reviewed host addresses are the
-defaults; personal addresses were removed and operators reach hosts through the
-tailnet (ADR-0075). Every entry has a required comment, and malformed or
+and HTTPS 443. The fleet hosts' reviewed addresses and Geoffrey Huntley's
+operator source (ADR-0247) are the entries; each names a value held only in the
+fleet-addresses SOPS document, never a literal (ADR-0075, ADR-0233). Every entry has a required comment, and malformed or
 duplicate addresses fail evaluation. All global TCP/UDP port and port-range
 openings from service modules are suppressed on fleet hosts: new external
 connections are accepted only from those addresses or through `tailscale0`.

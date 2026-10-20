@@ -125,6 +125,10 @@ let
     # The reviewed policy names fleet addresses, never literals; hosts map it.
     defaults = defaultHosts.overalls.fleetFirewall.allowedHosts == {}
       && lib.all (grant: grant ? name && !(grant ? address)) (lib.attrValues (import ../../../policy/network/allowed-hosts.nix));
+    # ADR-0247: every reviewed grant, including the operator source, names a
+    # fleet address whose value exists only in the SOPS document.
+    grantsNameFleetAddresses = lib.all (grant: (import ../../../policy/network/fleet-addresses.nix) ? ${grant.name})
+      (lib.attrValues (import ../../../policy/network/allowed-hosts.nix));
     tailscaleTrusted = nft.networking.firewall.enable
       && lib.sort builtins.lessThan nft.networking.firewall.trustedInterfaces == [ "lo" "tailscale0" ];
     noPublicPorts = lib.all (ports: ports == []) [
@@ -140,9 +144,7 @@ let
     nftRules = lib.all (fragment: lib.hasInfix fragment nft.networking.firewall.extraInputRules) [
       ''ip saddr 192.0.2.51 meta l4proto { tcp, udp } accept comment "Overalls fleet host"''
       ''ip saddr 192.0.2.52 meta l4proto { tcp, udp } accept comment "Dungarees fleet host"''
-    ] && !(lib.hasInfix "dport" nft.networking.firewall.extraInputRules)
-      # ADR-0075: personal addresses were removed on 2026-10-16.
-      && !(lib.hasInfix "103.134.170.11" nft.networking.firewall.extraInputRules);
+    ] && !(lib.hasInfix "dport" nft.networking.firewall.extraInputRules);
     iptablesRules = lib.all (fragment: lib.hasInfix fragment iptables.networking.firewall.extraCommands) [
       "-s 192.0.2.51 -p tcp"
       "-s 192.0.2.51 -p udp"

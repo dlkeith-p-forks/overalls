@@ -25,7 +25,7 @@
     cachixTokenFile = "/run/overalls-secrets/cachix/token";
   };
   services.overallsSecrets.bundles.cachix = {
-    encryptedFile = "${../../../secrets/overalls-cachix.enc.json}";
+    encryptedFile = "${../../../secrets/panterloons-cachix.enc.json}";
     outputs.token = { format = "raw"; secrets = [ "CACHIX_AUTH_TOKEN" ]; };
   };
   systemd.services.cachix-watch-store-agent = {
@@ -42,14 +42,14 @@
   overalls.tailscale.exitNode = true;
   services.openssh.ports = [ 2222 ];
   # @cc [owner:ghuntley,label:deployment] dungarees-worker-only
-  # Dungarees MUST use Overalls' control plane and its own enrolled identities.
+  # Dungarees MUST use Panterloons' control plane (ADR-0246) and its own enrolled identities.
   # It MUST NOT enable a local Marshall, database, public proxy or Porsche gateway.
   assertions = [{
     assertion = !config.services.marshall.enable
       && !config.services.postgresql.enable
       && !config.services.marshallProxy.enable
       && !config.services.porsche.enable;
-    message = "Dungarees is a Lilly worker for the Overalls control plane.";
+    message = "Dungarees is a Lilly worker for the Panterloons control plane.";
   }];
 
   # @cc [owner:ghuntley,label:deployment;recovery] fastpath-template-producer-dungarees
@@ -63,7 +63,7 @@
     images = map (image: { path = toString image.package; })
       (import ../../staged-guest-images.nix { inherit overallsPackages; });
     protectedAddressFiles = let files = config.overalls.fleetAddresses.files;
-      in [ files.dungareesPrimary files.dungareesService files.overallsPrimary ];
+      in [ files.dungareesPrimary files.dungareesService files.panterloonsPrimary ];
     protectedAddressUnits = [ config.overalls.fleetAddresses.unit ];
     ingress.enable = true;
   };

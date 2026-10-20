@@ -9566,7 +9566,7 @@ Type: `package`.
 Default:
 
 ```nix
-<derivation underclass-0.1.0-dbaf7b8>
+<derivation underclass-0.1.0-e8e28c3>
 ```
 
 
