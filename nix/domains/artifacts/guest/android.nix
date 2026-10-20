@@ -20,7 +20,22 @@ in
   # @cc [owner:ghuntley,label:security] android-display-loopback-only
   # The RFB server MUST bind loopback. A typed relay owns the fixed TAP ingress
   # port and accepts only Lilly's bounded display preface before proxying RFB.
-  environment.systemPackages = [ androidSdk pkgs.gawk pkgs.jdk pkgs.python3 pkgs.xorg.xorgserver pkgs.x11vnc ];
+  # Keep the terminald root-session runtime explicit.  The Android SDK closure
+  # is large and must not be relied on to provide the shell/account utilities
+  # that terminald resolves when the host opens the readiness probe session.
+  environment.systemPackages = [
+    androidSdk
+    pkgs.bash
+    pkgs.coreutils
+    pkgs.gawk
+    pkgs.glibc.getent
+    pkgs.jdk
+    pkgs.python3
+    pkgs.shadow
+    pkgs.util-linux
+    pkgs.xorg.xorgserver
+    pkgs.x11vnc
+  ];
   # The host-side Lilly connector reaches the typed relay through the guest
   # TAP. The relay is the only process on this fixed port; RFB stays on
   # loopback at 5901.
