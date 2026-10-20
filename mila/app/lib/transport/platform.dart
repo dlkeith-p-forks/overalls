@@ -1,6 +1,8 @@
 // Platform services behind one method channel: hardware device keys, the app
-// data directory and opening approval links in the system browser. Linux,
-// used for testing, implements the same services in Dart.
+// data directory and opening approval links in the system browser. The iOS,
+// Android, macOS and Windows runners implement the channel; Linux, used for
+// testing, implements the same services in Dart. `PlatformProfile` says which
+// service each platform has, so no other code branches on the OS.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -13,12 +15,74 @@ import 'package:mila_transport/mila_transport.dart';
 import '../features/preferences.dart';
 import '../features/lock/app_lock_controller.dart';
 
-/// The channel the iOS and Android runners implement (`MilaPlatform`).
+/// What each platform provides. One value per supported OS; everything
+/// platform-specific below reads it rather than testing the OS itself.
+enum PlatformProfile {
+  ios(hardwareKeys: true, push: DevicePlatform.ios, webView: true, lock: true),
+  android(hardwareKeys: true, push: DevicePlatform.android, webView: true, lock: true),
+  macos(hardwareKeys: true, push: DevicePlatform.macos, webView: true, lock: true),
+  windows(hardwareKeys: true, push: DevicePlatform.windows, webView: false, lock: true),
+  linux(hardwareKeys: false, push: null, webView: false, lock: false);
+
+  const PlatformProfile({
+    required this.hardwareKeys,
+    required this.push,
+    required this.webView,
+    required this.lock,
+  });
+
+  /// Device keys in platform custody behind the channel (Secure Enclave,
+  /// StrongBox/Keystore, or CNG with the TPM when present); otherwise
+  /// owner-only files in Dart.
+  final bool hardwareKeys;
+
+  /// The push platform, or null where there is no push service.
+  final DevicePlatform? push;
+
+  /// Whether public web endpoints open in an in-app webview.
+  final bool webView;
+
+  /// Whether `local_auth` can lock the app.
+  final bool lock;
+
+  /// Whether the runner implements the platform channel; Linux implements
+  /// its services in Dart.
+  bool get channel => this != linux;
+
+  /// The profile for an OS name as `Platform.operatingSystem` reports it.
+  static PlatformProfile? forOperatingSystem(String name) => switch (name) {
+    'ios' => ios,
+    'android' => android,
+    'macos' => macos,
+    'windows' => windows,
+    'linux' => linux,
+    _ => null,
+  };
+
+  /// Whether this build keeps device keys in platform custody. An unsigned
+  /// macOS dev build has no keychain entitlement, so it is built with
+  /// `MILA_SOFTWARE_KEYS=true` and keeps owner-only file keys instead, with
+  /// no push service; release builds refuse that define (see `main.dart`).
+  bool get custody => hardwareKeys && !softwareKeysBuild;
+
+  /// This process's profile.
+  static final PlatformProfile current =
+      forOperatingSystem(Platform.operatingSystem) ??
+      (throw UnsupportedError('Mila does not run on ${Platform.operatingSystem}'));
+}
+
+/// `--dart-define=MILA_SOFTWARE_KEYS=true`: an unsigned dev build without
+/// platform key custody (`PlatformProfile.custody`).
+const bool softwareKeysBuild = bool.fromEnvironment('MILA_SOFTWARE_KEYS');
+
+/// The channel the iOS, Android, macOS and Windows runners implement
+/// (`MilaPlatform`).
 const MethodChannel milaPlatformChannel = MethodChannel('dev.overalls.mila/platform');
 
-/// A key in the Secure Enclave (iOS) or StrongBox/Keystore (Android). The
-/// private half never crosses the channel: only the public point and DER
-/// signatures do.
+/// A key in the Secure Enclave (iOS, macOS), StrongBox/Keystore (Android) or
+/// CNG (Windows: the TPM's Platform Crypto Provider, or the software key
+/// storage provider on machines without one). The private half never crosses
+/// the channel: only the public point and DER signatures do.
 final class HardwareDeviceKey implements DeviceKey {
   HardwareDeviceKey._(this._host, this.publicBlob);
 
@@ -86,7 +150,7 @@ final class FileTrustStore implements TrustStore {
 
 /// Where Mila keeps device keys (Linux) and pinned trust.
 Future<Directory> milaDataDirectory() async {
-  if (Platform.isLinux) {
+  if (!PlatformProfile.current.channel) {
     final env = Platform.environment;
     final base = env['XDG_DATA_HOME'] ?? '${env['HOME']}/.local/share';
     return Directory('$base/dev.overalls.mila');
@@ -102,7 +166,7 @@ Future<void> openApprovalLink(Uri uri) async {
   if (uri.scheme != 'https' || !isHostname(uri.host)) {
     throw ArgumentError.value(uri.scheme, 'uri', 'approval links are HTTPS');
   }
-  if (Platform.isLinux) {
+  if (!PlatformProfile.current.channel) {
     // The URL is one argument: no shell parses it.
     await Process.run('xdg-open', [uri.toString()]);
     return;
@@ -110,8 +174,8 @@ Future<void> openApprovalLink(Uri uri) async {
   await milaPlatformChannel.invokeMethod<void>('openUrl', {'url': uri.toString()});
 }
 
-/// Shares a web endpoint link through the iOS or Android share sheet. Only
-/// HTTPS links are shared.
+/// Shares a web endpoint link through the iOS, Android or macOS share sheet.
+/// Only HTTPS links are shared.
 Future<void> shareLink(Uri uri) async {
   if (uri.scheme != 'https' || !isHostname(uri.host)) {
     throw ArgumentError.value(uri.scheme, 'uri', 'shared links are HTTPS');
@@ -120,7 +184,7 @@ Future<void> shareLink(Uri uri) async {
 }
 
 /// Whether public web endpoints open in an in-app webview here.
-bool get platformHasWebView => Platform.isIOS || Platform.isAndroid;
+bool get platformHasWebView => PlatformProfile.current.webView;
 
 /// Calls the platform makes into Dart, fanned out by method name.
 final StreamController<MethodCall> _platformCalls = StreamController<MethodCall>.broadcast();
@@ -137,7 +201,7 @@ Stream<MethodCall> _calls() {
 /// `overalls://` links from the platform. Linux receives the first as a
 /// launch argument from its `x-scheme-handler/overalls` desktop entry and
 /// later ones from a second `mila` invocation, which the single-instance
-/// runner forwards over the channel; iOS and Android push them over the
+/// runner forwards over the channel; the other runners push them over the
 /// channel too, holding the launch link until asked.
 Stream<String> platformLinks(List<String> arguments) {
   bool isLink(Object? value) => value is String && value.startsWith('overalls://');
@@ -145,7 +209,7 @@ Stream<String> platformLinks(List<String> arguments) {
   _calls().listen((call) {
     if (call.method == 'link' && isLink(call.arguments)) links.add(call.arguments as String);
   });
-  if (Platform.isLinux) {
+  if (!PlatformProfile.current.channel) {
     arguments.where(isLink).forEach(links.add);
     return links.stream;
   }
@@ -157,8 +221,9 @@ Stream<String> platformLinks(List<String> arguments) {
   return links.stream;
 }
 
-/// Poke keys in the Keychain (iOS) or Keystore-wrapped storage (Android),
-/// where the notification extension can open pokes. Only public keys cross.
+/// Poke keys in the Keychain (iOS, macOS), Keystore-wrapped storage (Android)
+/// or DPAPI-sealed storage (Windows), where the native poke opener can open
+/// pokes. Only public keys cross.
 final class HardwarePokeKeyStore implements PokeKeyStore {
   const HardwarePokeKeyStore();
 
@@ -181,12 +246,13 @@ final class HardwarePokeKeyStore implements PokeKeyStore {
   }
 }
 
-/// APNs (iOS) or FCM (Android) through the platform channel.
+/// APNs (iOS, macOS), FCM (Android) or WNS (Windows) through the platform
+/// channel.
 final class ChannelPushPlatform implements PushPlatform {
-  ChannelPushPlatform(this.provider);
+  ChannelPushPlatform(this.device);
 
   @override
-  final PushProvider provider;
+  final DevicePlatform device;
 
   @override
   Future<PushEnvironment> environment() async {
@@ -217,15 +283,16 @@ final class ChannelPushPlatform implements PushPlatform {
       .map((call) => call.arguments as String);
 }
 
-/// The push service for this platform, or null where there is none (Linux).
-PushPlatform? platformPush() => Platform.isIOS
-    ? ChannelPushPlatform(PushProvider.apns)
-    : Platform.isAndroid
-    ? ChannelPushPlatform(PushProvider.fcm)
-    : null;
+/// The push service for this platform, or null where there is none (Linux,
+/// and software-key dev builds, which have no push entitlement).
+PushPlatform? platformPush() => switch (PlatformProfile.current.push) {
+  final DevicePlatform device when PlatformProfile.current.custody => ChannelPushPlatform(device),
+  _ => null,
+};
 
-/// Biometrics or the device passcode through `local_auth`. Linux has no
-/// implementation, so the lock is unavailable there.
+/// Biometrics or the device passcode through `local_auth` (Touch ID on macOS,
+/// Windows Hello on Windows). Linux has no implementation, so the lock is
+/// unavailable there.
 final class PlatformLockAuthenticator implements LockAuthenticator {
   PlatformLockAuthenticator() : _auth = LocalAuthentication();
 
@@ -233,7 +300,7 @@ final class PlatformLockAuthenticator implements LockAuthenticator {
 
   @override
   Future<LockAvailability> availability() async {
-    if (!Platform.isIOS && !Platform.isAndroid) return LockAvailability.unavailable;
+    if (!PlatformProfile.current.lock) return LockAvailability.unavailable;
     try {
       return await _auth.isDeviceSupported()
           ? LockAvailability.available
@@ -289,9 +356,9 @@ final class FilePreferences implements PreferencesStore {
 Future<SshPorscheConnector> platformConnector() async {
   final data = await milaDataDirectory();
   return SshPorscheConnector(
-    keys: Platform.isLinux
-        ? FileDeviceKeyStore(Directory('${data.path}/device-keys'))
-        : const HardwareDeviceKeyStore(),
+    keys: PlatformProfile.current.custody
+        ? const HardwareDeviceKeyStore()
+        : FileDeviceKeyStore(Directory('${data.path}/device-keys')),
     trust: FileTrustStore(Directory('${data.path}/trust')),
     fetch: fetchTrustDocument,
     clock: () => DateTime.now().millisecondsSinceEpoch ~/ 1000,

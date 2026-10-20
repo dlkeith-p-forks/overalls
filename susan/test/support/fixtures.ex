@@ -29,11 +29,17 @@ defmodule Susan.Fixtures do
           trusted_proxies: [{127, 0, 0, 1}],
           apns_topics: [@apns_topic],
           fcm_app_ids: [@apns_topic],
+          wns_app_ids: [@apns_topic],
           apns: %{key: ec, key_id: "ABCDEFGHIJ", team_id: "TEAM123456"},
           fcm: %{
             project_id: "overalls-test",
             client_email: "relay@overalls-test.iam.example",
             private_key: rsa
+          },
+          wns: %{
+            tenant_id: "00000000-0000-4000-8000-000000000001",
+            client_id: "00000000-0000-4000-8000-000000000002",
+            client_secret: "wns-test-client-secret"
           },
           keyring: keyring(),
           repo: [],
@@ -56,6 +62,12 @@ defmodule Susan.Fixtures do
   @spec fcm_token() :: String.t()
   def fcm_token, do: "fcm:" <> Base.url_encode64(:crypto.strong_rand_bytes(90), padding: false)
 
+  @spec wns_channel() :: String.t()
+  def wns_channel,
+    do:
+      "https://wns2-par02p.notify.windows.com/w/?token=" <>
+        Base.url_encode64(:crypto.strong_rand_bytes(96), padding: false)
+
   @spec push_key(Config.t(), keyword()) :: {String.t(), PushKey.t()}
   def push_key(config, options \\ []) do
     provider = Keyword.get(options, :provider, :apns)
@@ -67,7 +79,11 @@ defmodule Susan.Fixtures do
       deployment: Keyword.get(options, :deployment, @deployment),
       token:
         Keyword.get_lazy(options, :token, fn ->
-          if provider == :apns, do: apns_token(), else: fcm_token()
+          case provider do
+            :apns -> apns_token()
+            :fcm -> fcm_token()
+            :wns -> wns_channel()
+          end
         end),
       issued_at: Keyword.get(options, :issued_at, System.os_time(:second))
     }

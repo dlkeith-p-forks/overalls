@@ -11,10 +11,27 @@ import 'poke_keys.dart';
 import 'porsche.dart';
 import 'susan.dart';
 
+/// The device platform a deployment records for a registered device. macOS
+/// shares APNs with iOS, so the provider alone does not name the platform.
+enum DevicePlatform {
+  ios('ios', PushProvider.apns),
+  android('android', PushProvider.fcm),
+  macos('macos', PushProvider.apns),
+  windows('windows', PushProvider.wns);
+
+  const DevicePlatform(this.wire, this.provider);
+
+  /// The `device register --platform` value.
+  final String wire;
+
+  /// The relay provider this platform's tokens belong to.
+  final PushProvider provider;
+}
+
 /// The platform's push service.
 abstract interface class PushPlatform {
-  /// Which relay provider this platform's tokens belong to.
-  PushProvider get provider;
+  /// Which platform this is; its relay provider follows from it.
+  DevicePlatform get device;
 
   Future<PushEnvironment> environment();
 
@@ -148,7 +165,7 @@ final class PushRegistrar {
         }
         final outcome = await susan.issueKey(
           PushKeyRequest(
-            provider: platform.provider,
+            provider: platform.device.provider,
             token: token,
             environment: await platform.environment(),
             deployment: deployment.host,
@@ -173,7 +190,7 @@ final class PushRegistrar {
             'device register',
             options: {
               'json': true,
-              'platform': platform.provider == PushProvider.apns ? 'ios' : 'android',
+              'platform': platform.device.wire,
               'push-key': '-',
               'enc-pubkey': encodeBase64UrlUnpadded(public),
             },

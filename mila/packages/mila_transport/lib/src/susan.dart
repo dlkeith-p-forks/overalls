@@ -26,13 +26,14 @@ const String milaAppId = 'dev.overalls.mila';
 /// Push providers the relay accepts.
 enum PushProvider {
   apns('apns'),
-  fcm('fcm');
+  fcm('fcm'),
+  wns('wns');
 
   const PushProvider(this.wire);
   final String wire;
 }
 
-/// APNs environments; FCM is always production.
+/// APNs environments; FCM and WNS are always production.
 enum PushEnvironment {
   production('production'),
   development('development');

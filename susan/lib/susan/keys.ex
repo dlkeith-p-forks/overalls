@@ -14,7 +14,7 @@ defmodule Susan.Keys do
   alias Susan.Relay.UnregisteredToken
 
   @keys ~w(provider token app_id environment deployment)
-  @providers %{"apns" => :apns, "fcm" => :fcm}
+  @providers %{"apns" => :apns, "fcm" => :fcm, "wns" => :wns}
   # Mila names the APNs sandbox gateway "development", as its entitlement does.
   @environments %{"production" => :production, "development" => :sandbox}
 
@@ -113,11 +113,14 @@ defmodule Susan.Keys do
 
   defp allowed(:apns, config), do: config.apns_topics
   defp allowed(:fcm, config), do: config.fcm_app_ids
+  defp allowed(:wns, config), do: config.wns_app_ids
 
   # APNs device tokens are hexadecimal; FCM registration tokens use a
-  # URL-safe alphabet with a colon separator.
+  # URL-safe alphabet with a colon separator; a WNS token is the device's
+  # channel URI, which names the WNS host Susan will post to.
   defp token?(:apns, token), do: Regex.match?(~r/\A(?:[0-9a-f]{2}){16,100}\z/, token)
   defp token?(:fcm, token), do: Regex.match?(~r/\A[A-Za-z0-9_:-]{32,512}\z/, token)
+  defp token?(:wns, token), do: Susan.Provider.wns_channel?(token)
 
   defp rate_scope(:issue), do: :source
   defp rate_scope(scope), do: scope

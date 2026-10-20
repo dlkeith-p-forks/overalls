@@ -17,9 +17,13 @@ defmodule Marshall.Notifications.Device do
 
   @type t :: %__MODULE__{}
   @type state :: :pending | :active | :invalidated | :revoked
-  @type platform :: :ios | :android
+  @type platform :: :ios | :android | :macos | :windows
 
   @live_states [:pending, :active]
+
+  # macOS shares APNs with iOS and Windows uses WNS (ADR-0235, ADR-0236); the
+  # platform is what the device reported, the provider is sealed in its push key.
+  @platforms [:ios, :android, :macos, :windows]
 
   @doc "States in which a device may still receive pokes or be refreshed."
   @spec live_states() :: [state()]
@@ -131,7 +135,7 @@ defmodule Marshall.Notifications.Device do
     end
 
     action :register_for_user, :map do
-      argument :platform, :atom, allow_nil?: false, constraints: [one_of: [:ios, :android]]
+      argument :platform, :atom, allow_nil?: false, constraints: [one_of: @platforms]
       argument :push_key, :string, allow_nil?: false, sensitive?: true
       argument :enc_public_key, :string, allow_nil?: false
       argument :label, :string, constraints: [max_length: 64]
@@ -161,7 +165,7 @@ defmodule Marshall.Notifications.Device do
     attribute :platform, :atom,
       allow_nil?: false,
       public?: true,
-      constraints: [one_of: [:ios, :android]]
+      constraints: [one_of: @platforms]
 
     attribute :push_key, :string,
       allow_nil?: false,

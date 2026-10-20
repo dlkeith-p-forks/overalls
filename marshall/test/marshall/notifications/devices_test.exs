@@ -44,6 +44,19 @@ defmodule Marshall.Notifications.DevicesTest do
     }
   end
 
+  test "desktop devices register under their own platform", c do
+    for platform <- ["macos", "windows"] do
+      {enc, _private} = PushPoke.generate_key_pair()
+
+      assert {:ok, %{"status" => "succeeded", "result" => result}} =
+               command(c, register_line(enc, "", platform), push_key(platform)) |> stringify()
+
+      assert result["platform"] == platform
+      assert [%{platform: atom}] = Ledger.read!(Device, id: result["id"])
+      assert Atom.to_string(atom) == platform
+    end
+  end
+
   test "device register binds the session key, redacts the push key and lists without secrets",
        c do
     {enc, _private} = PushPoke.generate_key_pair()
@@ -362,8 +375,9 @@ defmodule Marshall.Notifications.DevicesTest do
     )
   end
 
-  defp register_line(enc, extra \\ ""),
-    do: "device register --platform ios --push-key - --enc-pubkey #{b64(enc)} --json #{extra}"
+  defp register_line(enc, extra \\ "", platform \\ "ios"),
+    do:
+      "device register --platform #{platform} --push-key - --enc-pubkey #{b64(enc)} --json #{extra}"
 
   defp command(c, text, push_key \\ nil) do
     {:ok, command} = OverallsProtocol.SSHCommand.parse(String.trim(text))

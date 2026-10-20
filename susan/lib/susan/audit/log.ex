@@ -33,7 +33,7 @@ defmodule Susan.Audit.Log do
           optional(:reason) => atom(),
           optional(:install_fingerprint) => String.t(),
           optional(:key_id) => String.t(),
-          optional(:provider) => :apns | :fcm,
+          optional(:provider) => :apns | :fcm | :wns,
           optional(:delivery_id) => String.t(),
           optional(:keyring_id) => 1..255,
           optional(:count) => non_neg_integer()

@@ -14218,6 +14218,97 @@
       ]
     },
     {
+      "id": "mila-desktop-custody",
+      "journey": "A user installs Mila on macOS or Windows, signs in to a deployment and keeps its device key, pins and offline list on that machine",
+      "layers": [
+        "identity",
+        "storage",
+        "isolation"
+      ],
+      "boundary": "The platform profile selects hardware custody (Secure Enclave on signed macOS, a non-exportable CNG key on Windows with TPM or software provider) or owner-only software keys only for unsigned dev builds; Mila's files are owner-only through POSIX modes or a protected user-and-SYSTEM DACL on Windows.",
+      "denial": "A release build that carries the software-keys define refuses to start; a Windows file whose DACL is inherited, unprotected or grants any other SID is refused rather than read; a POSIX file other users can read is refused.",
+      "scope": "Dart unit and Hegel property tests over the SDDL builder and checker on every host, an icacls round trip that runs only on Windows, and macOS unsigned dev builds launched locally with 0700/0600 data files observed. The Windows CNG/TPM channel and Secure Enclave on a signed macOS build are not implemented or not exercised.",
+      "status": "partial",
+      "gaps": "No signed macOS build, no Windows native key channel and no Windows CI host; Secure Enclave and TPM custody are unverified on desktop.",
+      "preferred_gap": "Add Windows and macOS CI jobs that run the transport suite natively, plus an XCTest and CTest for the native key channels; no NixOS machine test can host macOS or Windows clients.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "mila/packages/mila_transport/test/owner_only_test.dart",
+          "assertion": "an allow entry for any other SID is refused",
+          "scope": "Hegel over generated SIDs and access masks against the SDDL checker; host-independent.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "mila/packages/mila_transport/test/owner_only_test.dart",
+          "assertion": "a written file is owner-only and refused once shared",
+          "scope": "Windows-only icacls grant to Everyone after a protected write.",
+          "execution": "present"
+        }
+      ]
+    },
+    {
+      "id": "mila-build-release-targets",
+      "journey": "A maintainer builds a dev or release Mila for Linux, Android, iOS, macOS or Windows",
+      "layers": [
+        "identity",
+        "execution"
+      ],
+      "boundary": "mila-build plans every target from typed inputs; release plans require their signing inputs, verify signatures as the final step and keep secrets out of arguments and printed plans.",
+      "denial": "A release with demo mode, software keys, a missing signing input or another host's target is refused instead of substituted.",
+      "scope": "Pure Dart planner unit and Hegel property tests; macOS and iOS-simulator dev builds run on a Mac. Signed Apple, Android and Windows release paths are not executed.",
+      "status": "partial",
+      "gaps": "No CI signing environment or Windows host; notarization, SignTool and upload-key signing are planned but not run.",
+      "preferred_gap": "Add release workflows in a protected environment that run each release target and record their signature verification output; NixOS machine tests cannot sign Apple or Windows artifacts.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "mila/tool/test/plan_test.dart",
+          "assertion": "release plans never enable demo or software keys and keep secrets out of arguments",
+          "scope": "Hegel over platform, host, demo and Apple-team inputs.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "mila/tool/test/plan_test.dart",
+          "assertion": "a missing signing input is refused, never replaced",
+          "scope": "Release planning for Android, iOS, macOS and Windows with no inputs.",
+          "execution": "present"
+        }
+      ]
+    },
+    {
+      "id": "susan-wns-egress",
+      "journey": "A Windows Mila exchanges its WNS channel URI for a push key and later receives a raw poke",
+      "layers": [
+        "transport",
+        "authorization"
+      ],
+      "boundary": "Susan admits a WNS channel URI only in the susan-wns-channel-shape form, seals it in the push key and re-checks it before each send; Entra ID tokens come from the compiled login.microsoftonline.com origin.",
+      "denial": "A channel URI with another scheme, host, port, userinfo, fragment or length, or a sandbox environment, is refused with the fixed 400; WNS 404/410 marks the token unregistered and 401 refreshes the Entra token once.",
+      "scope": "BEAM unit and Hegel property tests over the fake provider transport. The Nix service module does not enable WNS and no machine test fakes a WNS origin.",
+      "status": "partial",
+      "gaps": "WNS is not enabled in the deployed Susan, no Entra credentials exist, and Susan's config-loading tests run only on Linux.",
+      "preferred_gap": "Extend the susan-service machine test with WNS credentials and a fake *.notify.windows.com origin behind its private CA once the service module gains wnsAppIds.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "susan/test/susan/wns_channel_property_test.exs",
+          "assertion": "an accepted channel always posts to a notify.windows.com host on 443",
+          "scope": "Hegel over schemes, host suffixes, ports, userinfo and paths.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "susan/test/susan/poke_test.exs",
+          "assertion": "a WNS key sends a raw notification to its channel after one Entra exchange",
+          "scope": "Poke pipeline over Susan.FakeProvider.",
+          "execution": "present"
+        }
+      ]
+    },
+    {
       "id": "mila-poke-e2e",
       "journey": "An agent needs input and the user's phone shows a notification that opens the right machine",
       "layers": [

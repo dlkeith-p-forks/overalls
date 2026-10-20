@@ -5,6 +5,7 @@ library;
 export 'src/channels.dart';
 export 'src/device_key.dart';
 export 'src/owner_only.dart';
+export 'src/owner_only_windows.dart' show ownerOnlySddl, sddlIsOwnerOnly;
 export 'src/poke_keys.dart';
 export 'src/porsche.dart';
 export 'src/push_registrar.dart';

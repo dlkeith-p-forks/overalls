@@ -30,7 +30,7 @@ defmodule Susan.PushKey do
   ]
   defstruct @enforce_keys
 
-  @type provider :: :apns | :fcm
+  @type provider :: :apns | :fcm | :wns
   @type environment :: :production | :sandbox
   @type t :: %__MODULE__{
           key_id: String.t(),
@@ -60,7 +60,7 @@ defmodule Susan.PushKey do
     with {:ok, key} <- Keyring.fetch(keyring, kid),
          %{provider: provider, environment: environment, app_id: app_id} <- fields,
          %{deployment: deployment, token: token, issued_at: issued_at} <- fields,
-         true <- provider in [:apns, :fcm] and environment in [:production, :sandbox],
+         true <- provider in [:apns, :fcm, :wns] and environment in [:production, :sandbox],
          true <- is_integer(issued_at) and issued_at >= 0,
          true <- bounded?(app_id, 255) and bounded?(deployment, 253) and bounded?(token, 1024) do
       key_id = Map.get_lazy(fields, :key_id, &uuid/0)
@@ -157,8 +157,10 @@ defmodule Susan.PushKey do
 
   defp provider_code(:apns), do: 1
   defp provider_code(:fcm), do: 2
+  defp provider_code(:wns), do: 3
   defp provider_name(1), do: {:ok, :apns}
   defp provider_name(2), do: {:ok, :fcm}
+  defp provider_name(3), do: {:ok, :wns}
   defp provider_name(_), do: :error
   defp environment_code(:production), do: 1
   defp environment_code(:sandbox), do: 2

@@ -1,7 +1,7 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:hegel/hegel.dart';
-import 'package:mila/features/routes.dart';
 import 'package:mila_transport/mila_transport.dart';
+import 'package:mila_transport/routes.dart';
+import 'package:test/test.dart';
 
 const Deployment _added = Deployment('overalls.example');
 const Deployment _withPort = Deployment('overalls.example', port: 8443);
@@ -71,9 +71,10 @@ void main() {
   test('each new page link opens its own screen', () {
     const m = '0d9cc041-9db2-4e4c-b28b-1e41d7f472c1';
     const t = '6f1e2d3c-4b5a-4987-8a6b-5c4d3e2f1a0b';
-    String open(String path) => (linkTarget('overalls://overalls.example$path', const [
-      _added,
-    ], signedIn: (_) => true) as OpenPath).path;
+    String open(String path) =>
+        (linkTarget('overalls://overalls.example$path', const [_added], signedIn: (_) => true)
+                as OpenPath)
+            .path;
     expect(open('/machines/$m/threads/$t'), machineThreadPath(_added, m, t));
     expect(open('/machines/$m/terminals/$t'), machineTerminalPath(_added, m, t));
     expect(open('/threads/$t'), threadPath(_added, t));

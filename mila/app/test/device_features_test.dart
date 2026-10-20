@@ -33,7 +33,7 @@ final class _FakePush implements PushPlatform {
   final StreamController<String> changes = StreamController<String>.broadcast();
 
   @override
-  PushProvider get provider => PushProvider.apns;
+  DevicePlatform get device => DevicePlatform.ios;
 
   @override
   Future<PushEnvironment> environment() async => PushEnvironment.development;

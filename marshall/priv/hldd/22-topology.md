@@ -873,6 +873,9 @@ These are the failure boundaries:
   fails to decrypt on either side, Marshall's pokes fail and are retried; the
   public origin for Mila devices is unaffected.
 
-Egress is fixed in code, not configuration. The container uses a
+Egress is fixed in code, not configuration. Susan's WNS provider (ADR-0236)
+would add Entra ID `login.microsoftonline.com` and per-device
+`*.notify.windows.com` channel hosts; the deployed service module does not yet
+enable it, so salopettes makes no Microsoft egress. The container uses a
 loopback-only, epmd-less distribution ([`Susan.Epmd`](repo:susan/lib/susan/epmd.ex))
 because it has no shell from which to start epmd.

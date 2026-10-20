@@ -116,7 +116,7 @@ defmodule Susan.Audit.AuditEntry do
       constraints: [match: ~r/\A[0-9a-f]{64}\z/]
 
     attribute :key_id, :uuid, public?: true
-    attribute :provider, :atom, public?: true, constraints: [one_of: [:apns, :fcm]]
+    attribute :provider, :atom, public?: true, constraints: [one_of: [:apns, :fcm, :wns]]
 
     attribute :outcome, :atom,
       allow_nil?: false,

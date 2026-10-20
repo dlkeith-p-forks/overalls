@@ -83,7 +83,7 @@ flowchart LR
   Access[Current machine and thread write authority] -->|recipient selection| Notify
   Notify -->|sealed poke and install signature| Relay[Susan.Relay]
   Relay -->|closed audit facts| Audit[Susan.Audit]
-  Relay -->|content-free provider payload| Provider[APNs and FCM]
+  Relay -->|content-free provider payload| Provider[APNs, FCM and WNS]
 ```
 
 Notifications shares Marshall's PostgreSQL authority; Susan has its own database

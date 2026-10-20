@@ -888,7 +888,11 @@ defmodule Marshall.Events do
   # push keys, device keys, routes, ciphertext or Susan bodies.
   defevent("notifications.device_registered",
     message: "Push notification device registered",
-    metadata: [device_id: :uuid, user_id: :uuid, platform: {:enum, [:ios, :android]}]
+    metadata: [
+      device_id: :uuid,
+      user_id: :uuid,
+      platform: {:enum, [:ios, :android, :macos, :windows]}
+    ]
   )
 
   defevent("notifications.device_transition",

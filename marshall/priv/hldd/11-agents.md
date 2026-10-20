@@ -326,7 +326,7 @@ sequenceDiagram
   W->>W: seal PushPoke v1 to device X25519 key; sign with install Ed25519
   W->>S: POST /api/push/v1/poke (ciphertext only)
   S-->>W: 2xx delivered · 404/410 invalidate · 429/5xx retry · other 4xx permanent
-  S->>M: APNs/FCM poke
+  S->>M: APNs/FCM/WNS poke
   M->>M: decrypt route; fetch details over Porsche SSH
 ```
 

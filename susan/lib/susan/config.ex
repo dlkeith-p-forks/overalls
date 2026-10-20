@@ -6,12 +6,14 @@ defmodule Susan.Config do
 
       {"version": 1, "bind": "127.0.0.1", "port": 4100,
        "trusted_proxies": ["127.0.0.1"],
-       "apns_topics": ["dev.overalls.mila"], "fcm_app_ids": ["dev.overalls.mila"]}
+       "apns_topics": ["dev.overalls.mila"], "fcm_app_ids": ["dev.overalls.mila"],
+       "wns_app_ids": ["dev.overalls.mila"]}
 
   Secrets come only from files in `$CREDENTIALS_DIRECTORY`, named after the
   SOPS keys of `secrets/overalls-susan.enc.json`: `APNS_KEY_P8`,
-  `APNS_KEY_ID`, `APNS_TEAM_ID`, `FCM_SERVICE_ACCOUNT_JSON`,
-  `SUSAN_PUSH_KEY_SIGNING_KEY` and `DATABASE_URL`. Every file passes the
+  `APNS_KEY_ID`, `APNS_TEAM_ID`, `FCM_SERVICE_ACCOUNT_JSON`, `WNS_TENANT_ID`,
+  `WNS_CLIENT_ID`, `WNS_CLIENT_SECRET`, `SUSAN_PUSH_KEY_SIGNING_KEY` and
+  `DATABASE_URL`. Every file passes the
   `Susan.Credentials` custody checks. Any failure is the single fixed error
   `:invalid_runtime_configuration`.
   """
@@ -19,7 +21,7 @@ defmodule Susan.Config do
   import Bitwise
   alias Susan.{Credentials, Keyring}
 
-  @fields ~w(version bind port trusted_proxies apns_topics fcm_app_ids limits)
+  @fields ~w(version bind port trusted_proxies apns_topics fcm_app_ids wns_app_ids limits)
   @limit_scopes %{
     "key" => :key,
     "install" => :install,
@@ -34,8 +36,10 @@ defmodule Susan.Config do
     :trusted_proxies,
     :apns_topics,
     :fcm_app_ids,
+    :wns_app_ids,
     :apns,
     :fcm,
+    :wns,
     :keyring,
     :repo,
     :limits
@@ -44,14 +48,17 @@ defmodule Susan.Config do
 
   @type apns :: %{key: tuple(), key_id: String.t(), team_id: String.t()}
   @type fcm :: %{project_id: String.t(), client_email: String.t(), private_key: tuple()}
+  @type wns :: %{tenant_id: String.t(), client_id: String.t(), client_secret: String.t()}
   @type t :: %__MODULE__{
           bind: :inet.ip_address(),
           port: 1..65_535,
           trusted_proxies: [:inet.ip_address()],
           apns_topics: [String.t()],
           fcm_app_ids: [String.t()],
+          wns_app_ids: [String.t()],
           apns: apns() | nil,
           fcm: fcm() | nil,
+          wns: wns() | nil,
           keyring: Keyring.t(),
           repo: keyword(),
           limits: Susan.RateLimiter.limits()
@@ -74,14 +81,16 @@ defmodule Susan.Config do
          {:ok, proxies} <- addresses(Map.get(value, "trusted_proxies", [])),
          {:ok, topics} <- app_ids(Map.get(value, "apns_topics", [])),
          {:ok, fcm_ids} <- app_ids(Map.get(value, "fcm_app_ids", [])),
-         true <- topics != [] or fcm_ids != [],
+         {:ok, wns_ids} <- app_ids(Map.get(value, "wns_app_ids", [])),
+         true <- topics != [] or fcm_ids != [] or wns_ids != [],
          {:ok, limits} <- limits(Map.get(value, "limits", %{})),
          true <- Credentials.canonical_path?(credentials),
          {:ok, keyring} <-
            secret(credentials, "SUSAN_PUSH_KEY_SIGNING_KEY", 8192, &Keyring.parse/1),
          {:ok, repo} <- secret(credentials, "DATABASE_URL", 2048, &repo/1),
          {:ok, apns} <- optional(topics, fn -> apns(credentials) end),
-         {:ok, fcm} <- optional(fcm_ids, fn -> fcm(credentials) end) do
+         {:ok, fcm} <- optional(fcm_ids, fn -> fcm(credentials) end),
+         {:ok, wns} <- optional(wns_ids, fn -> wns(credentials) end) do
       {:ok,
        %__MODULE__{
          bind: bind,
@@ -89,8 +98,10 @@ defmodule Susan.Config do
          trusted_proxies: proxies,
          apns_topics: topics,
          fcm_app_ids: fcm_ids,
+         wns_app_ids: wns_ids,
          apns: apns,
          fcm: fcm,
+         wns: wns,
          keyring: keyring,
          repo: repo,
          limits: limits
@@ -124,6 +135,28 @@ defmodule Susan.Config do
 
   defp fcm(directory),
     do: secret(directory, "FCM_SERVICE_ACCOUNT_JSON", 16_384, &service_account/1)
+
+  # The Entra ID application WNS tokens are issued to: tenant and client ids
+  # are UUIDs (the tenant names the fixed token endpoint's path), and the
+  # client secret is bounded printable ASCII.
+  defp wns(directory) do
+    with {:ok, tenant} <- secret(directory, "WNS_TENANT_ID", 64, &uuid/1),
+         {:ok, client} <- secret(directory, "WNS_CLIENT_ID", 64, &uuid/1),
+         {:ok, client_secret} <- secret(directory, "WNS_CLIENT_SECRET", 256, &client_secret/1) do
+      {:ok, %{tenant_id: tenant, client_id: client, client_secret: client_secret}}
+    end
+  end
+
+  defp uuid(value),
+    do:
+      if(OverallsProtocol.uuid?(String.downcase(value)),
+        do: {:ok, String.downcase(value)},
+        else: :error
+      )
+
+  defp client_secret(value) do
+    if Regex.match?(~r/\A[\x21-\x7e]{16,256}\z/, value), do: {:ok, value}, else: :error
+  end
 
   # @cc [owner:ghuntley,label:security] susan-fcm-fixed-token-origin
   # A service account MUST name Google's fixed token endpoint; a document
@@ -251,6 +284,6 @@ defmodule Susan.Config do
   defimpl Inspect do
     def inspect(config, _opts),
       do:
-        "#Susan.Config<port: #{config.port}, apns: #{config.apns != nil}, fcm: #{config.fcm != nil}, secrets: [redacted]>"
+        "#Susan.Config<port: #{config.port}, apns: #{config.apns != nil}, fcm: #{config.fcm != nil}, wns: #{config.wns != nil}, secrets: [redacted]>"
   end
 end

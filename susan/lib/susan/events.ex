@@ -18,7 +18,7 @@ defmodule Susan.Events do
 
   defevent("susan.key_issued",
     message: "Push key issued",
-    metadata: [provider: {:enum, [:apns, :fcm]}, keyring_id: :int]
+    metadata: [provider: {:enum, [:apns, :fcm, :wns]}, keyring_id: :int]
   )
 
   defevent("susan.key_refused",
@@ -29,7 +29,7 @@ defmodule Susan.Events do
 
   defevent("susan.poke_accepted",
     message: "Poke accepted for delivery",
-    metadata: [provider: {:enum, [:apns, :fcm]}, duplicate: {:enum, [:no, :yes]}]
+    metadata: [provider: {:enum, [:apns, :fcm, :wns]}, duplicate: {:enum, [:no, :yes]}]
   )
 
   defevent("susan.poke_rejected",
@@ -66,7 +66,7 @@ defmodule Susan.Events do
   defevent("susan.provider_outcome",
     message: "Push provider outcome",
     metadata: [
-      provider: {:enum, [:apns, :fcm]},
+      provider: {:enum, [:apns, :fcm, :wns]},
       outcome: {:enum, [:sent, :unregistered, :retry, :rejected, :unavailable]},
       attempt: :int
     ]

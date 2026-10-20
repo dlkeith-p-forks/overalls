@@ -38,7 +38,7 @@ final class _FakePlatform implements PushPlatform {
   bool denied;
   int asked = 0;
   @override
-  PushProvider get provider => PushProvider.apns;
+  DevicePlatform get device => DevicePlatform.ios;
   @override
   Future<PushEnvironment> environment() async => PushEnvironment.development;
   @override
@@ -387,5 +387,5 @@ void main() {
       expect(await store.read(const Deployment(_host, port: 2222)), isNull);
       expect(file.existsSync(), isFalse);
     });
-  });
+  }, testOn: 'posix');
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mila_transport/mila_transport.dart';
@@ -27,6 +28,11 @@ const bool _demo = bool.fromEnvironment('MILA_DEMO');
 const bool _integration = bool.fromEnvironment('MILA_INTEGRATION');
 
 Future<void> main(List<String> arguments) async {
+  // A release build keeps keys in platform custody wherever the platform has
+  // it; `MILA_SOFTWARE_KEYS` is for unsigned dev builds only.
+  if (kReleaseMode && softwareKeysBuild && PlatformProfile.current.hardwareKeys) {
+    throw StateError('MILA_SOFTWARE_KEYS is refused in release builds');
+  }
   WidgetsFlutterBinding.ensureInitialized();
   registerFontLicences(rootBundle);
   if (!_demo) {

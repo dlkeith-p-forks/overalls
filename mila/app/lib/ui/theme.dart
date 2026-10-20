@@ -151,6 +151,8 @@ ThemeData monoThemeData(MonoTokens tokens, Brightness brightness) {
         TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         TargetPlatform.linux: FadeForwardsPageTransitionsBuilder(),
+        TargetPlatform.macOS: FadeForwardsPageTransitionsBuilder(),
+        TargetPlatform.windows: FadeForwardsPageTransitionsBuilder(),
       },
     ),
   );

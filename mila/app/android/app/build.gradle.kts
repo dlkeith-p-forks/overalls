@@ -46,11 +46,27 @@ android {
         buildConfig = true
     }
 
+    // The Play upload key comes from the Gradle properties `mila.upload.*`,
+    // which `mila-build android release` passes as ORG_GRADLE_PROJECT_
+    // environment variables so no password reaches a command line, never from
+    // a committed file. Without them a release build is signed with the debug
+    // key, as the offline Nix APK is (ADR-0235).
+    val upload = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
+        .associateWith { project.findProperty("mila.upload.$it") as String? }
+    signingConfigs {
+        if (upload.values.all { it != null }) {
+            create("upload") {
+                storeFile = file(upload.getValue("storeFile")!!)
+                storePassword = upload.getValue("storePassword")
+                keyAlias = upload.getValue("keyAlias")
+                keyPassword = upload.getValue("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("upload") ?: signingConfigs.getByName("debug")
         }
     }
 }

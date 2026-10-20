@@ -54,7 +54,7 @@ defmodule Susan.Relay.UnregisteredToken do
     attribute :provider, :atom,
       allow_nil?: false,
       public?: true,
-      constraints: [one_of: [:apns, :fcm]]
+      constraints: [one_of: [:apns, :fcm, :wns]]
 
     attribute :recorded_at, :utc_datetime_usec, allow_nil?: false, public?: true
   end

@@ -1615,7 +1615,8 @@ Susan learns that a deployment notified some device, never what about
 Sensitive operations: `device register` (stdin push key), `device rm`,
 `device prefs`, operator disable. Expected refusals: `push_disabled`,
 `device_limit`, `device_not_found`, `unauthorized`, `invalid_request`.
-Untested: real Susan/APNs/FCM delivery, Mila-side decryption on hardware.
+Untested: real Susan/APNs/FCM/WNS delivery, Mila-side decryption on hardware,
+and the Windows TPM and software-provider key paths.
 
 ## SSH terminal attach gateway stream
 
@@ -1703,9 +1704,9 @@ flowchart TB
     HTTP["Susan.HTTP: 1 KiB bound, 400≡404"]
     FSM["Poke FSM: key → signature → replay → rate → claim"]
     Audit[("audit_entries: append-only, hash chained")]
-    Secrets["$CREDENTIALS_DIRECTORY: .p8, service account, keyring, DB URL"]
+    Secrets["$CREDENTIALS_DIRECTORY: .p8, service account, Entra client, keyring, DB URL"]
   end
-  Providers["APNs / FCM (fixed origins, verify_peer)"]
+  Providers["APNs / FCM / WNS (fixed origins and *.notify.windows.com, verify_peer)"]
   Mila --> HTTP
   Marshall --> HTTP
   HTTP --> FSM --> Providers
@@ -1726,10 +1727,18 @@ flowchart TB
   - The install must not be blocked.
   - The token must not be in the negative cache of unregistered tokens.
 - **Transport.** TLS terminates at the fronting proxy. `X-Forwarded-For` is
-  believed only from configured proxies. Egress goes only to the four compiled
-  provider origins, with system trust and peer verification
-  ([`Susan.Provider.Finch`](repo:susan/lib/susan/provider/finch.ex)).
+  believed only from configured proxies. Egress goes only to the five compiled
+  provider origins (APNs production and sandbox, Google OAuth, FCM, Entra ID
+  `login.microsoftonline.com`) and to WNS channel URIs, with system trust and
+  peer verification ([`Susan.Provider.Finch`](repo:susan/lib/susan/provider/finch.ex)).
   A service account naming another token endpoint is refused at startup.
+  A WNS channel's host is chosen per device, so it is admitted only in the
+  shape `susan-wns-channel-shape` allows: `https`, port 443, a lower-case
+  host under `.notify.windows.com`, a path, no userinfo or fragment, at most
+  1024 bytes. The shape is checked at key issuance and again before every
+  send, and the URI is sealed inside the push key, never supplied at poke time
+  ([`Susan.Provider.wns_channel?/1`](repo:susan/lib/susan/provider.ex), its
+  [property test](repo:susan/test/susan/wns_channel_property_test.exs)).
 - **Execution fencing.** A `DeliveryReceipt` is unique per install and delivery
   id. Reclaiming a failed or stale `sending` receipt is an atomic conditional
   update, so concurrent retries cannot double-send.
@@ -1756,6 +1765,10 @@ flowchart TB
   - the database refuses UPDATE, DELETE and TRUNCATE on audit rows;
   - another host cannot decrypt the bundle.
 - **Untested gaps.**
+  - WNS is implemented in the release but not enabled in the Nix service
+    module (no `wns_app_ids` or Entra credentials are delivered), and no
+    machine test fakes a WNS origin; WNS evidence is BEAM unit and property
+    tests over the fake transport.
   - Real APNs/FCM acceptance: the machine tests use local fake origins behind a
     private CA.
   - Production hosting and TLS.

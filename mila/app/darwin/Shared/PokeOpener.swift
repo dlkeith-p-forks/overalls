@@ -17,7 +17,7 @@ import Foundation
 /// - ChaCha20-Poly1305 with AAD "overalls-mila-poke-v1" || 0x00 || host;
 /// - plaintext exactly {v: 1, kind: "needs_input", route: "/..."}.
 ///
-/// Shared by the NotificationService extension and RunnerTests.
+/// Shared by the iOS and macOS NotificationService extensions and RunnerTests.
 enum PokeOpener {
   static let label = "overalls-mila-poke-v1"
   static let minimumBytes = 1 + 32 + 12 + 16

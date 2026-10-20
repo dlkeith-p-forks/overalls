@@ -1,8 +1,9 @@
 defmodule Susan.Provider.Tokens do
   @moduledoc """
   Caches provider credentials in memory: the APNs provider JWT (refreshed
-  after 40 minutes, inside Apple's one-hour limit) and the FCM OAuth access
-  token (refreshed five minutes before expiry). Neither is logged or stored.
+  after 40 minutes, inside Apple's one-hour limit) and the FCM and WNS OAuth
+  access tokens (refreshed five minutes before expiry). None is logged or
+  stored.
   """
   use GenServer
 
@@ -10,6 +11,7 @@ defmodule Susan.Provider.Tokens do
 
   @apns_lifetime 2_400
   @fcm_scope "https://www.googleapis.com/auth/firebase.messaging"
+  @wns_scope "https://wns.windows.com/.default"
 
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(options),
@@ -21,11 +23,14 @@ defmodule Susan.Provider.Tokens do
   @spec fcm(Susan.Config.t()) :: {:ok, String.t()} | {:error, :retry | :unavailable}
   def fcm(config), do: GenServer.call(__MODULE__, {:fcm, config}, 20_000)
 
-  @spec invalidate(:apns | :fcm) :: :ok
+  @spec wns(Susan.Config.t()) :: {:ok, String.t()} | {:error, :retry | :unavailable}
+  def wns(config), do: GenServer.call(__MODULE__, {:wns, config}, 20_000)
+
+  @spec invalidate(:apns | :fcm | :wns) :: :ok
   def invalidate(provider), do: GenServer.cast(__MODULE__, {:invalidate, provider})
 
   @impl true
-  def init(:ok), do: {:ok, %{apns: nil, fcm: nil}}
+  def init(:ok), do: {:ok, %{apns: nil, fcm: nil, wns: nil}}
 
   @impl true
   def handle_call({:apns, config}, _from, state) do
@@ -47,23 +52,29 @@ defmodule Susan.Provider.Tokens do
     end
   end
 
-  def handle_call({:fcm, config}, _from, state) do
+  def handle_call({:fcm, config}, _from, state), do: oauth(:fcm, &exchange(config.fcm, &1), state)
+  def handle_call({:wns, config}, _from, state), do: oauth(:wns, &entra(config.wns, &1), state)
+
+  @impl true
+  def handle_cast({:invalidate, provider}, state), do: {:noreply, Map.put(state, provider, nil)}
+
+  defp oauth(provider, fetch, state) do
     now = System.os_time(:second)
 
-    case state.fcm do
+    case Map.fetch!(state, provider) do
       {token, expires} when expires - now > 300 ->
         {:reply, {:ok, token}, state}
 
       _ ->
-        case exchange(config.fcm, now) do
-          {:ok, token, expires} -> {:reply, {:ok, token}, %{state | fcm: {token, expires}}}
-          {:error, reason} -> {:reply, {:error, reason}, state}
+        case fetch.(now) do
+          {:ok, token, expires} ->
+            {:reply, {:ok, token}, Map.put(state, provider, {token, expires})}
+
+          {:error, reason} ->
+            {:reply, {:error, reason}, state}
         end
     end
   end
-
-  @impl true
-  def handle_cast({:invalidate, provider}, state), do: {:noreply, Map.put(state, provider, nil)}
 
   defp exchange(%{client_email: email, private_key: key}, now) do
     url = Susan.Provider.google_token_url()
@@ -81,6 +92,28 @@ defmodule Susan.Provider.Tokens do
         "assertion" => assertion
       })
 
+    token_response(url, body, now)
+  end
+
+  defp exchange(_missing, _now), do: {:error, :unavailable}
+
+  # Entra ID client credentials for WNS: the tenant, client id and secret come
+  # from Susan's credentials; the token endpoint's origin is fixed.
+  defp entra(%{tenant_id: tenant, client_id: client, client_secret: secret}, now) do
+    body =
+      URI.encode_query(%{
+        "grant_type" => "client_credentials",
+        "client_id" => client,
+        "client_secret" => secret,
+        "scope" => @wns_scope
+      })
+
+    token_response(Susan.Provider.microsoft_token_url(tenant), body, now)
+  end
+
+  defp entra(_missing, _now), do: {:error, :unavailable}
+
+  defp token_response(url, body, now) do
     headers = [{"content-type", "application/x-www-form-urlencoded"}]
 
     case Susan.Provider.HTTP.request(:post, url, headers, body) do
@@ -103,6 +136,4 @@ defmodule Susan.Provider.Tokens do
         {:error, :retry}
     end
   end
-
-  defp exchange(_missing, _now), do: {:error, :unavailable}
 end

@@ -54,5 +54,10 @@ defmodule Susan.FakeProvider do
       {:ok, 200, [],
        ~s({"access_token":"fake-access-token","expires_in":3600,"token_type":"Bearer"})}
 
+  defp default("https://login.microsoftonline.com" <> _),
+    do:
+      {:ok, 200, [],
+       ~s({"access_token":"fake-wns-token","expires_in":3600,"token_type":"Bearer"})}
+
   defp default(_url), do: {:ok, 200, [], ~s({"name":"projects/p/messages/1"})}
 end

@@ -11,11 +11,11 @@ import '../session.dart';
 import '../terminal/terminals_controller.dart' show MachineKey;
 
 /// Whether this platform shows public endpoints in an in-app webview
-/// (iOS and Android); overridden at startup.
+/// (iOS, Android and macOS); overridden at startup.
 final inAppWebViewProvider = Provider<bool>((ref) => false);
 
 /// Shares a link through the platform share sheet; null where there is
-/// none (Linux), which offers copying only.
+/// none (Linux, Windows), which offers copying only.
 final shareLinkProvider = Provider<Future<void> Function(Uri)?>((ref) => null);
 
 /// Why the last change did not apply.

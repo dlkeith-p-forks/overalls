@@ -27,6 +27,13 @@ defmodule Marshall.SSH.Commands do
   # Transcript pages stay well inside Porsche's 1 MiB response bound.
   @turns_limit 100
   @turns_budget 524_288
+  # The `device register --platform` values (OverallsProtocol.SSHCommand).
+  @device_platforms %{
+    "ios" => :ios,
+    "android" => :android,
+    "macos" => :macos,
+    "windows" => :windows
+  }
 
   @impl true
   def run(input, _, _) do
@@ -605,7 +612,7 @@ defmodule Marshall.SSH.Commands do
     device =
       Marshall.Notifications.register_device(
         %{
-          platform: Map.fetch!(%{"ios" => :ios, "android" => :android}, opts["platform"]),
+          platform: Map.fetch!(@device_platforms, opts["platform"]),
           push_key: opts["push-key"],
           enc_public_key: opts["enc-pubkey"],
           label: opts["label"],

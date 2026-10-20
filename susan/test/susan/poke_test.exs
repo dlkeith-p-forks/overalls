@@ -65,6 +65,39 @@ defmodule Susan.PokeTest do
     assert message["android"]["collapse_key"] == Fixtures.collapse_id("thread-1")
   end
 
+  test "a WNS key sends a raw notification to its channel after one Entra exchange", ctx do
+    {push_key, key} = Fixtures.push_key(ctx.config, provider: :wns)
+    input = Fixtures.poke(push_key, ctx.install)
+    assert {:respond, 204, :empty, nil} = Poke.handle(input, ctx.config)
+
+    assert {:respond, 204, :empty, nil} =
+             Poke.handle(Fixtures.poke(push_key, ctx.install), ctx.config)
+
+    assert [oauth, send, send2] = FakeProvider.requests()
+
+    assert oauth.url ==
+             "https://login.microsoftonline.com/00000000-0000-4000-8000-000000000001/oauth2/v2.0/token"
+
+    assert oauth.body =~ "grant_type=client_credentials"
+    assert oauth.body =~ "scope=https%3A%2F%2Fwns.windows.com%2F.default"
+    assert send.url == key.token and send2.url == key.token
+    headers = Map.new(send.headers)
+    assert headers["x-wns-type"] == "wns/raw"
+    assert headers["authorization"] == "Bearer fake-wns-token"
+
+    assert JSON.decode!(send.body) == %{
+             "overalls_v" => "1",
+             "overalls_k" => "needs_input",
+             "overalls_c" => JSON.decode!(input.body)["ciphertext"]
+           }
+  end
+
+  test "a WNS 410 marks the channel unregistered", ctx do
+    {push_key, _key} = Fixtures.push_key(ctx.config, provider: :wns)
+    FakeProvider.script([{"https://wns2-par02p.notify.windows.com", 410, [], ""}])
+    assert {:respond, 410, _, _} = Poke.handle(Fixtures.poke(push_key, ctx.install), ctx.config)
+  end
+
   test "a retried delivery id is answered without a second provider send", ctx do
     delivery = Susan.PushKey.uuid()
 

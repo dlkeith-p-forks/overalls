@@ -1,3 +1,8 @@
+// Goldens are recorded on Linux, where the Nix `mila-test` check renders
+// them; other hosts rasterize text differently, so their CI excludes the tag.
+@Tags(['golden'])
+library;
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';

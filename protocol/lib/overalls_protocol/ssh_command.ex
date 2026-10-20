@@ -132,7 +132,7 @@ defmodule OverallsProtocol.SSHCommand do
        "Stream JSON change notices for machines, threads and this session."},
     "device register" =>
       {0, 0, ["platform", "push-key", "enc-pubkey", "label"],
-       "device register --platform ios|android --push-key - --enc-pubkey KEY [--label LABEL]",
+       "device register --platform ios|android|macos|windows --push-key - --enc-pubkey KEY [--label LABEL]",
        "Register this device for push notifications. The push key is read from stdin."},
     "device ls" => {0, 0, [], "device ls", "List your push notification devices."},
     "device rm" => {1, 1, [], "device rm DEVICE_ID", "Revoke a push notification device."},
@@ -496,7 +496,7 @@ defmodule OverallsProtocol.SSHCommand do
   # Device registration MUST name a closed platform and a raw 32-byte X25519
   # public key, and SHOULD read the Susan push key from stdin (`-`). A literal
   # push key is accepted only in the opaque Susan key alphabet and bounds.
-  defp option?("platform", value), do: value in ["ios", "android"]
+  defp option?("platform", value), do: value in ["ios", "android", "macos", "windows"]
   defp option?("push-key", "-"), do: true
   defp option?("push-key", value), do: OverallsProtocol.SusanPoke.push_key?(value)
   defp option?("enc-pubkey", value), do: device_public_key?(value)

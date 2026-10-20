@@ -25,6 +25,9 @@ defmodule Susan.ConfigTest do
           "private_key" => pem(:RSAPrivateKey, rsa),
           "token_uri" => "https://oauth2.googleapis.com/token"
         }),
+      "WNS_TENANT_ID" => "00000000-0000-4000-8000-0000000000AA\n",
+      "WNS_CLIENT_ID" => "00000000-0000-4000-8000-000000000002",
+      "WNS_CLIENT_SECRET" => "entra-client-secret-value",
       "SUSAN_PUSH_KEY_SIGNING_KEY" =>
         JSON.encode!(%{
           "active" => 1,
@@ -42,7 +45,8 @@ defmodule Susan.ConfigTest do
         "version" => 1,
         "port" => 4100,
         "apns_topics" => ["dev.overalls.mila"],
-        "fcm_app_ids" => ["dev.overalls.mila"]
+        "fcm_app_ids" => ["dev.overalls.mila"],
+        "wns_app_ids" => ["dev.overalls.mila"]
       }),
       0o644
     )
@@ -62,8 +66,25 @@ defmodule Susan.ConfigTest do
     assert {:ok, config} = Config.load(ctx.config, ctx.credentials)
     assert config.port == 4100 and config.apns.key_id == "ABCDEFGHIJ"
     assert config.fcm.project_id == "overalls-test"
+    assert config.wns.tenant_id == "00000000-0000-4000-8000-0000000000aa"
+    assert config.wns_app_ids == ["dev.overalls.mila"]
     assert config.repo[:database] == "susan"
     refute inspect(config) =~ "BEGIN"
+    refute inspect(config) =~ "entra-client-secret"
+  end
+
+  test "a WNS-only relay needs only the WNS credentials", ctx do
+    for name <- ~w(APNS_KEY_P8 APNS_KEY_ID APNS_TEAM_ID FCM_SERVICE_ACCOUNT_JSON),
+        do: File.rm!(Path.join(ctx.credentials, name))
+
+    write(
+      ctx.config,
+      JSON.encode!(%{"version" => 1, "wns_app_ids" => ["dev.overalls.mila"]}),
+      0o644
+    )
+
+    assert {:ok, config} = Config.load(ctx.config, ctx.credentials)
+    assert config.apns == nil and config.fcm == nil and config.wns.client_id != nil
   end
 
   test "refuses unsafe or malformed secrets with one fixed error", ctx do
@@ -96,6 +117,9 @@ defmodule Susan.ConfigTest do
         )
       end,
       fn -> write(Path.join(ctx.credentials, "DATABASE_URL"), "mysql://x/y", 0o400) end,
+      fn -> write(Path.join(ctx.credentials, "WNS_TENANT_ID"), "../evil", 0o400) end,
+      fn -> write(Path.join(ctx.credentials, "WNS_CLIENT_SECRET"), "short", 0o400) end,
+      fn -> File.rm!(Path.join(ctx.credentials, "WNS_CLIENT_ID")) end,
       fn ->
         write(
           ctx.config,

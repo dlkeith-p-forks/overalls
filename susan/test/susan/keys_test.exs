@@ -39,7 +39,13 @@ defmodule Susan.KeysTest do
           body(%{"token" => "not-hex"}),
           body(%{"provider" => "fcm", "token" => Fixtures.fcm_token()}),
           body(%{"deployment" => "localhost"}),
-          body(%{"provider" => "webpush"})
+          body(%{"provider" => "webpush"}),
+          body(%{"provider" => "wns", "token" => Fixtures.wns_channel()}),
+          body(%{
+            "provider" => "wns",
+            "environment" => "production",
+            "token" => "https://evil.example/notify.windows.com/x"
+          })
         ] do
       assert {400, :rejected, nil} =
                Keys.issue(JSON.encode!(request), ctx.source, ctx.config, now)
@@ -47,6 +53,20 @@ defmodule Susan.KeysTest do
 
     assert {400, :rejected, nil} =
              Keys.issue(String.duplicate("x", 1025), ctx.source, ctx.config, now)
+  end
+
+  test "issues a WNS key only for a production channel URI", ctx do
+    request =
+      body(%{
+        "provider" => "wns",
+        "environment" => "production",
+        "token" => Fixtures.wns_channel()
+      })
+
+    now = System.os_time(:second)
+    assert {201, response} = Keys.issue(JSON.encode!(request), ctx.source, ctx.config, now)
+    assert {:ok, key} = PushKey.open(ctx.config.keyring, response["push_key"], now)
+    assert key.provider == :wns and key.token == request["token"]
   end
 
   test "refuses tokens the provider reported unregistered", ctx do

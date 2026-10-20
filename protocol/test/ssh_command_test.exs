@@ -296,13 +296,21 @@ defmodule OverallsProtocol.SSHCommandTest do
     assert replaced.options["push-key"] == push_key
     refute SSHCommand.stdin_secret?(replaced)
 
+    for platform <- ["ios", "android", "macos", "windows"] do
+      assert {:ok, %{options: %{"platform" => ^platform}}} =
+               SSHCommand.parse(
+                 "device register --platform #{platform} --push-key - --enc-pubkey #{key}"
+               )
+    end
+
     for bad <- ["", "short", "has space in it.......", String.duplicate("A", 701)] do
       assert {:error, :invalid_command} = SSHCommand.put_stdin_secret(command, bad)
     end
 
     for text <- [
           "device register --platform ios --push-key -",
-          "device register --platform windows --push-key - --enc-pubkey #{key}",
+          "device register --platform linux --push-key - --enc-pubkey #{key}",
+          "device register --platform macOS --push-key - --enc-pubkey #{key}",
           "device register --platform ios --push-key - --enc-pubkey AAAA",
           "device register --platform ios --push-key - --enc-pubkey #{key}=",
           "device register extra --platform ios --push-key - --enc-pubkey #{key}",

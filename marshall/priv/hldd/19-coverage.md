@@ -4083,6 +4083,57 @@ Tested scope: Pure Dart registration machine under a Hegel StateMachine with a f
 
 **Preferred test work:** Add a fleet scenario with a fake relay and the real Porsche device commands driving mila-probe through register, prefs and rm.
 
+## A user installs Mila on macOS or Windows, signs in to a deployment and keeps its device key, pins and offline list on that machine
+
+Coverage: **partial**. Layers: identity, storage, isolation.
+
+Boundary: The platform profile selects hardware custody (Secure Enclave on signed macOS, a non-exportable CNG key on Windows with TPM or software provider) or owner-only software keys only for unsigned dev builds; Mila's files are owner-only through POSIX modes or a protected user-and-SYSTEM DACL on Windows.
+
+Required refusal: A release build that carries the software-keys define refuses to start; a Windows file whose DACL is inherited, unprotected or grants any other SID is refused rather than read; a POSIX file other users can read is refused.
+
+Tested scope: Dart unit and Hegel property tests over the SDDL builder and checker on every host, an icacls round trip that runs only on Windows, and macOS unsigned dev builds launched locally with 0700/0600 data files observed. The Windows CNG/TPM channel and Secure Enclave on a signed macOS build are not implemented or not exercised.
+
+- **property, present**: [an allow entry for any other SID is refused](repo:mila/packages/mila_transport/test/owner_only_test.dart) — Hegel over generated SIDs and access masks against the SDDL checker; host-independent..
+- **unit, present**: [a written file is owner-only and refused once shared](repo:mila/packages/mila_transport/test/owner_only_test.dart) — Windows-only icacls grant to Everyone after a protected write..
+
+**Gaps:** No signed macOS build, no Windows native key channel and no Windows CI host; Secure Enclave and TPM custody are unverified on desktop.
+
+**Preferred test work:** Add Windows and macOS CI jobs that run the transport suite natively, plus an XCTest and CTest for the native key channels; no NixOS machine test can host macOS or Windows clients.
+
+## A maintainer builds a dev or release Mila for Linux, Android, iOS, macOS or Windows
+
+Coverage: **partial**. Layers: identity, execution.
+
+Boundary: mila-build plans every target from typed inputs; release plans require their signing inputs, verify signatures as the final step and keep secrets out of arguments and printed plans.
+
+Required refusal: A release with demo mode, software keys, a missing signing input or another host's target is refused instead of substituted.
+
+Tested scope: Pure Dart planner unit and Hegel property tests; macOS and iOS-simulator dev builds run on a Mac. Signed Apple, Android and Windows release paths are not executed.
+
+- **property, present**: [release plans never enable demo or software keys and keep secrets out of arguments](repo:mila/tool/test/plan_test.dart) — Hegel over platform, host, demo and Apple-team inputs..
+- **unit, present**: [a missing signing input is refused, never replaced](repo:mila/tool/test/plan_test.dart) — Release planning for Android, iOS, macOS and Windows with no inputs..
+
+**Gaps:** No CI signing environment or Windows host; notarization, SignTool and upload-key signing are planned but not run.
+
+**Preferred test work:** Add release workflows in a protected environment that run each release target and record their signature verification output; NixOS machine tests cannot sign Apple or Windows artifacts.
+
+## A Windows Mila exchanges its WNS channel URI for a push key and later receives a raw poke
+
+Coverage: **partial**. Layers: transport, authorization.
+
+Boundary: Susan admits a WNS channel URI only in the susan-wns-channel-shape form, seals it in the push key and re-checks it before each send; Entra ID tokens come from the compiled login.microsoftonline.com origin.
+
+Required refusal: A channel URI with another scheme, host, port, userinfo, fragment or length, or a sandbox environment, is refused with the fixed 400; WNS 404/410 marks the token unregistered and 401 refreshes the Entra token once.
+
+Tested scope: BEAM unit and Hegel property tests over the fake provider transport. The Nix service module does not enable WNS and no machine test fakes a WNS origin.
+
+- **property, present**: [an accepted channel always posts to a notify.windows.com host on 443](repo:susan/test/susan/wns_channel_property_test.exs) — Hegel over schemes, host suffixes, ports, userinfo and paths..
+- **unit, present**: [a WNS key sends a raw notification to its channel after one Entra exchange](repo:susan/test/susan/poke_test.exs) — Poke pipeline over Susan.FakeProvider..
+
+**Gaps:** WNS is not enabled in the deployed Susan, no Entra credentials exist, and Susan's config-loading tests run only on Linux.
+
+**Preferred test work:** Extend the susan-service machine test with WNS credentials and a fake *.notify.windows.com origin behind its private CA once the service module gains wnsAppIds.
+
 ## An agent needs input and the user's phone shows a notification that opens the right machine
 
 Coverage: **partial**. Layers: transport, isolation.

@@ -1145,14 +1145,19 @@ and [execution review](repo:docs/architecture/reviews/2026-09-29-antithesis-prop
 
 ## Mila
 
-Mila is the Overalls client for iOS and Android; its Linux build exists for
-testing. It manages machines through one SSH connection to the deployment's
+Mila is the Overalls client for iOS, Android, macOS and Windows; its Linux
+build exists for testing. A platform profile
+([`PlatformProfile`](repo:mila/app/lib/transport/platform.dart)) fixes per
+platform whether keys are hardware-held, which push provider is used, whether
+web tabs and the app lock exist, and where links arrive; no code path infers
+Linux from "not a phone". It manages machines through one SSH connection to the deployment's
 Porsche gateway and adds no Marshall API: every command is an ordinary Porsche
 `--json` command, authorized by Marshall's domains like any other SSH caller.
 
 | Concern | Behaviour |
 | --- | --- |
-| Device identity | One P-256 key per deployment: Secure Enclave (iOS), Android Keystore with StrongBox where present, an owner-only `0600` file on Linux. A readable Linux key file is refused. |
+| Device identity | One P-256 key per deployment: Secure Enclave (iOS and signed macOS builds), Android Keystore with StrongBox where present, a non-exportable CNG key on Windows (TPM 2.0 through the Platform Crypto Provider, otherwise the Software Key Storage Provider without refusal), and an owner-only file on Linux and unsigned macOS dev builds (`MILA_SOFTWARE_KEYS`, refused by a release build). A key file other users can read is refused. |
+| Owner-only files | POSIX hosts create directories `0700` and files `0600`. Windows applies a protected DACL granting only the current user and SYSTEM, and refuses a file whose DACL admits anyone else ([`owner_only_windows.dart`](repo:mila/packages/mila_transport/lib/src/owner_only_windows.dart)). |
 | Host trust | `https://HOST/bin/ssh-trust.json` is fetched over HTTPS without redirects and pinned. A later document with another CA, host or zone is refused; a failed fetch uses only an unretired pin. |
 | Host acceptance | Only `ssh-ed25519-cert-v01@openssh.com`. The certificate must come from the pinned CA, name the management host and be inside its validity window. The check runs in key exchange, before user authentication. |
 | Sign-in | Porsche's browser key approval. Mila opens `approval_url` in the system browser and keeps the connection, re-checking `whoami` every 2 seconds. A link expires after 600 seconds and is never replaced while shown. |
@@ -1200,7 +1205,9 @@ and its [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_te
 ### Mila notifications, app lock and offline list
 
 Notifications are opt-in per device and per deployment. Mila asks the
-platform for an APNs or FCM token. It exchanges the token for a push key at
+platform for an APNs token (iOS, macOS), an FCM token (Android) or a WNS
+channel URI (Windows), and registers as platform `ios`, `android`, `macos` or
+`windows`; macOS shares the APNs topic `dev.overalls.mila` with iOS. It exchanges the token for a push key at
 the fixed relay origin `https://notifications.overalls.dev`, then registers
 the device through Porsche with
 `device register --platform P --push-key - --enc-pubkey K`. The push key
@@ -1213,9 +1220,10 @@ id and the key expiry.
 | Registration | A pure state machine. Each step has an operation number, and a reply to an older step is ignored. Turning notifications off while a registration is in flight removes the device once it lands. A new platform token re-registers. The key is rotated within 14 days of expiry. `push_disabled` stops retries. Transient failures back off from 5 s to 30 min. |
 | Poke contents | Pokes are end-to-end encrypted to a per-deployment X25519 key: `0x01 ‖ ephemeral key ‖ nonce ‖ ChaCha20-Poly1305 ciphertext`, with the key derived by HKDF-SHA256 and the deployment host bound in the AAD. The relay sees only ciphertext. The plaintext is exactly `{v, kind: "needs_input", route}`, and the route must be a canonical app route on that host. |
 | Notification text | Fixed and localized ("An agent needs your input"). The decrypted route is used only as the tap link. A poke that fails to open shows the fixed text with no link on iOS (an APNs alert cannot be suppressed); Android shows nothing. |
-| Poke keys | iOS Keychain group shared with the notification extension, readable after first unlock on this device only. On Android, wrapped by a Keystore AES key. Only the public key leaves native code. Removing the device deletes the key. |
+| Poke keys | iOS and macOS Keychain group shared with the notification extension (the data-protection keychain on macOS), readable after first unlock on this device only. On Android, wrapped by a Keystore AES key. Only the public key leaves native code. Removing the device deletes the key. |
 | Device list | Each device can be turned on or off, or removed (`device prefs`, `device rm`). A device missing from `device ls` shows as revoked. |
 | App lock | Optional, with biometrics or the device passcode (`local_auth`). It locks immediately or after 1 or 5 minutes in the background. A saved lock covers Mila from the first frame. Locked content is not painted and not in the accessibility tree. Linux has no lock, and the setting says so. |
+| Desktop push | macOS uses the same notification-extension path as iOS, from code shared in `mila/app/darwin/Shared`. An unsigned macOS dev build has no push entitlement and offers no notifications. Windows push needs Susan's WNS provider (ADR-0236), whose deployed configuration is not yet enabled; the Windows native channel and poke opener are not yet implemented. |
 | Offline list | The last complete machine listing per deployment is saved as an owner-only `0600` file holding machine rows only, at most 500. While offline, the saved list is shown with its save time and its actions are disabled. |
 | Linux desktop | One window. A second `mila overalls://…` hands its link to the running window, which only navigates. |
 
@@ -1232,7 +1240,7 @@ sequenceDiagram
     P->>D: register device bound to the SSH key
     D-->>M: receipt with device id (via request show)
     D->>S: poke = ciphertext to the device X25519 key
-    S->>N: APNs/FCM data message
+    S->>N: APNs, FCM or WNS raw message
     N->>N: open with the deployment key, check host and route
     N-->>M: fixed localized alert, tap opens overalls://HOST/ROUTE
 ```
@@ -1260,10 +1268,31 @@ Evidence:
 - [lock policy](repo:mila/packages/mila_core/lib/src/app_lock.dart),
   [snapshot cache](repo:mila/packages/mila_core/lib/src/snapshot_cache.dart)
   and the [app journeys](repo:mila/app/test/device_features_test.dart);
-- native [iOS extension](repo:mila/app/ios/NotificationService/NotificationService.swift)
+- native [iOS and macOS extension](repo:mila/app/darwin/Shared/NotificationService.swift)
+  with [shared poke tests](repo:mila/app/darwin/SharedTests/PushPokeTests.swift)
   and [Android service](repo:mila/app/android/app/src/main/kotlin/dev/overalls/mila/MilaMessagingService.kt);
 - the [desktop machine test](repo:nix/verification/tests/machines/mila-desktop/default.nix)
   and the [M5 device review](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+### Mila build targets
+
+Every platform has a dev and a release target, driven by one typed planner,
+[`mila-build`](repo:mila/tool/lib/src/plan.dart)
+(`mila-build <linux|android|ios|macos|windows> <dev|release>`).
+
+| Platform | Dev | Release |
+| --- | --- | --- |
+| Linux | `nix build .#tool-mila-linux-dev`, debug bundle | `.#tool-mila-linux-release`, reproducible tarball with SHA-256 sums |
+| Android | debug-key APK | app bundle signed with the upload key from `MILA_ANDROID_UPLOAD_*` |
+| iOS | simulator debug build, or development-signed with `MILA_APPLE_TEAM` | IPA from `MILA_IOS_EXPORT_OPTIONS` |
+| macOS | unsigned debug app with software keys, or development-signed with Secure Enclave keys and the APNs sandbox | Developer ID signed, notarized and stapled DMG, assessed by `spctl` |
+| Windows | debug layout with a development MSIX manifest, registered with `Add-AppxPackage -Register` | MSIX packed with MakeAppx, signed and verified with SignTool |
+
+A release plan refuses demo mode, software keys, another host's target and any
+missing signing input rather than substituting one, and every signed release
+verifies its signature as a final step. Secrets reach tools through the
+environment and are redacted from printed plans. Apple builds clear the Nix
+compiler variables and use the system Xcode.
 
 ### Mila terminals, threads and web
 

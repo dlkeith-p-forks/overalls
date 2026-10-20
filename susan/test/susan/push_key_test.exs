@@ -78,7 +78,7 @@ defmodule Susan.PushKeyTest do
   test "arbitrary bound fields round-trip through the envelope" do
     Hegel.check(
       fn ->
-        provider = draw("provider", member_of([:apns, :fcm]))
+        provider = draw("provider", member_of([:apns, :fcm, :wns]))
         token = draw("token", string(:alphanumeric, min_length: 1, max_length: 200))
         app = draw("app", string(:alphanumeric, min_length: 1, max_length: 60))
         issued = draw("issued", integer(0, 4_000_000_000))

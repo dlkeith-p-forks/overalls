@@ -127,6 +127,30 @@ let
     '';
   };
 
+  # mila-build's planner (ADR-0235): the dev and release targets as data,
+  # with the release contract as a property test.
+  toolCheck = pkgs.buildDartApplication {
+    pname = "mila-tool-check";
+    inherit version;
+    src = source;
+    sourceRoot = "mila-source/tool";
+    pubspecLock = lib.importJSON (root + "/tool/pubspec.lock.json");
+    dartEntryPoints = { };
+    postPatch = hegelEngine;
+    buildPhase = ''
+      runHook preBuild
+      dart format --line-length 100 --language-version=3.9 --set-exit-if-changed bin lib test
+      ${offlinePub "dart"}
+      dart analyze --fatal-infos
+      dart test --reporter expanded
+      runHook postBuild
+    '';
+    installPhase = ''
+      touch $out
+      mkdir -p $pubcache
+    '';
+  };
+
   # The transport tests include a stock OpenSSH server presenting a host
   # certificate; MILA_REQUIRE_SSHD turns a missing sshd into a failure.
   transportCheck = pkgs.buildDartApplication {
@@ -171,7 +195,7 @@ let
     meta.mainProgram = "mila-probe";
   };
 
-  app = flutter.buildFlutterApplication {
+  appArgs = {
     pname = "mila";
     inherit version;
     src = source;
@@ -181,7 +205,9 @@ let
     pubspecLock = lib.importJSON (root + "/app/pubspec.lock.json");
     customSourceBuilders = patchedDartssh2;
     targetFlutterPlatform = "linux";
-    postPatch = hegelEngine + linkDartssh2 "../packages/mila_transport" + copyNotoFonts;
+    # The app has no property-test engine: its pure property tests live in
+    # mila_core and mila_transport, so no build hook fetches one.
+    postPatch = linkDartssh2 "../packages/mila_transport" + copyNotoFonts;
     flutterBuildFlags = [ "--dart-define=MILA_DEMO=${lib.boolToString false}" ];
     # The desktop entry claims overalls:// links; the runner passes the link
     # to Dart's main as its argument (ADR-0221).
@@ -202,6 +228,24 @@ let
       platforms = [ "x86_64-linux" ];
     };
   };
+
+  # Linux targets (ADR-0235): `release` is the production bundle the
+  # machine tests drive; `dev` is a debug bundle (asserts, the VM service)
+  # that also accepts `--dart-define=MILA_DEMO=true` from `mila-build`.
+  app = flutter.buildFlutterApplication appArgs;
+  linuxDev = flutter.buildFlutterApplication (appArgs // {
+    pname = "mila-dev";
+    flutterMode = "debug";
+    flutterBuildFlags = [ ];
+  });
+  # The release bundle as a reproducible tarball with its checksum.
+  linuxRelease = pkgs.runCommand "mila-linux-release-${version}" { } ''
+    mkdir -p $out
+    name=mila-${version}-linux-x86_64.tar.gz
+    tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner \
+      -czf $out/$name -C ${app} .
+    (cd $out && sha256sum $name > SHA256SUMS)
+  '';
 
   # The demo flavour talks to an in-memory deployment; the desktop machine
   # test drives it under a headless compositor.
@@ -245,7 +289,7 @@ let
 
   # The JSON lock Nix reads MUST describe the same packages as pubspec.lock.
   lockSync = pkgs.runCommand "mila-lock-sync" { nativeBuildInputs = [ pkgs.yq-go ]; } ''
-    for d in packages/mila_core packages/mila_transport app; do
+    for d in packages/mila_core packages/mila_transport tool app; do
       yq -o=json ${source}/$d/pubspec.lock > generated.json
       yq -o=json . ${source}/$d/pubspec.lock.json > committed.json
       if ! cmp -s generated.json committed.json; then
@@ -259,5 +303,5 @@ let
   android = import ./android.nix { inherit pkgs app; };
 in
 {
-  inherit app demo integration probe coreCheck transportCheck appCheck lockSync android;
+  inherit app linuxDev linuxRelease demo integration probe coreCheck transportCheck toolCheck appCheck lockSync android;
 }

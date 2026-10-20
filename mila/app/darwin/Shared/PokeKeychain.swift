@@ -6,8 +6,9 @@ import Security
 // after first unlock on this device. Only the 32-byte public key MAY cross the
 // platform channel; private keys MUST NOT be logged or exported.
 
-/// The extension's reader of the poke keys Runner stores (AppDelegate's
-/// `RunnerPokeKeychain` writes the same items) in the shared Keychain group: service `dev.overalls.mila.poke`, account =
+/// The extension's reader of the poke keys the runner stores
+/// (`MilaKeys.swift`'s `RunnerPokeKeychain` writes the same items) in the
+/// shared Keychain group: service `dev.overalls.mila.poke`, account =
 /// deployment host, data = raw 32-byte Curve25519 private key.
 enum PokeKeychain {
   static let service = "dev.overalls.mila.poke"
@@ -26,7 +27,7 @@ enum PokeKeychain {
     ]
     if let host { query[kSecAttrAccount as String] = host }
     if let group = accessGroup { query[kSecAttrAccessGroup as String] = group }
-    return query
+    return MilaKeychain.scoped(query)
   }
 
   static func privateKey(_ host: String) -> Data? {

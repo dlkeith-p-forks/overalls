@@ -113,6 +113,9 @@
         tool-nix-compact-host = nix-compact.lib.mkPackage { pkgs = nixpkgs.legacyPackages.${system}; };
         tool-lyra = built.lyra;
         tool-mila-linux = built.mila.app;
+        # mila-build's Linux dev and release targets (ADR-0235).
+        tool-mila-linux-dev = built.mila.linuxDev;
+        tool-mila-linux-release = built.mila.linuxRelease;
         tool-mila-demo = built.mila.demo;
         tool-mila-probe = built.mila.probe;
         # Optional Android APK, excluded from CI (ADR-0227).
@@ -256,6 +259,7 @@
         # mila-test covers golden images too: goldens are flutter tests.
         mila-core = built.mila.coreCheck;
         mila-transport = built.mila.transportCheck;
+        mila-tool = built.mila.toolCheck;
         mila-test = built.mila.appCheck;
         mila-lock-sync = built.mila.lockSync;
       }; };

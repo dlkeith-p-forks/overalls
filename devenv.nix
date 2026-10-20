@@ -33,6 +33,9 @@ let
   # The pinned Noto fallbacks Mila bundles (ADR-0207); the Nix builds copy
   # the same store path into the app.
   milaNotoFonts = import ./nix/domains/artifacts/mila/fonts.nix { inherit pkgs; };
+  # Firecracker, Lilly host helpers, network tools and Chromium are Linux-only; a
+  # darwin shell omits them instead of refusing to evaluate.
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
 in
 {
   outputs.guest = import ./nix/domains/artifacts/guest { inherit pkgs; };
@@ -48,9 +51,12 @@ in
   };
 
   # https://devenv.sh/basics/
-  env.GREET = "devenv";
-  env.OVERALLS_TEST_VMM_DIR = "${vmm}/bin";
-  env.OVERALLS_NIXPKGS_PATH = "${pkgs.path}";
+  env = {
+    GREET = "devenv";
+    OVERALLS_NIXPKGS_PATH = "${pkgs.path}";
+  } // lib.optionalAttrs isLinux {
+    OVERALLS_TEST_VMM_DIR = "${vmm}/bin";
+  };
 
   # Pull the repository's shared binary cache before evaluating the shell.
   cachix.pull = [ "overalls" ];
@@ -59,26 +65,36 @@ in
   # https://devenv.sh/packages/
   packages = [
     compactNix
-    hostLock
     pkgs.dtach
     pkgs.openssh
     pkgs.openssl
-    vmm
     pkgs.git
     pkgs.coreutils
     pkgs.util-linux
-    pkgs.iproute2
-    pkgs.nftables
     pkgs.procps
     pkgs.prek
     pkgs.nodejs
-    pkgs.chromium
     pkgs.watchexec
+    # Regenerates Mila's pubspec.lock.json files (`yq -o=json pubspec.lock`).
+    pkgs.yq-go
     pkgs.python3
     pkgs.ruff
     pkgs.ty
     toolchain.erlang
     milaFlutter
+  ] ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+    # Mila's macOS and iOS Xcode projects are edited with the xcodeproj gem
+    # rather than by hand (ADR-0235).
+    (pkgs.ruby.withPackages (gems: [ gems.xcodeproj ]))
+    # mila-build's Apple targets: macOS's openrsync drops the --chmod Flutter
+    # passes when it copies its read-only Nix-store framework.
+    pkgs.rsync
+  ] ++ lib.optionals isLinux [
+    hostLock
+    vmm
+    pkgs.iproute2
+    pkgs.nftables
+    pkgs.chromium
   ];
 
   # https://devenv.sh/languages/
@@ -112,7 +128,9 @@ in
   scripts.marvin-check.exec = ''
     cd "$DEVENV_ROOT/marvin"
     npm ci --ignore-scripts
-    export CHROME="${lib.getExe pkgs.chromium}"
+    ${if isLinux
+      then ''export CHROME="${lib.getExe pkgs.chromium}"''
+      else ''export CHROME="''${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"''}
     npm run check
     npm run smoke:chrome
   '';
@@ -160,10 +178,23 @@ in
     dart format --line-length 100 --set-exit-if-changed bin lib test
     dart analyze --fatal-infos
     dart test
+    cd "$DEVENV_ROOT/mila/tool"
+    dart format --line-length 100 --set-exit-if-changed bin lib test
+    dart analyze --fatal-infos
+    dart test
     cd "$DEVENV_ROOT/mila/app"
     dart format --line-length 100 --set-exit-if-changed lib test
     flutter analyze --fatal-infos
-    flutter test
+    # Goldens are recorded on Linux; other hosts rasterize text differently.
+    if [ "$(uname -s)" = Linux ]; then flutter test; else flutter test --exclude-tags golden; fi
+  '';
+
+  # Mila's dev and release targets for every platform (ADR-0235):
+  # `mila-build <linux|android|ios|macos|windows> <dev|release> [--demo] [--dry-run]`.
+  scripts.mila-build.exec = ''
+    cd "$DEVENV_ROOT/mila/tool"
+    dart pub get --offline >/dev/null
+    exec dart run bin/mila_build.dart "$@"
   '';
 
   # https://devenv.sh/tests/

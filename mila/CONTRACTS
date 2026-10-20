@@ -10,8 +10,10 @@ exchange before user authentication. There MUST be no trust-on-first-use, no
 unsigned fallback, and a changed CA, host or zone MUST be refused (ADR-0228).
 
 @cc [owner:ghuntley,label:security] mila-device-key-custody
-Each deployment MUST get its own P-256 device key. Mobile private keys MUST
-stay in the Secure Enclave or Android Keystore and never cross the platform
+Each deployment MUST get its own P-256 device key. iOS, Android, macOS and
+Windows private keys MUST stay in the Secure Enclave, Android Keystore or a
+non-exportable CNG key (the TPM's Platform Crypto Provider, or the software
+key storage provider where there is no TPM) and never cross the platform
 channel; the Linux test key MUST be owner-only and a readable key file MUST be
 refused. Keys, signatures and tokens MUST NOT be logged.
 

@@ -125,5 +125,5 @@ void main() {
         throwsA(isA<FileSystemException>()),
       );
     });
-  });
+  }, testOn: 'posix');
 }
