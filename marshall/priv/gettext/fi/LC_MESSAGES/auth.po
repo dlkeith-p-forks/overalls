@@ -141,3 +141,11 @@ msgstr "Haluatko varmasti kirjautua ulos?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Kirjaudu ulos"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "Kertakirjautuminen ei voinut todentaa sinua."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "Kertakirjautumista ei ole määritetty."

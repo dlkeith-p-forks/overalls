@@ -247,7 +247,7 @@ defmodule MarshallWeb.MachinesLiveTest do
   test "creation form compares available profile capabilities", %{conn: conn, owner: owner} do
     {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
 
-    assert has_element?(view, "#machine_profile option[selected][value='oss']")
+    assert has_element?(view, "#machine_profile option[selected][value='standard']")
     assert has_element?(view, "#machine_profile[aria-describedby='profile-guide']")
     assert has_element?(view, "#profile-help-customer", "owner-only")
     assert has_element?(view, "#profile-help-customer", "no outbound connections")
@@ -514,7 +514,14 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert has_element?(view, "#machine_disk_gib[value='3']")
     view |> form("#provision-form", machine: %{}) |> render_submit()
 
-    assert [%{image_id: id, profile: :oss, memory_bytes: 806_354_944, disk_bytes: 3_221_225_472}] =
+    assert [
+             %{
+               image_id: id,
+               profile: :standard,
+               memory_bytes: 806_354_944,
+               disk_bytes: 3_221_225_472
+             }
+           ] =
              Ledger.read!(VirtualMachine, owner_id: owner.id)
 
     assert id == image.id
@@ -553,7 +560,7 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert_patch(view)
     refute has_element?(view, "#machine_disk_gib[value='7']")
     refute has_element?(view, "#machine_memory_mib[value='769']")
-    assert has_element?(view, "#machine_profile option[selected][value='oss']")
+    assert has_element?(view, "#machine_profile option[selected][value='standard']")
   end
 
   test "explicit undersized drafts remain unchanged and Ash rejects admission", %{

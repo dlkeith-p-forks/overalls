@@ -1,4 +1,4 @@
-"""Ordinary installed-system owner creates a machine with the visible OSS default."""
+"""Ordinary installed-system owner saves an OSS preset and creates a machine."""
 
 import json
 import sys
@@ -39,8 +39,9 @@ def connected(page: Page) -> None:
 
 def run() -> None:
     """@cc [owner:ghuntley,label:verification;security] default-oss-browser-entry
-    The browser MUST leave the default profile untouched, preserve its request
-    across reload, and submit through the real form. Registered keys MUST use
+    The browser MUST save its machine preset through account settings, leave that
+    preset untouched in the creation form, preserve its request across reload,
+    and submit through the real form. Registered keys MUST use
     the actual key settings UI. Login tokens and failure URLs stay private.
     """
     global stage
@@ -67,7 +68,20 @@ def run() -> None:
                 page.locator("#add-ssh-key").click()
                 expect(page.locator("article")).to_contain_text("default-profile-" + role)
                 if role == "owner":
-                    stage = "default OSS form"
+                    stage = "account machine preset"
+                    expect(page.locator("#launch_defaults_profile")).to_have_value("oss")
+                    expect(page.locator("#machine_defaults_profile")).to_have_value("standard")
+                    expect(page.locator("#thread_defaults_profile")).to_have_value("standard")
+                    page.locator("#machine_defaults_profile").select_option("oss")
+                    page.locator("#machine_defaults_image_id").select_option(users["image_id"])
+                    page.locator("#machine-defaults-form button[type=submit]").click()
+                    expect(page.locator("#flash-info")).to_contain_text("Machine defaults saved.")
+                    page.reload()
+                    connected(page)
+                    expect(page.locator("#machine_defaults_profile")).to_have_value("oss")
+                    expect(page.locator("#launch_defaults_profile")).to_have_value("oss")
+                    expect(page.locator("#thread_defaults_profile")).to_have_value("standard")
+                    stage = "saved OSS preset form"
                     page.goto(ORIGIN + "/machines/new")
                     connected(page)
                     expect(page.locator("#machine_profile")).to_have_value("oss")

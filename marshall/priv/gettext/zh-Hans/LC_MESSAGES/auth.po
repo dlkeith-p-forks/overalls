@@ -148,3 +148,11 @@ msgstr "确定要退出登录吗？"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "退出登录"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "单点登录无法验证你的身份。"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "尚未配置单点登录。"

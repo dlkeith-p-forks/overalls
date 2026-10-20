@@ -375,3 +375,15 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Could not disconnect GitHub."
+msgstr "Could not disconnect GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "Could not update the GitHub connection."
+msgstr "Could not update the GitHub connection."
+
+#, elixir-autogen, elixir-format
+msgid "GitHub disconnected."
+msgstr "GitHub disconnected."

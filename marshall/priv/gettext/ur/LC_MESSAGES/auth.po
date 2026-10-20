@@ -141,3 +141,11 @@ msgstr "کیا آپ واقعی سائن آؤٹ کرنا چاہتے ہیں؟"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "سائن آؤٹ کریں"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "سنگل سائن آن آپ کی تصدیق نہیں کر سکا۔"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "سنگل سائن آن ترتیب نہیں دیا گیا۔"

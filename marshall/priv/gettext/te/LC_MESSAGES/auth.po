@@ -150,3 +150,11 @@ msgstr "మీరు ఖచ్చితంగా సైన్ అవుట్ �
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "సైన్ అవుట్ చేయండి"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "ఒకే సైన్-ఆన్ మిమ్మల్ని ప్రామాణీకరించలేకపోయింది."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "ఒకే సైన్-ఆన్ కాన్ఫిగర్ చేయబడలేదు."

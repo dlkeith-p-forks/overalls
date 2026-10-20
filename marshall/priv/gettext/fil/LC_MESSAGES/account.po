@@ -472,3 +472,47 @@ msgstr "kapareho ng oras mo"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "beripikasyon para sa mga pagbabagong pang-administrasyon"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Pumili ng wastong image, profile at laki ng machine."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Disk (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Imahe"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Hindi available ang mga image. Subukang muli mamaya."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Mga default ng machine"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Na-save ang mga default ng machine."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Memorya (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Nalalapat lang ang mga preset sa mga bagong machine."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "I-save ang mga default"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Trabaho"

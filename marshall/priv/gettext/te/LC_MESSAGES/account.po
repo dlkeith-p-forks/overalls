@@ -505,3 +505,47 @@ msgstr "మీ సమయమే"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "నిర్వాహక మార్పులకు ధృవీకరణ"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "చెల్లుబాటు అయ్యే ఇమేజ్, ప్రొఫైల్ మరియు మెషీన్ పరిమాణాన్ని ఎంచుకోండి."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "డిస్క్ (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "ఇమేజ్"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "ఇమేజ్‌లు అందుబాటులో లేవు. తర్వాత మళ్లీ ప్రయత్నించండి."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "మెషీన్ డిఫాల్ట్‌లు"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "మెషీన్ డిఫాల్ట్‌లు సేవ్ అయ్యాయి."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "మెమరీ (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "ప్రీసెట్‌లు కొత్త మెషీన్‌లకు మాత్రమే వర్తిస్తాయి."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "డిఫాల్ట్‌లను సేవ్ చేయండి"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "పని"

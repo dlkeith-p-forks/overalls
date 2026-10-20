@@ -100,11 +100,6 @@ msgstr "Na Overalls development place for machines wey dey inside other machines
 msgid "A good day to make something."
 msgstr "Na good day to build something."
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "New OSS machine go copy di repository when e start."
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1968,3 +1963,11 @@ msgstr "di transfer stream cut; e go continue by imself."
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "Confirm am"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "Di new machine go clone di repository when e boot."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

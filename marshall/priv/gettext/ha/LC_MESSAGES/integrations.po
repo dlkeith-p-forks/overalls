@@ -375,3 +375,15 @@ msgstr "misalin-haɗin-gwiwa"
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"
+
+#, elixir-autogen, elixir-format
+msgid "Could not disconnect GitHub."
+msgstr "An kasa cire haɗin GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "Could not update the GitHub connection."
+msgstr "An kasa sabunta haɗin GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "GitHub disconnected."
+msgstr "An cire haɗin GitHub."

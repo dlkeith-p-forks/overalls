@@ -506,3 +506,47 @@ msgstr "आपके ही समय पर"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "प्रशासनिक बदलाव के लिए सत्यापन"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "मान्य इमेज, प्रोफ़ाइल और मशीन का आकार चुनें।"
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "डिस्क (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "इमेज"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "इमेज उपलब्ध नहीं हैं। बाद में फिर कोशिश करें।"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "मशीन के डिफ़ॉल्ट"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "मशीन के डिफ़ॉल्ट सहेजे गए।"
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "मेमोरी (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "प्रीसेट केवल नई मशीनों पर लागू होते हैं।"
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "डिफ़ॉल्ट सहेजें"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "काम"

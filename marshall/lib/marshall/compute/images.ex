@@ -57,6 +57,17 @@ defmodule Marshall.Compute.Images do
 
   def guest_capabilities(_), do: Image.guest_capabilities(nil)
 
+  @doc "Whether the enabled durable image can receive a repository source."
+  @spec workspace_source_capable?(term()) :: boolean()
+  def workspace_source_capable?(id) when is_binary(id) do
+    case Ledger.read!(Image, id: id, enabled: true) do
+      [image] -> Image.workspace_source_capable?(image)
+      _ -> false
+    end
+  end
+
+  def workspace_source_capable?(_), do: false
+
   # @cc [owner:ghuntley,label:capacity;security] images-readiness-budget-row-bound
   # readiness_budget_ms/2 MUST read the durable image row and return nil for an
   # unknown ID, so readiness deadlines cannot be selected by a peer-provided set.

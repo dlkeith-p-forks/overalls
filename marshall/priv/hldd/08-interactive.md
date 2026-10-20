@@ -1661,3 +1661,30 @@ stream loss closes the bridge. Native Firecracker and browser journey evidence
 remains partial until the composed acceptance test is recorded.
 The bridge is shared per machine generation, so additional browser viewers reuse
 the authenticated guest channel rather than opening independent guest sockets.
+
+## Machine creation presets
+
+`/settings#machine-defaults` contains three independent presets under the existing
+fresh-login account gate. Each stores profile, operating-system image, vCPU,
+memory in MiB and disk in GiB. `/launch` starts with OSS; `/machines/new` and
+`/threads/new` start with Work, the existing `standard` machine profile. The
+thread's Work collaboration mode is separate and remains its initial mode.
+
+Saving validates an enabled ordinary image, whole-unit sizes within execution
+limits and image minima. Launch offers only images with current source2 and
+workspace capability. An unavailable catalog is shown explicitly; it grants no
+capacity or authority. Saved image selections that later become ineligible fall
+back to a usable configured/catalog image. Invalid saved sizes fall back to
+rounded image minima. If no suitable image exists, creation remains unavailable.
+
+Machine URL drafts override the preset and retain their request key through
+validation, refresh and reload. Thread form edits survive periodic refresh.
+One-off Customer and Inception machine choices remain available through their
+existing form and admission policy. Saving a preset changes neither an existing
+machine nor another preset. New launch visits use current preferences; an admitted
+visit reuses its original persisted request before ordinary Compute admission,
+even after preference changes or loss of live image availability.
+
+The [preset decision](repo:docs/architecture/decisions/0240-account-machine-creation-presets.md)
+and [focused tests](repo:marshall/test/marshall_web/machine_defaults_test.exs)
+distinguish application behavior from native execution and rollout acceptance.

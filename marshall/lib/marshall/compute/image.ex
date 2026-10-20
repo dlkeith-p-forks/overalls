@@ -194,13 +194,32 @@ defmodule Marshall.Compute.Image do
     end
   end
 
+  # @cc [owner:ghuntley,label:security;protocol] preset-source-image-capability
+  # A launch preset image MUST have a valid row-bound manifest declaring source
+  # protocol 2 and current workspace capability. Missing or unqualified identity
+  # MUST return false; a guest-agent set alone is insufficient.
+  @spec workspace_source_capable?(term()) :: boolean()
+  def workspace_source_capable?(%{id: id, manifest: manifest} = image) do
+    match?(
+      {:ok, %{id: ^id, workspace_source_version: 2}},
+      OverallsProtocol.ImageManifest.validate(manifest)
+    ) and
+      guest_capabilities(image).workspace
+  end
+
+  def workspace_source_capable?(_), do: false
+
   # @cc [owner:ghuntley,label:capacity] image-default-shape-rounding
   # For image minima within execution limits, omitted defaults MUST meet those
   # minima through whole MiB memory and whole GiB disk rounding. Minima above the
   # execution limits MUST remain oversized so admission rejects them, never clamp
   # below image requirements. This helper MUST NOT alter explicitly supplied sizes
   # or substitute for transactional Ash admission.
-  @spec default_shape(%{minimum_memory_bytes: pos_integer(), minimum_disk_bytes: pos_integer()}) ::
+  @spec default_shape(%{
+          required(:minimum_memory_bytes) => pos_integer(),
+          required(:minimum_disk_bytes) => pos_integer(),
+          optional(atom()) => term()
+        }) ::
           %{vcpu: pos_integer(), memory_bytes: pos_integer(), disk_bytes: pos_integer()}
   def default_shape(image) do
     %{

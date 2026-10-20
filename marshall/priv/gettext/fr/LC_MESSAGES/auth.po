@@ -142,3 +142,11 @@ msgstr "Voulez-vous vraiment vous déconnecter ?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Se déconnecter"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "L’authentification unique n’a pas pu vous authentifier."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "L’authentification unique n’est pas configurée."

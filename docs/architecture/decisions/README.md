@@ -1,5 +1,7 @@
 # Architecture decision records
 
+[ADR-0240](0240-account-machine-creation-presets.md) accepts three account creation presets: launch starts with OSS, machine and thread creation start with Standard (Work), with validated saved image and resource preferences and original-request launch replay. Implementation remains partial pending native and rollout acceptance.
+
 [ADR-0237](0237-windows-custodian-same-boot-recovery.md) completes ADR-0208's
 same-boot custodian restart: durable per-boot custodian generations scope jobs,
 pipes and receipts, and a prior lifetime's receipt is retired only after its
@@ -999,3 +1001,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0234](0234-installer-source-administrative-grant.md) | accepted | partial | Installer source grant for administrative SSH |
 | [ADR-0235](0235-panterloons-deployment-and-per-deployment-tunnels.md) | accepted | partial | Panterloons deployment and per-deployment fleet tunnels |
 | [ADR-0237](0237-windows-custodian-same-boot-recovery.md) | accepted | partial | Windows custodian same-boot recovery by logon-session quiescence |
+| [ADR-0240](0240-account-machine-creation-presets.md) | accepted | partial | Three account machine creation presets |

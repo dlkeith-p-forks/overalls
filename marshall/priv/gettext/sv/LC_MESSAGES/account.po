@@ -472,3 +472,47 @@ msgstr "samma tid som hos dig"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "verifiering för administrativa ändringar"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Välj en giltig avbildning, profil och maskinstorlek."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Disk (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Avbildning"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Avbildningar är inte tillgängliga. Försök igen senare."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Standardvärden för maskiner"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Standardvärden för maskiner har sparats."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Minne (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Förinställningar gäller bara nya maskiner."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Spara standardvärden"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Arbete"

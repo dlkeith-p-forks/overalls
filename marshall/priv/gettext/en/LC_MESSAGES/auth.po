@@ -141,3 +141,11 @@ msgstr "Are you sure you want to sign out?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Sign out"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "Single sign-on could not authenticate you."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "Single sign-on is not configured."

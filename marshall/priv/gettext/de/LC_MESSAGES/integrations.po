@@ -390,3 +390,15 @@ msgstr "beispiel-integration"
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"
+
+#, elixir-autogen, elixir-format
+msgid "Could not disconnect GitHub."
+msgstr "GitHub konnte nicht getrennt werden."
+
+#, elixir-autogen, elixir-format
+msgid "Could not update the GitHub connection."
+msgstr "Die GitHub-Verbindung konnte nicht aktualisiert werden."
+
+#, elixir-autogen, elixir-format
+msgid "GitHub disconnected."
+msgstr "GitHub wurde getrennt."

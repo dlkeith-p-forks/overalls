@@ -141,3 +141,11 @@ msgstr "Kas soovid kindlasti välja logida?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Logi välja"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "Ühekordne sisselogimine ei saanud sind autentida."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "Ühekordne sisselogimine pole seadistatud."

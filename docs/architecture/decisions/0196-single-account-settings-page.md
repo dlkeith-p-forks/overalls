@@ -107,6 +107,8 @@ This amends ADR-0195 item 6 (the profile page and sidebar placement) and the
 page named by ADR-0160's no-key setup return and ADR-0046's browser key
 management; their authority rules are untouched.
 
+[ADR-0240](0240-account-machine-creation-presets.md) appends a fifth `#machine-defaults` section with three independent creation presets. The page retains its strict security mount, section order and existing controls.
+
 ## Alternatives
 
 - **Merge Security and SSH keys but keep Profile separate.** Leaves two

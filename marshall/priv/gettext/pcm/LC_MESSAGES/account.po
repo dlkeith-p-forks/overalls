@@ -472,3 +472,47 @@ msgstr "di same time as your side"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "verification before admin changes"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Choose correct image, profile and machine size."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Disk space (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Machine image"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Images no dey available. Try again later."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Machine default settings"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Machine default settings don save."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Machine memory (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Preset settings na only for new machines."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Save default settings"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Di work"

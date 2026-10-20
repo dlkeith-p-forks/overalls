@@ -34,22 +34,43 @@ Tested scope: ADR-0201 presentation boundaries with historical bounded BEAM/Live
 
 **Preferred test work:** Execute the new generated negotiation/isolation properties and packaged NixOS account-language/Porsche journey; broaden browser engines and record representative script rendering. Independent native-speaker review remains optional for release and separate from structural coverage.
 
-## Open the single account page, move between its profile, sign-in, SSH key and Git sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint
+## Save separate launch, machine and thread creation presets and create or replay a machine
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.
+
+Boundary: Accounts stores only the authenticated actor’s three independent groups. Browser forms seed matching initial values; Compute remains admission authority. An admitted launch reuses its original owner/key request before source-checked admission.
+
+Required refusal: Malformed sizes, forbidden profiles, disabled or source-incapable launch images, foreign target identifiers and revoked logins cannot persist defaults. Explicit machine drafts remain subject to ordinary admission.
+
+Tested scope: ADR-0240 account persistence, preset isolation, browser form seeding, draft retention, source fallback and original-request launch replay in the BEAM test VM.
+
+- **unit, recorded**: [three presets persist independently and seed their creation surfaces](repo:marshall/test/marshall_web/machine_defaults_test.exs) — Self-only persisted groups, default profiles, independent forms and draft refresh/reload in real LiveViews with sandboxed PostgreSQL.; [execution record](repo:docs/architecture/reviews/2026-10-20-account-machine-presets.md).
+- **unit, recorded**: [settings reject invalid defaults and revoked logins without changing any preset](repo:marshall/test/marshall_web/machine_defaults_test.exs) — Typed save-action refusals and mounted-page revoked-login refusal without account mutation.; [execution record](repo:docs/architecture/reviews/2026-10-20-account-machine-presets.md).
+- **unit, recorded**: [launch uses its saved profile and sizes and replay keeps the original request](repo:marshall/test/marshall_web/machine_defaults_test.exs) — Ordinary Compute admission, immutable source and VM identity after changed account preferences; owner isolation of original-request projection.; [execution record](repo:docs/architecture/reviews/2026-10-20-account-machine-presets.md).
+- **property, recorded**: [profile drafts survive refresh and reload before duplicate submission](repo:marshall/test/marshall_web/default_profile_history_test.exs) — Generated omitted/explicit browser profiles, refresh, reload, stable key and duplicate admission; current omitted profile is Standard.; [execution record](repo:docs/architecture/reviews/2026-10-20-account-machine-presets.md).
+- **machine, present**: [stage = "account machine preset"](repo:nix/verification/tests/machines/default-oss/browser.py) — Packaged native browser fixture saves an OSS preset, reloads settings and retains it through creation/reload before existing guest policy probes. Revised source is present; execution pending..
+- **manual, recorded**: [id="machine-defaults"](repo:marshall/lib/marshall_web/live/account_live.ex) — Disposable real Chromium: independent saves/reloads, matching machine/thread initial values, 36 route/locale/theme/viewport combinations (settings and both create forms; English/Arabic/Japanese; light/dark; 1440/390 px), grid, overflow, direction, primary font, contrast and same-origin/CSP. Inspected representative screenshots; no guest execution or independent linguistic acceptance.; [execution record](repo:docs/architecture/reviews/2026-10-20-account-machine-presets.md).
+
+**Gaps:** Native guest execution, real-browser layout beyond English/Arabic/Japanese, cross-node first-admission preference races and production migration/rollout remain unverified. Existing isolation and storage evidence retains its original scope.
+
+**Preferred test work:** Execute the revised NixOS default-profile journey that saves an OSS preset, and extend it to all three preset forms and an actual thread/launch. Add generated preference-update/replay interleavings across independent nodes.
+
+## Open the single account page, move between its profile, sign-in, SSH key, Git and machine-default sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint
 
 Coverage: **partial**. Layers: identity, authorization, transport.
 
-Boundary: One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey, SSH key and Git sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH, User.set_time_zone and User.git_settings; fragments (#profile, #security, #ssh-keys, #git-settings) carry no authority and return_to keeps its allowlist.
+Boundary: One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey, SSH key, Git and machine-default sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH, User.set_time_zone, User.git_settings and User.save_machine_defaults; fragments (#profile, #security, #ssh-keys, #git-settings, #machine-defaults) carry no authority and return_to keeps its allowlist.
 
 Required refusal: Refuse anonymous visitors with a sign-in redirect; answer 404 on /settings/profile, /settings/security and /settings/ssh-keys; refuse unknown events with a fixed flash and no change; a revoked login halts the next SSH key event or clock tick with a sign-in redirect; a weaker mount (optional, current_user or none) fails the pin test.
 
 Tested scope: LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval confirmation, which stays on the approval page with the Open Mila link (ADR-0221) rather than navigating to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.
 
 - **unit, present**: [the merged page keeps the strict security mount of the former Security page](repo:marshall/test/marshall_web/account_live_test.exs) — Exact lifecycle mount ids [{AuthenticationPrivacy, :default}, {LiveUserAuth, :security}] and the /settings route to AccountLive.
-- **unit, present**: [the page renders every section behind one Account navigation entry](repo:marshall/test/marshall_web/account_live_test.exs) — All four section ids and index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile.
+- **unit, present**: [the page renders every section behind one Account navigation entry](repo:marshall/test/marshall_web/account_live_test.exs) — All five section ids and index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile.
 - **unit, present**: [anonymous visitors must sign in and the old settings pages are gone](repo:marshall/test/marshall_web/account_live_test.exs) — Sign-in redirect on /settings and 404 on the three removed paths.
 - **unit, present**: [admin reads remain available but a mutation prompts step-up](repo:marshall/test/marshall_web/account_live_test.exs) — The no-key administrator redirect and the Users page link target /settings?return_to=%2Fadmin%2Fusers#security.
 - **unit, present**: [revoked browser login cannot change keys through an existing LiveView](repo:marshall/test/marshall_web/account_live_test.exs) — A revoked persisted token halts the SSH key event on the merged page with a sign-in redirect and no key is stored.
-- **manual, present**: [check_account](repo:marshall/scripts/monospace_browser_probe.py) — Current synthetic browser fixture targets the Account route and all four sections, retains Git preference and zone round trips, anchor positioning, grid alignment and light/dark/mobile screenshots. Source and static checks do not record browser execution of this repaired probe..
+- **manual, present**: [check_account](repo:marshall/scripts/monospace_browser_probe.py) — Current synthetic browser fixture targets the Account route and all five sections, retains Git preference and zone round trips, anchor positioning, grid alignment and light/dark/mobile screenshots. Source and static checks do not record browser execution of this repaired probe..
 
 **Gaps:** The NixOS browser tests, the passkey probe and the Antithesis access workload were rewritten to /settings by inspection and have not been executed against the merged page; no property test fits a page composition.
 
@@ -1397,23 +1418,23 @@ Tested scope: Customer authorization properties, generated lifecycle/receipt his
 
 **Preferred test work:** Retain generated refusal histories and the native owner CLI lifecycle journey; extend native guest SSH and packet matrices separately.
 
-## Create a machine in the browser or Porsche SSH without choosing a profile
+## Create a machine using a saved browser preset or the Porsche SSH default
 
 Coverage: **partial**. Layers: authorization, isolation.
 
-Boundary: Both creation entries select OSS by default; an explicit Customer choice remains restricted by the persisted profile policy.
+Boundary: Browser machine creation now starts with Standard (Work) and resolves the account machine preset; Porsche retains OSS. The revised native browser fixture saves an OSS preset before its existing native OSS policy checks. Explicit Customer remains restricted by persisted profile policy.
 
 Required refusal: Reject unauthorized admission and Customer sharing, egress and agent execution even when a user selects Customer explicitly.
 
-Tested scope: Generated browser draft/default/reload histories and SSH semantic-input retry histories; native ordinary-user creation and profile enforcement journey. Campaign 015 separately checks the packaged standalone browser helper with pinned ty; recorded native execution retains its original source and scope.
+Tested scope: Historical native OSS-default and generated profile-retry results retain their original source scope. Current browser Work defaults and preset persistence have revised test sources; native execution of those revisions remains separate.
 
-- **unit, present**: [profile: :oss](repo:marshall/test/marshall_web/machines_live_test.exs) — Browser form and Ash-backed admission in the application test database.
+- **unit, present**: [configured image supplies rounded defaults and still provisions through Ash](repo:marshall/test/marshall_web/machines_live_test.exs) — Current Work-default browser form and Ash-backed admission in the application test database; saved preset behavior has separate scenario coverage..
 - **unit, present**: [assert default.result["profile"] == "oss"](repo:marshall/test/marshall/ssh/commands_test.exs) — Porsche command execution through Marshall with authenticated SSH session fixtures.
-- **property, recorded**: [profile drafts survive refresh and reload before duplicate submission](repo:marshall/test/marshall_web/default_profile_history_test.exs) — Independent last-choice model through omitted/explicit profiles, refresh, reload, persisted profile and one durable admission.; [execution record](repo:docs/architecture/reviews/2026-09-25-default-oss-verification.md).
-- **property, recorded**: [omitted and explicit profiles stay pinned through retry histories](repo:marshall/test/marshall/ssh/commands_test.exs) — Pinned profile and unchanged complete VM history/operation/reservation/receipt identities across same-input retries and changed semantic-input refusals.; [execution record](repo:docs/architecture/reviews/2026-09-25-default-oss-verification.md).
-- **machine, recorded**: [actual OSS guests reach the live local origin and Customer egress times out](repo:nix/verification/tests/machines/default-oss/driver.py) — Packaged browser/Porsche creation, ordinary persisted users, real boot trust, OSS sharing and DNS/HTTP controls, and Customer sharing/read/registration/egress refusal in real nested Firecracker guests.; [execution record](repo:docs/architecture/reviews/2026-09-25-default-oss-verification.md).
+- **property, recorded**: [profile drafts survive refresh and reload before duplicate submission](repo:marshall/test/marshall_web/default_profile_history_test.exs) — Historical fixed-OSS baseline: Independent last-choice model through omitted/explicit profiles, refresh, reload, persisted profile and one durable admission.; [execution record](repo:docs/architecture/reviews/2026-09-25-default-oss-verification.md).
+- **property, recorded**: [omitted and explicit profiles stay pinned through retry histories](repo:marshall/test/marshall/ssh/commands_test.exs) — Historical fixed-OSS baseline: Pinned profile and unchanged complete VM history/operation/reservation/receipt identities across same-input retries and changed semantic-input refusals.; [execution record](repo:docs/architecture/reviews/2026-09-25-default-oss-verification.md).
+- **machine, recorded**: [actual OSS guests reach the live local origin and Customer egress times out](repo:nix/verification/tests/machines/default-oss/driver.py) — Historical fixed-OSS baseline: Packaged browser/Porsche creation, ordinary persisted users, real boot trust, OSS sharing and DNS/HTTP controls, and Customer sharing/read/registration/egress refusal in real nested Firecracker guests.; [execution record](repo:docs/architecture/reviews/2026-09-25-default-oss-verification.md).
 
-**Gaps:** The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun. Current explicit Audi startup after Ziggy/Galileo readiness passed static and actual composed-driver typing checks; corrected fixture runtime remains pending.
+**Gaps:** The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun. Current explicit Audi startup after Ziggy/Galileo readiness passed static and actual composed-driver typing checks; corrected fixture runtime remains pending. The revised native browser preset journey has not run; historical fixed-OSS results do not establish current account preset behavior.
 
 **Preferred test work:** Add native unauthorized creation and owner guest-SSH cases; retain separate packet/tool and complete legacy feature-matrix acceptance after campaign 011's shared trust fixture repair.
 

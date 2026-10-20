@@ -126,6 +126,8 @@ The guest stores one source and runs plain git argument vectors into the shared
 `/workspace/REPOSITORY` checkout. Provider/API failures affect checkout status only.
 Source URLs, namespace, revisions, tokens and receipt bodies never enter diagnostics.
 
+[ADR-0240](0240-account-machine-creation-presets.md) amends only the fixed OSS/default-size launch clause above. New launches use the account launch preset, initially OSS; admitted visits reuse their original persisted admission request before repeating ordinary admission. Source, login, completion and guest authority boundaries remain unchanged.
+
 ## Alternatives
 
 - A source-v1 adapter or relabeled old image would obscure actual receiver support

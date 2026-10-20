@@ -50,7 +50,7 @@ defmodule MarshallWeb.LaunchLive do
   # @cc [owner:ghuntley,label:product;security] repository-launch-visit-dedupe
   # Admission MUST require the current stored login before
   # every message. Its key MUST bind actor, canonical source and visit, so replay
-  # admits one OSS VM. Expired staged input MUST create nothing. Successful
+  # admits one VM using the account launch preset. Expired staged input MUST create nothing. Successful
   # admission MUST precede the signed completion receipt and matching cookie clear.
   @spec handle_info({:launch, PendingLaunch.launch()}, socket()) :: {:noreply, socket()}
   def handle_info({:launch, pending}, socket) do
@@ -59,7 +59,7 @@ defmodule MarshallWeb.LaunchLive do
     key = PendingLaunch.idempotency_key(actor.id, source, pending.visit)
 
     with true <- pending.expires_at > System.system_time(:second) || {:error, :expired_visit},
-         {:ok, request} <- request(actor),
+         {:ok, request} <- request(actor, key),
          {:ok, vm} <-
            Compute.provision(
              Map.merge(request, %{idempotency_key: key, workspace_source: source}),
@@ -76,26 +76,30 @@ defmodule MarshallWeb.LaunchLive do
     end
   end
 
-  @spec request(Marshall.Accounts.User.t()) :: {:ok, map()} | {:error, atom()}
-  defp request(actor) do
-    # The image choice may use the observed catalog, but sizing uses the durable
-    # image minima so a replayed visit derives the same admission request.
+  @spec request(Marshall.Accounts.User.t(), String.t()) :: {:ok, map()} | {:error, term()}
+  defp request(actor, key) do
+    case Compute.repository_launch_request(%{idempotency_key: key}, actor: actor) do
+      {:ok, %{request: nil}} -> new_request(actor)
+      {:ok, %{request: request}} -> {:ok, request}
+      error -> error
+    end
+  end
+
+  @spec new_request(Marshall.Accounts.User.t()) :: {:ok, map()} | {:error, atom()}
+  defp new_request(actor) do
     with {:ok, catalog} <- Compute.catalog(%{}, actor: actor),
-         image_id when image_id != "" <- MachineDefaults.default_image("oss", catalog.images),
-         {:ok, image} <- Marshall.Compute.Images.enabled(image_id),
-         values =
-           MachineDefaults.creation_defaults(
-             %{"profile" => "oss", "image_id" => image_id},
-             [image]
-           ),
+         values = MachineDefaults.for_user(actor, :launch, catalog.images, source_required?: true),
+         image_id when image_id != "" <- values["image_id"],
+         {:ok, _image} <- Marshall.Compute.Images.enabled(image_id),
          {vcpu, ""} <- Integer.parse(values["vcpu"]),
          {memory_mib, ""} <- Integer.parse(values["memory_mib"]),
-         {disk_gib, ""} <- Integer.parse(values["disk_gib"]) do
+         {disk_gib, ""} <- Integer.parse(values["disk_gib"]),
+         profile when profile in ["standard", "oss"] <- values["profile"] do
       {:ok,
        %{
          architecture: :x86_64,
          image_id: image_id,
-         profile: :oss,
+         profile: profile,
          vcpu: vcpu,
          memory_bytes: memory_mib * 1_048_576,
          disk_bytes: disk_gib * 1_073_741_824
@@ -217,7 +221,7 @@ defmodule MarshallWeb.LaunchLive do
               <% end %>
             </h1>
             <p class="muted">
-              {dgettext("machines", "A new OSS machine will clone the repository when it boots.")}
+              {dgettext("machines", "A new machine will clone the repository when it boots.")}
             </p>
           </div>
         <% end %>

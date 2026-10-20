@@ -1,6 +1,6 @@
 """Default-profile journey scenarios; composed after setup.py with its helpers."""
 
-with subtest("ordinary browser owner accepts untouched OSS default and registers real keys"):
+with subtest("ordinary browser owner saves an OSS preset and registers real keys"):
     m1.succeed("fleet-op gateway-prepare " + root + "/porsche.token")
     m1.succeed("fleet-op gateway-configure fleet " + root + "/porsche.token")
     m1.succeed("systemctl start porsche.service")

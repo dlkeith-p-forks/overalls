@@ -63,6 +63,7 @@ defmodule Marshall.Compute do
       define :pinned_vms, action: :pinned_for_user
       define :list_vms_for_admin, action: :list_for_admin
       define :catalog, action: :catalog
+      define :repository_launch_request, action: :repository_launch_request
       define :provision, action: :provision
       define :clone, action: :clone
       define :get_clone, action: :get_clone

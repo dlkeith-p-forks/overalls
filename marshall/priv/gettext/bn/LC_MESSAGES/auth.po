@@ -141,3 +141,11 @@ msgstr "আপনি কি নিশ্চিতভাবে সাইন আ�
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "সাইন আউট করুন"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "একক সাইন-অন আপনাকে প্রমাণীকরণ করতে পারেনি।"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "একক সাইন-অন কনফিগার করা নেই।"

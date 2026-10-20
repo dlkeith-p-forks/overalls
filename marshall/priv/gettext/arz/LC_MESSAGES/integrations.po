@@ -375,3 +375,15 @@ msgstr "تكامل-مثال"
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"
+
+#, elixir-autogen, elixir-format
+msgid "Could not disconnect GitHub."
+msgstr "مقدرناش نفصل GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "Could not update the GitHub connection."
+msgstr "مقدرناش نحدّث اتصال GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "GitHub disconnected."
+msgstr "GitHub اتفصل."

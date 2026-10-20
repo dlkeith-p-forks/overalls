@@ -144,3 +144,11 @@ msgstr "¿Seguro que quieres cerrar sesión?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Cerrar sesión"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "El inicio de sesión único no pudo autenticarte."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "El inicio de sesión único no está configurado."

@@ -1695,3 +1695,5 @@ escape cleanup or physical storage acceptance; those remain open.
 ADR-0186 records the Covenant test-only contract layer used by all Elixir applications. Covenant obligations and tests provide deterministic executable evidence while existing ADR, HLDD, native and integration records remain authoritative for deployment and isolation guarantees.
 
 Localization follows [ADR-0201](decisions/0201-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.
+
+[ADR-0240](decisions/0240-account-machine-creation-presets.md) stores three independent creation presets in Accounts. Browser launch begins with OSS; machine and thread creation begin with Standard (Work). Preferences seed forms and never replace Compute admission. Replayed launches reuse their original admitted request through an owner-scoped Compute projection. Native preset and production rollout acceptance remain separate.

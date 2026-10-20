@@ -100,11 +100,6 @@ msgstr "Mazingira ya ukuzaji ya Overalls kwa mashine zilizowekwa kiota. Inatumia
 msgid "A good day to make something."
 msgstr "Siku nzuri ya kufanya kitu."
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "Mashine mpya ya OSS itanakili hazina itakapowashwa."
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1968,3 +1963,11 @@ msgstr "mkondo wa uhamisho umekatizwa; unaendelea kiotomatiki."
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "Thibitisha"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "Mashine mpya itanakili hazina itakapowashwa."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

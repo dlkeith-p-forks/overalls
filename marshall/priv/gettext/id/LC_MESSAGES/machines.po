@@ -100,11 +100,6 @@ msgstr "Lingkungan pengembangan Overalls untuk mesin bertingkat. Menggunakan ima
 msgid "A good day to make something."
 msgstr "Hari yang baik untuk membuat sesuatu."
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "Mesin OSS baru akan mengklon repositori saat boot."
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1968,3 +1963,11 @@ msgstr "aliran transfer terputus; proses dilanjutkan secara otomatis."
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "Konfirmasi"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "Mesin baru akan mengkloning repositori saat melakukan boot."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

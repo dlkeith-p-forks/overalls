@@ -1,5 +1,7 @@
 # Architecture reviews
 
+- [Account machine creation presets (2026-10-20)](2026-10-20-account-machine-presets.md): three independent account presets, self-only validated persistence, browser precedence and original-request launch replay; records executed checks separately from native and rollout gaps.
+
 - [Fleet addresses from SOPS (2026-10-20)](2026-10-20-fleet-addresses-from-sops.md): ADR-0233's
   shared address document, runtime firewall chain on both backends, runtime
   WireGuard endpoints, uplink recovery copy and the Susan path over `fleet0`;

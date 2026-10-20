@@ -1785,3 +1785,19 @@ flowchart TB
   - Multi-instance rate limiting: the buckets are per node and in memory.
   - Keyring rotation resets the negative cache, because the digest key derives
     from the active keyring key.
+
+## Machine creation preset boundaries
+
+| Layer | Authority and refusal |
+| --- | --- |
+| Identity | A current stored login bound to the actor is required at the account page and inside the preset save transaction. Revocation refuses the write. |
+| Authorization | Only the actor's locked live User row and one allowlisted preset can change. No form-supplied owner, Customer or Inception preset can bypass validation. |
+| Transport | Existing same-origin authenticated LiveView and CSRF protections carry the form; no new public endpoint or credential is introduced. |
+| Execution | Presets supply initial request inputs only. Compute rechecks image identity/capability, profile, account and placement. Launch replay repeats admission with original request/source identity. |
+| Isolation | Standard and OSS retain existing guest, network and tool policy. Presets change no Lilly fence or host privilege. |
+| Storage | Preferences are account columns; VM image and original admission sizes remain under Compute authority. Saving cannot mutate existing guest disks or release holds. |
+| Recovery | Invalid saves preserve all groups. Missing images or invalid saved shapes fall back at resolution. Archived launch identity prevents a repeated visit from allocating another VM. |
+
+The [preset scenario](#coverage) records bounded application evidence. Native
+preset execution, physical isolation, production migration and fleet convergence
+remain separate acceptance; no browser preference can establish them.

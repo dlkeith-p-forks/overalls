@@ -480,3 +480,47 @@ msgstr "동일한 시간"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "관리 변경 확인"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "유효한 이미지, 프로필 및 머신 크기를 선택하세요."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "디스크(GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "영상"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "이미지를 사용할 수 없습니다. 나중에 다시 시도하세요."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "머신 기본값"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "머신 기본값을 저장했습니다."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "메모리(MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "사전 설정은 새 머신에만 적용됩니다."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "기본값 저장"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "일하다"
