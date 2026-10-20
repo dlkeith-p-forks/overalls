@@ -53,6 +53,9 @@ defmodule Lilly.Host.ImageTemplate do
                              template_incarnation: record.payload["incarnation"]
                          })
 
+                {:error, :storage_busy} ->
+                  {:error, :storage_busy}
+
                 _ ->
                   {:quarantine, record.payload["incarnation"]}
               end
@@ -94,8 +97,12 @@ defmodule Lilly.Host.ImageTemplate do
          {:ok, sealed} <- Image.sealed(directory(pool, value), value["identities"]),
          true <- Enum.sort(files) == Enum.sort(Image.file_names(sealed)),
          true <- sealed.id == value["image_id"],
-         :ok <- native(pool, value, :on),
-         do: {:ok, sealed}
+         :ok <- native(pool, value, :on) do
+      {:ok, sealed}
+    else
+      {:error, :storage_busy} -> {:error, :storage_busy}
+      _ -> {:error, :template_unconfirmed}
+    end
   end
 
   # @cc [owner:ghuntley,label:recovery;capacity] template-single-builder
