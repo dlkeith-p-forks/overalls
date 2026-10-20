@@ -19,6 +19,7 @@
     (import ./underclass.nix { inherit packages; })
     ./remote-builders.nix
     ./nix-cache.nix
+    ./public-trust.nix
     ./fleet-network.nix
     ./nix-gc.nix
     (import ./nix-compact.nix { inherit nixCompact; })

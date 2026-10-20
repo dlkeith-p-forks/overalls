@@ -405,6 +405,21 @@ selected hosts; login alone grants no recovery access. Host and user key lists
 permit overlap during rotation. Reconciliation requires a retained recovery
 identity and replaces the data key whenever the recipient set changes.
 
+Every host trusts the public Brady root in addition to the nixpkgs CA bundle,
+minus `security.pki.caCertificateBlacklist`. The
+[public trust module](repo:nix/domains/system/public-trust.nix) distrusts Comodo AAA
+Services root, emSign ECC Root CA - G3, emSign Root CA - C1 and emSign ECC Root
+CA - C3, whose eMudhra intermediates had their private keys leaked in October 2026.
+Hosts, the kexec installer and NixOS guest images all import it. The list covers
+clients of the system bundle, including Erlang `:public_key.cacerts_get/0`, Go and
+`rustls-native-certs`. When `MARSHALL_DB_CA_CERTFILE` or `MARSHALL_SMTP_CA_CERTFILE`
+is unset, Marshall's PostgreSQL and SMTP TLS use the operating-system store, not the
+Hex `castore` bundle, so they also honour the list. Non-NixOS guest images keep
+their distribution's bundle. Remove the module once the pinned nixpkgs contains the
+upstream `security/ca.nix` change (nixpkgs `7816d39`), which appends the same names.
+Evidence: built host and guest bundle inspection and Marshall configuration unit
+tests; no machine test exercises a refused eMudhra chain.
+
 The [option reference](#options) lists every Overalls option in the default module,
 including nested records. Consult it for types, defaults and required fields.
 

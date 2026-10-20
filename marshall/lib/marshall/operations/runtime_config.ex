@@ -194,21 +194,22 @@ defmodule Marshall.Operations.RuntimeConfig do
   defp database_tls(env, host) do
     case Map.get(env, "MARSHALL_DB_TLS", "verify") do
       "verify" ->
-        ca = Map.get(env, "MARSHALL_DB_CA_CERTFILE", CAStore.file_path())
-
-        if absolute_file?(ca),
-          do:
+        case database_trust(env) do
+          {:ok, trust} ->
             {:ok,
-             [
-               verify: :verify_peer,
-               cacertfile: String.to_charlist(ca),
-               versions: [:"tlsv1.2", :"tlsv1.3"],
-               server_name_indication: String.to_charlist(host),
-               customize_hostname_check: [
-                 match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
-               ]
-             ]},
-          else: :error
+             trust ++
+               [
+                 verify: :verify_peer,
+                 versions: [:"tlsv1.2", :"tlsv1.3"],
+                 server_name_indication: String.to_charlist(host),
+                 customize_hostname_check: [
+                   match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+                 ]
+               ]}
+
+          :error ->
+            :error
+        end
 
       "loopback" when host in ["localhost", "127.0.0.1"] ->
         {:ok, false}
@@ -323,6 +324,20 @@ defmodule Marshall.Operations.RuntimeConfig do
     do:
       is_binary(value) and byte_size(value) in 1..253 and
         String.valid?(value) and not String.contains?(value, ["\0", "\r", "\n"])
+
+  # @cc [owner:ghuntley,label:security] runtime-postgres-system-trust
+  # Without MARSHALL_DB_CA_CERTFILE, PostgreSQL TLS MUST trust the operating
+  # system store, which honours the host's distrusted roots; a bundled Hex
+  # CA list MUST NOT be the default.
+  defp database_trust(env) do
+    case Map.fetch(env, "MARSHALL_DB_CA_CERTFILE") do
+      {:ok, ca} ->
+        if absolute_file?(ca), do: {:ok, [cacertfile: String.to_charlist(ca)]}, else: :error
+
+      :error ->
+        {:ok, [cacerts: :public_key.cacerts_get()]}
+    end
+  end
 
   defp absolute_file?(path),
     do: is_binary(path) and Path.type(path) == :absolute and File.regular?(path)

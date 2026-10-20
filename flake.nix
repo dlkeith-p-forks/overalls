@@ -106,6 +106,7 @@
           inherit system;
             modules = [ nixos-images.nixosModules.kexec-installer nixos-images.nixosModules.noninteractive
               ./nix/domains/system/nix-cache.nix
+              ./nix/domains/system/public-trust.nix
             ({ config, pkgs, ... }: {
               system.kexec-installer.name = "overalls-host-installer";
               environment.systemPackages = [ pkgs.python3 config.boot.zfs.package ];

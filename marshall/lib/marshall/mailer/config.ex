@@ -45,22 +45,24 @@ defmodule Marshall.Mailer.Config do
     username = env["MARSHALL_SMTP_USERNAME"]
     password = env["MARSHALL_SMTP_PASSWORD"]
     default_port = if mode == "implicit", do: "465", else: "587"
-    ca = Map.get(env, "MARSHALL_SMTP_CA_CERTFILE", CAStore.file_path())
 
     with true <- hostname?(host) and mode in ["implicit", "starttls"],
          true <- EmailAddress.valid?(from),
          true <- bounded?(username, 1024) and bounded?(password, 4096),
          {port, ""} when port in 1..65_535 <-
            Integer.parse(Map.get(env, "MARSHALL_SMTP_PORT", default_port)),
-         true <- is_binary(ca) and Path.type(ca) == :absolute and File.regular?(ca) do
-      tls = [
-        verify: :verify_peer,
-        cacertfile: String.to_charlist(ca),
-        versions: [:"tlsv1.2", :"tlsv1.3"],
-        depth: 10,
-        server_name_indication: String.to_charlist(host),
-        customize_hostname_check: [match_fun: :public_key.pkix_verify_hostname_match_fun(:https)]
-      ]
+         {:ok, trust} <- trust(env) do
+      tls =
+        trust ++
+          [
+            verify: :verify_peer,
+            versions: [:"tlsv1.2", :"tlsv1.3"],
+            depth: 10,
+            server_name_indication: String.to_charlist(host),
+            customize_hostname_check: [
+              match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+            ]
+          ]
 
       config = [
         adapter: Swoosh.Adapters.SMTP,
@@ -84,6 +86,25 @@ defmodule Marshall.Mailer.Config do
     end
   rescue
     _ -> {:error, :invalid_mail_configuration}
+  end
+
+  # @cc [owner:ghuntley,label:security] mail-smtp-system-trust
+  # Without MARSHALL_SMTP_CA_CERTFILE, remote SMTP TLS MUST trust the operating
+  # system store, which honours the host's distrusted roots; a bundled Hex CA
+  # list MUST NOT be the default. A configured CA file MUST be absolute and exist.
+  defp trust(env) do
+    case Map.fetch(env, "MARSHALL_SMTP_CA_CERTFILE") do
+      {:ok, ca} when is_binary(ca) ->
+        if Path.type(ca) == :absolute and File.regular?(ca),
+          do: {:ok, [cacertfile: String.to_charlist(ca)]},
+          else: :error
+
+      {:ok, _} ->
+        :error
+
+      :error ->
+        {:ok, [cacerts: :public_key.cacerts_get()]}
+    end
   end
 
   defp hostname?(host),

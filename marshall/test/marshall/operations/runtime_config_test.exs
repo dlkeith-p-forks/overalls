@@ -253,6 +253,25 @@ defmodule Marshall.Operations.RuntimeConfigTest do
              RuntimeConfig.from_env(Map.put(env, "MARSHALL_FLEET_LOOPBACK", "invalid"))
   end
 
+  test "PostgreSQL TLS trusts the system store unless an absolute CA file is configured" do
+    assert {:ok, config} = RuntimeConfig.from_env(environment())
+    assert config.repo[:ssl][:cacerts] == :public_key.cacerts_get()
+    refute Keyword.has_key?(config.repo[:ssl], :cacertfile)
+
+    ca = Path.join(@fixtures, "ca.pem")
+
+    assert {:ok, config} =
+             RuntimeConfig.from_env(Map.put(environment(), "MARSHALL_DB_CA_CERTFILE", ca))
+
+    assert config.repo[:ssl][:cacertfile] == String.to_charlist(ca)
+    refute Keyword.has_key?(config.repo[:ssl], :cacerts)
+
+    for ca <- ["relative/ca.pem", "/nonexistent/ca.pem"] do
+      assert {:error, :invalid_deployment_configuration} =
+               RuntimeConfig.from_env(Map.put(environment(), "MARSHALL_DB_CA_CERTFILE", ca))
+    end
+  end
+
   test "a single instance retains verified TLS and its full connection budget" do
     env =
       Map.merge(environment(), %{
