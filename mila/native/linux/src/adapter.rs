@@ -101,6 +101,7 @@ impl RuntimeAdapter for UnavailableRuntimeAdapter {
 #[cfg(test)]
 mod tests {
     use super::{
+        canonical_route,
         RuntimeAdapter, RuntimeError, RuntimeOperation, RuntimeRequest, UnavailableRuntimeAdapter,
     };
 
