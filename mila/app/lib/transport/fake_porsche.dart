@@ -8,6 +8,9 @@ import 'dart:typed_data';
 import 'package:mila_core/mila_core.dart';
 import 'package:mila_transport/mila_transport.dart';
 
+/// The operation a fake physical request reports.
+const String _fakeOperation = '0d9cc041-9db2-4e4c-b28b-1e41d7f472c1';
+
 /// A fake machine row.
 final class FakeMachine {
   FakeMachine(this.id, this.name, {this.desired = 'running', this.observed = 'running'});
@@ -20,6 +23,7 @@ final class FakeMachine {
   int vcpu = 2;
   int memoryMib = 4096;
   int diskGib = 50;
+  String? failureReason;
 
   Map<String, Object?> toJson(String host) => {
     'id': id,
@@ -36,6 +40,9 @@ final class FakeMachine {
     'disk_bytes': diskGib * 1024 * 1024 * 1024,
     'ssh_host': '$name.ssh.$host',
     'profile': 'standard',
+    'architecture': 'x86_64',
+    'inserted_at': '2026-10-01T09:30:00.000000Z',
+    'failure_reason': failureReason,
     'resize': null,
     'relocation': null,
   };
@@ -52,6 +59,9 @@ final class FakeDeployment {
 
   /// When true, the host presents a certificate from the wrong authority.
   bool untrusted = false;
+
+  /// Commands that fail as if Porsche were briefly unavailable, by name.
+  final Set<String> failing = {};
   final Map<String, Map<String, Object?>> _receipts = {};
 
   /// Every line the fake received, for assertions.
@@ -62,6 +72,23 @@ final class FakeDeployment {
 
   /// Grants by machine id, then email: the role name.
   final Map<String, Map<String, String>> shares = {};
+
+  /// Machines per `ls` page; the cursor is the last row's id.
+  int pageSize = 50;
+
+  /// When true, a clone's receipt reports `failed` until `request retry`.
+  bool failClones = false;
+
+  /// What `images` lists.
+  List<Map<String, Object?>> images = [
+    {'id': 'sha256:${'a' * 64}', 'name': 'NixOS', 'architecture': 'x86_64'},
+    {'id': 'sha256:${'b' * 64}', 'name': 'Ubuntu', 'architecture': 'x86_64'},
+  ];
+
+  /// What `team list` lists.
+  List<Map<String, Object?>> teams = [
+    {'id': '00000000-0000-4000-8000-00000000a001', 'name': 'platform', 'role': 'admin'},
+  ];
 
   /// When true, `device register` is refused with `push_disabled`.
   bool pushDisabled = false;
@@ -79,6 +106,21 @@ final class FakeDeployment {
 
   /// Web endpoints by machine id.
   final Map<String, FakeWeb> webs = {};
+
+  /// The public key this device signs in with, as `whoami` reports it.
+  /// `AA==` is the one-byte blob 0x00; its fingerprint is [ownKeyFingerprint].
+  static const String ownPublicKey = 'ssh-ed25519 AA==';
+  static const String ownKeyFingerprint = 'SHA256:bjQLnP+zepicpUTmu3gKLHiQHT+zNzh2hRGjBhevoB0';
+
+  /// Approved keys by id: the label and fingerprint. The first is this
+  /// device's own key.
+  final Map<String, (String, String)> sshKeys = {
+    '5e1f0000-0000-4000-8000-000000000001': ('this phone', ownKeyFingerprint),
+    '5e1f0000-0000-4000-8000-000000000002': (
+      'laptop',
+      'SHA256:47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU',
+    ),
+  };
 
   /// Text received on stdin for payload commands, for assertions that it
   /// never appears in a command line.
@@ -275,14 +317,20 @@ final class FakeAttach implements TerminalChannel {
 
 /// A fake registered push device.
 final class FakeDevice {
-  FakeDevice(this.id, this.platform, this.encPubkey);
+  FakeDevice(this.id, this.platform, this.encPubkey, {this.label});
 
   final String id;
   final String platform;
   final String encPubkey;
+  final String? label;
   bool enabled = true;
 
-  Map<String, Object?> toJson() => {'id': id, 'platform': platform, 'enabled': enabled};
+  Map<String, Object?> toJson() => {
+    'id': id,
+    'platform': platform,
+    'label': label,
+    'enabled': enabled,
+  };
 }
 
 final class FakePorscheConnector implements PorscheConnector {
@@ -417,6 +465,9 @@ final class _FakeSession implements PorscheSession {
       return (PorscheExit.ok, receipt);
     }
 
+    if (_fake.failing.contains(command.name)) {
+      return (PorscheExit.unavailable, error('unavailable'));
+    }
     final client = _client(command, stdin, read, error, receipt);
     if (client != null) return client;
     switch (command.name) {
@@ -438,6 +489,7 @@ final class _FakeSession implements PorscheSession {
           'a1b2c3d4-0000-4000-8000-$n',
           command.options['platform']! as String,
           command.options['enc-pubkey']! as String,
+          label: command.options['label'] as String?,
         );
         _fake.devices[device.id] = device;
         return receipt(id, {'device': device.toJson()});
@@ -452,15 +504,67 @@ final class _FakeSession implements PorscheSession {
         }
         return receipt(id, device.toJson());
       case 'whoami':
-        return (PorscheExit.ok, read({'email': 'user@${_fake.host}'}));
-      case 'ls':
+        return (
+          PorscheExit.ok,
+          read({'email': 'user@${_fake.host}', 'public_key': FakeDeployment.ownPublicKey}),
+        );
+      case 'ssh-key list':
         return (
           PorscheExit.ok,
           read({
-            'items': [for (final m in _fake.machines) m.toJson(_fake.host)],
-            'next_cursor': null,
+            'keys': [
+              for (final MapEntry(:key, :value) in _fake.sshKeys.entries)
+                {
+                  'id': key,
+                  'label': value.$1,
+                  'algorithm': 'ssh-ed25519',
+                  'fingerprint': value.$2,
+                  'inserted_at': '2026-10-18T09:00:00Z',
+                },
+            ],
           }),
         );
+      case 'ssh-key remove':
+        final id = command.options['request-id']! as String;
+        if (_fake.sshKeys.remove(command.arguments.single) == null) {
+          return (PorscheExit.invalid, error('not_found'));
+        }
+        return receipt(id, {'id': command.arguments.single, 'revoked': true});
+      case 'ls':
+        final after = command.options['after'];
+        final start = after == null ? 0 : _fake.machines.indexWhere((m) => m.id == after) + 1;
+        final page = _fake.machines.skip(start).take(_fake.pageSize).toList();
+        final more = start + page.length < _fake.machines.length;
+        return (
+          PorscheExit.ok,
+          read({
+            'items': [for (final m in page) m.toJson(_fake.host)],
+            'next_cursor': more ? page.last.id : null,
+          }),
+        );
+      case 'images':
+        return (PorscheExit.ok, read({'images': _fake.images}));
+      case 'team list':
+        return (PorscheExit.ok, read({'items': _fake.teams, 'next_cursor': null}));
+      case 'request retry' || 'request cancel':
+        final original = _fake._receipts[command.arguments.single];
+        if (original == null) return (PorscheExit.invalid, error('request_not_found'));
+        final id = command.options['request-id']! as String;
+        if (command.name == 'request retry') {
+          if (original['status'] != 'failed') {
+            return (PorscheExit.invalid, error('invalid_command'));
+          }
+          original['status'] = 'succeeded';
+          final copy = original['result'];
+          if (copy is Map<String, Object?> && copy['id'] is String && copy['name'] is String) {
+            _fake.machines.add(FakeMachine(copy['id']! as String, copy['name']! as String));
+          }
+        } else {
+          original
+            ..['status'] = 'failed'
+            ..['operation_id'] = _fakeOperation;
+        }
+        return receipt(id, const {});
       case 'show':
         final m = machine();
         return m == null
@@ -488,6 +592,13 @@ final class _FakeSession implements PorscheSession {
           final String name => name,
           _ => '${m.name}-clone',
         });
+        if (_fake.failClones) {
+          final (exit, body) = receipt(id, copy.toJson(_fake.host));
+          body
+            ..['status'] = 'failed'
+            ..['operation_id'] = _fakeOperation;
+          return (exit, body);
+        }
         _fake.machines.add(copy);
         return receipt(id, copy.toJson(_fake.host));
       case 'resize':

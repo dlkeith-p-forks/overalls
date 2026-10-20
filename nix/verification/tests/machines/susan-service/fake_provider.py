@@ -1,4 +1,4 @@
-"""Fake APNs, Google OAuth and FCM origins over TLS with HTTP/2 (ASGI)."""
+"""Fake APNs, Google OAuth, FCM, Entra ID and WNS origins over TLS with HTTP/2 (ASGI)."""
 
 import json
 from collections.abc import Awaitable, Callable
@@ -48,7 +48,7 @@ async def app(scope: Scope, receive: Receive, send: Send) -> None:
         "host": host,
         "path": scope["path"],
         "http_version": scope["http_version"],
-        "headers": {k: v for k, v in headers.items() if k.startswith("apns-")},
+        "headers": {k: v for k, v in headers.items() if k.startswith(("apns-", "x-wns-"))},
         "authorization": headers.get("authorization", "").split(" ")[0],
         "body": body.decode(errors="replace"),
     }
@@ -56,7 +56,7 @@ async def app(scope: Scope, receive: Receive, send: Send) -> None:
         log.write(json.dumps(record) + "\n")
     response = scripted(host)
     if response is None:
-        if host == "oauth2.googleapis.com":
+        if host in ("oauth2.googleapis.com", "login.microsoftonline.com"):
             payload = {"access_token": "fake-oauth-access", "expires_in": 3600}
             response = (200, {}, json.dumps(payload).encode())
         else:

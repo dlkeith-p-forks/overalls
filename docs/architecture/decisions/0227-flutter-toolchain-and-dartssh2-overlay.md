@@ -97,4 +97,5 @@ with network access, and its cache cost has not been measured.
 [ADR-0124](0124-unified-ssh-host-ca.md),
 [ADR-0191](0191-elixir-hegel-property-verification.md),
 [ADR-0220](0220-mila-client-over-porsche-ssh.md),
-[ADR-0228](0228-strict-host-certificates-in-mila.md).
+[ADR-0228](0228-strict-host-certificates-in-mila.md),
+[ADR-0235](0235-mila-desktop-clients.md) (Linux dev/release packages; Windows builds from the source bundle outside Nix).

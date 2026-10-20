@@ -31,6 +31,32 @@ enum PushProvider {
 
   const PushProvider(this.wire);
   final String wire;
+
+  /// Whether [token] has this provider's shape. Only WNS is checked: its
+  /// token is a URI the relay will post to, so Mila refuses anything Susan's
+  /// `susan-wns-channel-shape` rule would refuse rather than send it.
+  bool accepts(String token) => this != wns || wnsChannel(token);
+}
+
+final RegExp _wnsHost = RegExp(
+  r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*\.notify\.windows\.com$',
+);
+
+/// A WNS channel URI: `https` on port 443 to a host under
+/// `.notify.windows.com`, with a path, no userinfo or fragment, at most 1024
+/// bytes (ADR-0236).
+bool wnsChannel(String uri) {
+  if (utf8.encode(uri).length > 1024 || uri.contains(RegExp(r'[\\ ]')) || uri.contains('%00')) {
+    return false;
+  }
+  final parsed = Uri.tryParse(uri);
+  return parsed != null &&
+      parsed.scheme == 'https' &&
+      parsed.userInfo.isEmpty &&
+      !parsed.hasFragment &&
+      parsed.port == 443 &&
+      _wnsHost.hasMatch(parsed.host) &&
+      uri.startsWith('https://${parsed.host}/');
 }
 
 /// APNs environments; FCM and WNS are always production.

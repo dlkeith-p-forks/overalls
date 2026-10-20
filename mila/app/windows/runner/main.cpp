@@ -2,7 +2,13 @@
 #include <flutter/flutter_view_controller.h>
 #include <windows.h>
 
+#include <optional>
+#include <string>
+
 #include "flutter_window.h"
+#include "mila_push.h"
+#include "mila_text.h"
+#include "single_instance.h"
 #include "utils.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
@@ -22,12 +28,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   std::vector<std::string> command_line_arguments =
       GetCommandLineArguments();
 
+  // An `overalls://` link from the shell (the MSIX protocol handler passes
+  // it as an argument), or from a notification click or protocol activation.
+  std::optional<std::string> link;
+  for (const std::string& argument : command_line_arguments) {
+    if (mila_text::ValidLink(argument)) link = argument;
+  }
+  // A raw push that activated this process is opened and shown without a
+  // window.
+  if (mila_push::Start(link) == mila_push::Launch::kExit) {
+    ::CoUninitialize();
+    return EXIT_SUCCESS;
+  }
+  if (!single_instance::Claim(link)) {
+    ::CoUninitialize();
+    return EXIT_SUCCESS;
+  }
+
   project.set_dart_entrypoint_arguments(std::move(command_line_arguments));
 
-  FlutterWindow window(project);
+  FlutterWindow window(project, std::move(link));
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
-  if (!window.Create(L"mila", origin, size)) {
+  if (!window.Create(L"Mila", origin, size)) {
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);
@@ -38,6 +61,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
     ::DispatchMessage(&msg);
   }
 
+  mila_push::Stop();
   ::CoUninitialize();
   return EXIT_SUCCESS;
 }

@@ -65,6 +65,10 @@
   "@signInFailedRefused": {
     "description": "Authorization failure during sign-in."
   },
+  "signInFailedUnreachable": "The deployment cannot be reached.",
+  "@signInFailedUnreachable": {
+    "description": "Sign-in could not reach a deployment at the entered host (no trust document or SSH listener)."
+  },
   "signInFailedProtocol": "The deployment sent a reply Mila does not understand.",
   "@signInFailedProtocol": {
     "description": "Protocol failure during sign-in."
@@ -182,6 +186,15 @@
     "description": "Confirmation for deleting a machine. {name} is the machine name.",
     "placeholders": {
       "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deploymentRemoveConfirm": "Remove {host} from Mila? Its saved machine list and this device's notifications are removed. Your account and machines are not changed.",
+  "@deploymentRemoveConfirm": {
+    "description": "Confirmation before removing a deployment from Mila. {host} is the deployment host.",
+    "placeholders": {
+      "host": {
         "type": "String"
       }
     }
@@ -924,5 +937,176 @@
   "sharingMore": "Show more",
   "@sharingMore": {
     "description": "Button that loads the next page of shares."
+  },
+  "threadsEmptyHint": "Threads start in the browser and appear here.",
+  "@threadsEmptyHint": {
+    "description": "Under the empty Recent threads list: where threads are started, since Mila cannot start one."
+  },
+  "threadsMachineEmptyHint": "Threads that work on this machine appear here.",
+  "@threadsMachineEmptyHint": {
+    "description": "Under one machine's empty thread list."
+  },
+  "threadsStartInBrowser": "Start a thread in the browser",
+  "@threadsStartInBrowser": {
+    "description": "Button that opens the deployment's new-thread page in the system browser."
+  },
+  "machineMore": "Show more",
+  "@machineMore": {
+    "description": "Button under the machine list that loads the next page of machines."
+  },
+  "machineFailureReason": "Failure: {reason}",
+  "@machineFailureReason": {
+    "description": "Shown on a failed machine's row; the reason is an identifier from the deployment.",
+    "placeholders": {
+      "reason": {
+        "type": "String",
+        "example": "image_unavailable"
+      }
+    }
+  },
+  "machineImageDefault": "Default",
+  "@machineImageDefault": {
+    "description": "New-machine form image choice that keeps the deployment's default image."
+  },
+  "machineTeam": "Team",
+  "@machineTeam": {
+    "description": "Label above the new-machine form's team choices."
+  },
+  "machineTeamPersonal": "Personal",
+  "@machineTeamPersonal": {
+    "description": "New-machine form team choice for a machine that belongs to no team."
+  },
+  "machineNotFound": "This machine is not available.",
+  "@machineNotFound": {
+    "description": "Info tab text when the deployment does not show this machine to the user."
+  },
+  "machineLoading": "Loading this machine…",
+  "@machineLoading": {
+    "description": "Info tab text while the machine is read from the deployment."
+  },
+  "machineDesired": "Requested",
+  "@machineDesired": {
+    "description": "Info tab label for the state the machine was asked to reach."
+  },
+  "machineFailure": "Failure",
+  "@machineFailure": {
+    "description": "Info tab label for why the machine failed."
+  },
+  "machineChanging": "In progress",
+  "@machineChanging": {
+    "description": "Info tab label for a resize or host move under way."
+  },
+  "machineResizing": "Resizing",
+  "@machineResizing": {
+    "description": "Info tab value: a resize is under way."
+  },
+  "machineRelocating": "Moving host",
+  "@machineRelocating": {
+    "description": "Info tab value: the machine is moving to another host."
+  },
+  "machineAccess": "Access",
+  "@machineAccess": {
+    "description": "Info tab label for whether the user owns the machine."
+  },
+  "machineAccessOwner": "Yours",
+  "@machineAccessOwner": {
+    "description": "Info tab value: the user owns this machine."
+  },
+  "machineAccessShared": "Shared with you",
+  "@machineAccessShared": {
+    "description": "Info tab value: another account shared this machine with the user."
+  },
+  "machineArchitecture": "Architecture",
+  "@machineArchitecture": {
+    "description": "Info tab label for the processor architecture."
+  },
+  "machineProfile": "Profile",
+  "@machineProfile": {
+    "description": "Info tab label for the machine's profile."
+  },
+  "machineCreated": "Created",
+  "@machineCreated": {
+    "description": "Info tab label for when the machine was created."
+  },
+  "machineId": "ID",
+  "@machineId": {
+    "description": "Info tab label for the machine's identifier."
+  },
+  "signInAccount": "Account",
+  "@signInAccount": {
+    "description": "Label for the signed-in account's email on the sign-in screen."
+  },
+  "signInOpenMachines": "Open machines",
+  "@signInOpenMachines": {
+    "description": "Button on the signed-in sign-in screen that opens the machine list."
+  },
+  "signInSignOut": "Sign out",
+  "@signInSignOut": {
+    "description": "Ends the session with a deployment on this device; keys stay approved."
+  },
+  "signInDisconnected": "The connection to this deployment closed.",
+  "@signInDisconnected": {
+    "description": "Shown when a signed-in connection to the deployment dropped."
+  },
+  "signInReconnect": "Reconnect",
+  "@signInReconnect": {
+    "description": "Opens a new connection to a deployment after a drop."
+  },
+  "settingsSignedIn": "Signed in",
+  "@settingsSignedIn": {
+    "description": "State label for a deployment with a live signed-in session."
+  },
+  "settingsOffline": "Offline",
+  "@settingsOffline": {
+    "description": "State label for a deployment with no live session."
+  },
+  "sshKeysTitle": "SSH keys",
+  "@sshKeysTitle": {
+    "description": "Title of the page listing the account's approved SSH keys, and the link to it."
+  },
+  "sshKeysExplain": "Keys approved to sign in to your account on this deployment. A revoked key must be approved again before it can sign in.",
+  "@sshKeysExplain": {
+    "description": "Explanation at the top of the SSH keys page."
+  },
+  "sshKeysSignInFirst": "Sign in to see this account's keys.",
+  "@sshKeysSignInFirst": {
+    "description": "Shown on the SSH keys page without a live session."
+  },
+  "sshKeysFailed": "The keys could not be loaded.",
+  "@sshKeysFailed": {
+    "description": "Shown when the SSH key list could not be read."
+  },
+  "sshKeysLoading": "Loading keys…",
+  "@sshKeysLoading": {
+    "description": "Shown while the SSH key list loads."
+  },
+  "sshKeysEmpty": "No approved keys.",
+  "@sshKeysEmpty": {
+    "description": "Shown when the account has no approved SSH keys."
+  },
+  "sshKeyUnlabelled": "Unnamed key",
+  "@sshKeyUnlabelled": {
+    "description": "Heading for an SSH key with no label."
+  },
+  "sshKeyAlgorithm": "Type",
+  "@sshKeyAlgorithm": {
+    "description": "Label for an SSH key's algorithm, such as ssh-ed25519."
+  },
+  "sshKeyThisDevice": "This device",
+  "@sshKeyThisDevice": {
+    "description": "Marks the key this device is signed in with; it cannot be revoked here."
+  },
+  "sshKeyRevoke": "Revoke",
+  "@sshKeyRevoke": {
+    "description": "Button that revokes an approved SSH key."
+  },
+  "sshKeyRevokeConfirm": "Revoke the key {fingerprint}? A device using it must be approved again to sign in.",
+  "@sshKeyRevokeConfirm": {
+    "description": "Confirmation before revoking an SSH key. {fingerprint} is an SSH key fingerprint.",
+    "placeholders": {
+      "fingerprint": {
+        "type": "String"
+      }
+    }
   }
 }

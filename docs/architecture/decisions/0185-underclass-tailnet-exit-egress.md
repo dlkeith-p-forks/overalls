@@ -170,6 +170,8 @@ if the root-operator window above becomes a concern.
 
 ## Related decisions
 
+[ADR-0245](0245-underclass-egress-node-tag.md) tags the egress node
+`tag:underclass`.
 [ADR-0102](0102-local-underclass-monitor-socket.md) keeps the independent pools,
 loopback listener and tailnet-only publication that this decision preserves.
 [ADR-0075](0075-fleet-overlay-and-source-access.md) defines the tailnet as the

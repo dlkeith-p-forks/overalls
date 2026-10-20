@@ -102,4 +102,5 @@ None.
 ## Related decisions
 
 [ADR-0222](0222-porsche-client-commands.md),
-[ADR-0224](0224-susan-push-relay.md).
+[ADR-0224](0224-susan-push-relay.md),
+[ADR-0235](0235-mila-desktop-clients.md) (device platforms macos and windows).

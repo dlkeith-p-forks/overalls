@@ -1,5 +1,9 @@
 # Architecture reviews
 
+- [Mila desktop clients and Susan WNS (2026-10-21)](2026-10-21-mila-desktop.md):
+  ADR-0235's macOS and Windows clients, per-platform custody and dev/release
+  targets, and ADR-0236's suffix-bounded WNS egress; Windows native and signed
+  release evidence pending.
 - [Account machine creation presets (2026-10-20)](2026-10-20-account-machine-presets.md): three independent account presets, self-only validated persistence, browser precedence and original-request launch replay; records executed checks separately from native and rollout gaps.
 
 - [Fleet addresses from SOPS (2026-10-20)](2026-10-20-fleet-addresses-from-sops.md): ADR-0233's

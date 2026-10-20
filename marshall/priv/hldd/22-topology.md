@@ -764,10 +764,47 @@ Arrows mean configured service placement. Configuration: `overalls`. Marshall in
 ```mermaid
 flowchart LR
   host["panterloons"]
-
+  host --> s0["enrico"]
+  host --> s1["enricoRequestRecorder"]
+  host --> s2["enricoSloExporter"]
+  host --> s3["grafana"]
+  host --> s4["grafanaPublicProxy"]
+  host --> s5["lillyPhysicalSloExporter"]
+  host --> s6["marshall"]
+  host --> s7["marshallProxy"]
+  host --> s8["marshallReadySloExporter"]
+  host --> s9["marshallRequestRecorder"]
+  host --> s10["marshallSloExporter"]
+  host --> s11["opentelemetry-collector"]
+  host --> s12["overalls-trace-enrico"]
+  host --> s13["overalls-trace-marshall-overalls"]
+  host --> s14["overallsAutoUpdate"]
+  host --> s15["overallsFleetExporter"]
+  host --> s16["overallsLogStore"]
+  host --> s17["overallsLogging"]
+  host --> s18["overallsOtelFleet"]
+  host --> s19["porscheCancelSloExporter"]
+  host --> s20["porscheCloneSloExporter"]
+  host --> s21["porschePhysicalSloExporter"]
+  host --> s22["porscheRelocateSloExporter"]
+  host --> s23["porscheRetrySloExporter"]
+  host --> s24["postgresql"]
+  host --> s25["prometheus"]
+  host --> s26["telemetryStorageProbe"]
+  host --> s27["tempo"]
+  host --> s28["underclass"]
+  host --> s29["underclassEgress"]
+  host --> s30["underclassMonitorProbe"]
+  host --> s31["underclassProxySloExporter"]
+  host --> s32["vscodeBrowserNixosExporter"]
+  host --> s33["vscodeBrowserNixosProbe"]
+  host --> s34["vscodeBrowserNixosRequestRecorder"]
+  host --> s35["vscodeBrowserUbuntuExporter"]
+  host --> s36["vscodeBrowserUbuntuProbe"]
+  host --> s37["vscodeBrowserUbuntuRequestRecorder"]
 ```
 
-Arrows mean configured service placement. Configuration: `panterloons-base`. Marshall instances: none. Fleet address: `disabled`. Fleet peers: none. Administrative SSH ports: 22.
+Arrows mean configured service placement. Configuration: `panterloons`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`, `salopettes`. Administrative SSH ports: 22.
 
 ### salopettes
 

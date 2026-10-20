@@ -14,7 +14,16 @@ let
   egressSocket = "/run/underclass-egress/tailscaled.sock";
   egressProxy = "http://127.0.0.1:${toString egress.proxyPort}";
   # Operator entry point for the dedicated node, e.g. `sudo underclass-egress up`.
+  # Joining (`up` or `login`) always advertises the node's tags.
   egressCli = pkgs.writeShellScriptBin "underclass-egress" ''
+    case "''${1:-}" in
+      up|login)
+        command="$1"
+        shift
+        exec ${tailscaleExe} --socket=${egressSocket} "$command" \
+          --advertise-tags=${lib.escapeShellArg (lib.concatStringsSep "," egress.tags)} "$@"
+        ;;
+    esac
     exec ${tailscaleExe} --socket=${egressSocket} "$@"
   '';
   # Runs with full privileges (`+`) before every Underclass start: re-asserts
@@ -90,13 +99,23 @@ in
         default = 1055;
         description = "Loopback port of the egress node's outbound HTTP proxy.";
       };
+      tags = mkOption {
+        type = types.nonEmptyListOf (types.strMatching "tag:[a-z0-9][a-z0-9-]*");
+        default = [ "tag:underclass" ];
+        description = ''
+          Tailscale ACL tags the egress node advertises whenever an operator joins it with
+          `underclass-egress up` or `login`. The tailnet policy must let the joining
+          identity own each tag.
+        '';
+      };
     };
   };
 
   config = mkIf cfg.enable {
     # @cc [owner:ghuntley,label:cli] underclass-commands-on-path
     # Enabling Underclass MUST put its configured package on the host PATH; with
-    # egress enabled, `underclass-egress` MUST address only the egress node's socket.
+    # egress enabled, `underclass-egress` MUST address only the egress node's socket
+    # and MUST advertise the configured tags whenever it joins the node.
     environment.systemPackages = [ cfg.package ] ++ lib.optional egress.enable egressCli;
 
     assertions = [

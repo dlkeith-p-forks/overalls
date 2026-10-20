@@ -21,6 +21,15 @@ identity signs. Status is in the
 [Susan](reviews/2026-10-19-susan-push-relay.md) and
 [M6](reviews/2026-10-19-mila-m6.md) reviews; all nine decisions are partial.
 
+[ADR-0235](decisions/0235-mila-desktop-clients.md) extends Mila to macOS
+(Secure Enclave, APNs, a shared Darwin notification extension) and Windows
+(CNG keys in a TPM or the software provider, a DPAPI-sealed poke key, an
+owner-only DACL and WNS), and gives every platform a dev and a release build
+target. [ADR-0236](decisions/0236-susan-wns-provider.md) adds Susan's WNS
+provider, whose egress is the compiled Entra ID origin plus channel URIs
+confined to `*.notify.windows.com`. Both are partial; see the
+[desktop review](reviews/2026-10-21-mila-desktop.md).
+
 [ADR-0205](decisions/0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
 
 [ADR-0204](decisions/0204-git-attribution-and-guest-identity.md) preserves the reconciled duplicate Git attribution decision and its settings-page evidence; implementation remains partial.

@@ -9,6 +9,7 @@ import 'package:mila_transport/mila_transport.dart';
 
 import '../mutation.dart';
 import '../session.dart';
+import 'threads_controller.dart';
 
 /// Why the last thread action did not go through.
 enum ThreadActionFailure { refused, failed, invalidText, tooLarge, busy }
@@ -168,6 +169,14 @@ final class ThreadController extends Notifier<ThreadView> {
     );
     if (!ref.mounted || poll.phase != PollPhase.succeeded) return;
     final unread = detail.summary.unread.markRead(sequence);
+    // Lists already open show the new count at once rather than at their next
+    // watch event; lists not open are not created for this.
+    final d = key.$1;
+    for (final list in <ThreadsKey>{(d, null), (d, detail.summary.machineId)}) {
+      if (ref.exists(threadsProvider(list))) {
+        ref.read(threadsProvider(list).notifier).markedRead(_thread, unread);
+      }
+    }
     final current = state.detail;
     if (current == null) return;
     state = state.copyWith(

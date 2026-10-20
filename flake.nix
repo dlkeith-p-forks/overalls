@@ -119,6 +119,8 @@
         # mila-build's Linux dev and release targets (ADR-0235).
         tool-mila-linux-dev = built.mila.linuxDev;
         tool-mila-linux-release = built.mila.linuxRelease;
+        # Sources and pinned dependencies for the Windows build (ADR-0235).
+        tool-mila-source-bundle = built.mila.sourceBundle;
         tool-mila-demo = built.mila.demo;
         tool-mila-probe = built.mila.probe;
         # Optional Android APK, excluded from CI (ADR-0227).

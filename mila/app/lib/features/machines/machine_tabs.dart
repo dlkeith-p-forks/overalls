@@ -35,12 +35,8 @@ String machineTabPath(Deployment deployment, String machineId, MachineTab tab) =
 };
 
 /// The machine's display name, or its id until the list has loaded.
-String machineName(WidgetRef ref, Deployment deployment, String machineId) {
-  for (final m in ref.watch(machinesProvider(deployment)).machines) {
-    if (m.id == machineId) return m.name;
-  }
-  return machineId;
-}
+String machineName(WidgetRef ref, Deployment deployment, String machineId) =>
+    ref.watch(machinesProvider(deployment)).find(machineId)?.name ?? machineId;
 
 class MachineScaffold extends ConsumerWidget {
   const MachineScaffold({
@@ -51,6 +47,7 @@ class MachineScaffold extends ConsumerWidget {
     required this.children,
     this.actions = const [],
     this.body,
+    this.onRefresh,
   });
 
   final Deployment deployment;
@@ -61,6 +58,18 @@ class MachineScaffold extends ConsumerWidget {
 
   /// Replaces the scrolling [children] when a page needs the whole area.
   final Widget? body;
+
+  /// When set, the page offers REFRESH and pull to refresh, which run it.
+  final Future<void> Function()? onRefresh;
+
+  Widget _list() {
+    final list = ListView(
+      padding: const EdgeInsets.all(MonoScale.fontSize),
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: children,
+    );
+    return onRefresh == null ? list : RefreshIndicator(onRefresh: onRefresh!, child: list);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -74,7 +83,24 @@ class MachineScaffold extends ConsumerWidget {
           child: BackGlyph(label: l.back),
         ),
         title: Text(machineName(ref, deployment, machineId), textDirection: TextDirection.ltr),
-        actions: actions,
+        actions: [
+          ...actions,
+          if (onRefresh != null)
+            TextButton(
+              key: const Key('machine-refresh'),
+              onPressed: onRefresh,
+              child: Text(l.refresh.toUpperCase()),
+            ),
+          // One glyph wide: the app bar already holds the page's own actions.
+          Tooltip(
+            message: l.settingsTitle,
+            child: TextButton(
+              key: const Key('machine-settings'),
+              onPressed: () => context.go(settingsPath),
+              child: GlyphText(Glyph.menu, label: l.settingsTitle),
+            ),
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,11 +111,7 @@ class MachineScaffold extends ConsumerWidget {
             onSelected: (index) =>
                 context.go(machineTabPath(deployment, machineId, machineTabs[index])),
           ),
-          Expanded(
-            child:
-                body ??
-                ListView(padding: const EdgeInsets.all(MonoScale.fontSize), children: children),
-          ),
+          Expanded(child: body ?? _list()),
         ],
       ),
     );

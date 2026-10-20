@@ -3,9 +3,11 @@
 #include <optional>
 
 #include "flutter/generated_plugin_registrant.h"
+#include "single_instance.h"
 
-FlutterWindow::FlutterWindow(const flutter::DartProject& project)
-    : project_(project) {}
+FlutterWindow::FlutterWindow(const flutter::DartProject& project,
+                             std::optional<std::string> initial_link)
+    : project_(project), initial_link_(std::move(initial_link)) {}
 
 FlutterWindow::~FlutterWindow() {}
 
@@ -25,6 +27,9 @@ bool FlutterWindow::OnCreate() {
     return false;
   }
   RegisterPlugins(flutter_controller_->engine());
+  platform_ = std::make_unique<MilaPlatform>(
+      flutter_controller_->engine()->messenger(), GetHandle(),
+      std::move(initial_link_));
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
 
   flutter_controller_->engine()->SetNextFrameCallback([&]() {
@@ -40,6 +45,7 @@ bool FlutterWindow::OnCreate() {
 }
 
 void FlutterWindow::OnDestroy() {
+  platform_ = nullptr;
   if (flutter_controller_) {
     flutter_controller_ = nullptr;
   }
@@ -61,9 +67,19 @@ FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
     }
   }
 
+  if (MilaPlatform::HandleRun(message, lparam)) return 0;
+
   switch (message) {
     case WM_FONTCHANGE:
       flutter_controller_->engine()->ReloadSystemFonts();
+      break;
+    case WM_COPYDATA:
+      // A link from a second instance; only the window's own process
+      // handles it, and it only navigates.
+      if (auto link = single_instance::LinkFrom(lparam)) {
+        if (platform_) platform_->Open(*link);
+        return TRUE;
+      }
       break;
   }
 

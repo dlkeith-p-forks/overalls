@@ -1,0 +1,339 @@
+name: "mila release"
+
+# Mila's signed release targets (ADR-0235), on a `mila-vX.Y.Z` tag, inside the
+# protected `mila-release` environment that alone holds the signing material.
+# Every job hands mila-build its MILA_* inputs (mila/tool/lib/src/plan.dart);
+# mila-build refuses a missing input and verifies each signature it makes.
+# Signing material is written to job-temporary files and keychains that an
+# always() step removes; nothing is echoed or committed.
+#
+# Secrets: APPLE_CERTIFICATE_P12_BASE64, APPLE_CERTIFICATE_PASSWORD,
+# APPLE_MACOS_PROFILE_RUNNER_BASE64, APPLE_MACOS_PROFILE_NOTIFICATION_SERVICE_BASE64,
+# APPLE_IOS_PROFILE_RUNNER_BASE64, APPLE_IOS_PROFILE_NOTIFICATION_SERVICE_BASE64,
+# APPLE_IOS_EXPORT_OPTIONS_BASE64, APPLE_NOTARY_KEY_P8_BASE64, APPLE_NOTARY_KEY_ID,
+# APPLE_NOTARY_ISSUER_ID, ANDROID_UPLOAD_KEYSTORE_BASE64,
+# ANDROID_UPLOAD_STORE_PASSWORD, ANDROID_UPLOAD_KEY_PASSWORD,
+# WINDOWS_CERTIFICATE_PFX_BASE64, WINDOWS_CERTIFICATE_PASSWORD.
+# Variables: MILA_APPLE_TEAM, MILA_APPLE_IDENTITY (Developer ID for macOS),
+# MILA_IOS_IDENTITY, MILA_MACOS_PROFILE_RUNNER,
+# MILA_MACOS_PROFILE_NOTIFICATION_SERVICE, MILA_IOS_PROFILE_RUNNER,
+# MILA_IOS_PROFILE_NOTIFICATION_SERVICE (profile names),
+# MILA_ANDROID_UPLOAD_KEY_ALIAS, MILA_FCM_PROJECT_ID, MILA_FCM_APPLICATION_ID,
+# MILA_FCM_API_KEY, MILA_FCM_SENDER_ID, MILA_WINDOWS_PUBLISHER,
+# MILA_WINDOWS_TIMESTAMP_URL (optional).
+on:
+  push:
+    tags: ["mila-v*"]
+
+concurrency:
+  group: mila-release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.47.0
+  FLUTTER_WINDOWS_SHA256: 9f96d393cdfad05bea0b4b42c603ffda027af11adadc8e4cf3ac87e49110c1ca
+
+jobs:
+  source-bundle:
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
+    timeout-minutes: 60
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+      - name: Build the source bundle
+        run: |
+          nix build -L .#tool-mila-source-bundle --out-link bundle
+          mkdir -p out
+          cp -L bundle/* out/
+          (cd out && sha256sum -c SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mila-source-bundle
+          path: out/
+          if-no-files-found: error
+
+  linux:
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
+    timeout-minutes: 120
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+      - name: Linux release tarball
+        run: |
+          nix build -L .#tool-mila-linux-release --out-link release
+          mkdir -p out
+          cp -L release/*.tar.gz release/SHA256SUMS out/
+          (cd out && sha256sum -c SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-linux
+          path: out/
+          if-no-files-found: error
+
+  android:
+    # flutter build appbundle runs outside Nix (ADR-0227) against the
+    # runner's Android SDK, with the pinned Flutter from the devenv shell.
+    runs-on: ubuntu-24.04
+    environment: mila-release
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Nix
+        uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
+      - name: Setup Cachix
+        uses: cachix/cachix-action@ee79db531bfb851a7cf47035057b7cca88d26449
+        with:
+          name: overalls
+          extraPullNames: devenv
+          useDaemon: false
+      - name: Install devenv
+        run: |
+          rev=$(jq -r '.nodes.devenv.locked.rev' devenv.lock)
+          nix profile install "github:cachix/devenv/$rev"
+      - name: Write the upload keystore
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+        run: |
+          umask 077
+          printf '%s' "$KEYSTORE" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          echo "MILA_ANDROID_UPLOAD_STORE_FILE=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+      - name: Android release (app bundle)
+        env:
+          MILA_ANDROID_UPLOAD_STORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}
+          MILA_ANDROID_UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+          MILA_ANDROID_UPLOAD_KEY_ALIAS: ${{ vars.MILA_ANDROID_UPLOAD_KEY_ALIAS }}
+          MILA_FCM_PROJECT_ID: ${{ vars.MILA_FCM_PROJECT_ID }}
+          MILA_FCM_APPLICATION_ID: ${{ vars.MILA_FCM_APPLICATION_ID }}
+          MILA_FCM_API_KEY: ${{ vars.MILA_FCM_API_KEY }}
+          MILA_FCM_SENDER_ID: ${{ vars.MILA_FCM_SENDER_ID }}
+        run: devenv shell -- mila-build android release
+      - name: Remove the upload keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/upload.jks"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-android
+          path: |
+            mila/build/android-release/*.aab
+            mila/build/android-release/SHA256SUMS
+          if-no-files-found: error
+
+  apple:
+    runs-on: macos-15
+    environment: mila-release
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos
+            identity_var: MILA_APPLE_IDENTITY
+            artifact: "*.dmg"
+          - platform: ios
+            identity_var: MILA_IOS_IDENTITY
+            artifact: "*.ipa"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Nix
+        uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
+      - name: Setup Cachix
+        uses: cachix/cachix-action@ee79db531bfb851a7cf47035057b7cca88d26449
+        with:
+          name: overalls
+          extraPullNames: devenv
+          useDaemon: false
+      - name: Install devenv
+        run: |
+          rev=$(jq -r '.nodes.devenv.locked.rev' devenv.lock)
+          nix profile install "github:cachix/devenv/$rev"
+      - name: Import signing identity, profiles and notary credentials
+        env:
+          CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          PROFILE_RUNNER: ${{ matrix.platform == 'macos' && secrets.APPLE_MACOS_PROFILE_RUNNER_BASE64 || secrets.APPLE_IOS_PROFILE_RUNNER_BASE64 }}
+          PROFILE_EXTENSION: ${{ matrix.platform == 'macos' && secrets.APPLE_MACOS_PROFILE_NOTIFICATION_SERVICE_BASE64 || secrets.APPLE_IOS_PROFILE_NOTIFICATION_SERVICE_BASE64 }}
+          EXPORT_OPTIONS: ${{ secrets.APPLE_IOS_EXPORT_OPTIONS_BASE64 }}
+          NOTARY_KEY: ${{ secrets.APPLE_NOTARY_KEY_P8_BASE64 }}
+          NOTARY_KEY_ID: ${{ secrets.APPLE_NOTARY_KEY_ID }}
+          NOTARY_ISSUER: ${{ secrets.APPLE_NOTARY_ISSUER_ID }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          set -euo pipefail
+          umask 077
+          secrets="$RUNNER_TEMP/mila-signing"
+          mkdir -p "$secrets"
+          keychain="$secrets/mila.keychain-db"
+          password=$(openssl rand -hex 24)
+          security create-keychain -p "$password" "$keychain"
+          security set-keychain-settings -lut 3600 "$keychain"
+          security unlock-keychain -p "$password" "$keychain"
+          printf '%s' "$CERTIFICATE" | base64 -D > "$secrets/identity.p12"
+          security import "$secrets/identity.p12" -k "$keychain" -P "$CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign -T /usr/bin/productbuild -T /usr/bin/security
+          rm -f "$secrets/identity.p12"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$password" "$keychain" > /dev/null
+          existing=()
+          while IFS= read -r line; do existing+=("$(echo "$line" | tr -d '" ')"); done \
+            < <(security list-keychains -d user)
+          security list-keychains -d user -s "$keychain" "${existing[@]}"
+          extension=$([ "$PLATFORM" = macos ] && echo provisionprofile || echo mobileprovision)
+          for dir in "$HOME/Library/MobileDevice/Provisioning Profiles" \
+                     "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"; do
+            mkdir -p "$dir"
+            printf '%s' "$PROFILE_RUNNER" | base64 -D > "$dir/mila-runner.$extension"
+            printf '%s' "$PROFILE_EXTENSION" | base64 -D > "$dir/mila-notification-service.$extension"
+          done
+          if [ "$PLATFORM" = macos ]; then
+            printf '%s' "$NOTARY_KEY" | base64 -D > "$secrets/notary.p8"
+            xcrun notarytool store-credentials mila-notary --key "$secrets/notary.p8" \
+              --key-id "$NOTARY_KEY_ID" --issuer "$NOTARY_ISSUER" --keychain "$keychain" > /dev/null
+            rm -f "$secrets/notary.p8"
+            echo "MILA_NOTARY_PROFILE=mila-notary" >> "$GITHUB_ENV"
+          else
+            printf '%s' "$EXPORT_OPTIONS" | base64 -D > "$secrets/ExportOptions.plist"
+            echo "MILA_IOS_EXPORT_OPTIONS=$secrets/ExportOptions.plist" >> "$GITHUB_ENV"
+          fi
+          echo "MILA_KEYCHAIN=$keychain" >> "$GITHUB_ENV"
+      - name: ${{ matrix.platform }} release
+        env:
+          MILA_APPLE_TEAM: ${{ vars.MILA_APPLE_TEAM }}
+          MILA_APPLE_IDENTITY: ${{ vars[matrix.identity_var] }}
+          MILA_APPLE_PROFILE_RUNNER: ${{ matrix.platform == 'macos' && vars.MILA_MACOS_PROFILE_RUNNER || vars.MILA_IOS_PROFILE_RUNNER }}
+          MILA_APPLE_PROFILE_NOTIFICATION_SERVICE: ${{ matrix.platform == 'macos' && vars.MILA_MACOS_PROFILE_NOTIFICATION_SERVICE || vars.MILA_IOS_PROFILE_NOTIFICATION_SERVICE }}
+        run: |
+          set -euo pipefail
+          devenv shell -- mila-build ${{ matrix.platform }} release
+          # The iOS plan copies the exported IPA without a checksum file.
+          out=mila/build/${{ matrix.platform }}-release
+          if [ ! -f "$out/SHA256SUMS" ]; then
+            (cd "$out" && shasum -a 256 ${{ matrix.artifact }} > SHA256SUMS)
+          fi
+      - name: Remove signing material
+        if: always()
+        run: |
+          [ -n "${MILA_KEYCHAIN:-}" ] && security delete-keychain "$MILA_KEYCHAIN" || true
+          rm -rf "$RUNNER_TEMP/mila-signing"
+          rm -f "$HOME/Library/MobileDevice/Provisioning Profiles"/mila-* \
+            "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"/mila-*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.platform }}
+          path: |
+            mila/build/${{ matrix.platform }}-release/${{ matrix.artifact }}
+            mila/build/${{ matrix.platform }}-release/SHA256SUMS
+          if-no-files-found: error
+
+  windows:
+    needs: source-bundle
+    runs-on: windows-2025
+    environment: mila-release
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mila-source-bundle
+          path: ${{ runner.temp }}/bundle
+      - name: Unpack and verify the source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/bundle"
+          sha256sum -c SHA256SUMS
+          tar -xzf mila-source-bundle-*.tar.gz -C "$RUNNER_TEMP"
+          root=$(cd "$RUNNER_TEMP" && cd mila-source-bundle-* && pwd -W)
+          (cd "$root" && sha256sum --quiet -c SHA256SUMS)
+          echo "MILA_ROOT=$root" >> "$GITHUB_ENV"
+          echo "PUB_CACHE=$root/pub-cache" >> "$GITHUB_ENV"
+      - name: Install the pinned Flutter
+        run: |
+          $zip = Join-Path $env:RUNNER_TEMP "flutter.zip"
+          $url = "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_$($env:FLUTTER_VERSION)-stable.zip"
+          Invoke-WebRequest -Uri $url -OutFile $zip
+          $hash = (Get-FileHash -Algorithm SHA256 $zip).Hash.ToLowerInvariant()
+          if ($hash -ne $env:FLUTTER_WINDOWS_SHA256) { throw "Flutter archive digest $hash does not match the pin" }
+          tar -xf $zip -C $env:RUNNER_TEMP
+          Remove-Item $zip
+          "$env:RUNNER_TEMP\flutter\bin" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+      - name: Resolve packages offline from the bundle
+        run: |
+          flutter config --no-analytics
+          foreach ($d in "packages/mila_core", "packages/mila_transport", "tool", "app") {
+            Push-Location (Join-Path $env:MILA_ROOT "mila/$d")
+            flutter pub get --offline --enforce-lockfile
+            if ($LASTEXITCODE -ne 0) { throw "pub get failed in $d" }
+            Pop-Location
+          }
+      - name: Import the code-signing certificate
+        env:
+          CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE_PFX_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          $pfx = Join-Path $env:RUNNER_TEMP "mila-signing.pfx"
+          [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:CERTIFICATE))
+          $password = ConvertTo-SecureString $env:CERTIFICATE_PASSWORD -AsPlainText -Force
+          $cert = Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password $password
+          Remove-Item $pfx
+          "MILA_WINDOWS_CERT_SHA1=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Windows release (signed MSIX)
+        working-directory: ${{ env.MILA_ROOT }}/mila/tool
+        env:
+          MILA_WINDOWS_PUBLISHER: ${{ vars.MILA_WINDOWS_PUBLISHER }}
+          MILA_WINDOWS_TIMESTAMP_URL: ${{ vars.MILA_WINDOWS_TIMESTAMP_URL }}
+        run: |
+          dart run bin/mila_build.dart windows release
+          if ($LASTEXITCODE -ne 0) { throw "mila-build windows release failed" }
+      - name: Remove the code-signing certificate
+        if: always()
+        run: |
+          Remove-Item (Join-Path $env:RUNNER_TEMP "mila-signing.pfx") -ErrorAction SilentlyContinue
+          if ($env:MILA_WINDOWS_CERT_SHA1) {
+            Remove-Item "Cert:\CurrentUser\My\$($env:MILA_WINDOWS_CERT_SHA1)" -DeleteKey -ErrorAction SilentlyContinue
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-windows
+          path: |
+            ${{ env.MILA_ROOT }}/mila/build/windows-release/*.msix
+            ${{ env.MILA_ROOT }}/mila/build/windows-release/SHA256SUMS
+          if-no-files-found: error
+
+  publish:
+    needs: [source-bundle, linux, android, apple, windows]
+    runs-on: ubuntu-24.04
+    environment: mila-release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Collect artifacts and checksums
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          # Each job verified its own signatures; re-check its checksums here.
+          for dir in artifacts/release-* artifacts/mila-source-bundle; do
+            (cd "$dir" && sha256sum -c SHA256SUMS)
+            find "$dir" -type f ! -name SHA256SUMS -exec cp {} release/ \;
+          done
+          (cd release && sha256sum -- * | LC_ALL=C sort -k2 > SHA256SUMS)
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag \
+            --title "Mila ${TAG#mila-v}" --notes "Signed Mila builds; verify with SHA256SUMS." \
+            release/*

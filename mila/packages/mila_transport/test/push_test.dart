@@ -34,18 +34,19 @@ SusanHttpResponse _granted({String expires = '2027-01-16T12:00:00Z'}) => SusanHt
 );
 
 final class _FakePlatform implements PushPlatform {
-  _FakePlatform({this.denied = false});
+  _FakePlatform({this.denied = false, this.device = DevicePlatform.ios, this.value = 'a1b2c3d4'});
   bool denied;
   int asked = 0;
+  final String value;
   @override
-  DevicePlatform get device => DevicePlatform.ios;
+  final DevicePlatform device;
   @override
   Future<PushEnvironment> environment() async => PushEnvironment.development;
   @override
   Future<String> token() async {
     asked++;
     if (denied) throw const PushPermissionDeniedException();
-    return 'a1b2c3d4';
+    return value;
   }
 
   @override
@@ -231,6 +232,7 @@ void main() {
       _FakeSession? session,
       _FakePlatform? platform,
       List<SusanHttpResponse>? replies,
+      _RecordingTransport? transport,
     }) async {
       final fake = session ?? _FakeSession();
       final keys = FilePokeKeyStore(Directory('${dir.path}/poke'), random: Random(3));
@@ -238,7 +240,7 @@ void main() {
         deployment: const Deployment(_host),
         platform: platform ?? _FakePlatform(),
         susan: SusanClient(
-          transport: _RecordingTransport(replies ?? [_granted()]),
+          transport: transport ?? _RecordingTransport(replies ?? [_granted()]),
           clock: () => _now,
         ),
         pokeKeys: keys,
@@ -271,6 +273,32 @@ void main() {
       expect(utf8.decode(session.stdins.single!), 'cHVzaC1rZXk\n');
       expect(line, isNot(contains('cHVzaC1rZXk')));
       expect(File('${dir.path}/poke/$_host.json').statSync().modeString(), 'rw-------');
+    });
+
+    test('a Windows device registers its WNS channel as a production key', () async {
+      const channel = 'https://wns2-par02p.notify.windows.com/w/?token=AwYAAAB';
+      final transport = _RecordingTransport([_granted()]);
+      final (state, session, _) = await run(
+        platform: _FakePlatform(device: DevicePlatform.windows, value: channel),
+        transport: transport,
+      );
+      expect(state.phase, PushPhase.active);
+      final (_, body) = transport.requests.single;
+      expect(body['provider'], 'wns');
+      expect(body['token'], channel);
+      expect(body['environment'], 'production', reason: 'only APNs has a sandbox');
+      expect(session.lines.single, contains('--platform=windows'));
+    });
+
+    test('a WNS token that is not a notify.windows.com channel is never sent', () async {
+      final transport = _RecordingTransport([_granted()]);
+      final (state, session, _) = await run(
+        platform: _FakePlatform(device: DevicePlatform.windows, value: 'https://evil.example/w'),
+        transport: transport,
+      );
+      expect(state.phase, isNot(PushPhase.active));
+      expect(transport.requests, isEmpty);
+      expect(session.lines, isEmpty);
     });
 
     test('a lost reply is resolved by polling, never by registering again', () async {

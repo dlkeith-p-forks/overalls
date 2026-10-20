@@ -9,7 +9,9 @@ import '../../ui/theme.dart';
 import '../../ui/tokens.dart';
 import '../../ui/widgets.dart';
 import '../machines/machine_tabs.dart';
+import '../failure_notice.dart';
 import '../routes.dart';
+import '../sign_in_screen.dart' show openExternalProvider;
 import 'thread_labels.dart';
 import 'threads_controller.dart';
 
@@ -54,8 +56,21 @@ class _MachineThreadsScreenState extends ConsumerState<MachineThreadsScreen> {
           onChanged: (value) => setState(() => _query = value),
         ),
         const SizedBox(height: MonoScale.line),
-        if (view.failed) Text(l.threadsFailed, key: const Key('threads-failed')),
-        if (!view.loading && !view.failed && view.threads.isEmpty) Text(l.threadsEmpty),
+        if (view.failed)
+          FailureNotice(
+            message: l.threadsFailed,
+            messageKey: const Key('threads-failed'),
+            retryKey: const Key('threads-retry'),
+            onRetry: ref.read(threadsProvider(key).notifier).refresh,
+          ),
+        if (!view.loading && !view.failed && view.threads.isEmpty) ...[
+          Text(l.threadsEmpty),
+          Text(
+            l.threadsMachineEmptyHint,
+            key: const Key('threads-empty-hint'),
+            style: TextStyle(color: MonoTheme.of(context).textAlt),
+          ),
+        ],
         if (view.threads.isNotEmpty && shown.isEmpty) Text(l.threadsNoMatch),
         for (final thread in shown)
           Padding(
@@ -107,60 +122,97 @@ class _RecentThreadsScreenState extends ConsumerState<RecentThreadsScreen> {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(MonoScale.fontSize),
-        children: [
-          TextField(
-            key: const Key('recent-search'),
-            decoration: InputDecoration(
-              hintText: l.threadsSearch,
-              prefixText: '${Glyph.search.char} ',
+      body: RefreshIndicator(
+        onRefresh: ref.read(threadsProvider(key).notifier).refresh,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(MonoScale.fontSize),
+          children: [
+            TextField(
+              key: const Key('recent-search'),
+              decoration: InputDecoration(
+                hintText: l.threadsSearch,
+                prefixText: '${Glyph.search.char} ',
+              ),
+              onChanged: (value) => setState(() => _query = value),
             ),
-            onChanged: (value) => setState(() => _query = value),
-          ),
-          const SizedBox(height: MonoScale.line / 2),
-          if (unread > 0)
-            Text(
-              l.threadsUnreadTotal(unread),
-              key: const Key('recent-unread'),
-              style: const TextStyle(fontWeight: MonoScale.bold),
-            ),
-          const SizedBox(height: MonoScale.line / 2),
-          if (view.failed) Text(l.threadsFailed),
-          if (!view.loading && !view.failed && view.threads.isEmpty) Text(l.threadsEmpty),
-          if (view.threads.isNotEmpty && shown.isEmpty) Text(l.threadsNoMatch),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              // One card per 32 character cells, at least one column.
-              final columns = (constraints.maxWidth / (MonoScale.fontSize * 0.6 * 32))
-                  .floor()
-                  .clamp(1, 4);
-              final width = (constraints.maxWidth - (columns - 1) * MonoScale.fontSize) / columns;
-              return Wrap(
-                spacing: MonoScale.fontSize,
-                runSpacing: MonoScale.line / 2,
-                children: [
-                  for (final thread in shown)
-                    SizedBox(
-                      width: width,
-                      child: ThreadCard(
-                        thread: thread,
-                        onTap: () => context.go(
-                          thread.machineId == null
-                              ? threadPath(widget.deployment, thread.id)
-                              : machineThreadPath(widget.deployment, thread.machineId!, thread.id),
+            const SizedBox(height: MonoScale.line / 2),
+            if (unread > 0)
+              Text(
+                l.threadsUnreadTotal(unread),
+                key: const Key('recent-unread'),
+                style: const TextStyle(fontWeight: MonoScale.bold),
+              ),
+            const SizedBox(height: MonoScale.line / 2),
+            if (view.failed)
+              FailureNotice(
+                message: l.threadsFailed,
+                messageKey: const Key('recent-failed'),
+                retryKey: const Key('recent-retry'),
+                onRetry: ref.read(threadsProvider(key).notifier).refresh,
+              ),
+            if (!view.loading && !view.failed && view.threads.isEmpty) ...[
+              Text(l.threadsEmpty),
+              Text(
+                l.threadsEmptyHint,
+                key: const Key('recent-empty-hint'),
+                style: TextStyle(color: MonoTheme.of(context).textAlt),
+              ),
+              const SizedBox(height: MonoScale.line / 2),
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: ConsoleButton(
+                  key: const Key('recent-start-browser'),
+                  label: l.threadsStartInBrowser,
+                  glyph: Glyph.arrowUpRight,
+                  onPressed: () =>
+                      ref.read(openExternalProvider)(newThreadInBrowser(widget.deployment)),
+                ),
+              ),
+            ],
+            if (view.threads.isNotEmpty && shown.isEmpty) Text(l.threadsNoMatch),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                // One card per 32 character cells, at least one column.
+                final columns = (constraints.maxWidth / (MonoScale.fontSize * 0.6 * 32))
+                    .floor()
+                    .clamp(1, 4);
+                final width = (constraints.maxWidth - (columns - 1) * MonoScale.fontSize) / columns;
+                return Wrap(
+                  spacing: MonoScale.fontSize,
+                  runSpacing: MonoScale.line / 2,
+                  children: [
+                    for (final thread in shown)
+                      SizedBox(
+                        width: width,
+                        child: ThreadCard(
+                          thread: thread,
+                          onTap: () => context.go(
+                            thread.machineId == null
+                                ? threadPath(widget.deployment, thread.id)
+                                : machineThreadPath(
+                                    widget.deployment,
+                                    thread.machineId!,
+                                    thread.id,
+                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                ],
-              );
-            },
-          ),
-        ],
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+/// The deployment's browser page for starting a thread; Porsche has no
+/// command that creates one.
+Uri newThreadInBrowser(Deployment deployment) =>
+    Uri(scheme: 'https', host: deployment.host, path: '/threads/new');
 
 /// A thread row: title, state and unread count, as text and weight.
 class ThreadCard extends StatelessWidget {

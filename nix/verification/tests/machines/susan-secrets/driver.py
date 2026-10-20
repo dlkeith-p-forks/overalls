@@ -33,6 +33,9 @@ with subtest("bundle and credential custody"):
         "APNS_KEY_ID",
         "APNS_TEAM_ID",
         "FCM_SERVICE_ACCOUNT_JSON",
+        "WNS_TENANT_ID",
+        "WNS_CLIENT_ID",
+        "WNS_CLIENT_SECRET",
         "SUSAN_PUSH_KEY_SIGNING_KEY",
         "DATABASE_URL",
     ):
@@ -43,7 +46,7 @@ with subtest("bundle and credential custody"):
     environment = relay.succeed(f"tr '\\0' '\\n' < /proc/{pid}/environ")
     assert "CREDENTIALS_DIRECTORY=/run/credentials/susan.service" in environment
     for line in environment.splitlines():
-        assert not line.startswith(("APNS_", "FCM_", "SUSAN_PUSH", "DATABASE_URL")), line
+        assert not line.startswith(("APNS_", "FCM_", "WNS_", "SUSAN_PUSH", "DATABASE_URL")), line
     relay.wait_until_succeeds(
         'sudo -u susan psql -At susan -c "select count(*) from audit_entries '
         "where action = 'key_rotated' and keyring_id = 1\" | grep -Fx 1"

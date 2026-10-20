@@ -7,6 +7,7 @@ import 'package:mila_transport/mila_transport.dart';
 import '../../l10n/app_localizations.dart';
 import '../../ui/tokens.dart';
 import '../../ui/widgets.dart';
+import '../failure_notice.dart';
 import '../machines/machine_tabs.dart';
 import '../sign_in_screen.dart' show openExternalProvider;
 import 'web_controller.dart';
@@ -76,7 +77,13 @@ class _WebScreenState extends ConsumerState<WebScreen> {
         ),
       ],
       children: [
-        if (view.failed && endpoint == null) Text(l.webFailed, key: const Key('web-failed')),
+        if (view.failed && endpoint == null)
+          FailureNotice(
+            message: l.webFailed,
+            messageKey: const Key('web-failed'),
+            retryKey: const Key('web-retry'),
+            onRetry: controller.refresh,
+          ),
         if (endpoint != null) ...[
           Panel(
             child: Column(

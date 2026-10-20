@@ -181,8 +181,12 @@ Rollout has two stages, because Underclass is an update health unit:
 1. With `egress.enable` alone, the node runs logged out and Underclass is
    unchanged. Join it once on each host:
    `sudo underclass-egress up --hostname=$(hostname)-underclass-egress`.
-   Approve it in the admin console if your tailnet requires that, and make sure
-   tailnet policy lets it use exit nodes. Then
+   Joining always advertises `tag:underclass` (`services.underclass.egress.tags`,
+   ADR-0245), so tailnet policy must let you own that tag. Approve the node in
+   the admin console if your tailnet requires that, and make sure tailnet policy
+   lets `tag:underclass` use exit nodes. A node joined before the tag existed
+   keeps user ownership until you rejoin it with
+   `sudo underclass-egress up --force-reauth`. Then
    `sudo underclass-egress set --exit-node=mac-mini` followed by
    `curl -x http://127.0.0.1:1055 https://ipinfo.io/country` should print `AU`.
 2. Setting `services.underclass.egress.exitNode = "mac-mini"` gives Underclass

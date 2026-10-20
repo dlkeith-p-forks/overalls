@@ -110,9 +110,13 @@ final class SignInController extends Notifier<SignInView> {
 
   void _apply(SignInEvent event, [PorscheSession? session]) {
     final next = state.flow.apply(event);
-    final keep = next.phase == SignInPhase.expired || next.phase == SignInPhase.failed
-        ? null
-        : session ?? state.session;
+    // Only a live phase holds a connection; the rest have none to offer.
+    final keep = switch (next.phase) {
+      SignInPhase.connecting ||
+      SignInPhase.awaitingApproval ||
+      SignInPhase.signedIn => session ?? state.session,
+      _ => null,
+    };
     state = SignInView(next, keep);
   }
 
@@ -129,16 +133,31 @@ final class SignInController extends Notifier<SignInView> {
       _apply(
         e.failure == ConnectFailure.hostUntrusted
             ? HostRejected(generation)
-            : Disconnected(generation),
+            : Unreachable(generation),
       );
       return;
     }
     _apply(Connected(generation), session);
-    unawaited(session.closed.then((_) => _apply(Disconnected(generation))));
+    unawaited(
+      session.closed.then((_) {
+        if (!ref.mounted || state.flow.generation != generation) return;
+        _stopTimers();
+        _apply(Disconnected(generation));
+      }),
+    );
     _tick = Timer.periodic(const Duration(seconds: 1), (_) {
       _apply(Tick(ref.read(clockProvider)()));
     });
     await _whoami(session);
+  }
+
+  /// Ends the session on this device. Keys and the deployment's approval are
+  /// unchanged, so signing in again needs no new approval.
+  Future<void> signOut() async {
+    _stopTimers();
+    final session = state.session;
+    _apply(const SignOut());
+    await session?.close();
   }
 
   Future<void> _whoami(PorscheSession session) async {

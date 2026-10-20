@@ -61,7 +61,6 @@ Future<_App> _signedIn(WidgetTester tester, {String? clipboard}) async {
   await tester.enterText(find.byKey(const Key('deployment-host')), _host);
   await tester.tap(find.byKey(const Key('add-deployment')));
   await tester.pumpAndSettle();
-  await tester.tap(find.byKey(const Key('sign-in-start')));
   await tester.pumpAndSettle();
   final container = ProviderScope.containerOf(tester.element(find.byType(MaterialApp)));
   return _App(fake, container.read(routerProvider), opened, links);

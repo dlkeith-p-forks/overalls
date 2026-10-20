@@ -50,10 +50,11 @@ The operator directed both changes on 2026-10-20.
   On 2026-10-20 that name resolved to a proxy that answered HTTPS with a
   redirect to itself, so Overalls cannot deliver pokes until the proxy forwards
   HTTPS to Salopettes or Overalls retires.
-- `DUNGAREES_SERVICE_IPV4` still holds the failed Dungarees' former service
-  address until the replacement address is assigned, so Overalls' second DNS
-  peer is unreachable and wildcard renewal waits on it, as it has since the
-  hardware failed.
+- `DUNGAREES_SERVICE_IPV4` now holds the replacement Dungarees' additional
+  address (correction, 2026-10-20; `PANTERLOONS_SERVICE_IPV4` was added
+  alongside it). Dungarees serves Audi DNS only for Panterloons, so Overalls'
+  second DNS peer stays unreachable and wildcard renewal waits on it, as it has
+  since the hardware failed.
 
 ## Invariants and verification
 
