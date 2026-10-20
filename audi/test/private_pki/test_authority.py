@@ -43,7 +43,9 @@ class AuthorityTest(unittest.TestCase):
         self.assertEqual(pki.years_after(self.now, 1).day, 28)
 
     def test_fleet_request_has_exact_subject_and_names(self) -> None:
-        self.assertEqual(pki.names(), ["llm.internal", "*.integration.internal"])
+        self.assertEqual(
+            pki.names(), ["llm.internal", "reflection.internal", "*.integration.internal"]
+        )
         _, csr_pem = pki.request()
         csr = x509.load_pem_x509_csr(csr_pem)
         names = csr.extensions.get_extension_for_class(x509.SubjectAlternativeName)
