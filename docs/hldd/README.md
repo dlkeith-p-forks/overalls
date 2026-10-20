@@ -35,7 +35,8 @@ rationale. There are no timestamps or global receipt index to conflict over.
 
 Source hashes bind the path as well as bytes. Adding, editing, renaming, deleting
 or restoring a source requires review. Deletion records a tombstone at its existing
-receipt path; a tombstone does not authorize a restored file. Changing applicable
+receipt path; a tombstone does not authorize a restored file. A removed chapter
+with no remaining group mapping is reviewed through the catch-all group. Changing applicable
 group definitions requires reviewing the affected sources again. Chapter hashes
 in source receipts are historical review context, not a requirement to repeat all
 source reviews whenever documentation changes. Each chapter's own receipt checks

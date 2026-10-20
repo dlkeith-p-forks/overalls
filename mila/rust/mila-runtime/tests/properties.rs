@@ -4,6 +4,23 @@ use mila_runtime::{
     MAX_SNAPSHOT_BYTES,
 };
 use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
+use mila_runtime::{RuntimeError, SnapshotStore};
+
+#[derive(Default)]
+struct MemoryStore {
+    bytes: std::cell::RefCell<Option<Vec<u8>>>,
+}
+
+impl SnapshotStore for MemoryStore {
+    fn read(&self, _deployment: &str) -> Result<Option<Vec<u8>>, RuntimeError> {
+        Ok(self.bytes.borrow().clone())
+    }
+
+    fn write(&self, _deployment: &str, bytes: &[u8]) -> Result<(), RuntimeError> {
+        *self.bytes.borrow_mut() = Some(bytes.to_vec());
+        Ok(())
+    }
+}
 
 #[hegel::test(test_cases = 64)]
 fn arbitrary_bytes_never_panic(tc: TestCase) {
@@ -118,4 +135,36 @@ fn lock_relocks_after_elapsed_background_delay() {
         .apply(LockEvent::Backgrounded(10))
         .apply(LockEvent::Foregrounded(60_010));
     assert_eq!(lock.phase, LockPhase::Locked);
+}
+
+#[hegel::test(test_cases = 64)]
+fn snapshot_persistence_never_replaces_newer_data(tc: TestCase) {
+    let old = tc.draw(gs::default::<u64>());
+    let delta = tc.draw(gs::default::<u16>()) as u64;
+    let newer = old.saturating_add(delta);
+    let store = MemoryStore::default();
+    let cached =
+        MachineSnapshot::new("control.example.test".into(), None, old, vec![]).expect("valid");
+    let _ = mila_runtime::save_snapshot_if_newer(&store, None, cached.clone()).expect("save");
+    let incoming =
+        MachineSnapshot::new("control.example.test".into(), None, newer, vec![]).expect("valid");
+    let selected = mila_runtime::save_snapshot_if_newer(&store, None, incoming).expect("save");
+    assert_eq!(selected.saved_at, newer.max(old));
+    let loaded = mila_runtime::load_snapshot(&store, "control.example.test", None)
+        .expect("load")
+        .expect("snapshot");
+    assert_eq!(loaded.saved_at, newer.max(old));
+}
+
+#[test]
+fn snapshot_store_rejects_cross_deployment_bytes() {
+    let store = MemoryStore::default();
+    let snapshot =
+        MachineSnapshot::new("control.example.test".into(), None, 1, vec![]).expect("valid");
+    let bytes = snapshot.encode().expect("encode");
+    *store.bytes.borrow_mut() = Some(bytes);
+    assert_eq!(
+        mila_runtime::load_snapshot(&store, "other.example.test", None),
+        Err(RuntimeError::InvalidSnapshot)
+    );
 }

@@ -148,6 +148,7 @@ case Marshall.Ingress.FleetACMEConfig.from_env(System.get_env()) do
         maintenance: 2,
         github: 2,
         notifications: 5,
+        redaction: 2,
         certificates: 1
       ]
 

@@ -59,6 +59,16 @@ defmodule Marshall.Agents.Prompt do
   def maintenance(_, _, _, _), do: {:error, :invalid_request}
 
   defp admit!(root, thread, actor, prompt, key, options) do
+    {prompt, prompt_findings} =
+      case prompt do
+        value when is_binary(value) ->
+          result = Marshall.Redaction.Scanner.redact(value)
+          {result.value, result.findings}
+
+        nil ->
+          {nil, []}
+      end
+
     vm =
       case Ledger.read!(VirtualMachine, id: root.vm_id) do
         [vm] -> vm
@@ -134,7 +144,8 @@ defmodule Marshall.Agents.Prompt do
           working_directory: directory,
           configuration_owner_id: root.owner_id,
           maintenance_kind: Map.get(options, :maintenance_kind),
-          maintenance_metadata: Map.get(options, :maintenance_metadata, %{})
+          maintenance_metadata: Map.get(options, :maintenance_metadata, %{}),
+          redaction_profile: Marshall.Redaction.Scanner.profile_digest()
         })
 
       if prompt do
@@ -143,7 +154,11 @@ defmodule Marshall.Agents.Prompt do
           turn_id: turn.id,
           sequence: locked.next_event_sequence,
           kind: :prompt,
-          body: %{"prompt" => prompt}
+          body: %{
+            "prompt" => prompt,
+            "redaction_findings" => prompt_findings,
+            "redaction_profile" => Marshall.Redaction.Scanner.profile_digest()
+          }
         })
 
         Ledger.update!(locked, :advance, %{next_event_sequence: locked.next_event_sequence + 1})

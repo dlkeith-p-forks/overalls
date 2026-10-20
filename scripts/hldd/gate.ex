@@ -242,6 +242,10 @@ defmodule Overalls.HLDDGate do
   # Source currency MUST bind its path, bytes and applicable mappings. Chapter
   # currency MUST be checked independently; a later chapter review MUST NOT
   # invalidate unrelated source reviews. Deleted targets require tombstones.
+
+  # @cc [owner:ghuntley,label:verification] hldd-chapter-removal-review
+  # A chapter removed from every current mapping MUST remain selectable for
+  # explicit deletion review through the catch-all group.
   @spec status(String.t()) :: [review()]
   def status(root), do: status(root, manifest(root)["groups"])
 
@@ -268,6 +272,10 @@ defmodule Overalls.HLDDGate do
         if kind == "source",
           do: mapping(groups, path),
           else: Enum.filter(groups, &(Path.basename(path) in &1["chapters"]))
+
+      # A removed chapter has no current association. Keep its deletion
+      # review reachable through the catch-all rather than orphan its receipt.
+      mapped = if mapped == [], do: Enum.filter(groups, &(&1["prefixes"] == [])), else: mapped
 
       state =
         cond do

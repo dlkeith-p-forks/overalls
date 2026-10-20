@@ -1398,6 +1398,8 @@ sources to relevant chapters. A source receipt binds its path, bytes and mapping
 its chapter hashes preserve the documentation inspected at review time. Later
 chapter changes require one chapter review, not repeated reviews of every source.
 Deleted sources keep explicit tombstones, and restored sources need a new review.
+A removed chapter with no remaining mapping uses the catch-all group for deletion
+review; a missing chapter still named by a mapping remains an error.
 `elixir scripts/check_hldd.exs status` lists exact stale paths. The existing
 `record GROUP updated|no-impact RATIONALE` command records only stale targets;
 repeatable `--path PATH` selectors limit it to the reviewed change. Current receipts

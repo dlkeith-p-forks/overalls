@@ -136,6 +136,8 @@ under `docs/hldd/reviews/chapters/<chapter-id>.md`. Do not edit hashes by hand.
 A source receipt retains the chapter hashes inspected during that review; later
 chapter edits require their own review and do not invalidate unrelated sources.
 Deleted sources retain reviewed tombstones; restoring them requires another review.
+After removing a chapter’s last mapping, review its deletion through the catch-all
+group. Missing chapters still named by mappings remain errors even after review.
 
 After reviewing each affected source group, record explicitly:
 

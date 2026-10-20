@@ -1,0 +1,8 @@
+@cc [owner:ghuntley,label:security;concurrency] redaction-no-plaintext-retention
+Redaction workers MUST overwrite matched text atomically and MUST NOT retain plaintext findings in run, shard, audit, diagnostic, or job metadata.
+
+@cc [owner:ghuntley,label:capacity;recovery] redaction-bounded-inactive-work
+Historical redaction MUST process only inactive machine threads in bounded batches, use short database transactions, and fence updates by the immutable profile and current content generation.
+
+@cc [owner:ghuntley,label:security] redaction-attachments-out-of-scope
+Attachment bytes and image/PDF contents MUST NOT be inspected or rewritten by the text redaction scanner.

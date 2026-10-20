@@ -416,6 +416,7 @@ defmodule MarshallWeb.Layouts do
          {"access", dgettext("shared", "Access authority"), "/admin/access"},
          {"git", dgettext("shared", "Git mirrors"), "/admin/git"},
          {"audit", dgettext("shared", "Audit"), "/admin/audit"},
+         {"redaction", dgettext("shared", "Thread redaction"), "/admin/redaction"},
          {"scim", dgettext("shared", "SCIM provisioning"), "/admin/scim"}
        ]}
     ]

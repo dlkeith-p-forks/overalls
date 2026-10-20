@@ -11,6 +11,51 @@
 msgid ""
 msgstr ""
 
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "Thread redaction"
+msgstr ""
+
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "Scrub inactive threads"
+msgstr ""
+
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "Inactive thread scrub queued."
+msgstr ""
+
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "The scrub could not be queued."
+msgstr ""
+
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "Text in prompts, model output, and tool results is scrubbed in bounded background batches. Attachments are not inspected."
+msgstr ""
+
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "Redaction history is unavailable."
+msgstr ""
+
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "Processed %{count}"
+msgstr ""
+
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "Changed %{count}"
+msgstr ""
+
+#: lib/marshall_web/live/admin/redaction_live.ex
+#, elixir-autogen, elixir-format
+msgid "Profile %{digest}"
+msgstr ""
+
 #: lib/marshall_web/live/admin/audit_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "; the next due check can then request a new generation."

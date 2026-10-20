@@ -1,6 +1,7 @@
 # Architecture reviews
 
 - [Independent HLDD reviews](2026-10-20-hldd-independent-reviews.md): ADR-0250, review isolation, safe migration and merge verification.
+- [Thread redaction (2026-10-20)](2026-10-20-thread-redaction.md): bounded inactive-machine text scrubs, profile fencing, and admin audit controls.
 
 - [Mila desktop clients and Susan WNS (2026-10-21)](2026-10-21-mila-desktop.md):
   ADR-0235's macOS and Windows clients, per-platform custody and dev/release

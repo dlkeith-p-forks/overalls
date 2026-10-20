@@ -109,6 +109,7 @@ config :marshall, Oban,
     maintenance: 2,
     github: 2,
     notifications: 5,
+    redaction: 2,
     certificates: [limit: 1, paused: true]
   ],
   lifeline: [rescue_after: {2, :hours}],
@@ -120,7 +121,8 @@ config :marshall, Oban,
        {"* * * * *", Marshall.Enrico.Worker},
        {"* * * * *", Marshall.Compute.IdleWorker},
        {"* * * * *", Marshall.Scim.RetirementWorker},
-       {"* * * * *", Marshall.GitHub.Worker, args: %{"op" => "reconcile"}}
+       {"* * * * *", Marshall.GitHub.Worker, args: %{"op" => "reconcile"}},
+       {"15 * * * *", Marshall.Redaction.SweepWorker}
      ]}
   ]
 

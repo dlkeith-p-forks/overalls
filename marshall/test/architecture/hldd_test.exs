@@ -704,6 +704,32 @@ defmodule Overalls.HLDDTest do
     assert receipt["data"]["migration"]["system"]["source_digest"] == hd(groups)["source_digest"]
   end
 
+  test "a removed chapter remains reviewable after its last mapping is removed", %{root: root} do
+    fixture(root)
+    HLDDGate.record(root, "system", "updated", "Initial reviewed fixture and complete chapters")
+    chapter = "marshall/priv/hldd/01-system.md"
+    [group] = HLDDGate.manifest(root)["groups"]
+
+    Overalls.HLDDDocuments.write([
+      %{
+        "path" => Path.join(root, "docs/hldd/groups/system.yaml"),
+        "data" => %{group | "chapters" => group["chapters"] -- ["01-system.md"]}
+      }
+    ])
+
+    File.rm!(Path.join(root, chapter))
+    assert Enum.any?(stale(root), &(&1.path == chapter and &1.groups == ["system"]))
+
+    HLDDGate.record(
+      root,
+      "system",
+      "updated",
+      "Removed the fixture chapter and reviewed the remaining mappings"
+    )
+
+    assert HLDDGate.check(root) == []
+  end
+
   @spec stale(String.t()) :: [HLDDGate.review()]
   defp stale(root), do: Enum.reject(HLDDGate.status(root), &(&1.status == "current"))
 

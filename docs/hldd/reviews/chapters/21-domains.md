@@ -1,32 +1,32 @@
 ---
-digest: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
+digest: 68866597842c524f9f563a37b978a4464974ca2b21a486c94f60ecd1edd6b2da
 disposition: no-impact
 kind: chapter
 mapping_digest: null
 migration:
   deployment:
-    chapter_digest: 9a9e9255eb86fa91f3418b1c398853a745a51fd15f2f5eca5737439f6caf08c2
+    chapter_digest: 4f5066da691ca599174d9497e85d3e9aae8b4c2ac4cd217fab5c3e1194e7fe04
     source_digest: 32939571a328dfb45510183c422eecb46bdb38fa777346f23c0fd9cc2bb9c079
   governance:
-    chapter_digest: 751ceb5fdfcc269772d47964ba027021dfc5bbf898375b131030c5c474f3edc0
-    source_digest: 9d32ce22ccb4f120978a3e89a9ead131666dc31eab3a6227ca7efab86556993c
+    chapter_digest: e3add24016a33b2c75232d8f9bf0be50143364240352a9e93cd9c7783e1fdfc5
+    source_digest: b35bdf2970cb4cc25c93417e188ba4e43594bdd33b7e4afab3b340b60a27f704
   lilly:
-    chapter_digest: 985473887db844b21221e9cd15fc4274003de7e7113e496f5a79143075489161
+    chapter_digest: b91feca7cba21da41cabb7a8ef3fd116ead4830e9e8409f82b32940452a6797e
     source_digest: 2b3fed271b8c7d9725d4b0ab37d59c1d7e6d8292013cf4927f5a66f57ebc968c
   marshall:
-    chapter_digest: 611713216c60038ac614a76a8aa4c5cb29f705024b6f3d45fb4b34d1ac794463
-    source_digest: 66cd97c314ea56b581e84f078c4745e952d0cd805117b65f0d777dadac728694
+    chapter_digest: e2d0b2a88a96457b192f28966923a0d5aef7690102833313b039acbe392a786b
+    source_digest: c91e1c283771b3bd85228b0767787fd552c5b4327efb2fb6438d4c86250d2cf2
   mila:
-    chapter_digest: e55458d450e8c1eb96b0135d17becedf97db36241e5503077036be57c28ce3f1
-    source_digest: 67fa642ad4ad7cbc69bcbfdf12a38549302a7842f95213c629565a0f99bfed28
+    chapter_digest: d5e850eb30cf89acfc1a40386a701ca06a8adc2df7bf317748adda9601b411b1
+    source_digest: 7fa241b31dfb6c46be8875dd1213bee70870f2e70eff829797bba7c8d87b3aa8
   protocol:
-    chapter_digest: 6ad8755133568a29871821ead8496649cf2eb94dd919470761b790d2b8335ec1
+    chapter_digest: 88ec31c6e2c2dff08d8ab9f759e08060b597de5c3d29d4592ca97f00e3379473
     source_digest: baafb9219dcfb35323e5f8ac2408613cc9637c63de94aa8d58146da77693afa3
   services:
-    chapter_digest: 01147e4e7aa57b2b7cd7dc49e393607ec0a4e3a550334d3e00311d6a075eb59b
-    source_digest: 16a7457f7a3e51f0d7cbeddb3a83a05890620aab8900bf099a9fb4ac0ce4ab19
+    chapter_digest: 814a89851d665a013ca390668c64225a3ee82e847bc7c241f5faa3bd3ef5f7bd
+    source_digest: fe1369b0e91d3bb3572ceb09331a854dd601b4f0887a079f3741d5d3ab022ae0
   system:
-    chapter_digest: 494e592f230e1f0b746f9eb420ba17cb4c837f31d5d2ce870eac56d922c369a5
+    chapter_digest: cb1f603dd3665ed298e84411839ffaf084bd8f677d1b8cd5d8318fa09b9097b9
     source_digest: 47039dcaa34d541ff79bf833ddd72228d68396789313d69ec0e6a326674277ee
 path: marshall/priv/hldd/21-domains.md
 reviewed_chapters: {}
@@ -34,18 +34,18 @@ state: present
 version: 2
 ---
 
-system: Reviewed the Mila transport model additions; they do not add Ash domains, hosts, deployment topology, or system handbook behavior.
+system: Reviewed concurrent native migration and FFI changes; no chapter update required for this group.
 
-marshall: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
+marshall: Reviewed concurrent native migration and FFI changes; no chapter update required for this group.
 
-protocol: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
+protocol: Reviewed concurrent native migration and FFI changes; no chapter update required for this group.
 
-lilly: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
+lilly: Reviewed concurrent native migration and FFI changes; no chapter update required for this group.
 
-services: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
+services: Reviewed CI workflow-only change; no services HLDD behavior changed.
 
-deployment: Reviewed the Android SDK setup correction; it only makes the native CI job install declared API 36 build inputs and does not alter deployment roles or runtime behavior.
+deployment: Reviewed concurrent native migration and FFI changes; no chapter update required for this group.
 
-governance: Reviewed the Apple native compile fixes for route hashing and list identity; they preserve the documented native scaffold behavior.
+governance: Reviewed concurrent native migration and FFI changes; no chapter update required for this group.
 
-mila: Reviewed the Rust FFI trust-document, push-registration, terminal and watch validation probes; they preserve existing native boundary behavior and do not change handbook deployment, security, or topology contracts.
+mila: Added typed Rust snapshot persistence coordinator using existing SnapshotStore boundary; no documented behavior or topology changed.

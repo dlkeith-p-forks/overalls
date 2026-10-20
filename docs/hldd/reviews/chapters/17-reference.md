@@ -1,5 +1,5 @@
 ---
-digest: f873720e39141ec28babf1da9573796b2d87067b2f8779ea16340d22afb90576
+digest: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed ADR-0250, gate, migration, YAML parser, maintenance skill and contributor workflow. Chapter 17 describes independent source/chapter currency, tombstones and selected-path reviews. Historical scenario links now point to the split ledger without changing their execution claims.
+Reviewed and documented catch-all deletion review for chapters after their last mapping is removed, while preserving refusal of still-mapped missing chapters. The final merged-tree run passes all 33 HLDD regressions, including this edge case; workflow, contract and evidence records agree with chapter 17.
