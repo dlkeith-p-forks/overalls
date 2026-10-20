@@ -1,6 +1,20 @@
 defmodule Marshall.Redaction.ScannerTest do
   use ExUnit.Case, async: true
+  use ExUnitProperties
   alias Marshall.Redaction.Scanner
+
+  property "redaction is idempotent for generated secret-bearing text" do
+    check all prefix <- string(:alphanumeric, min_length: 0, max_length: 32),
+              suffix <- string(:alphanumeric, min_length: 0, max_length: 32),
+              token <- string(:alphanumeric, length: 24) do
+      input = prefix <> " ghp_" <> token <> " " <> suffix
+      first = Scanner.redact(input)
+      second = Scanner.redact(first.value)
+
+      assert second.value == first.value
+      assert Enum.all?(second.findings, &(&1.count == 0))
+    end
+  end
 
   test "redacts supported text and is idempotent" do
     secret = "ghp_" <> String.duplicate("A", 24)
