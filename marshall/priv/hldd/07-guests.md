@@ -861,7 +861,8 @@ receipts and four additional Arch/Alma read-only sudo/helper checks at distinct
 times and recorded revision contexts. Fresh OmniOS `122228` supplies the owner
 checkpoint missing from its earlier `091638` journey. This scoped milestone
 does not establish a simultaneous same-revision run, broader enabled-capability
-acceptance, revocation, native isolation, interrupted growth or physical recovery.
+acceptance, revocation, native isolation or physical recovery; native interrupted
+growth is covered separately by ADR-0243 fixtures, not by this milestone.
 
 Windows fleet staging/registration selects `windowsGuestPublished`, a
 recursive-hash fixed-output copy of the reviewed 64 GiB Desktop Experience
@@ -1282,7 +1283,11 @@ covered separately by `native-freebsd-wrong-cid`. That test boots a test-only
 FreeBSD fault kernel, whose distinct build identity keeps it out of every
 promoted image. Before its probe listens, it requires the kernel decoder to
 refuse injected wrong-CID and length-mismatched frames, and requires a correctly
-addressed control frame to reach the listener.
+addressed control frame to reach the listener. The same test then streams
+traffic into a guest socket while the probe injects 64 racing invalid resets
+through the driver's configuration-change path; the blocked reader must wake,
+new sockets must fail with `ENXIO`, and the host must find the probe port
+closed. Production kernels carry neither test OID.
 A separate test-only FreeBSD image passed one actual Firecracker pause,
 full-snapshot and resume transport event: idle socket identity refused with
 `ECONNRESET`, pending accept/read/write calls woke with errors and fresh sockets
@@ -1291,9 +1296,31 @@ native review. This is separate from the final service image and does not
 establish reset-race stress, DMA reclamation, physical or OmniOS behavior.
 The persisted `native-freebsd-reset` nested-KVM gate subsequently passed in
 232 seconds with the same socket outcomes and exact image/kernel/probe/firmware/
-VMM receipts in the review. Both native test probes cross-compile; only FreeBSD
-has recorded event execution. Its private fixture Unix API adds no production
-control or ordinary guest TCP surface.
+VMM receipts in the review. Both native test probes cross-compile. Its private
+fixture Unix API adds no production control or ordinary guest TCP surface.
+
+OmniOS module assembly also runs as a Nix derivation,
+[`omnios-image-candidate`](repo:nix/domains/artifacts/guest/omnios/assembly.nix).
+It needs the `kvm` system feature and boots the pinned stock image offline in
+QEMU twice. The guest's Solaris `ld` links the nine modules, and
+`native_image.py assemble` installs them into a separate scratch copy. Both
+copies share ZFS vdev GUIDs, so only the administration disk is bootable and the
+scratch slice is selected by its ZFS label. The receipt checker binds the build
+ID, pool GUID, stock `unix` digest and raw disk. Every module built from
+unchanged objects must match the promoted `45983bb7` digest. Two executions
+produced the identical assembly receipt; the raw disks differ in ZFS GUIDs,
+transaction groups, timestamps, the SMF repository and the boot archive. The
+output keeps `native_admission=false` and replaces no promotion.
+
+The formal `native-omnios-transport` and `native-omnios-reset` nested-KVM gates
+consume that candidate. Reset passed in 721.76 seconds: three 204 API responses,
+idle/read/write refusals, original listener reuse and current-CID revalidation.
+Transport passed both clean boots in 761.59 seconds with the complete service
+oracle, the nine echo sizes through 1 MiB, same-boot production restoration and
+loaded viosock/sockvsock file digests equal to the assembly receipt. An earlier
+transport run on the same inputs timed out sending SSH `poweroff`; that
+intermittent shutdown failure is undiagnosed. Wrong-CID injection, DMA/race
+stress, bit-reproducible disks and admission remain open.
 
 Native boot now includes a root-only mounted-root growth helper before MMDS
 identity and network. It verifies both GPT copies/CRCs, exact disk/partition
@@ -1312,7 +1339,17 @@ boots/two expansions with complete service oracles, preserved data and strict
 EFI inventories (only bounded root `NvVars` mutable). The final reviewed
 blocking-flush image passed all five services/growth/policy/daemon-recovery/
 same-disk SIGKILL-recovery variants, with exact image and immutable receipt paths
-in the native review. The recorded source-qualified OmniOS growth replay separately covers three clean boots and two expansions; interrupted expansion remains open.
+in the native review. The recorded source-qualified OmniOS growth replay separately covers three clean boots and two expansions.
+[ADR-0243](repo:docs/architecture/decisions/0243-native-guest-durability-verification.md)
+native durability tests then SIGKILL Firecracker at traced growth writes past
+the old disk end in two stages. Each following boot must pass UFS fsck or a
+zero-error ZFS scrub, report the old or new root size and complete growth.
+The same tests replay a dm-log-writes host journal prefix to model power loss.
+They also move a stopped disk between two nested hosts with ZFS send/receive
+and boot it under a new placement. The corrected FreeBSD candidate and the
+promoted OmniOS image passed all three under production Writeback drive
+caching. FreeBSD flush receipts now require a `DIOCGFLUSH` device cache flush
+after UFS resume; the promoted FreeBSD image predates that fix.
 This adds a tenth production executable
 per OS beyond the recorded eighteen-executable package. OmniOS's offline SMF
 profile disables all four stock cloud-init instances and stock SSH; only

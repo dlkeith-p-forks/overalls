@@ -15,7 +15,11 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
     flush: false,
     agents: false,
     editor: false,
-    inception: false
+    inception: false,
+    android_sdk: false,
+    adb: false,
+    android_emulator: false,
+    android_display: false
   }
 
   # @cc [owner:ghuntley,label:verification;security] image-guest-agents-identity-property
@@ -80,7 +84,11 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
              flush: true,
              agents: true,
              editor: true,
-             inception: true
+             inception: true,
+             android_sdk: false,
+             adb: false,
+             android_emulator: false,
+             android_display: false
            }
 
     for image <- [nil, %{}, %{id: validated.id, manifest: nil}, %{validated | id: "wrong"}] do
@@ -169,7 +177,11 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
              flush: true,
              agents: true,
              editor: false,
-             inception: false
+             inception: false,
+             android_sdk: false,
+             adb: false,
+             android_emulator: false,
+             android_display: false
            }
 
     for path <- [["root", "sha256"], ["boot", "firmware", "sha256"], ["kernel", "sha256"]] do

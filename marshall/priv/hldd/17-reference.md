@@ -825,6 +825,10 @@ native links and 764 payload checks, native validation of three manifests and
 the exact four stock-network removals. Read-only receipt extraction and clean
 shutdown sealed disk `24318238`; normal persistent-image replay remains pending.
 This is a recorded target-native assembly, not a reproducibly Nix-built image.
+`omnios-image-candidate` performs the same link/install inside a `kvm` Nix
+build and feeds the formal `native-omnios-transport` and `native-omnios-reset`
+checks; its assembly receipt reproduces, its raw disk does not, and it keeps
+`native_admission=false`.
 The completion-corrected `76b8c1ad` object build passed all four host gates,
 including 161 source-extracted completion histories and four rejected mutants.
 Its separate pristine native assembly passed the same nine-module/764-entry/

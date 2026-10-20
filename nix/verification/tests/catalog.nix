@@ -216,8 +216,21 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   native-freebsd-crash-recovery = import ./machines/native-services { pkgs = testPkgs; inherit packages; crash = true; };
   # OmniOS/illumos uses the separately promoted image. The explicit admission
   # opt-in keeps these test receipts scoped to verification; each runner still
-  # emits native_admission=false. Formal OmniOS transport/reset remain absent
-  # because their runners require a non-admitted candidate image plus probe.
+  # emits native_admission=false. Formal OmniOS transport/reset instead use the
+  # non-admitted Nix KVM-assembled candidate, whose test-only manifest binds the
+  # transport token, assembly receipt and raw disk the runners require.
+  native-omnios-transport = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosImageCandidate;
+    osName = "illumos"; transport = true;
+    transportProbe = "${packages.lyra.native.probes}/bin/x86_64-unknown-illumos-overalls-native-transport-probe";
+    transportBuildId = packages.omniosImageCandidate.buildId;
+  };
+  native-omnios-reset = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosImageCandidate;
+    osName = "illumos"; transportReset = true;
+    transportProbe = "${import ./evaluation/native-reset-probes.nix { pkgs = buildPkgs; inherit packages; }}/bin/illumos-reset-probe";
+    transportBuildId = packages.omniosImageCandidate.buildId;
+  };
   native-omnios-services = import ./machines/native-services {
     pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
     osName = "illumos"; allowNativeAdmission = true;
@@ -237,6 +250,29 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   native-omnios-crash-recovery = import ./machines/native-services {
     pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
     osName = "illumos"; crash = true; allowNativeAdmission = true;
+  };
+  # Native durability (ADR-0190, ADR-0243): interrupted root growth, host power loss
+  # replayed from a dm-log-writes journal, and two-host ZFS relocation.
+  native-freebsd-interrupted-growth = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "interrupted-growth";
+  };
+  native-freebsd-power-loss = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "power-loss";
+  };
+  native-freebsd-relocation = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "relocation";
+  };
+  native-omnios-interrupted-growth = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "interrupted-growth";
+    image = packages.omniosGuest; osName = "illumos"; allowNativeAdmission = true;
+  };
+  native-omnios-power-loss = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "power-loss";
+    image = packages.omniosGuest; osName = "illumos"; allowNativeAdmission = true;
+  };
+  native-omnios-relocation = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "relocation";
+    image = packages.omniosGuest; osName = "illumos"; allowNativeAdmission = true;
   };
   windows-firmware = packages.windowsFirmware;
   windows-guest-unit = import ./evaluation/windows-guest.nix { pkgs = buildPkgs; inherit packages; };

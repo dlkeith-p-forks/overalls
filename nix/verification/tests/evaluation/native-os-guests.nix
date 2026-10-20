@@ -58,8 +58,16 @@ assert packages.omniosGuest.nativeAdmission;
 assert packages.omniosGuest.runtimeValidated;
 assert !packages.omniosImageCandidateKit.nativeAdmission;
 assert !packages.omniosImageCandidateKit.runtimeValidated;
-# Formal OmniOS transport/reset catalog entries remain closed until a
-# non-admitted candidate image and separate illumos probe are published.
+# The Nix KVM-assembled OmniOS candidate is test-only input to the formal
+# transport/reset runners. It never opens admission or replaces the promotion.
+assert !packages.omniosImageCandidate.nativeAdmission;
+assert !packages.omniosImageCandidate.runtimeValidated;
+assert !packages.omniosImageCandidate.imageAssemblyReady;
+assert !packages.omniosImageCandidate.reproducibleRawDisk;
+assert packages.omniosImageCandidate.buildId == packages.omniosImageCandidateKit.kernel.buildId;
+assert lib.elem "kvm" packages.omniosImageCandidate.requiredSystemFeatures;
+assert lib.hasInfix "native_image.py\" assemble" (builtins.readFile ../../../domains/artifacts/guest/omnios/guest-assemble.sh);
+assert toString packages.omniosGuest != toString packages.omniosImageCandidate;
 assert !(packages ? illumosTransportProbeImage);
 assert !freebsd.passthru.kernelReady;
 assert !omnios.passthru.kernelReady;
