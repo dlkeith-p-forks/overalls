@@ -7,5 +7,7 @@
     name = "panterloons";
     adminAddress = "100.98.214.120";
     otelWorker = "dungarees";
+    # Dungarees is a gateway peer in its tunnel, as it was for Overalls.
+    audiRelay = true;
   };
 }

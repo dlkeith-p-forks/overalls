@@ -675,10 +675,46 @@ disabled in the base profile. The service allowlist lives in
 ```mermaid
 flowchart LR
   host["dungarees"]
-
+  host --> s0["audi"]
+  host --> s1["audiDns"]
+  host --> s2["audiDnsRequestRecorder"]
+  host --> s3["audiDnsSloExporter"]
+  host --> s4["audiPrivate"]
+  host --> s5["audiPrivateRequestRecorder"]
+  host --> s6["audiPrivateSloExporter"]
+  host --> s7["audiSshRequestRecorder"]
+  host --> s8["audiSshSloExporter"]
+  host --> s9["brady"]
+  host --> s10["bradyRequestRecorder"]
+  host --> s11["bradySloExporter"]
+  host --> s12["galileo"]
+  host --> s13["galileoRequestRecorder"]
+  host --> s14["galileoSloExporter"]
+  host --> s15["lilly"]
+  host --> s16["lillyHostd"]
+  host --> s17["lillyTransfer"]
+  host --> s18["opentelemetry-collector"]
+  host --> s19["overalls-trace-audi"]
+  host --> s20["overalls-trace-audi-dns"]
+  host --> s21["overalls-trace-audi-private"]
+  host --> s22["overalls-trace-brady"]
+  host --> s23["overalls-trace-galileo"]
+  host --> s24["overalls-trace-lilly"]
+  host --> s25["overalls-trace-ziggy"]
+  host --> s26["overallsAutoUpdate"]
+  host --> s27["overallsFleetExporter"]
+  host --> s28["overallsLogging"]
+  host --> s29["overallsOtelFleet"]
+  host --> s30["overallsOtelGuest"]
+  host --> s31["underclass"]
+  host --> s32["underclassEgress"]
+  host --> s33["underclassMonitorProbe"]
+  host --> s34["underclassProxySloExporter"]
+  host --> s35["ziggy"]
+  host --> s36["ziggySloExporter"]
 ```
 
-Arrows mean configured service placement. Configuration: `dungarees-base`. Marshall instances: none. Fleet address: `disabled`. Fleet peers: none. Administrative SSH ports: 22.
+Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `panterloons`. Administrative SSH ports: 2222.
 
 ### overalls
 
