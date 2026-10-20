@@ -6,6 +6,7 @@ import hashlib
 import socket
 import struct
 import threading
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -113,3 +114,51 @@ def exercise(uds: Path, build_id: str) -> list[Exchange]:
         exchange(uds, build_id, size)
         for size in (0, 1, 44, 4096, 65_535, 65_536, 65_537, 262_144, MAX_BYTES)
     ]
+
+
+RESET_PORT = 1101
+
+
+def reset_race(uds: Path, serial: Path) -> None:
+    """Stream into the fault probe until its racing resets fence the transport.
+
+    The guest reports its verdict only on the console. Afterwards the ordinary
+    listener must be unreachable because the device stopped.
+    """
+    stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    try:
+        stream.settimeout(10)
+        stream.connect(str(uds))
+        stream.sendall(f"CONNECT {RESET_PORT}\n".encode("ascii"))
+        if not read_line(stream, 64).startswith(b"OK "):
+            raise RuntimeError("reset-race listener handshake failed")
+        chunk = bytes(65_536)
+        deadline = time.monotonic() + 15
+        try:
+            while time.monotonic() < deadline:
+                stream.sendall(chunk)
+        except OSError:
+            pass
+    finally:
+        stream.close()
+    deadline = time.monotonic() + 20
+    while True:
+        text = serial.read_bytes().decode("utf-8", "replace")
+        if "OVFB-RESET-RACE pass" in text:
+            break
+        if "OVFB-RESET-RACE fail" in text or time.monotonic() >= deadline:
+            raise RuntimeError("guest did not report a fenced reset race")
+        time.sleep(0.5)
+    probe = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    try:
+        probe.settimeout(5)
+        probe.connect(str(uds))
+        probe.sendall(f"CONNECT {PORT}\n".encode("ascii"))
+        try:
+            reply = read_line(probe, 64)
+        except (OSError, RuntimeError):
+            return
+        if reply.startswith(b"OK "):
+            raise RuntimeError("fenced transport still accepted a connection")
+    finally:
+        probe.close()

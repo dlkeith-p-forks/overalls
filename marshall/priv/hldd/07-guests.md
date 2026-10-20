@@ -1282,7 +1282,11 @@ covered separately by `native-freebsd-wrong-cid`. That test boots a test-only
 FreeBSD fault kernel, whose distinct build identity keeps it out of every
 promoted image. Before its probe listens, it requires the kernel decoder to
 refuse injected wrong-CID and length-mismatched frames, and requires a correctly
-addressed control frame to reach the listener.
+addressed control frame to reach the listener. The same test then streams
+traffic into a guest socket while the probe injects 64 racing invalid resets
+through the driver's configuration-change path; the blocked reader must wake,
+new sockets must fail with `ENXIO`, and the host must find the probe port
+closed. Production kernels carry neither test OID.
 A separate test-only FreeBSD image passed one actual Firecracker pause,
 full-snapshot and resume transport event: idle socket identity refused with
 `ECONNRESET`, pending accept/read/write calls woke with errors and fresh sockets

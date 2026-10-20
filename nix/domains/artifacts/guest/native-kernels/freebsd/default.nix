@@ -160,8 +160,9 @@ pkgs.runCommand "overalls-freebsd-kernel-${if faultInjection then "fault" else "
   done
   ${if faultInjection then ''
     grep -Eq " [Tt] ovfb_fault_inject$" "$evidence/symbols"
+    grep -Eq " [Tt] ovfb_fault_reset$" "$evidence/symbols"
   '' else ''
-    if grep -Eq " [Tt] ovfb_fault_inject$" "$evidence/symbols"; then exit 1; fi
+    if grep -Eq " [Tt] ovfb_fault_(inject|reset)$" "$evidence/symbols"; then exit 1; fi
   ''}
   bytes=$(stat -c %s "$out/kernel")
   test "$bytes" -gt 1024

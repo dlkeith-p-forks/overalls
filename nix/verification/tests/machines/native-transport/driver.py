@@ -18,7 +18,8 @@ host.succeed(
     " /work/native/transport-receipt.json"
 )
 host.succeed(
-    "jq -e '.fault_injection == $f and .wrong_cid_injection_refused == $f'"
+    "jq -e '.fault_injection == $f and .wrong_cid_injection_refused == $f"
+    " and .reset_race_fenced == $f'"
     f" --argjson f {'true' if fault_injection else 'false'}"
     " /work/native/transport-receipt.json"
 )

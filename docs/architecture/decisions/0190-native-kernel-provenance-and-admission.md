@@ -105,8 +105,9 @@ browser journey; those remain separately recorded acceptance obligations.
    and the Lilly jail test prove bounded metadata and the native firmware
    configuration only. The recorded native receipts prove only their named
    FreeBSD and OmniOS nested-KVM scenarios. The separate test-only FreeBSD
-   fault-kernel receipt establishes FreeBSD kernel wrong-CID frame refusal only.
-   They do not imply OmniOS wrong-CID refusal or reset/DMA safety, direct peer-VM or host isolation, physical durability,
+   fault-kernel receipt establishes FreeBSD kernel wrong-CID frame refusal and
+   fencing under racing invalid resets only.
+   They do not imply OmniOS wrong-CID refusal or reset safety, DMA safety, direct peer-VM or host isolation, physical durability,
    relocation or Marshall fleet acceptance.
 7. **Native admission is boot-bound and fail closed.** Before credentials or
    readiness, Lilly requires an `attested` response from the jail-local probe
@@ -702,7 +703,7 @@ publication, admission or selection; the failure cause remains unestablished.
 - Reproducible native full-disk assembly remains unrecorded. The exact FreeBSD
   and OmniOS artifacts are promoted by reviewed immutable bytes and hash-bound native
   evidence; candidate manifests alone remain insufficient.
-- OmniOS wrong-CID injection, repeated/racing reset and DMA safety, physical
+- OmniOS wrong-CID injection, valid-reset races and DMA safety, physical
   recovery and broader isolation retain separate gaps. The one reset receipt
   and exact image promotion do not establish those broader guarantees or admit
   unrelated members of either native family.

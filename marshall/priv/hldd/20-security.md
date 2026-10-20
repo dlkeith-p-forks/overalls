@@ -1218,8 +1218,12 @@ test-only FreeBSD fault kernel injects raw frames through the real receive path.
 Under nested KVM and Firecracker it refused twelve wrong-source and
 wrong-destination CID frames, including CIDs with upper 32-bit bits set, plus a
 length-mismatched frame, with `EBADMSG` and no listener effect. A correctly
-addressed control frame reached the listener. Production kernels carry no
-injection OID. OmniOS wrong-CID injection, malformed DMA, reset, native crash durability and broader isolation evidence
+addressed control frame reached the listener. In the same run, 64 racing
+invalid resets injected through the driver's configuration-change path, during
+live receive traffic, fenced the socket domain: the blocked reader woke, new
+sockets failed with `ENXIO` and the host could not reconnect. Production kernels
+carry neither injection OID. OmniOS wrong-CID injection, malformed DMA, valid
+reset events racing traffic, native crash durability and broader isolation evidence
 remain gaps; scoped growth/recovery and IPv4/router/TAP results are recorded
 separately below. The
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md)

@@ -60,3 +60,38 @@ ovfb_fault_inject(SYSCTL_HANDLER_ARGS)
 SYSCTL_PROC(_debug, OID_AUTO, overalls_vsock_inject,
     CTLTYPE_OPAQUE | CTLFLAG_WR | CTLFLAG_MPSAFE, NULL, 0, ovfb_fault_inject,
     "S", "Overalls test-only: inject one raw received vsock frame");
+
+/** @cc [owner:ghuntley,label:verification;recovery] freebsd-fault-reset-race
+ * A privileged write of 1 MUST raise the same pending-reset condition as an
+ * unexpected device configuration change through ovfb_config_change, so the
+ * real receive task observes an invalid reset, fences every socket and stops
+ * the device. Repeated writes MAY race live traffic and each other; they MUST
+ * NOT bypass the task's domain lock or touch socket state directly.
+ */
+static int
+ovfb_fault_reset(SYSCTL_HANDLER_ARGS)
+{
+    int value = 0;
+    int error;
+
+    error = sysctl_handle_int(oidp, &value, 0, req);
+    if (error != 0 || req->newptr == NULL)
+        return (error);
+    if (value != 1)
+        return (EINVAL);
+    error = priv_check(req->td, PRIV_DRIVER);
+    if (error != 0)
+        return (error);
+    sx_xlock(&ovfb_domain_lock);
+    if (ovfb_device == NULL) {
+        sx_xunlock(&ovfb_domain_lock);
+        return (ENXIO);
+    }
+    error = ovfb_config_change(ovfb_device->dev);
+    sx_xunlock(&ovfb_domain_lock);
+    return (error);
+}
+
+SYSCTL_PROC(_debug, OID_AUTO, overalls_vsock_inject_reset,
+    CTLTYPE_INT | CTLFLAG_WR | CTLFLAG_MPSAFE, NULL, 0, ovfb_fault_reset,
+    "I", "Overalls test-only: raise an unexpected device reset");

@@ -369,6 +369,74 @@ mod native {
         Ok(())
     }
 
+    #[cfg(target_os = "freebsd")]
+    const RESET_PORT: u32 = 1101;
+
+    #[cfg(target_os = "freebsd")]
+    fn inject_reset() -> Result<(), libc::c_int> {
+        let value: libc::c_int = 1;
+        // SAFETY: the OID name is NUL-terminated; value is a live integer
+        // input and no output buffer is requested.
+        let result = unsafe {
+            libc::sysctlbyname(
+                c"debug.overalls_vsock_inject_reset".as_ptr(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                (&raw const value).cast(),
+                size_of::<libc::c_int>(),
+            )
+        };
+        if result == 0 {
+            Ok(())
+        } else {
+            Err(io::Error::last_os_error().raw_os_error().unwrap_or(0))
+        }
+    }
+
+    /// @cc [owner:ghuntley,label:verification;recovery] native-test-reset-race
+    /// On the fault kernel, while the host streams into an accepted
+    /// connection, 64 racing unexpected-reset events MUST fence the transport:
+    /// the blocked reader MUST wake with an error or EOF within five seconds,
+    /// and new socket creation MUST then refuse with ENXIO. The result is
+    /// reported only on the console, after every listener has been fenced.
+    #[cfg(target_os = "freebsd")]
+    fn reset_race(race: &Listener) -> io::Result<()> {
+        use std::sync::mpsc;
+        use std::time::Duration;
+        let mut connection = race.accept()?;
+        let (sender, receiver) = mpsc::channel();
+        std::thread::spawn(move || {
+            let mut buffer = [0_u8; 16_384];
+            let mut total = 0_usize;
+            let outcome = loop {
+                match connection.read(&mut buffer) {
+                    Ok(0) => break Ok(total),
+                    Ok(count) => total += count,
+                    Err(error) => break Err(error),
+                }
+            };
+            let _ = sender.send(outcome);
+        });
+        std::thread::sleep(Duration::from_millis(500));
+        if inject_reset().is_err() {
+            return Err(io::Error::other("first reset injection failed"));
+        }
+        for _ in 1..64 {
+            match inject_reset() {
+                Ok(()) | Err(libc::ENXIO) => {}
+                Err(_) => return Err(io::Error::other("racing reset injection failed")),
+            }
+        }
+        match receiver.recv_timeout(Duration::from_secs(5)) {
+            Ok(Err(_) | Ok(_)) => {}
+            Err(_) => return Err(io::Error::other("blocked reader did not wake")),
+        }
+        match socket() {
+            Err(error) if error.raw_os_error() == Some(libc::ENXIO) => Ok(()),
+            _ => Err(io::Error::other("fenced transport created a socket")),
+        }
+    }
+
     pub fn run(require_fault_injection: bool) -> io::Result<()> {
         boundaries()?;
         if require_fault_injection {
@@ -379,8 +447,34 @@ mod native {
         }
         let listener = Listener::bind(PORT, 8)?;
         let initial = kernel_probe::verified_build_id(&listener)?;
+        #[cfg(target_os = "freebsd")]
+        let race = if require_fault_injection {
+            let race = Listener::bind(RESET_PORT, 1)?;
+            Some(std::thread::spawn(move || {
+                let verdict = if reset_race(&race).is_ok() {
+                    "pass"
+                } else {
+                    "fail"
+                };
+                println!("OVFB-RESET-RACE {verdict}");
+                let _ = io::stdout().flush();
+            }))
+        } else {
+            None
+        };
         loop {
-            let mut connection = listener.accept()?;
+            let mut connection = match listener.accept() {
+                Ok(connection) => connection,
+                Err(error) => {
+                    // The fenced listener wakes first; keep the process alive
+                    // until the race thread has reported its console verdict.
+                    #[cfg(target_os = "freebsd")]
+                    if let Some(race) = race {
+                        let _ = race.join();
+                    }
+                    return Err(error);
+                }
+            };
             if kernel_probe::verified_build_id(&listener)? != initial {
                 return Err(io::Error::other("changed transport identity"));
             }

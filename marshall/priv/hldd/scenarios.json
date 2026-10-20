@@ -12678,9 +12678,9 @@
           "execution": "recorded",
           "path": "nix/verification/tests/machines/native-transport/driver.py",
           "assertion": ".fault_injection == $f and .wrong_cid_injection_refused == $f",
-          "scope": "Test-only FreeBSD fault kernel ade4982b under nested KVM/Firecracker 1.16.1: twelve wrong-source/destination CID REQUEST frames (including upper-32-bit CIDs) and one length-mismatched frame returned EBADMSG with no listener effect; a correctly addressed control frame reached the listener; ordinary token/CID/ABI/nine-size checks also passed. Production kernels carry no injection OID. No OmniOS, DMA, reset-race or isolation claim.",
+          "scope": "Test-only FreeBSD fault kernel 6a8a404e under nested KVM/Firecracker 1.16.1 (220.5 s): twelve wrong-source/destination CID REQUEST frames (including upper-32-bit CIDs) and one length-mismatched frame returned EBADMSG with no listener effect; a correctly addressed control frame reached the listener; 64 racing invalid resets during live receive traffic woke the blocked reader, made socket() fail with ENXIO and closed the probe port; ordinary token/CID/ABI/nine-size checks also passed. Production kernels carry neither injection OID. No OmniOS, DMA, valid-reset race or isolation claim.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
-          "record_assertion": "`native-freebsd-wrong-cid` (derivation"
+          "record_assertion": "### FreeBSD native reset race"
         }
       ]
     },

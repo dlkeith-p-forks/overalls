@@ -11,7 +11,7 @@ import time
 from dataclasses import asdict
 from pathlib import Path
 
-from native_transport import connect, exercise
+from native_transport import connect, exercise, reset_race
 
 
 def digest(path: Path) -> str:
@@ -73,6 +73,8 @@ def run(
                         ) from None
                     time.sleep(0.5)
             exchanges = exercise(uds, build_id)
+            if fault_injection:
+                reset_race(uds, work / "serial.log")
             receipt = {
                 "version": 1,
                 "os": os_name,
@@ -85,6 +87,7 @@ def run(
                 "malformed_length_refused": True,
                 "fault_injection": fault_injection,
                 "wrong_cid_injection_refused": fault_injection,
+                "reset_race_fenced": fault_injection,
                 "disconnected_history_recovered": True,
                 "exchanges": [asdict(result) for result in exchanges],
                 "native_admission": False,

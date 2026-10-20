@@ -1704,3 +1704,39 @@ OmniOS wrong-CID refusal, malformed DMA descriptors, reset races, peer-VM or
 physical-host isolation, or production admission. The production FreeBSD kernel
 does not contain the injection OID.
 
+
+### FreeBSD native reset race
+
+The fault kernel now also exposes a root-only `debug.overalls_vsock_inject_reset`
+OID. A write of 1 calls the driver's own `ovfb_config_change`, so the real
+receive task sees an unexpected configuration change, treats it as an invalid
+reset, fences every socket and stops the device. The OID never touches socket
+state itself. Both test OIDs exist only in the `GENERIC-OVERALLS-FAULT` build;
+the production recipe now fails if either `ovfb_fault_inject` or
+`ovfb_fault_reset` appears in its symbols, and the fault recipe fails if either
+is missing.
+
+After the wrong-CID checks, the fault probe accepts one connection on port 1101
+while the host streams 64 KiB writes into it from a reader thread. The probe
+then injects 64 resets: the first must succeed, and later ones may only succeed
+or return `ENXIO` once the device has stopped. The blocked reader must wake
+within 5 seconds, and a new `socket()` must then fail with `ENXIO`. The guest
+prints its verdict on the console. The host requires `OVFB-RESET-RACE pass`, and
+then requires the ordinary probe port to refuse a new connection.
+
+`native-freebsd-wrong-cid` (derivation
+`/nix/store/f4zcmpsa85xay1lf2bipcj92sdpd8ngm-vm-test-run-overalls-freebsd-native-wrong-cid.drv`)
+passed under nested KVM and the patched Firecracker 1.16.1. The test script took
+220.5 seconds; the runner took 204.9 seconds. The run used fault token
+`6a8a404e9963e355580076bc3549d8afc4e67002556659b0037f1eb0e2315e99`, image
+`66e9d500dbee3bc01117c6ac0384607687ac7be6a541093b52fae0aa26b754d7`, firmware
+`261c6d43…` and VMM `9815649a…`. The receipt has SHA-256
+`ceaf0283dd47f599fd473f085e3123b1ea4f088e93649b932b3f0f8ae3a2fbf8` and records
+`fault_injection`, `wrong_cid_injection_refused` and `reset_race_fenced` as true.
+This run also re-passed the wrong-CID refusals and ordinary exchanges with the
+new token, so it supersedes the `ade4982b` run as current wrong-CID evidence.
+
+This covers FreeBSD's fencing when invalid resets race each other and live
+receive traffic. It does not cover a valid transport-reset event racing traffic,
+malformed DMA descriptors, OmniOS, peer-VM or physical-host isolation, or
+production admission.
