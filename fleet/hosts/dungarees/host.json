@@ -31,7 +31,7 @@
         "dst": "default"
       }
     ],
-    "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPN1sS7dVBxNZqkcHjQLM8PMKUrLfdWJZglf1C1OJIfn"
+    "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7y1W1+xEbxh79utYBpvLJpq+3g/0vkDjoLm2Pi01QX"
   },
   "firmware": "uefi",
   "git": {
