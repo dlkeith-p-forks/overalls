@@ -4,6 +4,7 @@
 //! with the caller; no secret or private key crosses this boundary.
 
 use mila_model::MilaRoute;
+use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
 use mila_transport::{decode_watch_line, TerminalAttachRequest, WatchEvent};
 use std::ffi::{c_char, CStr};
 
@@ -16,6 +17,104 @@ pub enum MilaFfiStatus {
     InvalidRoute = -2,
     OutputTooSmall = -3,
     InvalidRequest = -4,
+}
+
+/// Validates a trust document fetched for `origin_host`. The document is
+/// parsed and checked entirely in Rust; no certificate or token is returned.
+#[no_mangle]
+pub unsafe extern "C" fn mila_trust_document_validate(
+    document: *const u8,
+    length: usize,
+    origin_host: *const c_char,
+    now: u64,
+) -> MilaFfiStatus {
+    if document.is_null() || origin_host.is_null() {
+        return MilaFfiStatus::NullInput;
+    }
+    // SAFETY: callers provide a readable byte buffer of `length` bytes.
+    let bytes = std::slice::from_raw_parts(document, length);
+    // SAFETY: caller provides a NUL-terminated host string.
+    let host = match CStr::from_ptr(origin_host).to_str() {
+        Ok(host) => host,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    mila_transport::decode_trust_document(bytes, host, now)
+        .map(|_| MilaFfiStatus::Ok)
+        .unwrap_or(MilaFfiStatus::InvalidRequest)
+}
+
+/// Validates a push registration request without carrying a platform secret
+/// across the ABI. `provider`: 0=APNs, 1=FCM, 2=WNS; `environment`: 0=dev,
+/// 1=production. WNS requires a channel endpoint; other providers reject one.
+#[no_mangle]
+pub unsafe extern "C" fn mila_push_registration_validate(
+    provider: u8,
+    environment: u8,
+    token: *const c_char,
+    app_id: *const c_char,
+    deployment: *const c_char,
+    endpoint: *const c_char,
+) -> MilaFfiStatus {
+    if token.is_null() || app_id.is_null() || deployment.is_null() {
+        return MilaFfiStatus::NullInput;
+    }
+    let token = match CStr::from_ptr(token).to_str() {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let deployment = match CStr::from_ptr(deployment).to_str() {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let app_id = match CStr::from_ptr(app_id).to_str() {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let endpoint = if endpoint.is_null() {
+        None
+    } else {
+        match CStr::from_ptr(endpoint).to_str() {
+            Ok(value) => Some(value),
+            Err(_) => return MilaFfiStatus::InvalidRequest,
+        }
+    };
+    let provider = match provider {
+        0 => PushProvider::Apns,
+        1 => PushProvider::Fcm,
+        2 => PushProvider::Wns,
+        _ => return MilaFfiStatus::InvalidRequest,
+    };
+    let environment = match environment {
+        0 => PushEnvironment::Development,
+        1 => PushEnvironment::Production,
+        _ => return MilaFfiStatus::InvalidRequest,
+    };
+    PushRegistrationRequest::new(
+        provider,
+        token.to_owned(),
+        app_id.to_owned(),
+        environment,
+        deployment.to_owned(),
+        endpoint.map(str::to_owned),
+    )
+    .map(|_| MilaFfiStatus::Ok)
+    .unwrap_or(MilaFfiStatus::InvalidRequest)
+}
+
+/// Checks a bounded watch subscription filter count. UUID values themselves
+/// remain in the native/runtime layer and never cross this ABI.
+#[no_mangle]
+pub extern "C" fn mila_watch_validate_filters(
+    machine_count: u16,
+    thread_count: u16,
+) -> MilaFfiStatus {
+    if (machine_count as usize) + (thread_count as usize)
+        > mila_transport::WatchRequest::MAX_FILTERS
+    {
+        MilaFfiStatus::InvalidRequest
+    } else {
+        MilaFfiStatus::Ok
+    }
 }
 
 /// Stable event tags returned by [`mila_watch_event_kind`].
@@ -171,7 +270,7 @@ pub unsafe extern "C" fn mila_route_format(
 mod tests {
     use super::{
         mila_ffi_get_version, mila_ffi_version, mila_terminal_validate, mila_watch_event_kind,
-        MilaFfiAbiVersion, MilaFfiStatus, MilaWatchEventKind,
+        mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus, MilaWatchEventKind,
     };
 
     #[test]
@@ -223,5 +322,24 @@ mod tests {
         // SAFETY: line and kind are valid; an excessive length must be rejected.
         let status = unsafe { mila_watch_event_kind(line.as_ptr(), 65_537, &mut kind) };
         assert_eq!(status, MilaFfiStatus::InvalidRequest);
+    }
+
+    #[test]
+    fn validates_watch_filter_bound() {
+        assert_eq!(mila_watch_validate_filters(64, 0), MilaFfiStatus::Ok);
+        assert_eq!(
+            mila_watch_validate_filters(65, 0),
+            MilaFfiStatus::InvalidRequest
+        );
+    }
+
+    #[test]
+    fn rejects_null_trust_document_inputs() {
+        let host = std::ffi::CString::new("mgmt.example.test").unwrap();
+        // SAFETY: null document is intentional for the ABI guard test.
+        assert_eq!(
+            unsafe { super::mila_trust_document_validate(std::ptr::null(), 0, host.as_ptr(), 0) },
+            MilaFfiStatus::NullInput
+        );
     }
 }

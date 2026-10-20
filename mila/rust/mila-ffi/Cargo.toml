@@ -11,4 +11,5 @@ crate-type = ["cdylib", "staticlib", "rlib"]
 mila-model = { path = "../mila-model" }
 mila-protocol = { path = "../mila-protocol" }
 mila-transport = { path = "../mila-transport" }
+mila-runtime = { path = "../mila-runtime" }
 uuid.workspace = true
