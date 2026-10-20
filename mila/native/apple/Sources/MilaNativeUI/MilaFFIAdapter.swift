@@ -55,6 +55,62 @@ public struct MilaFFIResponse: Codable, Equatable, Sendable {
 
 public enum MilaFFIError: Error, Equatable, Sendable {
     case unavailable
+    case invalidRoute
+    case outputTooSmall
+    case incompatibleABI
+}
+
+private enum MilaRustFFI {
+    @_silgen_name("mila_ffi_get_version")
+    static func getVersion(_ version: UnsafeMutablePointer<MilaFFIAbiVersion>) -> Int32
+    @_silgen_name("mila_route_format")
+    static func formatRoute(_ input: UnsafePointer<CChar>, _ output: MilaRouteOutput) -> Int32
+}
+
+private struct MilaRouteOutput {
+    var bytes: UnsafeMutablePointer<UInt8>?
+    var capacity: Int
+    var written: UnsafeMutablePointer<Int>?
+}
+
+private struct MilaFFIAbiVersion {
+    var major: UInt32
+    var minor: UInt32
+}
+
+/// Adapter for the stable C ABI exported by `mila-ffi`.
+/// The host must link the Rust library; no Rust-owned memory is retained by this value.
+public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
+    public init() {}
+
+    public func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse {
+        guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
+        return MilaFFIResponse(payload: request.payload)
+    }
+
+    public func canonicalRoute(_ value: String) throws -> String {
+        var output = [UInt8](repeating: 0, count: 2048)
+        var written = 0
+        let status = output.withUnsafeMutableBufferPointer { buffer in
+            value.withCString { input in
+                withUnsafeMutablePointer(to: &written) { writtenPointer in
+                    let out = MilaRouteOutput(bytes: buffer.baseAddress, capacity: buffer.count, written: writtenPointer)
+                    return MilaRustFFI.formatRoute(input, out)
+                }
+            }
+        }
+        switch status {
+        case 0: return String(decoding: output.prefix(written), as: UTF8.self)
+        case -2: throw MilaFFIError.invalidRoute
+        case -3: throw MilaFFIError.outputTooSmall
+        default: throw MilaFFIError.unavailable
+        }
+    }
+
+    private func abiCompatible() -> Bool {
+        var version = MilaFFIAbiVersion(major: 0, minor: 0)
+        return MilaRustFFI.getVersion(&version) == 0 && version.major == 1
+    }
 }
 
 /**

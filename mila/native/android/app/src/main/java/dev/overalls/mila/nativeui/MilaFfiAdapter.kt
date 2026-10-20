@@ -56,6 +56,8 @@ data class MilaFfiResponse(val payload: MilaFfiPayload)
 
 sealed interface MilaFfiError {
     data object Unavailable : MilaFfiError
+    data object IncompatibleAbi : MilaFfiError
+    data object InvalidRoute : MilaFfiError
 }
 
 sealed interface MilaFfiResult {
@@ -77,5 +79,38 @@ object UnavailableMilaFfiAdapter : MilaFfiAdapter {
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {
         request.operation
         return MilaFfiResult.Failure(MilaFfiError.Unavailable)
+    }
+}
+
+/** JNI entry points backed by the stable `mila-ffi` C ABI in the host application. */
+internal object MilaRustFfi {
+    init {
+        runCatching { System.loadLibrary("mila_ffi") }
+    }
+
+    @JvmStatic
+    external fun abiVersion(): Int
+
+    @JvmStatic
+    external fun canonicalRoute(value: String): String?
+}
+
+/** Typed Android adapter. Native linkage is lazy so the UI remains testable without a device. */
+class LinkedMilaFfiAdapter : MilaFfiAdapter {
+    override suspend fun call(request: MilaFfiRequest): MilaFfiResult {
+        request.operation
+        return try {
+            if (MilaRustFfi.abiVersion() != 1) MilaFfiResult.Failure(MilaFfiError.IncompatibleAbi)
+            else MilaFfiResult.Success(MilaFfiResponse(request.payload))
+        } catch (_: UnsatisfiedLinkError) {
+            MilaFfiResult.Failure(MilaFfiError.Unavailable)
+        }
+    }
+
+    fun canonicalizeRoute(value: String): Result<String> = runCatching {
+        MilaRustFfi.canonicalRoute(value) ?: throw IllegalArgumentException("invalid route")
+    }.recoverCatching { error ->
+        if (error is IllegalArgumentException) throw error
+        throw error
     }
 }
