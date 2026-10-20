@@ -1,5 +1,5 @@
 ---
-digest: 505092e2225246d6d92888da693041141a1393fb223f1d9cb48880004cdb0521
+digest: f5eaf2f1240f518572fad5a7d29bb5cdc17a4a8255ceadeaebe9ddae85ccc792
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed native build configuration fixes; platform compilation changes do not alter documented architecture.
+Windows build configuration selects a supported runtime architecture; no user-facing or documented topology change.
