@@ -21,87 +21,20 @@ defmodule Marshall.Scim.TeamFixture do
     |> Marshall.PasskeyFixture.verified_session()
   end
 
-  @doc """
-  Enable SCIM as an elevated administrator and return the bearer token.
-
-  The single-operation `configure` action (`operation: :enable`) is used when
-  present. The earlier action refuses every administrator (its `always()`
-  policy also matched `:configure`), so this fixture then performs the same
-  Ledger transaction as the fixed `:enable` operation: persist only the token
-  digest and start native team retirement.
-  """
+  @doc "Enable SCIM through the administrator `:enable` operation and return the bearer token."
   @spec enable!(Marshall.Accounts.User.t()) :: String.t()
   def enable!(admin \\ admin()) do
-    if operation_api?() do
-      assert {:ok, %{enabled: true, token: token}} = configure(admin, %{operation: :enable})
-      assert is_binary(token)
-      token
-    else
-      token = "scim_" <> Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
-
-      assert {:ok, _} =
-               Ledger.transaction(
-                 fn ->
-                   Marshall.Accounts.Security.require_admin!(admin)
-                   digest = Marshall.Scim.Auth.digest(token)
-
-                   case current() do
-                     nil ->
-                       Ledger.create!(Marshall.Scim.Configuration, :create, %{
-                         token_digest: digest,
-                         state: :enabled,
-                         enabled_at: Ledger.now()
-                       })
-
-                     config ->
-                       config
-                       |> Ledger.update!(:enable, %{})
-                       |> Ledger.update!(:rotate_token, %{token_digest: digest})
-                   end
-
-                   Marshall.Scim.TeamRetirement.retire_native_teams!()
-                 end,
-                 admin
-               )
-
-      token
-    end
+    assert {:ok, %{enabled: true, token: token}} = configure(admin, %{operation: :enable})
+    assert is_binary(token)
+    token
   end
 
-  @doc "Disable SCIM as an elevated administrator."
+  @doc "Disable SCIM through the administrator `:disable` operation."
   @spec disable!(Marshall.Accounts.User.t()) :: :ok
   def disable!(admin \\ admin()) do
-    if operation_api?() do
-      assert {:ok, %{enabled: false}} = configure(admin, %{operation: :disable})
-    else
-      assert {:ok, _} =
-               Ledger.transaction(
-                 fn ->
-                   Marshall.Accounts.Security.require_admin!(admin)
-                   Ledger.update!(current(), :disable, %{})
-                 end,
-                 admin
-               )
-    end
-
+    assert {:ok, %{enabled: false}} = configure(admin, %{operation: :disable})
     refute Marshall.Scim.enabled?()
     :ok
-  end
-
-  @spec operation_api?() :: boolean()
-  defp operation_api? do
-    Marshall.Scim.Configuration
-    |> Ash.Resource.Info.action(:configure)
-    |> Map.fetch!(:arguments)
-    |> Enum.any?(&(&1.name == :operation))
-  end
-
-  @spec current() :: Marshall.Scim.Configuration.t() | nil
-  defp current do
-    case Ledger.read!(Marshall.Scim.Configuration, key: "installation") do
-      [config] -> config
-      [] -> nil
-    end
   end
 
   @spec configure(Marshall.Accounts.User.t(), map()) :: {:ok, map()} | {:error, term()}
