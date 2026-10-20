@@ -1,5 +1,11 @@
 # Architecture decision records
 
+[ADR-0237](0237-windows-custodian-same-boot-recovery.md) completes ADR-0208's
+same-boot custodian restart: durable per-boot custodian generations scope jobs,
+pipes and receipts, and a prior lifetime's receipt is retired only after its
+job vanished and no process of the worker's exact account logon session remains,
+terminating only re-verified stragglers. Native execution remains pending.
+
 [ADR-0234](0234-installer-source-administrative-grant.md) records the
 authenticated installer's source at installation and admits only it to
 administrative SSH through an optional runtime firewall rule, so a base system
@@ -60,7 +66,8 @@ remain separate; the selected `windows-v1` editor capability stays false.
 [ADR-0208](0208-windows-editor-job-custodian.md) replaces ADR-0200 in full,
 preserving the immutable Windows editor candidate contract while moving worker/job
 custody into an independently supervised SYSTEM task. Implementation remains
-partial pending native custodian failure/recovery and exact-image browser evidence.
+partial pending native custodian failure/recovery and exact-image browser evidence;
+ADR-0237 supplies its same-boot recovery mechanism.
 
 
 [ADR-0199](0199-memory-suspension-and-demand-wake.md) accepts full-memory
@@ -986,3 +993,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0232](0232-sops-delivered-public-host-addresses.md) | superseded | partial | SOPS-delivered public host addresses |
 | [ADR-0233](0233-fleet-addresses-from-sops.md) | accepted | partial | Fleet addresses from SOPS and the Susan fleet path |
 | [ADR-0234](0234-installer-source-administrative-grant.md) | accepted | partial | Installer source grant for administrative SSH |
+| [ADR-0237](0237-windows-custodian-same-boot-recovery.md) | accepted | partial | Windows custodian same-boot recovery by logon-session quiescence |

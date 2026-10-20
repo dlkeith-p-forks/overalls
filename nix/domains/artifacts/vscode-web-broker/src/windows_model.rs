@@ -227,13 +227,239 @@ impl WorkerIdentity {
             .collect()
     }
 
-    pub fn pipe_name(&self) -> String {
-        format!(r"\\.\pipe\overalls-editor-{}-{}", self.uid, self.key())
+    /// Kernel names include the owning custodian generation, so a job or pipe
+    /// of one custodian lifetime can never be confused with its successor's.
+    pub fn pipe_name(&self, generation: CustodianGeneration) -> String {
+        format!(
+            r"\\.\pipe\overalls-editor-{}-g{}-{}",
+            self.uid,
+            generation.get(),
+            self.key()
+        )
     }
 
-    pub fn job_name(&self) -> String {
-        format!(r"Global\overalls-editor-{}-{}", self.uid, self.key())
+    pub fn job_name(&self, generation: CustodianGeneration) -> String {
+        format!(
+            r"Global\overalls-editor-{}-g{}-{}",
+            self.uid,
+            generation.get(),
+            self.key()
+        )
     }
+}
+
+/// One custodian process lifetime inside a physical-boot receipt namespace.
+/// Zero never names a lifetime; successors strictly increase and never wrap.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(try_from = "u64", into = "u64")]
+pub struct CustodianGeneration(u64);
+
+impl CustodianGeneration {
+    pub fn new(value: u64) -> Result<Self, Refusal> {
+        (value != 0).then_some(Self(value)).ok_or(Refusal::Custody)
+    }
+
+    pub fn get(self) -> u64 {
+        self.0
+    }
+
+    /// @cc [owner:ghuntley,label:security;recovery] windows-custodian-generation-successor
+    /// A starting custodian MUST take a generation strictly greater than every
+    /// generation previously recorded in its boot namespace. Absence starts at
+    /// one; overflow MUST refuse rather than wrap or reuse an earlier lifetime.
+    pub fn successor(previous: Option<Self>) -> Result<Self, Refusal> {
+        match previous {
+            None => Ok(Self(1)),
+            Some(previous) => previous.0.checked_add(1).map(Self).ok_or(Refusal::Custody),
+        }
+    }
+}
+
+impl TryFrom<u64> for CustodianGeneration {
+    type Error = &'static str;
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        Self::new(value).map_err(|_| "custodian generation must be nonzero")
+    }
+}
+
+impl From<CustodianGeneration> for u64 {
+    fn from(value: CustodianGeneration) -> Self {
+        value.0
+    }
+}
+
+/// The LSA logon-session LUID of one worker's S4U token. Every process created
+/// from that token inherits it, and it is unique within one physical boot.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(try_from = "u64", into = "u64")]
+pub struct LogonSession(u64);
+
+impl LogonSession {
+    pub fn new(value: u64) -> Result<Self, Refusal> {
+        (value != 0).then_some(Self(value)).ok_or(Refusal::Custody)
+    }
+
+    /// Combine a Win32 LUID without sign extension of its high part.
+    pub fn from_luid(low: u32, high: i32) -> Result<Self, Refusal> {
+        Self::new((u64::from(high as u32) << 32) | u64::from(low))
+    }
+}
+
+impl TryFrom<u64> for LogonSession {
+    type Error = &'static str;
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        Self::new(value).map_err(|_| "logon session must be nonzero")
+    }
+}
+
+impl From<LogonSession> for u64 {
+    fn from(value: LogonSession) -> Self {
+        value.0
+    }
+}
+
+/// Exact account and logon session of a live process's primary token.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct TokenOwner {
+    pub sid: AccountSid,
+    pub logon: LogonSession,
+}
+
+/// What a SYSTEM observer could establish about one process-list entry.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum TokenObservation {
+    /// The token user is a complete ordinary local account SID.
+    Account(TokenOwner),
+    /// The token user is a valid non-account principal such as SYSTEM.
+    NonAccount,
+    /// The token could not be opened or read.
+    Unreadable,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ProcessObservation {
+    /// The process exited between enumeration and observation.
+    Exited,
+    /// An unopenable entry whose creator is the kernel (Idle/System parent).
+    /// User-mode tokens cannot create processes with those parents.
+    KernelCreated,
+    /// An unopenable or untimed entry with a user-mode creator.
+    Unobservable,
+    Opened {
+        process: ProcessIdentity,
+        token: TokenObservation,
+    },
+}
+
+/// Exact recorded custody of a worker launched by an earlier custodian
+/// generation in the current boot namespace.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct PriorWorker {
+    pub generation: CustodianGeneration,
+    pub sid: AccountSid,
+    pub logon: LogonSession,
+    pub root: ProcessIdentity,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ProcessClass {
+    Unrelated,
+    Straggler(ProcessIdentity),
+    Ambiguous,
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-straggler-classification
+/// Only a live process created no earlier than the recorded prior root whose
+/// primary token has the exact recorded account SID and logon session MAY be a
+/// straggler. Earlier processes, other accounts, other sessions of the same
+/// account and kernel-created entries are unrelated and MUST NOT be touched.
+/// A possibly-descendant process whose token or creation is unobservable MUST
+/// be ambiguous, never unrelated.
+pub fn classify_process(prior: &PriorWorker, observation: &ProcessObservation) -> ProcessClass {
+    match observation {
+        ProcessObservation::Exited | ProcessObservation::KernelCreated => ProcessClass::Unrelated,
+        ProcessObservation::Unobservable => ProcessClass::Ambiguous,
+        ProcessObservation::Opened { process, token } => {
+            // A descendant cannot predate the suspended root it descends from.
+            if process.created < prior.root.created {
+                return ProcessClass::Unrelated;
+            }
+            match token {
+                TokenObservation::Account(owner)
+                    if owner.sid == prior.sid && owner.logon == prior.logon =>
+                {
+                    ProcessClass::Straggler(*process)
+                }
+                TokenObservation::Account(_) | TokenObservation::NonAccount => {
+                    ProcessClass::Unrelated
+                }
+                TokenObservation::Unreadable => ProcessClass::Ambiguous,
+            }
+        }
+    }
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-prior-receipt-admission
+/// A cold same-boot receipt MAY enter recovery only when it was written by a
+/// strictly earlier custodian generation, its stable identity exactly matches
+/// the current admitted worker, and its generation-scoped named job no longer
+/// exists. Current/future generations, identity drift, a surviving job and
+/// observation errors MUST refuse without adoption, termination or deletion.
+pub fn prior_receipt_admission(
+    current: CustodianGeneration,
+    recorded: CustodianGeneration,
+    exact_identity: bool,
+    prior_job_present: impl FnOnce() -> Result<bool, Refusal>,
+) -> Result<(), Refusal> {
+    if recorded >= current || !exact_identity {
+        return Err(Refusal::Custody);
+    }
+    if prior_job_present()? {
+        return Err(Refusal::Custody);
+    }
+    Ok(())
+}
+
+/// Plan one bounded pass. Any ambiguous entry refuses the whole pass.
+pub fn straggler_plan(
+    prior: &PriorWorker,
+    observations: &[ProcessObservation],
+) -> Result<Vec<ProcessIdentity>, Refusal> {
+    let mut stragglers = Vec::new();
+    for observation in observations {
+        match classify_process(prior, observation) {
+            ProcessClass::Unrelated => {}
+            ProcessClass::Straggler(process) => stragglers.push(process),
+            ProcessClass::Ambiguous => return Err(Refusal::Custody),
+        }
+    }
+    Ok(stragglers)
+}
+
+pub const PRIOR_SESSION_ROUNDS: usize = 8;
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-prior-session-quiescence
+/// Same-boot replacement after custodian loss MUST observe a complete process
+/// list containing zero processes of the prior worker's exact account logon
+/// session. Each pass MAY terminate only planned stragglers; any ambiguous
+/// observation, scan error or termination error MUST refuse. Exhausting the
+/// bounded passes without an empty observation MUST refuse replacement.
+pub fn drain_prior_session(
+    prior: &PriorWorker,
+    rounds: usize,
+    mut scan: impl FnMut() -> Result<Vec<ProcessObservation>, Refusal>,
+    mut terminate: impl FnMut(&PriorWorker, ProcessIdentity) -> Result<(), Refusal>,
+) -> Result<(), Refusal> {
+    for _ in 0..rounds {
+        let stragglers = straggler_plan(prior, &scan()?)?;
+        if stragglers.is_empty() {
+            return Ok(());
+        }
+        for process in stragglers {
+            terminate(prior, process)?;
+        }
+    }
+    Err(Refusal::Custody)
 }
 
 /// Process creation time disambiguates a retained kernel process from PID reuse.
@@ -628,9 +854,10 @@ mod tests {
         #[test]
         fn identity_changes_never_reuse_old_pipe_or_job(epoch in 2_u64..u64::MAX, rid in 1002_u32..u32::MAX) {
             let first = identity();
+            let generation = CustodianGeneration::new(1).unwrap();
             let mut next = first.clone(); next.execution_epoch = epoch;
-            prop_assert_ne!(first.pipe_name(), next.pipe_name());
-            prop_assert_ne!(first.job_name(), next.job_name());
+            prop_assert_ne!(first.pipe_name(generation), next.pipe_name(generation));
+            prop_assert_ne!(first.job_name(generation), next.job_name(generation));
             next = first.clone(); next.sid = sid(rid);
             prop_assert_ne!(first.key(), next.key());
         }
@@ -666,6 +893,288 @@ mod tests {
             foreign.editor_origin = foreign.editor_origin.replace("apps.test", "other.test");
             prop_assert!(!current.matches_retained_binding(&foreign, &boot, &descriptor));
         }
+    }
+
+    fn prior(generation: u64) -> PriorWorker {
+        PriorWorker {
+            generation: CustodianGeneration::new(generation).unwrap(),
+            sid: sid(1001),
+            logon: LogonSession::new(0x1_0000_0042).unwrap(),
+            root: ProcessIdentity {
+                pid: 900,
+                created: 1_000,
+            },
+        }
+    }
+
+    /// One simulated process-list entry for the recovery state machine.
+    #[derive(Clone, Debug)]
+    struct Simulated {
+        pid: u32,
+        created: u64,
+        rid: u32,
+        logon: u64,
+        observable: bool,
+        token_readable: bool,
+        stubborn: bool,
+        respawns: u8,
+    }
+
+    impl Simulated {
+        fn matches(&self, prior: &PriorWorker) -> bool {
+            self.created >= prior.root.created
+                && sid(self.rid) == prior.sid
+                && LogonSession::new(self.logon).unwrap() == prior.logon
+        }
+
+        fn observation(&self) -> ProcessObservation {
+            if !self.observable {
+                return ProcessObservation::Unobservable;
+            }
+            ProcessObservation::Opened {
+                process: ProcessIdentity {
+                    pid: self.pid,
+                    created: self.created,
+                },
+                token: if self.token_readable {
+                    TokenObservation::Account(TokenOwner {
+                        sid: sid(self.rid),
+                        logon: LogonSession::new(self.logon).unwrap(),
+                    })
+                } else {
+                    TokenObservation::Unreadable
+                },
+            }
+        }
+    }
+
+    fn simulated() -> impl Strategy<Value = Simulated> {
+        (
+            1_u32..64,
+            prop_oneof![500_u64..1_000, 1_000_u64..2_000],
+            prop_oneof![Just(1001_u32), Just(1002_u32)],
+            prop_oneof![Just(0x1_0000_0042_u64), Just(0x1_0000_0043_u64)],
+            prop::bool::weighted(0.95),
+            prop::bool::weighted(0.95),
+            prop::bool::weighted(0.1),
+            0_u8..3,
+        )
+            .prop_map(
+                |(pid, created, rid, logon, observable, token_readable, stubborn, respawns)| {
+                    Simulated {
+                        pid,
+                        created,
+                        rid,
+                        logon,
+                        observable,
+                        token_readable,
+                        stubborn,
+                        respawns,
+                    }
+                },
+            )
+    }
+
+    proptest! {
+        #[test]
+        fn custodian_generations_strictly_increase_and_never_reuse(value in 1_u64..u64::MAX) {
+            let previous = CustodianGeneration::new(value).unwrap();
+            let next = CustodianGeneration::successor(Some(previous)).unwrap();
+            prop_assert!(next > previous);
+            let identity = identity();
+            prop_assert_ne!(identity.job_name(previous), identity.job_name(next));
+            prop_assert_ne!(identity.pipe_name(previous), identity.pipe_name(next));
+            let encoded = serde_json::to_vec(&next).unwrap();
+            prop_assert_eq!(serde_json::from_slice::<CustodianGeneration>(&encoded).unwrap(), next);
+        }
+
+        #[test]
+        fn stale_or_current_generation_receipts_never_reach_recovery(
+            current in 1_u64..1_000,
+            recorded in 1_u64..1_000,
+            exact in any::<bool>(),
+            present in any::<bool>(),
+        ) {
+            let current = CustodianGeneration::new(current).unwrap();
+            let recorded = CustodianGeneration::new(recorded).unwrap();
+            let mut probed = false;
+            let decision = prior_receipt_admission(current, recorded, exact, || {
+                probed = true;
+                Ok(present)
+            });
+            if recorded < current && exact && !present {
+                prop_assert_eq!(decision, Ok(()));
+            } else {
+                prop_assert_eq!(decision, Err(Refusal::Custody));
+            }
+            // Stale/current generations and identity drift refuse before any
+            // kernel observation of the prior job namespace.
+            prop_assert_eq!(probed, recorded < current && exact);
+        }
+
+        #[test]
+        fn prior_session_drain_never_touches_other_accounts_or_sessions(
+            table in prop::collection::vec(simulated(), 0..24),
+        ) {
+            let prior = prior(1);
+            let mut live = table.clone();
+            let mut next_pid = 10_000;
+            let mut terminated = Vec::new();
+            let result = {
+                let live = std::cell::RefCell::new(&mut live);
+                drain_prior_session(
+                    &prior,
+                    PRIOR_SESSION_ROUNDS,
+                    || Ok(live.borrow().iter().map(Simulated::observation).collect()),
+                    |_, target| {
+                        let mut live = live.borrow_mut();
+                        let index = live
+                            .iter()
+                            .position(|entry| entry.pid == target.pid && entry.created == target.created)
+                            .ok_or(Refusal::Custody)?;
+                        terminated.push(live[index].clone());
+                        if live[index].stubborn {
+                            return Ok(());
+                        }
+                        let entry = live.remove(index);
+                        if entry.respawns > 0 {
+                            // A dying straggler may spawn a same-session child.
+                            next_pid += 1;
+                            live.push(Simulated { pid: next_pid, created: 3_000, respawns: entry.respawns - 1, stubborn: false, observable: true, token_readable: true, ..entry });
+                        }
+                        Ok(())
+                    },
+                )
+            };
+            // Only exact account and logon-session stragglers are ever terminated.
+            for entry in &terminated {
+                prop_assert!(entry.matches(&prior));
+            }
+            // Every unrelated original entry survives untouched.
+            for entry in table.iter().filter(|entry| !entry.matches(&prior) && (entry.observable && entry.token_readable || entry.created < prior.root.created)) {
+                prop_assert!(live.iter().any(|survivor| survivor.pid == entry.pid && survivor.created == entry.created));
+            }
+            let ambiguous = table.iter().any(|entry| {
+                (!entry.observable) || (!entry.token_readable && entry.created >= prior.root.created)
+            });
+            let stubborn = table.iter().any(|entry| entry.stubborn && entry.matches(&prior));
+            match result {
+                Ok(()) => {
+                    prop_assert!(!ambiguous && !stubborn);
+                    prop_assert!(live.iter().all(|entry| !entry.matches(&prior)));
+                }
+                Err(reason) => {
+                    prop_assert_eq!(reason, Refusal::Custody);
+                    prop_assert!(ambiguous || stubborn);
+                }
+            }
+        }
+
+        #[test]
+        fn scan_and_termination_errors_refuse_replacement(reason_index in 0_usize..3) {
+            let reason = [Refusal::Custody, Refusal::Startup, Refusal::Capacity][reason_index];
+            let prior = prior(2);
+            prop_assert_eq!(drain_prior_session(&prior, PRIOR_SESSION_ROUNDS, || Err(reason), |_, _| panic!("no plan")), Err(reason));
+            let straggler = ProcessObservation::Opened {
+                process: ProcessIdentity { pid: 7, created: 2_000 },
+                token: TokenObservation::Account(TokenOwner { sid: prior.sid.clone(), logon: prior.logon }),
+            };
+            prop_assert_eq!(
+                drain_prior_session(&prior, PRIOR_SESSION_ROUNDS, || Ok(vec![straggler.clone()]), |_, _| Err(reason)),
+                Err(reason)
+            );
+        }
+    }
+
+    #[test]
+    fn prior_session_classification_is_exact() {
+        let prior = prior(1);
+        let opened = |created, token| ProcessObservation::Opened {
+            process: ProcessIdentity { pid: 5, created },
+            token,
+        };
+        let own = TokenObservation::Account(TokenOwner {
+            sid: prior.sid.clone(),
+            logon: prior.logon,
+        });
+        assert_eq!(
+            classify_process(&prior, &opened(1_000, own.clone())),
+            ProcessClass::Straggler(ProcessIdentity {
+                pid: 5,
+                created: 1_000
+            })
+        );
+        // Created before the root: unrelated even with a matching session.
+        assert_eq!(
+            classify_process(&prior, &opened(999, own)),
+            ProcessClass::Unrelated
+        );
+        assert_eq!(
+            classify_process(&prior, &opened(999, TokenObservation::Unreadable)),
+            ProcessClass::Unrelated
+        );
+        // Another logon session of the same account is never a straggler.
+        assert_eq!(
+            classify_process(
+                &prior,
+                &opened(
+                    2_000,
+                    TokenObservation::Account(TokenOwner {
+                        sid: prior.sid.clone(),
+                        logon: LogonSession::new(0x1_0000_0043).unwrap()
+                    })
+                )
+            ),
+            ProcessClass::Unrelated
+        );
+        // The same session LUID under another account SID is unrelated.
+        assert_eq!(
+            classify_process(
+                &prior,
+                &opened(
+                    2_000,
+                    TokenObservation::Account(TokenOwner {
+                        sid: sid(1002),
+                        logon: prior.logon
+                    })
+                )
+            ),
+            ProcessClass::Unrelated
+        );
+        assert_eq!(
+            classify_process(&prior, &opened(2_000, TokenObservation::NonAccount)),
+            ProcessClass::Unrelated
+        );
+        assert_eq!(
+            classify_process(&prior, &opened(2_000, TokenObservation::Unreadable)),
+            ProcessClass::Ambiguous
+        );
+        assert_eq!(
+            classify_process(&prior, &ProcessObservation::Unobservable),
+            ProcessClass::Ambiguous
+        );
+        assert_eq!(
+            classify_process(&prior, &ProcessObservation::KernelCreated),
+            ProcessClass::Unrelated
+        );
+        assert_eq!(
+            classify_process(&prior, &ProcessObservation::Exited),
+            ProcessClass::Unrelated
+        );
+        assert_eq!(
+            CustodianGeneration::successor(None),
+            CustodianGeneration::new(1)
+        );
+        assert_eq!(
+            CustodianGeneration::successor(Some(CustodianGeneration::new(u64::MAX).unwrap())),
+            Err(Refusal::Custody)
+        );
+        assert!(serde_json::from_slice::<CustodianGeneration>(b"0").is_err());
+        assert!(serde_json::from_slice::<LogonSession>(b"0").is_err());
+        assert_eq!(
+            LogonSession::from_luid(0x42, -1).map(u64::from),
+            Ok(0xffff_ffff_0000_0042)
+        );
     }
 
     #[test]

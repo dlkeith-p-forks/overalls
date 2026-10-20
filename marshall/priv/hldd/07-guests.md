@@ -1700,9 +1700,10 @@ worker-pipe readiness. Every job handle stays with the custodian. Its map retain
 separately reserves at most 128 live/retired pipe slots. Reuse requires exact
 PID/time/SID/executable/job/pipe identity. Live-root probe and observation errors
 refuse without termination; only a verified-dead held root permits exact-job
-zero-descendant drainage before replacement. A fresh custodian refuses all prior
-same-boot receipts until a new physical boot namespace. Safe same-boot automatic
-replacement remains unimplemented.
+zero-descendant drainage before replacement. A restarted custodian takes a durable
+per-boot generation and, per [ADR-0237](repo:docs/architecture/decisions/0237-windows-custodian-same-boot-recovery.md), replaces an earlier generation's worker only
+after its job vanished and no process of the exact account logon session remains;
+native crash execution remains pending.
 
 The merged package graph aligns the Linux Node version and hash-pinned Windows
 runtime, headers and import library on 24.21.0. This restores editor package

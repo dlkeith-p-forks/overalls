@@ -9,13 +9,15 @@
 //! package and manifest promote this code.
 
 use overalls_vscode_web_broker::windows::{
-    Package, QuarantinedJob, Worker, package_file, private_directory, read_private_optional,
-    require_system, resolve_account, write_private,
+    Package, QuarantinedJob, Worker, observe_processes, package_file, prior_job_present,
+    private_directory, read_private_optional, require_system, resolve_account, terminate_straggler,
+    write_private,
 };
 use overalls_vscode_web_broker::windows_ipc as ipc;
 use overalls_vscode_web_broker::windows_model::{
-    CustodianAccounts, HeldWorkerDecision, ProcessIdentity, WorkerIdentity, WorkerPath,
-    held_worker_decision,
+    CustodianAccounts, CustodianGeneration, HeldWorkerDecision, LogonSession, PRIOR_SESSION_ROUNDS,
+    PriorWorker, ProcessIdentity, WorkerIdentity, WorkerPath, drain_prior_session,
+    held_worker_decision, prior_receipt_admission,
 };
 use overalls_vscode_web_broker::windows_pipe::Pipe;
 use overalls_vscode_web_broker::{
@@ -35,6 +37,8 @@ use std::time::{Duration, Instant};
 const STARTUP: Duration = Duration::from_secs(20);
 const MAX_CONNECTIONS: usize = 64;
 const RECEIPT_MAXIMUM: usize = 16 * 1024;
+const RECEIPT_VERSION: u8 = 2;
+const GENERATION_MAXIMUM: usize = 128;
 
 #[derive(Clone, Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -49,13 +53,25 @@ struct Configuration {
     worker_path: String,
 }
 
+/// Version 2 binds the receipt to the custodian lifetime that owned its job
+/// and to the worker token's logon session for same-boot loss recovery.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Receipt {
     version: u8,
+    generation: CustodianGeneration,
     worker_key: String,
     binding: Binding,
     process: ProcessIdentity,
+    logon: LogonSession,
+}
+
+/// The durable last custodian generation of one physical-boot namespace.
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct GenerationRecord {
+    version: u8,
+    generation: CustodianGeneration,
 }
 
 enum WorkerState {
@@ -74,6 +90,8 @@ struct Runtime {
     package: Package,
     state: overalls_vscode_web_broker::windows_model::LocalPath,
     workers: CustodianAccounts<WorkerState>,
+    // Present only in the custodian role, after its endpoint is reserved.
+    generation: Option<CustodianGeneration>,
     endpoint: String,
     executable: overalls_vscode_web_broker::windows_model::LocalPath,
     connections: AtomicUsize,
@@ -176,7 +194,7 @@ fn worker_identity(runtime: &Runtime, preface: &Preface) -> Result<WorkerIdentit
 }
 
 fn receipt_matches(receipt: &Receipt, identity: &WorkerIdentity, runtime: &Runtime) -> bool {
-    receipt.version == 1
+    receipt.version == RECEIPT_VERSION
         && receipt.worker_key == identity.key()
         && identity.matches_retained_binding(&receipt.binding, &runtime.boot, &runtime.descriptor)
 }
@@ -192,10 +210,11 @@ fn launch_and_record(
     binding: &Binding,
     path: &overalls_vscode_web_broker::windows_model::LocalPath,
     slot: &mut WorkerState,
+    generation: CustodianGeneration,
     deadline: Instant,
 ) -> Result<(), Refusal> {
     let worker_key = identity.key();
-    let mut worker = match Worker::launch(identity, &runtime.package) {
+    let mut worker = match Worker::launch(identity, generation, &runtime.package) {
         Ok(worker) => worker,
         Err(failure) => {
             if let Some(job) = failure.quarantine {
@@ -206,10 +225,12 @@ fn launch_and_record(
     };
     let recorded = (|| {
         let receipt = Receipt {
-            version: 1,
+            version: RECEIPT_VERSION,
+            generation,
             worker_key,
             binding: binding.clone(),
             process: worker.process_identity(),
+            logon: worker.logon_session(),
         };
         let encoded = serde_json::to_vec(&receipt).map_err(|_| Refusal::Custody)?;
         write_private(path, &encoded)?;
@@ -308,6 +329,7 @@ fn probe(worker: &Worker, binding: &Binding, deadline: Instant) -> Result<(), Re
 /// identity ambiguity MUST quarantine/refuse without deleting the receipt.
 fn ensure_worker(runtime: &Runtime, preface: Preface, deadline: Instant) -> Result<Pipe, Refusal> {
     let binding = &preface.binding;
+    let generation = runtime.generation.ok_or(Refusal::Custody)?;
     let slot = runtime.workers.slot(binding.uid, || WorkerState::Empty)?;
     with_slot(&slot, deadline, |slot| {
         run_authorizer(
@@ -328,7 +350,7 @@ fn ensure_worker(runtime: &Runtime, preface: Preface, deadline: Instant) -> Resu
                 return Err(Refusal::Custody);
             }
             WorkerState::Live(worker) => {
-                if !worker.matches(&identity) {
+                if !worker.matches(&identity, generation) {
                     return Err(Refusal::Custody);
                 }
                 let bytes =
@@ -336,7 +358,9 @@ fn ensure_worker(runtime: &Runtime, preface: Preface, deadline: Instant) -> Resu
                 let receipt: Receipt =
                     serde_json::from_slice(&bytes).map_err(|_| Refusal::Custody)?;
                 if !receipt_matches(&receipt, &identity, runtime)
+                    || receipt.generation != generation
                     || receipt.process != worker.process_identity()
+                    || receipt.logon != worker.logon_session()
                 {
                     return Err(Refusal::Custody);
                 }
@@ -357,24 +381,99 @@ fn ensure_worker(runtime: &Runtime, preface: Preface, deadline: Instant) -> Resu
                 fs::remove_file(path.as_str()).map_err(|_| Refusal::Custody)?;
             }
             WorkerState::Empty => {
-                if read_private_optional(&path, RECEIPT_MAXIMUM)?.is_some() {
-                    // Custodian loss requests KILL_ON_CLOSE, but a dead root or
-                    // missing job name cannot prove all descendants have exited.
-                    // Without the original job handle, this account remains
-                    // refused until a new MMDS physical boot namespace.
-                    return Err(Refusal::Custody);
+                if let Some(bytes) = read_private_optional(&path, RECEIPT_MAXIMUM)? {
+                    let receipt: Receipt =
+                        serde_json::from_slice(&bytes).map_err(|_| Refusal::Custody)?;
+                    recover_prior_custodian(runtime, &identity, &receipt, generation)?;
+                    // Quiescence is established; only this exact account's
+                    // private receipt is removed. Personal files are untouched.
+                    fs::remove_file(path.as_str()).map_err(|_| Refusal::Custody)?;
                 }
             }
         }
         if Instant::now() >= deadline {
             return Err(Refusal::Readiness);
         }
-        launch_and_record(runtime, identity, binding, &path, slot, deadline)?;
+        launch_and_record(
+            runtime, identity, binding, &path, slot, generation, deadline,
+        )?;
         match slot {
             WorkerState::Live(worker) => worker.connect(),
             _ => Err(Refusal::Custody),
         }
     })
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-same-boot-recovery
+/// A cold same-boot receipt without a retained job handle MAY be retired only
+/// when an earlier custodian generation wrote it for the exact current worker
+/// identity, its generation-scoped job name no longer opens, and a complete
+/// process observation finds zero processes of its exact account logon session
+/// after terminating only those stragglers. Every other outcome MUST refuse and
+/// retain the receipt; no other account, session or personal file is touched.
+fn recover_prior_custodian(
+    runtime: &Runtime,
+    identity: &WorkerIdentity,
+    receipt: &Receipt,
+    generation: CustodianGeneration,
+) -> Result<(), Refusal> {
+    prior_receipt_admission(
+        generation,
+        receipt.generation,
+        receipt_matches(receipt, identity, runtime),
+        || prior_job_present(identity, receipt.generation),
+    )?;
+    let prior = PriorWorker {
+        generation: receipt.generation,
+        sid: identity.sid().clone(),
+        logon: receipt.logon,
+        root: receipt.process,
+    };
+    let result = drain_prior_session(
+        &prior,
+        PRIOR_SESSION_ROUNDS,
+        observe_processes,
+        terminate_straggler,
+    );
+    event(
+        if result.is_ok() {
+            "prior_custody_recovered"
+        } else {
+            "prior_custody_refused"
+        },
+        result.err(),
+    );
+    result
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-durable-generation
+/// The custodian MUST reserve its exclusive boot-bound endpoint before taking
+/// a generation, so two live custodians cannot share or race one. It MUST
+/// durably publish a strictly greater generation than the recorded one before
+/// admitting requests; a malformed or unreadable record MUST refuse startup.
+fn advance_generation(
+    state: &overalls_vscode_web_broker::windows_model::LocalPath,
+) -> Result<CustodianGeneration, Refusal> {
+    let path = local(&format!(r"{}\generation.json", state.as_str()))?;
+    let previous = match read_private_optional(&path, GENERATION_MAXIMUM)? {
+        None => None,
+        Some(bytes) => {
+            let record: GenerationRecord =
+                serde_json::from_slice(&bytes).map_err(|_| Refusal::Custody)?;
+            if record.version != 1 {
+                return Err(Refusal::Custody);
+            }
+            Some(record.generation)
+        }
+    };
+    let generation = CustodianGeneration::successor(previous)?;
+    let encoded = serde_json::to_vec(&GenerationRecord {
+        version: 1,
+        generation,
+    })
+    .map_err(|_| Refusal::Custody)?;
+    write_private(&path, &encoded)?;
+    Ok(generation)
 }
 
 fn pipe_relay(mut client: Pipe, mut worker: Pipe) -> Result<(), Refusal> {
@@ -505,6 +604,14 @@ fn serve(configuration: Configuration, custodian: bool) -> Result<(), Refusal> {
     private_directory(&state)?;
     let boot = physical.boot;
     let worker_path = WorkerPath::parse(&configuration.worker_path)?;
+    // Reserve the first endpoint instance before taking a generation: a live
+    // predecessor keeps the endpoint, so this custodian cannot start beside it.
+    let custody = if custodian {
+        let listener = ipc::listener(&endpoint, true)?;
+        Some((listener, advance_generation(&state)?))
+    } else {
+        None
+    };
     let runtime = Arc::new(Runtime {
         descriptor: configuration.descriptor.clone(),
         configuration,
@@ -518,12 +625,13 @@ fn serve(configuration: Configuration, custodian: bool) -> Result<(), Refusal> {
         },
         state,
         workers: CustodianAccounts::default(),
+        generation: custody.as_ref().map(|(_, generation)| *generation),
         endpoint,
         executable,
         connections: AtomicUsize::new(0),
     });
-    if custodian {
-        return custody_serve(runtime);
+    if let Some((listener, _)) = custody {
+        return custody_serve(runtime, listener);
     }
     let listener =
         TcpListener::bind((runtime.boot.address, PORT)).map_err(|_| Refusal::Transport)?;
@@ -554,11 +662,10 @@ fn serve(configuration: Configuration, custodian: bool) -> Result<(), Refusal> {
     Err(Refusal::Transport)
 }
 
-fn custody_serve(runtime: Arc<Runtime>) -> Result<(), Refusal> {
-    // Reserve the first instance before admitting any request. Create its
+fn custody_serve(runtime: Arc<Runtime>, mut listener: Pipe) -> Result<(), Refusal> {
+    // The first instance was reserved before any request. Create its
     // successor while the accepted instance remains owned, so the name never
     // becomes available for another server between connections.
-    let mut listener = ipc::listener(&runtime.endpoint, true)?;
     event("started", None);
     loop {
         listener.accept().map_err(|_| Refusal::Transport)?;
