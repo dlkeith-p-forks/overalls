@@ -72,7 +72,11 @@ defmodule MarshallWeb.Endpoint do
   @spec scim_dispatch(Plug.Conn.t(), keyword()) :: Plug.Conn.t()
   defp scim_dispatch(%Plug.Conn{path_info: ["scim", "v2" | rest]} = conn, _opts) do
     conn = %{conn | path_info: rest, script_name: conn.script_name ++ ["scim", "v2"]}
-    MarshallWeb.ScimRouter.call(conn, MarshallWeb.ScimRouter.init([]))
+    # The SCIM router sends its own response; halt so no later endpoint plug
+    # touches the already-sent connection.
+    conn
+    |> MarshallWeb.ScimRouter.call(MarshallWeb.ScimRouter.init([]))
+    |> Plug.Conn.halt()
   end
 
   defp scim_dispatch(conn, _opts), do: conn

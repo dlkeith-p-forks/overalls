@@ -5,16 +5,14 @@ defmodule Marshall.Scim.TeamRetirement do
   require Ash.Query
   require Marshall.Events
 
-  @grace_seconds 7 * 24 * 60 * 60
-
   # @cc [owner:ghuntley,label:security;recovery] scim-enable-native-team-retirement
   # Enabling SCIM MUST mark every active :native team :retiring with a shared
-  # seven-day deadline and enqueue its TeamRetirementWorker in the caller's
+  # ScimRetirement grace deadline and enqueue its TeamRetirementWorker in the caller's
   # Ledger transaction. Already retiring or SCIM-managed teams are unchanged,
   # so repeated enables are idempotent.
   @spec retire_native_teams!() :: :ok
   def retire_native_teams! do
-    deadline = DateTime.add(Ledger.now(), @grace_seconds, :second)
+    deadline = Marshall.Accounts.ScimRetirement.deadline_from(Ledger.now())
 
     Team
     |> Ash.Query.filter(management_mode == :native)

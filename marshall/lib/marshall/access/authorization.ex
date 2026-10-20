@@ -8,13 +8,15 @@ defmodule Marshall.Access.Authorization do
   # @cc [owner:ghuntley,label:security] customer-owner-only-access
   # Customer VM access MUST require the immutable owner, even for administrators,
   # and MUST deny web access. Unknown profiles MUST deny. Cedar remains required.
+  # A machine whose owner is retired or SCIM-inactive MUST deny every actor, so
+  # collaborators cannot wake a SCIM-suspended machine during the grace period.
   @spec allowed?(VirtualMachine.t(), term(), String.t()) :: boolean()
   def allowed?(vm, %Marshall.Accounts.User{} = actor, action) do
     OverallsProtocol.ProfilePolicy.allows?(vm.profile, :terminal) and
       (vm.owner_id == actor.id or OverallsProtocol.ProfilePolicy.allows?(vm.profile, :sharing)) and
       (action != "web" or OverallsProtocol.ProfilePolicy.allows?(vm.profile, :web)) and
       match?(
-        %Marshall.Accounts.User{deleted_at: nil},
+        %Marshall.Accounts.User{deleted_at: nil, active: true},
         Marshall.Accounts.Security.current(vm.owner_id)
       ) and
       Cedar.allowed?(actor, action, entity(vm, actor))

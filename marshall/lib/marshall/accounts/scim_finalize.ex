@@ -1,43 +1,45 @@
 defmodule Marshall.Accounts.ScimFinalize do
   @moduledoc "Finalizes an expired SCIM retirement without changing the user UUID."
-  alias Marshall.Accounts.{User, UserDeletion}
-  alias Marshall.Authorization.SystemActor
+  alias Marshall.Accounts.{AccountLifecycle, ScimRetirement, UserDeletion}
   alias Marshall.Compute.Ledger
-  require Ash.Query
 
+  # @cc [owner:ghuntley,label:security;recovery] scim-finalize-ghost-identity
+  # Finalization MUST keep the UUID and history, archive the user's threads,
+  # retire identity attachments, revoke every stored login, clear the OIDC
+  # subject binding and replace the email with deleted-<uuid>@deleted.invalid
+  # in one transaction. A finalized identity MUST NOT be changed again.
+  @doc """
+  Retires the identity of a completed `:scim_retirement` deletion. Administrator
+  deletions retired their identity when they were recorded; for them, and for
+  an identity that is already retired, this is a no-op. Requires the caller's
+  transaction (DeleteUserMachines holds the retirement fence and deletion lock).
+  """
   @spec finalize!(UserDeletion.t()) :: :ok
-  def finalize!(%UserDeletion{user_id: user_id}) do
-    Ledger.transaction(
-      fn ->
-        user =
-          User
-          |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
-          |> Ash.Query.filter(id == ^user_id)
-          |> Ash.Query.lock(:for_update)
-          |> Ash.read_one!(actor: SystemActor.compute())
+  def finalize!(%UserDeletion{kind: :scim_retirement, user_id: user_id}) do
+    unless Marshall.Repo.in_transaction?(),
+      do: raise(ArgumentError, "SCIM finalization requires the deletion transaction")
 
-        if user && is_nil(user.deleted_at) do
-          archive_threads!(user.id)
-          Marshall.Accounts.AccountLifecycle.revoke_tokens!(user.id)
+    user = ScimRetirement.lock_user!(user_id)
 
-          Ledger.update!(user, :security_state, %{
-            deleted_at: Ledger.now(),
-            administrator: false,
-            active: false,
-            email: "deleted-#{user.id}@deleted.invalid",
-            mfa_generation: user.mfa_generation + 1
-          })
-        end
+    if user && is_nil(user.deleted_at) do
+      archive_threads!(user.id)
+      AccountLifecycle.retire_attachments!(user.id, user.id)
+      AccountLifecycle.revoke_tokens!(user.id)
 
-        :ok
-      end,
-      # Retirement already opened the attributed ledger transaction; the
-      # SystemActor above authorizes reads and is not an audit actor.
-      :inherit
-    )
+      Ledger.update!(user, :scim_finalize, %{
+        deleted_at: Ledger.now(),
+        administrator: false,
+        active: false,
+        scim_external_id: nil,
+        email: "deleted-#{user.id}@deleted.invalid",
+        mfa_generation: user.mfa_generation + 1
+      })
+    end
 
     :ok
   end
+
+  def finalize!(%UserDeletion{}), do: :ok
 
   @spec archive_threads!(String.t()) :: :ok
   defp archive_threads!(user_id) do
@@ -53,7 +55,7 @@ defmodule Marshall.Accounts.ScimFinalize do
       WHERE creator_id = $1
       ON CONFLICT (thread_id) DO NOTHING
       """,
-      [user_id, now],
+      [Ecto.UUID.dump!(user_id), now],
       log: false
     )
 

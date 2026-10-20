@@ -1259,4 +1259,31 @@ defmodule Marshall.Events do
     message: "SCIM request refused",
     metadata: [reason: :atom]
   )
+
+  defevent("scim.machine_suspended",
+    message: "Machine suspended for SCIM user retirement",
+    metadata: [user_id: :uuid, vm_id: :uuid]
+  )
+
+  defevent("scim.machine_suspension_failed",
+    level: :warning,
+    message: "Machine suspension for SCIM user retirement refused",
+    metadata: [user_id: :uuid, vm_id: :uuid, reason: :atom]
+  )
+
+  defevent("scim.user_machines_resumed",
+    message: "SCIM-suspended machines resumed after reactivation",
+    metadata: [user_id: :uuid, resumed_count: :int]
+  )
+
+  defevent("scim.user_finalized",
+    message: "SCIM user retirement finalized",
+    metadata: [user_id: :uuid]
+  )
+
+  defevent("scim.user_retirement_failed",
+    level: :warning,
+    message: "SCIM user retirement step failed and will be retried",
+    metadata: [user_id: :uuid, reason: :atom]
+  )
 end

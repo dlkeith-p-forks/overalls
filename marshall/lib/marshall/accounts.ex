@@ -9,6 +9,7 @@ defmodule Marshall.Accounts do
     resource Marshall.Accounts.GuestAccount
     resource Marshall.Accounts.GuestAccount.Version
     resource Marshall.Accounts.UserDeletion
+    resource Marshall.Accounts.ScimMachineSuspension
     resource Marshall.Accounts.Passkey
     resource Marshall.Accounts.PasskeyChallenge
     resource Marshall.Accounts.Verification
