@@ -173,7 +173,7 @@ defmodule Marshall.Agents.CLIAccess do
     actor = Marshall.Accounts.Security.current(session.actor_id)
 
     if DateTime.compare(session.expires_at, Ledger.now()) == :gt and
-         match?(%Marshall.Accounts.User{deleted_at: nil}, actor) and
+         match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, actor) and
          match?(%VirtualMachine{archived_at: nil}, vm) and vm.desired_state != :deleted and
          Marshall.Access.Authorization.allowed?(vm, actor, "write"),
        do: {:ok, actor},

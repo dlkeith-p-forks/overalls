@@ -17,7 +17,7 @@ defmodule Marshall.Threads.Authorization do
   @spec allowed?(Thread.t(), term(), String.t()) :: boolean()
   def allowed?(%Thread{} = thread, %User{} = actor, action)
       when action in ["read", "write", "manage"] do
-    match?(%User{deleted_at: nil}, Security.current(thread.creator_id)) and
+    match?(%User{deleted_at: nil, active: true}, Security.current(thread.creator_id)) and
       Cedar.allowed?(actor, action, entity(thread, actor))
   end
 

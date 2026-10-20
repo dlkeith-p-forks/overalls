@@ -248,8 +248,11 @@ defmodule Marshall.Ingress.WebStreams do
   end
 
   defp require_owner!(vm) do
-    unless match?(%User{deleted_at: nil}, Marshall.Accounts.Security.current(vm.owner_id)),
-      do: deny!()
+    unless match?(
+             %User{deleted_at: nil, active: true},
+             Marshall.Accounts.Security.current(vm.owner_id)
+           ),
+           do: deny!()
   end
 
   defp current_endpoint!(id), do: List.first(Ledger.read!(Endpoint, id: id)) || deny!()
@@ -325,7 +328,10 @@ defmodule Marshall.Ingress.WebStreams do
     unless integration.peer and integration.peer_vm_id == target.id and
              (is_nil(attestation.name) or integration.name == attestation.name) and
              source_authorized and target_owned and
-             match?(%User{deleted_at: nil}, Marshall.Accounts.Security.current(source.owner_id)) and
+             match?(
+               %User{deleted_at: nil, active: true},
+               Marshall.Accounts.Security.current(source.owner_id)
+             ) and
              OverallsProtocol.ProfilePolicy.allows?(source.profile, :egress) and
              source.desired_state == :running and source.observed_state == :running and
              Marshall.Compute.RelocationReadinessState.terminal_allowed?(source),

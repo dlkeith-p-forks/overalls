@@ -140,7 +140,7 @@ defmodule Marshall.Agents.Loop do
             vm == nil or vm.desired_state != :running or vm.observed_state != :running ->
               :machine_unavailable
 
-            not match?(%Marshall.Accounts.User{deleted_at: nil}, actor) or
+            not match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, actor) or
                 not Marshall.Access.Authorization.allowed?(vm, actor, "write") ->
               :access_revoked
 

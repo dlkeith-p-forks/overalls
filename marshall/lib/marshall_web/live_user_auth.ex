@@ -198,7 +198,7 @@ defmodule MarshallWeb.LiveUserAuth do
       {:ok, _} ->
         user = Marshall.Accounts.Security.current(socket.assigns.current_user.id)
 
-        if is_nil(user) or not is_nil(user.deleted_at),
+        if is_nil(user) or not is_nil(user.deleted_at) or not user.active,
           do: {:halt, Phoenix.LiveView.redirect(socket, to: ~p"/sign-in")},
           else: {:cont, socket}
 

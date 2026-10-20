@@ -71,6 +71,23 @@ defmodule Marshall.SSH.AuthorityTest do
     )
   end
 
+  test "an authenticated key session stops working once its account is deactivated", c do
+    text = public_key(<<9::256>>)
+    assert {:ok, _} = SSH.add_key(%{public_key: text}, actor: c.user)
+    assert {:ok, session} = open(c, text)
+    assert {:ok, %{status: "authenticated"}} = status(c, session)
+
+    # SCIM deactivation keeps the row (and key) during grace; only `active` changes.
+    {1, _} =
+      Marshall.Repo.update_all(
+        Ecto.Query.from(u in "users", where: u.id == type(^c.user.id, :binary_id)),
+        set: [active: false]
+      )
+
+    assert {:error, _} = status(c, session)
+    assert {:error, _} = open(c, text)
+  end
+
   test "gateway rotation and another gateway cannot inherit a session", c do
     {:ok, pending} = open(c, public_key(<<2::256>>))
     {other_token, _} = Token.issue(:gateway)

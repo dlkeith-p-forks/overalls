@@ -12,7 +12,7 @@ defmodule Marshall.Galileo.Ownership do
   # liveness of an archived team; missing ownership MUST fail closed.
   @spec live?(Integration.t()) :: boolean()
   def live?(%Integration{owner_id: owner_id}) when is_binary(owner_id),
-    do: match?(%User{deleted_at: nil}, Security.current(owner_id))
+    do: match?(%User{deleted_at: nil, active: true}, Security.current(owner_id))
 
   def live?(%Integration{team_id: team_id}) when is_binary(team_id) do
     Team

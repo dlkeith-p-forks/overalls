@@ -51,7 +51,10 @@ defmodule MarshallWeb.MachineWorkspace do
   def administrative_access_expired?(socket, permission) do
     actor = socket.assigns.current_user
 
-    if match?(%User{administrator: true, deleted_at: nil}, Security.current(actor.id)) and
+    if match?(
+         %User{administrator: true, deleted_at: nil, active: true},
+         Security.current(actor.id)
+       ) and
          not Security.recent?(actor) do
       case socket.assigns[:vm] do
         %{owner: false, profile: profile, id: id} when profile != :customer ->

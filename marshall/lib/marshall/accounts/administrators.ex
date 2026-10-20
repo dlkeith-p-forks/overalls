@@ -25,7 +25,9 @@ defmodule Marshall.Accounts.Administrators do
 
         user = Map.fetch!(Security.lock_admin_participants!(actor.id, id), id)
 
-        unless user && is_nil(user.deleted_at), do: Ledger.rollback(:unknown_user)
+        unless (user && is_nil(user.deleted_at)) and user.active,
+          do: Ledger.rollback(:unknown_user)
+
         Security.require_admin!(actor)
 
         changed =

@@ -52,7 +52,7 @@ defmodule Marshall.Threads.Sharing do
     user =
       User
       |> Ash.Query.for_read(:internal_lookup)
-      |> Ash.Query.filter(email == ^request.email and is_nil(deleted_at))
+      |> Ash.Query.filter(email == ^request.email and is_nil(deleted_at) and active == true)
       |> Ash.read_one!(actor: SystemActor.compute())
 
     if is_nil(user), do: Ledger.rollback(:recipient_not_registered)

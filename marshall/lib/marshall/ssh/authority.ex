@@ -328,7 +328,9 @@ defmodule Marshall.SSH.Authority do
       |> Ash.Query.filter(id == ^key.user_id)
       |> Ash.read_one!(actor: SystemActor.compute())
 
-    if user == nil or not is_nil(user.deleted_at), do: Ledger.rollback(:unauthorized)
+    if user == nil or not is_nil(user.deleted_at) or not user.active,
+      do: Ledger.rollback(:unauthorized)
+
     live_session!(session)
     {user, key}
   end

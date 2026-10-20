@@ -46,7 +46,7 @@ defmodule Marshall.Accounts.Security do
   @spec passkey_verified?(String.t() | nil, String.t()) :: boolean()
   def passkey_verified?(token_id, user_id) do
     case current(user_id) do
-      %User{deleted_at: nil} = user ->
+      %User{deleted_at: nil, active: true} = user ->
         case proof(token_id, user_id) do
           %Verification{verified_at: %DateTime{}, generation: generation, credential_id: key_id} ->
             generation == user.mfa_generation and
@@ -69,7 +69,8 @@ defmodule Marshall.Accounts.Security do
   def recent?(%User{} = actor) do
     with token_id when is_binary(token_id) <- jti(actor),
          {:ok, _} <- Login.token_present(token_id, actor.id),
-         %User{deleted_at: nil, mfa_reset_required: false} = user <- current(actor.id),
+         %User{deleted_at: nil, active: true, mfa_reset_required: false} = user <-
+           current(actor.id),
          %Verification{} = verification <- proof(token_id, user.id),
          true <- verification.generation == user.mfa_generation,
          true <-
@@ -454,7 +455,7 @@ defmodule Marshall.Accounts.Security do
       |> Ash.Query.lock(:for_update)
       |> Ash.read_one!()
 
-    unless user && is_nil(user.deleted_at), do: Ledger.rollback(:unauthorized)
+    unless (user && is_nil(user.deleted_at)) and user.active, do: Ledger.rollback(:unauthorized)
     user
   end
 

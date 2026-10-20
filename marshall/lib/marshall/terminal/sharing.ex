@@ -37,7 +37,7 @@ defmodule Marshall.Terminal.Sharing do
 
           recipient =
             Marshall.Accounts.User
-            |> Ash.Query.filter(email == ^email and is_nil(deleted_at))
+            |> Ash.Query.filter(email == ^email and is_nil(deleted_at) and active == true)
             |> Ash.read_one!(authorize?: false)
 
           unless not is_nil(recipient) and recipient.id != actor.id and

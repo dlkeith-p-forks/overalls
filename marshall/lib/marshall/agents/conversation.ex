@@ -20,7 +20,7 @@ defmodule Marshall.Agents.Conversation do
           [%VirtualMachine{owner_id: owner_id, desired_state: :deleted} = vm]
           when owner_id == actor.id ->
             if match?(
-                 %Marshall.Accounts.User{deleted_at: nil},
+                 %Marshall.Accounts.User{deleted_at: nil, active: true},
                  Marshall.Accounts.Security.current(actor.id)
                ),
                do: {:ok, Map.put(vm, :permissions, %{write: false})},

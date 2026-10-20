@@ -55,7 +55,7 @@ defmodule Marshall.Agents.ExecutorSession do
 
           owner = Marshall.Accounts.Security.current(root.owner_id)
 
-          unless match?(%Marshall.Accounts.User{deleted_at: nil}, owner) and
+          unless match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, owner) and
                    Marshall.Access.Authorization.allowed?(vm, owner, "write"),
                  do: Ledger.rollback(:access_revoked)
 
@@ -357,7 +357,7 @@ defmodule Marshall.Agents.ExecutorSession do
     [vm] = Ledger.read!(VirtualMachine, id: executor.vm_id)
     actor = Marshall.Accounts.Security.current(turn.actor_id)
 
-    unless match?(%Marshall.Accounts.User{deleted_at: nil}, actor) and
+    unless match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, actor) and
              Marshall.Access.Authorization.allowed?(vm, actor, "write"),
            do: Ledger.rollback(:access_revoked)
 
@@ -411,7 +411,7 @@ defmodule Marshall.Agents.ExecutorSession do
     [root] = Ledger.read!(Root, id: executor.root_id)
     owner = Marshall.Accounts.Security.current(root.owner_id)
 
-    unless match?(%Marshall.Accounts.User{deleted_at: nil}, owner) and
+    unless match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, owner) and
              Marshall.Access.Authorization.allowed?(vm, owner, "write"),
            do: Ledger.rollback(:access_revoked)
 

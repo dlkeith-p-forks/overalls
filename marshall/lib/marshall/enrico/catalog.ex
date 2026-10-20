@@ -124,7 +124,7 @@ defmodule Marshall.Enrico.Catalog do
     end
   end
 
-  defp live?(user), do: match?(%User{deleted_at: nil}, Security.current(user.id))
+  defp live?(user), do: match?(%User{deleted_at: nil, active: true}, Security.current(user.id))
 
   defp refreshable(%Repository{phase: :removing}), do: {:error, :removing}
   defp refreshable(%Repository{phase: :refreshing}), do: {:error, :already_refreshing}

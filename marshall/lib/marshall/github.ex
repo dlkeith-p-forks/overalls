@@ -1104,7 +1104,7 @@ defmodule Marshall.GitHub do
     AccountLifecycle.admit!(user_id)
     user = Security.lock_user!(user_id)
 
-    unless is_nil(user.deleted_at) && is_binary(jti) &&
+    unless is_nil(user.deleted_at) && user.active && is_binary(jti) &&
              match?({:ok, _}, Login.present(jti, user_id)),
            do: Ledger.rollback(:unauthorized)
 

@@ -142,8 +142,11 @@ defmodule Marshall.Scim.UserLifecycleHttpTest do
     user = create_user!(scim)
     assert {200, _} = set_active(scim, user.id, false)
 
-    {login, _} = Marshall.PasskeyFixture.login(user!(user.id))
-    assert :error == Login.present(Security.jti(login), user.id)
+    # An inactive identity cannot even record a new primary login.
+    inactive = user!(user.id)
+    {:ok, _token, %{"jti" => jti}} = AshAuthentication.Jwt.token_for_user(inactive)
+    assert {:error, :unauthorized} = Security.primary(inactive, jti)
+    assert :error == Login.present(jti, user.id)
 
     assert {:error, _} =
              Marshall.Compute.Ledger.transaction(fn -> AccountLifecycle.admit!(user.id) end)

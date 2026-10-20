@@ -268,7 +268,8 @@ defmodule MarshallWeb.LiveAdminAuth do
              "admin_read",
              Cedar.entity("ControlPlane", "marshall")
            ),
-         %User{deleted_at: nil} = user <- Security.current(socket.assigns.current_user.id) do
+         %User{deleted_at: nil, active: true} = user <-
+           Security.current(socket.assigns.current_user.id) do
       {:cont,
        assign(socket,
          current_user: Security.bind(user, socket.private.login_jti),

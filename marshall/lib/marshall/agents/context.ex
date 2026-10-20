@@ -296,8 +296,8 @@ defmodule Marshall.Agents.Context do
              is_nil(vm.archived_at),
            do: Ledger.rollback(:machine_unavailable)
 
-    unless match?(%Marshall.Accounts.User{deleted_at: nil}, actor) and
-             match?(%Marshall.Accounts.User{deleted_at: nil}, owner) and
+    unless match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, actor) and
+             match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, owner) and
              Marshall.Access.Authorization.allowed?(vm, actor, "write") and
              task_access?(root, actor),
            do: Ledger.rollback(:access_revoked)

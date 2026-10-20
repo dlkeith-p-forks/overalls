@@ -248,7 +248,7 @@ defmodule Marshall.Agents.ModelCalls do
                    vm.desired_state == :running and vm.observed_state == :running and
                    vm.archived_at == nil and turn.status == :running and
                    thread.active_turn_id == turn.id and
-                   match?(%Marshall.Accounts.User{deleted_at: nil}, actor) and
+                   match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, actor) and
                    Marshall.Access.Authorization.allowed?(vm, actor, "write"),
                  do: Ledger.rollback(:stale_execution)
 
@@ -440,7 +440,7 @@ defmodule Marshall.Agents.ModelCalls do
         {:ok, _} =
           Marshall.Agents.TurnCoordinator.finish(turn.id, :failed, :machine_unavailable)
 
-      not match?(%Marshall.Accounts.User{deleted_at: nil}, actor) or
+      not match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, actor) or
           not Marshall.Access.Authorization.allowed?(vm, actor, "write") ->
         {:ok, _} = Marshall.Agents.TurnCoordinator.finish(turn.id, :failed, :access_revoked)
 

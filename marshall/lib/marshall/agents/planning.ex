@@ -508,7 +508,7 @@ defmodule Marshall.Agents.Planning do
 
   @spec turn_actor_authorized?(Thread.t(), Turn.t()) :: boolean()
   defp turn_actor_authorized?(thread, turn) do
-    with %User{deleted_at: nil} = actor <- Security.current(turn.actor_id),
+    with %User{deleted_at: nil, active: true} = actor <- Security.current(turn.actor_id),
          [root] <- Ledger.read!(Root, id: thread.root_id),
          [%VirtualMachine{archived_at: nil} = vm] <-
            Ledger.read!(VirtualMachine, id: root.vm_id),
@@ -532,7 +532,7 @@ defmodule Marshall.Agents.Planning do
   @spec require_write!(Thread.t(), User.t()) :: :ok
   defp require_write!(thread, actor) do
     current = Security.current(actor.id)
-    unless match?(%User{deleted_at: nil}, current), do: Ledger.rollback(:forbidden)
+    unless match?(%User{deleted_at: nil, active: true}, current), do: Ledger.rollback(:forbidden)
     [root] = Ledger.read!(Root, id: thread.root_id)
 
     vm =

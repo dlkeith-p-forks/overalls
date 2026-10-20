@@ -47,7 +47,7 @@ defmodule Marshall.Agents.TurnCoordinator do
       [vm] = Ledger.read!(VirtualMachine, id: root.vm_id)
       actor = Marshall.Accounts.Security.current(turn.actor_id)
 
-      if match?(%Marshall.Accounts.User{deleted_at: nil}, actor) and
+      if match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, actor) and
            Marshall.Access.Authorization.allowed?(vm, actor, "write") do
         start_locked!(turn, thread, root)
       else

@@ -116,7 +116,7 @@ defmodule Marshall.Agents.WebSearch do
             vm.archived_at != nil or vm.desired_state != :running or
               vm.observed_state != :running or
               not Marshall.Compute.Images.guest_capabilities(vm.image_id).agents or
-              not match?(%Marshall.Accounts.User{deleted_at: nil}, actor) or
+              not match?(%Marshall.Accounts.User{deleted_at: nil, active: true}, actor) or
                 not Marshall.Access.Authorization.allowed?(vm, actor, "write") ->
               finish_locked!(
                 command,
