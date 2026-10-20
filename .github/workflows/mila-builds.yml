@@ -8,6 +8,7 @@ on:
   pull_request:
     paths:
       - "mila/**"
+      - "mila/rust/**"
       - "protocol/test/fixtures/**"
       - "nix/domains/artifacts/mila/**"
       - "nix/platform/dartssh2.nix"
@@ -17,6 +18,7 @@ on:
     branches: [trunk]
     paths:
       - "mila/**"
+      - "mila/rust/**"
       - "protocol/test/fixtures/**"
       - "nix/domains/artifacts/mila/**"
       - "nix/platform/dartssh2.nix"
@@ -55,8 +57,10 @@ jobs:
             .#checks.x86_64-linux.mila-tool \
             .#checks.x86_64-linux.mila-test \
             .#checks.x86_64-linux.mila-lock-sync \
+            .#checks.x86_64-linux.mila-rust \
             .#tool-mila-linux-dev \
-            .#tool-mila-linux-release
+            .#tool-mila-linux-release \
+            .#tool-mila-rust
 
   source-bundle:
     runs-on: namespace-profile-cached-amd64-xl;container.privileged=true

@@ -215,6 +215,11 @@ let
         build = import ./vscode-web-broker { inherit pkgs; };
         hashes = { };
       };
+      mila-rust = {
+        locks = [ "mila/rust/Cargo.lock" ];
+        build = mila.rust;
+        hashes = { };
+      };
       otel-guest-receiver = {
         locks = [ "nix/domains/system/otel-guest/receiver/Cargo.lock" ];
         build = pkgs.callPackage ../system/otel-guest/receiver.nix { };
