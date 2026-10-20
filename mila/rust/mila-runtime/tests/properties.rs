@@ -1,5 +1,6 @@
 use hegel::{generators as gs, TestCase};
 use mila_runtime::{MachineSnapshot, SnapshotMachine, MAX_SNAPSHOT_BYTES};
+use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
 
 #[hegel::test(test_cases = 64)]
 fn arbitrary_bytes_never_panic(tc: TestCase) {
@@ -32,4 +33,56 @@ fn encoded_snapshots_round_trip(tc: TestCase) {
         MachineSnapshot::decode(&encoded, "control.example.test", None).expect("decode"),
         snapshot
     );
+}
+
+#[hegel::test(test_cases = 64)]
+fn arbitrary_registration_inputs_never_panic(tc: TestCase) {
+    let token =
+        String::from_utf8_lossy(&tc.draw(gs::vecs(gs::default::<u8>()).max_size(800))).into_owned();
+    let app =
+        String::from_utf8_lossy(&tc.draw(gs::vecs(gs::default::<u8>()).max_size(300))).into_owned();
+    let host =
+        String::from_utf8_lossy(&tc.draw(gs::vecs(gs::default::<u8>()).max_size(300))).into_owned();
+    let _ = PushRegistrationRequest::new(
+        PushProvider::Fcm,
+        token,
+        app,
+        PushEnvironment::Production,
+        host,
+        None,
+    );
+}
+
+#[test]
+fn registration_restricts_origins_and_secrets() {
+    let token = "a".repeat(32);
+    let req = PushRegistrationRequest::new(
+        PushProvider::Apns,
+        token,
+        "com.example.mila".into(),
+        PushEnvironment::Production,
+        "mila.example.test".into(),
+        None,
+    )
+    .expect("valid");
+    assert_eq!(PushProvider::Apns.origin(), "https://api.push.apple.com");
+    assert!(!format!("{req:?}").contains("aaaa"));
+    assert!(PushRegistrationRequest::new(
+        PushProvider::Fcm,
+        "a".repeat(32),
+        "app".into(),
+        PushEnvironment::Development,
+        "mila.example.test".into(),
+        None
+    )
+    .is_err());
+    assert!(PushRegistrationRequest::new(
+        PushProvider::Wns,
+        "https://evil.example/channel".into(),
+        "app".into(),
+        PushEnvironment::Production,
+        "mila.example.test".into(),
+        Some("https://evil.example/channel".into())
+    )
+    .is_err());
 }

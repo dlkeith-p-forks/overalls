@@ -282,6 +282,178 @@ pub struct PushRegistration {
     pub key_id: String,
     pub expires_at: u64,
 }
+
+/// Push provider accepted by Susan's closed registration API.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum PushProvider {
+    Apns,
+    Fcm,
+    Wns,
+}
+
+impl PushProvider {
+    pub const fn origin(self) -> &'static str {
+        match self {
+            Self::Apns => "https://api.push.apple.com",
+            Self::Fcm => "https://fcm.googleapis.com",
+            Self::Wns => "https://notify.windows.com",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum PushEnvironment {
+    Production,
+    Development,
+}
+
+/// Secret provider token. Formatting deliberately never exposes its contents.
+#[derive(Clone, Eq, PartialEq, Serialize, Deserialize)]
+pub struct ProviderToken(String);
+impl std::fmt::Debug for ProviderToken {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("ProviderToken(REDACTED)")
+    }
+}
+impl ProviderToken {
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+/// Closed request sent from a native client to Susan for key issuance.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct PushRegistrationRequest {
+    pub provider: PushProvider,
+    pub token: ProviderToken,
+    pub app_id: String,
+    pub environment: PushEnvironment,
+    pub deployment: String,
+    /// WNS channel URI; absent for APNs and FCM, whose origins are fixed.
+    pub endpoint: Option<String>,
+}
+
+impl PushRegistrationRequest {
+    pub fn new(
+        provider: PushProvider,
+        token: String,
+        app_id: String,
+        environment: PushEnvironment,
+        deployment: String,
+        endpoint: Option<String>,
+    ) -> Result<Self, RuntimeError> {
+        if app_id.is_empty()
+            || app_id.len() > 256
+            || !app_id.bytes().all(|b| b.is_ascii_graphic() && b != b'"')
+        {
+            return Err(RuntimeError::InvalidPushRegistration);
+        }
+        validate_host(&deployment).map_err(|_| RuntimeError::InvalidPushRegistration)?;
+        if provider != PushProvider::Apns && environment == PushEnvironment::Development {
+            return Err(RuntimeError::InvalidPushRegistration);
+        }
+        if !provider_token_valid(provider, &token) {
+            return Err(RuntimeError::InvalidPushRegistration);
+        }
+        match provider {
+            PushProvider::Wns => {
+                let value = endpoint
+                    .as_deref()
+                    .ok_or(RuntimeError::InvalidPushRegistration)?;
+                if value != token || !wns_channel_valid(value) {
+                    return Err(RuntimeError::InvalidPushRegistration);
+                }
+            }
+            PushProvider::Apns | PushProvider::Fcm if endpoint.is_some() => {
+                return Err(RuntimeError::InvalidPushRegistration)
+            }
+            _ => {}
+        }
+        Ok(Self {
+            provider,
+            token: ProviderToken(token),
+            app_id,
+            environment,
+            deployment,
+            endpoint,
+        })
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct PushRegistrationReply {
+    pub push_key: String,
+    pub key_id: String,
+    pub expires_at: u64,
+}
+
+impl PushRegistrationReply {
+    pub fn new(
+        push_key: String,
+        key_id: String,
+        expires_at: u64,
+        now: u64,
+    ) -> Result<Self, RuntimeError> {
+        if !(16..=700).contains(&push_key.len())
+            || !base64url(&push_key)
+            || key_id.is_empty()
+            || key_id.len() > 128
+            || expires_at <= now
+        {
+            return Err(RuntimeError::InvalidPushRegistration);
+        }
+        Ok(Self {
+            push_key,
+            key_id,
+            expires_at,
+        })
+    }
+}
+
+fn provider_token_valid(provider: PushProvider, token: &str) -> bool {
+    match provider {
+        PushProvider::Apns => {
+            (32..=200).contains(&token.len())
+                && token
+                    .bytes()
+                    .all(|b| b.is_ascii_hexdigit() && !b.is_ascii_uppercase())
+        }
+        PushProvider::Fcm => {
+            (32..=512).contains(&token.len())
+                && token
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b"_:-".contains(&b))
+        }
+        PushProvider::Wns => wns_channel_valid(token),
+    }
+}
+
+fn wns_channel_valid(value: &str) -> bool {
+    if value.len() > 1024
+        || !value.starts_with("https://")
+        || value.contains([' ', '\\', '%', '#', '@'])
+    {
+        return false;
+    }
+    let Some((authority, path)) = value[8..].split_once('/') else {
+        return false;
+    };
+    if path.is_empty() || !authority.ends_with(":443") {
+        return false;
+    }
+    let host = authority.strip_suffix(":443").unwrap_or(authority);
+    host.ends_with(".notify.windows.com")
+        && host.split('.').all(|part| {
+            !part.is_empty()
+                && part
+                    .bytes()
+                    .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'-')
+        })
+}
 impl PushRegistration {
     pub fn new(
         platform: mila_model::DevicePlatform,
