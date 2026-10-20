@@ -9,7 +9,7 @@ import unittest
 from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
-from typing import TypedDict, cast
+from typing import NotRequired, TypedDict, cast
 from unittest.mock import patch
 
 import cli  # ty: ignore[unresolved-import] # PYTHONPATH nix/domains/artifacts/host
@@ -51,8 +51,9 @@ class StorageRecord(TypedDict):
 
 
 class BudgetsRecord(TypedDict):
-    guestMemoryMiB: int
-    guestCpuCores: int
+    # Hetzner Cloud hosts declare only the ARC budget (no Lilly guests).
+    guestMemoryMiB: NotRequired[int]
+    guestCpuCores: NotRequired[int]
     arcMaxMiB: int
 
 
@@ -719,6 +720,58 @@ class HostPlanning(unittest.TestCase):
             cli.validate(h)
         h["storage"]["quotaBytes"] = 1234
         cli.validate(h)
+
+    def test_hcloud_single_zfs_root_without_guest_storage(self) -> None:
+        def cloud() -> HostRecord:
+            h = host()
+            h["platform"] = "hcloud"
+            h["inventory"]["disks"] = [disk("root", "physical")]
+            h["storage"].update(system=["root"], guests=[], quotaBytes=None)
+            h["budgets"] = {"arcMaxMiB": 512}
+            return h
+
+        cli.validate(cloud())
+        h = cloud()
+        h["storage"]["quotaBytes"] = 0
+        cli.validate(h)
+        h = cloud()
+        h["inventory"]["disks"].append(disk("second", "physical"))
+        h["storage"]["system"] = ["root", "second"]
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        h["inventory"]["disks"].append(disk("local1", "physical"))
+        h["storage"]["guests"] = ["local1"]
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        h["storage"]["quotaBytes"] = 1234
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        # A Lilly role is refused on a platform without reviewed KVM.
+        cast("dict[str, object]", h)["lilly"] = {"controlPlane": "https://example.test"}
+        with self.assertRaisesRegex(cli.Failure, "Lilly"):
+            cli.validate(h)
+        h = cloud()
+        h["budgets"] = {"arcMaxMiB": 512, "guestCpuCores": 1, "guestMemoryMiB": 1024}
+        with self.assertRaisesRegex(cli.Failure, "budgets"):
+            cli.validate(h)
+
+    def test_hcloud_guard_skips_kvm_but_lilly_platforms_require_it(self) -> None:
+        h = host()
+        for platform, calls in (("hcloud", 0), ("ec2", 1)):
+            h["platform"] = platform
+            with (
+                patch.object(remote, "inventory", return_value=copy.deepcopy(h["inventory"])),
+                patch.object(remote, "firmware", return_value="uefi"),
+                patch.object(remote, "kvm") as probed,
+                patch.object(sys, "argv", ["remote", "guard"]),
+                patch.object(sys, "stdin", __import__("io").StringIO(json.dumps(h))),
+                patch("builtins.print"),
+            ):
+                remote.main()
+            self.assertEqual(probed.call_count, calls)
 
     def test_reordered_devices_match(self) -> None:
         expected = host()["inventory"]

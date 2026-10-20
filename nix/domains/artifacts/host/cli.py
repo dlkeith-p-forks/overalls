@@ -20,6 +20,8 @@ from remote import Binding, Facts, Identity, Inventory, StorageFacts
 
 REPOSITORY = "ssh://git@github.com/ghuntley/overalls"
 REMOTE = Path(__file__).with_name("remote.py")
+PLATFORMS = ("hetzner", "ec2", "hcloud")
+HCLOUD_GATEWAY = "172.31.1.1"
 
 
 class Failure(Exception):
@@ -188,11 +190,7 @@ def probe[T](
 
 def validate(h: Host) -> Host:
     safe_name(h["name"])
-    if (
-        not h["reviewed"]
-        or h["platform"] not in ("hetzner", "ec2")
-        or h["firmware"] not in ("bios", "uefi")
-    ):
+    if not h["reviewed"] or h["platform"] not in PLATFORMS or h["firmware"] not in ("bios", "uefi"):
         raise Failure("Review platform, firmware and network before planning")
     if h["inventory"]["arch"] != "x86_64" or not h["inventory"]["machine"] or not h["network"]:
         raise Failure("Reviewed x86_64 hardware and networking required")
@@ -201,9 +199,13 @@ def validate(h: Host) -> Host:
         or h["identity"]["hostId"] == "00000000"
     ):
         raise Failure("Explicit nonzero ZFS host ID required")
-    if set(h["budgets"]) != {"guestMemoryMiB", "guestCpuCores", "arcMaxMiB"} or any(
-        type(h["budgets"][k]) is not int or h["budgets"][k] <= 0
-        for k in ("guestMemoryMiB", "guestCpuCores", "arcMaxMiB")
+    budgets = (
+        {"arcMaxMiB"}
+        if h["platform"] == "hcloud"
+        else {"guestMemoryMiB", "guestCpuCores", "arcMaxMiB"}
+    )
+    if set(h["budgets"]) != budgets or any(
+        type(h["budgets"][k]) is not int or h["budgets"][k] <= 0 for k in budgets
     ):
         raise Failure("Explicit positive production resource budgets required")
     disks = {d["id"]: d for d in h["inventory"]["disks"]}
@@ -230,6 +232,17 @@ def validate(h: Host) -> Host:
             or h["storage"]["quotaBytes"] <= 0
         ):
             raise Failure("Hetzner requires two system disks and a reviewed guest quota")
+    elif h["platform"] == "hcloud":
+        # @cc [owner:ghuntley,label:deployment;capacity] hcloud-single-zfs-root
+        # A Hetzner Cloud host MUST select exactly one system disk, no guest
+        # disks, no guest quota and no Lilly role.
+        if (
+            len(system) != 1
+            or guests
+            or h["storage"]["quotaBytes"] not in (None, 0)
+            or "lilly" in h
+        ):
+            raise Failure("Hetzner Cloud requires one system disk and no guest storage or Lilly")
     elif (
         any(d["kind"] not in ("ebs", "local-nvme") for d in disks.values())
         or len(system) != 1
@@ -304,7 +317,7 @@ def discover(args: argparse.Namespace) -> None:
     for nic in facts["addresses"]:
         if nic["ifname"] == "lo" or not nic.get("address"):
             continue
-        network["10-" + nic["ifname"]] = {
+        entry: dict[str, object] = {
             "matchConfig": {"MACAddress": nic["address"]},
             "networkConfig": {"DHCP": "yes"}
             if args.platform == "ec2"
@@ -316,6 +329,15 @@ def discover(args: argparse.Namespace) -> None:
                 ]
             },
         }
+        if args.platform == "hcloud":
+            # Hetzner Cloud routes IPv4 through an on-link /32 gateway and IPv6
+            # through fe80::1; both are proposals for explicit review.
+            entry["routes"] = [
+                {"Destination": HCLOUD_GATEWAY + "/32", "Scope": "link"},
+                {"Destination": "0.0.0.0/0", "Gateway": HCLOUD_GATEWAY, "GatewayOnLink": True},
+                {"Destination": "::/0", "Gateway": "fe80::1", "GatewayOnLink": True},
+            ]
+        network["10-" + nic["ifname"]] = entry
     candidate: dict[str, object] = {
         "name": safe_name(args.name),
         "reviewed": False,
@@ -330,7 +352,9 @@ def discover(args: argparse.Namespace) -> None:
             "quotaBytes": None,
             "ashift": 12,
         },
-        "budgets": {
+        "budgets": {"arcMaxMiB": None}
+        if args.platform == "hcloud"
+        else {
             "guestMemoryMiB": None,
             "guestCpuCores": None,
             "arcMaxMiB": None,
@@ -658,7 +682,7 @@ def main() -> int:
         if name in ("plan", "discover"):
             p.add_argument("--output", required=True)
         if name == "discover":
-            p.add_argument("--platform", choices=("hetzner", "ec2"), required=True)
+            p.add_argument("--platform", choices=PLATFORMS, required=True)
             p.add_argument("--name", required=True)
         if name == "install":
             p.add_argument("--plan", required=True)

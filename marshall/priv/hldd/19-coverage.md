@@ -4456,3 +4456,21 @@ Tested scope: Hegel stateful supervisor, framing property and OpenSSH reconnect 
 **Gaps:** No run against Porsche's real watch.
 
 **Preferred test work:** A NixOS machine test observing a thread change through watch.
+
+## An operator installs and enrolls a KVM-less Hetzner Cloud host that runs only Susan behind TLS for notifications.overalls.dev
+
+Coverage: **partial**. Layers: storage, isolation, transport, recovery.
+
+Boundary: hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly; salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at one IPv4 address.
+
+Required refusal: Two system disks, guest disks, a guest quota, Lilly budgets or a lilly section are refused before planning; Lilly platforms still require working KVM in the guard.
+
+Tested scope: Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions.
+
+- **unit, present**: [def test_hcloud_single_zfs_root_without_guest_storage(](repo:nix/verification/tests/evaluation/host-planning.py) — cli.validate over a valid hcloud declaration and each refused variant..
+- **unit, present**: [def test_hcloud_guard_skips_kvm_but_lilly_platforms_require_it(](repo:nix/verification/tests/evaluation/host-planning.py) — remote guard with KVM mocked for hcloud and ec2 declarations..
+- **unit, present**: [hcloud-single-zfs-root: one disk, a ZFS root and no guest dataset.](repo:nix/verification/tests/evaluation/storage-configuration.nix) — Evaluated hcloud-uefi and hcloud-bios profile fixtures..
+
+**Gaps:** Physical installation, enrollment and ACME issuance on salopettes are recorded in ADR-0231 once performed; real APNs/FCM credentials remain placeholders.
+
+**Preferred test work:** A host-conversion NixOS machine test with a single virtio disk under the hcloud platform.

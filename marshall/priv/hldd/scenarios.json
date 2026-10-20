@@ -15035,6 +15035,45 @@
           "execution": "present"
         }
       ]
+    },
+    {
+      "id": "hcloud-susan-host",
+      "journey": "An operator installs and enrolls a KVM-less Hetzner Cloud host that runs only Susan behind TLS for notifications.overalls.dev",
+      "layers": [
+        "storage",
+        "isolation",
+        "transport",
+        "recovery"
+      ],
+      "boundary": "hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly; salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at one IPv4 address.",
+      "denial": "Two system disks, guest disks, a guest quota, Lilly budgets or a lilly section are refused before planning; Lilly platforms still require working KVM in the guard.",
+      "scope": "Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions.",
+      "status": "partial",
+      "gaps": "Physical installation, enrollment and ACME issuance on salopettes are recorded in ADR-0231 once performed; real APNs/FCM credentials remain placeholders.",
+      "preferred_gap": "A host-conversion NixOS machine test with a single virtio disk under the hcloud platform.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/host-planning.py",
+          "assertion": "def test_hcloud_single_zfs_root_without_guest_storage(",
+          "scope": "cli.validate over a valid hcloud declaration and each refused variant.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/host-planning.py",
+          "assertion": "def test_hcloud_guard_skips_kvm_but_lilly_platforms_require_it(",
+          "scope": "remote guard with KVM mocked for hcloud and ec2 declarations.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/storage-configuration.nix",
+          "assertion": "hcloud-single-zfs-root: one disk, a ZFS root and no guest dataset.",
+          "scope": "Evaluated hcloud-uefi and hcloud-bios profile fixtures.",
+          "execution": "present"
+        }
+      ]
     }
   ]
 }

@@ -6,5 +6,6 @@ device validation. Private credentials MUST remain outside plans and diagnostics
 
 @cc [owner:ghuntley,label:recovery] enrollment-preserves-installation
 Enrollment MUST never format disks or replace host keys. Polling MUST remain
-gated until credentials, pinned Git access, storage and KVM verification succeed.
+gated until credentials, pinned Git access, storage and KVM verification succeed;
+hcloud hosts, which never run Lilly, skip only the KVM probe.
 Receipts MUST bind installation identity and pool GUID; loss MUST fail closed.

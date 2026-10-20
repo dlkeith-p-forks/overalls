@@ -130,10 +130,13 @@ real provider acceptance or the latest integrated relay verifier.
 
 ## Open questions
 
-- Registry, host and TLS placement for the image.
+- Registry, host and TLS placement for the image. Host and TLS placement are
+  resolved by [ADR-0231](0231-hetzner-cloud-hosts-and-susan-placement.md):
+  the enrolled `hcloud` host salopettes with ACME TLS; no registry is used.
 - Android delivery without Google services.
 
 ## Related decisions
 
 [ADR-0220](0220-mila-client-over-porsche-ssh.md),
-[ADR-0225](0225-marshall-notifications-domain.md).
+[ADR-0225](0225-marshall-notifications-domain.md),
+[ADR-0231](0231-hetzner-cloud-hosts-and-susan-placement.md) (placement).

@@ -4,9 +4,15 @@ let
   h = host;
   efi = h.firmware == "uefi";
   mirror = h.platform == "hetzner";
+  # @cc [owner:ghuntley,label:deployment;capacity] hcloud-single-zfs-root
+  # A Hetzner Cloud host MUST boot from exactly one system disk carrying a ZFS
+  # zroot/root dataset. It has no guest disks, guest dataset or guest quota.
+  cloud = h.platform == "hcloud";
+  ec2 = h.platform == "ec2";
+  zfsRoot = mirror || cloud;
   disks = lib.listToAttrs (map (d: lib.nameValuePair d.id d) h.inventory.disks);
   bootDisks = h.storage.system;
-  guestDisks = if mirror then [] else h.storage.guests;
+  guestDisks = if zfsRoot then [] else h.storage.guests;
   binding = {
     inherit (h) platform firmware identity;
     inventory = h.inventory // { disks = map (d: builtins.removeAttrs d [ "active" "path" "aliases" ]) h.inventory.disks; };
@@ -55,11 +61,11 @@ let
         };
       }
       // lib.optionalAttrs efi { ESP = esp (if index == 0 then "/boot" else "/boot-mirror"); }
-      // { system = { label = "${h.name}-system${toString index}"; size = "100%"; content = if mirror then { type = "zfs"; pool = "zroot"; }
+      // { system = { label = "${h.name}-system${toString index}"; size = "100%"; content = if zfsRoot then { type = "zfs"; pool = "zroot"; }
         else { type = "filesystem"; format = "ext4"; mountpoint = "/"; }; }; };
     };
   };
-  pool = if mirror then "zroot" else "guests";
+  pool = if zfsRoot then "zroot" else "guests";
   policy = { compression = "lz4"; reservation = "none"; refreservation = "none";
     mountpoint = "none"; canmount = "off"; };
   lillySettings = h.lilly or {};
@@ -112,13 +118,18 @@ in {
         && config.services.overallsSecrets.bundles.lilly.outputs."credential.json".secrets == [ "LILLY_CREDENTIAL" ]
         && config.services.lilly.egressInterface == lillySettings.egressInterface); message = "Generated Lilly secret delivery or egress conflicts with manual configuration"; }
     { assertion = !lillyEnrolled || map (p: builtins.removeAttrs p [ "max_iops" "max_iops_source" ]) config.services.lilly.pools == lillyPools; message = "Generated Lilly pools conflict with manual configuration"; }
-    { assertion = builtins.elem h.platform [ "hetzner" "ec2" ] && builtins.elem h.firmware [ "bios" "uefi" ]; message = "Unsupported host platform or firmware"; }
+    { assertion = builtins.elem h.platform [ "hetzner" "ec2" "hcloud" ] && builtins.elem h.firmware [ "bios" "uefi" ]; message = "Unsupported host platform or firmware"; }
     { assertion = h.inventory.arch == "x86_64" && h.reviewed; message = "Hosts require reviewed x86_64 hardware and network"; }
     { assertion = builtins.length bootDisks == (if mirror then 2 else 1); message = "Invalid system disk count"; }
-    { assertion = builtins.attrNames h.budgets == [ "arcMaxMiB" "guestCpuCores" "guestMemoryMiB" ] && h.budgets.guestMemoryMiB > 0 && h.budgets.guestCpuCores > 0 && h.budgets.arcMaxMiB > 0; message = "Explicit production resource budgets required"; }
+    { assertion = if cloud then builtins.attrNames h.budgets == [ "arcMaxMiB" ] && h.budgets.arcMaxMiB > 0
+        else builtins.attrNames h.budgets == [ "arcMaxMiB" "guestCpuCores" "guestMemoryMiB" ] && h.budgets.guestMemoryMiB > 0 && h.budgets.guestCpuCores > 0 && h.budgets.arcMaxMiB > 0; message = "Explicit production resource budgets required"; }
+    # @cc [owner:ghuntley,label:deployment;security] hcloud-no-kvm-no-lilly
+    # Hetzner Cloud hosts have no reviewed KVM and no guest storage, so they
+    # MUST NOT declare or run Lilly and MUST NOT reserve a guest quota.
+    { assertion = !cloud || (h.storage.guests == [] && builtins.elem (h.storage.quotaBytes or null) [ null 0 ] && !(h ? lilly) && !config.services.lilly.enable); message = "Hetzner Cloud hosts carry no guest storage, quota or Lilly role"; }
     { assertion = lillyBinding == null || lib.all (p: builtins.attrNames p == [ "filesystem_id" "id" "name" "storage" ]) lillyBinding.pools; message = "Lilly binding pools must carry exactly id, name, filesystem_id and storage"; }
     { assertion = !mirror || h.storage.quotaBytes > 0; message = "Shared root storage requires a reviewed guest quota"; }
-    { assertion = mirror || (guestDisks != [] && lib.sort builtins.lessThan guestDisks == lib.sort builtins.lessThan (map (d: d.id) (lib.filter (d: d.kind == "local-nvme") h.inventory.disks)) && disks.${builtins.head bootDisks}.kind == "ebs"); message = "EC2 requires EBS root and every local NVMe drive"; }
+    { assertion = !ec2 || (guestDisks != [] && lib.sort builtins.lessThan guestDisks == lib.sort builtins.lessThan (map (d: d.id) (lib.filter (d: d.kind == "local-nvme") h.inventory.disks)) && disks.${builtins.head bootDisks}.kind == "ebs"); message = "EC2 requires EBS root and every local NVMe drive"; }
     { assertion = !config.services.lilly.enable || lib.all (path: !lib.hasPrefix "/var/lib/lilly/pool" path)
         [ config.services.lilly.stateDirectory config.services.lilly.vmStateDirectory config.services.lilly.networkStateDirectory ]; message = "Lilly control journals must remain on system storage"; }
     { assertion = !config.services.lilly.enable || (builtins.length config.services.lilly.pools == 1
@@ -162,9 +173,9 @@ in {
     extra-system-features = [ "nested-kvm" ];
   };
   boot.initrd.availableKernelModules = [ "nvme" "ahci" "virtio_pci" "virtio_blk" "virtio_scsi" ];
-  boot.kernelModules = [ "kvm-intel" "kvm-amd" ] ++ lib.optional (!mirror) "ena";
-  boot.initrd.kernelModules = lib.optional (!mirror) "ena";
-  boot.kernelParams = lib.optionals (!mirror) [ "console=ttyS0,115200n8" "nvme_core.io_timeout=4294967295" ];
+  boot.kernelModules = [ "kvm-intel" "kvm-amd" ] ++ lib.optional ec2 "ena";
+  boot.initrd.kernelModules = lib.optional ec2 "ena";
+  boot.kernelParams = lib.optionals ec2 [ "console=ttyS0,115200n8" "nvme_core.io_timeout=4294967295" ];
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
   boot.zfs.forceImportAll = false;
@@ -178,7 +189,7 @@ in {
   boot.loader.grub = {
     enable = true; efiSupport = efi; efiInstallAsRemovable = efi;
     devices = lib.mkForce [];
-    extraConfig = lib.optionalString (!mirror) ''
+    extraConfig = lib.optionalString ec2 ''
       serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
       terminal_output console serial
     '';
@@ -199,9 +210,9 @@ in {
       type = "zpool"; mode = if mirror then "mirror" else "";
       options = { ashift = toString h.storage.ashift; cachefile = "none"; };
       rootFsOptions = policy;
-      datasets = lib.optionalAttrs mirror { root = {
+      datasets = lib.optionalAttrs zfsRoot { root = {
         type = "zfs_fs"; options = { mountpoint = "legacy"; canmount = "on"; }; mountpoint = "/";
-      }; } // { lilly = {
+      }; } // lib.optionalAttrs (!cloud) { lilly = {
         type = "zfs_fs";
         options = { mountpoint = "/var/lib/lilly/pool"; canmount = "on"; }
           // lib.optionalAttrs mirror { quota = toString h.storage.quotaBytes; };
@@ -210,7 +221,7 @@ in {
     };
   };
   # Guest-storage failure must not prevent the EBS-backed host from booting.
-  fileSystems."/var/lib/lilly/pool".options = [ "nofail" "x-systemd.device-timeout=5s" "x-systemd.after=zfs-mount.service" ];
+  fileSystems."/var/lib/lilly/pool" = lib.mkIf (!cloud) { options = [ "nofail" "x-systemd.device-timeout=5s" "x-systemd.after=zfs-mount.service" ]; };
   # @cc [owner:ghuntley,label:deployment] host-probe-runtime-tools
   # The installed administrative command path MUST provide Python, Git and ZFS
   # tools for SSH-delivered host probes, including receipt Git-access checks.
