@@ -20,7 +20,7 @@ defmodule Marshall.Agents.Command do
     defaults [:read]
 
     create :queue do
-      accept [:root_id, :thread_id, :turn_id, :call_id, :tool, :arguments]
+      accept [:root_id, :thread_id, :turn_id, :call_id, :tool, :arguments, :redaction_profile]
     end
 
     update :transition do
@@ -57,6 +57,7 @@ defmodule Marshall.Agents.Command do
 
     attribute :arguments, :map, allow_nil?: false
     attribute :result, :map
+    attribute :redaction_profile, :string, constraints: [max_length: 128]
 
     attribute :status, :atom,
       allow_nil?: false,

@@ -144,7 +144,8 @@ defmodule Marshall.Agents.Prompt do
           working_directory: directory,
           configuration_owner_id: root.owner_id,
           maintenance_kind: Map.get(options, :maintenance_kind),
-          maintenance_metadata: Map.get(options, :maintenance_metadata, %{})
+          maintenance_metadata: Map.get(options, :maintenance_metadata, %{}),
+          redaction_profile: Marshall.Redaction.Scanner.profile_digest()
         })
 
       if prompt do

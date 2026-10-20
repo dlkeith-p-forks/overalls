@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "source": "preflight-compatible generated secret profile",
+  "rules": [
+    {"id":"github-token","pattern":"\\bgh[pousr]_[A-Za-z0-9_]{20,}\\b"},
+    {"id":"openai-key","pattern":"\\bsk-[A-Za-z0-9]{20,}\\b"},
+    {"id":"aws-access-key","pattern":"\\bAKIA[0-9A-Z]{16}\\b"},
+    {"id":"private-key","pattern":"-----BEGIN PRIVATE KEY-----"},
+    {"id":"jwt","pattern":"\\beyJ..."}
+  ],
+  "attachments": "excluded"
+}

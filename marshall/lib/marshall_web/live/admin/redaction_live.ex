@@ -27,6 +27,15 @@ defmodule MarshallWeb.Admin.RedactionLive do
     end
   end
 
+  def handle_event(action, %{"id" => id}, socket) when action in ["pause", "resume", "cancel"] do
+    with {:ok, run} <- Ash.get(Marshall.Redaction.Run, id, actor: Marshall.Authorization.SystemActor.compute()),
+         {:ok, _} <- Ash.update(run, String.to_existing_atom(action), %{}, actor: Marshall.Authorization.SystemActor.compute()) do
+      {:noreply, socket |> put_flash(:info, dgettext("admin_audit", "Redaction run updated.")) |> refresh()}
+    else
+      _ -> {:noreply, put_flash(socket, :error, dgettext("admin_audit", "The redaction run could not be updated."))}
+    end
+  end
+
   defp refresh(socket) do
     runs =
       from(r in "redaction_runs",
@@ -72,6 +81,11 @@ defmodule MarshallWeb.Admin.RedactionLive do
             <span>#{run.id}</span><span>{run.state}</span>
             <span>{dgettext("admin_audit", "Processed %{count}", count: run.processed)}</span><span>{dgettext("admin_audit", "Changed %{count}", count: run.changed)}</span>
             <span class="muted">{dgettext("admin_audit", "Profile %{digest}", digest: run.profile_digest)}</span>
+            <span class="row">
+              <button :if={run.state == :running} phx-click="pause" phx-value-id={run.id}>{dgettext("admin_audit", "Pause")}</button>
+              <button :if={run.state == :paused} phx-click="resume" phx-value-id={run.id}>{dgettext("admin_audit", "Resume")}</button>
+              <button :if={run.state in [:queued, :running, :paused]} phx-click="cancel" phx-value-id={run.id}>{dgettext("admin_audit", "Cancel")}</button>
+            </span>
           </div>
         </div>
       </section>

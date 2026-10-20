@@ -34,7 +34,8 @@ defmodule Marshall.Agents.Turn do
         :configuration_owner_id,
         :selected_skills,
         :maintenance_kind,
-        :maintenance_metadata
+        :maintenance_metadata,
+        :redaction_profile
       ]
     end
 
@@ -78,6 +79,7 @@ defmodule Marshall.Agents.Turn do
       constraints: [one_of: [:compact_context, :reload_context, :skill_operation]]
 
     attribute :maintenance_metadata, :map, allow_nil?: false, default: %{}
+    attribute :redaction_profile, :string, constraints: [max_length: 128]
 
     attribute :status, :atom,
       allow_nil?: false,

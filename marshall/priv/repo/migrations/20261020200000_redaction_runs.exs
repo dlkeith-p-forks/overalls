@@ -2,6 +2,14 @@ defmodule Marshall.Repo.Migrations.RedactionRuns do
   use Ecto.Migration
 
   def change do
+    alter table(:agent_turns) do
+      add :redaction_profile, :text
+    end
+
+    alter table(:agent_commands) do
+      add :redaction_profile, :text
+    end
+
     create table(:redaction_runs, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :scope, :map, null: false
