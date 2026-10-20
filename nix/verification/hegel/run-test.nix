@@ -64,18 +64,18 @@ let
   '';
   indent2 = script: lib.concatMapStringsSep "\n" (line: "  " + line) (lib.splitString "\n" script);
   indent4 = script: lib.concatMapStringsSep "\n" (line: "    " + line) (lib.splitString "\n" script);
-  compose = cfg: script: ''
-    try:
-${indent2 (if script == "" then "pass" else script)}
-    except BaseException:
-        try:
-${indent4 (epilogue cfg)}
-        except BaseException:
-            print("[hegel] property runner failed while preserving an imperative failure")
-        raise
-    else:
-${indent2 (epilogue cfg)}
-  '';
+  compose = cfg: script:
+    "try:\n"
+    + indent2 (if script == "" then "pass" else script)
+    + "\nexcept BaseException:\n"
+    + "    try:\n"
+    + indent4 (indent4 (epilogue cfg))
+    + "\n    except BaseException:\n"
+    + "        print(\"[hegel] property runner failed while preserving an imperative failure\")\n"
+    + "    raise\n"
+    + "else:\n"
+    + indent2 (epilogue cfg);
+
 in
 {
   # @cc [owner:ghuntley,label:verification] hegel-test-properties-execution
