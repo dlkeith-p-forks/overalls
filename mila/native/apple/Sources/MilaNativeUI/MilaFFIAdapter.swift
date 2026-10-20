@@ -7,7 +7,7 @@ public enum MilaFFIOperation: String, Codable, Sendable {
 }
 
 /// Navigation targets accepted from external activation. Credentials and commands are excluded.
-public enum MilaRoute: Equatable, Sendable {
+public enum MilaRoute: Hashable, Sendable {
     case machines
     case machine(id: UUID)
     case threads

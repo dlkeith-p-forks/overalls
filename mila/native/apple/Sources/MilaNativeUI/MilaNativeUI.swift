@@ -47,8 +47,8 @@ private struct MachinesView: View {
     var body: some View {
         List {
             Section("Machines") {
-                ForEach([("Development", UUID(uuidString: "00000000-0000-0000-0000-000000000001")!), ("Production", UUID(uuidString: "00000000-0000-0000-0000-000000000002")!)], id: \.1) { machine in
-                    Button(machine.0) { select(machine.1) }
+                ForEach([UUID(uuidString: "00000000-0000-0000-0000-000000000001")!, UUID(uuidString: "00000000-0000-0000-0000-000000000002")!], id: \.self) { id in
+                    Button(id.uuidString == "00000000-0000-0000-0000-000000000001" ? "Development" : "Production") { select(id) }
                 }
             }
         }.navigationTitle("Machines")
