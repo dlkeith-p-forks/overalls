@@ -8,7 +8,6 @@ let
   endpoints = {
     # Builders are reached over Tailscale so no public address is evaluated.
     dungarees = { address = "100.96.244.44"; port = 2222; logicalCpus = 96; };
-    overalls = { address = "100.117.30.53"; port = 2222; logicalCpus = 32; };
     panterloons = { address = "100.98.214.120"; port = 2222; logicalCpus = 96; };
   };
 in
