@@ -12,8 +12,20 @@ typedef enum MilaFfiStatus {
   MILA_FFI_OK = 0,
   MILA_FFI_NULL_INPUT = -1,
   MILA_FFI_INVALID_ROUTE = -2,
-  MILA_FFI_OUTPUT_TOO_SMALL = -3
+  MILA_FFI_OUTPUT_TOO_SMALL = -3,
+  MILA_FFI_INVALID_REQUEST = -4
 } MilaFfiStatus;
+
+typedef enum MilaWatchEventKind {
+  MILA_WATCH_UNKNOWN = 0,
+  MILA_WATCHING = 1,
+  MILA_HEARTBEAT = 2,
+  MILA_MACHINE_CHANGED = 3,
+  MILA_TERMINAL_SESSIONS_CHANGED = 4,
+  MILA_THREAD_CHANGED = 5,
+  MILA_RESYNC = 6,
+  MILA_SESSION = 7
+} MilaWatchEventKind;
 
 typedef struct MilaFfiAbiVersion {
   uint32_t major;
@@ -32,6 +44,12 @@ uint32_t mila_ffi_version(void);
 MilaFfiStatus mila_ffi_get_version(MilaFfiAbiVersion *out_version);
 /* Canonicalizes a bounded overalls:// route into caller-owned storage. */
 MilaFfiStatus mila_route_format(const char *input, MilaRouteOutput output);
+/* Validates PTY dimensions and read/write mode before opening a terminal. */
+MilaFfiStatus mila_terminal_validate(uint16_t columns, uint16_t rows,
+                                     uint8_t read_write);
+/* Decodes one bounded watch line and returns only its event tag. */
+MilaFfiStatus mila_watch_event_kind(const uint8_t *line, size_t length,
+                                    MilaWatchEventKind *out_kind);
 
 #ifdef __cplusplus
 }
