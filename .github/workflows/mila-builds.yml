@@ -118,6 +118,9 @@ jobs:
           devenv version
       - name: Format, analyze and test Mila
         run: devenv shell -- mila-check
+      - name: Swift native package tests
+        working-directory: mila/native/apple
+        run: swift test
       - name: macOS and iOS dev targets
         run: |
           devenv shell -- mila-build macos dev
@@ -205,9 +208,49 @@ jobs:
         run: |
           dart run bin/mila_build.dart windows dev
           if ($LASTEXITCODE -ne 0) { throw "mila-build windows dev failed" }
+      - name: Native WinUI build (.NET 10)
+        working-directory: ${{ env.MILA_ROOT }}/mila/windows-dotnet
+        run: |
+          dotnet restore
+          dotnet --version
+          if (-not (dotnet --version).StartsWith("10.")) { throw "Mila requires the latest .NET 10 SDK" }
+          dotnet build --configuration Release --no-restore
       - uses: actions/upload-artifact@v4
         with:
           name: mila-windows-dev
           path: ${{ env.MILA_ROOT }}/mila/build/windows-dev/
           if-no-files-found: error
           retention-days: 7
+
+  linux-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GTK4 and libadwaita development libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libgtk-4-dev libadwaita-1-dev pkg-config
+      - name: Build and test native GTK client
+        working-directory: mila/native/linux
+        run: cargo test --locked
+      - name: Check formatting
+        working-directory: mila/native/linux
+        run: cargo fmt --all -- --check
+
+  android-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK platform
+        run: sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Assemble native Compose APK
+        working-directory: mila/native/android
+        run: gradle --no-daemon --stacktrace assembleDebug
