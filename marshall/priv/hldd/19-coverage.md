@@ -1103,6 +1103,22 @@ Tested scope: Upstream 469aff4 cargo unit, Hegel property and end-to-end tests p
 
 **Preferred test work:** Make the reset check interval injectable and add an end-to-end test where a cooldown expires while a request waits on the reset lock; extend the Underclass NixOS service test with a throttling upstream fixture.
 
+## Receive a served response instead of “Selected model is at capacity” when one pool account's upstream stream overloads before output
+
+Coverage: **gap**. Layers: authorization, recovery.
+
+Boundary: The pinned Underclass proxy holds a streamed 2xx response, for at most 60 seconds or 1 MiB, until its first output or terminal event. It retries on another pool account only when that terminal event is a capacity failure with no output before it, and it never sends a byte to the client from a discarded attempt. The overloaded account keeps its health and is skipped only for that request.
+
+Required refusal: Policy, quota and other failure codes are never retried on another account, and an error after any output passes through unchanged. When every account overloads, the client receives the original upstream bytes rather than a synthesized error, no banked reset is redeemed, and the SLO journal records one failure for the request.
+
+Tested scope: Upstream dbaf7b8 cargo unit, Hegel property and end-to-end tests passed on the source with the fleet instrumentation patch and slo.rs applied, including failover, every-account-overloaded replay and overload-after-output pass-through cases; the fleet package built offline. NixOS checks were not run on this pin.
+
+
+
+**Gaps:** No NixOS test drives an overloading upstream through the instrumented service, so SLO outcome counting across a failover is verified only by source review; live provider overload behavior on this revision is unobserved.
+
+**Preferred test work:** Extend the Underclass NixOS service test with an upstream fixture that overloads one account before output; verify the client receives the other account's response, the SLO journal records one success, and an all-accounts overload records one failure.
+
 ## Rotate host-local Codex credentials and recover rejected provider accounts
 
 Coverage: **gap**. Layers: authorization, storage, recovery.
