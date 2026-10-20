@@ -48,7 +48,8 @@ assert lib.assertMsg (valid good) (lib.concatMapStringsSep "\n" (a: a.message) (
 assert good.services.lillyTransfer.enable;
 assert good.services.lillyTransfer.port == host.lilly.transferEndpoint.port;
 assert good.networking.firewall.allowedTCPPorts == [];
-assert lib.hasInfix "ip saddr 136.243.69.55 meta l4proto { tcp, udp } accept" good.networking.firewall.extraInputRules;
+# Fleet addresses are SOPS-delivered, so a host without the document gets no grant.
+assert good.overalls.fleetFirewall.allowedHosts == {};
 assert builtins.hasContext good.services.overallsSecrets.bundles.git.encryptedFile;
 assert builtins.hasContext good.services.overallsSecrets.bundles.lilly.encryptedFile;
 assert good.services.underclass.enable;

@@ -2,6 +2,7 @@
 
 import fcntl
 import hashlib
+import ipaddress
 import json
 import os
 import platform
@@ -87,6 +88,17 @@ class Address(TypedDict):
     addr_info: list[AddrInfo]
 
 
+class Uplink(TypedDict):
+    """Live uplink facts for the recovery copy; the values stay off the repository."""
+
+    addresses: list[str]
+    gateway: str
+    routes: list[str]
+
+
+UPLINK_RECOVERY = Path("/mnt/var/lib/overalls-host/uplink.conf")
+
+
 class Facts(TypedDict):
     inventory: Inventory
     firmware: str
@@ -109,6 +121,14 @@ def kvm() -> None:
             raise ValueError("unsupported KVM API")
         vm = fcntl.ioctl(device, 0xAE01, 0)
         os.close(vm)
+
+
+def guest_platform(host: Declaration) -> bool:
+    """@cc [owner:ghuntley,label:deployment;security] hcloud-no-kvm-no-lilly
+    Hetzner Cloud hosts MUST NOT require KVM and MUST bind their ZFS root
+    dataset instead of a Lilly guest dataset. Every other platform keeps both.
+    """
+    return host["platform"] != "hcloud"
 
 
 def active(node: BlockDevice) -> bool:
@@ -252,15 +272,18 @@ def storage(host: Declaration, root: str = "", binding: Binding | None = None) -
     match(host["inventory"], current)
     if firmware() != host["firmware"]:
         raise ValueError("firmware changed")
-    kvm()
+    guests = guest_platform(host)
+    if guests:
+        kvm()
     if host["platform"] == "ec2" and run(["findmnt", "-n", "-o", "FSTYPE", root or "/"]) != "ext4":
         raise ValueError("EC2 system storage is not ext4")
-    pool = "zroot" if host["platform"] == "hetzner" else "guests"
-    dataset = pool + "/lilly"
+    pool = "guests" if host["platform"] == "ec2" else "zroot"
+    dataset = pool + ("/lilly" if guests else "/root")
+    mount = root + "/var/lib/lilly/pool" if guests else root or "/"
     if run(["zfs", "get", "-H", "-o", "value", "mounted", dataset]) != "yes":
-        raise ValueError("guest dataset not mounted")
-    if run(["findmnt", "-n", "-o", "SOURCE", root + "/var/lib/lilly/pool"]) != dataset:
-        raise ValueError("guest mount identity differs")
+        raise ValueError("bound dataset not mounted")
+    if run(["findmnt", "-n", "-o", "SOURCE", mount]) != dataset:
+        raise ValueError("bound mount identity differs")
     for key, value in (("compression", "lz4"), ("reservation", "0"), ("refreservation", "0")):
         if run(["zfs", "get", "-Hp", "-o", "value", key, dataset]) != value:
             raise ValueError("guest storage policy differs")
@@ -289,6 +312,48 @@ def atomic(path: Path, value: object) -> None:
     fd = os.open(path.parent, os.O_DIRECTORY)
     os.fsync(fd)
     os.close(fd)
+
+
+def uplink_drop_in(uplink: Uplink) -> str:
+    """Render the networkd drop-in exactly as overalls-fleet-uplink does.
+
+    The host-planning check compares this with fleet-addresses.py, so a base
+    system booting without the SOPS document gets the same addressing.
+    """
+    interfaces = [ipaddress.IPv4Interface(address) for address in uplink["addresses"]]
+    gateway = ipaddress.IPv4Address(uplink["gateway"])
+    routes = [ipaddress.IPv4Address(route) for route in uplink["routes"]]
+    if not interfaces or any(i.network != interfaces[0].network for i in interfaces):
+        raise ValueError("uplink addresses must share one on-link network")
+    if gateway not in interfaces[0].network:
+        raise ValueError("uplink gateway must be on-link")
+    lines = ["[Network]", *(f"Address={i.with_prefixlen}" for i in interfaces), ""]
+    lines += ["[Route]", f"Destination={gateway}/32", "Scope=link", ""]
+    lines += ["[Route]", f"Gateway={gateway}", "GatewayOnLink=yes", ""]
+    for destination in [str(interfaces[0].network), *(f"{route}/32" for route in routes)]:
+        lines += [
+            "[Route]",
+            f"Destination={destination}",
+            f"Gateway={gateway}",
+            "GatewayOnLink=yes",
+            "",
+        ]
+    return "\n".join(lines)
+
+
+def install_uplink(uplink: Uplink) -> dict[str, int]:
+    text = uplink_drop_in(uplink)
+    if UPLINK_RECOVERY.exists():
+        raise ValueError("uplink recovery copy already exists")
+    UPLINK_RECOVERY.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    temp = UPLINK_RECOVERY.with_suffix(".tmp")
+    with open(temp, "w", opener=lambda p, f: os.open(p, f, 0o600)) as stream:
+        stream.write(text)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temp, UPLINK_RECOVERY)
+    # Only counts are reported; the addresses never reach operator output.
+    return {"addresses": len(uplink["addresses"]), "routes": len(uplink["routes"])}
 
 
 def verify(host: Declaration, receipt: bool = False) -> StorageFacts:
@@ -350,7 +415,8 @@ def main() -> None:
         match(host["inventory"], inventory(require_zfs=True), erase=True)
         if host["firmware"] != firmware():
             raise ValueError("firmware changed")
-        kvm()
+        if guest_platform(host):
+            kvm()
         result = {"safe": True}
     elif action == "verify":
         host = json.loads(Path(sys.argv[2]).read_text())
@@ -362,6 +428,8 @@ def main() -> None:
         if path.exists():
             raise ValueError("installation baseline already exists")
         atomic(path, result)
+    elif action == "install-uplink":
+        result = install_uplink(json.load(sys.stdin))
     else:
         raise ValueError("unknown operation")
     print(json.dumps(result, sort_keys=True))

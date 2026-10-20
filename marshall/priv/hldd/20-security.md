@@ -198,6 +198,30 @@ custody and all nonleaf host values; they do not establish commit/push,
 live replacement or renewed client
 acceptance. TLS verification and native client configuration remain unchanged.
 
+## Fleet address custody and the Susan fleet path
+
+ADR-0233 keeps every fleet public address in one SOPS document and sends
+Marshall's Susan pokes over `fleet0`. These sensitive operations are
+operator-only: rotating the document (`nix run .#secrets -- encrypt
+fleet-addresses --replace`), and rotating a Lilly-protected address, which also
+needs the deliberate rebind flow.
+
+| Layer | Authority and required refusal |
+| --- | --- |
+| Identity | The document's recipients are the recovery users and the three fleet hosts' SSH-derived age keys. WireGuard peer keys, not addresses, identify `fleet0` peers; salopettes has its own key in `salopettes-fleet-network`. |
+| Authorization | A runtime grant admits only the reviewed source it names. Salopettes' handshake is admitted on Overalls only from its decrypted address, and its tunnel `/32` reaches only its declared TCP ports (443, 9464, 9467). |
+| Transport | Marshall resolves `notifications.overalls.dev` to `10.90.0.3` and still verifies Susan's public certificate inside the tunnel. Fleet traffic is IPv4 only. |
+| Execution | `overalls-fleet-addresses.service` must validate every value before any consumer starts. A malformed, wildcard or missing value refuses the uplink, firewall refill, WireGuard endpoint and service start. |
+| Isolation | Runtime rules live in one chain reached by a static jump. The refill unit flushes before validating, so a bad rotation never leaves an earlier address open. |
+| Storage | Decrypted values exist only under `/run/overalls-secrets/fleet-addresses/` and in the root-only uplink recovery copy. They never reach the Nix store, the repository or diagnostics. |
+| Recovery | A decryption failure keeps a dedicated host addressed from its recovery copy and closes its runtime rules. Installation writes that copy for base systems. A lost tunnel only delays notifications. |
+
+Untested boundaries: the production rollout on Overalls and Dungarees,
+HAProxy, Porsche, Audi and Lilly starting with runtime addresses in a machine
+test, and Cloudflare's proxied-record behaviour. Evidence: the `fleet-addresses`
+and `fleet-network` machine checks, plus the `fleet-firewall-configuration` and
+`host-planning` checks.
+
 ## Underclass provider egress layers
 
 ADR-0185 sends Underclass provider traffic through a dedicated tailnet node and

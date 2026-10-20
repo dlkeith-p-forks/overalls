@@ -4,7 +4,7 @@ Date: 2026-09-17
 
 ## Scope and architecture impact
 
-Provision the operator-authorized Hetzner machine `overalls` at `136.243.69.55`
+Provision the operator-authorized Hetzner machine `overalls` at `OVERALLS_PRIMARY_IPV4`
 using ADR-0043. The existing fleet access and recovery policy is preserved;
 `ghuntley` remains the administrator and recovery recipient. No new architectural
 decision is introduced. ADR-0043 remains accepted and partial.

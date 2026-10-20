@@ -16,7 +16,7 @@ This is explicitly one physical failure domain.
   one, retaining TLS and the connection-budget formula.
 - Local PostgreSQL must exist before the updater's first application migration.
   Bootstrap database/TLS/password units are deployed separately before roles.
-- Public DNS now resolves overalls.dev to 136.243.69.55. The deployment uses
+- Public DNS now resolves overalls.dev to OVERALLS_PRIMARY_IPV4. The deployment uses
   HTTP-01 issuance for the public proxy and a private CA for verified local
   backend and database connections. Lilly uses the local backend on port 4443.
 - Resend credentials are encrypted for the host and administrator recovery key.

@@ -112,6 +112,8 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   # the OCI image. Susan is deployed independently of every Marshall.
   susan-service = import ./machines/susan-service service;
   susan-secrets = import ./machines/susan-secrets service;
+  # SOPS-delivered fleet addresses and runtime firewall rules (ADR-0233).
+  fleet-addresses = import ./machines/fleet-addresses service;
   susan-image = import ./machines/susan-image { pkgs = testPkgs; inherit packages; };
   porsche-crash-dumps = import ./machines/porsche-crash-dumps service;
   administrative-ssh = import ./machines/administrative-ssh service;
@@ -125,6 +127,8 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   log-store = import ./machines/log-store { pkgs = testPkgs; };
   public-grafana = import ./machines/public-grafana { pkgs = testPkgs; module = modules.default; };
   public-grafana-configuration = import ./evaluation/public-grafana.nix { pkgs = testPkgs; inherit nixpkgs; module = modules.default; };
+  proxy-runtime-address = import ./machines/proxy-runtime-address { pkgs = testPkgs; module = modules.default; };
+  runtime-socket-configuration =import ./evaluation/runtime-socket.nix { pkgs = testPkgs; inherit nixpkgs; module = modules.default; };
   trace-spool-native = import ./machines/trace-spool { pkgs = testPkgs; };
   otel-fleet = import ./machines/otel-fleet { pkgs = testPkgs; };
   otel-burn-delivery = import ./machines/otel-burn-delivery { pkgs = testPkgs; inherit hegel; };

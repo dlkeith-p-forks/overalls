@@ -39,7 +39,8 @@ nix run .#host -- discover --platform hetzner --name example \
   --identity /private/operator-key --output /private/example.candidate.json
 ```
 
-Use `--platform ec2` for EC2 bare metal. Discovery writes a new candidate and
+Use `--platform ec2` for EC2 bare metal, or `--platform hcloud` for a Hetzner Cloud
+virtual server (see [Hetzner Cloud hosts](#hetzner-cloud-hosts)). Discovery writes a new candidate and
 refuses to overwrite an existing file. It proposes DHCP for EC2 and interface
 addresses for Hetzner; the original routes are preserved as discovery evidence.
 Review Hetzner gateways, on-link routes, DNS, IPv6 and MAC matches explicitly.
@@ -154,6 +155,31 @@ interval and jitter. Platform, firmware, disk inventory, boot/pool topology and
 persistent identity changes are rejected by ordinary updates. Use deliberate
 maintenance instead of trying to roll such a change through the timer.
 
+## Hetzner Cloud hosts
+
+`hcloud` ([ADR-0231](../architecture/decisions/0231-hetzner-cloud-hosts-and-susan-placement.md))
+is for KVM-less service hosts. A fresh Hetzner Cloud image forces a root password
+change on first login; change it, add the operator public key to root's
+`authorized_keys`, and pin the server's Ed25519 key before discovery. Review:
+
+- `storage.system` names the single disk; `storage.guests` stays empty and
+  `storage.quotaBytes` stays null.
+- `budgets` is exactly `{"arcMaxMiB": N}`; there is no `lilly` section.
+- The proposed network uses `DHCP = "ipv4"`, a default via `fe80::1` for IPv6,
+  and `LinkLocalAddressing = "ipv6"` so that the IPv6 gateway stays reachable.
+  It carries no address literals; the profile refuses them
+  ([ADR-0233](../architecture/decisions/0233-fleet-addresses-from-sops.md)).
+- Public addresses of every fleet host live in the shared
+  `secrets/fleet-addresses.enc.json` (see the [secrets guide](../../secrets/README.md)).
+  Add the host's names to `nix/policy/network/fleet-addresses.nix`, list the
+  `fleet-addresses` document in `credentials`, and re-encrypt it once the host
+  key is enrolled. Point public listeners at `overalls.fleetAddresses.files`
+  and its `unit`. To rotate an address, change the document; no code changes.
+
+The guard and the storage receipt skip KVM and bind `zroot/root`. Plan, install,
+enroll and verify are otherwise identical, including the trunk auto-updater.
+[Salopettes](../../fleet/hosts/salopettes/configuration.nix) is the reference role.
+
 ## EC2 storage loss and deliberate recovery
 
 A missing local drive or different pool/dataset GUID fails readiness and blocks
@@ -199,7 +225,10 @@ actual overheads and the installed uplink):
 
 The lifetime defaults to five 365-day years; supported values are 1..157680000
 seconds. `transferEndpoint` optionally accepts the existing complete pinned SSH
-transfer endpoint. Configure image manifests and any extra networking through the
+transfer endpoint. A fleet host names its address by secret instead
+(`"addressSecret": "NAME_PRIMARY_IPV4"` beside `port` and `host_key`);
+preparation decrypts `secrets/fleet-addresses.enc.json` with the recovery key and
+sends the validated address to Marshall, so no address enters the declaration. Configure image manifests and any extra networking through the
 existing host role module. Do not hand-set generated Lilly host or pool IDs.
 Host names for this workflow may have at most 26 characters so `NAME-lilly`
 fits the secret inventory name limit.

@@ -34,8 +34,10 @@ let
   # The control-plane CA is public, but its path may be root-only (a fixture's
   # private state directory); systemd reads it as root and hands the service
   # user a private copy, exactly as it does the credential.
+  protectedAddresses = import ./protected-addresses.nix { inherit lib; files = cfg.protectedAddressFiles; };
   loadCredentials = [ "credential:${cfg.credentialFile}" "control-ca:${cfg.controlPlaneCAFile}" ]
-    ++ lib.optional (cfg.inceptionSMTPFile != null) "inception-smtp:${cfg.inceptionSMTPFile}";
+    ++ lib.optional (cfg.inceptionSMTPFile != null) "inception-smtp:${cfg.inceptionSMTPFile}"
+    ++ protectedAddresses.credentials;
   # Directories the BEAM owns (its private state and runtime).
   ownedDirectories = lib.unique ([ "/run/lilly" "/var/lib/lilly" "/run/lilly-clone-copies" cfg.stateDirectory cfg.vmStateDirectory cfg.networkStateDirectory ]
     ++ map (pool: pool.path) cfg.pools);
@@ -204,6 +206,16 @@ in
       default = [];
       description = "Additional canonical IPv4 networks denied to guests, including public management endpoints.";
     };
+    protectedAddressFiles = mkOption {
+      type = types.listOf (types.strMatching "/run/[A-Za-z0-9_./-]+");
+      default = [];
+      description = "Runtime files, each holding one canonical IPv4 address, denied to guests as /32 networks in addition to protectedCidrs; for addresses kept out of the repository.";
+    };
+    protectedAddressUnits = mkOption {
+      type = types.listOf (types.strMatching "[a-zA-Z0-9_.@-]+\\.service");
+      default = [];
+      description = "Units that publish protectedAddressFiles; Lilly and Brady start after them.";
+    };
     guestCpuCores = mkOption {
       type = types.ints.positive;
       default = 24;
@@ -287,6 +299,10 @@ in
     services.overallsCrashDumpRetention.directories = lib.mkIf cfg.crashDumps.enable ([ "/var/lib/lilly-crash-dumps" ]);
     systemd.coredump.settings.Coredump = lib.mkIf cfg.crashDumps.enable { Storage = "none"; ProcessSizeMax = 0; };
     assertions = [
+      { assertion = lib.unique cfg.protectedAddressFiles == cfg.protectedAddressFiles
+          && builtins.length cfg.protectedAddressFiles <= 64
+          && (cfg.protectedAddressFiles == [] || cfg.protectedAddressUnits != []);
+        message = "Lilly runtime protected addresses must be unique, at most 64, and published by a declared unit."; }
       { assertion = config.services.lillyTransfer.enable;
         message = "Enabled Lilly requires its restricted transfer service."; }
       { assertion = (cfg.inceptionImageId == null) == (cfg.inceptionSMTPFile == null);
@@ -658,8 +674,8 @@ in
       description = "Lilly Firecracker provisioner";
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-online.target" "lilly.slice" ] ++ lib.optional (cfg.inceptionImageId != null) "lilly-inception-preflight.service";
-      after = [ "network-online.target" "lilly.slice" "systemd-tmpfiles-setup.service" "nftables.service" "lilly-inception-preflight.service" "lilly-hostd.service" ] ++ cfg.secretUnits;
-      requires = cfg.secretUnits ++ lib.optional hasZfs "lilly-pool-propagation.service"
+      after = [ "network-online.target" "lilly.slice" "systemd-tmpfiles-setup.service" "nftables.service" "lilly-inception-preflight.service" "lilly-hostd.service" ] ++ cfg.secretUnits ++ cfg.protectedAddressUnits;
+      requires = cfg.secretUnits ++ cfg.protectedAddressUnits ++ lib.optional hasZfs "lilly-pool-propagation.service"
         ++ [ "lilly-ownership.service" ];
       # Every lease lives in hostd: Lilly cannot outlive its session.
       bindsTo = [ "lilly-hostd.service" ];
@@ -690,7 +706,8 @@ in
         ${pkgs.jq}/bin/jq --slurpfile metadata ${cfg.package}/overalls-release.json \
           ${lib.optionalString audiConnector ''--argjson audi_uid "$(${pkgs.coreutils}/bin/id -u audi)"''} \
           ${lib.optionalString hasBrady ''--argjson brady_uid "$(${pkgs.coreutils}/bin/id -u brady)"''} \
-          '.execution += ($metadata[0] | {firecracker, jailer, unshare})${lib.optionalString audiConnector " | .ingress.audi_uid = $audi_uid"}${lib.optionalString hasBrady " | .execution.brady.uid = $brady_uid"}' \
+          ${protectedAddresses.jqArguments} \
+          '.execution += ($metadata[0] | {firecracker, jailer, unshare})${lib.optionalString audiConnector " | .ingress.audi_uid = $audi_uid"}${lib.optionalString hasBrady " | .execution.brady.uid = $brady_uid"} | ${protectedAddresses.jqFilter ".execution.protected_cidrs"}' \
           ${configuration} > /run/lilly-release/config.json.new
         chmod 0600 /run/lilly-release/config.json.new
         mv -T /run/lilly-release/config.json.new /run/lilly-release/config.json

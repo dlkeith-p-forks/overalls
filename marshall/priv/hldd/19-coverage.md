@@ -1103,6 +1103,22 @@ Tested scope: Upstream 469aff4 cargo unit, Hegel property and end-to-end tests p
 
 **Preferred test work:** Make the reset check interval injectable and add an end-to-end test where a cooldown expires while a request waits on the reset lock; extend the Underclass NixOS service test with a throttling upstream fixture.
 
+## Receive a served response instead of “Selected model is at capacity” when one pool account's upstream stream overloads before output
+
+Coverage: **gap**. Layers: authorization, recovery.
+
+Boundary: The pinned Underclass proxy holds a streamed 2xx response, for at most 60 seconds or 1 MiB, until its first output or terminal event. It retries on another pool account only when that terminal event is a capacity failure with no output before it, and it never sends a byte to the client from a discarded attempt. The overloaded account keeps its health and is skipped only for that request.
+
+Required refusal: Policy, quota and other failure codes are never retried on another account, and an error after any output passes through unchanged. When every account overloads, the client receives the original upstream bytes rather than a synthesized error, no banked reset is redeemed, and the SLO journal records one failure for the request.
+
+Tested scope: Upstream dbaf7b8 cargo unit, Hegel property and end-to-end tests passed on the source with the fleet instrumentation patch and slo.rs applied, including failover, every-account-overloaded replay and overload-after-output pass-through cases; the fleet package built offline. NixOS checks were not run on this pin.
+
+
+
+**Gaps:** No NixOS test drives an overloading upstream through the instrumented service, so SLO outcome counting across a failover is verified only by source review; live provider overload behavior on this revision is unobserved.
+
+**Preferred test work:** Extend the Underclass NixOS service test with an upstream fixture that overloads one account before output; verify the client receives the other account's response, the SLO journal records one success, and an all-accounts overload records one failure.
+
 ## Rotate host-local Codex credentials and recover rejected provider accounts
 
 Coverage: **gap**. Layers: authorization, storage, recovery.
@@ -4182,9 +4198,9 @@ Tested scope: susan-secrets and susan-service machine tests; susan-image for the
 - **machine, recorded**: [keyring rotation is audited and older push keys still open](repo:nix/verification/tests/machines/susan-secrets/driver.py) — Single host plus a wrong-host node.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 - **machine, recorded**: [no secret bytes in image layers or the container filesystem](repo:nix/verification/tests/machines/susan-image/driver.py) — Rootful podman.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 
-**Gaps:** secrets/overalls-susan.enc.json holds placeholder values only (recovery-only); no production host recipient or real APNs/FCM credentials.
+**Gaps:** secrets/overalls-susan.enc.json holds placeholder values only, encrypted to the recovery recipients and the salopettes host (ADR-0231); real APNs/FCM credentials are not installed.
 
-**Preferred test work:** Create the document for the chosen host and repeat susan-secrets against it.
+**Preferred test work:** Replace the placeholders with real provider credentials and repeat susan-secrets against the salopettes document.
 
 ## An agent asks a planning question and the thread's writers get a Mila notification that opens the thread, without Susan learning what it is about
 
@@ -4456,3 +4472,43 @@ Tested scope: Hegel stateful supervisor, framing property and OpenSSH reconnect 
 **Gaps:** No run against Porsche's real watch.
 
 **Preferred test work:** A NixOS machine test observing a thread change through watch.
+
+## An operator installs and enrolls a KVM-less Hetzner Cloud host that runs only Susan behind TLS for notifications.overalls.dev
+
+Coverage: **partial**. Layers: storage, isolation, transport, recovery.
+
+Boundary: hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly, and no address literals (IPv4 by DHCP, IPv6 off); salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at the IPv4 address delivered by the shared fleet-addresses SOPS document.
+
+Required refusal: Two system disks, guest disks, a guest quota, Lilly budgets, a lilly section or static hcloud addresses are refused before planning; Lilly platforms still require working KVM in the guard; a missing or malformed address document keeps the public listener closed.
+
+Tested scope: Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions, fleet firewall evaluation and the fleet-addresses NixOS machine test.
+
+- **unit, present**: [def test_hcloud_single_zfs_root_without_guest_storage(](repo:nix/verification/tests/evaluation/host-planning.py) — cli.validate over a valid hcloud declaration and each refused variant..
+- **unit, present**: [def test_hcloud_guard_skips_kvm_but_lilly_platforms_require_it(](repo:nix/verification/tests/evaluation/host-planning.py) — remote guard with KVM mocked for hcloud and ec2 declarations..
+- **unit, present**: [hcloud-single-zfs-root: one disk, a ZFS root and no guest dataset.](repo:nix/verification/tests/evaluation/storage-configuration.nix) — Evaluated hcloud-uefi and hcloud-bios profile fixtures..
+- **unit, present**: [def test_hcloud_discovery_keeps_addresses_out_of_the_candidate(](repo:nix/verification/tests/evaluation/host-planning.py) — Discovery candidate for hcloud with documentation-range addresses: DHCP IPv4 only, link-local off, no IPv6 route, no literals, redacted default routes..
+- **machine, recorded**: [SOPS-delivered fleet addresses MUST open runtime source and destination](repo:nix/verification/tests/machines/fleet-addresses/default.nix) — Client and nftables/iptables nodes with host-sealed SOPS documents: closed before decryption, only the declared rules at the decrypted addresses, firewall reload and restart, rotation and malformed-document closure. Test addresses only; no Hetzner Cloud network.; [execution record](repo:docs/architecture/reviews/2026-10-20-fleet-addresses-from-sops.md).
+
+**Gaps:** Physical installation, enrollment and ACME issuance on salopettes are recorded in ADR-0232; real APNs/FCM credentials remain placeholders.
+
+**Preferred test work:** A host-conversion NixOS machine test with a single virtio disk under the hcloud platform.
+
+## An operator rotates a fleet public address by changing one SOPS document, and Marshall reaches Susan on salopettes over fleet0
+
+Coverage: **partial**. Layers: authorization, execution, isolation, storage, recovery, transport.
+
+Boundary: Fleet public addresses live only in secrets/fleet-addresses.enc.json; overalls-fleet-addresses validates every value before the runtime firewall chain, WireGuard endpoints, uplink drop-in and service binds use it; Overalls admits salopettes' handshake only from its decrypted address and resolves notifications.overalls.dev to 10.90.0.3.
+
+Required refusal: A missing, malformed or wildcard address keeps every runtime rule, endpoint and listener closed; a rotation flushes before admitting; an unreadable document leaves a dedicated host on its root-only uplink recovery copy; static IPv4 address or route literals beside a runtime uplink are refused at evaluation.
+
+Tested scope: NixOS machine tests on both firewall backends with test VLAN addresses, the fleet-network runtime-endpoint subtest, the proxy and relay socket runtime-address test, and evaluation of the fleet firewall, host planning and service modules.
+
+- **machine, recorded**: [SOPS-delivered fleet addresses MUST open runtime source and destination](repo:nix/verification/tests/machines/fleet-addresses/default.nix) — Runtime grants and listeners on nftables and iptables, reload refill, rotation, malformed closure, uplink drop-in and recovery copy. Test VLAN addresses only.; [execution record](repo:docs/architecture/reviews/2026-10-20-fleet-addresses-from-sops.md).
+- **machine, recorded**: [runtime endpoints stay closed until published, then apply](repo:nix/verification/tests/machines/fleet-network/default.nix) — A peer whose endpoints and handshake rule are runtime-only: closed before publication, malformed endpoint refused, wg endpoint and runtime rule applied.; [execution record](repo:docs/architecture/reviews/2026-10-20-fleet-addresses-from-sops.md).
+- **machine, recorded**: [Real HAProxy and systemd socket units MUST bind only the validated runtime](repo:nix/verification/tests/machines/proxy-runtime-address/default.nix) — HAProxy and the relay socket bind only the published address; empty, wildcard and malformed values leave both down.; [execution record](repo:docs/architecture/reviews/2026-10-20-fleet-addresses-from-sops.md).
+- **unit, present**: [def test_install_copy_matches_the_runtime_uplink_drop_in(](repo:nix/verification/tests/evaluation/host-planning.py) — The install-time recovery copy is byte-equal to the runtime uplink drop-in; documentation addresses..
+- **unit, present**: [runtimeServiceRules = valid runtimeIptables && valid runtimeNft](repo:nix/verification/tests/evaluation/fleet-firewall.nix) — Evaluated runtime chain jump on both backends, rule names, publishing units and reload propagation..
+
+**Gaps:** Production rollout evidence on Overalls and Dungarees, removal of their literals, and machine tests that start Porsche, Audi and Lilly with runtime addresses remain open; per-peer fleet port scoping is not implemented.
+
+**Preferred test work:** A three-node NixOS machine test with a runtime-only fleet0 peer carrying Marshall-to-Susan HTTPS.

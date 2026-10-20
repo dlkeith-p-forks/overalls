@@ -9,7 +9,7 @@ import unittest
 from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
-from typing import TypedDict, cast
+from typing import ClassVar, NotRequired, TypedDict, cast
 from unittest.mock import patch
 
 import cli  # ty: ignore[unresolved-import] # PYTHONPATH nix/domains/artifacts/host
@@ -22,6 +22,11 @@ if spec is None or spec.loader is None:
 updater = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(updater)
 resource_helper = sys.argv.pop(1)
+fleet_spec = importlib.util.spec_from_file_location("fleet_addresses", sys.argv.pop(1))
+if fleet_spec is None or fleet_spec.loader is None:
+    raise RuntimeError("fleet address helper unavailable")
+fleet_addresses = importlib.util.module_from_spec(fleet_spec)
+fleet_spec.loader.exec_module(fleet_addresses)
 
 
 class DiskRecord(TypedDict):
@@ -51,8 +56,9 @@ class StorageRecord(TypedDict):
 
 
 class BudgetsRecord(TypedDict):
-    guestMemoryMiB: int
-    guestCpuCores: int
+    # Hetzner Cloud hosts declare only the ARC budget (no Lilly guests).
+    guestMemoryMiB: NotRequired[int]
+    guestCpuCores: NotRequired[int]
     arcMaxMiB: int
 
 
@@ -605,13 +611,14 @@ class HostPlanning(unittest.TestCase):
             with patch.object(cli, "run") as run:
                 cli.anywhere(
                     args,
-                    {"install": "install", "system": "system", "kexec": "kexec"},
+                    {"install": "install", "system": "system", "kexec": "kexec", "host": host()},
                     "kexec",
                     args.target,
                 )
             command = run.call_args.args[0]
             self.assertEqual(command[command.index("--ssh-port") + 1], "2222")
             self.assertEqual(command[command.index("--post-kexec-ssh-port") + 1], "22")
+            self.assertNotIn("--kexec-extra-flags", command)
             for invalid in [0, -1, 65536, True, "2222"]:
                 args.ssh_port = invalid
                 with self.assertRaises(cli.Failure):
@@ -720,6 +727,107 @@ class HostPlanning(unittest.TestCase):
         h["storage"]["quotaBytes"] = 1234
         cli.validate(h)
 
+    def test_hcloud_single_zfs_root_without_guest_storage(self) -> None:
+        def cloud() -> HostRecord:
+            h = host()
+            h["platform"] = "hcloud"
+            h["inventory"]["disks"] = [disk("root", "physical")]
+            h["storage"].update(system=["root"], guests=[], quotaBytes=None)
+            h["budgets"] = {"arcMaxMiB": 512}
+            return h
+
+        cli.validate(cloud())
+        h = cloud()
+        h["storage"]["quotaBytes"] = 0
+        cli.validate(h)
+        h = cloud()
+        h["inventory"]["disks"].append(disk("second", "physical"))
+        h["storage"]["system"] = ["root", "second"]
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        h["inventory"]["disks"].append(disk("local1", "physical"))
+        h["storage"]["guests"] = ["local1"]
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        h["storage"]["quotaBytes"] = 1234
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        # A Lilly role is refused on a platform without reviewed KVM.
+        cast("dict[str, object]", h)["lilly"] = {"controlPlane": "https://example.test"}
+        with self.assertRaisesRegex(cli.Failure, "Lilly"):
+            cli.validate(h)
+        h = cloud()
+        h["budgets"] = {"arcMaxMiB": 512, "guestCpuCores": 1, "guestMemoryMiB": 1024}
+        with self.assertRaisesRegex(cli.Failure, "budgets"):
+            cli.validate(h)
+
+    def test_hcloud_discovery_keeps_addresses_out_of_the_candidate(self) -> None:
+        facts = {
+            "inventory": host()["inventory"],
+            "firmware": "uefi",
+            "hostKey": "ssh-ed25519 AAAAfixture",
+            "addresses": [
+                {"ifname": "lo", "address": "00:00:00:00:00:00", "addr_info": []},
+                {
+                    "ifname": "eth0",
+                    "address": "92:00:00:00:00:01",
+                    "addr_info": [
+                        {"local": "192.0.2.7", "prefixlen": 32, "scope": "global"},
+                        {"local": "2001:db8:7::1", "prefixlen": 64, "scope": "global"},
+                    ],
+                },
+            ],
+            "routes": [
+                {"dev": "eth0", "dst": "default", "gateway": "172.31.1.1", "prefsrc": "192.0.2.7"},
+                {"dev": "eth0", "dst": "192.0.2.7", "prefsrc": "192.0.2.7", "type": "local"},
+                {"dev": "eth0", "dst": "2001:db8:7::/64"},
+                {"dev": "eth0", "dst": "default", "gateway": "fe80::1"},
+            ],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "candidate.json"
+            args = SimpleNamespace(platform="hcloud", name="cloudy", output=str(output))
+            with patch.object(cli, "probe", return_value=facts):
+                cli.discover(args)
+            text = output.read_text()
+        candidate = json.loads(text)
+        for literal in ("192.0.2.7", "2001:db8"):
+            self.assertNotIn(literal, text)
+        uplink = candidate["network"]["10-eth0"]
+        self.assertEqual(uplink["networkConfig"]["DHCP"], "ipv4")
+        self.assertNotIn("Address", uplink["networkConfig"])
+        # The fleet tunnel is IPv4-only, so no IPv6 is proposed either.
+        self.assertEqual(uplink["networkConfig"]["LinkLocalAddressing"], "no")
+        self.assertNotIn("routes", uplink)
+        self.assertEqual(candidate["discovery"]["routes"], [{"dev": "eth0", "dst": "default"}])
+
+    def test_hcloud_installer_forces_the_legacy_kexec_syscall(self) -> None:
+        h = host()
+        for platform, flags in (
+            ("hcloud", ["--kexec-extra-flags", "--kexec-syscall"]),
+            ("ec2", []),
+        ):
+            h["platform"] = platform
+            self.assertEqual(cli.kexec_flags(cast("cli.Host", h)), flags)
+
+    def test_hcloud_guard_skips_kvm_but_lilly_platforms_require_it(self) -> None:
+        h = host()
+        for platform, calls in (("hcloud", 0), ("ec2", 1)):
+            h["platform"] = platform
+            with (
+                patch.object(remote, "inventory", return_value=copy.deepcopy(h["inventory"])),
+                patch.object(remote, "firmware", return_value="uefi"),
+                patch.object(remote, "kvm") as probed,
+                patch.object(sys, "argv", ["remote", "guard"]),
+                patch.object(sys, "stdin", __import__("io").StringIO(json.dumps(h))),
+                patch("builtins.print"),
+            ):
+                remote.main()
+            self.assertEqual(probed.call_count, calls)
+
     def test_reordered_devices_match(self) -> None:
         expected = host()["inventory"]
         actual = copy.deepcopy(expected)
@@ -795,6 +903,81 @@ class HostPlanning(unittest.TestCase):
                     "lilly": {"binding": {"hostId": "old-host"}},
                 }
             )
+
+    def test_lilly_binding_compares_the_effective_protected_set(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            primary = Path(directory) / "primary"
+            primary.write_text("192.0.2.10\n")
+            other = Path(directory) / "other"
+            other.write_text("198.51.100.7")
+            malformed = Path(directory) / "malformed"
+            malformed.write_text("192.0.2.010")
+            literal = {
+                "hostId": "host",
+                "protectedCidrs": ["10.90.0.0/24", "192.0.2.10/32"],
+                "guestCpuCores": 2,
+            }
+            legacy = {k: v for k, v in literal.items() if k != "protectedAddressFiles"}
+            moved = {
+                "hostId": "host",
+                "protectedCidrs": ["10.90.0.0/24"],
+                "protectedAddressFiles": [str(primary)],
+                "guestCpuCores": 2,
+            }
+            # A literal moved into an equal runtime file, and a binding that
+            # predates the key, keep the effective policy.
+            self.assertTrue(updater.lilly_bindings_equivalent(legacy, moved))
+            self.assertTrue(
+                updater.lilly_bindings_equivalent(legacy, {**literal, "protectedAddressFiles": []})
+            )
+            for changed in (
+                {**moved, "protectedAddressFiles": [str(other)]},
+                {**moved, "protectedAddressFiles": [str(malformed)]},
+                {**moved, "protectedAddressFiles": [str(Path(directory) / "missing")]},
+                {**moved, "guestCpuCores": 4},
+                {**moved, "hostId": "other"},
+            ):
+                self.assertFalse(updater.lilly_bindings_equivalent(legacy, changed))
+            # Identical runtime-only bindings stay equal even before the
+            # files exist, so ordinary updates never depend on decryption.
+            unread = {**moved, "protectedAddressFiles": [str(Path(directory) / "missing")]}
+            self.assertTrue(updater.lilly_bindings_equivalent(unread, copy.deepcopy(unread)))
+            self.assertEqual(
+                enrollment.protected_networks(moved), ["10.90.0.0/24", "192.0.2.10/32"]
+            )
+            self.assertEqual(
+                enrollment.stable_binding({"binding": legacy}),
+                enrollment.stable_binding({"binding": moved}),
+            )
+            with self.assertRaisesRegex(ValueError, "runtime protected address"):
+                enrollment.protected_networks({**moved, "protectedAddressFiles": [str(malformed)]})
+
+            runner = object.__new__(updater.Deployment)
+            runner.config = {}
+            installation = {"platform": "hetzner"}
+            runner.candidate = {
+                "installationBinding": installation,
+                "diagnosticPreflight": [],
+                "marshall": None,
+                "lilly": {"binding": moved},
+            }
+            previous = {
+                "installationBinding": installation,
+                "consumers": [],
+                "marshall": None,
+                "lilly": {"binding": legacy},
+            }
+            # The binding passes, so preflight proceeds to the owner baseline.
+            with (
+                patch.object(Path, "exists", return_value=False),
+                self.assertRaisesRegex(updater.UpdateError, "missing_lilly_baseline"),
+            ):
+                runner.preflight(previous)
+            runner.candidate["lilly"] = {
+                "binding": {**moved, "protectedAddressFiles": [str(other)]}
+            }
+            with self.assertRaisesRegex(updater.UpdateError, "lilly_binding_change"):
+                runner.preflight(previous)
 
     def test_resource_preflight_uses_closed_failure_reason(self) -> None:
         installation = {"platform": "hetzner"}
@@ -1139,6 +1322,118 @@ class HostPlanning(unittest.TestCase):
             self.assertRaises(ValueError),
         ):
             remote.main()
+
+
+class UplinkRecovery(unittest.TestCase):
+    """Install writes the copy the base system boots with; documentation addresses only."""
+
+    MAC = "02:00:00:00:00:01"
+    UPLINK: ClassVar["remote.Uplink"] = {
+        "addresses": ["192.0.2.10/26", "192.0.2.20/26"],
+        "gateway": "192.0.2.1",
+        "routes": ["198.51.100.7"],
+    }
+
+    def host(self, uplink: bool = True) -> dict[str, object]:
+        host: dict[str, object] = {
+            "network": {"10-eth0": {"matchConfig": {"MACAddress": self.MAC}}}
+        }
+        if uplink:
+            host["addresses"] = {"uplink": {"network": "10-eth0"}}
+        return host
+
+    def facts(self, routes: list[dict[str, object]] | None = None) -> dict[str, object]:
+        return {
+            "addresses": [
+                {
+                    "ifname": "lo",
+                    "address": "00:00:00:00:00:00",
+                    "addr_info": [{"local": "127.0.0.1", "prefixlen": 8, "scope": "host"}],
+                },
+                {
+                    "ifname": "eth0",
+                    "address": self.MAC,
+                    "addr_info": [
+                        {"local": "192.0.2.10", "prefixlen": 26, "scope": "global"},
+                        {"local": "192.0.2.20", "prefixlen": 26, "scope": "global"},
+                        {"local": "2001:db8::2", "prefixlen": 64, "scope": "global"},
+                        {"local": "fe80::1", "prefixlen": 64, "scope": "link"},
+                    ],
+                },
+            ],
+            "routes": routes
+            if routes is not None
+            else [
+                {"dst": "default", "gateway": "192.0.2.1", "dev": "eth0"},
+                {"dst": "192.0.2.0/26", "gateway": "192.0.2.1", "dev": "eth0"},
+                {"dst": "198.51.100.7", "gateway": "192.0.2.1", "dev": "eth0"},
+                {"dst": "192.0.2.1", "dev": "eth0", "scope": "link"},
+                {"dst": "192.0.2.10", "dev": "eth0", "table": "local", "type": "local"},
+                {"dst": "default", "gateway": "fe80::1", "dev": "eth0"},
+            ],
+        }
+
+    def test_facts_select_the_declared_interface_ipv4_and_host_routes(self) -> None:
+        self.assertEqual(cli.uplink_facts(self.host(), self.facts()), self.UPLINK)
+        self.assertIsNone(cli.uplink_facts(self.host(uplink=False), self.facts()))
+
+    def test_facts_refuse_missing_interface_or_ambiguous_gateway(self) -> None:
+        moved = self.host()
+        moved["network"] = {"10-eth0": {"matchConfig": {"MACAddress": "02:00:00:00:00:09"}}}
+        with self.assertRaises(cli.Failure):
+            cli.uplink_facts(moved, self.facts())
+        ambiguous: list[list[dict[str, object]]] = [
+            [],
+            [
+                {"dst": "default", "gateway": "192.0.2.1", "dev": "eth0"},
+                {"dst": "default", "gateway": "192.0.2.2", "dev": "eth0"},
+            ],
+        ]
+        for routes in ambiguous:
+            with self.assertRaises(cli.Failure):
+                cli.uplink_facts(self.host(), self.facts(routes))
+
+    def test_install_copy_matches_the_runtime_uplink_drop_in(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            values = {
+                "one": "192.0.2.10",
+                "two": "192.0.2.20",
+                "prefix": "26",
+                "gateway": "192.0.2.1",
+                "peer": "198.51.100.7",
+            }
+            for name, value in values.items():
+                (Path(directory) / name).write_text(value + "\n")
+            runtime = fleet_addresses.render(
+                {"directory": directory, "names": {}, "uplink": None},
+                {
+                    "network": "10-eth0",
+                    "addresses": ["one", "two"],
+                    "prefix": "prefix",
+                    "gateway": "gateway",
+                    "hostRoutes": ["peer"],
+                    "recoveryFile": "/unused",
+                },
+            )
+        self.assertEqual(remote.uplink_drop_in(self.UPLINK), runtime)
+
+    def test_install_copy_is_private_written_once_and_validated(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "overalls-host" / "uplink.conf"
+            with patch.object(remote, "UPLINK_RECOVERY", target):
+                self.assertEqual(remote.install_uplink(self.UPLINK), {"addresses": 2, "routes": 1})
+                self.assertEqual(target.stat().st_mode & 0o777, 0o600)
+                self.assertEqual(target.parent.stat().st_mode & 0o777, 0o700)
+                with self.assertRaises(ValueError):
+                    remote.install_uplink(self.UPLINK)
+        for bad in (
+            {**self.UPLINK, "gateway": "198.51.100.1"},
+            {**self.UPLINK, "addresses": ["192.0.2.10/26", "198.51.100.10/26"]},
+            {**self.UPLINK, "addresses": []},
+            {**self.UPLINK, "routes": ["not-an-address"]},
+        ):
+            with self.assertRaises(ValueError):
+                remote.uplink_drop_in(cast("remote.Uplink", bad))
 
 
 if __name__ == "__main__":

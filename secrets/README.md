@@ -272,12 +272,13 @@ The plaintext marker `PLACEHOLDER_unencrypted` (excluded from encryption by
 SOPS' `_unencrypted` suffix, ignored by SecretSpec) shows this status without
 decryption. Remove it when the real values are installed.
 
-Susan's hosting is still open (ADR-0224) and no host recipient exists, so the
-document is registered **recovery-only** in
-[`secret-documents.nix`](../nix/policy/secrets/secret-documents.nix) and
-encrypted to the recovery recipients alone. No host config enables
-`services.susan`, so nothing points `services.susan.secretsFile` at it yet. To
-deploy Susan:
+Susan runs on the Hetzner Cloud host salopettes (ADR-0231). Its
+[`host.json`](../fleet/hosts/salopettes/host.json) claims the document, so the
+recovery-only entry in
+[`secret-documents.nix`](../nix/policy/secrets/secret-documents.nix) steps aside
+and the document is encrypted to the recovery recipients plus salopettes, whose
+[configuration](../fleet/hosts/salopettes/configuration.nix) points
+`services.susan.secretsFile` at it. To move Susan to another host:
 
 1. Add `{ "name": "overalls-susan", "path": "secrets/overalls-susan.enc.json" }`
    to the chosen host's `host.json` `credentials`. The recovery-only entry steps
@@ -321,3 +322,30 @@ Rotation:
 All values are runtime-only: never put them in Nix expressions, the OCI image or
 logs. The container form mounts the same file names at `/run/secrets/susan`
 (owned by uid 65532, mode 0400).
+
+## Fleet addresses
+
+`fleet-addresses.enc.json` holds every fleet public address under
+`overalls-fleet-addresses.production`
+([ADR-0233](../docs/architecture/decisions/0233-fleet-addresses-from-sops.md)):
+
+| Secret | Use |
+| --- | --- |
+| `OVERALLS_PRIMARY_IPV4`, `DUNGAREES_PRIMARY_IPV4` | control, administration, WireGuard endpoints and reviewed-source grants |
+| `OVERALLS_SERVICE_IPV4`, `DUNGAREES_SERVICE_IPV4` | Audi and Audi DNS listeners |
+| `OVERALLS_PREFIX`, `OVERALLS_GATEWAY_IPV4`, `DUNGAREES_PREFIX`, `DUNGAREES_GATEWAY_IPV4` | each dedicated host's own uplink prefix and gateway |
+| `SALOPETTES_IPV4` | the Susan listener and the Salopettes WireGuard endpoint |
+
+Its recipients are the recovery users, Overalls, Dungarees and Salopettes; each
+host selects only the names its configuration uses. The repository holds no
+address literal. `overalls.fleetAddresses` validates every value at runtime
+before any listener, firewall rule, WireGuard endpoint or uplink uses it, and a
+malformed value keeps them closed. A dedicated host's uplink falls back to its
+root-only recovery copy (`/var/lib/overalls-host/uplink.conf`), so a decryption
+failure never strands it.
+
+To rotate, decrypt to a private 0600 file outside the checkout, edit it and run
+`nix run .#secrets -- encrypt fleet-addresses --input FILE --replace`, then
+`nix run .#secrets -- check`. Update DNS for any published name in the same
+change window. Rotating a Lilly-protected address changes Lilly's network claim
+and needs the deliberate rebind flow, not an ordinary update.

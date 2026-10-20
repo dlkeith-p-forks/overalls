@@ -18,6 +18,23 @@ let
       release = package.releaseId;
     }) cfg.editorPackages;
   };
+  acme = cfg.ingress.wildcardAcme;
+  acmeNameservers = if acme == null then [] else acme.nameservers;
+  # Runtime nameserver addresses (for example SOPS-delivered fleet addresses)
+  # reach the issuer only as credentials; Marshall validates the rendered JSON.
+  acmeRuntime = lib.any (nameserver: nameserver.addressFile != null) acmeNameservers;
+  acmeCredential = index: "acme-nameserver-${toString index}";
+  acmeArguments = lib.concatStringsSep " " (lib.concatLists (lib.imap0 (index: nameserver:
+    lib.optional (nameserver.addressFile != null)
+      ''--rawfile n${toString index} "$CREDENTIALS_DIRECTORY/${acmeCredential index}"'') acmeNameservers));
+  acmeAddress = index: nameserver: if nameserver.addressFile == null
+    then builtins.toJSON nameserver.address
+    else "($n${toString index} | rtrimstr(\"\\n\"))";
+  acmeFilter = "[" + lib.concatStringsSep ", " (lib.imap0 (index: nameserver:
+    "{address: ${acmeAddress index nameserver}, port: ${toString nameserver.port}}") acmeNameservers) + "]";
+  acmeRender = lib.optionalString acmeRuntime ''
+    acme_nameservers="$(${pkgs.jq}/bin/jq -cn ${acmeArguments} ${lib.escapeShellArg acmeFilter})" || exit 1
+  '';
   sloCatalog = pkgs.writeText "marshall-fleet-slo-catalog.json" (builtins.toJSON (import ./otel-fleet/slo-catalog.nix));
 in
 {
@@ -141,7 +158,12 @@ in
           certificateRootsFile = mkOption { type = localTypes.absolutePath; description = "CA roots validating issued certificate chains."; };
           acceptTerms = mkOption { type = types.bool; default = false; description = "Explicit consent to register an ACME account."; };
           nameservers = mkOption { type = types.listOf (types.submodule { options = {
-            address = mkOption { type = localTypes.ipv4; };
+            address = mkOption { type = types.nullOr localTypes.ipv4; default = null; };
+            addressFile = mkOption {
+              type = types.nullOr (types.strMatching "/run/[A-Za-z0-9_./-]+");
+              default = null;
+              description = "Runtime file holding the replica's IPv4 address; list its publishing unit in secretUnits.";
+            };
             port = mkOption { type = types.port; default = 53; };
           }; }); description = "Authoritative Audi DNS replicas checked before challenge acknowledgement."; };
         }; });
@@ -276,7 +298,8 @@ in
           (cfg.ingress.zone != null && builtins.elem cfg.ingress.wildcardAcme.issuerInstance names &&
            builtins.length cfg.ingress.wildcardAcme.nameservers >= 2 &&
            builtins.length cfg.ingress.wildcardAcme.nameservers <= 8 &&
-           builtins.length (lib.unique cfg.ingress.wildcardAcme.nameservers) == builtins.length cfg.ingress.wildcardAcme.nameservers);
+           builtins.length (lib.unique cfg.ingress.wildcardAcme.nameservers) == builtins.length cfg.ingress.wildcardAcme.nameservers
+           && lib.all (nameserver: (nameserver.address == null) != (nameserver.addressFile == null)) acmeNameservers);
         message = "Wildcard ACME requires a local issuer instance, ingress zone and two to eight distinct DNS peers."; }
       { assertion = !cfg.crashDumps.enable || cfg.crashDumps.publicKeyFile != null; message = "Encrypted dumps require an operator public key file."; }
       { assertion = names != [] && builtins.length names <= cfg.replicaCount;
@@ -335,7 +358,9 @@ in
         MARSHALL_FLEET_ACME_DIRECTORY = cfg.ingress.wildcardAcme.directory;
         MARSHALL_FLEET_ACME_ISSUER_CA_FILE = "/run/credentials/marshall-${name}.service/fleet-issuer-ca.pem";
         MARSHALL_FLEET_ACME_ROOTS_FILE = "/run/credentials/marshall-${name}.service/fleet-roots.pem";
-        MARSHALL_FLEET_ACME_NAMESERVERS = builtins.toJSON cfg.ingress.wildcardAcme.nameservers;
+      } // lib.optionalAttrs (acme != null && acme.issuerInstance == name && !acmeRuntime) {
+        MARSHALL_FLEET_ACME_NAMESERVERS = builtins.toJSON (map (nameserver: { inherit (nameserver) address port; }) acmeNameservers);
+      } // lib.optionalAttrs (acme != null && acme.issuerInstance == name) {
         MARSHALL_FLEET_ACME_ACCEPT_TERMS = if cfg.ingress.wildcardAcme.acceptTerms then "true" else "false";
       } // lib.optionalAttrs (cfg.ingress.inceptionPublicFile != null) {
         MARSHALL_INCEPTION_PUBLIC_FILE = "/run/credentials/marshall-${name}.service/inception-public.json";
@@ -390,6 +415,7 @@ in
         ${lib.optionalString (cfg.publicHostFile != null) ''
           public_host="$(${pkgs.python3}/bin/python3 ${./marshall-public-host.py} "$CREDENTIALS_DIRECTORY/public-host")" || exit 1
         ''}
+        ${lib.optionalString (acme != null && acme.issuerInstance == name) acmeRender}
         ${lib.optionalString (cfg.defaultImageIdFile != null) ''
           default_image="$(${pkgs.python3}/bin/python3 ${./marshall-default-image.py} "$CREDENTIALS_DIRECTORY/default-image-id")" || exit 1
         ''}
@@ -405,7 +431,7 @@ in
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_CATALOG=${sloCatalog}"} \
           MARSHALL_INGRESS_EDITOR_RELEASES=${lib.escapeShellArg (builtins.toJSON editorReleases)} \
           MARSHALL_NOTIFICATIONS_ENABLED=${if cfg.notifications.enable then "true" else "false"} \
-\
+          ${lib.optionalString (acmeRuntime && acme.issuerInstance == name) ''MARSHALL_FLEET_ACME_NAMESERVERS="$acme_nameservers"''} \
           OVERALLS_MARVIN_RELEASE=${lib.escapeShellArg (if cfg.marvinPackage == null then "" else toString cfg.marvinPackage)} \
           ${lib.optionalString (fleetOtelEnabled && name == "overalls") "MARSHALL_SERVICE_LEVEL_DIRECTORY=/run/marshall-slo-overalls"} \
           ERL_CRASH_DUMP=/dev/null RELEASE_TMP=/run/marshall-${name} \
@@ -458,7 +484,8 @@ in
           ++ lib.optionals (cfg.ingress.wildcardAcme != null && cfg.ingress.wildcardAcme.issuerInstance == name) [
             "fleet-issuer-ca.pem:${cfg.ingress.wildcardAcme.issuerCaFile}"
             "fleet-roots.pem:${cfg.ingress.wildcardAcme.certificateRootsFile}"
-          ];
+          ] ++ lib.optionals (acme != null && acme.issuerInstance == name) (lib.concatLists (lib.imap0 (index: nameserver:
+            lib.optional (nameserver.addressFile != null) "${acmeCredential index}:${nameserver.addressFile}") acmeNameservers));
         RuntimeDirectory = [ "marshall-${name}" ] ++ lib.optional fleetOtelEnabled "marshall-slo-${name}";
         RuntimeDirectoryMode = if fleetOtelEnabled then "0750" else "0700";
         WorkingDirectory = cfg.package;

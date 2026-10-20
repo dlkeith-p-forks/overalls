@@ -4,10 +4,13 @@ let
   cfg = fleet.publicGrafana;
   proxy = config.services.marshallProxy;
   marshall = config.services.marshall or { enable = false; };
-  addressConflicts = address: builtins.elem address [ proxy.bindAddress "0.0.0.0" ];
+  # A runtime proxy address is unknown at evaluation, so every listener on the
+  # Grafana port conflicts regardless of its address.
+  runtime = proxy.bindAddressFile != null;
+  addressConflicts = address: runtime || builtins.elem address [ proxy.bindAddress "0.0.0.0" ];
   streamConflicts = stream: builtins.elem stream [
     "${proxy.bindAddress}:${toString cfg.port}" "0.0.0.0:${toString cfg.port}" (toString cfg.port)
-  ];
+  ] || (runtime && lib.hasSuffix ":${toString cfg.port}" stream);
   socketConflict = lib.any (socket: (socket.enable or true) && lib.any streamConflicts socket.listenStreams)
     (builtins.attrValues config.systemd.sockets);
   ssh = config.services.openssh;
@@ -43,8 +46,10 @@ in {
     }]; }
     (lib.mkIf cfg.enable {
       assertions = [
-        { assertion = proxy.bindAddress != "0.0.0.0";
+        { assertion = runtime || proxy.bindAddress != "0.0.0.0";
           message = "Public Grafana requires an explicit IPv4 listener address."; }
+        { assertion = !runtime || config.overalls.fleetFirewall.enable;
+          message = "Public Grafana on a runtime proxy address requires the fleet firewall's runtime listener."; }
         { assertion = !builtins.elem cfg.port [ proxy.port 3000 8405 9090 3200 ]
             && !socketConflict && !sshConflict && !lib.any serviceConflict [ "porsche" "enrico" ]
             && (!marshall.enable || lib.all
@@ -58,7 +63,7 @@ in {
       };
       services.haproxy.config = lib.mkAfter ''
         frontend grafana_public
-          bind ${proxy.bindAddress}:${toString cfg.port} ssl crt ${proxy.certificateFile} alpn h2,http/1.1
+          bind ${proxy.bindSpec cfg.port} ssl crt ${proxy.certificateFile} alpn h2,http/1.1
           acl grafana_host hdr(host),lower -m str ${lib.toLower proxy.publicHost} ${lib.toLower proxy.publicHost}:${toString cfg.port}
           http-request deny deny_status 421 unless grafana_host
           http-request del-header Forwarded
@@ -73,12 +78,16 @@ in {
           http-check expect status 200
           server grafana 127.0.0.1:3000 check
       '';
+      # The proxy's listeners share one perimeter entry: the same literal, or
+      # the same runtime file and unit as the HTTP-01 listener.
       overalls.fleetFirewall.publicServices.marshall-proxy = lib.mkIf config.overalls.fleetFirewall.enable {
-        address = proxy.bindAddress;
+        address = lib.mkIf (!runtime) proxy.bindAddress;
+        addressFile = lib.mkIf runtime proxy.bindAddressFile;
+        addressUnit = lib.mkIf runtime proxy.bindAddressUnit;
         tcpPorts = [ cfg.port ];
         comment = "Marshall proxy public listeners";
       };
-      networking.firewall = lib.mkIf (!config.overalls.fleetFirewall.enable)
+      networking.firewall = lib.mkIf (!config.overalls.fleetFirewall.enable && !runtime)
         (import ../listener-firewall.nix {
           inherit lib config; address = proxy.bindAddress; tcpPorts = [ cfg.port ];
         });

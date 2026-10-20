@@ -28,7 +28,8 @@ class Configuration(TypedDict):
     issuer: str
     group: str
     hostname: str
-    listenAddress: str
+    listenAddress: str | None
+    listenAddressVariable: str | None
     listenPort: int
     caFile: str
     minimumValiditySeconds: int
@@ -51,6 +52,10 @@ def integer(value: object) -> int:
     return value
 
 
+def optional_string(value: object) -> str | None:
+    return None if value is None else string(value)
+
+
 def configuration_value(raw: object) -> Configuration:
     if not isinstance(raw, dict):
         raise ValueError("invalid publication configuration")
@@ -61,7 +66,8 @@ def configuration_value(raw: object) -> Configuration:
         issuer=string(raw["issuer"]),
         group=string(raw["group"]),
         hostname=string(raw["hostname"]),
-        listenAddress=string(raw["listenAddress"]),
+        listenAddress=optional_string(raw["listenAddress"]),
+        listenAddressVariable=optional_string(raw.get("listenAddressVariable")),
         listenPort=integer(raw["listenPort"]),
         caFile=string(raw["caFile"]),
         minimumValiditySeconds=integer(raw["minimumValiditySeconds"]),
@@ -207,9 +213,26 @@ def published_file(configuration: Configuration) -> bytes:
     return pem
 
 
+def listen_address(configuration: Configuration) -> ipaddress.IPv4Address:
+    """Return the proxy listener address: the evaluated literal, or exactly one
+    validated runtime value from the unit's EnvironmentFile."""
+    literal, variable = configuration["listenAddress"], configuration["listenAddressVariable"]
+    if variable is None:
+        if literal is None:
+            raise ValueError("listener address source is required")
+        return ipaddress.IPv4Address(literal)
+    if literal is not None:
+        raise ValueError("exactly one listener address source is required")
+    text = os.environ.get(variable, "")
+    address = ipaddress.IPv4Address(text)
+    if str(address) != text or address.is_unspecified:
+        raise ValueError("runtime listener address must be canonical and explicit")
+    return address
+
+
 def served(configuration: Configuration, candidate: bytes) -> bool:
     try:
-        address = ipaddress.IPv4Address(configuration["listenAddress"])
+        address = listen_address(configuration)
         if address.is_unspecified:
             address = ipaddress.IPv4Address("127.0.0.1")
         context = ssl.create_default_context(cafile=configuration["caFile"])
