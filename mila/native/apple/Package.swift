@@ -17,5 +17,10 @@ let package = Package(
             name: "MilaNativeUI",
             path: "Sources/MilaNativeUI"
         ),
+        .testTarget(
+            name: "MilaNativeUITests",
+            dependencies: ["MilaNativeUI"],
+            path: "Tests/MilaNativeUITests"
+        ),
     ]
 )
