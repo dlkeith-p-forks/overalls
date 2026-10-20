@@ -1,5 +1,5 @@
 ---
-digest: 8cc81840d4111ea4f131915103a5da04d72dac617f88a731c3881dc62f8c825c
+digest: 195c081cdd6bb016d45158bdfd0becfcfad77275020eb3cc33170b5932c99f97
 disposition: no-impact
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed the two upstream redaction fixes: Ash.update receives attributes as argument two and the named action as an option; the actor and allowed actions are unchanged. These repair existing documented workflow calls without changing its authority or evidence claims.
+Continuation filtering only narrows existing inactive-thread behavior; no handbook text changed.
