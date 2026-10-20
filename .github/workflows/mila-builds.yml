@@ -159,8 +159,10 @@ jobs:
           set -euo pipefail
           cd "$RUNNER_TEMP/bundle"
           sha256sum -c SHA256SUMS
-          tar -xzf mila-source-bundle-*.tar.gz -C "$RUNNER_TEMP"
-          root=$(cd "$RUNNER_TEMP" && cd mila-source-bundle-* && pwd -W)
+          # Git Bash cannot pass the Windows runner's `D:\\...` path to tar's
+          # `-C` option. Extract beside the archive and resolve the root there.
+          tar -xzf mila-source-bundle-*.tar.gz
+          root=$(cd mila-source-bundle-* && pwd -W)
           (cd "$root" && sha256sum --quiet -c SHA256SUMS)
           echo "MILA_ROOT=$root" >> "$GITHUB_ENV"
           echo "PUB_CACHE=$root/pub-cache" >> "$GITHUB_ENV"

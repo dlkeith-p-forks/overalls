@@ -4,6 +4,7 @@
 //! with the caller; no secret or private key crosses this boundary.
 
 use mila_model::MilaRoute;
+use mila_runtime::MachineSnapshot;
 use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
 use mila_transport::{decode_watch_line, TerminalAttachRequest, WatchEvent};
 use std::ffi::{c_char, CStr};
@@ -19,8 +20,59 @@ pub enum MilaFfiStatus {
     InvalidRequest = -4,
 }
 
+/// Non-sensitive metadata extracted from a validated offline machine snapshot.
+/// The machine records themselves remain in the native/runtime layer.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct MilaSnapshotSummary {
+    pub machine_count: u32,
+    pub saved_at: u64,
+}
+
+/// Validates a bounded snapshot and returns only its count and timestamp.
+/// `host` and `port` identify the deployment the native client is currently
+/// connected to; snapshots for another deployment are rejected.
+///
+/// # Safety
+/// `bytes` must reference `length` readable bytes and `host` a NUL-terminated
+/// UTF-8 string. `out_summary` must point to writable summary storage.
+#[no_mangle]
+pub unsafe extern "C" fn mila_snapshot_validate(
+    bytes: *const u8,
+    length: usize,
+    host: *const c_char,
+    port: u16,
+    has_port: u8,
+    out_summary: *mut MilaSnapshotSummary,
+) -> MilaFfiStatus {
+    if bytes.is_null() || host.is_null() || out_summary.is_null() {
+        return MilaFfiStatus::NullInput;
+    }
+    if has_port > 1 {
+        return MilaFfiStatus::InvalidRequest;
+    }
+    let host = match CStr::from_ptr(host).to_str() {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let input = std::slice::from_raw_parts(bytes, length);
+    let snapshot = match MachineSnapshot::decode(input, host, (has_port == 1).then_some(port)) {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    *out_summary = MilaSnapshotSummary {
+        machine_count: snapshot.machines.len() as u32,
+        saved_at: snapshot.saved_at,
+    };
+    MilaFfiStatus::Ok
+}
+
 /// Validates a trust document fetched for `origin_host`. The document is
 /// parsed and checked entirely in Rust; no certificate or token is returned.
+///
+/// # Safety
+/// `document` must point to `length` readable bytes and `origin_host` must be
+/// a valid NUL-terminated UTF-8 string for the duration of the call.
 #[no_mangle]
 pub unsafe extern "C" fn mila_trust_document_validate(
     document: *const u8,
@@ -46,6 +98,10 @@ pub unsafe extern "C" fn mila_trust_document_validate(
 /// Validates a push registration request without carrying a platform secret
 /// across the ABI. `provider`: 0=APNs, 1=FCM, 2=WNS; `environment`: 0=dev,
 /// 1=production. WNS requires a channel endpoint; other providers reject one.
+///
+/// # Safety
+/// `token`, `app_id`, and `deployment` must be valid NUL-terminated UTF-8
+/// strings. If supplied, `endpoint` must meet the same requirements.
 #[no_mangle]
 pub unsafe extern "C" fn mila_push_registration_validate(
     provider: u8,
@@ -270,8 +326,10 @@ pub unsafe extern "C" fn mila_route_format(
 mod tests {
     use super::{
         mila_ffi_get_version, mila_ffi_version, mila_terminal_validate, mila_watch_event_kind,
-        mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus, MilaWatchEventKind,
+        mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus, MilaSnapshotSummary,
+        MilaWatchEventKind,
     };
+    use mila_runtime::MachineSnapshot;
 
     #[test]
     fn exposes_stable_abi_version() {
@@ -341,5 +399,60 @@ mod tests {
             unsafe { super::mila_trust_document_validate(std::ptr::null(), 0, host.as_ptr(), 0) },
             MilaFfiStatus::NullInput
         );
+    }
+
+    #[test]
+    fn validates_snapshot_and_returns_safe_summary() {
+        let snapshot = MachineSnapshot::new("mgmt.example.test".into(), Some(443), 42, vec![])
+            .unwrap()
+            .encode()
+            .unwrap();
+        let host = std::ffi::CString::new("mgmt.example.test").unwrap();
+        let mut summary = MilaSnapshotSummary {
+            machine_count: 9,
+            saved_at: 0,
+        };
+        let status = unsafe {
+            super::mila_snapshot_validate(
+                snapshot.as_ptr(),
+                snapshot.len(),
+                host.as_ptr(),
+                443,
+                1,
+                &mut summary,
+            )
+        };
+        assert_eq!(status, MilaFfiStatus::Ok);
+        assert_eq!(
+            summary,
+            MilaSnapshotSummary {
+                machine_count: 0,
+                saved_at: 42
+            }
+        );
+    }
+
+    #[test]
+    fn rejects_snapshot_for_wrong_deployment() {
+        let snapshot = MachineSnapshot::new("mgmt.example.test".into(), None, 1, vec![])
+            .unwrap()
+            .encode()
+            .unwrap();
+        let host = std::ffi::CString::new("other.example.test").unwrap();
+        let mut summary = MilaSnapshotSummary {
+            machine_count: 0,
+            saved_at: 0,
+        };
+        let status = unsafe {
+            super::mila_snapshot_validate(
+                snapshot.as_ptr(),
+                snapshot.len(),
+                host.as_ptr(),
+                0,
+                0,
+                &mut summary,
+            )
+        };
+        assert_eq!(status, MilaFfiStatus::InvalidRequest);
     }
 }

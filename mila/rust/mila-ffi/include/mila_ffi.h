@@ -27,6 +27,11 @@ typedef struct MilaRouteOutput {
   size_t *written;
 } MilaRouteOutput;
 
+typedef struct MilaSnapshotSummary {
+  uint32_t machine_count;
+  uint64_t saved_at;
+} MilaSnapshotSummary;
+
 /* Returns the ABI major version. */
 uint32_t mila_ffi_version(void);
 /* Writes the complete ABI version, returning MILA_FFI_NULL_INPUT when absent. */
@@ -42,6 +47,10 @@ MilaFfiStatus mila_push_registration_validate(uint8_t provider, uint8_t environm
                                               const char *deployment, const char *endpoint);
 /* Validates bounded watch filter counts (maximum 64 combined). */
 MilaFfiStatus mila_watch_validate_filters(uint16_t machine_count, uint16_t thread_count);
+/* Validates an offline snapshot for a deployment and returns safe metadata. */
+MilaFfiStatus mila_snapshot_validate(const uint8_t *bytes, size_t length,
+                                     const char *host, uint16_t port,
+                                     uint8_t has_port, MilaSnapshotSummary *out_summary);
 
 #ifdef __cplusplus
 }
