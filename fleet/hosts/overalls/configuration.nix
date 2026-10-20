@@ -33,10 +33,12 @@
     after = [ "overalls-secrets-cachix.service" ];
   };
 
-  overalls.remoteBuilders = {
-    enable = true;
+  # Peers awaiting an installed identity are omitted, so Overalls keeps
+  # evaluating while a replacement host is a base declaration.
+  overalls.remoteBuilders = let machines = import ../../remote-builders.nix { inherit lib; }; in {
+    enable = lib.attrNames machines != [ "overalls" ];
     localName = "overalls";
-    machines = import ../../remote-builders.nix { inherit lib; };
+    inherit machines;
   };
   imports = [ ./services.nix ../../fleet-network.nix ];
   services.overallsOtelFleet = {

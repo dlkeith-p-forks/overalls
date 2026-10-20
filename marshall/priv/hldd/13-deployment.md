@@ -181,6 +181,12 @@ runs again before the old credentials disappear from circulation is part of the
 procedure. The native journey and generated histories are indexed in the
 [host replacement review](repo:docs/architecture/reviews/2026-09-27-host-replacement.md).
 
+While a replacement is a published base declaration (no installed key or
+credentials), the fleet remote-builder registry omits it and a host left without
+a keyed peer disables its builder cache instead of failing evaluation, so the
+other hosts keep updating through the reinstall. The `remote-builders-configuration`
+evaluation case `unkeyed-omitted` checks the omission.
+
 ## Build and activate a release
 
 ```sh

@@ -13,6 +13,7 @@ in
 # @cc [owner:ghuntley,label:security] fleet-builder-authority
 # Host pins and encrypted document paths MUST derive from authoritative host
 # inventory; CPU slots MUST reflect authenticated physical CPU observations.
+# A host awaiting its installed identity (a base declaration) is not a builder.
 lib.mapAttrs (name: endpoint: endpoint // {
   systems = [ "${inventory.${name}.inventory.arch}-linux" ];
   supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" "nested-kvm" ];
@@ -23,4 +24,4 @@ lib.mapAttrs (name: endpoint: endpoint // {
       (throw "Missing remote builder credential") inventory.${name}.credentials;
     path = ../. + ("/" + document.path);
   in assert lib.assertMsg (builtins.pathExists path) "Missing remote builder ciphertext"; "${path}";
-}) endpoints
+}) (lib.filterAttrs (name: _: inventory.${name}.identity.sshKeys != []) endpoints)

@@ -178,8 +178,8 @@
     };
   };
 
-  # Discovery uses rescue's eth0 name; installed hardware uses enp5s0.
-  services.overallsFleetExporter.externalInterfaces = lib.mkForce [ "enp5s0" ];
+  # Discovery uses rescue's eth0 name; installed hardware uses enp193s0f0np0.
+  services.overallsFleetExporter.externalInterfaces = lib.mkForce [ "enp193s0f0np0" ];
   services.overallsFleetExporter.units = [
     "lilly.service"
     "ziggy.service"

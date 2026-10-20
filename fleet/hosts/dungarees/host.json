@@ -23,64 +23,7 @@
     "guestCpuCores": 32,
     "guestMemoryMiB": 95232
   },
-  "credentials": [
-    {
-      "name": "dungarees-git",
-      "path": "secrets/dungarees-git.enc.json"
-    },
-    {
-      "name": "dungarees-lilly",
-      "path": "secrets/dungarees-lilly.enc.json"
-    },
-    {
-      "name": "dungarees-brady",
-      "path": "secrets/dungarees-brady.enc.json"
-    },
-    {
-      "name": "dungarees-ziggy",
-      "path": "secrets/dungarees-ziggy.enc.json"
-    },
-    {
-      "name": "dungarees-audi-private",
-      "path": "secrets/dungarees-audi-private.enc.json"
-    },
-    {
-      "name": "dungarees-logstore",
-      "path": "secrets/dungarees-logstore.enc.json"
-    },
-    {
-      "name": "dungarees-remote-builders",
-      "path": "secrets/dungarees-remote-builders.enc.json"
-    },
-    {
-      "name": "dungarees-fleet-network",
-      "path": "secrets/dungarees-fleet-network.enc.json"
-    },
-    {
-      "name": "dungarees-galileo",
-      "path": "secrets/dungarees-galileo.enc.json"
-    },
-    {
-      "name": "dungarees-underclass",
-      "path": "secrets/dungarees-underclass.enc.json"
-    },
-    {
-      "name": "dungarees-audi",
-      "path": "secrets/dungarees-audi.enc.json"
-    },
-    {
-      "name": "dungarees-audi-dns",
-      "path": "secrets/dungarees-audi-dns.enc.json"
-    },
-    {
-      "name": "overalls-cachix",
-      "path": "secrets/overalls-cachix.enc.json"
-    },
-    {
-      "name": "fleet-addresses",
-      "path": "secrets/fleet-addresses.enc.json"
-    }
-  ],
+  "credentials": [],
   "discovery": {
     "routes": [
       {
@@ -88,7 +31,7 @@
         "dst": "default"
       }
     ],
-    "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMtfutt4THjYXg9SXARzcr+fL9ylsx/gSWGm01ZqoOpl"
+    "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPN1sS7dVBxNZqkcHjQLM8PMKUrLfdWJZglf1C1OJIfn"
   },
   "firmware": "uefi",
   "git": {
@@ -96,10 +39,8 @@
     "repository": "ssh://git@github.com/ghuntley/overalls"
   },
   "identity": {
-    "hostId": "5ffb4252",
-    "sshKeys": [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7YqQClUFnB1POZHExl0fqKLqXmEUlBzKtMD6/knJ+M"
-    ]
+    "hostId": "12bb4b7b",
+    "sshKeys": []
   },
   "inventory": {
     "arch": "x86_64",
@@ -107,61 +48,42 @@
       {
         "active": false,
         "aliases": [
-          "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117850",
-          "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117850_1",
-          "/dev/disk/by-id/nvme-eui.363447304c1178500025385400000003"
+          "/dev/disk/by-id/nvme-INTEL_SSDPF2KX019T1M_PHAX405408LR1P9BGN",
+          "/dev/disk/by-id/nvme-INTEL_SSDPF2KX019T1M_PHAX405408LR1P9BGN_1",
+          "/dev/disk/by-id/nvme-eui.01000000000000005cd2e41aba705651"
         ],
-        "device": "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117850",
-        "id": "disk-24f1c97dc9627e0111145f2e",
+        "device": "/dev/disk/by-id/nvme-INTEL_SSDPF2KX019T1M_PHAX405408LR1P9BGN",
+        "id": "disk-20cf44929c8f7c42e79aced7",
         "kind": "physical",
-        "model": "SAMSUNG MZQL21T9HCJR-00A07",
-        "path": "/dev/nvme1n1",
-        "serial": "S64GNT0L117850",
+        "model": "INTEL SSDPF2KX019T1M",
+        "path": "/dev/nvme0n1",
+        "serial": "PHAX405408LR1P9BGN",
         "size": 1920383410176,
         "transport": "nvme"
       },
       {
         "active": false,
         "aliases": [
-          "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117831",
-          "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117831_1",
-          "/dev/disk/by-id/nvme-eui.363447304c1178310025385400000003"
+          "/dev/disk/by-id/nvme-INTEL_SSDPF2KX019T1M_PHAX405408B21P9BGN",
+          "/dev/disk/by-id/nvme-INTEL_SSDPF2KX019T1M_PHAX405408B21P9BGN_1",
+          "/dev/disk/by-id/nvme-eui.01000000000000005cd2e4d1b8705651"
         ],
-        "device": "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117831",
-        "id": "disk-9b1c2d011b9a645d293b69c2",
+        "device": "/dev/disk/by-id/nvme-INTEL_SSDPF2KX019T1M_PHAX405408B21P9BGN",
+        "id": "disk-5757c7dd87014b3ee5af9c08",
         "kind": "physical",
-        "model": "SAMSUNG MZQL21T9HCJR-00A07",
-        "path": "/dev/nvme0n1",
-        "serial": "S64GNT0L117831",
+        "model": "INTEL SSDPF2KX019T1M",
+        "path": "/dev/nvme1n1",
+        "serial": "PHAX405408B21P9BGN",
         "size": 1920383410176,
         "transport": "nvme"
       }
     ],
-    "machine": "1e47fcf0-ac62-11f1-8420-5cffb9e15600"
+    "machine": "663d3cd4-bfde-11d3-01a6-9c6b00e948a7"
   },
   "lilly": {
-    "binding": {
-      "credential_id": "7a53542b-981c-4d6a-b44a-b4b3894c09de",
-      "expires_at": "2031-09-21T10:09:51.389382Z",
-      "host_id": "585ccc67-1631-4d6c-84b2-fc06a3cd085a",
-      "machine_id": "sha256:bfeafb2e02f39e32d19e8ae7829871ba65f28dfaf8f79302f7fbc97cb7b6ef95",
-      "pools": [
-        {
-          "filesystem_id": "zfs:10079321893273699629:1297516200523506477",
-          "id": "ee45ac6d-e264-43e0-adce-57d14dafb19e",
-          "name": "guests",
-          "storage": {
-            "backend": "zfs",
-            "dataset": "zroot/lilly",
-            "dataset_guid": "1297516200523506477",
-            "zpool_guid": "10079321893273699629"
-          }
-        }
-      ]
-    },
     "controlPlane": "https://ghuntley.dev:5443",
     "credentialTtlSeconds": 157680000,
-    "egressInterface": "enp5s0",
+    "egressInterface": "enp193s0f0np0",
     "overheads": {
       "cores": 0,
       "memoryBytes": 0,
@@ -169,7 +91,6 @@
     },
     "transferEndpoint": {
       "addressSecret": "DUNGAREES_PRIMARY_IPV4",
-      "host_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7YqQClUFnB1POZHExl0fqKLqXmEUlBzKtMD6/knJ+M",
       "port": 2223
     }
   },
@@ -177,7 +98,7 @@
   "network": {
     "10-eth0": {
       "matchConfig": {
-        "MACAddress": "9c:6b:00:dc:70:62"
+        "MACAddress": "9c:6b:00:e9:4d:63"
       },
       "networkConfig": {
         "DNS": [
@@ -196,8 +117,8 @@
     "guests": [],
     "quotaBytes": 1710470725632,
     "system": [
-      "disk-24f1c97dc9627e0111145f2e",
-      "disk-9b1c2d011b9a645d293b69c2"
+      "disk-20cf44929c8f7c42e79aced7",
+      "disk-5757c7dd87014b3ee5af9c08"
     ]
   }
 }
