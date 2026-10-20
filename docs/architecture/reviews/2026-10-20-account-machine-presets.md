@@ -52,8 +52,8 @@ structure, pinned locale data, translated documentation and strict catalogs.
 Compilation passed with warnings treated as errors. Covenant remains bounded to
 the BEAM test VM; its module-loadability baseline does not prove native isolation.
 
-Upstream `644810bd` was integrated before publication. Its fleet decision retains
-ADR-0235; this preset decision is ADR-0240. The supplemental run passed nine
+Upstream `644810bd` was integrated before publication. Its fleet decision, then
+numbered 0235, is now ADR-0238; this preset decision is ADR-0240. The supplemental run passed nine
 checks covering presets, image-size defaults and the integrated ACME configuration.
 The sizing typespec now admits catalog metadata alongside its required minima,
 matching its existing runtime behavior; a closed two-key map had made Dialyzer

@@ -108,6 +108,10 @@
     {
       "name": "fleet-addresses",
       "path": "secrets/fleet-addresses.enc.json"
+    },
+    {
+      "name": "fleet-tailscale",
+      "path": "secrets/fleet-tailscale.enc.json"
     }
   ],
   "discovery": {

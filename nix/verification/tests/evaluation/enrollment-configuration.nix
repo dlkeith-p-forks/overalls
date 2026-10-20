@@ -10,6 +10,7 @@ let
       # Evaluation-only ciphertext path; this suite does not decrypt credentials.
       ++ [
         { name = "${original.name}-underclass"; path = "secrets/${original.name}-git.enc.json"; }
+        { name = "fleet-tailscale"; path = "secrets/${original.name}-git.enc.json"; }
       ];
     lilly = {
       controlPlane = "https://control.test";
@@ -42,6 +43,7 @@ let
   wrongSecret = evaluate host { services.lilly.credentialFile = lib.mkForce "/run/wrong.json"; };
   wrongGroup = evaluate host { services.overallsSecrets.bundles.lilly.group = lib.mkForce "wheel"; };
   wrongTransferPort = evaluate host { services.lillyTransfer.port = lib.mkForce 2225; };
+  noTailscale = evaluate (host // { credentials = lib.filter (c: c.name != "fleet-tailscale") host.credentials; }) {};
   tooLong = evaluate (host // { lilly = host.lilly // { credentialTtlSeconds = 157680001; }; }) {};
 in
 assert lib.assertMsg (valid good) (lib.concatMapStringsSep "\n" (a: a.message) (lib.filter (a: !a.assertion) good.assertions));
@@ -81,4 +83,15 @@ assert builtins.elem "overalls-secrets-lilly.service" good.systemd.services.lill
 assert good.services.overallsSecrets.bundles.lilly.outputs."credential.json".secrets == [ "LILLY_CREDENTIAL" ];
 assert builtins.elem "nested-kvm" good.nix.settings.extra-system-features;
 assert good.services.tailscale.enable && good.systemd.services ? tailscaled;
+# @cc [owner:ghuntley,label:verification;security] tailscale-auto-join-evaluation
+# An enrolled host with the fleet-tailscale credential joins from the decrypted
+# runtime key after its secret unit; without it no auth key or join unit exists.
+assert good.services.tailscale.authKeyFile == "/run/overalls-secrets/tailscale/auth-key";
+assert builtins.elem "overalls-secrets-tailscale.service" good.systemd.services.tailscaled-autoconnect.requires;
+assert builtins.elem "overalls-secrets-tailscale.service" good.systemd.services.tailscaled-autoconnect.after;
+assert good.services.overallsSecrets.bundles.tailscale.outputs.auth-key.secrets == [ "TAILSCALE_AUTH_KEY" ];
+assert builtins.hasContext good.services.overallsSecrets.bundles.tailscale.encryptedFile;
+assert noTailscale.services.tailscale.authKeyFile == null;
+assert !(noTailscale.systemd.services ? tailscaled-autoconnect);
+assert !(noTailscale.services.overallsSecrets.bundles ? tailscale);
 pkgs.writeText "enrollment-configuration" "passed\n"

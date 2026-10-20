@@ -58,6 +58,15 @@ preserving other fields (such as `DB_PASSWORD`), and update the bundle in the
 same change. Without a recovery identity, generate a fresh CA and replace all
 three documents together.
 
+## Tailscale auto-join key
+
+[`fleet-tailscale.enc.json`](fleet-tailscale.enc.json) holds the shared
+Tailscale authentication key as `overalls-tailscale.production.TAILSCALE_AUTH_KEY`
+(ADR-0241). Enrolled hosts that name the `fleet-tailscale` credential decrypt it
+to `/run/overalls-secrets/tailscale/auth-key` and join automatically while their
+daemon needs a login. Rotate it with `encrypt fleet-tailscale --replace` after
+revoking the old key in the Tailscale console.
+
 ## Git deploy key
 
 [`git-bootstrap.enc.json`](git-bootstrap.enc.json) is the recovery copy of the

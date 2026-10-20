@@ -1,5 +1,9 @@
 # Architecture decision records
 
+[ADR-0241](0241-sops-tailscale-auto-join.md) delivers a shared Tailscale
+authentication key through SOPS so enrolled hosts join the tailnet
+automatically; base systems still join by explicit operator action.
+
 [ADR-0240](0240-account-machine-creation-presets.md) accepts three account creation presets: launch starts with OSS, machine and thread creation start with Standard (Work), with validated saved image and resource preferences and original-request launch replay. Implementation remains partial pending native and rollout acceptance.
 
 [ADR-0239](0239-salopettes-joins-panterloons-tunnel.md) moves Salopettes into
@@ -1007,3 +1011,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0238](0238-panterloons-deployment-and-per-deployment-tunnels.md) | accepted | partial | Panterloons deployment and per-deployment fleet tunnels |
 | [ADR-0239](0239-salopettes-joins-panterloons-tunnel.md) | accepted | partial | Salopettes joins the Panterloons tunnel |
 | [ADR-0240](0240-account-machine-creation-presets.md) | accepted | partial | Three account machine creation presets |
+| [ADR-0241](0241-sops-tailscale-auto-join.md) | accepted | partial | SOPS-delivered automatic Tailscale joining |

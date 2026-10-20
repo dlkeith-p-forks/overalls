@@ -87,6 +87,13 @@ telemetry follows the same split through `services.overallsOtelFleet.hosts`:
 Overalls observes only itself, Panterloons observes itself and Dungarees.
 Until the operator moves `ghuntley.dev` DNS, public names reach Overalls.
 
+Enrolled hosts that declare the shared `fleet-tailscale` credential join the
+tailnet automatically (ADR-0241): `tailscaled-autoconnect` presents the
+SOPS-delivered key from `/run/overalls-secrets/tailscale/auth-key` only while
+the daemon needs a login. Base systems hold no credentials and join only when
+an operator runs `tailscale up`. Rotating the key is a sensitive, operator-only
+document replacement after revoking the old key in the Tailscale console.
+
 No fleet host's public address is in the repository (ADR-0233). The shared
 document `secrets/fleet-addresses.enc.json` holds each dedicated host's primary
 and service IPv4 addresses, its own prefix and gateway, and salopettes' IPv4.
