@@ -3,6 +3,8 @@ defmodule Marshall.MessageBoards do
   import Ecto.Query
   alias Marshall.Repo
 
+  require Marshall.Events
+
   @profiles [:standard, :oss]
   @max_body 65_536
 
@@ -96,10 +98,10 @@ defmodule Marshall.MessageBoards do
 
     count = purge_machine!(vm_id)
 
-    Marshall.Events.emit("agent.message_board_machine_purged",
+    Marshall.Events.emit("message_board.posts_purged",
       vm_id: vm_id,
       state: state,
-      purged_count: count
+      count: count
     )
 
     now = DateTime.utc_now() |> DateTime.truncate(:microsecond)
