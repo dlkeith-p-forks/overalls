@@ -759,6 +759,43 @@ class HostPlanning(unittest.TestCase):
         with self.assertRaisesRegex(cli.Failure, "budgets"):
             cli.validate(h)
 
+    def test_hcloud_discovery_keeps_addresses_out_of_the_candidate(self) -> None:
+        facts = {
+            "inventory": host()["inventory"],
+            "firmware": "uefi",
+            "hostKey": "ssh-ed25519 AAAAfixture",
+            "addresses": [
+                {"ifname": "lo", "address": "00:00:00:00:00:00", "addr_info": []},
+                {
+                    "ifname": "eth0",
+                    "address": "92:00:00:00:00:01",
+                    "addr_info": [
+                        {"local": "192.0.2.7", "prefixlen": 32, "scope": "global"},
+                        {"local": "2001:db8:7::1", "prefixlen": 64, "scope": "global"},
+                    ],
+                },
+            ],
+            "routes": [
+                {"dev": "eth0", "dst": "default", "gateway": "172.31.1.1", "prefsrc": "192.0.2.7"},
+                {"dev": "eth0", "dst": "192.0.2.7", "prefsrc": "192.0.2.7", "type": "local"},
+                {"dev": "eth0", "dst": "2001:db8:7::/64"},
+                {"dev": "eth0", "dst": "default", "gateway": "fe80::1"},
+            ],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "candidate.json"
+            args = SimpleNamespace(platform="hcloud", name="cloudy", output=str(output))
+            with patch.object(cli, "probe", return_value=facts):
+                cli.discover(args)
+            text = output.read_text()
+        candidate = json.loads(text)
+        for literal in ("192.0.2.7", "2001:db8"):
+            self.assertNotIn(literal, text)
+        uplink = candidate["network"]["10-eth0"]
+        self.assertEqual(uplink["networkConfig"]["DHCP"], "ipv4")
+        self.assertNotIn("Address", uplink["networkConfig"])
+        self.assertEqual(candidate["discovery"]["routes"], [{"dev": "eth0", "dst": "default"}])
+
     def test_hcloud_installer_forces_the_legacy_kexec_syscall(self) -> None:
         h = host()
         for platform, flags in (

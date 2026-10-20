@@ -4461,15 +4461,17 @@ Tested scope: Hegel stateful supervisor, framing property and OpenSSH reconnect 
 
 Coverage: **partial**. Layers: storage, isolation, transport, recovery.
 
-Boundary: hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly; salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at one IPv4 address.
+Boundary: hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly, and no address literals (IPv4 by DHCP); salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at the IPv4 address delivered by its host-bound SOPS document.
 
-Required refusal: Two system disks, guest disks, a guest quota, Lilly budgets or a lilly section are refused before planning; Lilly platforms still require working KVM in the guard.
+Required refusal: Two system disks, guest disks, a guest quota, Lilly budgets, a lilly section or static hcloud addresses are refused before planning; Lilly platforms still require working KVM in the guard; a missing or malformed address document keeps the public listener closed.
 
-Tested scope: Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions.
+Tested scope: Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions, fleet firewall evaluation and the public-address NixOS machine test.
 
 - **unit, present**: [def test_hcloud_single_zfs_root_without_guest_storage(](repo:nix/verification/tests/evaluation/host-planning.py) — cli.validate over a valid hcloud declaration and each refused variant..
 - **unit, present**: [def test_hcloud_guard_skips_kvm_but_lilly_platforms_require_it(](repo:nix/verification/tests/evaluation/host-planning.py) — remote guard with KVM mocked for hcloud and ec2 declarations..
 - **unit, present**: [hcloud-single-zfs-root: one disk, a ZFS root and no guest dataset.](repo:nix/verification/tests/evaluation/storage-configuration.nix) — Evaluated hcloud-uefi and hcloud-bios profile fixtures..
+- **unit, present**: [def test_hcloud_discovery_keeps_addresses_out_of_the_candidate(](repo:nix/verification/tests/evaluation/host-planning.py) — Discovery candidate for hcloud with documentation-range addresses: DHCP, no literals, redacted default routes..
+- **machine, present**: [The SOPS-delivered public address MUST open a destination-scoped listener](repo:nix/verification/tests/machines/public-address/default.nix) — Two-node VLAN with a host-sealed SOPS document: closed before decryption, only the declared port at the decrypted address, firewall reload and restart, rotation, malformed-document closure and the IPv6 networkd drop-in. Test addresses only; no Hetzner Cloud network..
 
 **Gaps:** Physical installation, enrollment and ACME issuance on salopettes are recorded in ADR-0231 once performed; real APNs/FCM credentials remain placeholders.
 

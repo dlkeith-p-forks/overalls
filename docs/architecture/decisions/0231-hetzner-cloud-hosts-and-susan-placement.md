@@ -42,13 +42,16 @@ Add a third host platform, `hcloud`, for Hetzner Cloud virtual servers:
   pinned Git access and gated polling.
 - Discovery proposes Hetzner Cloud's static routing for review: the IPv4
   address as `/32` with an on-link route to `172.31.1.1`, and IPv6 through
-  `fe80::1`.
+  `fe80::1`. [ADR-0232](0232-sops-delivered-public-host-addresses.md) amends
+  this: hcloud declarations take IPv4 from DHCP and their public addresses
+  from a host-bound SOPS document.
 
 Place Susan on the `hcloud` host **salopettes** (`fleet/hosts/salopettes`), which
 runs only Susan, its local PostgreSQL and nginx. Nginx terminates publicly
 trusted TLS for `notifications.overalls.dev` with an ACME HTTP-01 certificate,
 forwards to Susan's loopback listener and keeps no access log. The fleet
-firewall admits only TCP 80 and 443 at the host's public IPv4 address; SSH stays
+firewall admits only TCP 80 and 443 at the host's public IPv4 address, which
+ADR-0232 delivers through SOPS; SSH stays
 limited to reviewed fleet sources and Tailscale. Salopettes is enrolled like
 every fleet host, so the trunk auto-updater deploys it, and it decrypts
 `overalls-susan` with its own host recipient. The Nix OCI image remains a
@@ -110,9 +113,13 @@ autoupdate on a single ZFS disk.
 - Real APNs and FCM credentials; the deployed document still holds the
   placeholders described in `secrets/README.md`.
 - IPv6 public listeners in the fleet firewall.
+- Salopettes also offers a Tailscale exit node (`overalls.tailscale.exitNode`,
+  as on the other fleet hosts); joining the tailnet and approving the route are
+  operator actions.
 
 ## Related decisions
 
 [ADR-0043](0043-declarative-host-provisioning.md) gains the `hcloud` platform;
 [ADR-0224](0224-susan-push-relay.md) gains its host and TLS placement;
-[ADR-0225](0225-marshall-notifications-domain.md) retries Susan outages.
+[ADR-0225](0225-marshall-notifications-domain.md) retries Susan outages;
+[ADR-0232](0232-sops-delivered-public-host-addresses.md) amends its addressing.

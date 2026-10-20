@@ -15045,9 +15045,9 @@
         "transport",
         "recovery"
       ],
-      "boundary": "hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly; salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at one IPv4 address.",
-      "denial": "Two system disks, guest disks, a guest quota, Lilly budgets or a lilly section are refused before planning; Lilly platforms still require working KVM in the guard.",
-      "scope": "Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions.",
+      "boundary": "hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly, and no address literals (IPv4 by DHCP); salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at the IPv4 address delivered by its host-bound SOPS document.",
+      "denial": "Two system disks, guest disks, a guest quota, Lilly budgets, a lilly section or static hcloud addresses are refused before planning; Lilly platforms still require working KVM in the guard; a missing or malformed address document keeps the public listener closed.",
+      "scope": "Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions, fleet firewall evaluation and the public-address NixOS machine test.",
       "status": "partial",
       "gaps": "Physical installation, enrollment and ACME issuance on salopettes are recorded in ADR-0231 once performed; real APNs/FCM credentials remain placeholders.",
       "preferred_gap": "A host-conversion NixOS machine test with a single virtio disk under the hcloud platform.",
@@ -15071,6 +15071,20 @@
           "path": "nix/verification/tests/evaluation/storage-configuration.nix",
           "assertion": "hcloud-single-zfs-root: one disk, a ZFS root and no guest dataset.",
           "scope": "Evaluated hcloud-uefi and hcloud-bios profile fixtures.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/host-planning.py",
+          "assertion": "def test_hcloud_discovery_keeps_addresses_out_of_the_candidate(",
+          "scope": "Discovery candidate for hcloud with documentation-range addresses: DHCP, no literals, redacted default routes.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/public-address/default.nix",
+          "assertion": "The SOPS-delivered public address MUST open a destination-scoped listener",
+          "scope": "Two-node VLAN with a host-sealed SOPS document: closed before decryption, only the declared port at the decrypted address, firewall reload and restart, rotation, malformed-document closure and the IPv6 networkd drop-in. Test addresses only; no Hetzner Cloud network.",
           "execution": "present"
         }
       ]

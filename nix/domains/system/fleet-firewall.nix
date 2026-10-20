@@ -1,8 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   cfg = config.overalls.fleetFirewall;
   hosts = lib.attrValues cfg.allowedHosts;
-  services = lib.attrValues cfg.publicServices;
+  allServices = lib.attrValues cfg.publicServices;
+  services = lib.filter (service: service.address != null) allServices;
+  runtimeServices = lib.filterAttrs (_: service: service.addressFile != null) cfg.publicServices;
+  runtimeChain = name: "overalls-public-${name}";
   validIPv4 = address:
     let octets = lib.splitString "." address;
     in builtins.length octets == 4 && lib.all (octet:
@@ -24,6 +27,11 @@ let
       "iptables -w -A nixos-fw -d ${service.address} -p ${rule.protocol} --dport ${toString rule.port} -m comment --comment ${lib.escapeShellArg service.comment} -j nixos-fw-accept"
     ) (map (port: { protocol = "tcp"; inherit port; }) service.tcpPorts
         ++ map (port: { protocol = "udp"; inherit port; }) service.udpPorts)) services;
+  # Runtime-address listeners: a static jump to an initially empty chain that
+  # the per-service unit fills once it has validated the runtime address.
+  runtimeIptablesRules = lib.concatMapStringsSep "\n" (name: ''
+    iptables -w -N ${runtimeChain name} 2>/dev/null || true
+    iptables -w -A nixos-fw -j ${runtimeChain name}'') (lib.attrNames runtimeServices);
 in
 {
   options.overalls.fleetFirewall = {
@@ -50,8 +58,19 @@ in
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
           address = lib.mkOption {
-            type = lib.types.strMatching "[0-9]{1,3}(\\.[0-9]{1,3}){3}";
+            type = lib.types.nullOr (lib.types.strMatching "[0-9]{1,3}(\\.[0-9]{1,3}){3}");
+            default = null;
             description = "Explicit local IPv4 destination address; never a wildcard.";
+          };
+          addressFile = lib.mkOption {
+            type = lib.types.nullOr (lib.types.strMatching "/run/[A-Za-z0-9_./-]+");
+            default = null;
+            description = "Runtime file holding the explicit local IPv4 destination, for addresses kept out of the repository (for example a decrypted SOPS bundle). Requires the iptables backend.";
+          };
+          addressUnit = lib.mkOption {
+            type = lib.types.nullOr (lib.types.strMatching "[a-zA-Z0-9_.@-]+\\.service");
+            default = null;
+            description = "Unit that publishes addressFile; the listener rules follow it.";
           };
           tcpPorts = lib.mkOption {
             type = lib.types.listOf lib.types.port;
@@ -80,13 +99,18 @@ in
         message = "Fleet firewall grants require unique IPv4 source addresses."; }
       { assertion = lib.all (service: validIPv4 service.address && service.address != "0.0.0.0") services;
         message = "Public service listeners require canonical explicit IPv4 destination addresses."; }
+      { assertion = lib.all (service: (service.address == null) != (service.addressFile == null)
+          && (service.addressFile == null) == (service.addressUnit == null)) allServices;
+        message = "Public service listeners require exactly one of address or addressFile, and addressFile requires addressUnit."; }
+      { assertion = runtimeServices == {} || !config.networking.nftables.enable;
+        message = "Runtime public service addresses require the iptables firewall backend."; }
       { assertion = lib.length (lib.unique (map (service: service.address) services)) == lib.length services;
         message = "Public service listeners require unique IPv4 destination addresses."; }
-      { assertion = lib.all (service: service.tcpPorts != [] || service.udpPorts != []) services;
+      { assertion = lib.all (service: service.tcpPorts != [] || service.udpPorts != []) allServices;
         message = "Public service listeners require at least one TCP or UDP port."; }
       { assertion = lib.all (service:
           lib.length (lib.unique service.tcpPorts) == lib.length service.tcpPorts
-          && lib.length (lib.unique service.udpPorts) == lib.length service.udpPorts) services;
+          && lib.length (lib.unique service.udpPorts) == lib.length service.udpPorts) allServices;
         message = "Public service listeners require unique ports per protocol."; }
     ];
 
@@ -98,7 +122,9 @@ in
     # explicitly force-priority authenticated transport rules and reviewed
     # destination-scoped public service listeners admitted through publicServices
     # MAY coexist. A public service entry MUST NOT broaden into a wildcard
-    # destination or an unrelated address.
+    # destination or an unrelated address. An entry whose address lives outside
+    # the repository (addressFile) MUST jump to a dedicated chain that admits
+    # nothing until its unit has validated the runtime address and filled it.
     networking.firewall = {
       enable = true;
       trustedInterfaces = lib.mkForce [ "lo" "tailscale0" ];
@@ -109,7 +135,28 @@ in
       extraInputRules = lib.mkForce (lib.optionalString config.networking.nftables.enable
         (lib.concatStringsSep "\n" (lib.filter (rules: rules != "") [ nftRules publicNftRules ])));
       extraCommands = lib.mkForce (lib.optionalString (!config.networking.nftables.enable)
-        (lib.concatStringsSep "\n" (lib.filter (rules: rules != "") [ iptablesRules publicIptablesRules ])));
+        (lib.concatStringsSep "\n" (lib.filter (rules: rules != "") [ iptablesRules publicIptablesRules runtimeIptablesRules ])));
     };
+
+    systemd.services = lib.mapAttrs' (name: service: lib.nameValuePair (runtimeChain name) {
+      description = "Admit the ${name} public listener at its runtime address";
+      after = [ "firewall.service" service.addressUnit ];
+      requires = [ service.addressUnit ];
+      wantedBy = [ "multi-user.target" ];
+      # Firewall reloads keep the dedicated chain and its validated rules;
+      # a firewall restart restarts this unit, which refills it.
+      partOf = [ "firewall.service" ];
+      restartTriggers = [ (builtins.toJSON service) ];
+      path = [ pkgs.iptables ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = lib.escapeShellArgs ([ "${pkgs.python3}/bin/python3" "${./fleet-firewall-runtime.py}"
+          "--chain" (runtimeChain name) "--address-file" service.addressFile "--comment" service.comment ]
+          ++ map (port: "--rule=tcp:${toString port}") service.tcpPorts
+          ++ map (port: "--rule=udp:${toString port}") service.udpPorts);
+        ExecStop = "${pkgs.iptables}/bin/iptables -w -F ${runtimeChain name}";
+      };
+    }) runtimeServices;
   };
 }

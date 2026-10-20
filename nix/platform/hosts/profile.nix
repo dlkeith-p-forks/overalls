@@ -127,6 +127,13 @@ in {
     # Hetzner Cloud hosts have no reviewed KVM and no guest storage, so they
     # MUST NOT declare or run Lilly and MUST NOT reserve a guest quota.
     { assertion = !cloud || (h.storage.guests == [] && builtins.elem (h.storage.quotaBytes or null) [ null 0 ] && !(h ? lilly) && !config.services.lilly.enable); message = "Hetzner Cloud hosts carry no guest storage, quota or Lilly role"; }
+    # @cc [owner:ghuntley,label:security;deployment] hcloud-addresses-outside-repository
+    # Hetzner Cloud declarations MUST NOT hold address literals: every network
+    # takes IPv4 from DHCP and any public address arrives through SOPS.
+    { assertion = !cloud || lib.all (network:
+        (network.networkConfig.DHCP or null) == "ipv4" && !(network.networkConfig ? Address) && !(network ? address)
+        && lib.all (route: !(route ? PreferredSource)) (network.routes or [])) (builtins.attrValues h.network);
+      message = "Hetzner Cloud networks use DHCP for IPv4 and keep addresses out of the repository"; }
     { assertion = lillyBinding == null || lib.all (p: builtins.attrNames p == [ "filesystem_id" "id" "name" "storage" ]) lillyBinding.pools; message = "Lilly binding pools must carry exactly id, name, filesystem_id and storage"; }
     { assertion = !mirror || h.storage.quotaBytes > 0; message = "Shared root storage requires a reviewed guest quota"; }
     { assertion = !ec2 || (guestDisks != [] && lib.sort builtins.lessThan guestDisks == lib.sort builtins.lessThan (map (d: d.id) (lib.filter (d: d.kind == "local-nvme") h.inventory.disks)) && disks.${builtins.head bootDisks}.kind == "ebs"); message = "EC2 requires EBS root and every local NVMe drive"; }

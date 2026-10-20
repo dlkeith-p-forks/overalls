@@ -165,9 +165,17 @@ change on first login; change it, add the operator public key to root's
 - `storage.system` names the single disk; `storage.guests` stays empty and
   `storage.quotaBytes` stays null.
 - `budgets` is exactly `{"arcMaxMiB": N}`; there is no `lilly` section.
-- The proposed network is the public IPv4 `/32` with an on-link route to
-  `172.31.1.1`, the routed IPv6 `/64` with a default via `fe80::1`, and
-  `LinkLocalAddressing = "ipv6"` so that IPv6 gateway stays reachable.
+- The proposed network uses `DHCP = "ipv4"`, a default via `fe80::1` for IPv6,
+  and `LinkLocalAddressing = "ipv6"` so that the IPv6 gateway stays reachable.
+  It carries no address literals; the profile refuses them
+  ([ADR-0232](../architecture/decisions/0232-sops-delivered-public-host-addresses.md)).
+- For public addresses, write a private 0600 JSON file outside the checkout:
+  `{"overalls-public-address": {"production": {"PUBLIC_IPV4": "...", "PUBLIC_IPV6": ".../64"}}}`.
+  List `NAME-address` in `credentials`, then run
+  `nix run .#secrets -- encrypt NAME-address --input FILE` once the host key is
+  enrolled. Enable `overalls.publicAddress` and point public listeners at its
+  `ipv4File` and `unit`. To rotate an address, use `encrypt ... --replace`; no
+  code changes.
 
 The guard and the storage receipt skip KVM and bind `zroot/root`. Plan, install,
 enroll and verify are otherwise identical, including the trunk auto-updater.

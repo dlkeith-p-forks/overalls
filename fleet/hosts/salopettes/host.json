@@ -10,152 +10,17 @@
     {
       "name": "overalls-susan",
       "path": "secrets/overalls-susan.enc.json"
+    },
+    {
+      "name": "salopettes-address",
+      "path": "secrets/salopettes-address.enc.json"
     }
   ],
   "discovery": {
     "routes": [
       {
         "dev": "eth0",
-        "dst": "default",
-        "flags": [],
-        "gateway": "172.31.1.1",
-        "metric": 100,
-        "prefsrc": "204.168.188.91",
-        "protocol": "dhcp"
-      },
-      {
-        "dev": "eth0",
-        "dst": "172.31.1.1",
-        "flags": [],
-        "metric": 100,
-        "prefsrc": "204.168.188.91",
-        "protocol": "dhcp",
-        "scope": "link"
-      },
-      {
-        "dev": "eth0",
-        "dst": "185.12.64.1",
-        "flags": [],
-        "gateway": "172.31.1.1",
-        "metric": 100,
-        "prefsrc": "204.168.188.91",
-        "protocol": "dhcp"
-      },
-      {
-        "dev": "eth0",
-        "dst": "185.12.64.2",
-        "flags": [],
-        "gateway": "172.31.1.1",
-        "metric": 100,
-        "prefsrc": "204.168.188.91",
-        "protocol": "dhcp"
-      },
-      {
-        "dev": "lo",
-        "dst": "127.0.0.0/8",
-        "flags": [],
-        "prefsrc": "127.0.0.1",
-        "protocol": "kernel",
-        "scope": "host",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "lo",
-        "dst": "127.0.0.1",
-        "flags": [],
-        "prefsrc": "127.0.0.1",
-        "protocol": "kernel",
-        "scope": "host",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "lo",
-        "dst": "127.255.255.255",
-        "flags": [],
-        "prefsrc": "127.0.0.1",
-        "protocol": "kernel",
-        "scope": "link",
-        "table": "local",
-        "type": "broadcast"
-      },
-      {
-        "dev": "eth0",
-        "dst": "204.168.188.91",
-        "flags": [],
-        "prefsrc": "204.168.188.91",
-        "protocol": "kernel",
-        "scope": "host",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "eth0",
-        "dst": "2a01:4f9:c01d:b3c::/64",
-        "flags": [],
-        "metric": 256,
-        "pref": "medium",
-        "protocol": "kernel"
-      },
-      {
-        "dev": "eth0",
-        "dst": "fe80::/64",
-        "flags": [],
-        "metric": 256,
-        "pref": "medium",
-        "protocol": "kernel"
-      },
-      {
-        "dev": "eth0",
-        "dst": "default",
-        "flags": [
-          "onlink"
-        ],
-        "gateway": "fe80::1",
-        "metric": 1024,
-        "pref": "medium",
-        "protocol": "static"
-      },
-      {
-        "dev": "lo",
-        "dst": "::1",
-        "flags": [],
-        "metric": 0,
-        "pref": "medium",
-        "protocol": "kernel",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "eth0",
-        "dst": "2a01:4f9:c01d:b3c::1",
-        "flags": [],
-        "metric": 0,
-        "pref": "medium",
-        "protocol": "kernel",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "eth0",
-        "dst": "fe80::9000:aff:fe36:dd5",
-        "flags": [],
-        "metric": 0,
-        "pref": "medium",
-        "protocol": "kernel",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "eth0",
-        "dst": "ff00::/8",
-        "flags": [],
-        "metric": 256,
-        "pref": "medium",
-        "protocol": "kernel",
-        "table": "local",
-        "type": "multicast"
+        "dst": "default"
       }
     ],
     "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPDWvRAboNMrQcGX7kbWhNTFUwyWuA+EfXTfTotMrhGH"
@@ -198,10 +63,7 @@
         "MACAddress": "92:00:0a:36:0d:d5"
       },
       "networkConfig": {
-        "Address": [
-          "204.168.188.91/32",
-          "2a01:4f9:c01d:b3c::1/64"
-        ],
+        "DHCP": "ipv4",
         "DNS": [
           "185.12.64.1",
           "185.12.64.2",
@@ -212,15 +74,6 @@
         "LinkLocalAddressing": "ipv6"
       },
       "routes": [
-        {
-          "Destination": "172.31.1.1/32",
-          "Scope": "link"
-        },
-        {
-          "Destination": "0.0.0.0/0",
-          "Gateway": "172.31.1.1",
-          "GatewayOnLink": true
-        },
         {
           "Destination": "::/0",
           "Gateway": "fe80::1",

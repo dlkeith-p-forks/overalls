@@ -322,3 +322,17 @@ Rotation:
 All values are runtime-only: never put them in Nix expressions, the OCI image or
 logs. The container form mounts the same file names at `/run/secrets/susan`
 (owned by uid 65532, mode 0400).
+
+## Host public addresses
+
+`salopettes-address.enc.json` holds salopettes' public addresses under
+`overalls-public-address.production`: `PUBLIC_IPV4` and `PUBLIC_IPV6`, the latter
+with its prefix ([ADR-0232](../docs/architecture/decisions/0232-sops-delivered-public-host-addresses.md)).
+Its recipients are the recovery users and salopettes. The repository holds no
+address literal for the host; `overalls.publicAddress` validates both values at
+runtime, opens the Susan listener at the IPv4 address and attaches the IPv6
+address. To rotate the addresses, write the new values to a private 0600 file
+outside the checkout and run
+`nix run .#secrets -- encrypt salopettes-address --input FILE --replace`. The
+updater then restarts the bundle and its dependents; a malformed value keeps the
+listener closed.

@@ -462,8 +462,11 @@ separate public addresses on each host. Enrico is a private quota-bound cache.
 [Dungarees assertions](repo:fleet/hosts/dungarees/configuration.nix) enforce its
 worker-only control-plane configuration.
 [Salopettes assertions](repo:fleet/hosts/salopettes/configuration.nix) enforce
-its Susan-only role; its public listeners are TCP 80 and 443 at its IPv4 address,
-and nginx forwards to Susan's loopback port 4100 without access logs.
+its Susan-only role. Its public listeners are TCP 80 and 443 at its IPv4
+address, which arrives only through the `salopettes-address` SOPS document
+(ADR-0232). Nginx forwards to Susan's loopback port 4100 without access logs.
+Like the other fleet hosts, it offers a Tailscale exit node once an operator
+joins it to the tailnet.
 
 Only Overalls Marshall receives the dedicated SSH CA private key through an
 encrypted runtime bundle and systemd credential. Porsche, both Audi gateways
@@ -860,7 +863,9 @@ service [`services.susan`](repo:nix/domains/system/susan.nix) with a local
 PostgreSQL behind an nginx proxy that terminates ACME HTTP-01 TLS for
 `notifications.overalls.dev` ([host role](repo:fleet/hosts/salopettes/configuration.nix)).
 Salopettes is enrolled like every fleet host, so the trunk auto-updater deploys
-Susan, and it decrypts `overalls-susan` with its own host recipient. The OCI
+Susan, and it decrypts `overalls-susan` with its own host recipient. Its public
+addresses come from the host-bound `salopettes-address` document (ADR-0232); the
+repository holds no address literal for it. The OCI
 image [`image-susan`](repo:nix/domains/artifacts/susan-image.nix) remains a
 packaging artifact with no registry: streamLayeredImage with uid 65532, no
 shell, a read-only root, tmpfs `/tmp` and a fixed creation time. Migrations

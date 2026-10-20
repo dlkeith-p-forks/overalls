@@ -1,5 +1,10 @@
 # Architecture decision records
 
+[ADR-0232](0232-sops-delivered-public-host-addresses.md) keeps Hetzner Cloud
+host addresses out of the repository: IPv4 by DHCP, the public addresses from a
+host-bound SOPS document, and firewall listeners at the runtime address;
+implementation remains partial.
+
 [ADR-0231](0231-hetzner-cloud-hosts-and-susan-placement.md) accepts a KVM-less,
 Lilly-free `hcloud` host platform with a single-disk ZFS root and places Susan
 alone on the enrolled host salopettes behind ACME TLS for
@@ -968,3 +973,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0229](0229-scim-managed-identity-and-teams.md) | accepted | partial | SCIM-managed identity and teams |
 | [ADR-0230](0230-terminal-image-decoder-webassembly.md) | accepted | partial | WebAssembly compilation for the terminal image decoder |
 | [ADR-0231](0231-hetzner-cloud-hosts-and-susan-placement.md) | accepted | partial | Hetzner Cloud fleet hosts and Susan placement |
+| [ADR-0232](0232-sops-delivered-public-host-addresses.md) | accepted | partial | SOPS-delivered public host addresses |

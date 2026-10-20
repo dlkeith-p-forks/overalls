@@ -13,6 +13,7 @@
     ./security-audit.nix
     ./access.nix
     ./fleet-firewall.nix
+    ./public-address.nix
     ./tailscale.nix
     (import ./underclass.nix { inherit packages; })
     ./remote-builders.nix

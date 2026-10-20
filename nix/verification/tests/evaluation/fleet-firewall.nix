@@ -71,6 +71,25 @@ let
       };
     };
   };
+  runtimeService = {
+    networking.nftables.enable = false;
+    systemd.services.fixture-address.serviceConfig.Type = "oneshot";
+    overalls.fleetFirewall = {
+      enable = true;
+      publicServices.susan = {
+        addressFile = "/run/fixture/ipv4";
+        addressUnit = "fixture-address.service";
+        tcpPorts = [ 80 443 ];
+        comment = "Susan push relay";
+      };
+    };
+  };
+  runtimeIptables = evaluate runtimeService;
+  runtimeUnit = runtimeIptables.systemd.services.overalls-public-susan;
+  rejectedRuntime = settings:
+    let result = builtins.tryEval (let cfg = evaluate (lib.recursiveUpdate runtimeService settings);
+      in builtins.deepSeq cfg.overalls.fleetFirewall.publicServices (valid cfg));
+    in !result.success || !result.value;
   publicNft = evaluate (publicService // { networking.nftables.enable = true; });
   publicIptables = evaluate (publicService // { networking.nftables.enable = false; });
   rejectedPublic = publicServices:
@@ -144,6 +163,21 @@ let
       "-d 192.0.2.10 -p udp --dport 53"
       "--comment 'Audi public plane'"
     ];
+    # Runtime addresses: a static jump to a dedicated chain that only the
+    # address-following unit fills; no address enters the evaluated rules.
+    runtimeServiceRules = valid runtimeIptables
+      && lib.hasInfix "iptables -w -N overalls-public-susan 2>/dev/null || true" runtimeIptables.networking.firewall.extraCommands
+      && lib.hasInfix "iptables -w -A nixos-fw -j overalls-public-susan" runtimeIptables.networking.firewall.extraCommands
+      && !(lib.hasInfix "--dport" runtimeIptables.networking.firewall.extraCommands)
+      && builtins.elem "fixture-address.service" runtimeUnit.requires
+      && builtins.elem "fixture-address.service" runtimeUnit.after
+      && builtins.elem "firewall.service" runtimeUnit.partOf
+      && lib.all (fragment: lib.hasInfix fragment runtimeUnit.serviceConfig.ExecStart) [
+        "--chain overalls-public-susan" "--address-file /run/fixture/ipv4" "'--rule=tcp:80'" "'--rule=tcp:443'"
+      ];
+    runtimeServiceNeedsUnit = rejectedRuntime { overalls.fleetFirewall.publicServices.susan.addressUnit = null; };
+    runtimeServiceNotBoth = rejectedRuntime { overalls.fleetFirewall.publicServices.susan.address = "192.0.2.10"; };
+    runtimeServiceIptablesOnly = rejectedRuntime { networking.nftables.enable = true; };
     publicServiceNoWildcard = rejectedPublic {
       wildcard = { address = "0.0.0.0"; tcpPorts = [ 443 ]; comment = "Wildcard"; };
     };

@@ -21,7 +21,6 @@ from remote import Binding, Facts, Identity, Inventory, StorageFacts
 REPOSITORY = "ssh://git@github.com/ghuntley/overalls"
 REMOTE = Path(__file__).with_name("remote.py")
 PLATFORMS = ("hetzner", "ec2", "hcloud")
-HCLOUD_GATEWAY = "172.31.1.1"
 
 
 class Failure(Exception):
@@ -308,6 +307,16 @@ def write_new(path: str, value: object) -> None:
         stream.write("\n")
 
 
+def default_routes(routes: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Keep only each default route's interface, without addresses."""
+    kept: list[dict[str, object]] = []
+    for route in routes:
+        entry: dict[str, object] = {"dev": route.get("dev"), "dst": "default"}
+        if route.get("dst") == "default" and entry not in kept:
+            kept.append(entry)
+    return kept
+
+
 def discover(args: argparse.Namespace) -> None:
     facts: Facts = probe(args)
     disks = facts["inventory"]["disks"]
@@ -317,26 +326,29 @@ def discover(args: argparse.Namespace) -> None:
     for nic in facts["addresses"]:
         if nic["ifname"] == "lo" or not nic.get("address"):
             continue
-        entry: dict[str, object] = {
-            "matchConfig": {"MACAddress": nic["address"]},
-            "networkConfig": {"DHCP": "yes"}
-            if args.platform == "ec2"
-            else {
+        entry: dict[str, object] = {"matchConfig": {"MACAddress": nic["address"]}}
+        if args.platform == "ec2":
+            entry["networkConfig"] = {"DHCP": "yes"}
+        elif args.platform == "hcloud":
+            # @cc [owner:ghuntley,label:security;deployment] hcloud-addresses-outside-repository
+            # Hetzner Cloud candidates MUST NOT carry address literals: IPv4
+            # comes from the provider's DHCP and the IPv6 address from the
+            # host's SOPS document (public-address-from-sops). Only the
+            # provider's fixed IPv6 gateway is proposed for review.
+            entry["networkConfig"] = {
+                "DHCP": "ipv4",
+                "IPv6AcceptRA": False,
+                "LinkLocalAddressing": "ipv6",
+            }
+            entry["routes"] = [{"Destination": "::/0", "Gateway": "fe80::1", "GatewayOnLink": True}]
+        else:
+            entry["networkConfig"] = {
                 "Address": [
                     f"{a['local']}/{a['prefixlen']}"
                     for a in nic["addr_info"]
                     if a["scope"] == "global"
                 ]
-            },
-        }
-        if args.platform == "hcloud":
-            # Hetzner Cloud routes IPv4 through an on-link /32 gateway and IPv6
-            # through fe80::1; both are proposals for explicit review.
-            entry["routes"] = [
-                {"Destination": HCLOUD_GATEWAY + "/32", "Scope": "link"},
-                {"Destination": "0.0.0.0/0", "Gateway": HCLOUD_GATEWAY, "GatewayOnLink": True},
-                {"Destination": "::/0", "Gateway": "fe80::1", "GatewayOnLink": True},
-            ]
+            }
         network["10-" + nic["ifname"]] = entry
     candidate: dict[str, object] = {
         "name": safe_name(args.name),
@@ -361,7 +373,12 @@ def discover(args: argparse.Namespace) -> None:
         },
         "git": {"repository": REPOSITORY, "knownHosts": ""},
         "credentials": [],
-        "discovery": {"sourceKey": facts["hostKey"], "routes": facts["routes"]},
+        "discovery": {
+            "sourceKey": facts["hostKey"],
+            "routes": default_routes(facts["routes"])
+            if args.platform == "hcloud"
+            else facts["routes"],
+        },
     }
     write_new(args.output, candidate)
 

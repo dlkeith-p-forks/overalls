@@ -1,9 +1,16 @@
 { config, lib, ... }:
 let
-  publicAddress = "204.168.188.91";
   origin = "notifications.overalls.dev";
 in
 {
+  # The public addresses live only in the host-bound SOPS document; IPv4 comes
+  # up by DHCP, so the base system and recovery never need the secret.
+  overalls.publicAddress = {
+    enable = true;
+    encryptedFile = "${../../../secrets/salopettes-address.enc.json}";
+    network = "10-uplink";
+  };
+
   # Discovery ran under Ubuntu's eth0 name; installed NixOS names it enp1s0.
   services.overallsFleetExporter.externalInterfaces = lib.mkForce [ "enp1s0" ];
 
@@ -45,7 +52,6 @@ in
     virtualHosts.${origin} = {
       enableACME = true;
       forceSSL = true;
-      listenAddresses = [ publicAddress ];
       extraConfig = ''
         access_log off;
         client_max_body_size 4k;
@@ -58,11 +64,18 @@ in
     defaults.email = "noreply@ghuntley.dev";
   };
 
+  # The listener binds every address; the firewall admits it only at the
+  # SOPS-delivered IPv4 address.
   overalls.fleetFirewall.publicServices.susan = {
-    address = publicAddress;
+    addressFile = config.overalls.publicAddress.ipv4File;
+    addressUnit = config.overalls.publicAddress.unit;
     tcpPorts = [ 80 443 ];
     comment = "Susan push relay HTTPS and ACME";
   };
+
+  # Like the other fleet hosts, salopettes offers a Tailscale exit node; joining
+  # the tailnet and approving the route stay explicit operator actions.
+  overalls.tailscale.exitNode = true;
 
   # Susan is small; keep store reclamation bounded for the 150 GiB root.
   services.overallsNixGc = {
