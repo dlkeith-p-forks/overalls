@@ -69,6 +69,27 @@ defmodule Marshall.Agents.ModelProtocol do
         "required" => ["url"],
         "additionalProperties" => false
       }
+    },
+    %{
+      "type" => "function",
+      "name" => "thread",
+      "description" => "Search or read authorized threads and manage bounded subscriptions.",
+      "parameters" => %{
+        "type" => "object",
+        "properties" => %{
+          "operation" => %{
+            "type" => "string",
+            "enum" => ["search", "read", "subscribe", "replay"]
+          },
+          "thread_id" => %{"type" => "string"},
+          "query" => %{"type" => "string"},
+          "cursor" => %{"type" => "string"},
+          "limit" => %{"type" => "integer", "minimum" => 1, "maximum" => 100},
+          "active" => %{"type" => "boolean"}
+        },
+        "required" => ["operation"],
+        "additionalProperties" => false
+      }
     }
   ]
 
@@ -86,6 +107,7 @@ defmodule Marshall.Agents.ModelProtocol do
             | :spawn_child_agent
             | :web_search
             | :web_fetch
+            | :thread
             | :request_user_input,
           arguments: map()
         }
@@ -429,6 +451,7 @@ defmodule Marshall.Agents.ModelProtocol do
   defp tool_name("spawn_child_agent"), do: {:ok, :spawn_child_agent}
   defp tool_name("web_search"), do: {:ok, :web_search}
   defp tool_name("web_fetch"), do: {:ok, :web_fetch}
+  defp tool_name("thread"), do: {:ok, :thread}
   defp tool_name("request_user_input"), do: {:ok, :request_user_input}
   defp tool_name(_), do: {:error, :invalid_response}
 
@@ -466,7 +489,33 @@ defmodule Marshall.Agents.ModelProtocol do
       Map.keys(arguments) == ["questions"] and
         match?({:ok, _}, Planning.validate_questions(questions))
 
+  defp valid_arguments?(:thread, %{"operation" => operation} = arguments)
+       when operation in ["search", "read", "subscribe", "replay"] do
+    Map.keys(arguments) -- ~w(operation thread_id query cursor limit active) == [] and
+      valid_thread_operation?(operation, arguments)
+  end
+
+  defp valid_arguments?(:thread, _), do: false
   defp valid_arguments?(_, _), do: false
+
+  defp valid_thread_operation?("search", arguments) do
+    optional_text?(arguments, "query", 256) and limit?(arguments) and cursor?(arguments)
+  end
+
+  defp valid_thread_operation?(operation, arguments) when operation in ["read", "replay"] do
+    uuid?(arguments["thread_id"]) and limit?(arguments) and cursor?(arguments)
+  end
+
+  defp valid_thread_operation?("subscribe", arguments),
+    do: uuid?(arguments["thread_id"]) and is_boolean(Map.get(arguments, "active", true))
+
+  defp uuid?(value), do: is_binary(value) and Ecto.UUID.cast(value) != :error
+
+  defp optional_text?(args, key, max),
+    do: not Map.has_key?(args, key) or (is_binary(args[key]) and byte_size(args[key]) in 1..max)
+
+  defp limit?(args), do: not Map.has_key?(args, "limit") or args["limit"] in 1..100
+  defp cursor?(args), do: not Map.has_key?(args, "cursor") or is_binary(args["cursor"])
 
   defp control_tools(options) do
     if Keyword.get(options, :collaboration_mode, :work) == :plan and

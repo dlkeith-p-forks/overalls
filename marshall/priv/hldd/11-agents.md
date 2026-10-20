@@ -513,3 +513,10 @@ service, private Git credential flow or plugin marketplace is introduced.
 ## Commit attribution
 
 Marshall supplies a current trusted developer instruction selected by the stable thread configuration owner. Attribution defaults on and requests exactly one Co-authored-by: Overalls <noreply@overalls.dev> trailer while preserving other trailers. Disabling attribution supersedes earlier attribution instructions. Existing commits are not rewritten. This instructional policy does not intercept Git or guarantee model compliance.
+# Thread tool and profile boards
+
+Marshall exposes typed `thread` operations for authorized metadata search,
+bounded reads, subscriptions and cursor replay. Profile message boards retain
+machine and thread tags; links resolve through the existing thread
+authorization boundary. A machine reaching the paused, stopped or deleted
+state-machine state purges tagged history and records a redacted replay event.

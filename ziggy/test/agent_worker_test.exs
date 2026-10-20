@@ -57,6 +57,29 @@ defmodule Ziggy.AgentWorkerTest do
     end
   end
 
+  defmodule TransportClosingFinch do
+    @spec stream_while(
+            term(),
+            term(),
+            map(),
+            (term(), map() -> {:cont, map()} | {:halt, map()}),
+            keyword()
+          ) ::
+            {:error, term(), map()}
+    def stream_while(_request, _finch, state, callback, _options) do
+      {:cont, state} = callback.({:status, 200}, state)
+      {:cont, state} = callback.({:headers, [{"content-type", "text/event-stream"}]}, state)
+      response = %{"status" => "completed", "output" => [%{"type" => "message"}]}
+
+      chunk =
+        "data: " <>
+          Jason.encode!(%{"type" => "response.completed", "response" => response}) <> "\n\n"
+
+      {:cont, state} = callback.({:data, chunk}, state)
+      {:error, :closed, state}
+    end
+  end
+
   setup do
     dir = Path.join(System.tmp_dir!(), "ziggy-agent-worker-#{System.unique_integer([:positive])}")
     File.mkdir!(dir)
@@ -151,6 +174,15 @@ defmodule Ziggy.AgentWorkerTest do
 
     assert [%{"completion" => %{"tokens" => %{}, "completeness" => "unknown"}}] =
              Ziggy.Spool.pending(Ziggy.Spool)
+  end
+
+  test "a transport close after a completed SSE response preserves the response" do
+    config =
+      configuration(200, "application/json", "{}")
+      |> Map.put(:finch_module, TransportClosingFinch)
+
+    assert :completed = Ziggy.AgentWorker.execute(config, work(request()))
+    assert_receive {:delivered, %{"response" => %{"status" => "completed"}}}
   end
 
   test "chat admission retains chat operation accounting" do

@@ -1,0 +1,11 @@
+@cc [owner:ghuntley,label:durability] message-board-profile-uniqueness
+Each user MUST have at most one message board per supported machine profile.
+Board creation MUST be idempotent under concurrent retries.
+
+@cc [owner:ghuntley,label:durability] message-board-request-idempotency
+Posting with the same author, profile and request key MUST return the original
+post when the body matches and MUST reject a conflicting body.
+
+@cc [owner:ghuntley,label:recovery] message-board-machine-purge
+Stopping or suspending a machine MUST remove every post tagged with that VM,
+including posts created by machines admitted outside Threads.

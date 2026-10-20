@@ -51,6 +51,7 @@ defmodule Marshall.Compute.VirtualMachine do
   # Deleted intent MUST NOT return to running, paused or stopped. Observations remain
   # separate authenticated facts; a state transition alone cannot release holds.
   state_machine do
+    # Board retention follows durable lifecycle states; terminal transitions purge posts.
     state_attribute :desired_state
     initial_states [:running]
     default_initial_state :running
@@ -357,6 +358,7 @@ defmodule Marshall.Compute.VirtualMachine do
     update :request_pause do
       accept [:generation, :crash_restart_times]
       change transition_state(:paused)
+      change Marshall.Compute.MessageBoardCleanup
     end
 
     update :idle_policy do
@@ -374,11 +376,13 @@ defmodule Marshall.Compute.VirtualMachine do
     update :request_stop do
       accept [:generation, :crash_restart_times]
       change transition_state(:stopped)
+      change Marshall.Compute.MessageBoardCleanup
     end
 
     update :request_delete do
       accept [:generation, :crash_restart_times]
       change transition_state(:deleted)
+      change Marshall.Compute.MessageBoardCleanup
     end
 
     update :apply_resize do

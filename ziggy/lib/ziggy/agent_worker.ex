@@ -102,6 +102,7 @@ defmodule Ziggy.AgentWorker do
             [],
             &consume/1,
             finch: Ziggy.Finch,
+            finch_module: Map.get(config, :finch_module, Finch),
             request_id: id,
             openai_origin: config.openai_origin
           )
@@ -254,8 +255,11 @@ defmodule Ziggy.AgentWorker do
   @spec terminal_response(Ziggy.Upstream.result(), binary(), Ziggy.AgentStream.t() | nil) :: map()
   defp terminal_response(%{outcome: :cancelled}, _, _), do: %{"error" => "cancelled"}
 
+  # @cc [owner:ghuntley,label:recovery] completed-response-survives-transport-close
+  # A provider transport close after a valid terminal response MUST preserve that
+  # response. Incomplete streams still fail closed through `AgentStream.finish/1`.
   defp terminal_response(%{outcome: outcome}, _, _)
-       when outcome not in [:completed, :upstream_error],
+       when outcome not in [:completed, :upstream_error, :transport_error],
        do: %{"error" => "upstream_failed"}
 
   defp terminal_response(%{status: status}, _, %Ziggy.AgentStream{} = stream) do

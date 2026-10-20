@@ -63,23 +63,36 @@ defmodule Marshall.Compute.Idle do
   # replace unresolved execution, resize, clone, relocation or wake work.
   @spec suspend(String.t()) :: {:ok, :paused | :deferred} | {:error, term()}
   def suspend(vm_id) do
-    Ledger.transaction(fn ->
-      case Ledger.read!(VirtualMachine, id: vm_id) do
-        [] ->
-          :deferred
-
-        [candidate] ->
-          host = Ledger.lock!(Host, candidate.host_id)
-          vm = Ledger.lock!(VirtualMachine, vm_id)
-
-          if vm && host && vm.host_id == host.id && eligible?(vm, Ledger.now()) do
-            Lifecycle.pause_idle_locked!(vm, host)
-            :paused
-          else
+    result =
+      Ledger.transaction(fn ->
+        case Ledger.read!(VirtualMachine, id: vm_id) do
+          [] ->
             :deferred
-          end
-      end
-    end)
+
+          [candidate] ->
+            host = Ledger.lock!(Host, candidate.host_id)
+            vm = Ledger.lock!(VirtualMachine, vm_id)
+
+            if vm && host && vm.host_id == host.id && eligible?(vm, Ledger.now()) do
+              Lifecycle.pause_idle_locked!(vm, host)
+              :paused
+            else
+              :deferred
+            end
+        end
+      end)
+
+    case result do
+      {:ok, :paused} ->
+        # A suspended machine cannot receive board notifications. Cleanup is
+        # idempotent and deliberately happens after the lifecycle intent is
+        # durable, so retries cannot resurrect stale entries.
+        Marshall.MessageBoards.purge_for_state!(vm_id, :paused)
+        result
+
+      _ ->
+        result
+    end
   end
 
   @spec eligible?(VirtualMachine.t(), DateTime.t()) :: boolean()

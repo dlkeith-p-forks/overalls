@@ -615,3 +615,8 @@ Cross-host clone copies carry no checkpoint and pull no RAM
 prepare step reports its own closed reason instead of one generic refusal.
 These are BEAM unit results; the composed `porsche-fleet` relocate and clone
 journey is the native evidence.
+# Agent history cleanup
+
+VM pause, stop and delete state-machine transitions remove machine-tagged
+message-board history after the durable transition. Cleanup records identifiers
+and counts for authorized thread subscribers; message content is never emitted.

@@ -47,7 +47,9 @@ defmodule Ziggy.Upstream do
     true = is_binary(request_id)
     callback = fn event, state -> receive_event(event, state, route.provider, consume) end
 
-    case Finch.stream_while(request, finch, initial, callback,
+    finch_module = Keyword.get(options, :finch_module, Finch)
+
+    case finch_module.stream_while(request, finch, initial, callback,
            pool_timeout: 5000,
            receive_timeout: 30_000,
            request_timeout: :infinity

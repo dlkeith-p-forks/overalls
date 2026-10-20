@@ -245,6 +245,7 @@ defmodule Marshall.Compute.Outcomes do
         end
 
         complete!(operation, outcome)
+        Ledger.after_commit(fn -> Marshall.MessageBoards.purge_for_state!(vm.id, :paused) end)
         []
 
       {:paused, :pause, :failed} ->
@@ -256,6 +257,7 @@ defmodule Marshall.Compute.Outcomes do
         Ledger.update!(reservation, :release_checkpoint, %{})
         unless relocating, do: Ledger.update!(reservation, :release_compute, %{})
         complete!(operation, outcome)
+        Ledger.after_commit(fn -> Marshall.MessageBoards.purge_for_state!(vm.id, :stopped) end)
         []
 
       {:deleted, :delete, :deleted} ->

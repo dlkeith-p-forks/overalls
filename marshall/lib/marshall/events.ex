@@ -1286,4 +1286,9 @@ defmodule Marshall.Events do
     message: "SCIM user retirement step failed and will be retried",
     metadata: [user_id: :uuid, reason: :atom]
   )
+
+  defevent("agent.message_board_machine_purged",
+    message: "Machine message-board history purged",
+    metadata: [vm_id: :uuid, state: :atom, purged_count: :int]
+  )
 end

@@ -112,6 +112,7 @@ defmodule MarshallWeb.Router do
       live "/admin/operations", Admin.OperationsLive, :index
       live "/admin/scim", Admin.ScimLive, :index
       live "/usage", InferenceLive, :index
+      live "/message-board", MessageBoardLive, :index
       live "/integrations", IntegrationsLive, :index
       live "/git", GitLive, :index
       live "/git/github/:owner/:repo", GitLive, :show

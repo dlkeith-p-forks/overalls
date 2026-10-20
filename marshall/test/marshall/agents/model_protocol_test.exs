@@ -287,4 +287,22 @@ defmodule Marshall.Agents.ModelProtocolTest do
                child?: true
              )
   end
+
+  test "accepts bounded typed thread operations" do
+    response = %{
+      "status" => "completed",
+      "output" => [
+        %{
+          "type" => "function_call",
+          "call_id" => "thread-1",
+          "name" => "thread",
+          "arguments" =>
+            Jason.encode!(%{"operation" => "search", "query" => "build", "limit" => 10})
+        }
+      ]
+    }
+
+    assert {:ok, {:tools, [%{tool: :thread, arguments: %{"operation" => "search"}}]}} =
+             ModelProtocol.parse_response(response, :standard)
+  end
 end
