@@ -1,6 +1,6 @@
 ---
-digest: 8e2c349f731293e64dc8a42f661202e2c24cb6cfd4a217f440f8d3f83737aab5
-disposition: updated
+digest: 11893583ab1f057ca41b61fa29bc53931f7b5997320efd064082d67870c58f37
+disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
 path: docs/architecture/reviews/2026-10-20-hldd-independent-reviews.md
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-Reviewed and documented catch-all deletion review for chapters after their last mapping is removed, while preserving refusal of still-mapped missing chapters. The final merged-tree run passes all 33 HLDD regressions, including this edge case; workflow, contract and evidence records agree with chapter 17.
+Recorded the rejected stale upstream legacy manifest and explicit review of the three incoming source changes. This preserves the migration refusal guarantee and existing evidence boundaries.

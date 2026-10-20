@@ -375,6 +375,9 @@ portable boot bundle. This changes image identity without removing guest tools
 or kernel features. Real-kernel load-image comparison has passed; native boot
 acceptance for this change is still pending.
 
+The default NixOS guest package list declares both Git and the GitHub CLI (`gh`);
+see the [guest configuration](repo:nix/domains/artifacts/guest/configuration.nix).
+
 For NixOS customization, pass `extraModules` to the guest builder and select
 packages with `environment.systemPackages`. For Ubuntu, use `lib.mkUbuntuGuest`
 with `imageName`, `packages`, `packageLock`, optional public CA certificates, and

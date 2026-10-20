@@ -11,20 +11,19 @@ defmodule Marshall.Redaction.Coordinator do
   def perform(%Oban.Job{args: %{"run_id" => run_id}}) do
     with {:ok, run} <- Ash.get(Run, run_id, actor: Marshall.Authorization.SystemActor.compute()),
          :ok <- ensure_running(run),
-         {:ok, processed, has_more?} <- process_batch(run) do
+         {:ok, _processed, has_more?} <- process_batch(run) do
       if has_more? do
         _ = %{run_id: run_id} |> new() |> Oban.insert()
       else
         _ =
           Ash.update(
             run,
-            :complete,
             %{
               processed: run.processed,
               changed: run.changed,
               skipped: run.skipped,
               failed: run.failed
-            }, actor: Marshall.Authorization.SystemActor.compute())
+            }, action: :complete, actor: Marshall.Authorization.SystemActor.compute())
       end
 
       :ok
@@ -34,7 +33,7 @@ defmodule Marshall.Redaction.Coordinator do
   def perform(%Oban.Job{}), do: {:error, :invalid_arguments}
 
   defp ensure_running(%Run{state: :queued} = run) do
-    case Ash.update(run, :start, %{}, actor: Marshall.Authorization.SystemActor.compute()) do
+    case Ash.update(run, %{}, action: :start, actor: Marshall.Authorization.SystemActor.compute()) do
       {:ok, _} -> :ok
       error -> error
     end
@@ -119,13 +118,12 @@ defmodule Marshall.Redaction.Coordinator do
     _ =
       Ash.update(
         run,
-        :progress,
         %{
           processed: run.processed + processed,
           changed: run.changed + changed,
           skipped: 0,
           failed: 0
-        }, actor: Marshall.Authorization.SystemActor.compute())
+        }, action: :progress, actor: Marshall.Authorization.SystemActor.compute())
 
     {:ok, processed, more_rows?(run.profile_digest)}
   end

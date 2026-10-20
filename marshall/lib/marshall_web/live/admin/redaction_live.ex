@@ -29,7 +29,7 @@ defmodule MarshallWeb.Admin.RedactionLive do
 
   def handle_event(action, %{"id" => id}, socket) when action in ["pause", "resume", "cancel"] do
     with {:ok, run} <- Ash.get(Marshall.Redaction.Run, id, actor: Marshall.Authorization.SystemActor.compute()),
-         {:ok, _} <- Ash.update(run, String.to_existing_atom(action), %{}, actor: Marshall.Authorization.SystemActor.compute()) do
+         {:ok, _} <- Ash.update(run, %{}, action: String.to_existing_atom(action), actor: Marshall.Authorization.SystemActor.compute()) do
       {:noreply, socket |> put_flash(:info, dgettext("admin_audit", "Redaction run updated.")) |> refresh()}
     else
       _ -> {:noreply, put_flash(socket, :error, dgettext("admin_audit", "The redaction run could not be updated."))}

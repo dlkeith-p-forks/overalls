@@ -78,3 +78,10 @@ merged tree. The combined architecture review index received its own explicit
 review. The removed aggregate manifest was not restored, and unrelated current
 receipts were not rewritten. This transfers existing evidence without claiming
 new execution of the upstream redaction or native-client features.
+
+A second upstream merge, `eab8baf0`, added three source changes. Its legacy system
+receipt was stale, so the migration correctly refused to transfer any evidence.
+Those three diffs were reviewed explicitly instead: two files correct Ash update
+argument shapes without changing documented redaction authority; the NixOS guest
+package list adds `gh`, now documented as a declaration in chapter 07. No claim
+of rebuilt or deployed guest images was added. Unrelated receipts stayed current.

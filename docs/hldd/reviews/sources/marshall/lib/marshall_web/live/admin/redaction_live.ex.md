@@ -1,12 +1,8 @@
 ---
-digest: ee91f9ca3bed969842544959751d50a1a78bf438c3cac05e04ffe2f32a0c0da5
+digest: 213d9b67f7784fece4cb1b9ea43bd6f6387c8f05ba495fc74a0d7e8be10c43c7
 disposition: no-impact
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
-migration:
-  marshall:
-    chapter_digest: e2d0b2a88a96457b192f28966923a0d5aef7690102833313b039acbe392a786b
-    source_digest: c91e1c283771b3bd85228b0767787fd552c5b4327efb2fb6438d4c86250d2cf2
 path: marshall/lib/marshall_web/live/admin/redaction_live.ex
 reviewed_chapters:
   marshall/priv/hldd/02-control-plane.md: 8398bc3791875b6bc8cf22b6602a6efccb886c001a0f78d5a1500a3f5707ff3d
@@ -16,8 +12,8 @@ reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
   marshall/priv/hldd/11-agents.md: 583a34e60b6968f2e8e49141feed2e653b46074be845a1c918a1908e19fa04a4
   marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
-  marshall/priv/hldd/17-reference.md: 5513e1fb7deb5378fef4713fb925a9d0c0f2b1bc2539548d98e72c856262e897
-  marshall/priv/hldd/19-coverage.md: 5dc84656f2a81c5674ed8311af44a7f2e9c33262d36f624e11f8ba378a32db61
+  marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
+  marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
   marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
   marshall/priv/hldd/21-domains.md: 68866597842c524f9f563a37b978a4464974ca2b21a486c94f60ecd1edd6b2da
   marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
@@ -25,4 +21,4 @@ state: present
 version: 2
 ---
 
-marshall: Reviewed concurrent native migration and FFI changes; no chapter update required for this group.
+Reviewed the two upstream redaction fixes: Ash.update receives attributes as argument two and the named action as an option; the actor and allowed actions are unchanged. These repair existing documented workflow calls without changing its authority or evidence claims.
