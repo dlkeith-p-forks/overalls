@@ -36,9 +36,10 @@ internal static class MilaRouteParser
 internal enum MilaNativeStatus : int
 {
     Ok = 0,
-    InvalidArgument = 1,
-    NativeFailure = 2,
-    Unavailable = -1,
+    NullInput = -1,
+    InvalidRoute = -2,
+    OutputTooSmall = -3,
+    Unavailable = -127,
 }
 
 /// <summary>
@@ -102,7 +103,7 @@ internal static partial class RustNative
         }
     }
 
-    [LibraryImport(LibraryName, EntryPoint = "mila_native_version")]
+    [LibraryImport(LibraryName, EntryPoint = "mila_ffi_get_version")]
     private static partial MilaNativeStatus GetVersionNative(
         out MilaNativeVersion version);
 }
