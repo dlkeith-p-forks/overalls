@@ -1,7 +1,7 @@
 defmodule Marshall.Agents.ThreadToolWorker do
   @moduledoc "Executes server-owned typed thread tool commands."
   use GenServer
-  alias Marshall.Agents.{Command, ThreadTool, Turn}
+  alias Marshall.Agents.{AttachmentTool, Command, ThreadTool, Turn}
   alias Marshall.Compute.Ledger
 
   @poll_ms 500
@@ -78,6 +78,13 @@ defmodule Marshall.Agents.ThreadToolWorker do
          Map.get(args, "cursor", 0),
          Map.get(args, "limit", 100)
        )}
+
+  defp dispatch(owner_id, %{"operation" => "upload", "thread_id" => thread_id} = args),
+    do: AttachmentTool.upload(owner_id, thread_id, args)
+
+  defp dispatch(owner_id, %{"operation" => "download", "attachment_id" => attachment_id}),
+    do: AttachmentTool.download(owner_id, attachment_id)
+
 
   defp dispatch(_, _), do: {:error, :invalid_operation}
 end

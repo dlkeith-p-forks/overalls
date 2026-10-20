@@ -1,5 +1,15 @@
 # Agent threads and tools
 
+## Thread attachments
+
+Attachments belong to a user thread and use current thread Cedar authorization.
+PostgreSQL stores opaque metadata and lifecycle state while encrypted content is
+kept behind a storage adapter. Uploads return metadata and an attachment ID;
+downloads stream through a short-lived capability outside model context. Machine
+stop and suspension remove message-board posts without removing attachments.
+Archived threads retain authorized access; deletion drives quarantine and purge
+with identifier-only audit receipts.
+
 ## Thread machine suspension
 
 New `/threads`/Orb provisioning enables a fixed four-hour idle policy. The clock

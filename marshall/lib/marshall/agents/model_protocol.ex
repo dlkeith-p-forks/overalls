@@ -90,6 +90,25 @@ defmodule Marshall.Agents.ModelProtocol do
         "required" => ["operation"],
         "additionalProperties" => false
       }
+    },
+    %{
+      "type" => "function",
+      "name" => "attachment",
+      "description" => "Upload, authorize, or resolve a thread-owned attachment without placing bytes in context.",
+      "parameters" => %{
+        "type" => "object",
+        "properties" => %{
+          "operation" => %{"type" => "string", "enum" => ["upload", "download"]},
+          "thread_id" => %{"type" => "string"},
+          "attachment_id" => %{"type" => "string"},
+          "idempotency_key" => %{"type" => "string"},
+          "content_base64" => %{"type" => "string", "maxLength" => 13981016},
+          "media_type" => %{"type" => "string"},
+          "display_name" => %{"type" => "string"}
+        },
+        "required" => ["operation"],
+        "additionalProperties" => false
+      }
     }
   ]
 
@@ -108,6 +127,7 @@ defmodule Marshall.Agents.ModelProtocol do
             | :web_search
             | :web_fetch
             | :thread
+            | :attachment
             | :request_user_input,
           arguments: map()
         }
@@ -452,6 +472,7 @@ defmodule Marshall.Agents.ModelProtocol do
   defp tool_name("web_search"), do: {:ok, :web_search}
   defp tool_name("web_fetch"), do: {:ok, :web_fetch}
   defp tool_name("thread"), do: {:ok, :thread}
+  defp tool_name("attachment"), do: {:ok, :attachment}
   defp tool_name("request_user_input"), do: {:ok, :request_user_input}
   defp tool_name(_), do: {:error, :invalid_response}
 
@@ -496,6 +517,16 @@ defmodule Marshall.Agents.ModelProtocol do
   end
 
   defp valid_arguments?(:thread, _), do: false
+
+  defp valid_arguments?(:attachment, %{"operation" => "upload", "thread_id" => thread_id, "idempotency_key" => key, "content_base64" => content} = args) do
+    uuid?(thread_id) and is_binary(key) and byte_size(key) in 1..128 and is_binary(content) and byte_size(content) <= 13_981_016 and Map.keys(args) -- ~w(operation thread_id idempotency_key content_base64 media_type display_name) == []
+  end
+
+  defp valid_arguments?(:attachment, %{"operation" => "download", "attachment_id" => attachment_id} = args),
+    do: uuid?(attachment_id) and Map.keys(args) == ["operation", "attachment_id"]
+
+
+  defp valid_arguments?(:attachment, _), do: false
   defp valid_arguments?(_, _), do: false
 
   defp valid_thread_operation?("search", arguments) do

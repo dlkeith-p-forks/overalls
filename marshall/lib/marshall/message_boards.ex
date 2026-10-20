@@ -2,6 +2,7 @@ defmodule Marshall.MessageBoards do
   @moduledoc "User/profile message boards with machine-scoped cleanup."
   import Ecto.Query
   alias Marshall.Repo
+  require Marshall.Events
 
   require Marshall.Events
 

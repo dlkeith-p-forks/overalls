@@ -143,6 +143,11 @@ in
 
   # https://devenv.sh/basics/
   enterShell = ''
+    # Release derivations deliberately build Cedar from vendored inputs offline;
+    # the interactive development shell may fetch the pinned crate when its
+    # cache is cold so local compilation is reproducible instead of failing on
+    # an unrelated missing Cargo cache entry.
+    export CARGO_NET_OFFLINE=false
     hello         # Run scripts directly
     git --version # Use packages
   '';

@@ -108,6 +108,11 @@ defmodule Marshall.Events do
     metadata: [thread_id: :uuid, reason: :atom]
   )
 
+  defevent("attachment.operation",
+    message: "Thread attachment operation completed",
+    metadata: [attachment_id: :uuid, thread_id: :uuid, operation: :atom, outcome: :atom]
+  )
+
   defevent("agent.child_created",
     message: "Agent child thread created",
     metadata: [vm_id: :uuid, thread_id: :uuid, parent_thread_id: :uuid]

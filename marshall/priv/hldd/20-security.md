@@ -1,5 +1,13 @@
 # Security boundaries and sensitive operations
 
+## Attachment storage and access
+
+Every attachment operation checks identity and current thread authority. Opaque
+IDs and content-addressed keys prevent user-selected paths. Bytes are encrypted
+at rest and excluded from model context and diagnostic events. Revoked readers
+and stale capabilities fail closed; lifecycle and cleanup emit redacted audit
+receipts. Malware scanning and cross-host blob recovery remain gaps.
+
 ## Memory suspension and wake authority
 
 Suspension adds sensitive RAM storage and continuation authority. Checkpoint

@@ -185,6 +185,29 @@ defmodule Marshall.Agents.ModelProtocolTest do
     assert {:error, :invalid_response} = ModelProtocol.parse_response(forged, :standard)
   end
 
+  test "attachment tool accepts typed upload and download calls" do
+    response = %{
+      "status" => "completed",
+      "output" => [
+        %{
+          "type" => "function_call",
+          "call_id" => "attachment-1",
+          "name" => "attachment",
+          "arguments" => Jason.encode!(%{
+            "operation" => "upload",
+            "thread_id" => Ecto.UUID.generate(),
+            "idempotency_key" => "upload-1",
+            "content_base64" => Base.encode64("hello"),
+            "media_type" => "text/plain"
+          })
+        }
+      ]
+    }
+
+    assert {:ok, {:tools, [%{tool: :attachment}]}} =
+             ModelProtocol.parse_response(response, :standard)
+  end
+
   test "projection preserves all events before compaction evaluates the request" do
     events =
       Enum.map(1..300, fn sequence ->

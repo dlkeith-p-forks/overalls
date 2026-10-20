@@ -3,10 +3,10 @@ defmodule Marshall.Agents.Capabilities do
 
   @type profile :: :oss | :standard | :inception | :customer
   @type tool ::
-          :exec_command | :read_file | :spawn_child_agent | :web_search | :web_fetch | :thread
+          :exec_command | :read_file | :spawn_child_agent | :web_search | :web_fetch | :thread | :attachment
 
-  @all_tools [:exec_command, :read_file, :spawn_child_agent, :web_search, :web_fetch, :thread]
-  @standard_tools [:exec_command, :read_file, :web_search, :web_fetch, :thread]
+  @all_tools [:exec_command, :read_file, :spawn_child_agent, :web_search, :web_fetch, :thread, :attachment]
+  @standard_tools [:exec_command, :read_file, :web_search, :web_fetch, :thread, :attachment]
 
   # @cc [owner:ghuntley,label:security] agent-profile-tool-policy
   # The persisted VM profile alone selects model tools. Unknown profiles and

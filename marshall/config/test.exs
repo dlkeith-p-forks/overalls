@@ -13,22 +13,25 @@ config :ash, policies: [show_policy_breakdowns?: true], disable_async?: true
 # Run `mix help test` for more information.
 transport =
   case System.get_env("PGHOST") do
-    socket when is_binary(socket) and socket != "" ->
-      [socket_dir: socket, username: System.get_env("PGUSER", System.get_env("USER"))]
+    socket when is_binary(socket) ->
+      if String.starts_with?(socket, "/"),
+        do: [socket_dir: socket, username: System.get_env("PGUSER", System.get_env("USER"))],
+        else: [hostname: socket, username: System.get_env("PGUSER", System.get_env("USER"))]
 
-    _ ->
-      [hostname: "localhost", username: "postgres"]
+    _ -> [hostname: "localhost", username: "postgres"]
   end
 
 config :marshall,
        Marshall.Repo,
        [
-         password: "postgres",
+         password: System.get_env("PGPASSWORD", "postgres"),
+         maintenance_database: System.get_env("MARSHALL_MAINTENANCE_DATABASE", "postgres"),
+         ssl: if(System.get_env("PGSSLMODE") == "require", do: [verify: :verify_none], else: false),
          port:
            String.to_integer(
              System.get_env("MARSHALL_TEST_PORT", System.get_env("PGPORT", "5432"))
            ),
-         database: "marshall_test#{System.get_env("MIX_TEST_PARTITION")}",
+         database: System.get_env("MARSHALL_TEST_DATABASE", "marshall_test#{System.get_env("MIX_TEST_PARTITION")}"),
          pool: Ecto.Adapters.SQL.Sandbox,
          pool_size: System.schedulers_online() * 2
        ] ++ transport

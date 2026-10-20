@@ -75,6 +75,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
     Marshall.Agents.SkillInstallation => [:read, :register, :publish, :configure, :fail],
     Marshall.Agents.SkillRevision => [:read, :record],
     Marshall.Agents.SkillOperation => [:read, :record, :dispatch, :finish],
+    Marshall.Agents.Attachment => [:read, :create_pending, :begin_upload, :publish, :quarantine, :fail, :begin_delete, :finish_delete],
     Marshall.Threads.Thread => [
       :read,
       :history,

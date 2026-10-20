@@ -31,5 +31,6 @@ defmodule Marshall.Agents do
     resource Marshall.Agents.SkillInstallation
     resource Marshall.Agents.SkillRevision
     resource Marshall.Agents.SkillOperation
+    resource Marshall.Agents.Attachment
   end
 end
