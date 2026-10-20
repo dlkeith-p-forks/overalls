@@ -275,7 +275,10 @@ in
     # 96 GiB: the Linux templates plus the 64 GiB Windows disk (ADR-0173).
     imageTemplates.budgetBytes = 96 * 1024 * 1024 * 1024;
     controlPlaneCAFile = "/etc/overalls/service-ca.crt";
-    protectedCidrs = [ "136.243.69.55/32" "136.243.69.37/32" ];
+    # The host's own addresses arrive at runtime (ADR-0233); the effective
+    # protected set, and so Lilly's network claim, is unchanged.
+    protectedAddressFiles = [ addresses.files.overallsPrimary addresses.files.overallsService ];
+    protectedAddressUnits = [ addresses.unit ];
     ingress.enable = true;
   };
 

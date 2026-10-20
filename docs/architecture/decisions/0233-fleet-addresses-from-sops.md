@@ -171,8 +171,12 @@ it is offline.
   [`fleet-network`](../../../nix/verification/tests/machines/fleet-network/default.nix),
   [`fleet-firewall`](../../../nix/verification/tests/evaluation/fleet-firewall.nix) and
   [`host-planning`](../../../nix/verification/tests/evaluation/host-planning.py).
-- Remaining gaps: the dedicated hosts' literals are removed in later stages;
-  deployment evidence (the WireGuard handshake with salopettes, Susan health
+- Host declarations: [Overalls](../../../fleet/hosts/overalls/host.json) and
+  [Dungarees](../../../fleet/hosts/dungarees/host.json) carry no address
+  literals; both hosts' Lilly protected networks are runtime files
+  ([Overalls](../../../fleet/hosts/overalls/services.nix),
+  [Dungarees](../../../fleet/hosts/dungarees/configuration.nix)).
+- Remaining gaps: deployment evidence (the WireGuard handshake with salopettes, Susan health
   over `fleet0`, runtime chains, binds and the recovery copy) is recorded as
   each stage reaches the hosts. No machine test starts Porsche, Audi, HAProxy
   or Lilly with a runtime address.

@@ -141,14 +141,46 @@ returns.
 - Recorded run: `enrollment-preparation` **passed** (12 tests, including the
   transfer address from the fleet document and its refusals).
 
+## Stages C and D (Overalls declaration, Lilly protected networks)
+
+The operator asked for the remaining stages at once. Overalls' declaration
+loses its address literals the same way as Dungarees', with `/32` routes to
+both Dungarees addresses and the transfer endpoint named by
+`OVERALLS_PRIMARY_IPV4`. A drop-in rendered from the private values reproduces
+the five literal routes and both addresses exactly.
+
+Lilly's protected networks on both hosts become `protectedAddressFiles` from
+the fleet address bundle, with `protectedAddressUnits` naming its unit. The
+evaluated `protectedCidrs` keep only the fleet overlay, and the effective set
+equals the literal set it replaces, so Lilly's network claim is unchanged.
+
+The updater compares the raw binding while a protected file is unreadable, and
+Overalls has not activated stage A. Before pushing, the operator session seeded
+on Overalls, as root and with the bundle's modes (0700 directory, 0600 files):
+
+- the two protected-address files under
+  `/run/overalls-secrets/fleet-addresses/`, so preflight sees the equal set;
+- the uplink recovery copy `/var/lib/overalls-host/uplink.conf`, rendered from
+  the private values and identical to the literal routes, so the first
+  activation cannot strand the host if the document fails to decrypt.
+
+The seeded `/run` files do not survive a reboot before the update activates;
+they must be seeded again in that case. Dungarees is offline and needs the same
+seeding (its three protected files and recovery copy) before its updater runs,
+or the update is refused (a refusal, not a stranding).
+
+Overalls' stage C toplevel is still blocked by the pre-existing default image
+identity derivation that another session owns, so it activates stages A to D
+together once that is fixed.
+
 ## Follow-up
 
 - Stage A deployment evidence:
   - the WireGuard handshake between Overalls and salopettes;
   - Susan `/healthz` over `fleet0`;
   - runtime chains and binds on Overalls.
-- Later stages:
-  - the uplink drop-in and recovery copy on Overalls and Dungarees;
-  - removing the host declaration literals and Lilly protected literals.
+- Deployment evidence for stages B to D: the uplink drop-in, the recovery
+  copy and Lilly's unchanged claim on Overalls and, when it returns, Dungarees
+  (after seeding).
 - Per-peer fleet port scoping (finding 1).
 - Machine tests that start Porsche, Audi and Lilly with runtime addresses.

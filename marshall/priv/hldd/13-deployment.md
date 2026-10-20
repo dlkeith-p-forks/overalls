@@ -104,7 +104,12 @@ closed. Consumers:
   files; a per-peer unit applies them with `wg set`.
 - **Services.** Porsche, Audi and Audi DNS render their bind into `/run` at
   start; HAProxy and the relay socket bind through a start-time guard; Lilly
-  and Brady append runtime protected `/32` networks.
+  and Brady append runtime protected `/32` networks. The updater compares
+  Lilly's effective protected set, but while a protected file is unreadable it
+  compares the raw binding and refuses the update. A host that has never run
+  the address bundle therefore needs its protected files and uplink recovery
+  copy seeded by an operator (root-only, the bundle's modes) before its first
+  update that moves the literals; Dungarees needs this when it returns.
 
 The `fleet-addresses` and `fleet-network` machine tests cover these paths on
 both firewall backends.
