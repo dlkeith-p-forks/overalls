@@ -299,9 +299,12 @@ let
     done
     touch $out
   '';
+  # Sources, patched dartssh2, fonts, Monocypher and a pinned pub cache for
+  # hosts that build without Nix (ADR-0235).
+  sourceBundle = import ./source-bundle.nix { inherit pkgs source dartssh2 notoFonts version root; };
   # Optional Android APK; a flake package only, never a CI check (ADR-0227).
   android = import ./android.nix { inherit pkgs app; };
 in
 {
-  inherit app linuxDev linuxRelease demo integration probe coreCheck transportCheck toolCheck appCheck lockSync android;
+  inherit app linuxDev linuxRelease sourceBundle demo integration probe coreCheck transportCheck toolCheck appCheck lockSync android;
 }

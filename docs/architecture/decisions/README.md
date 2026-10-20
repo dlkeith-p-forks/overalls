@@ -1,6 +1,26 @@
 # Architecture decision records
 
+[ADR-0246](0246-panterloons-control-plane-deployment.md) runs Panterloons as a
+copy of the Overalls deployment from the same parameterised host roles, with
+fresh secrets and a bootstrap stage before its own Marshall issues credentials.
+
+[ADR-0245](0245-underclass-egress-node-tag.md) makes `underclass-egress up`
+advertise `tag:underclass` so tailnet policy can identify the Underclass
+egress node.
+
+[ADR-0241](0241-sops-tailscale-auto-join.md) delivers a shared Tailscale
+authentication key through SOPS so enrolled hosts join the tailnet
+automatically; base systems still join by explicit operator action.
+
 [ADR-0240](0240-account-machine-creation-presets.md) accepts three account creation presets: launch starts with OSS, machine and thread creation start with Standard (Work), with validated saved image and resource preferences and original-request launch replay. Implementation remains partial pending native and rollout acceptance.
+
+[ADR-0239](0239-salopettes-joins-panterloons-tunnel.md) moves Salopettes into
+the Panterloons tunnel, leaves Overalls alone in its own, and restores the
+wildcard issuer's two-peer minimum.
+
+[ADR-0238](0238-panterloons-deployment-and-per-deployment-tunnels.md) makes
+Panterloons a separate deployment with its own fleet tunnel, moves Dungarees to
+it, and gives fleet telemetry a per-deployment host roster.
 
 [ADR-0237](0237-windows-custodian-same-boot-recovery.md) completes ADR-0208's
 same-boot custodian restart: durable per-boot custodian generations scope jobs,
@@ -8,9 +28,15 @@ pipes and receipts, and a prior lifetime's receipt is retired only after its
 job vanished and no process of the worker's exact account logon session remains,
 terminating only re-verified stragglers. Native execution remains pending.
 
-[ADR-0235](0235-panterloons-deployment-and-per-deployment-tunnels.md) makes
-Panterloons a separate deployment with its own fleet tunnel, moves Dungarees to
-it, and gives fleet telemetry a per-deployment host roster.
+[ADR-0236](0236-susan-wns-provider.md) adds a WNS provider to Susan: Entra ID
+client-credentials tokens, raw notifications, and egress to channel URIs
+confined to `https://*.notify.windows.com:443`, amending ADR-0224's egress
+rule; implementation remains partial.
+
+[ADR-0235](0235-mila-desktop-clients.md) makes Mila a first-class macOS and
+Windows client: a per-platform profile, Secure Enclave or CNG (TPM, else
+software) device keys, owner-only DACL storage, APNs and WNS push, and dev and
+release build targets for every platform; implementation remains partial.
 
 [ADR-0234](0234-installer-source-administrative-grant.md) records the
 authenticated installer's source at installation and admits only it to
@@ -1001,6 +1027,12 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0232](0232-sops-delivered-public-host-addresses.md) | superseded | partial | SOPS-delivered public host addresses |
 | [ADR-0233](0233-fleet-addresses-from-sops.md) | accepted | partial | Fleet addresses from SOPS and the Susan fleet path |
 | [ADR-0234](0234-installer-source-administrative-grant.md) | accepted | partial | Installer source grant for administrative SSH |
-| [ADR-0235](0235-panterloons-deployment-and-per-deployment-tunnels.md) | accepted | partial | Panterloons deployment and per-deployment fleet tunnels |
+| [ADR-0235](0235-mila-desktop-clients.md) | accepted | partial | Mila desktop clients for macOS and Windows |
+| [ADR-0236](0236-susan-wns-provider.md) | accepted | partial | Susan WNS provider and channel-host egress |
 | [ADR-0237](0237-windows-custodian-same-boot-recovery.md) | accepted | partial | Windows custodian same-boot recovery by logon-session quiescence |
+| [ADR-0238](0238-panterloons-deployment-and-per-deployment-tunnels.md) | accepted | partial | Panterloons deployment and per-deployment fleet tunnels |
+| [ADR-0239](0239-salopettes-joins-panterloons-tunnel.md) | accepted | partial | Salopettes joins the Panterloons tunnel |
 | [ADR-0240](0240-account-machine-creation-presets.md) | accepted | partial | Three account machine creation presets |
+| [ADR-0241](0241-sops-tailscale-auto-join.md) | accepted | partial | SOPS-delivered automatic Tailscale joining |
+| [ADR-0245](0245-underclass-egress-node-tag.md) | accepted | partial | Underclass egress node tag |
+| [ADR-0246](0246-panterloons-control-plane-deployment.md) | accepted | partial | Panterloons control-plane deployment |

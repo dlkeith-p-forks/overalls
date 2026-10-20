@@ -5,29 +5,42 @@ import 'package:mila_core/mila_core.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../ui/tokens.dart';
+import '../../ui/widgets.dart';
 import 'machines_controller.dart' show gibibyte;
 
 /// Which form to show.
 enum MachineFormKind { create, clone, resize }
 
-/// What a completed form asks for.
-typedef MachineFormResult = ({String? name, String? source, MachineShape shape});
+/// What a completed form asks for. A null image or team keeps the
+/// deployment's default image and a personal machine.
+typedef MachineFormResult = ({
+  String? name,
+  String? source,
+  String? image,
+  String? team,
+  MachineShape shape,
+});
+
+/// The images and teams a create form may offer, read while it opens.
+typedef MachineChoices = (Future<List<ImageChoice>>, Future<List<TeamChoice>>);
 
 /// Shows the [kind] form; null when cancelled.
 Future<MachineFormResult?> showMachineForm(
   BuildContext context,
   MachineFormKind kind, {
   Machine? machine,
+  MachineChoices? choices,
 }) => showDialog<MachineFormResult>(
   context: context,
-  builder: (context) => _MachineFormDialog(kind: kind, machine: machine),
+  builder: (context) => _MachineFormDialog(kind: kind, machine: machine, choices: choices),
 );
 
 class _MachineFormDialog extends StatefulWidget {
-  const _MachineFormDialog({required this.kind, this.machine});
+  const _MachineFormDialog({required this.kind, this.machine, this.choices});
 
   final MachineFormKind kind;
   final Machine? machine;
+  final MachineChoices? choices;
 
   @override
   State<_MachineFormDialog> createState() => _MachineFormDialogState();
@@ -41,6 +54,24 @@ class _MachineFormDialogState extends State<_MachineFormDialog> {
   final TextEditingController _disk = TextEditingController();
   Set<String> _invalid = const {};
   bool _nothing = false;
+  List<ImageChoice> _images = const [];
+  List<TeamChoice> _teams = const [];
+  ImageChoice? _image;
+  TeamChoice? _team;
+
+  @override
+  void initState() {
+    super.initState();
+    final choices = widget.choices;
+    if (choices == null) return;
+    // Either list arriving late or not at all leaves the default in place.
+    choices.$1.then((images) {
+      if (mounted) setState(() => _images = images);
+    }, onError: (Object _) {});
+    choices.$2.then((teams) {
+      if (mounted) setState(() => _teams = teams);
+    }, onError: (Object _) {});
+  }
 
   bool get _named => widget.kind != MachineFormKind.resize;
   bool get _shaped => widget.kind != MachineFormKind.clone;
@@ -79,7 +110,13 @@ class _MachineFormDialogState extends State<_MachineFormDialog> {
       _nothing = nothing;
     });
     if (invalid.isNotEmpty || nothing) return;
-    Navigator.of(context).pop((name: name.value, source: source.value, shape: shape));
+    Navigator.of(context).pop((
+      name: name.value,
+      source: source.value,
+      image: _image?.id,
+      team: _team?.name,
+      shape: shape,
+    ));
   }
 
   Widget _field(
@@ -103,6 +140,31 @@ class _MachineFormDialogState extends State<_MachineFormDialog> {
             ? MilaLocalizations.of(context).machineFieldInvalid
             : null,
       ),
+    ),
+  );
+
+  /// A labelled choice among [options], led by the default (null).
+  Widget _choice<T extends Object>(
+    String key,
+    String label,
+    List<T> options,
+    T? selected,
+    String Function(T?) text,
+    ValueChanged<T?> onSelected,
+  ) => Padding(
+    padding: const EdgeInsets.only(bottom: MonoScale.line / 2),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label),
+        Segmented<T?>(
+          keyPrefix: 'machine-form-$key',
+          options: [null, ...options],
+          selected: selected,
+          label: text,
+          onSelected: onSelected,
+        ),
+      ],
     ),
   );
 
@@ -135,6 +197,28 @@ class _MachineFormDialogState extends State<_MachineFormDialog> {
                 l.machineSourceOptional,
                 hint: 'https://github.com/owner/repo',
                 keyboard: TextInputType.url,
+              ),
+            if (widget.kind == MachineFormKind.create && _images.isNotEmpty)
+              _choice<ImageChoice>(
+                'image',
+                l.kvImage,
+                _images,
+                _image,
+                (image) => image == null
+                    ? l.machineImageDefault
+                    : image.architecture == null
+                    ? image.name
+                    : '${image.name} ${image.architecture}',
+                (image) => setState(() => _image = image),
+              ),
+            if (widget.kind == MachineFormKind.create && _teams.isNotEmpty)
+              _choice<TeamChoice>(
+                'team',
+                l.machineTeam,
+                _teams,
+                _team,
+                (team) => team?.name ?? l.machineTeamPersonal,
+                (team) => setState(() => _team = team),
               ),
             if (_shaped) ...[
               _field(

@@ -78,14 +78,21 @@ comes from DHCP, IPv6 is off, and the profile refuses static addresses.
 Discovery proposes DHCP IPv4 and keeps only each default route's interface.
 Salopettes, the Susan host, is the only `hcloud` host.
 
-Each deployment has its own `fleet0` tunnel (ADR-0235). Overalls (`10.90.0.1`)
-peers with Salopettes (`10.90.0.3`); Panterloons (`10.90.0.1`) peers with
-Dungarees (`10.90.0.2`). Evaluation refuses a peer outside the host's own
+Each deployment has its own `fleet0` tunnel (ADR-0238, ADR-0239). Panterloons
+(`10.90.0.1`) peers with Dungarees (`10.90.0.2`) and Salopettes (`10.90.0.3`);
+Overalls (`10.90.0.1`) is alone in its tunnel, with its Audi relay disabled,
+and reaches Susan through public DNS. Evaluation refuses a peer outside the host's own
 tunnel, and only a tunnel's `10.90.0.1` admits control-plane ports. Fleet
 telemetry follows the same split through `services.overallsOtelFleet.hosts`:
 Overalls observes only itself, Panterloons observes itself and Dungarees.
-Until the operator moves `ghuntley.dev` DNS, public names reach Overalls, whose
-wildcard issuer runs with its single Audi DNS replica.
+Until the operator moves `ghuntley.dev` DNS, public names reach Overalls.
+
+Enrolled hosts that declare the shared `fleet-tailscale` credential join the
+tailnet automatically (ADR-0241): `tailscaled-autoconnect` presents the
+SOPS-delivered key from `/run/overalls-secrets/tailscale/auth-key` only while
+the daemon needs a login. Base systems hold no credentials and join only when
+an operator runs `tailscale up`. Rotating the key is a sensitive, operator-only
+document replacement after revoking the old key in the Tailscale console.
 
 No fleet host's public address is in the repository (ADR-0233). The shared
 document `secrets/fleet-addresses.enc.json` holds each dedicated host's primary

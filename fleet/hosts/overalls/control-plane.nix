@@ -1,0 +1,50 @@
+{ lib, ... }:
+let
+  inherit (lib) mkOption types;
+  name = types.strMatching "[a-z][a-z0-9-]*";
+  addressName = types.strMatching "[a-z][A-Za-z0-9]*";
+in
+{
+  # @cc [owner:ghuntley,label:deployment;security] control-plane-host-identity
+  # The Overalls host roles MUST serve exactly one deployment, named here. Its
+  # SOPS documents, fleet address files, administrative address and telemetry
+  # roster MUST all derive from these values so a copied deployment (ADR-0246)
+  # never reads another deployment's secrets or binds another host's address.
+  options.overalls.controlPlaneHost = {
+    name = mkOption {
+      type = name;
+      default = "overalls";
+      description = "Host name; selects `secrets/<name>-*.enc.json` and the `<name>Primary`/`<name>Service` address files.";
+    };
+    peerNameservers = mkOption {
+      type = types.listOf addressName;
+      default = [ "dungareesService" ];
+      description = "Fleet address names of the other Audi DNS replicas used by the wildcard issuer.";
+    };
+    adminAddress = mkOption {
+      type = types.strMatching "100\\.[0-9]+\\.[0-9]+\\.[0-9]+";
+      default = "100.117.30.53";
+      description = "This host's Tailscale address, the only listener for administrative SSH.";
+    };
+    otelWorker = mkOption {
+      type = types.nullOr name;
+      default = null;
+      description = "The deployment's telemetry worker host, or null when the host observes only itself.";
+    };
+    bootstrap = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        First activation of a new deployment, before its own Marshall can bind
+        Lilly and issue Porsche, Audi, Ziggy and Galileo credentials: those
+        roles, Brady and guest telemetry intake stay off, and administrative SSH
+        keeps the base host's port 22.
+      '';
+    };
+    audiRelay = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether Audi relays through a gateway peer in the deployment's tunnel.";
+    };
+  };
+}

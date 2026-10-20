@@ -19,6 +19,10 @@
     {
       "name": "salopettes-fleet-network",
       "path": "secrets/salopettes-fleet-network.enc.json"
+    },
+    {
+      "name": "fleet-tailscale",
+      "path": "secrets/fleet-tailscale.enc.json"
     }
   ],
   "discovery": {

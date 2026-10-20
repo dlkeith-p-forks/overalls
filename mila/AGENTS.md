@@ -1,8 +1,9 @@
 # Mila guidance
 
-Mila is the Overalls client for iOS, Android and Linux (Linux is for testing).
-Read [ADR-0220](../docs/architecture/decisions/0220-mila-client-over-porsche-ssh.md)
-to [ADR-0228](../docs/architecture/decisions/0228-strict-host-certificates-in-mila.md)
+Mila is the Overalls client for iOS, Android, macOS and Windows; Linux is for
+testing. Read [ADR-0220](../docs/architecture/decisions/0220-mila-client-over-porsche-ssh.md)
+to [ADR-0228](../docs/architecture/decisions/0228-strict-host-certificates-in-mila.md),
+[ADR-0235](../docs/architecture/decisions/0235-mila-desktop-clients.md)
 and [CONTRACTS](CONTRACTS) before changing it.
 
 ## Layout
@@ -12,6 +13,10 @@ and [CONTRACTS](CONTRACTS) before changing it.
 | `packages/mila_core` | Pure Dart: command encoding, reply decoding, routes, host certificates, state machines. |
 | `packages/mila_transport` | Pure Dart: Porsche SSH connector, device keys, trust pinning, `mila-probe`. |
 | `app` | Flutter presentation, platform channels (`MilaPlatform`), localization. |
+| `app/darwin/Shared` | Swift shared by the iOS and macOS runners and notification extensions: keys, poke keychain, poke opener. |
+| `app/macos`, `app/windows` | Desktop runners. Windows native code is C++ (`windows/runner`). |
+| `app/native` | Portable C++ poke opener for Windows, with a CTest over the shared vectors. |
+| `tool` | `mila-build`: typed dev/release planner for every platform; native string generator. |
 
 ## Working rules
 
@@ -33,5 +38,12 @@ and [CONTRACTS](CONTRACTS) before changing it.
   (`nix/verification/hegel/libhegel-dart.nix`) in sandboxed builds.
 - Wire formats shared with Elixir have fixtures under `protocol/test/fixtures`;
   change both sides and the fixture together.
-- The iOS and Android native code cannot be built in Nix; say so when it is
-  changed without a device build.
+- The iOS, Android, macOS and Windows native code cannot be built in Nix; say
+  so when it is changed without a device build. Windows code cannot be compiled
+  on a Mac at all; rely on the `windows` CI job.
+- Branch on `PlatformProfile`, never on `Platform.isX`; a new platform gets a
+  profile value, a `DevicePlatform` wire name and protocol/Marshall support.
+- Apple builds under `devenv shell` need the system Xcode: `mila-build` clears
+  Nix's `SDKROOT`/`CC`/`LD` and puts `/usr/bin/xcrun` first; plain
+  `flutter build macos` inside the shell does not.
+- Goldens are recorded on Linux; other hosts run `flutter test --exclude-tags golden`.

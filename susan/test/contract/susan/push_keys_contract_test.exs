@@ -70,4 +70,45 @@ defmodule SusanPushKeysContractTest do
     File.ln_s!(secret, Path.join(dir, "LINKED"))
     assert :error = Susan.Credentials.secret(dir, "LINKED", 100)
   end
+
+  @tag obligation: "susan.push_keys.I5"
+  test "WNS keys are issued and sent only for notify.windows.com channels" do
+    owner = Ecto.Adapters.SQL.Sandbox.start_owner!(Susan.Repo, shared: true)
+    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(owner) end)
+    config = Fixtures.config()
+    source = :crypto.strong_rand_bytes(32)
+
+    body = %{
+      "provider" => "wns",
+      "token" => Fixtures.wns_channel(),
+      "app_id" => "dev.overalls.mila",
+      "environment" => "production",
+      "deployment" => "control.example.test"
+    }
+
+    assert {201, _} = Keys.issue(JSON.encode!(body), source, config, 5)
+
+    for channel <- [
+          "https://wns.notify.windows.com.evil.example/w",
+          "https://evil.example/notify.windows.com/w",
+          "https://wns.notify.windows.com:8443/w"
+        ] do
+      assert {400, :rejected, nil} =
+               Keys.issue(JSON.encode!(%{body | "token" => channel}), source, config, 5)
+    end
+
+    {_, key} = Fixtures.push_key(config, provider: :wns, token: "https://evil.example/w")
+    Susan.FakeProvider.reset()
+
+    message = %Susan.Provider{
+      push_key: key,
+      kind: :needs_input,
+      ciphertext: "c",
+      collapse_id: "x",
+      issued_at: 5
+    }
+
+    assert :rejected = Susan.Provider.WNS.deliver(message, config)
+    assert Susan.FakeProvider.requests() == []
+  end
 end

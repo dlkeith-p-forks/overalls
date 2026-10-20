@@ -8,6 +8,7 @@ import '../../l10n/app_localizations.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.dart';
 import '../../ui/widgets.dart';
+import '../failure_notice.dart';
 import '../labels.dart';
 import '../machines/machine_tabs.dart';
 import '../routes.dart';
@@ -83,7 +84,13 @@ class TerminalsScreen extends ConsumerWidget {
         ),
         if (view.request != null) Text(view.request!.text(l), key: const Key('terminals-request')),
         const SizedBox(height: MonoScale.line),
-        if (view.failed) Text(l.terminalsFailed, key: const Key('terminals-failed')),
+        if (view.failed)
+          FailureNotice(
+            message: l.terminalsFailed,
+            messageKey: const Key('terminals-failed'),
+            retryKey: const Key('terminals-retry'),
+            onRetry: controller.refresh,
+          ),
         if (!view.loading && !view.failed && view.sessions.isEmpty) Text(l.terminalsEmpty),
         for (final session in view.sessions)
           Padding(

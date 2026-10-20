@@ -188,4 +188,5 @@ None for this decision; per-feature questions are in ADR-0222 to ADR-0225.
 [ADR-0222](0222-porsche-client-commands.md),
 [ADR-0226](0226-monospace-web-on-flutter.md),
 [ADR-0227](0227-flutter-toolchain-and-dartssh2-overlay.md),
-[ADR-0228](0228-strict-host-certificates-in-mila.md).
+[ADR-0228](0228-strict-host-certificates-in-mila.md),
+[ADR-0235](0235-mila-desktop-clients.md) (macOS and Windows clients; Linux stays the test build).

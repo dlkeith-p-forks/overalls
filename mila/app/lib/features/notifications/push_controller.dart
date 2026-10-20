@@ -16,6 +16,10 @@ final pushPlatformProvider = Provider<PushPlatform?>((ref) => null);
 /// Where poke keys live; null where there is no push service.
 final pokeKeyStoreProvider = Provider<PokeKeyStore?>((ref) => null);
 
+/// The name this device registers with, shown in the device list; null
+/// registers without one.
+final deviceLabelProvider = Provider<String?>((ref) => null);
+
 /// The relay client at its fixed origin.
 final susanClientProvider = Provider<SusanClient>((ref) => SusanClient());
 
@@ -43,7 +47,8 @@ final class PushView {
   );
 }
 
-String _recordKey(Deployment deployment) => 'push.$deployment';
+/// The preferences key holding [deployment]'s registration record.
+String pushRecordKey(Deployment deployment) => 'push.$deployment';
 
 final pushProvider = NotifierProvider.family<PushController, PushView, Deployment>(
   PushController.new,
@@ -73,6 +78,7 @@ final class PushController extends Notifier<PushView> {
       platform: platform,
       susan: ref.watch(susanClientProvider),
       pokeKeys: keys,
+      label: ref.read(deviceLabelProvider),
       random: ref.read(randomProvider),
     );
     _tokens = platform.tokenChanges.listen(
@@ -89,7 +95,7 @@ final class PushController extends Notifier<PushView> {
 
   Future<void> _restore() async {
     await ref.read(preferencesProvider.notifier).loaded;
-    final saved = ref.read(preferencesProvider)?[_recordKey(deployment)];
+    final saved = ref.read(preferencesProvider)?[pushRecordKey(deployment)];
     final registration = saved is Map<String, Object?>
         ? PushRegistration.restore(saved)
         : const PushRegistration.initial();
@@ -112,7 +118,7 @@ final class PushController extends Notifier<PushView> {
   Future<void> _save(PushRegistration before) async {
     final record = state.registration.record;
     if (_same(before.record, record)) return;
-    await ref.read(preferencesProvider.notifier).put(_recordKey(deployment), record);
+    await ref.read(preferencesProvider.notifier).put(pushRecordKey(deployment), record);
   }
 
   static bool _same(Map<String, Object?> a, Map<String, Object?> b) =>
@@ -166,7 +172,10 @@ final class PushController extends Notifier<PushView> {
   Future<void> refreshDevices() async {
     final session = ref.read(sessionProvider(deployment));
     if (session == null) return;
+    state = state.copyWith(busy: true);
     await _listDevices(session);
+    if (!ref.mounted) return;
+    if (state.busy) state = state.copyWith(busy: false);
     final mine = state.registration.deviceId;
     final devices = state.devices;
     if (devices != null &&

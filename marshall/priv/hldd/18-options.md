@@ -9437,6 +9437,19 @@ Default:
 ```
 
 
+## `services.susan.wnsAppIds`
+
+Accepted WNS application identifiers (Mila's MSIX identity). Non-empty requires WNS_TENANT_ID, WNS_CLIENT_ID and WNS_CLIENT_SECRET in the secrets bundle.
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
 ## `services.underclass.egress.enable`
 
 Whether to enable a dedicated userspace Tailscale node whose loopback HTTP proxy can carry
@@ -9491,6 +9504,24 @@ Default:
 
 ```nix
 1055
+```
+
+
+## `services.underclass.egress.tags`
+
+Tailscale ACL tags the egress node advertises whenever an operator joins it with
+`underclass-egress up` or `login`. The tailnet policy must let the joining
+identity own each tag.
+
+
+Type: `non-empty (list of string matching the pattern tag:[a-z0-9][a-z0-9-]*)`.
+
+Default:
+
+```nix
+[
+  "tag:underclass"
+]
 ```
 
 

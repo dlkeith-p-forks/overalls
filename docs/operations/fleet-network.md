@@ -1,19 +1,20 @@
 # IPv4 fleet control network
 
 The [physical deployment](../../fleet/fleet-network.nix) declares one `fleet0`
-tunnel per deployment (ADR-0235). The Overalls tunnel assigns Overalls
-`10.90.0.1/32` and Salopettes `10.90.0.3/32`; the Panterloons tunnel assigns
-Panterloons `10.90.0.1/32` and Dungarees `10.90.0.2/32`. The tunnels never
-peer, so the same tunnel address names each deployment's own control plane.
+tunnel per deployment (ADR-0238, ADR-0239). The Panterloons tunnel assigns
+Panterloons `10.90.0.1/32`, Dungarees `10.90.0.2/32` and Salopettes
+`10.90.0.3/32`; Overalls holds `10.90.0.1/32` alone in its own tunnel until it
+retires. The tunnels never peer, so the same tunnel address names each
+deployment's own control plane.
 WireGuard uses UDP 51820 between physical IPv4 addresses. Only declared peers
 may reach that UDP destination; each peer owns exactly one tunnel `/32`. IPv6 is
-disabled. Salopettes peers only with Overalls: Marshall resolves
-`notifications.overalls.dev` to `10.90.0.3` and reaches Susan over the tunnel
-on TCP 443 (ADR-0233).
+disabled. Salopettes peers only with Panterloons, whose Marshall will resolve
+`notifications.overalls.dev` to `10.90.0.3` and reach Susan over the tunnel on
+TCP 443 (ADR-0233). Overalls resolves that name through public DNS.
 
 Until the operator moves `ghuntley.dev` DNS to Panterloons, the public names
-still reach Overalls, Overalls' wildcard issuer uses only its own Audi DNS
-replica, and Panterloons and Dungarees cannot serve public traffic.
+still reach Overalls, and Panterloons and Dungarees cannot serve public
+traffic.
 
 Public addresses never appear in the repository (ADR-0233). Names such as
 `OVERALLS_PRIMARY_IPV4` below are secrets in

@@ -23,7 +23,7 @@ in
   # Gateway bootstrap MUST use the trusted Ash operator action and private
   # systemd credentials. Reapplying the same token MUST preserve generation;
   # errors MUST fail startup without exposing token or database credentials.
-  systemd.services.overalls-porsche-authority = {
+  systemd.services.overalls-porsche-authority = lib.mkIf (!config.overalls.controlPlaneHost.bootstrap) {
     description = "Configure Porsche gateway authority in Marshall";
     wantedBy = [ "multi-user.target" ];
     after = [ "overalls-database-password.service" "overalls-secrets-marshall.service" "overalls-secrets-porsche.service" ];

@@ -52,6 +52,11 @@ in {
             base_domain = "tailnet";
             override_local_dns = false;
           };
+          # The fleet user owns the egress node's advertised tag.
+          policy.path = pkgs.writeText "underclass-egress-policy.json" (builtins.toJSON {
+            tagOwners."tag:underclass" = [ "fleet@" ];
+            acls = [{ action = "accept"; src = [ "*" ]; dst = [ "*:*" ]; }];
+          });
         };
       };
       services.nginx = {
@@ -209,7 +214,21 @@ in {
     exit_id = next(n["id"] for n in nodes if n["given_name"] == "exit")
     headscale.succeed(f"headscale nodes approve-routes -i {exit_id} -r 0.0.0.0/0,::/0")
 
-    host.succeed(f"{EGRESS} up {login} --hostname=host-underclass-egress")
+    # Production joins Tailscale with `underclass-egress up`, which advertises
+    # tag:underclass. Headscale, this test's stand-in control server, refuses
+    # client-requested tags on auth-key joins and takes them from the key, so the
+    # node joins through the raw socket CLI with a key carrying the tag.
+    tagged = headscale.succeed(
+        f"headscale preauthkeys create -u {user_id} --reusable --tags tag:underclass"
+    ).strip().splitlines()[-1]
+    host.succeed(
+        "${pkgs.tailscale}/bin/tailscale --socket=/run/underclass-egress/tailscaled.sock up"
+        f" --login-server https://headscale --auth-key {tagged} --hostname=host-underclass-egress"
+    )
+
+    with subtest("the egress node carries tag:underclass"):
+        status = json.loads(host.succeed(f"{EGRESS} status --json"))
+        assert "tag:underclass" in (status["Self"].get("Tags") or []), status["Self"]
 
     with subtest("Underclass starts once the exit node is selected"):
         host.wait_for_unit("underclass.service")

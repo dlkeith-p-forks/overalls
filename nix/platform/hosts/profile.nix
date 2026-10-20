@@ -77,6 +77,8 @@ let
   backupDocument = lib.findFirst (d: d.name == "${h.name}-backup") null h.credentials;
   underclassDocument = lib.findFirst (d: d.name == "${h.name}-underclass") null h.credentials;
   underclassEnrolled = enrolled && underclassDocument != null;
+  tailscaleDocument = lib.findFirst (d: d.name == "fleet-tailscale") null h.credentials;
+  tailscaleEnrolled = enrolled && tailscaleDocument != null;
   fleetExporterInterfaces = lib.unique (map (route: route.dev)
     (lib.filter (route: route.dst == "default") h.discovery.routes));
   lillyPools = if lillyBinding == null then [] else map (p: {
@@ -216,12 +218,19 @@ in {
     optional = true;
     units = [ "overalls-base-source.service" ];
   };
-  # @cc [owner:ghuntley,label:deployment] fleet-tailscale-mesh
+  # @cc [owner:ghuntley,label:deployment;security] fleet-tailscale-mesh
   # Every base and enrolled fleet host MUST run the Tailscale client daemon so
   # operators retain a management path independent of the provider network.
-  # The daemon starts unauthenticated; joining the tailnet stays an explicit
-  # operator action and the profile MUST NOT hold Tailscale credentials.
+  # An enrolled host naming the shared fleet-tailscale credential MUST join the
+  # tailnet automatically with the SOPS-delivered auth key (ADR-0241); the key
+  # MUST NOT enter the Nix store. A base system starts unauthenticated and
+  # joins only through an explicit operator action.
   services.tailscale.enable = true;
+  services.tailscale.authKeyFile = lib.mkIf tailscaleEnrolled "/run/overalls-secrets/tailscale/auth-key";
+  systemd.services.tailscaled-autoconnect = lib.mkIf tailscaleEnrolled {
+    requires = [ "overalls-secrets-tailscale.service" ];
+    after = [ "overalls-secrets-tailscale.service" ];
+  };
   # @cc [owner:ghuntley,label:deployment] fleet-default-store-reclamation
   # Every base and enrolled fleet host MUST enable bounded Nix store garbage
   # collection; hosts override the reviewed thresholds through their own
@@ -359,6 +368,10 @@ in {
     bundles.git = {
       encryptedFile = toString (encryptedDocument gitDocument);
       outputs.deploy-key = { format = "raw"; secrets = [ "GIT_DEPLOY_KEY" ]; };
+    };
+    bundles.tailscale = lib.mkIf tailscaleEnrolled {
+      encryptedFile = toString (encryptedDocument tailscaleDocument);
+      outputs.auth-key = { format = "raw"; secrets = [ "TAILSCALE_AUTH_KEY" ]; };
     };
     bundles.underclass = lib.mkIf underclassEnrolled {
       encryptedFile = toString (encryptedDocument underclassDocument);

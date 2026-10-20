@@ -1,37 +1,43 @@
-{ config, overallsPackages, pkgs, ... }:
+{ config, lib, overallsPackages, pkgs, ... }:
 let
+  host = config.overalls.controlPlaneHost;
+  secret = name: ../../../secrets + "/${host.name}-${name}.enc.json";
   # SOPS-delivered fleet addresses (ADR-0233); no address literal is evaluated.
   addresses = config.overalls.fleetAddresses;
+  primary = addresses.files."${host.name}Primary";
+  service = addresses.files."${host.name}Service";
+  # Roles whose credentials the deployment's own Marshall issues.
+  issued = !host.bootstrap;
 in
 {
   imports = [ ./image-catalog.nix ./porsche-authority.nix ./private-services.nix ];
 
   services.overallsSecrets.bundles = {
     ssh-host-ca = {
-      encryptedFile = "${../../../secrets/overalls-ssh-host-ca.enc.json}";
+      encryptedFile = "${secret "ssh-host-ca"}";
       outputs.key = { format = "raw"; secrets = [ "SSH_HOST_CA_KEY" ]; };
     };
     brady = {
-      encryptedFile = "${../../../secrets/overalls-brady.enc.json}";
+      encryptedFile = "${secret "brady"}";
       outputs = {
         "issuer.pem" = { format = "raw"; secrets = [ "BRADY_ISSUER_CERTIFICATE" ]; };
         "issuer.key" = { format = "raw"; secrets = [ "BRADY_ISSUER_KEY" ]; };
       };
     };
-    porsche = {
-      encryptedFile = "${../../../secrets/overalls-porsche.enc.json}";
+    porsche = lib.mkIf issued {
+      encryptedFile = "${secret "porsche"}";
       outputs.token = { format = "raw"; secrets = [ "PORSCHE_GATEWAY_TOKEN" ]; };
     };
-    audi = {
-      encryptedFile = "${../../../secrets/overalls-audi.enc.json}";
+    audi = lib.mkIf issued {
+      encryptedFile = "${secret "audi"}";
       outputs.token = { format = "raw"; secrets = [ "AUDI_GATEWAY_TOKEN" ]; };
     };
-    audi-dns = {
-      encryptedFile = "${../../../secrets/overalls-audi-dns.enc.json}";
+    audi-dns = lib.mkIf issued {
+      encryptedFile = "${secret "audi-dns"}";
       outputs.token = { format = "raw"; secrets = [ "AUDI_DNS_TOKEN" ]; };
     };
     marshall = {
-      encryptedFile = "${../../../secrets/overalls-marshall.enc.json}";
+      encryptedFile = "${secret "marshall"}";
       outputs.environment = {
         format = "environment";
         secrets = [ "DATABASE_URL" "SECRET_KEY_BASE" "TOKEN_SIGNING_SECRET" "MARSHALL_CLOAK_KEYS" ];
@@ -39,11 +45,11 @@ in
       outputs."serper.key" = { format = "raw"; secrets = [ "SERPER_API_KEY" ]; };
     };
     github-oauth = {
-      encryptedFile = "${../../../secrets/overalls-github-oauth.enc.json}";
+      encryptedFile = "${secret "github-oauth"}";
       outputs.secret = { format = "raw"; secrets = [ "GITHUB_CLIENT_SECRET" ]; };
     };
     enrico = {
-      encryptedFile = "${../../../secrets/overalls-enrico.enc.json}";
+      encryptedFile = "${secret "enrico"}";
       outputs = {
         token = { format = "raw"; secrets = [ "ENRICO_TOKEN" ]; };
         "tls.crt" = { format = "raw"; secrets = [ "TLS_CERT" ]; };
@@ -51,21 +57,21 @@ in
       };
     };
     backend-tls = {
-      encryptedFile = "${../../../secrets/overalls-backend-tls.enc.json}";
+      encryptedFile = "${secret "backend-tls"}";
       outputs = {
         "tls.crt" = { format = "raw"; secrets = [ "TLS_CERT" ]; };
         "tls.key" = { format = "raw"; secrets = [ "TLS_KEY" ]; };
       };
     };
     smtp = {
-      encryptedFile = "${../../../secrets/overalls-smtp.enc.json}";
+      encryptedFile = "${secret "smtp"}";
       outputs = {
         username = { format = "raw"; secrets = [ "SMTP_USERNAME" ]; };
         password = { format = "raw"; secrets = [ "SMTP_PASSWORD" ]; };
       };
     };
     logstore = {
-      encryptedFile = "${../../../secrets/overalls-logstore.enc.json}";
+      encryptedFile = "${secret "logstore"}";
       outputs = {
         "tls.crt" = { format = "raw"; secrets = [ "TLS_CERT" ]; };
         "tls.key" = { format = "raw"; secrets = [ "TLS_KEY" ]; };
@@ -122,7 +128,7 @@ in
   # @cc [owner:ghuntley,label:security;deployment] overalls-brady-signer
   # Brady MUST start only with this host's encrypted signer bundle. The public
   # root is the guest trust anchor; its signing key stays recovery-only.
-  services.brady = {
+  services.brady = lib.mkIf issued {
     enable = true;
     issuerCertificateFile = "/run/overalls-secrets/brady/issuer.pem";
     issuerKeyFile = "/run/overalls-secrets/brady/issuer.key";
@@ -149,10 +155,8 @@ in
       issuerCaFile = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
       certificateRootsFile = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
       acceptTerms = true;
-      nameservers = [
-        # Dungarees moved to Panterloons; one Audi DNS replica until cutover.
-        { addressFile = addresses.files.overallsService; }
-      ];
+      nameservers = [ { addressFile = service; } ]
+        ++ map (peer: { addressFile = addresses.files.${peer}; }) host.peerNameservers;
     };
     poolSize = 10;
     databaseConnectionBudget = 64;
@@ -233,9 +237,9 @@ in
   # @cc [owner:ghuntley,label:deployment;security] overalls-porsche-authority
   # Porsche MUST use verified backend HTTPS and separately encrypted gateway
   # authority. Startup MUST wait for idempotent Ash authority registration.
-  services.porsche = {
+  services.porsche = lib.mkIf issued {
     enable = true;
-    bindAddressFile = addresses.files.overallsPrimary;
+    bindAddressFile = primary;
     bindAddressUnit = addresses.unit;
     controlPlane = "https://ghuntley.dev:5443";
     publicOrigin = "https://ghuntley.dev";
@@ -246,7 +250,7 @@ in
 
   services.marshallProxy = {
     enable = true;
-    bindAddressFile = addresses.files.overallsPrimary;
+    bindAddressFile = primary;
     bindAddressUnit = addresses.unit;
     publicHost = "ghuntley.dev";
     backendCAFile = "/etc/overalls/service-ca.crt";
@@ -277,7 +281,7 @@ in
     controlPlaneCAFile = "/etc/overalls/service-ca.crt";
     # The host's own addresses arrive at runtime (ADR-0233); the effective
     # protected set, and so Lilly's network claim, is unchanged.
-    protectedAddressFiles = [ addresses.files.overallsPrimary addresses.files.overallsService ];
+    protectedAddressFiles = [ primary service ];
     protectedAddressUnits = [ addresses.unit ];
     ingress.enable = true;
   };
@@ -291,15 +295,15 @@ in
   # delegated zone MUST remain a strict subzone of ghuntley.dev; the apex keeps
   # serving the proxy's HTTP-01 issuance and Porsche's public origin, so it
   # MUST never be delegated to Audi DNS.
-  overalls.fleetFirewall.publicServices.audi = {
-    addressFile = addresses.files.overallsService;
+  overalls.fleetFirewall.publicServices.audi = lib.mkIf issued {
+    addressFile = service;
     addressUnit = addresses.unit;
     tcpPorts = [ 22 53 80 443 ];
     udpPorts = [ 53 ];
     comment = "Audi public gateway and DNS";
   };
 
-  services.audiDns = {
+  services.audiDns = lib.mkIf issued {
     enable = true;
     controlPlane = "https://ghuntley.dev:5443";
     caFile = "/etc/overalls/service-ca.crt";
@@ -308,19 +312,20 @@ in
     zone = "apps.ghuntley.dev";
     nameservers = [ "ns1.ghuntley.dev" "ns2.ghuntley.dev" ];
     mailbox = "hostmaster.ghuntley.dev";
-    bindAddressFile = addresses.files.overallsService;
+    bindAddressFile = service;
     bindAddressUnit = addresses.unit;
   };
 
-  services.audi = {
-    relay.enable = true;
+  services.audi = lib.mkIf issued {
+    # Overalls is alone in its tunnel (ADR-0239); no gateway peer can relay.
+    relay.enable = host.audiRelay;
     enable = true;
     hostId = config.services.lilly.hostId;
     controlPlane = "https://ghuntley.dev:5443";
     caFile = "/etc/overalls/service-ca.crt";
     credentialFile = "/run/overalls-secrets/audi/token";
     secretUnits = [ "overalls-secrets-audi.service" ];
-    bindAddressFile = addresses.files.overallsService;
+    bindAddressFile = service;
     bindAddressUnit = addresses.unit;
     tls = {
       enable = true;

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mila/app.dart';
+import 'package:mila/features/routes.dart';
 import 'package:mila/features/session.dart';
 import 'package:mila/features/sign_in_screen.dart';
 import 'package:mila/transport/fake_porsche.dart';
@@ -23,7 +25,8 @@ Future<FakeDeployment> _pumpApp(WidgetTester tester, {bool approved = false}) as
       ),
     ],
   );
-  final opened = <Uri>[];
+  _opened.clear();
+  final opened = _opened;
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
@@ -36,6 +39,8 @@ Future<FakeDeployment> _pumpApp(WidgetTester tester, {bool approved = false}) as
   await tester.pumpAndSettle();
   return fake;
 }
+
+final List<Uri> _opened = [];
 
 Future<void> _addDeployment(WidgetTester tester, String host) async {
   await tester.enterText(find.byKey(const Key('deployment-host')), host);
@@ -55,11 +60,15 @@ void main() {
     final fake = await _pumpApp(tester);
     fake.machines.last.pinned = true;
     await _addDeployment(tester, _host);
-    await tester.tap(find.byKey(const Key('sign-in-start')));
     await tester.pump();
     await tester.pump();
     expect(find.byKey(const Key('sign-in-fingerprint')), findsOneWidget);
     expect(fake.received.single, 'whoami --json');
+    expect(_opened, hasLength(1), reason: 'adding a deployment opens its approval link once');
+    expect(_opened.single.scheme, 'https');
+    await tester.tap(find.byKey(const Key('sign-in-open')));
+    expect(_opened, hasLength(2), reason: 'the button reopens the same link');
+    expect(_opened.last, _opened.first);
 
     fake.approved = true;
     await tester.pump(approvalPollInterval);
@@ -76,7 +85,6 @@ void main() {
   testWidgets('a lifecycle action is submitted once with a request id', (tester) async {
     final fake = await _pumpApp(tester, approved: true);
     await _addDeployment(tester, _host);
-    await tester.tap(find.byKey(const Key('sign-in-start')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('action-stop-$_box')));
     await tester.pumpAndSettle();
@@ -91,7 +99,6 @@ void main() {
   testWidgets('deleting asks for confirmation and cancelling sends nothing', (tester) async {
     final fake = await _pumpApp(tester, approved: true);
     await _addDeployment(tester, _host);
-    await tester.tap(find.byKey(const Key('sign-in-start')));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.byKey(const Key('action-delete-$_box')));
     await tester.tap(find.byKey(const Key('action-delete-$_box')));
@@ -102,14 +109,48 @@ void main() {
     expect(fake.received.where((line) => line.startsWith('rm ')), isEmpty);
   });
 
+  testWidgets('a host with no deployment is reported unreachable, not as an expired link', (
+    tester,
+  ) async {
+    await _pumpApp(tester);
+    await _addDeployment(tester, 'not-a-deployment.example');
+    await tester.pumpAndSettle();
+    expect(find.text('The deployment cannot be reached.'), findsOneWidget);
+    expect(find.byKey(const Key('sign-in-expired')), findsNothing);
+    expect(_opened, isEmpty, reason: 'no approval link, so no browser');
+  });
+
   testWidgets('an untrusted host certificate stops sign-in without fallback', (tester) async {
     final fake = await _pumpApp(tester);
     fake.untrusted = true;
     await _addDeployment(tester, _host);
-    await tester.tap(find.byKey(const Key('sign-in-start')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('sign-in-failed')), findsOneWidget);
     expect(fake.received, isEmpty);
+  });
+
+  testWidgets('removing a deployment asks first, then forgets it', (tester) async {
+    await _pumpApp(tester, approved: true);
+    await _addDeployment(tester, _host);
+    await tester.pumpAndSettle();
+    final router = GoRouter.of(tester.element(find.byType(Scaffold).first));
+    router.go(settingsPath);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('remove-deployment-$_host')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('CANCEL'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('remove-deployment-$_host')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('remove-deployment-$_host')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('confirm-deployment-remove')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('remove-deployment-$_host')), findsNothing);
+    router.go(deploymentsPath);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('deployment-$_host')), findsNothing);
   });
 
   testWidgets('dark appearance applies the dark tokens', (tester) async {

@@ -68,18 +68,51 @@ Map<String, Object> _mutation(String requestId) => {
 
 PorscheCommand? _valid(PorscheCommand command) => validateCommand(command) == null ? command : null;
 
-/// `new`, or null when a value would be refused.
+/// `new`, or null when a value would be refused. An absent [image] or
+/// [team] leaves the deployment's default image and a personal machine.
 PorscheCommand? createMachineCommand({
   String? name,
   String? source,
+  String? image,
+  String? team,
   MachineShape shape = const MachineShape(),
   required String requestId,
 }) => _valid(
   PorscheCommand(
     'new',
-    options: {..._mutation(requestId), 'name': ?name, 'source': ?source, ...shape.options},
+    options: {
+      ..._mutation(requestId),
+      'name': ?name,
+      'source': ?source,
+      'image': ?image,
+      'team': ?team,
+      ...shape.options,
+    },
   ),
 );
+
+/// `request retry` or `request cancel` for the clone or resize that
+/// [original] submitted, under its own fresh [requestId]; null when an
+/// identifier would be refused.
+PorscheCommand? requestControlCommand(
+  RequestControl control,
+  String original, {
+  required String requestId,
+}) => _valid(PorscheCommand(control.command, arguments: [original], options: _mutation(requestId)));
+
+/// What may be done to a clone or resize after it was submitted. Porsche
+/// accepts these only for clone, resize and relocation requests.
+enum RequestControl {
+  retry('request retry'),
+  cancel('request cancel');
+
+  const RequestControl(this.command);
+
+  final String command;
+}
+
+/// Commands whose requests Porsche lets the caller retry or cancel.
+const Set<String> controllableCommands = {'clone', 'resize'};
 
 /// `clone`, or null when a value would be refused.
 PorscheCommand? cloneMachineCommand(String machineId, {String? name, required String requestId}) =>

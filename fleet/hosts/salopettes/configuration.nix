@@ -4,8 +4,8 @@ let
   addresses = config.overalls.fleetAddresses;
 in
 {
-  # Marshall on Overalls reaches Susan over the fleet WireGuard (ADR-0233);
-  # the fleet tunnel is IPv4-only, so salopettes runs without IPv6. Its public
+  # Marshall on Panterloons reaches Susan over the fleet WireGuard (ADR-0233,
+  # ADR-0239); the fleet tunnel is IPv4-only, so salopettes runs without IPv6. Its public
   # address lives only in the shared fleet-addresses SOPS document, and IPv4
   # comes up by DHCP, so the base system never needs the secret.
   imports = [ ../../fleet-network.nix ];
@@ -65,7 +65,7 @@ in
   };
 
   # The listener binds every address; the firewall admits the public path only
-  # at the SOPS-delivered IPv4 address, and Overalls through fleet0.
+  # at the SOPS-delivered IPv4 address, and Panterloons through fleet0.
   overalls.fleetFirewall.publicServices.susan = {
     addressFile = addresses.files.salopettesPrimary;
     addressUnit = addresses.unit;

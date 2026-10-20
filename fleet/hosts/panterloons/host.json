@@ -6,7 +6,8 @@
     },
     "uplink": {
       "addresses": [
-        "panterloonsPrimary"
+        "panterloonsPrimary",
+        "panterloonsService"
       ],
       "gateway": "gateway",
       "hostRoutes": [
@@ -21,7 +22,72 @@
     "guestCpuCores": 32,
     "guestMemoryMiB": 95232
   },
-  "credentials": [],
+  "credentials": [
+    {
+      "name": "panterloons-git",
+      "path": "secrets/panterloons-git.enc.json"
+    },
+    {
+      "name": "panterloons-database",
+      "path": "secrets/panterloons-database.enc.json"
+    },
+    {
+      "name": "panterloons-smtp",
+      "path": "secrets/panterloons-smtp.enc.json"
+    },
+    {
+      "name": "panterloons-backend-tls",
+      "path": "secrets/panterloons-backend-tls.enc.json"
+    },
+    {
+      "name": "panterloons-marshall",
+      "path": "secrets/panterloons-marshall.enc.json"
+    },
+    {
+      "name": "panterloons-github-oauth",
+      "path": "secrets/panterloons-github-oauth.enc.json"
+    },
+    {
+      "name": "panterloons-brady",
+      "path": "secrets/panterloons-brady.enc.json"
+    },
+    {
+      "name": "panterloons-enrico",
+      "path": "secrets/panterloons-enrico.enc.json"
+    },
+    {
+      "name": "panterloons-logstore",
+      "path": "secrets/panterloons-logstore.enc.json"
+    },
+    {
+      "name": "panterloons-remote-builders",
+      "path": "secrets/panterloons-remote-builders.enc.json"
+    },
+    {
+      "name": "panterloons-fleet-network",
+      "path": "secrets/panterloons-fleet-network.enc.json"
+    },
+    {
+      "name": "panterloons-underclass",
+      "path": "secrets/panterloons-underclass.enc.json"
+    },
+    {
+      "name": "panterloons-ssh-host-ca",
+      "path": "secrets/panterloons-ssh-host-ca.enc.json"
+    },
+    {
+      "name": "panterloons-cachix",
+      "path": "secrets/panterloons-cachix.enc.json"
+    },
+    {
+      "name": "fleet-addresses",
+      "path": "secrets/fleet-addresses.enc.json"
+    },
+    {
+      "name": "fleet-tailscale",
+      "path": "secrets/fleet-tailscale.enc.json"
+    }
+  ],
   "discovery": {
     "routes": [
       {
@@ -38,7 +104,9 @@
   },
   "identity": {
     "hostId": "def98d68",
-    "sshKeys": []
+    "sshKeys": [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIML9xc+noYLHshIEx68vs9wbTO6IaehIrei3EQeDjlYd"
+    ]
   },
   "inventory": {
     "arch": "x86_64",
@@ -89,7 +157,8 @@
     },
     "transferEndpoint": {
       "addressSecret": "PANTERLOONS_PRIMARY_IPV4",
-      "port": 2223
+      "port": 2223,
+      "host_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIML9xc+noYLHshIEx68vs9wbTO6IaehIrei3EQeDjlYd"
     }
   },
   "name": "panterloons",

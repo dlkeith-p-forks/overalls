@@ -16,6 +16,7 @@ import 'features/routes.dart';
 import 'features/session.dart';
 import 'features/settings_screen.dart';
 import 'features/sign_in_screen.dart';
+import 'features/ssh_keys/ssh_keys_screen.dart';
 import 'features/terminal/terminal_screen.dart';
 import 'features/terminal/terminals_screen.dart';
 import 'features/threads/thread_screen.dart';
@@ -47,11 +48,26 @@ GoRouter buildRouter() {
 
   return GoRouter(
     routes: [
-      GoRoute(path: deploymentsPath, builder: (context, state) => const DeploymentsScreen()),
+      GoRoute(
+        path: deploymentsPath,
+        builder: (context, state) => DeploymentsScreen(
+          prefill: switch (state.extra) {
+            DeploymentPrefill(:final host) => host,
+            _ => null,
+          },
+        ),
+      ),
       GoRoute(path: settingsPath, builder: (context, state) => const SettingsScreen()),
       GoRoute(
         path: '/d/:deployment/sign-in',
-        builder: (context, state) => deployment(state, (d) => SignInScreen(deployment: d)),
+        builder: (context, state) => deployment(
+          state,
+          (d) => SignInScreen(deployment: d, autoStart: state.extra is SignInAutoStart),
+        ),
+      ),
+      GoRoute(
+        path: '/d/:deployment/keys',
+        builder: (context, state) => deployment(state, (d) => SshKeysScreen(deployment: d)),
       ),
       GoRoute(
         path: '/d/:deployment/machines',
@@ -191,7 +207,21 @@ void followLink(WidgetRef ref, String link) {
   switch (target) {
     case OpenPath(:final path):
       router.go(path);
-    case UnknownDeployment() || RefusedLink():
+    case UnknownDeployment(:final host):
+      router.go(deploymentsPath, extra: DeploymentPrefill(host));
+      _tell(router, (l) => l.linkUnknownDeployment(host));
+    case RefusedLink():
       router.go(deploymentsPath);
+      _tell(router, (l) => l.linkRefused);
   }
+}
+
+/// Says why a link did not open where it pointed. The navigator's context
+/// sits below the localizations and the app's scaffold messenger.
+void _tell(GoRouter router, String Function(MilaLocalizations l) message) {
+  final context = router.routerDelegate.navigatorKey.currentContext;
+  if (context == null) return;
+  ScaffoldMessenger.maybeOf(context)
+    ?..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(message(MilaLocalizations.of(context)))));
 }

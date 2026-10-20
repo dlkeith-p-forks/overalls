@@ -176,6 +176,32 @@ with subtest("FCM v1 data-only message after a service-account OAuth exchange"):
     }, message
     assert message["android"]["collapse_key"] == collapse_id, message
 
+with subtest("WNS raw notification after an Entra ID client-credentials exchange"):
+    key("windows", "wns", "198.51.100.55")
+    count = len(requests())
+    assert poke("windows", "198.51.100.56", installer="e")["status"] == 204
+    new = requests()[count:]
+    hosts = [entry["host"] for entry in new]
+    assert hosts == ["login.microsoftonline.com", "wns2-test.notify.windows.com"], hosts
+    oauth, wns = new
+    assert oauth["path"] == "/00000000-0000-4000-8000-0000000000a1/oauth2/v2.0/token", oauth
+    assert "grant_type=client_credentials" in oauth["body"], oauth
+    assert wns["path"] == "/w/", wns
+    assert wns["authorization"] == "Bearer", wns
+    assert wns["headers"]["x-wns-type"] == "wns/raw", wns
+    assert set(json.loads(wns["body"])) == {"overalls_v", "overalls_k", "overalls_c"}, wns
+
+with subtest("a push key for a non-WNS channel host is refused without a write"):
+    before = audit_actions()
+    for channel in (
+        "https://wns2-test.notify.windows.com.evil.example/w/",
+        "https://evil.example/notify.windows.com/w/",
+        "http://wns2-test.notify.windows.com/w/",
+    ):
+        refused = call(f"{client} issue-token '{channel}' 198.51.100.57")
+        assert refused["status"] == 400, refused
+    assert audit_actions() == before, "refused issuance must not write"
+
 with subtest("install identity states and audit chain"):
     fingerprint = relay.succeed(f"{client} fingerprint b").strip()
     state = relay.succeed(

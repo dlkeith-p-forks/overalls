@@ -362,7 +362,9 @@ Provider egress can be pinned to a tailnet exit node (ADR-0185).
 with its own state and socket, no TUN device and no routes. Its HTTP proxy
 listens only on `127.0.0.1:1055`. The enrolled profile sets
 `services.underclass.egress.exitNode = "mac-mini"`. Each host's node starts
-logged out, and an operator joins it once with `sudo underclass-egress up`.
+logged out, and an operator joins it once with `sudo underclass-egress up`,
+which always advertises `tag:underclass` (ADR-0245) so tailnet policy can
+identify the node.
 The exit-node setting gives Underclass `HTTPS_PROXY`, confines
 the unit to loopback through systemd IP filtering, and adds a privileged start
 gate. The gate selects the exit node with LAN access disabled and refuses to

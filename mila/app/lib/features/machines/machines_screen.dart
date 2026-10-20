@@ -10,6 +10,7 @@ import '../../ui/tokens.dart';
 import '../../ui/widgets.dart';
 import '../labels.dart';
 import '../routes.dart';
+import 'machine_actions.dart';
 import 'machine_form.dart';
 import 'machines_controller.dart';
 
@@ -34,11 +35,20 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
   String _query = '';
 
   Future<void> _create() async {
-    final form = await showMachineForm(context, MachineFormKind.create);
+    final machines = ref.read(machinesProvider(widget.deployment).notifier);
+    final form = await showMachineForm(
+      context,
+      MachineFormKind.create,
+      choices: (machines.images(), machines.teams()),
+    );
     if (form == null || !mounted) return;
-    await ref
-        .read(machinesProvider(widget.deployment).notifier)
-        .create(name: form.name, source: form.source, shape: form.shape);
+    await machines.create(
+      name: form.name,
+      source: form.source,
+      image: form.image,
+      team: form.team,
+      shape: form.shape,
+    );
   }
 
   @override
@@ -46,6 +56,7 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
     final l = MilaLocalizations.of(context);
     final view = ref.watch(machinesProvider(widget.deployment));
     final shown = searchMachines(view.machines, _query);
+    final controller = ref.read(machinesProvider(widget.deployment).notifier);
     final creating =
         view.requests[newMachineRequest] != null && !view.requests[newMachineRequest]!.terminal;
     return Scaffold(
@@ -68,13 +79,22 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
           ),
           TextButton(
             key: const Key('machines-refresh'),
-            onPressed: ref.read(machinesProvider(widget.deployment).notifier).refresh,
+            onPressed: controller.refresh,
             child: Text(l.refresh.toUpperCase()),
+          ),
+          // One glyph wide: the app bar already holds the page's own actions.
+          Tooltip(
+            message: l.settingsTitle,
+            child: TextButton(
+              key: const Key('machines-settings'),
+              onPressed: () => context.go(settingsPath),
+              child: GlyphText(Glyph.menu, label: l.settingsTitle),
+            ),
           ),
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: ref.read(machinesProvider(widget.deployment).notifier).refresh,
+        onRefresh: controller.refresh,
         child: ListView(
           padding: const EdgeInsets.all(MonoScale.fontSize),
           children: [
@@ -96,11 +116,21 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
                 onPressed: creating || view.savedAt != null ? null : _create,
               ),
             ),
-            if (view.requests[newMachineRequest] != null)
-              Text(view.requests[newMachineRequest]!.text(l), key: const Key('request-new')),
+            RequestStatus(deployment: widget.deployment, requestKey: newMachineRequest),
             const SizedBox(height: MonoScale.line),
             if (view.failed || view.savedAt != null)
-              Text(l.machinesOffline, key: const Key('machines-offline')),
+              Wrap(
+                spacing: MonoScale.fontSize / 2,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(l.machinesOffline, key: const Key('machines-offline')),
+                  TextButton(
+                    key: const Key('machines-retry'),
+                    onPressed: view.loading ? null : controller.refresh,
+                    child: Text(l.retry.toUpperCase()),
+                  ),
+                ],
+              ),
             if (view.savedAt != null)
               Text(
                 l.machinesSavedAt(formatSavedAt(view.savedAt!)),
@@ -115,6 +145,15 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
                 machine: machine,
                 request: view.requests[machine.id],
                 offline: view.savedAt != null,
+              ),
+            if (view.nextCursor != null && view.savedAt == null)
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: TextButton(
+                  key: const Key('machines-more'),
+                  onPressed: view.loadingMore ? null : controller.more,
+                  child: Text(l.machineMore.toUpperCase()),
+                ),
               ),
           ],
         ),
@@ -137,31 +176,6 @@ class _MachineRow extends ConsumerWidget {
   final Deployment deployment;
   final Machine machine;
   final RequestPoll? request;
-
-  Future<void> _act(BuildContext context, WidgetRef ref, MachineAction action) async {
-    final l = MilaLocalizations.of(context);
-    if (action == MachineAction.delete) {
-      final confirmed = await showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: Text(l.confirmDelete(machine.name)),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(l.cancel.toUpperCase()),
-            ),
-            TextButton(
-              key: const Key('confirm-delete'),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(l.actionDelete.toUpperCase()),
-            ),
-          ],
-        ),
-      );
-      if (confirmed != true) return;
-    }
-    await ref.read(machinesProvider(deployment).notifier).perform(machine, action);
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -195,20 +209,14 @@ class _MachineRow extends ConsumerWidget {
               ),
               if (machine.imageName != null)
                 Text(machine.imageName!, style: TextStyle(color: tokens.textAlt)),
-              if (request != null) Text(request!.text(l), key: Key('request-${machine.id}')),
+              if (machine.failureReason != null && machine.observed == ObservedState.failed)
+                Text(
+                  l.machineFailureReason(machine.failureReason!),
+                  key: Key('machine-failure-${machine.id}'),
+                ),
+              RequestStatus(deployment: deployment, requestKey: machine.id),
               const SizedBox(height: MonoScale.line / 2),
-              Wrap(
-                spacing: MonoScale.fontSize / 2,
-                runSpacing: MonoScale.line / 2,
-                children: [
-                  for (final action in MachineAction.available(machine))
-                    ConsoleButton(
-                      key: Key('action-${action.name}-${machine.id}'),
-                      label: action.text(l),
-                      onPressed: busy || offline ? null : () => _act(context, ref, action),
-                    ),
-                ],
-              ),
+              MachineActions(deployment: deployment, machine: machine, enabled: !busy && !offline),
             ],
           ),
         ),

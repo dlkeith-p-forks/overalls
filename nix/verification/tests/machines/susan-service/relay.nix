@@ -1,6 +1,7 @@
 { pkgs, packages }:
 let
-  providerHosts = [ "api.push.apple.com" "api.sandbox.push.apple.com" "oauth2.googleapis.com" "fcm.googleapis.com" ];
+  providerHosts = [ "api.push.apple.com" "api.sandbox.push.apple.com" "oauth2.googleapis.com" "fcm.googleapis.com"
+    "login.microsoftonline.com" "wns2-test.notify.windows.com" ];
   # A private CA stands in for the public roots so the release's real
   # verify_peer TLS path talks to the local fake provider origins.
   tls = pkgs.runCommand "susan-fake-provider-tls" { nativeBuildInputs = [ pkgs.openssl ]; } ''
@@ -33,6 +34,7 @@ in {
       secretsFile = "/run/susan-sealed/susan.enc.json";
       apnsTopics = [ "dev.overalls.mila" ];
       fcmAppIds = [ "dev.overalls.mila" ];
+      wnsAppIds = [ "dev.overalls.mila" ];
     };
     systemd.services.susan.wantedBy = lib.mkForce [ ];
     systemd.services.fake-provider = {

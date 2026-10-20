@@ -8,17 +8,35 @@ import '../ui/tokens.dart';
 import '../ui/widgets.dart';
 import 'routes.dart';
 import 'session.dart';
+import 'sign_in_screen.dart' show SignInAutoStart;
+
+/// Navigation `extra` carrying a host to offer in the add field, as a link
+/// to a deployment not yet added does.
+final class DeploymentPrefill {
+  const DeploymentPrefill(this.host);
+  final String host;
+}
 
 class DeploymentsScreen extends ConsumerStatefulWidget {
-  const DeploymentsScreen({super.key});
+  const DeploymentsScreen({super.key, this.prefill});
+
+  /// A host to place in the add field; never added without the user.
+  final String? prefill;
 
   @override
   ConsumerState<DeploymentsScreen> createState() => _DeploymentsScreenState();
 }
 
 class _DeploymentsScreenState extends ConsumerState<DeploymentsScreen> {
-  final TextEditingController _host = TextEditingController();
+  late final TextEditingController _host = TextEditingController(text: widget.prefill);
   bool _invalid = false;
+
+  @override
+  void didUpdateWidget(DeploymentsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final prefill = widget.prefill;
+    if (prefill != null && prefill != oldWidget.prefill) _host.text = prefill;
+  }
 
   @override
   void dispose() {
@@ -32,7 +50,9 @@ class _DeploymentsScreenState extends ConsumerState<DeploymentsScreen> {
     if (deployment == null) return;
     ref.read(deploymentsProvider.notifier).add(deployment);
     _host.clear();
-    context.go(signInPath(deployment));
+    // Adding a deployment is the request to sign in to it: the sign-in screen
+    // starts at once, so the approval link opens without a second tap.
+    context.go(signInPath(deployment), extra: const SignInAutoStart());
   }
 
   @override
@@ -60,7 +80,13 @@ class _DeploymentsScreenState extends ConsumerState<DeploymentsScreen> {
                 key: Key('deployment-$deployment'),
                 label: deployment.toString(),
                 glyph: Glyph.arrowRight,
-                onPressed: () => context.go(signInPath(deployment)),
+                // A signed-in deployment opens its machines; any other opens
+                // sign-in, where a dropped connection can be resumed.
+                onPressed: () => context.go(
+                  ref.read(sessionProvider(deployment)) == null
+                      ? signInPath(deployment)
+                      : machinesPath(deployment),
+                ),
               ),
             ),
           const SizedBox(height: MonoScale.line),

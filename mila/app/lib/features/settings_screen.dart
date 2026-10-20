@@ -1,16 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:mila_core/mila_core.dart';
+import 'package:mila_transport/mila_transport.dart';
 
 import '../l10n/app_localizations.dart';
 import '../ui/theme.dart';
 import '../ui/tokens.dart';
 import '../ui/widgets.dart';
+import 'forget_deployment.dart';
 import 'lock/app_lock_controller.dart';
 import 'routes.dart';
 import 'session.dart';
+import 'ssh_keys/ssh_keys_screen.dart' show sshKeysPath;
 
 final appearanceProvider = NotifierProvider<AppearanceNotifier, Appearance>(AppearanceNotifier.new);
 
@@ -77,7 +82,118 @@ class SettingsScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            const SizedBox(height: MonoScale.line),
+            Panel(
+              title: l.deploymentsTitle,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (final d in deployments)
+                    _DeploymentRow(deployment: d, onRemove: () => _confirmRemove(context, ref, d)),
+                ],
+              ),
+            ),
           ],
+        ],
+      ),
+    );
+  }
+
+  Future<void> _confirmRemove(BuildContext context, WidgetRef ref, Deployment deployment) async {
+    final l = MilaLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(l.deploymentRemoveConfirm(deployment.toString())),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l.cancel.toUpperCase()),
+          ),
+          TextButton(
+            key: const Key('confirm-deployment-remove'),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l.notificationsRemoveDevice.toUpperCase()),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) await forgetDeployment(ref, deployment);
+  }
+}
+
+/// One added deployment: its account and connection, and what can be done
+/// with it on this device.
+class _DeploymentRow extends ConsumerWidget {
+  const _DeploymentRow({required this.deployment, required this.onRemove});
+
+  final Deployment deployment;
+  final VoidCallback onRemove;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = MilaLocalizations.of(context);
+    final d = deployment;
+    final flow = ref.watch(signInProvider(d)).flow;
+    final controller = ref.read(signInProvider(d).notifier);
+    final signedIn = flow.phase == SignInPhase.signedIn;
+    final email = flow.email;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: MonoScale.line / 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(d.toString(), textDirection: TextDirection.ltr),
+          Row(
+            children: [
+              StatusLabel(
+                signedIn ? l.settingsSignedIn : l.settingsOffline,
+                key: Key('deployment-state-$d'),
+                tone: signedIn ? StateTone.success : null,
+              ),
+              if (email != null) ...[
+                const SizedBox(width: MonoScale.fontSize),
+                Flexible(
+                  child: Text(
+                    email,
+                    key: Key('deployment-account-$d'),
+                    textDirection: TextDirection.ltr,
+                    style: TextStyle(color: MonoTheme.of(context).textAlt),
+                  ),
+                ),
+              ],
+            ],
+          ),
+          Wrap(
+            children: [
+              if (signedIn)
+                TextButton(
+                  key: Key('ssh-keys-$d'),
+                  onPressed: () => context.go(sshKeysPath(d)),
+                  child: Text(l.sshKeysTitle.toUpperCase()),
+                ),
+              if (flow.phase == SignInPhase.disconnected)
+                TextButton(
+                  key: Key('reconnect-deployment-$d'),
+                  onPressed: () {
+                    unawaited(controller.start());
+                    context.go(signInPath(d));
+                  },
+                  child: Text(l.signInReconnect.toUpperCase()),
+                ),
+              if (signedIn || flow.phase == SignInPhase.disconnected)
+                TextButton(
+                  key: Key('sign-out-deployment-$d'),
+                  onPressed: controller.signOut,
+                  child: Text(l.signInSignOut.toUpperCase()),
+                ),
+              TextButton(
+                key: Key('remove-deployment-$d'),
+                onPressed: onRemove,
+                child: Text(l.notificationsRemoveDevice.toUpperCase()),
+              ),
+            ],
+          ),
         ],
       ),
     );

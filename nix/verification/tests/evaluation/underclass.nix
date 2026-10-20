@@ -106,6 +106,10 @@ let
       && builtins.elem "underclass-egress.service" routedService.requires
       && builtins.elem "underclass-egress.service" routedService.after;
     egressNodeRequired = !(lib.all (item: item.assertion) routedWithoutNode.assertions);
+    egressJoinTags = let cli = lib.findFirst (p: (p.name or "") == "underclass-egress") null
+      egressNodeOnly.environment.systemPackages; in
+      egressNodeOnly.services.underclass.egress.tags == [ "tag:underclass" ]
+      && cli != null && lib.hasInfix "--advertise-tags=tag:underclass" cli.text;
   };
   failed = builtins.attrNames (lib.filterAttrs (_: result: !result) cases);
 in

@@ -208,9 +208,9 @@ needs the deliberate rebind flow.
 
 | Layer | Authority and required refusal |
 | --- | --- |
-| Identity | The document's recipients are the recovery users and the three fleet hosts' SSH-derived age keys. WireGuard peer keys, not addresses, identify `fleet0` peers; salopettes has its own key in `salopettes-fleet-network`. |
-| Authorization | A runtime grant admits only the reviewed source it names. Salopettes' handshake is admitted on Overalls only from its decrypted address, and its tunnel `/32` reaches only its declared TCP ports (443, 9464, 9467). |
-| Transport | Marshall resolves `notifications.overalls.dev` to `10.90.0.3` and still verifies Susan's public certificate inside the tunnel. Fleet traffic is IPv4 only. |
+| Identity | The document's recipients are the recovery users and the enrolled fleet hosts' SSH-derived age keys. WireGuard peer keys, not addresses, identify `fleet0` peers; salopettes has its own key in `salopettes-fleet-network`. |
+| Authorization | A runtime grant admits only the reviewed source it names. Salopettes' handshake is admitted on Panterloons only from its decrypted address, and its tunnel `/32` reaches only its declared TCP ports (443, 9464, 9467). |
+| Transport | Salopettes is in the Panterloons tunnel (ADR-0239): Panterloons' Marshall resolves `notifications.overalls.dev` to `10.90.0.3` and still verifies Susan's public certificate inside the tunnel. Overalls, alone in its tunnel, resolves that name through public DNS. Fleet traffic is IPv4 only. |
 | Execution | `overalls-fleet-addresses.service` must validate every value before any consumer starts. A malformed, wildcard or missing value refuses the uplink, firewall refill, WireGuard endpoint and service start. |
 | Isolation | Runtime rules live in one chain reached by a static jump. The refill unit flushes before validating, so a bad rotation never leaves an earlier address open. Only an optional rule (the installer source of ADR-0234) is skipped when its file is absent; a malformed optional address still closes the chain. |
 | Storage | Decrypted values exist only under `/run/overalls-secrets/fleet-addresses/` and in the root-only uplink recovery copy. They never reach the Nix store, the repository or diagnostics. |

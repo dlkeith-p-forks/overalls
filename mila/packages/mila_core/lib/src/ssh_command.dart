@@ -145,7 +145,7 @@ const Map<String, CommandSpec> catalog = {
   // Push devices (ADR-0225). The push key travels on stdin, never in the line.
   'device register': CommandSpec(
     'device register',
-    options: ['platform', 'push-key', 'enc-pubkey'],
+    options: ['platform', 'push-key', 'enc-pubkey', 'label'],
     mutation: true,
     required: ['platform', 'push-key', 'enc-pubkey'],
   ),
@@ -218,7 +218,7 @@ const Map<String, PayloadKind> payloadCommands = {
 };
 
 /// Platforms `device register` accepts.
-const Set<String> pushPlatforms = {'ios', 'android'};
+const Set<String> pushPlatforms = {'ios', 'android', 'macos', 'windows'};
 
 final RegExp _encPublicKey = RegExp(r'^[A-Za-z0-9_-]{43}$');
 
@@ -385,6 +385,8 @@ bool _optionValid(String key, Object value) {
     'push-key' => value == '-',
     'enc-pubkey' => _encPublicKey.hasMatch(value),
     'enabled' => value == 'true' || value == 'false',
+    // A device's display name: one line of printable text, 1 to 64 bytes.
+    'label' => _text(value) && utf8.encode(value).length <= 64,
     _ => false,
   };
 }

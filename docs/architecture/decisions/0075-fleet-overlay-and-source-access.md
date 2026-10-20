@@ -101,6 +101,8 @@ documented owner and that direct Tailscale connectivity succeeds on both hosts.
 
 ## Related decisions
 
+[ADR-0241](0241-sops-tailscale-auto-join.md) lets enrolled hosts join the
+tailnet automatically with a SOPS-delivered key.
 [ADR-0233](0233-fleet-addresses-from-sops.md) amends this record: reviewed
 source grants and WireGuard endpoints may name SOPS-delivered runtime
 addresses, admitted through the runtime firewall chain, and salopettes joins

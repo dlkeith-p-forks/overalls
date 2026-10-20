@@ -1,4 +1,5 @@
 {
   "dungarees": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPo5nvlYuJo5xjvJBJzazagymUehnJAbVAwg6JOrloh3 dungarees-remote-builders",
-  "overalls": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAavE3sOpVXM7YiiO3TdVgHwR8E+8YF3KnEFvkBG976A overalls-remote-builders"
+  "overalls": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAavE3sOpVXM7YiiO3TdVgHwR8E+8YF3KnEFvkBG976A overalls-remote-builders",
+  "panterloons": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGoXLPkh3fZaCVQkZnoYqCCTTuCCnlt2FIs4LV1Cj6IH panterloons-remote-builders"
 }

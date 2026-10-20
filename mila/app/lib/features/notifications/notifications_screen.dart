@@ -77,6 +77,14 @@ class NotificationsScreen extends ConsumerWidget {
           child: BackGlyph(label: l.back),
         ),
         title: Text(l.notificationsTitle),
+        actions: [
+          if (session != null && !unsupported)
+            TextButton(
+              key: const Key('notifications-refresh'),
+              onPressed: view.busy ? null : controller.refreshDevices,
+              child: Text(l.refresh.toUpperCase()),
+            ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(MonoScale.fontSize),
@@ -183,7 +191,19 @@ class _DeviceRow extends ConsumerWidget {
         runSpacing: MonoScale.line / 2,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Text(device.platform, textDirection: TextDirection.ltr),
+          if (device.label case final label?) ...[
+            Text(
+              label,
+              key: Key('device-label-${device.id}'),
+              style: const TextStyle(fontWeight: MonoScale.bold),
+            ),
+            Text(
+              device.platform,
+              textDirection: TextDirection.ltr,
+              style: TextStyle(color: tokens.textAlt),
+            ),
+          ] else
+            Text(device.platform, textDirection: TextDirection.ltr),
           StatusLabel(device.enabled ? l.pushStateOn : l.pushStateOff),
           if (current)
             Text(

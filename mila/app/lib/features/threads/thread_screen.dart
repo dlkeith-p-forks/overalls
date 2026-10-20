@@ -8,6 +8,7 @@ import '../../l10n/app_localizations.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.dart';
 import '../../ui/widgets.dart';
+import '../failure_notice.dart';
 import '../routes.dart';
 import 'thread_controller.dart';
 import 'thread_labels.dart';
@@ -113,7 +114,13 @@ class _ThreadScreenState extends ConsumerState<ThreadScreen> {
               key: const Key('thread-transcript'),
               padding: const EdgeInsets.all(MonoScale.fontSize),
               children: [
-                if (view.failed) Text(l.threadFailed, key: const Key('thread-failed')),
+                if (view.failed)
+                  FailureNotice(
+                    message: l.threadFailed,
+                    messageKey: const Key('thread-failed'),
+                    retryKey: const Key('thread-retry'),
+                    onRetry: controller.refresh,
+                  ),
                 if (summary != null)
                   Wrap(
                     spacing: MonoScale.fontSize,
