@@ -14,7 +14,7 @@ Overalls and Dungarees need Tailscale, and every current and future deployed
 fleet host must receive the same overlay client. Operators also require a small,
 reviewable set of public IPv4 sources that can reach TCP and UDP listeners on
 every host. The initial set is the public address of each current physical host
-and Geoffrey Huntley's `103.134.170.11` address. Each grant needs a comment so a
+and Geoffrey Huntley's personal address. Each grant needs a comment so a
 reviewer can identify its owner or purpose.
 
 The fleet profile already enables authoritative named SSH access and the NixOS
@@ -69,7 +69,10 @@ that import service modules without enabling fleet access.
   route and enable the kernel IPv4 forwarding required to carry tailnet traffic.
 - The registry includes Overalls and Dungarees, with a required comment for
   every entry. On 2026-10-16 the user removed every personal address, including
-  the initial `103.134.170.11`; operators reach hosts through the tailnet.
+  the initial operator address; operators reach hosts through the tailnet.
+  [ADR-0247](0247-sops-operator-source-grant.md) restores one operator source,
+  held only in the fleet-addresses SOPS document. (Correction, 2026-10-20: the
+  address literal was removed from this record; it remains in history.)
 - Both nftables and iptables configurations accept TCP and UDP from every
   registry address on every destination port, including HTTP and HTTPS, and do
   not create an equivalent other-protocol source rule.
@@ -101,6 +104,9 @@ documented owner and that direct Tailscale connectivity succeeds on both hosts.
 
 ## Related decisions
 
+[ADR-0247](0247-sops-operator-source-grant.md) amends this record's 2026-10-16
+removal of personal addresses: Geoffrey Huntley's operator source is again a
+reviewed grant, delivered only through the fleet-addresses SOPS document.
 [ADR-0241](0241-sops-tailscale-auto-join.md) lets enrolled hosts join the
 tailnet automatically with a SOPS-delivered key.
 [ADR-0233](0233-fleet-addresses-from-sops.md) amends this record: reviewed
