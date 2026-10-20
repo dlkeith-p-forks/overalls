@@ -51,11 +51,17 @@ def post(path: str, body: bytes, headers: dict[str, str]) -> tuple[int, dict[str
         return error.code, dict(error.headers), error.read()
 
 
-def issue(name: str, provider: str, source: str, reuse: str | None) -> None:
-    if reuse is not None:
+def issue(
+    name: str, provider: str, source: str, reuse: str | None, channel: str | None = None
+) -> None:
+    if channel is not None:
+        token = channel
+    elif reuse is not None:
         token = str(json.loads((root / f"key-{reuse}.json").read_text())["token"])
     elif provider == "apns":
         token = os.urandom(32).hex()
+    elif provider == "wns":
+        token = "https://wns2-test.notify.windows.com/w/?token=" + b64(os.urandom(96))
     else:
         token = "fcm:" + b64(os.urandom(96))
     body = {
@@ -160,6 +166,9 @@ elif mode == "poke":
         sys.argv[5],
         sys.argv[6] if len(sys.argv) > 6 else None,
     )
+elif mode == "issue-token":
+    # A WNS key for an explicit channel URI, to exercise the host-shape refusal.
+    issue("channel", "wns", sys.argv[3], None, channel=sys.argv[2])
 elif mode == "malformed":
     malformed(sys.argv[2])
 elif mode == "fingerprint":

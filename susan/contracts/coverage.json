@@ -1,9 +1,9 @@
 {
   "apps": {
     "susan": {
-      "active": 15,
-      "coverage": 1.0,
-      "covered": 15
+      "active": 16,
+      "coverage": 0.875,
+      "covered": 14
     },
     "system": {
       "active": 0,
@@ -141,10 +141,10 @@
       }
     },
     "susan.push_keys": {
-      "active": 4,
+      "active": 5,
       "app": "susan",
-      "coverage": 1.0,
-      "covered": 4,
+      "coverage": 0.6,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "susan.push_keys.I1": {
@@ -178,13 +178,23 @@
           ]
         },
         "susan.push_keys.I4": {
-          "failing": 0,
+          "failing": 1,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
           "tests": [
             "test a readable or symlinked secret is refused"
+          ]
+        },
+        "susan.push_keys.I5": {
+          "failing": 1,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test WNS keys are issued and sent only for notify.windows.com channels"
           ]
         }
       }
@@ -200,8 +210,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 15,
-    "coverage": 1.0,
-    "covered": 15
+    "active": 16,
+    "coverage": 0.875,
+    "covered": 14
   }
 }

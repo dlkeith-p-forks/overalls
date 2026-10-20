@@ -16,9 +16,10 @@ const String _box = '0d9cc041-9db2-4e4c-b28b-1e41d7f472c1';
 /// Pumps the app with [links] as the platform's link stream.
 Future<(FakeDeployment, GoRouter)> _pump(
   WidgetTester tester,
-  StreamController<String> links,
-) async {
-  final fake = FakeDeployment(_host, approved: true, machines: [FakeMachine(_box, 'dev-box')]);
+  StreamController<String> links, {
+  bool approved = true,
+}) async {
+  final fake = FakeDeployment(_host, approved: approved, machines: [FakeMachine(_box, 'dev-box')]);
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
@@ -43,7 +44,6 @@ void main() {
     await tester.enterText(find.byKey(const Key('deployment-host')), _host);
     await tester.tap(find.byKey(const Key('add-deployment')));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('sign-in-start')));
     await tester.pumpAndSettle();
     final sent = List.of(fake.received);
 
@@ -66,17 +66,19 @@ void main() {
   testWidgets('links to a deployment not yet signed in reach only its sign-in', (tester) async {
     final links = StreamController<String>();
     addTearDown(links.close);
-    final (fake, router) = await _pump(tester, links);
+    final (fake, router) = await _pump(tester, links, approved: false);
     await tester.enterText(find.byKey(const Key('deployment-host')), _host);
     await tester.tap(find.byKey(const Key('add-deployment')));
     await tester.pumpAndSettle();
     router.go(deploymentsPath);
     await tester.pumpAndSettle();
+    // Adding started sign-in (awaiting approval); the link itself sends nothing.
+    final before = List<String>.of(fake.received);
 
     links.add('overalls://$_host/machines/$_box');
     await tester.pumpAndSettle();
     expect(_location(router), signInPath(const Deployment(_host)));
-    expect(fake.received, isEmpty);
+    expect(fake.received, before);
   });
 
   testWidgets('unknown deployments and malformed links land on the deployment list', (

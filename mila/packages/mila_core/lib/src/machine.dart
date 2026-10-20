@@ -55,6 +55,8 @@ final class Machine {
     this.diskBytes,
     this.sshHost,
     this.profile,
+    this.architecture,
+    this.createdAt,
     this.failureReason,
     this.resizing = false,
     this.relocating = false,
@@ -76,6 +78,10 @@ final class Machine {
   final int? diskBytes;
   final String? sshHost;
   final String? profile;
+  final String? architecture;
+
+  /// When the machine was created, in UTC.
+  final DateTime? createdAt;
   final String? failureReason;
   final bool resizing;
   final bool relocating;
@@ -153,6 +159,12 @@ T? _enum<T extends Enum>(List<T> values, Object? name) {
 int? _int(Object? value) => value is int && value >= 0 ? value : null;
 String? _string(Object? value) => value is String ? value : null;
 
+/// An ISO 8601 timestamp with an explicit zone, in UTC; anything else is absent.
+DateTime? _timestamp(Object? value) {
+  if (value is! String || !RegExp(r'(Z|[+-]\d\d:\d\d)$').hasMatch(value)) return null;
+  return DateTime.tryParse(value)?.toUtc();
+}
+
 /// Decodes one machine object. Identity and authority fields are strict;
 /// descriptive fields are optional so newer servers stay readable.
 Machine decodeMachine(Map<String, Object?> value) {
@@ -188,6 +200,8 @@ Machine decodeMachine(Map<String, Object?> value) {
     diskBytes: _int(value['disk_bytes']),
     sshHost: _string(value['ssh_host']),
     profile: _string(value['profile']),
+    architecture: _string(value['architecture']),
+    createdAt: _timestamp(value['inserted_at']),
     failureReason: _string(value['failure_reason']),
     resizing: value['resize'] is Map,
     relocating: value['relocation'] is Map,

@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
 import 'features/lock/app_lock_controller.dart';
 import 'features/machines/machines_controller.dart';
+import 'features/notifications/device_label.dart';
 import 'features/notifications/push_controller.dart';
 import 'features/preferences.dart';
 import 'features/session.dart';
@@ -50,6 +51,7 @@ Future<void> main(List<String> arguments) async {
         if (push != null) ...[
           pushPlatformProvider.overrideWithValue(push),
           pokeKeyStoreProvider.overrideWithValue(const HardwarePokeKeyStore()),
+          deviceLabelProvider.overrideWithValue(localDeviceLabel()),
         ],
         openExternalProvider.overrideWithValue(openApprovalLink),
         inAppWebViewProvider.overrideWithValue(platformHasWebView),

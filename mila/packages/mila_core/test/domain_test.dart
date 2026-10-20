@@ -112,6 +112,7 @@ final class SignInMachine extends StateMachine {
       state = state.apply(Disconnected(old));
       state = state.apply(WhoamiFinished(old, _approval(old), now));
       state = state.apply(HostRejected(old));
+      state = state.apply(Unreachable(old));
       expect(identical(state, before), isTrue);
     }),
     Rule('whoami pending', (tc) {
@@ -139,8 +140,49 @@ final class SignInMachine extends StateMachine {
         ),
       );
     }),
-    Rule('disconnect', (tc) => state = state.apply(Disconnected(state.generation))),
+    Rule('disconnect', (tc) {
+      final before = state;
+      state = state.apply(Disconnected(state.generation));
+      if (before.phase == SignInPhase.signedIn) {
+        // A dropped signed-in connection is recoverable and keeps the account.
+        expect(state.phase, SignInPhase.disconnected);
+        expect(state.account, before.account);
+      }
+    }),
+    Rule('reconnect after a drop', (tc) {
+      final before = state;
+      state = state.apply(const StartSignIn());
+      if (before.phase == SignInPhase.disconnected) {
+        expect(state.phase, SignInPhase.connecting);
+        expect(state.generation, before.generation + 1);
+      }
+    }),
+    Rule('sign out', (tc) {
+      final before = state;
+      state = state.apply(const SignOut());
+      expect(state.phase, SignInPhase.idle);
+      expect(state.generation, before.generation + 1);
+      // The retired connection can no longer sign this device in.
+      final stale = state.apply(
+        WhoamiFinished(
+          before.generation,
+          const ChannelOutcome(PorscheExit.ok, ReadReply({'email': 'a@example.com'})),
+          now,
+        ),
+      );
+      expect(identical(stale, state), isTrue);
+    }),
     Rule('host rejected', (tc) => state = state.apply(HostRejected(state.generation))),
+    Rule('unreachable', (tc) {
+      final before = state;
+      state = state.apply(Unreachable(state.generation));
+      if (before.phase == SignInPhase.connecting) {
+        // An unreachable host is reported as such, never as an expired link.
+        expect(state.failure, SignInFailure.unreachable);
+      } else {
+        expect(identical(state, before), isTrue);
+      }
+    }),
     Rule('time passes', (tc) {
       final seconds = tc.draw(integers(min: 1, max: 400), name: 'seconds');
       now = now.add(Duration(seconds: seconds));
@@ -165,8 +207,9 @@ final class SignInMachine extends StateMachine {
       }
     }),
     Invariant('signed in carries an account and nothing else', (tc) {
-      expect(state.phase == SignInPhase.signedIn, state.account != null);
-      if (state.phase == SignInPhase.signedIn) expect(state.approvalUrl, isNull);
+      final known = state.phase == SignInPhase.signedIn || state.phase == SignInPhase.disconnected;
+      expect(known, state.account != null);
+      if (known) expect(state.approvalUrl, isNull);
     }),
     Invariant('failures name a reason', (tc) {
       expect(state.phase == SignInPhase.failed, state.failure != null);

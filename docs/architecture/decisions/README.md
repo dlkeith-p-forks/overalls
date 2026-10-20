@@ -24,6 +24,16 @@ pipes and receipts, and a prior lifetime's receipt is retired only after its
 job vanished and no process of the worker's exact account logon session remains,
 terminating only re-verified stragglers. Native execution remains pending.
 
+[ADR-0236](0236-susan-wns-provider.md) adds a WNS provider to Susan: Entra ID
+client-credentials tokens, raw notifications, and egress to channel URIs
+confined to `https://*.notify.windows.com:443`, amending ADR-0224's egress
+rule; implementation remains partial.
+
+[ADR-0235](0235-mila-desktop-clients.md) makes Mila a first-class macOS and
+Windows client: a per-platform profile, Secure Enclave or CNG (TPM, else
+software) device keys, owner-only DACL storage, APNs and WNS push, and dev and
+release build targets for every platform; implementation remains partial.
+
 [ADR-0234](0234-installer-source-administrative-grant.md) records the
 authenticated installer's source at installation and admits only it to
 administrative SSH through an optional runtime firewall rule, so a base system
@@ -1011,6 +1021,8 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0232](0232-sops-delivered-public-host-addresses.md) | superseded | partial | SOPS-delivered public host addresses |
 | [ADR-0233](0233-fleet-addresses-from-sops.md) | accepted | partial | Fleet addresses from SOPS and the Susan fleet path |
 | [ADR-0234](0234-installer-source-administrative-grant.md) | accepted | partial | Installer source grant for administrative SSH |
+| [ADR-0235](0235-mila-desktop-clients.md) | accepted | partial | Mila desktop clients for macOS and Windows |
+| [ADR-0236](0236-susan-wns-provider.md) | accepted | partial | Susan WNS provider and channel-host egress |
 | [ADR-0237](0237-windows-custodian-same-boot-recovery.md) | accepted | partial | Windows custodian same-boot recovery by logon-session quiescence |
 | [ADR-0238](0238-panterloons-deployment-and-per-deployment-tunnels.md) | accepted | partial | Panterloons deployment and per-deployment fleet tunnels |
 | [ADR-0239](0239-salopettes-joins-panterloons-tunnel.md) | accepted | partial | Salopettes joins the Panterloons tunnel |

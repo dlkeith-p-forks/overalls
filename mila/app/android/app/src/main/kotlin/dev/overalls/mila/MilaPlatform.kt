@@ -2,6 +2,7 @@ package dev.overalls.mila
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -88,8 +89,17 @@ class MilaPlatform(
                 "openUrl" -> {
                     val uri = Uri.parse(call.argument<String>("url") ?: "")
                     if (uri.scheme != "https") return result.error("invalid_argument", "url", null)
-                    context.startActivity(Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    result.success(null)
+                    // The user's default browser; without one, report it rather than crash.
+                    try {
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW, uri)
+                                .addCategory(Intent.CATEGORY_BROWSABLE)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        )
+                        result.success(null)
+                    } catch (_: ActivityNotFoundException) {
+                        result.error("unavailable", "browser", null)
+                    }
                 }
                 // A web endpoint link to the system share sheet; HTTPS only.
                 "share" -> {

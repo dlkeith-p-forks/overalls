@@ -265,7 +265,8 @@ authorized. Provider readiness remains false until real keys replace them.
 
 `overalls-susan.enc.json` contains **placeholder values only**, under
 `overalls-susan.production`. They must be rotated before any real deployment:
-no APNs or FCM provider will accept them. Each value still passes Susan's own
+no APNs or FCM provider will accept them. The document has no WNS entries:
+`services.susan.wnsAppIds` is empty on salopettes, so none are expected. Each value still passes Susan's own
 startup validation, so a test deployment could boot with them:
 
 - `APNS_KEY_P8` and the FCM `private_key` are throwaway P-256 and RSA-2048
@@ -308,6 +309,9 @@ raw file, and systemd passes them to Susan as `LoadCredential=` files.
 | `APNS_KEY_ID` | 10-character key id of that `.p8` key | `[A-Z0-9]{10}` | placeholder: `PLACEHOLD1` |
 | `APNS_TEAM_ID` | 10-character Apple developer team id | `[A-Z0-9]{10}` | placeholder: `PLACEHOLD2` |
 | `FCM_SERVICE_ACCOUNT_JSON` | Google service-account JSON for FCM v1 | required when `fcmAppIds` is set; `token_uri` must be `https://oauth2.googleapis.com/token`; RSA ≥ 2048 | placeholder: project `placeholder`, throwaway RSA key |
+| `WNS_TENANT_ID` | Entra ID tenant of the WNS application | required when `wnsAppIds` is set; UUID; names the fixed `login.microsoftonline.com` token path | absent |
+| `WNS_CLIENT_ID` | Entra ID application (client) id | required when `wnsAppIds` is set; UUID | absent |
+| `WNS_CLIENT_SECRET` | Entra ID client secret for the client-credentials flow | required when `wnsAppIds` is set; 16–256 printable ASCII | absent |
 | `SUSAN_PUSH_KEY_SIGNING_KEY` | Push-key keyring JSON `{"active":N,"keys":{"N":"<base64url 32 bytes>"}}` | 1–16 distinct keys, ids 1–255, active id present | placeholder: one random id-1 key |
 | `DATABASE_URL` | `postgres://`/`ecto://` URL of Susan's own database | database name `[a-z_][a-z0-9_]*` | local socket database `susan` |
 
@@ -322,6 +326,9 @@ Rotation:
 - **APNs `.p8` / FCM service account.** Replace the values and restart; cached
   provider tokens are dropped on restart. Revoke the old key in the Apple or
   Google console after the restart.
+- **WNS client secret.** Add a new secret to the Entra application, replace
+  `WNS_CLIENT_SECRET` and restart (the cached access token is dropped), then
+  delete the old secret in Entra.
 - **Database URL.** Rotate the role password in PostgreSQL first, then the
   document.
 - **Placeholders.** Replace every field in one `encrypt --replace` and remove

@@ -61,6 +61,9 @@ def secrets(active: int, database_url: str) -> dict[str, str]:
         "APNS_TEAM_ID": "TEAM123456",
         "FCM_SERVICE_ACCOUNT_JSON": json.dumps(account),
         "SUSAN_PUSH_KEY_SIGNING_KEY": json.dumps({"active": active, "keys": keys}),
+        "WNS_TENANT_ID": "00000000-0000-4000-8000-0000000000a1",
+        "WNS_CLIENT_ID": "00000000-0000-4000-8000-0000000000a2",
+        "WNS_CLIENT_SECRET": material("wns-secret", os.urandom(24)).hex(),
         "DATABASE_URL": database_url,
     }
     remember([*keys.values(), apns.splitlines()[1], google.splitlines()[1]])

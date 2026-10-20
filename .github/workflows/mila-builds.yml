@@ -1,0 +1,209 @@
+name: "mila builds"
+
+# Mila's dev targets on every platform (ADR-0235). Linux and Android build in
+# Nix; macOS and iOS use the devenv shell with the runner's Xcode; Windows has
+# no Nix and builds from the mila-source-bundle the Linux job produces, so it
+# sees the same patched dartssh2, fonts, Monocypher and locked pub packages.
+on:
+  pull_request:
+    paths:
+      - "mila/**"
+      - "protocol/test/fixtures/**"
+      - "nix/domains/artifacts/mila/**"
+      - "nix/platform/dartssh2.nix"
+      - "nix/platform/patches/dartssh2-*"
+      - ".github/workflows/mila-builds.yml"
+  push:
+    branches: [trunk]
+    paths:
+      - "mila/**"
+      - "protocol/test/fixtures/**"
+      - "nix/domains/artifacts/mila/**"
+      - "nix/platform/dartssh2.nix"
+      - "nix/platform/patches/dartssh2-*"
+      - ".github/workflows/mila-builds.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: mila-builds-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # The pinned Flutter (ADR-0227) for hosts without Nix, from
+  # storage.googleapis.com/flutter_infra_release/releases/releases_windows.json.
+  FLUTTER_VERSION: 3.47.0
+  FLUTTER_WINDOWS_SHA256: 9f96d393cdfad05bea0b4b42c603ffda027af11adadc8e4cf3ac87e49110c1ca
+
+jobs:
+  linux:
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
+    timeout-minutes: 120
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+      - name: Mila checks and Linux dev/release targets
+        run: |
+          cachix watch-exec overalls -- nix build -L --no-link \
+            .#checks.x86_64-linux.mila-core \
+            .#checks.x86_64-linux.mila-transport \
+            .#checks.x86_64-linux.mila-tool \
+            .#checks.x86_64-linux.mila-test \
+            .#checks.x86_64-linux.mila-lock-sync \
+            .#tool-mila-linux-dev \
+            .#tool-mila-linux-release
+
+  source-bundle:
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
+    timeout-minutes: 60
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+      - name: Build the source bundle
+        run: |
+          nix build -L .#tool-mila-source-bundle --out-link bundle
+          mkdir -p out
+          cp -L bundle/* out/
+          (cd out && sha256sum -c SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mila-source-bundle
+          path: out/
+          if-no-files-found: error
+          retention-days: 7
+
+  android:
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
+    timeout-minutes: 90
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+      - name: Android dev APK (debug key)
+        run: cachix watch-exec overalls -- nix build -L --no-link .#tool-mila-android
+
+  apple:
+    # Mila's macOS and iOS dev targets and the shared native poke tests.
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Nix
+        uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
+      - name: Setup Cachix
+        uses: cachix/cachix-action@ee79db531bfb851a7cf47035057b7cca88d26449
+        with:
+          name: overalls
+          extraPullNames: devenv
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          useDaemon: false
+      - name: Install devenv
+        run: |
+          rev=$(jq -r '.nodes.devenv.locked.rev' devenv.lock)
+          nix profile install "github:cachix/devenv/$rev"
+          devenv version
+      - name: Format, analyze and test Mila
+        run: devenv shell -- mila-check
+      - name: macOS and iOS dev targets
+        run: |
+          devenv shell -- mila-build macos dev
+          devenv shell -- mila-build ios dev
+      - name: Native RunnerTests (macOS and iOS simulator)
+        # Apple's toolchain, not Nix's: the same environment mila-build uses.
+        run: |
+          devenv shell -- bash -euo pipefail -c '
+            unset SDKROOT CC CXX LD
+            export DEVELOPER_DIR="$(xcode-select -p)" PATH="/usr/bin:$PATH"
+            cd mila/app/macos
+            xcodebuild test -workspace Runner.xcworkspace -scheme Runner \
+              -destination platform=macOS CODE_SIGNING_ALLOWED=NO MILA_SIGNING=unsigned
+            cd ../ios
+            device=$(xcrun simctl list devices available -j |
+              jq -r "[.devices[][] | select(.name | startswith(\"iPhone\"))][0].udid")
+            xcodebuild test -workspace Runner.xcworkspace -scheme Runner \
+              -destination "id=$device" CODE_SIGNING_ALLOWED=NO
+          '
+
+  windows:
+    needs: source-bundle
+    runs-on: windows-2025
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mila-source-bundle
+          path: ${{ runner.temp }}/bundle
+      - name: Unpack and verify the source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/bundle"
+          sha256sum -c SHA256SUMS
+          tar -xzf mila-source-bundle-*.tar.gz -C "$RUNNER_TEMP"
+          root=$(cd "$RUNNER_TEMP" && cd mila-source-bundle-* && pwd -W)
+          (cd "$root" && sha256sum --quiet -c SHA256SUMS)
+          echo "MILA_ROOT=$root" >> "$GITHUB_ENV"
+          echo "PUB_CACHE=$root/pub-cache" >> "$GITHUB_ENV"
+      - name: Install the pinned Flutter
+        run: |
+          $zip = Join-Path $env:RUNNER_TEMP "flutter.zip"
+          $url = "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_$($env:FLUTTER_VERSION)-stable.zip"
+          Invoke-WebRequest -Uri $url -OutFile $zip
+          $hash = (Get-FileHash -Algorithm SHA256 $zip).Hash.ToLowerInvariant()
+          if ($hash -ne $env:FLUTTER_WINDOWS_SHA256) { throw "Flutter archive digest $hash does not match the pin" }
+          tar -xf $zip -C $env:RUNNER_TEMP
+          Remove-Item $zip
+          "$env:RUNNER_TEMP\flutter\bin" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+      - name: Resolve packages offline from the bundle
+        run: |
+          flutter config --no-analytics
+          flutter --version
+          foreach ($d in "packages/mila_core", "packages/mila_transport", "tool", "app") {
+            Push-Location (Join-Path $env:MILA_ROOT "mila/$d")
+            flutter pub get --offline --enforce-lockfile
+            if ($LASTEXITCODE -ne 0) { throw "pub get failed in $d" }
+            Pop-Location
+          }
+      - name: Transport tests (Windows owner-only DACLs)
+        working-directory: ${{ env.MILA_ROOT }}/mila/packages/mila_transport
+        run: |
+          dart test --reporter expanded
+          if ($LASTEXITCODE -ne 0) { throw "mila_transport tests failed" }
+      - name: mila-build tests
+        working-directory: ${{ env.MILA_ROOT }}/mila/tool
+        run: |
+          dart test --reporter expanded
+          if ($LASTEXITCODE -ne 0) { throw "mila/tool tests failed" }
+      - name: Native poke opener (CTest)
+        working-directory: ${{ env.MILA_ROOT }}
+        run: |
+          cmake -S mila/app/native -B build/native "-DMILA_MONOCYPHER_DIR=$env:MILA_ROOT/third_party/monocypher"
+          if ($LASTEXITCODE -ne 0) { throw "cmake configure failed" }
+          cmake --build build/native --config Release
+          if ($LASTEXITCODE -ne 0) { throw "native build failed" }
+          ctest --test-dir build/native -C Release --output-on-failure
+          if ($LASTEXITCODE -ne 0) { throw "CTest failed" }
+      - name: Windows dev target
+        working-directory: ${{ env.MILA_ROOT }}/mila/tool
+        run: |
+          dart run bin/mila_build.dart windows dev
+          if ($LASTEXITCODE -ne 0) { throw "mila-build windows dev failed" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mila-windows-dev
+          path: ${{ env.MILA_ROOT }}/mila/build/windows-dev/
+          if-no-files-found: error
+          retention-days: 7

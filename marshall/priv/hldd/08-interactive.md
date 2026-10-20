@@ -1173,11 +1173,14 @@ Porsche gateway and adds no Marshall API: every command is an ordinary Porsche
 | Owner-only files | POSIX hosts create directories `0700` and files `0600`. Windows applies a protected DACL granting only the current user and SYSTEM, and refuses a file whose DACL admits anyone else ([`owner_only_windows.dart`](repo:mila/packages/mila_transport/lib/src/owner_only_windows.dart)). |
 | Host trust | `https://HOST/bin/ssh-trust.json` is fetched over HTTPS without redirects and pinned. A later document with another CA, host or zone is refused; a failed fetch uses only an unretired pin. |
 | Host acceptance | Only `ssh-ed25519-cert-v01@openssh.com`. The certificate must come from the pinned CA, name the management host and be inside its validity window. The check runs in key exchange, before user authentication. |
-| Sign-in | Porsche's browser key approval. Mila opens `approval_url` in the system browser and keeps the connection, re-checking `whoami` every 2 seconds. A link expires after 600 seconds and is never replaced while shown. |
+| Sign-in | Porsche's browser key approval. Adding a deployment starts sign-in at once, and Mila opens each new `approval_url` in the user's default browser (the button reopens it) and keeps the connection, re-checking `whoami` every 2 seconds. A link expires after 600 seconds and is never replaced while shown. A signed-in deployment opens its machine list and shows the `whoami` email. A dropped connection after sign-in is shown as disconnected with Reconnect (a new connection and `whoami`) and Sign out (closes the session locally; the key and its approval are unchanged). Mila does not reconnect by itself. |
+| Deployments | Settings lists each deployment with its signed-in or offline state and email. Remove asks first, turns notifications off while a session is open (waiting at most 10 seconds), then deletes the poke key, notification record and saved machine list and forgets the deployment. The account, its machines and the device key's approval on Marshall are untouched. |
+| SSH keys | `ssh-key list` per deployment; Revoke confirms, then sends `ssh-key remove` once with a request id. The key Mila signs in with (matched by fingerprint of `whoami`'s `public_key`) is marked and cannot be revoked from Mila. Marshall decides which keys the account may remove. |
 | Mutations | Submitted once with a client `porsche-<32 hex>` request id and `--no-wait`, then polled with `request show`; never resubmitted. |
-| Machines | The list offers a new machine with optional name, repository source, CPU, memory (MiB) and disk (GiB). The Info tab offers resize and clone. Resize refuses an empty change or a shrinking disk before sending. Managers also see sharing: `share show`, `share add EMAIL ROLE`, and `share remove` after confirmation. Marshall decides who may do each. |
+| Machines | The list pages with `ls --after`, shows a failure reason on failed rows, and offers a new machine with optional name, repository source, image (`images`), team (`team list`), CPU, memory (MiB) and disk (GiB). A machine on no loaded page is read with `show`. The Info tab shows the machine's identifiers, requested state, failure reason, access, architecture, profile and creation time, and offers the lifecycle actions, resize and clone. A clone or resize request that is still accepted can be cancelled (`request cancel`) and one that failed retried (`request retry`), each naming the original request under a new request id. Resize refuses an empty change or a shrinking disk before sending. Managers also see sharing: `share show`, `share add EMAIL ROLE`, and `share remove` after confirmation. Marshall decides who may do each. |
 | Type | JetBrains Mono, with the ADR-0207 Noto faces bundled as fallbacks for Arabic, Indic, CJK and symbols. Flutter cannot read WOFF2, so Nix fetches the original TrueType and OpenType files that Marshall's manifest pins, checks their digests and ships each with its OFL notice. |
-| Links | `overalls://HOST/PATH` only navigates. Unknown deployments land on the deployment list; signed-out deployments reach only their sign-in screen. |
+| Links | `overalls://HOST/PATH` only navigates. Unknown deployments land on the deployment list with the host filled in and a message asking to add it; refused links say so; signed-out deployments reach only their sign-in screen. |
+| Recovery | Every list and detail read that fails shows its reason with Try again; machine pages and Recent threads also refresh by pull or a Refresh action. |
 | Language | One ARB catalog per Porsche locale, checked against `porsche/priv/gettext`. Egyptian Arabic, Hausa and Nigerian Pidgin have no Flutter framework catalog, so dialog and tooltip strings borrow Arabic or English while Mila's own strings stay in the locale; Egyptian Arabic keeps right-to-left direction. Terminal output and identifiers stay left to right. |
 
 ```mermaid
@@ -1201,8 +1204,9 @@ sequenceDiagram
 ```
 
 Failure behaviour: an untrusted host ends the connection before any command and
-before the device key signs anything; an unreachable origin with no pin is
-reported as unreachable rather than untrusted. Mila stores no terminal bytes,
+before the device key signs anything; an unreachable origin with no pin (for
+example a host serving no `/bin/ssh-trust.json`) is reported as unreachable
+rather than untrusted or as an expired approval link. Mila stores no terminal bytes,
 tokens or reply bodies; it logs nothing about keys or commands.
 
 Evidence: [transport](repo:mila/packages/mila_transport/lib/src/ssh_porsche.dart)
@@ -1234,7 +1238,7 @@ id and the key expiry.
 | Poke contents | Pokes are end-to-end encrypted to a per-deployment X25519 key: `0x01 ‖ ephemeral key ‖ nonce ‖ ChaCha20-Poly1305 ciphertext`, with the key derived by HKDF-SHA256 and the deployment host bound in the AAD. The relay sees only ciphertext. The plaintext is exactly `{v, kind: "needs_input", route}`, and the route must be a canonical app route on that host. |
 | Notification text | Fixed and localized ("An agent needs your input"). The decrypted route is used only as the tap link. A poke that fails to open shows the fixed text with no link on iOS (an APNs alert cannot be suppressed); Android shows nothing. |
 | Poke keys | iOS and macOS Keychain group shared with the notification extension (the data-protection keychain on macOS), readable after first unlock on this device only. On Android, wrapped by a Keystore AES key. Only the public key leaves native code. Removing the device deletes the key. |
-| Device list | Each device can be turned on or off, or removed (`device prefs`, `device rm`). A device missing from `device ls` shows as revoked. |
+| Device list | Each device can be turned on or off, or removed (`device prefs`, `device rm`), and the list refreshes on request. A device missing from `device ls` shows as revoked. Registration sends `--label` with the computer's host name where the platform reports one (none on Android); the label is a display name, not an identifier. |
 | App lock | Optional, with biometrics or the device passcode (`local_auth`). It locks immediately or after 1 or 5 minutes in the background. A saved lock covers Mila from the first frame. Locked content is not painted and not in the accessibility tree. Linux has no lock, and the setting says so. |
 | Desktop push | macOS uses the same notification-extension path as iOS, from code shared in `mila/app/darwin/Shared`. An unsigned macOS dev build has no push entitlement and offers no notifications. Windows push needs Susan's WNS provider (ADR-0236), whose deployed configuration is not yet enabled; the Windows native channel and poke opener are not yet implemented. |
 | Offline list | The last complete machine listing per deployment is saved as an owner-only `0600` file holding machine rows only, at most 500. While offline, the saved list is shown with its save time and its actions are disabled. |
@@ -1322,7 +1326,7 @@ Links to these pages only navigate.
 | Cursor resume | A dropped channel reattaches from the bytes already shown. When the header's `from` differs from the cursor, Mila resets the screen and counts a documented jump; otherwise the cursor only moves forward. |
 | Read-only | Chosen or granted, read-only never sends keys, pastes or resizes. Choosing control again reattaches writable. |
 | Retry | Exit 5 (transport) retries with backoff, at most 8 attempts. Exits 1 (refused), 2 (invalid) and 3 (authority) end the view with a localized reason. |
-| Threads | Lists, transcript pages (`thread turns --after`), questions, plan approve and revise, plan or work mode. The read marker only moves forward (`thread read`). |
+| Threads | Lists, transcript pages (`thread turns --after`), questions, plan approve and revise, plan or work mode. The read marker only moves forward (`thread read`), and open thread lists drop the unread count at once. Porsche cannot start a thread, so an empty Recent list links to Marshall's `/threads/new` page in the browser. |
 | Watch | `watch` JSON lines trigger re-reads; Mila never takes state from them. More than 40 s of silence reopens the stream. Transport loss reconnects after 1 to 60 s; authority loss stops it. |
 | Web | `web show`, and `web set` at the shown `policy_revision`, so a concurrent change is a conflict. Only HTTPS URLs on DNS hosts are opened. Public endpoints open in a webview on iOS and Android; private endpoints always open in the system browser. |
 

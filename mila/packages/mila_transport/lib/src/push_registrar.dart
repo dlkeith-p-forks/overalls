@@ -53,12 +53,20 @@ final class PushUnavailableException implements Exception {
 
 /// One device registered on a deployment, as `device ls` lists it.
 final class RegisteredDevice {
-  const RegisteredDevice({required this.id, required this.platform, required this.enabled});
+  const RegisteredDevice({
+    required this.id,
+    required this.platform,
+    required this.enabled,
+    this.label,
+  });
   final String id;
 
   /// `ios`, `android`, or `unknown` for a platform this client does not know.
   final String platform;
   final bool enabled;
+
+  /// The name the device registered with, if any, as one line of text.
+  final String? label;
 }
 
 /// Decodes a `device ls --json` result, tolerating unknown keys and skipping
@@ -77,8 +85,30 @@ List<RegisteredDevice>? decodeDeviceList(Map<String, Object?> result) {
               ? item['platform']! as String
               : 'unknown',
           enabled: item['enabled'] != false,
+          label: _label(item['label']),
         ),
   ];
+}
+
+/// A listed label shown as text: one printable line, otherwise none.
+String? _label(Object? value) {
+  if (value is! String) return null;
+  final trimmed = value.trim();
+  return trimmed.isEmpty || trimmed.length > 64 || _unprintable.hasMatch(trimmed) ? null : trimmed;
+}
+
+final RegExp _unprintable = RegExp(r'[\x00-\x1f\x7f-\x9f\u2028\u2029]');
+
+/// Fits [raw] to the `device register --label` rule: control characters
+/// become spaces, runs of space collapse, and the result is cut on a
+/// character boundary to 64 UTF-8 bytes. Null when nothing printable is left.
+String? deviceLabel(String raw) {
+  var text = raw.replaceAll(_unprintable, ' ').replaceAll(RegExp(r'\s+'), ' ').trim();
+  while (utf8.encode(text).length > 64) {
+    final runes = text.runes.toList()..removeLast();
+    text = String.fromCharCodes(runes).trimRight();
+  }
+  return text.isEmpty ? null : text;
 }
 
 /// The device id in a `device register` receipt, wherever a server puts it.
@@ -112,15 +142,21 @@ final class PushRegistrar {
     required this.platform,
     required this.susan,
     required this.pokeKeys,
+    String? label,
     Random? random,
     this.pollBackoff = const Backoff(base: Duration(milliseconds: 500), cap: Duration(seconds: 5)),
     this.maximumPolls = 60,
-  }) : _random = random ?? Random.secure();
+  }) : label = label == null ? null : deviceLabel(label),
+       _random = random ?? Random.secure();
 
   final Deployment deployment;
   final PushPlatform platform;
   final SusanClient susan;
   final PokeKeyStore pokeKeys;
+
+  /// Sent as `device register --label` so the device list can tell this
+  /// device apart, after [deviceLabel] fits it to the catalog's rule.
+  final String? label;
   final Random _random;
   final Backoff pollBackoff;
   final int maximumPolls;
@@ -157,6 +193,7 @@ final class PushRegistrar {
         final String token;
         try {
           token = _token ??= await platform.token();
+          if (!platform.device.provider.accepts(token)) throw const PushUnavailableException();
         } on PushPermissionDeniedException {
           return PushKeyFailed(operation, PushStepFailure.refused);
         } on PushUnavailableException {
@@ -167,7 +204,11 @@ final class PushRegistrar {
           PushKeyRequest(
             provider: platform.device.provider,
             token: token,
-            environment: await platform.environment(),
+            // Only APNs has a sandbox; Susan refuses any other provider's
+            // development key.
+            environment: platform.device.provider == PushProvider.apns
+                ? await platform.environment()
+                : PushEnvironment.production,
             deployment: deployment.host,
           ),
         );
@@ -193,6 +234,7 @@ final class PushRegistrar {
               'platform': platform.device.wire,
               'push-key': '-',
               'enc-pubkey': encodeBase64UrlUnpadded(public),
+              'label': ?label,
             },
           ),
           stdin: utf8.encode('${key.pushKey}\n'),

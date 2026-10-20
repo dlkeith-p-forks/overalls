@@ -182,7 +182,7 @@ void main() {
     expect(line, 'device register --enc-pubkey=$key --json --platform=ios --push-key=-');
     for (final options in [
       {'platform': 'ios', 'push-key': 'secret-key', 'enc-pubkey': key},
-      {'platform': 'windows', 'push-key': '-', 'enc-pubkey': key},
+      {'platform': 'linux', 'push-key': '-', 'enc-pubkey': key},
       {'platform': 'ios', 'push-key': '-', 'enc-pubkey': '$key='},
       {'platform': 'ios', 'push-key': '-'},
     ]) {

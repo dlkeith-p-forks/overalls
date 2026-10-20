@@ -4,10 +4,12 @@ let
   inherit (lib) mkOption mkEnableOption mkIf types;
   cfg = config.services.susan;
   paths = import ./types.nix { inherit lib; };
+  # The Entra ID client for WNS (ADR-0236) is delivered only when a WNS app
+  # id is configured, so bundles without Windows push need no WNS entries.
   secretNames = [
     "APNS_KEY_P8" "APNS_KEY_ID" "APNS_TEAM_ID" "FCM_SERVICE_ACCOUNT_JSON"
     "SUSAN_PUSH_KEY_SIGNING_KEY" "DATABASE_URL"
-  ];
+  ] ++ lib.optionals (cfg.wnsAppIds != [ ]) [ "WNS_TENANT_ID" "WNS_CLIENT_ID" "WNS_CLIENT_SECRET" ];
   limitType = types.submodule {
     options = {
       burst = mkOption { type = types.ints.between 1 100000; };
@@ -21,6 +23,8 @@ let
     trusted_proxies = cfg.trustedProxies;
     apns_topics = cfg.apnsTopics;
     fcm_app_ids = cfg.fcmAppIds;
+  } // lib.optionalAttrs (cfg.wnsAppIds != [ ]) {
+    wns_app_ids = cfg.wnsAppIds;
   } // lib.optionalAttrs (cfg.limits != { }) { limits = cfg.limits; }));
   releaseEnvironment = {
     SUSAN_CONFIG_FILE = "${runtime}";
@@ -53,6 +57,11 @@ in {
     trustedProxies = mkOption { type = types.listOf types.str; default = [ "127.0.0.1" ]; description = "Peers whose last X-Forwarded-For hop is believed for per-source rate limits."; };
     apnsTopics = mkOption { type = types.listOf types.str; default = [ ]; description = "Accepted APNs topics (Mila bundle identifiers)."; };
     fcmAppIds = mkOption { type = types.listOf types.str; default = [ ]; description = "Accepted FCM application identifiers."; };
+    wnsAppIds = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = "Accepted WNS application identifiers (Mila's MSIX identity). Non-empty requires WNS_TENANT_ID, WNS_CLIENT_ID and WNS_CLIENT_SECRET in the secrets bundle.";
+    };
     limits = mkOption {
       type = types.attrsOf limitType;
       default = { };
@@ -79,8 +88,8 @@ in {
   # unprivileged with no writable state outside its own directories.
   config = mkIf cfg.enable {
     assertions = [
-      { assertion = cfg.apnsTopics != [ ] || cfg.fcmAppIds != [ ];
-        message = "Susan requires at least one APNs topic or FCM application id."; }
+      { assertion = cfg.apnsTopics != [ ] || cfg.fcmAppIds != [ ] || cfg.wnsAppIds != [ ];
+        message = "Susan requires at least one APNs topic, FCM application id or WNS application id."; }
       { assertion = lib.all (name: builtins.elem name [ "key" "install" "source" "global" "issue" ]) (builtins.attrNames cfg.limits);
         message = "Susan limit overrides must name key, install, source, global or issue."; }
     ];

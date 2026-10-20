@@ -139,4 +139,5 @@ real provider acceptance or the latest integrated relay verifier.
 
 [ADR-0220](0220-mila-client-over-porsche-ssh.md),
 [ADR-0225](0225-marshall-notifications-domain.md),
-[ADR-0231](0231-hetzner-cloud-hosts-and-susan-placement.md) (placement).
+[ADR-0231](0231-hetzner-cloud-hosts-and-susan-placement.md) (placement),
+[ADR-0236](0236-susan-wns-provider.md) (amends egress and third parties for WNS).
