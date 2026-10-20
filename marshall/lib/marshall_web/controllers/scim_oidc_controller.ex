@@ -1,89 +1,57 @@
 defmodule MarshallWeb.ScimOidcController do
+  @moduledoc "Browser endpoints for OIDC single sign-on while SCIM owns identity lifecycle."
   use MarshallWeb, :controller
 
-  alias Marshall.Scim.Configuration
   import AshAuthentication.Plug.Helpers, only: [store_in_session: 2]
   alias Marshall.Scim.Oidc
-  require Ash.Query
+
+  @flow_key :scim_oidc_flow
 
   @spec start(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def start(conn, _params) do
-    with {:ok, config} <- enabled_config(),
-         issuer when is_binary(issuer) <- config.oidc_issuer,
-         client_id when is_binary(client_id) <- config.oidc_client_id do
-      state = :crypto.strong_rand_bytes(32) |> Base.url_encode64(padding: false)
-      nonce = :crypto.strong_rand_bytes(32) |> Base.url_encode64(padding: false)
-      callback = MarshallWeb.Endpoint.url() <> "/auth/oidc/callback"
-      authorize = issuer <> "/authorize"
-
-      url =
-        URI.append_query(
-          URI.parse(authorize),
-          URI.encode_query(%{
-            "client_id" => client_id,
-            "redirect_uri" => callback,
-            "response_type" => "code",
-            "scope" => "openid email",
-            "state" => state,
-            "nonce" => nonce
-          })
-        )
-
-      conn
-      |> put_session(:scim_oidc_state, state)
-      |> put_session(:scim_oidc_nonce, nonce)
-      |> redirect(external: url)
-    else
-      _ ->
+    case Oidc.begin(callback_url()) do
+      {:ok, url, flow} ->
         conn
+        |> put_session(@flow_key, flow)
+        |> redirect(external: url)
+
+      {:error, _reason} ->
+        conn
+        |> delete_session(@flow_key)
         |> put_flash(:error, dgettext("auth", "Single sign-on is not configured."))
         |> redirect(to: ~p"/sign-in")
     end
   end
 
+  # @cc [owner:ghuntley,label:security] scim-oidc-callback-one-shot
+  # The callback MUST remove the session flow before any outcome so a state,
+  # nonce or verifier cannot be replayed, and failures MUST render one generic
+  # message without provider error text, codes, tokens or claims.
   @spec callback(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def callback(conn, %{"state" => state, "iss" => issuer, "sub" => subject} = params) do
-    expected = get_session(conn, :scim_oidc_state)
-    nonce = get_session(conn, :scim_oidc_nonce)
+  def callback(conn, params) do
+    flow = get_session(conn, @flow_key)
+    conn = delete_session(conn, @flow_key)
 
-    if is_binary(expected) and Plug.Crypto.secure_compare(expected, state) and
-         (is_nil(params["nonce"]) or params["nonce"] == nonce) do
-      claims = %{"iss" => issuer, "sub" => subject}
+    case Oidc.complete(flow, params, callback_url()) do
+      {:ok, user, token} ->
+        user =
+          Ash.Resource.put_metadata(user, :token, token)
+          |> Ash.Resource.put_metadata(:authentication_strategies, [:oidc])
 
-      case Oidc.sign_in(claims) do
-        {:ok, user, token} ->
-          user =
-            Ash.Resource.set_metadata(user, %{token: token, authentication_strategies: [:oidc]})
+        conn
+        |> delete_session(:return_to)
+        |> store_in_session(user)
+        |> assign(:current_user, user)
+        |> put_flash(:info, dgettext("auth", "You are now signed in"))
+        |> redirect(to: ~p"/overview")
 
-          conn
-          |> delete_session(:scim_oidc_state)
-          |> delete_session(:scim_oidc_nonce)
-          |> store_in_session(user)
-          |> redirect(to: ~p"/overview")
-
-        _ ->
-          failure(conn)
-      end
-    else
-      failure(conn)
+      {:error, _reason} ->
+        conn
+        |> put_flash(:error, dgettext("auth", "Single sign-on could not authenticate you."))
+        |> redirect(to: ~p"/sign-in")
     end
   end
 
-  def callback(conn, _), do: failure(conn)
-
-  defp failure(conn) do
-    conn
-    |> put_flash(:error, dgettext("auth", "Single sign-on could not authenticate you."))
-    |> redirect(to: ~p"/sign-in")
-  end
-
-  defp enabled_config do
-    Configuration
-    |> Ash.Query.filter(state == :enabled)
-    |> Ash.read_one(actor: Marshall.Authorization.SystemActor.compute())
-    |> case do
-      {:ok, %Configuration{} = config} -> {:ok, config}
-      _ -> {:error, :not_configured}
-    end
-  end
+  @spec callback_url() :: String.t()
+  defp callback_url, do: url(~p"/auth/oidc/callback")
 end

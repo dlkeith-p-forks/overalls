@@ -49,16 +49,38 @@ defmodule Marshall.Scim.Configuration do
     end
 
     update :rotate_token do
-      accept [:token_digest, :oidc_issuer, :oidc_client_id, :oidc_client_secret]
+      accept [:token_digest]
       require_atomic? false
     end
 
+    update :save_oidc do
+      accept [:oidc_issuer, :oidc_client_id, :oidc_client_secret]
+      require_atomic? false
+    end
+
+    # One administrator operation per submission: enabling and rotating each
+    # return a new bearer token once; disabling and saving OIDC settings never
+    # mint a token. An empty client secret keeps the stored secret unless
+    # clear_oidc_client_secret is true.
     action :configure, :map do
-      argument :enabled, :boolean, allow_nil?: false
-      argument :rotate_token, :boolean, allow_nil?: false, default: false
-      argument :oidc_issuer, :string, allow_nil?: true
-      argument :oidc_client_id, :string, allow_nil?: true
-      argument :oidc_client_secret, :string, allow_nil?: true, sensitive?: true
+      argument :operation, :atom,
+        allow_nil?: false,
+        constraints: [one_of: [:enable, :disable, :rotate_token, :save_oidc]]
+
+      argument :oidc_issuer, :string,
+        allow_nil?: true,
+        constraints: [max_length: 2048, allow_empty?: true]
+
+      argument :oidc_client_id, :string,
+        allow_nil?: true,
+        constraints: [max_length: 512, allow_empty?: true]
+
+      argument :oidc_client_secret, :string,
+        allow_nil?: true,
+        sensitive?: true,
+        constraints: [max_length: 4096, allow_empty?: true]
+
+      argument :clear_oidc_client_secret, :boolean, allow_nil?: false, default: false
       run Marshall.Scim.ConfigurationActions
     end
   end
@@ -68,7 +90,10 @@ defmodule Marshall.Scim.Configuration do
       authorize_if Marshall.Accounts.Checks.Administrator
     end
 
-    policy always() do
+    # Every policy whose condition matches must pass, so the internal-lookup
+    # policy is scoped to record actions; an always() condition also matched
+    # :configure and refused every administrator.
+    policy action_type([:read, :create, :update, :destroy]) do
       authorize_if Marshall.Accounts.Checks.InternalLookup
     end
   end
