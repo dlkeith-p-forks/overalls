@@ -319,7 +319,10 @@ rec {
   mila = import ./mila {
     inherit pkgs;
     libhegelDart = import ../../verification/hegel/libhegel-dart.nix { inherit pkgs; };
-  };
+  } // (let rust = import ./mila/rust.nix { inherit pkgs; }; in {
+    rust = rust.package;
+    rustCheck = rust.check;
+  });
   vscodeWeb = import ./vscode-web { inherit pkgs; };
   updateVscodeExtensions = import ./vscode-web/updater.nix { inherit pkgs vscodeWeb; };
   vscodeWebBroker = import ./vscode-web-broker { inherit pkgs; };

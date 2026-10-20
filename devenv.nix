@@ -189,6 +189,19 @@ in
     if [ "$(uname -s)" = Linux ]; then flutter test; else flutter test --exclude-tags golden; fi
   '';
 
+  # The Rust core is checked independently while Flutter remains the current
+  # presentation client. Nix runs the same locked workspace check offline.
+  scripts.mila-rust-check.exec = ''
+    cd "$DEVENV_ROOT/mila/rust"
+    cargo fmt --all -- --check
+    cargo test --workspace --locked
+    cargo clippy --workspace --all-targets --locked -- -D warnings
+  '';
+  scripts.mila-rust-build.exec = ''
+    cd "$DEVENV_ROOT/mila/rust"
+    cargo build --workspace --locked
+  '';
+
   # Mila's dev and release targets for every platform (ADR-0235):
   # `mila-build <linux|android|ios|macos|windows> <dev|release> [--demo] [--dry-run]`.
   scripts.mila-build.exec = ''

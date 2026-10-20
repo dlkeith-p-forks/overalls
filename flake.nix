@@ -137,6 +137,7 @@
         tool-mila-source-bundle = built.mila.sourceBundle;
         tool-mila-demo = built.mila.demo;
         tool-mila-probe = built.mila.probe;
+        tool-mila-rust = built.mila.rust;
         # Optional Android APK, excluded from CI (ADR-0227).
         tool-mila-android = built.mila.android;
         tool-github-managed = built.githubTools.release;
@@ -289,6 +290,7 @@
         mila-tool = built.mila.toolCheck;
         mila-test = built.mila.appCheck;
         mila-lock-sync = built.mila.lockSync;
+        mila-rust = built.mila.rustCheck;
       }; };
     };
 }

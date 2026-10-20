@@ -8,10 +8,19 @@ opens `overalls://` links.
 ```sh
 devenv shell
 mila-check                                   # format, analyze and test everything
+mila-rust-check                              # format, test and lint the Rust core
+mila-rust-build                              # compile every Rust workspace crate
 cd mila/app && flutter run -d linux --dart-define=MILA_DEMO=true   # in-memory demo
 nix build .#tool-mila-linux                  # Linux bundle
+nix build .#tool-mila-rust                   # Rust workspace libraries
 mila-build macos dev                         # any platform: linux|android|ios|macos|windows, dev|release
 ```
+
+The Rust core under [`rust/`](rust/) is a Cargo workspace shared by native
+client seams. `mila-rust-check` runs formatting, the locked workspace tests and
+Clippy; `mila-rust-build` compiles the workspace in the devenv shell. The Nix
+`mila-rust` check and `tool-mila-rust` package run the same workspace from the
+committed lock file without using tracked build output.
 
 `mila-build <platform> <dev|release> [--demo] [--dry-run]` (from
 [`tool/`](tool/lib/src/plan.dart)) is the one entry point for every target. A dev
