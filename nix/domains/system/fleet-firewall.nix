@@ -1,8 +1,14 @@
 { config, lib, ... }:
 let
   cfg = config.overalls.fleetFirewall;
-  hosts = lib.attrValues cfg.allowedHosts;
-  services = lib.attrValues cfg.publicServices;
+  allHosts = lib.attrValues cfg.allowedHosts;
+  hosts = lib.filter (host: host.address != null) allHosts;
+  runtimeHosts = lib.filterAttrs (_: host: host.addressFile != null) cfg.allowedHosts;
+  allServices = lib.attrValues cfg.publicServices;
+  services = lib.filter (service: service.address != null) allServices;
+  runtimeServices = lib.filterAttrs (_: service: service.addressFile != null) cfg.publicServices;
+  runtimeFile = lib.types.nullOr (lib.types.strMatching "/run/[A-Za-z0-9_./-]+");
+  runtimeUnit = lib.types.nullOr (lib.types.strMatching "[a-zA-Z0-9_.@-]+\\.service");
   validIPv4 = address:
     let octets = lib.splitString "." address;
     in builtins.length octets == 4 && lib.all (octet:
@@ -26,16 +32,28 @@ let
         ++ map (port: { protocol = "udp"; inherit port; }) service.udpPorts)) services;
 in
 {
+  imports = [ ./runtime-firewall.nix ];
   options.overalls.fleetFirewall = {
     enable = lib.mkEnableOption "fleet-wide Tailscale and reviewed-source firewall access";
     allowedHosts = lib.mkOption {
-      default = import ../../policy/network/allowed-hosts.nix;
-      description = "Named IPv4 sources allowed to reach every fleet host over TCP and UDP.";
+      default = {};
+      description = "Named IPv4 sources allowed to reach every fleet host over TCP and UDP; fleet hosts fill it from the reviewed policy in nix/policy/network/allowed-hosts.nix.";
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
           address = lib.mkOption {
-            type = lib.types.strMatching "[0-9]{1,3}(\\.[0-9]{1,3}){3}";
+            type = lib.types.nullOr (lib.types.strMatching "[0-9]{1,3}(\\.[0-9]{1,3}){3}");
+            default = null;
             description = "Reviewed IPv4 source address.";
+          };
+          addressFile = lib.mkOption {
+            type = runtimeFile;
+            default = null;
+            description = "Runtime file holding the reviewed IPv4 source, for addresses kept out of the repository.";
+          };
+          addressUnit = lib.mkOption {
+            type = runtimeUnit;
+            default = null;
+            description = "Unit that publishes addressFile.";
           };
           comment = lib.mkOption {
             type = lib.types.strMatching "[A-Za-z0-9][A-Za-z0-9 ._()/-]{0,95}";
@@ -50,8 +68,19 @@ in
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
           address = lib.mkOption {
-            type = lib.types.strMatching "[0-9]{1,3}(\\.[0-9]{1,3}){3}";
+            type = lib.types.nullOr (lib.types.strMatching "[0-9]{1,3}(\\.[0-9]{1,3}){3}");
+            default = null;
             description = "Explicit local IPv4 destination address; never a wildcard.";
+          };
+          addressFile = lib.mkOption {
+            type = runtimeFile;
+            default = null;
+            description = "Runtime file holding the explicit local IPv4 destination, for addresses kept out of the repository (for example a decrypted SOPS bundle).";
+          };
+          addressUnit = lib.mkOption {
+            type = runtimeUnit;
+            default = null;
+            description = "Unit that publishes addressFile; the listener rules follow it.";
           };
           tcpPorts = lib.mkOption {
             type = lib.types.listOf lib.types.port;
@@ -74,19 +103,25 @@ in
 
   config = lib.mkIf cfg.enable {
     assertions = [
+      { assertion = lib.all (host: (host.address == null) != (host.addressFile == null)
+          && (host.addressFile == null) == (host.addressUnit == null)) allHosts;
+        message = "Fleet firewall grants require exactly one of address or addressFile, and addressFile requires addressUnit."; }
       { assertion = lib.all (host: validIPv4 host.address) hosts;
         message = "Fleet firewall grants require canonical IPv4 source addresses."; }
       { assertion = lib.length (lib.unique (map (host: host.address) hosts)) == lib.length hosts;
         message = "Fleet firewall grants require unique IPv4 source addresses."; }
       { assertion = lib.all (service: validIPv4 service.address && service.address != "0.0.0.0") services;
         message = "Public service listeners require canonical explicit IPv4 destination addresses."; }
+      { assertion = lib.all (service: (service.address == null) != (service.addressFile == null)
+          && (service.addressFile == null) == (service.addressUnit == null)) allServices;
+        message = "Public service listeners require exactly one of address or addressFile, and addressFile requires addressUnit."; }
       { assertion = lib.length (lib.unique (map (service: service.address) services)) == lib.length services;
         message = "Public service listeners require unique IPv4 destination addresses."; }
-      { assertion = lib.all (service: service.tcpPorts != [] || service.udpPorts != []) services;
+      { assertion = lib.all (service: service.tcpPorts != [] || service.udpPorts != []) allServices;
         message = "Public service listeners require at least one TCP or UDP port."; }
       { assertion = lib.all (service:
           lib.length (lib.unique service.tcpPorts) == lib.length service.tcpPorts
-          && lib.length (lib.unique service.udpPorts) == lib.length service.udpPorts) services;
+          && lib.length (lib.unique service.udpPorts) == lib.length service.udpPorts) allServices;
         message = "Public service listeners require unique ports per protocol."; }
     ];
 
@@ -98,7 +133,9 @@ in
     # explicitly force-priority authenticated transport rules and reviewed
     # destination-scoped public service listeners admitted through publicServices
     # MAY coexist. A public service entry MUST NOT broaden into a wildcard
-    # destination or an unrelated address.
+    # destination or an unrelated address. An entry whose address lives outside
+    # the repository (addressFile) MUST be admitted only through the runtime
+    # firewall chain (runtime-firewall-addresses), on either backend.
     networking.firewall = {
       enable = true;
       trustedInterfaces = lib.mkForce [ "lo" "tailscale0" ];
@@ -111,5 +148,27 @@ in
       extraCommands = lib.mkForce (lib.optionalString (!config.networking.nftables.enable)
         (lib.concatStringsSep "\n" (lib.filter (rules: rules != "") [ iptablesRules publicIptablesRules ])));
     };
+
+    overalls.runtimeFirewall.rules = lib.mapAttrs' (name: host: lib.nameValuePair "source-${name}" {
+      sourceFile = host.addressFile;
+      protocol = "any";
+      inherit (host) comment;
+      units = [ host.addressUnit ];
+    }) runtimeHosts
+    // lib.listToAttrs (lib.concatLists (lib.mapAttrsToList (name: service:
+      lib.optional (service.tcpPorts != []) (lib.nameValuePair "public-${name}-tcp" {
+        destinationFile = service.addressFile;
+        protocol = "tcp";
+        ports = service.tcpPorts;
+        inherit (service) comment;
+        units = [ service.addressUnit ];
+      })
+      ++ lib.optional (service.udpPorts != []) (lib.nameValuePair "public-${name}-udp" {
+        destinationFile = service.addressFile;
+        protocol = "udp";
+        ports = service.udpPorts;
+        inherit (service) comment;
+        units = [ service.addressUnit ];
+      })) runtimeServices));
   };
 }

@@ -4,6 +4,19 @@ let
   cfg = config.services.marshallProxy;
   localTypes = import ./types.nix { inherit lib; };
   names = builtins.attrNames cfg.backends;
+  runtime = cfg.bindAddressFile != null;
+  variable = "MARSHALL_PROXY_BIND_IPV4";
+  addressDirectory = "/run/marshall-proxy-address";
+  # Refuses an absent or non-canonical runtime address before HAProxy parses a
+  # bind line, so a quoted "${VAR}:443" can never degrade to a wildcard.
+  guard = pkgs.writeShellScript "marshall-proxy-address-guard" ''
+    value="''${${variable}-}"
+    octet='(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])'
+    if ! [[ "$value" =~ ^$octet(\.$octet){3}$ ]] || [ "$value" = 0.0.0.0 ]; then
+      echo '{"event":"proxy.runtime_address_refused","severity":"error"}' >&2
+      exit 1
+    fi
+  '';
 in
 {
   options.services.marshallProxy = {
@@ -16,6 +29,46 @@ in
       type = localTypes.ipv4;
       default = "0.0.0.0";
       description = "Literal public listener address.";
+    };
+    bindAddressFile = mkOption {
+      type = types.nullOr (types.strMatching "/run/[A-Za-z0-9_./-]+");
+      default = null;
+      description = "Runtime file holding the explicit listener IPv4 address (for example a decrypted SOPS bundle output), used instead of bindAddress so the address never enters the Nix store. Every HAProxy listener derived from this proxy binds it.";
+    };
+    bindAddressUnit = mkOption {
+      type = types.nullOr (types.strMatching "[a-zA-Z0-9_.@-]+\\.service");
+      default = null;
+      description = "Unit that publishes bindAddressFile; the proxy address unit follows it.";
+    };
+    bindSpec = mkOption {
+      type = types.functionTo types.str;
+      readOnly = true;
+      internal = true;
+      default = port: if runtime
+        then ''"''${${variable}}:${toString port}"''
+        else "${cfg.bindAddress}:${toString port}";
+      description = "HAProxy bind argument for a port on the proxy address: the literal, or the quoted runtime environment reference.";
+    };
+    addressUnits = mkOption {
+      type = types.listOf types.str;
+      readOnly = true;
+      internal = true;
+      default = lib.optional runtime "marshall-proxy-address.service";
+      description = "Units every HAProxy consumer of the proxy address must follow.";
+    };
+    addressEnvironmentFile = mkOption {
+      type = types.nullOr types.str;
+      readOnly = true;
+      internal = true;
+      default = if runtime then "${addressDirectory}/address.env" else null;
+      description = "EnvironmentFile carrying the validated runtime address variable for every HAProxy consumer.";
+    };
+    addressGuard = mkOption {
+      type = types.nullOr types.str;
+      readOnly = true;
+      internal = true;
+      default = if runtime then "${guard}" else null;
+      description = "ExecStartPre/ExecReload command refusing a missing or non-canonical runtime address; consumers order it first.";
     };
     port = mkOption {
       type = types.port;
@@ -69,8 +122,12 @@ in
       { assertion = !config.services.marshall.enable || lib.all (instance: instance.port != cfg.port && instance.fleetPort != cfg.port)
           (builtins.attrValues config.services.marshall.instances);
         message = "Marshall proxy and local backend ports must be distinct."; }
+      { assertion = runtime == (cfg.bindAddressUnit != null) && (!runtime || cfg.bindAddress == "0.0.0.0");
+        message = "A runtime proxy address requires bindAddressUnit and replaces bindAddress."; }
+      { assertion = !runtime || !cfg.openFirewall || (config.overalls.fleetFirewall.enable or false);
+        message = "A runtime proxy address cannot open a destination-scoped listener without the fleet firewall; set openFirewall = false or admit it through fleet firewall runtime listeners."; }
     ];
-    networking.firewall = mkIf cfg.openFirewall (import ./listener-firewall.nix {
+    networking.firewall = mkIf (cfg.openFirewall && !runtime) (import ./listener-firewall.nix {
       inherit lib config; address = cfg.bindAddress; tcpPorts = [ cfg.port ];
     });
     services.haproxy.enable = true;
@@ -106,7 +163,7 @@ in
       frontend marshall_public
         unique-id-format %[uuid()]
         http-request set-header X-Request-ID %[unique-id]
-        bind ${cfg.bindAddress}:${toString cfg.port} ssl crt ${cfg.certificateFile} alpn h2,http/1.1
+        bind ${cfg.bindSpec cfg.port} ssl crt ${cfg.certificateFile} alpn h2,http/1.1
         acl public_host hdr(host),lower -m str ${lib.toLower cfg.publicHost} ${lib.toLower cfg.publicHost}:${toString cfg.port}
         http-request deny deny_status 421 unless public_host
         http-request del-header Forwarded
@@ -129,9 +186,45 @@ in
     # TLS files MUST remain outside the store and be reread on validated reload.
     # Request logs MUST exclude URLs, headers, credentials and terminal payloads.
     systemd.services.haproxy = {
-      after = cfg.secretUnits;
-      requires = cfg.secretUnits;
-      serviceConfig.UMask = "0027";
+      after = cfg.secretUnits ++ cfg.addressUnits;
+      requires = cfg.secretUnits ++ cfg.addressUnits;
+      serviceConfig = lib.mkMerge [
+        { UMask = "0027"; }
+        (mkIf runtime {
+          EnvironmentFile = cfg.addressEnvironmentFile;
+          ExecStartPre = lib.mkOrder 400 [ cfg.addressGuard ];
+          ExecReload = lib.mkOrder 400 [ cfg.addressGuard ];
+        })
+      ];
+    };
+
+    # @cc [owner:ghuntley,label:security;deployment] proxy-runtime-bind-address
+    # A runtime proxy address MUST be validated as a canonical explicit IPv4
+    # address before any HAProxy listener derived from the proxy starts or
+    # reloads, and each such listener MUST bind exactly that address. A missing,
+    # wildcard or malformed value MUST fail closed instead of binding everywhere.
+    systemd.services.marshall-proxy-address = mkIf runtime {
+      description = "Validate the runtime Marshall proxy listener address";
+      after = [ cfg.bindAddressUnit ];
+      requires = [ cfg.bindAddressUnit ];
+      # Each consumer start retries validation; refusals must not exhaust a
+      # start limit that would then block the corrected address.
+      startLimitIntervalSec = 0;
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        UMask = "0077";
+        RuntimeDirectory = "marshall-proxy-address";
+        RuntimeDirectoryMode = "0700";
+        RuntimeDirectoryPreserve = true;
+        ExecStart = lib.escapeShellArgs [ "${pkgs.python3}/bin/python3" "${./proxy-address.py}"
+          "--address-file" cfg.bindAddressFile "--variable" variable "--output" "${addressDirectory}/address.env" ];
+        NoNewPrivileges = true;
+        PrivateNetwork = true;
+        ProtectSystem = "strict";
+        ProtectHome = true;
+        ReadWritePaths = [ addressDirectory ];
+      };
     };
   };
 }

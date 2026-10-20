@@ -753,8 +753,8 @@ Marshall operator entry point, use new private output paths and each host's
 current enrolled Lilly UUID:
 
 ```text
-audi-gateway-rotate audi-overalls OVERALLS_HOST_UUID 136.243.69.37 10.90.0.1 9445 /private/overalls-relay.token
-audi-gateway-rotate audi-dungarees DUNGAREES_HOST_UUID 136.243.69.32 10.90.0.2 9445 /private/dungarees-relay.token
+audi-gateway-rotate audi-overalls OVERALLS_HOST_UUID OVERALLS_SERVICE_IPV4 10.90.0.1 9445 /private/overalls-relay.token
+audi-gateway-rotate audi-dungarees DUNGAREES_HOST_UUID DUNGAREES_SERVICE_IPV4 10.90.0.2 9445 /private/dungarees-relay.token
 audi-gateway-verify /private/overalls-relay.token
 audi-gateway-verify /private/dungarees-relay.token
 ```

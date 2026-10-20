@@ -58,7 +58,9 @@
     imageTemplates.budgetBytes = 96 * 1024 * 1024 * 1024;
     images = map (image: { path = toString image.package; })
       (import ../../staged-guest-images.nix { inherit overallsPackages; });
-    protectedCidrs = [ "136.243.69.35/32" "136.243.69.32/32" "136.243.69.55/32" ];
+    protectedAddressFiles = let files = config.overalls.fleetAddresses.files;
+      in [ files.dungareesPrimary files.dungareesService files.overallsPrimary ];
+    protectedAddressUnits = [ config.overalls.fleetAddresses.unit ];
     ingress.enable = true;
   };
 
@@ -132,13 +134,14 @@
 
   # @cc [owner:ghuntley,label:security;deployment] dungarees-audi-worker-plane
   # Audi gateway and DNS listeners MUST bind the reserved explicit address
-  # 136.243.69.32 and remain reachable from the public internet through the
+  # DUNGAREES_SERVICE_IPV4 and remain reachable from the public internet through the
   # reviewed fleet-perimeter public service entry (TCP 22/80/443 and UDP/TCP
   # 53), and MUST reach the control plane only through the verified fleet
   # tunnel. The worker-only assertion MUST stay intact: no local Marshall,
   # database, public proxy or Porsche gateway may be enabled here.
   overalls.fleetFirewall.publicServices.audi = {
-    address = "136.243.69.32";
+    addressFile = config.overalls.fleetAddresses.files.dungareesService;
+    addressUnit = config.overalls.fleetAddresses.unit;
     tcpPorts = [ 22 53 80 443 ];
     udpPorts = [ 53 ];
     comment = "Audi public gateway and DNS";
@@ -146,7 +149,6 @@
 
   services.audiDns = {
     enable = true;
-    openFirewall = true;
     controlPlane = "https://ghuntley.dev:5443";
     caFile = "/etc/overalls/service-ca.crt";
     credentialFile = "/run/overalls-secrets/audi-dns/token";
@@ -154,7 +156,8 @@
     zone = "apps.ghuntley.dev";
     nameservers = [ "ns1.ghuntley.dev" "ns2.ghuntley.dev" ];
     mailbox = "hostmaster.ghuntley.dev";
-    bindAddress = "136.243.69.32";
+    bindAddressFile = config.overalls.fleetAddresses.files.dungareesService;
+    bindAddressUnit = config.overalls.fleetAddresses.unit;
   };
 
   services.audi = {
@@ -165,8 +168,8 @@
     caFile = "/etc/overalls/service-ca.crt";
     credentialFile = "/run/overalls-secrets/audi/token";
     secretUnits = [ "overalls-secrets-audi.service" ];
-    bindAddress = "136.243.69.32";
-    openFirewall = true;
+    bindAddressFile = config.overalls.fleetAddresses.files.dungareesService;
+    bindAddressUnit = config.overalls.fleetAddresses.unit;
     tls = {
       enable = true;
       zone = "apps.ghuntley.dev";
@@ -175,8 +178,8 @@
     };
   };
 
-  # Discovery uses rescue's eth0 name; installed hardware uses enp5s0.
-  services.overallsFleetExporter.externalInterfaces = lib.mkForce [ "enp5s0" ];
+  # Discovery uses rescue's eth0 name; installed hardware uses enp193s0f0np0.
+  services.overallsFleetExporter.externalInterfaces = lib.mkForce [ "enp193s0f0np0" ];
   services.overallsFleetExporter.units = [
     "lilly.service"
     "ziggy.service"

@@ -10,13 +10,30 @@ let
   # @cc [owner:ghuntley,label:deployment] overalls-default-installed-image
   # The default MUST be derived by the shared manifest validator from the exact
   # image registered below and staged on Lilly, never from a second ID algorithm.
-  # Standalone validation MUST load EditorRelease before ImageManifest so both
-  # legacy and editor-enabled manifests use the complete shared protocol schema.
+  # Standalone validation MUST compile EditorRelease, GuestAgents, ImageManifest
+  # and NativeAdmission together so every manifest uses the complete shared
+  # protocol schema.
+  # NativeAdmission reads the reviewed native histories at compile time.
+  protocolSource = lib.fileset.toSource {
+    root = ../../../protocol;
+    fileset = lib.fileset.unions [
+      ../../../protocol/lib/overalls_protocol/editor_release.ex
+      ../../../protocol/lib/overalls_protocol/guest_agents.ex
+      ../../../protocol/lib/overalls_protocol/image_manifest.ex
+      ../../../protocol/lib/overalls_protocol/native_admission.ex
+      ../../../protocol/priv/native
+    ];
+  };
+  protocol = "${protocolSource}/lib/overalls_protocol";
   imageIdentity = pkgs.runCommand "overalls-default-image-id" {
     nativeBuildInputs = [ overallsPackages.toolchain.elixir ];
   } ''
     export ERL_FLAGS="+S 2:2"
-    elixir -r ${../../../protocol/lib/overalls_protocol/editor_release.ex} -r ${../../../protocol/lib/overalls_protocol/image_manifest.ex} -e '
+    mkdir "$TMPDIR/protocol-beams"
+    elixirc -o "$TMPDIR/protocol-beams" \
+      ${protocol}/editor_release.ex ${protocol}/guest_agents.ex \
+      ${protocol}/image_manifest.ex ${protocol}/native_admission.ex
+    elixir -pa "$TMPDIR/protocol-beams" -e '
       [source, output] = System.argv()
       {:ok, image} = source |> File.read!() |> JSON.decode!() |> OverallsProtocol.ImageManifest.validate()
       File.write!(output, image.id)

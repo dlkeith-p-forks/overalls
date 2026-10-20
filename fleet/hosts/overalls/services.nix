@@ -1,4 +1,8 @@
 { config, overallsPackages, pkgs, ... }:
+let
+  # SOPS-delivered fleet addresses (ADR-0233); no address literal is evaluated.
+  addresses = config.overalls.fleetAddresses;
+in
 {
   imports = [ ./image-catalog.nix ./porsche-authority.nix ./private-services.nix ];
 
@@ -34,8 +38,8 @@
       };
       outputs."serper.key" = { format = "raw"; secrets = [ "SERPER_API_KEY" ]; };
     };
-    github-oauth-placeholder = {
-      encryptedFile = "${../../../secrets/overalls-github-oauth-placeholder.enc.json}";
+    github-oauth = {
+      encryptedFile = "${../../../secrets/overalls-github-oauth.enc.json}";
       outputs.secret = { format = "raw"; secrets = [ "GITHUB_CLIENT_SECRET" ]; };
     };
     enrico = {
@@ -146,8 +150,8 @@
       certificateRootsFile = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
       acceptTerms = true;
       nameservers = [
-        { address = "136.243.69.37"; }
-        { address = "136.243.69.32"; }
+        { addressFile = addresses.files.overallsService; }
+        { addressFile = addresses.files.dungareesService; }
       ];
     };
     poolSize = 10;
@@ -160,6 +164,8 @@
       "overalls-secrets-ssh-host-ca.service"
       "overalls-secrets-backend-tls.service"
       "overalls-database-password.service"
+      # The wildcard issuer's Audi DNS replica addresses (ADR-0233).
+      addresses.unit
     ];
     cpuCores = 2;
     memoryMiB = 4096;
@@ -229,8 +235,8 @@
   # authority. Startup MUST wait for idempotent Ash authority registration.
   services.porsche = {
     enable = true;
-    bindAddress = "136.243.69.55";
-    openFirewall = true;
+    bindAddressFile = addresses.files.overallsPrimary;
+    bindAddressUnit = addresses.unit;
     controlPlane = "https://ghuntley.dev:5443";
     publicOrigin = "https://ghuntley.dev";
     caFile = "/etc/overalls/service-ca.crt";
@@ -240,7 +246,8 @@
 
   services.marshallProxy = {
     enable = true;
-    bindAddress = "136.243.69.55";
+    bindAddressFile = addresses.files.overallsPrimary;
+    bindAddressUnit = addresses.unit;
     publicHost = "ghuntley.dev";
     backendCAFile = "/etc/overalls/service-ca.crt";
     backends.overalls = {
@@ -268,13 +275,16 @@
     # 96 GiB: the Linux templates plus the 64 GiB Windows disk (ADR-0173).
     imageTemplates.budgetBytes = 96 * 1024 * 1024 * 1024;
     controlPlaneCAFile = "/etc/overalls/service-ca.crt";
-    protectedCidrs = [ "136.243.69.55/32" "136.243.69.37/32" ];
+    # The host's own addresses arrive at runtime (ADR-0233); the effective
+    # protected set, and so Lilly's network claim, is unchanged.
+    protectedAddressFiles = [ addresses.files.overallsPrimary addresses.files.overallsService ];
+    protectedAddressUnits = [ addresses.unit ];
     ingress.enable = true;
   };
 
   # @cc [owner:ghuntley,label:security;deployment] overalls-audi-public-plane
   # Audi gateway and DNS listeners MUST bind the reserved explicit address
-  # 136.243.69.37 and remain reachable from the public internet through the
+  # OVERALLS_SERVICE_IPV4 and remain reachable from the public internet through the
   # reviewed fleet-perimeter public service entry (TCP 22/80/443 and UDP/TCP
   # 53); ordinary per-service firewall openings stay suppressed by ADR-0075.
   # Wildcard binds MUST fail evaluation against Porsche's shared port. The
@@ -282,7 +292,8 @@
   # serving the proxy's HTTP-01 issuance and Porsche's public origin, so it
   # MUST never be delegated to Audi DNS.
   overalls.fleetFirewall.publicServices.audi = {
-    address = "136.243.69.37";
+    addressFile = addresses.files.overallsService;
+    addressUnit = addresses.unit;
     tcpPorts = [ 22 53 80 443 ];
     udpPorts = [ 53 ];
     comment = "Audi public gateway and DNS";
@@ -290,7 +301,6 @@
 
   services.audiDns = {
     enable = true;
-    openFirewall = true;
     controlPlane = "https://ghuntley.dev:5443";
     caFile = "/etc/overalls/service-ca.crt";
     credentialFile = "/run/overalls-secrets/audi-dns/token";
@@ -298,7 +308,8 @@
     zone = "apps.ghuntley.dev";
     nameservers = [ "ns1.ghuntley.dev" "ns2.ghuntley.dev" ];
     mailbox = "hostmaster.ghuntley.dev";
-    bindAddress = "136.243.69.37";
+    bindAddressFile = addresses.files.overallsService;
+    bindAddressUnit = addresses.unit;
   };
 
   services.audi = {
@@ -309,8 +320,8 @@
     caFile = "/etc/overalls/service-ca.crt";
     credentialFile = "/run/overalls-secrets/audi/token";
     secretUnits = [ "overalls-secrets-audi.service" ];
-    bindAddress = "136.243.69.37";
-    openFirewall = true;
+    bindAddressFile = addresses.files.overallsService;
+    bindAddressUnit = addresses.unit;
     tls = {
       enable = true;
       zone = "apps.ghuntley.dev";

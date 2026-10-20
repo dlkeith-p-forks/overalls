@@ -388,6 +388,7 @@ ports; they do not enumerate every systemd unit or firewall rule.
 | --- | --- |
 | `overalls` | Control plane and worker: one Marshall instance, local PostgreSQL, public web proxy, Porsche and Enrico, plus provisioner and guest services, diagnostic log store, Prometheus, Tempo and loopback Grafana behind an authenticated public HTTPS frontend on port 3443. Loss of this host removes the declared control-plane authority and both central telemetry query paths; collection on the worker remains independent. |
 | `dungarees` | Worker using Overalls authority, with its own Lilly, guest storage, private services and OpenTelemetry collector; also a public Audi gateway and DNS replica. It deliberately has no Marshall, PostgreSQL, web proxy, Porsche or central telemetry store. |
+| `salopettes` | Hetzner Cloud `hcloud` host (ADR-0231) running only the Susan push relay, its local PostgreSQL and an nginx TLS proxy for `notifications.overalls.dev`. It has no KVM, Lilly, Marshall, Porsche or Audi and holds no fleet authority: Marshall reaches it only as a public HTTPS client, so its loss delays needs-input pokes, which Marshall retries and expires, but affects no guest, session or control-plane state. |
 
 ## Authority and interactions
 
@@ -460,6 +461,13 @@ management SSH port 22; administrative OpenSSH uses 2222. Audi and DNS bind
 separate public addresses on each host. Enrico is a private quota-bound cache.
 [Dungarees assertions](repo:fleet/hosts/dungarees/configuration.nix) enforce its
 worker-only control-plane configuration.
+[Salopettes assertions](repo:fleet/hosts/salopettes/configuration.nix) enforce
+its Susan-only role. Its public listeners are TCP 80 and 443 at its IPv4
+address, which arrives only through the shared `fleet-addresses` SOPS document
+(ADR-0233). Nginx forwards to Susan's loopback port 4100 without access logs.
+It joins `fleet0` as `10.90.0.3` with IPv6 off and peers only with Overalls,
+which admits its handshake only from that SOPS-delivered address. Like the
+other fleet hosts, it offers a Tailscale exit node.
 
 Only Overalls Marshall receives the dedicated SSH CA private key through an
 encrypted runtime bundle and systemd credential. Porsche, both Audi gateways
@@ -489,7 +497,7 @@ with a reader-only runtime credential. Marshall has no diagnostic query credenti
 or reader dependency.
 Overalls exposes only
 Grafana through a dedicated authenticated HTTPS proxy frontend on
-`136.243.69.55:3443`, with a matching destination-scoped perimeter grant.
+`OVERALLS_PRIMARY_IPV4:3443`, with a matching destination-scoped perimeter grant.
 The proxy reuses its existing public certificate; Grafana login remains the
 operator authority boundary. Prometheus and Tempo have no public frontend. The
 WireGuard peer key and firewall identify the physical sender, while the Rust
@@ -665,46 +673,10 @@ disabled in the base profile. The service allowlist lives in
 ```mermaid
 flowchart LR
   host["dungarees"]
-  host --> s0["audi"]
-  host --> s1["audiDns"]
-  host --> s2["audiDnsRequestRecorder"]
-  host --> s3["audiDnsSloExporter"]
-  host --> s4["audiPrivate"]
-  host --> s5["audiPrivateRequestRecorder"]
-  host --> s6["audiPrivateSloExporter"]
-  host --> s7["audiSshRequestRecorder"]
-  host --> s8["audiSshSloExporter"]
-  host --> s9["brady"]
-  host --> s10["bradyRequestRecorder"]
-  host --> s11["bradySloExporter"]
-  host --> s12["galileo"]
-  host --> s13["galileoRequestRecorder"]
-  host --> s14["galileoSloExporter"]
-  host --> s15["lilly"]
-  host --> s16["lillyHostd"]
-  host --> s17["lillyTransfer"]
-  host --> s18["opentelemetry-collector"]
-  host --> s19["overalls-trace-audi"]
-  host --> s20["overalls-trace-audi-dns"]
-  host --> s21["overalls-trace-audi-private"]
-  host --> s22["overalls-trace-brady"]
-  host --> s23["overalls-trace-galileo"]
-  host --> s24["overalls-trace-lilly"]
-  host --> s25["overalls-trace-ziggy"]
-  host --> s26["overallsAutoUpdate"]
-  host --> s27["overallsFleetExporter"]
-  host --> s28["overallsLogging"]
-  host --> s29["overallsOtelFleet"]
-  host --> s30["overallsOtelGuest"]
-  host --> s31["underclass"]
-  host --> s32["underclassEgress"]
-  host --> s33["underclassMonitorProbe"]
-  host --> s34["underclassProxySloExporter"]
-  host --> s35["ziggy"]
-  host --> s36["ziggySloExporter"]
+
 ```
 
-Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `overalls`. Administrative SSH ports: 2222.
+Arrows mean configured service placement. Configuration: `dungarees-base`. Marshall instances: none. Fleet address: `disabled`. Fleet peers: none. Administrative SSH ports: 22.
 
 ### overalls
 
@@ -783,7 +755,20 @@ flowchart LR
   host --> s69["ziggySloExporter"]
 ```
 
-Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`. Administrative SSH ports: 2222.
+Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`, `salopettes`. Administrative SSH ports: 2222.
+
+### salopettes
+
+```mermaid
+flowchart LR
+  host["salopettes"]
+  host --> s0["overallsAutoUpdate"]
+  host --> s1["overallsFleetExporter"]
+  host --> s2["postgresql"]
+  host --> s3["susan"]
+```
+
+Arrows mean configured service placement. Configuration: `salopettes`. Marshall instances: none. Fleet address: `10.90.0.3`. Fleet peers: `overalls`. Administrative SSH ports: 22.
 <!-- hldd:view:end -->
 
 ## Configuration and change procedure
@@ -837,19 +822,29 @@ delays notifications and Mila's watch stream still works while open.
 
 ## Susan placement and fixed egress
 
-Susan is a separate deployment, not a role on fleet hosts. It is either the
-NixOS service [`services.susan`](repo:nix/domains/system/susan.nix) with a local
-PostgreSQL or the OCI image
-[`image-susan`](repo:nix/domains/artifacts/susan-image.nix). The image is
-streamLayeredImage with uid 65532, no shell, a read-only root, tmpfs `/tmp` and
-a fixed creation time. Migrations run as a separate release command. Hosting,
-registry and TLS placement are open (ADR-0224), so no inventory host enables it
-yet and the generated topology has no Susan node.
+Susan is a separate deployment that shares no authority with Marshall hosts.
+ADR-0231 places it alone on the Hetzner Cloud host `salopettes`, as the NixOS
+service [`services.susan`](repo:nix/domains/system/susan.nix) with a local
+PostgreSQL behind an nginx proxy that terminates ACME HTTP-01 TLS for
+`notifications.overalls.dev` ([host role](repo:fleet/hosts/salopettes/configuration.nix)).
+Salopettes is enrolled like every fleet host, so the trunk auto-updater deploys
+Susan, and it decrypts `overalls-susan` with its own host recipient. Its public
+address comes from the shared `fleet-addresses` document (ADR-0233); the
+repository holds no address literal for it. Marshall on Overalls resolves
+`notifications.overalls.dev` to salopettes' `fleet0` address `10.90.0.3`, so its
+pokes cross the authenticated tunnel to TCP 443 and still verify the public
+certificate. Mila devices use the public origin, which needs the DNS record to
+stay unproxied. The OCI
+image [`image-susan`](repo:nix/domains/artifacts/susan-image.nix) remains a
+packaging artifact with no registry: streamLayeredImage with uid 65532, no
+shell, a read-only root, tmpfs `/tmp` and a fixed creation time. Migrations
+run as a separate release command.
 
 ```mermaid
 flowchart LR
-  Internet["Mila apps and Marshalls"] -->|"HTTPS notifications.overalls.dev"| Proxy["TLS proxy (placement open)"]
-  Proxy -->|"HTTP 127.0.0.1:4100"| Susan["Susan release / container"]
+  Internet["Mila apps"] -->|"HTTPS notifications.overalls.dev"| Proxy["salopettes nginx (ACME TLS)"]
+  Marshall["Marshall on overalls"] -->|"HTTPS over fleet0 to 10.90.0.3:443"| Proxy
+  Proxy -->|"HTTP 127.0.0.1:4100"| Susan["Susan release on salopettes"]
   Susan --> PG[("Susan PostgreSQL")]
   Susan -->|"HTTPS h2"| APNs["api.push.apple.com / api.sandbox.push.apple.com"]
   Susan -->|"HTTPS"| Google["oauth2.googleapis.com, fcm.googleapis.com"]
@@ -863,6 +858,9 @@ These are the failure boundaries:
 - When PostgreSQL is down, `/healthz` answers 503 and pokes answer 503.
 - When a provider has an outage, pokes answer 503 with that provider's
   Retry-After.
+- When the `fleet0` tunnel to salopettes is down, or its address document
+  fails to decrypt on either side, Marshall's pokes fail and are retried; the
+  public origin for Mila devices is unaffected.
 
 Egress is fixed in code, not configuration. The container uses a
 loopback-only, epmd-less distribution ([`Susan.Epmd`](repo:susan/lib/susan/epmd.ex))

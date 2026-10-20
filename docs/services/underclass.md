@@ -98,6 +98,22 @@ windows, and old rows are pruned by the service. Prompts, cache keys,
 credentials and upstream error text are not retained. This pin has source
 review and an offline package build only; tests were not run.
 
+Revision `dbaf7b8` retries upstream capacity failures on another account
+(upstream ADR 0022). Upstream answers 200, then fails the stream with
+`server_is_overloaded` before any output; Codex shows "Selected model is at
+capacity". The proxy now holds a streamed response, for at most 60 seconds or
+1 MiB, until its first output or terminal event. An overload before any output
+is recorded, that account is skipped for the rest of the request without a
+health change, and the sticky session moves to the account that serves the
+request. If every account overloads, the client receives the original upstream
+bytes. Errors after output still pass through. A stream `error` event's nested
+code is now recorded, so these failures count as `overloaded` instead of
+`upstream_failed`. Response headers now reach clients at the first output
+rather than the first upstream byte. A request that retries elsewhere still
+produces exactly one SLO outcome. This pin has an offline package build, and
+the upstream tests passed on the patched source; live provider behavior is
+unverified.
+
 Revision `469aff4` keeps the fail-fast 429 but always selects an account again
 after the automatic reset attempt. That attempt can wait behind another
 request's usage check, and short upstream throttles (seconds to a minute) can

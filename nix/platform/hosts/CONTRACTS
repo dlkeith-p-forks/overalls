@@ -3,7 +3,8 @@ Profiles MUST NOT format storage on boot or activation. EC2 data loss MUST leave
 system storage and SSH available, with readiness withheld until reconciliation.
 
 @cc [owner:ghuntley,label:capacity] explicit-host-budgets
-Host profiles MUST require exactly explicit guest CPU, memory and ARC budgets and
-refuse the retired logical budget. Lilly binding pools MUST carry exactly id,
+Host profiles MUST require exactly explicit guest CPU, memory and ARC budgets, or
+exactly the ARC budget on Lilly-free hcloud hosts, and refuse the retired logical
+budget. Lilly binding pools MUST carry exactly id,
 name, filesystem_id and storage. Hetzner guests MUST have a reviewed physical
 quota; EC2 local storage MUST exclude every EBS disk.

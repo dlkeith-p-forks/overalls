@@ -17,12 +17,12 @@ routing defects.
   withdrew guest DNS records. This was an implementation defect in the deployed
   fleet path, not an authentication bypass. ADR-0095 replaces the hidden alias
   with a source-restricted systemd socket relay that binds only
-  `136.243.69.55:5443`, preserves TLS bytes, and forwards to Marshall's existing
+  `OVERALLS_PRIMARY_IPV4:5443`, preserves TLS bytes, and forwards to Marshall's existing
   `127.0.0.1:5443` listener. Marshall remains the TLS and service-token authority.
 - **Resolved, high — provider-subnet neighbour discovery:** Dungarees could not
-  reach the Overalls Audi address `136.243.69.37` directly and returned `No route
+  reach the Overalls Audi address `OVERALLS_SERVICE_IPV4` directly and returned `No route
   to host`. The reviewed host declaration now routes that address as a `/32`
-  through provider gateway `136.243.69.1`, matching the existing route for the
+  through provider gateway `DUNGAREES_GATEWAY_IPV4`, matching the existing route for the
   Overalls primary address. ADR-0095 and the `public-service-peer-routing`
   contract make this provider behavior explicit.
 - **Resolved in configuration, medium — staging trust:** both Audi roles had
@@ -82,10 +82,10 @@ routing defects.
   blocked before execution by eight pre-existing type errors in its composed
   test driver; those diagnostics do not originate in the changed files.
 - Overalls activated `0aefbe0`; the relay listened only on
-  `136.243.69.55:5443`, carried live control traffic to `127.0.0.1:5443`, and
+  `OVERALLS_PRIMARY_IPV4:5443`, carried live control traffic to `127.0.0.1:5443`, and
   `/etc/hosts` contained no stale alias. Dungarees activated `e6195a0`, reported
   healthy updater state, resolved `overalls.dev` publicly, and routed both `.55`
-  and `.37` through `136.243.69.1`; its gateway and DNS readiness sockets both
+  and `.37` through `DUNGAREES_GATEWAY_IPV4`; its gateway and DNS readiness sockets both
   returned `ready: true`.
 - Both authoritative DNS addresses returned the active `.37` gateway for the
   Overalls-hosted VMs. Ordinary HTTPS returned each expected page with a

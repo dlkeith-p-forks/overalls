@@ -5,14 +5,15 @@ let
   # Both CPU counts were measured with nproc --all over inventory-pinned
   # administrative SSH on 2026-09-18. Guest budgets are not CPU discovery.
   endpoints = {
-    dungarees = { address = "136.243.69.35"; port = 2222; logicalCpus = 32; };
-    # Overalls administrative SSH listens only on its Tailscale address.
+    # Builders are reached over Tailscale so no public address is evaluated.
+    dungarees = { address = "100.120.189.15"; port = 2222; logicalCpus = 32; };
     overalls = { address = "100.117.30.53"; port = 2222; logicalCpus = 32; };
   };
 in
 # @cc [owner:ghuntley,label:security] fleet-builder-authority
 # Host pins and encrypted document paths MUST derive from authoritative host
 # inventory; CPU slots MUST reflect authenticated physical CPU observations.
+# A host awaiting its installed identity (a base declaration) is not a builder.
 lib.mapAttrs (name: endpoint: endpoint // {
   systems = [ "${inventory.${name}.inventory.arch}-linux" ];
   supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" "nested-kvm" ];
@@ -23,4 +24,4 @@ lib.mapAttrs (name: endpoint: endpoint // {
       (throw "Missing remote builder credential") inventory.${name}.credentials;
     path = ../. + ("/" + document.path);
   in assert lib.assertMsg (builtins.pathExists path) "Missing remote builder ciphertext"; "${path}";
-}) endpoints
+}) (lib.filterAttrs (name: _: inventory.${name}.identity.sshKeys != []) endpoints)

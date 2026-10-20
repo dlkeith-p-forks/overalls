@@ -39,8 +39,8 @@ behavior without changing the original review boundary.
   apex handling), so delegating `overalls.dev` itself would break the proxy's
   HTTP-01 issuance and Porsche's `publicOrigin`. Contracted in
   `overalls-audi-public-plane`.
-- **Confirmed:** explicit-address binding. Overalls binds `136.243.69.37`
-  (ADR-0085 reservation); Dungarees binds `136.243.69.32`, previously
+- **Confirmed:** explicit-address binding. Overalls binds `OVERALLS_SERVICE_IPV4`
+  (ADR-0085 reservation); Dungarees binds `DUNGAREES_SERVICE_IPV4`, previously
   documented only as additional SSH on port 2222 — no port collision with Audi
   22/80/443/53. Both addresses were already in Lilly's `protectedCidrs`.
   ADR-0085's implementation evidence now records the Dungarees reservation.

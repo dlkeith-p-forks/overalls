@@ -25,7 +25,7 @@
   };
   services.marshall.integrations.github = {
     clientId = "placeholder-github-client-id";
-    clientSecretFile = "/run/overalls-secrets/github-oauth-placeholder/secret";
+    clientSecretFile = "/run/overalls-secrets/github-oauth/secret";
     redirectUri = "https://ghuntley.dev/auth/github-com/callback";
   };
   systemd.services.cachix-watch-store-agent = {
@@ -33,10 +33,12 @@
     after = [ "overalls-secrets-cachix.service" ];
   };
 
-  overalls.remoteBuilders = {
-    enable = true;
+  # Peers awaiting an installed identity are omitted, so Overalls keeps
+  # evaluating while a replacement host is a base declaration.
+  overalls.remoteBuilders = let machines = import ../../remote-builders.nix { inherit lib; }; in {
+    enable = lib.attrNames machines != [ "overalls" ];
     localName = "overalls";
-    machines = import ../../remote-builders.nix { inherit lib; };
+    inherit machines;
   };
   imports = [ ./services.nix ../../fleet-network.nix ];
   services.overallsOtelFleet = {
@@ -75,10 +77,8 @@
   };
   services.openssh.openFirewall = false;
   networking.enableIPv6 = false;
-  networking.firewall = import ../../../nix/domains/system/listener-firewall.nix {
-    inherit lib config; address = "136.243.69.55"; tcpPorts = [ 2222 ];
-    udpPortRanges = [{ from = 60000; to = 61000; }];
-  };
+  # The fleet perimeter (ADR-0075) owns every input rule; administrative SSH on
+  # 2222 and mosh are reached over Tailscale and the reviewed source grants.
   programs.mosh.openFirewall = false;
   overalls.tailscale.exitNode = true;
   networking.domain = "dev";
@@ -103,11 +103,23 @@
   systemd.services.marshall-overalls.upholds = [ "marshall-fleet-relay.socket" ];
   systemd.sockets.marshall-fleet-relay = {
     description = "Source-restricted Marshall fleet API relay";
-    wantedBy = [ "sockets.target" ];
+    # The address arrives at runtime (ADR-0233); the socket has no static
+    # listener and starts once overalls-runtime-socket-marshall-fleet-relay
+    # has written its drop-in.
+    wantedBy = [];
     partOf = [ "marshall-overalls.service" ];
-    listenStreams = [ "136.243.69.55:5443" ];
     socketConfig.FreeBind = true;
   };
+  overalls.runtimeSockets.marshall-fleet-relay = {
+    addressFile = config.overalls.fleetAddresses.files.overallsPrimary;
+    addressUnit = config.overalls.fleetAddresses.unit;
+    port = 5443;
+  };
+  # @cc [owner:ghuntley,label:deployment;security] overalls-susan-fleet-path
+  # Marshall's compiled Susan origin MUST resolve to salopettes' fleet0
+  # address so pokes cross the authenticated tunnel; TLS still verifies the
+  # public notifications.overalls.dev certificate (ADR-0233).
+  networking.hosts."10.90.0.3" = [ "notifications.overalls.dev" ];
   # @cc [owner:ghuntley,label:recovery] overalls-gateway-certificate-transport
   # Initial gateway certificate acquisition MUST activate the local fleet API
   # socket after updater quiescence, rather than wait for post-gateway restore.

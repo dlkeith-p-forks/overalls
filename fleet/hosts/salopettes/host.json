@@ -1,0 +1,91 @@
+{
+  "addresses": {},
+  "budgets": {
+    "arcMaxMiB": 1024
+  },
+  "credentials": [
+    {
+      "name": "salopettes-git",
+      "path": "secrets/salopettes-git.enc.json"
+    },
+    {
+      "name": "overalls-susan",
+      "path": "secrets/overalls-susan.enc.json"
+    },
+    {
+      "name": "fleet-addresses",
+      "path": "secrets/fleet-addresses.enc.json"
+    },
+    {
+      "name": "salopettes-fleet-network",
+      "path": "secrets/salopettes-fleet-network.enc.json"
+    }
+  ],
+  "discovery": {
+    "routes": [
+      {
+        "dev": "eth0",
+        "dst": "default"
+      }
+    ],
+    "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPDWvRAboNMrQcGX7kbWhNTFUwyWuA+EfXTfTotMrhGH"
+  },
+  "firmware": "uefi",
+  "git": {
+    "knownHosts": "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\n",
+    "repository": "ssh://git@github.com/ghuntley/overalls"
+  },
+  "identity": {
+    "hostId": "c1a12a0a",
+    "sshKeys": [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINDfOMMdczZHtJQdcvXErOm/i0Bbbq2yxC6+RDlvtiY0"
+    ]
+  },
+  "inventory": {
+    "arch": "x86_64",
+    "disks": [
+      {
+        "active": true,
+        "aliases": [
+          "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_130763259"
+        ],
+        "device": "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_130763259",
+        "id": "disk-5b2842f62a75e5c5b7d8bd9c",
+        "kind": "physical",
+        "model": "QEMU HARDDISK",
+        "path": "/dev/sda",
+        "serial": "130763259",
+        "size": 163842097152,
+        "transport": "unknown"
+      }
+    ],
+    "machine": "fd80d98c-4a7b-40f6-afc2-da8ad1ea8775"
+  },
+  "name": "salopettes",
+  "network": {
+    "10-uplink": {
+      "matchConfig": {
+        "MACAddress": "92:00:0a:36:0d:d5"
+      },
+      "networkConfig": {
+        "DHCP": "ipv4",
+        "DNS": [
+          "185.12.64.1",
+          "185.12.64.2"
+        ],
+        "IPv6AcceptRA": false,
+        "LinkLocalAddressing": "no"
+      }
+    }
+  },
+  "platform": "hcloud",
+  "reviewed": true,
+  "storage": {
+    "ashift": 12,
+    "guests": [],
+    "quotaBytes": null,
+    "system": [
+      "disk-5b2842f62a75e5c5b7d8bd9c"
+    ]
+  }
+}

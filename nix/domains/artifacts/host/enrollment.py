@@ -178,9 +178,41 @@ def stable_owner(owner: Mapping[str, object]) -> dict[str, object]:
     return result
 
 
+def protected_networks(binding: Mapping[str, object]) -> list[str]:
+    """The effective protected set Lilly claims (lilly-protected-binding-effective)."""
+    protected = binding.get("protectedCidrs")
+    files = binding.get("protectedAddressFiles", [])
+    if (
+        not isinstance(protected, list)
+        or not all(isinstance(item, str) for item in protected)
+        or not isinstance(files, list)
+        or not all(isinstance(item, str) for item in files)
+    ):
+        raise ValueError("invalid Lilly network binding")
+    effective = set(cast("list[str]", protected))
+    for item in cast("list[str]", files):
+        text = Path(item).read_text(encoding="ascii").strip()
+        octets = text.split(".")
+        if (
+            len(octets) != 4
+            or not all(
+                part.isdigit() and str(int(part)) == part and int(part) <= 255 for part in octets
+            )
+            or text in ("0.0.0.0", "255.255.255.255")
+            or octets[0] == "127"
+            or int(octets[0]) >= 224
+        ):
+            raise ValueError("invalid Lilly runtime protected address")
+        effective.add(text + "/32")
+    return sorted(effective)
+
+
 def stable_binding(lilly: Mapping[str, object]) -> dict[str, object]:
     result = dict(object_value(lilly.get("binding")))
     result.pop("hostId", None)
+    if "protectedCidrs" in result:
+        result["protectedCidrs"] = protected_networks(result)
+        result.pop("protectedAddressFiles", None)
     pools = result.get("pools")
     if not isinstance(pools, list):
         return result
@@ -214,13 +246,10 @@ def network_rebind_descriptor(
     old_lilly: Mapping[str, object], old_owner: Mapping[str, object]
 ) -> dict[str, object]:
     binding = object_value(old_lilly.get("binding"))
-    protected = binding.get("protectedCidrs")
-    if not isinstance(protected, list) or not all(isinstance(item, str) for item in protected):
-        raise ValueError("invalid Lilly network binding")
     return {
         "host_id": string_value(binding.get("hostId")),
         "egress": string_value(binding.get("egressInterface")),
-        "protected": sorted(set(protected)),
+        "protected": protected_networks(binding),
         "state_dir": string_value(old_owner.get("network_state_dir")),
     }
 

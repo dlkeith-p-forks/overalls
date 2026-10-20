@@ -29,6 +29,9 @@ let
     # Upper bound; fresh native observations further constrain quota and headroom.
     cache_quota_bytes = 274877906944;
   });
+  # Runtime protected addresses render Brady's policy beside Lilly's at start.
+  protectedAddresses = import ../protected-addresses.nix { inherit lib; files = lilly.protectedAddressFiles; };
+  runtimeProtected = lilly.protectedAddressFiles != [];
   resolv = pkgs.writeText "brady-resolv.conf" (lib.concatMapStrings (ip: "nameserver ${ip}\n") cfg.dnsResolvers);
   otelEnabled = lib.attrByPath [ "services" "overallsOtelFleet" "enable" ] false config;
 in {
@@ -99,11 +102,11 @@ in {
       description = "Brady transparent guest egress proxy";
       wantedBy = [ "multi-user.target" ];
       wants = [ "lilly.service" "brady-storage.service" "brady-pressure.service" ];
-      after = [ "lilly.service" "brady-storage.service" ] ++ cfg.secretUnits;
-      requires = cfg.secretUnits;
+      after = [ "lilly.service" "brady-storage.service" ] ++ cfg.secretUnits ++ lilly.protectedAddressUnits;
+      requires = cfg.secretUnits ++ lilly.protectedAddressUnits;
       startLimitIntervalSec = 0;
       environment = {
-        BRADY_CONFIG_FILE = runtime;
+        BRADY_CONFIG_FILE = if runtimeProtected then "/run/brady/config.json" else runtime;
         RELEASE_DISTRIBUTION = "none"; RELEASE_TMP = "/run/brady"; ERL_CRASH_DUMP = "/dev/null";
       } // lib.optionalAttrs otelEnabled {
         BRADY_FLEET_MONITOR = "1";
@@ -114,6 +117,11 @@ in {
         for credential in issuer.pem issuer.key; do
           ${pkgs.coreutils}/bin/install -m 0400 "$CREDENTIALS_DIRECTORY/$credential" "/run/brady/credentials/$credential"
         done
+      '' + lib.optionalString runtimeProtected ''
+        ${pkgs.jq}/bin/jq ${protectedAddresses.jqArguments} \
+          '${protectedAddresses.jqFilter ".protected_cidrs"}' ${runtime} > /run/brady/config.json.new
+        ${pkgs.coreutils}/bin/chmod 0600 /run/brady/config.json.new
+        ${pkgs.coreutils}/bin/mv -T /run/brady/config.json.new /run/brady/config.json
       '';
       script = ''
         export RELEASE_COOKIE
@@ -124,7 +132,8 @@ in {
         Type = "exec"; User = "brady"; Group = "brady"; UMask = "0077";
         Restart = "always"; RestartSec = 5;
         RuntimeDirectory = "brady"; RuntimeDirectoryMode = "0700";
-        LoadCredential = [ "issuer.pem:${cfg.issuerCertificateFile}" "issuer.key:${cfg.issuerKeyFile}" ];
+        LoadCredential = [ "issuer.pem:${cfg.issuerCertificateFile}" "issuer.key:${cfg.issuerKeyFile}" ]
+          ++ protectedAddresses.credentials;
         NetworkNamespacePath = "/run/netns/lilly-${suffix}";
         BindReadOnlyPaths = [ "${resolv}:/etc/resolv.conf" ];
         CapabilityBoundingSet = [ "CAP_NET_RAW" ];

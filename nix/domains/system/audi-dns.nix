@@ -5,6 +5,9 @@ let
   fleetOtelEnabled = lib.attrByPath [ "services" "overallsOtelFleet" "enable" ] false config;
   paths = import ./types.nix { inherit lib; };
   name = lib.types.strMatching "[a-z0-9][a-z0-9.-]*";
+  bind = import ./runtime-bind.nix { inherit lib pkgs; };
+  runtimeBind = cfg.bindAddressFile != null;
+  configFile = if runtimeBind then "/run/audi-dns/config.json" else runtime;
   runtime = pkgs.writeText "audi-dns-runtime.json" (builtins.toJSON {
     version = 1;
     status_socket = "/run/audi-dns/status.sock";
@@ -26,7 +29,7 @@ in {
     zone = lib.mkOption { type = name; description = "Delegated application zone."; };
     nameservers = lib.mkOption { type = lib.types.listOf name; description = "At least two independent authoritative nameservers."; };
     mailbox = lib.mkOption { type = name; description = "SOA responsible mailbox in DNS name form."; };
-    bindAddress = lib.mkOption { type = paths.ipv4; default = "0.0.0.0"; };
+  } // bind.options { description = "the Audi DNS listener"; } cfg // {
     port = lib.mkOption { type = lib.types.port; default = 53; };
     openFirewall = lib.mkOption { type = lib.types.bool; default = false; };
     cpuCores = lib.mkOption { type = lib.types.ints.positive; default = 2; };
@@ -37,10 +40,10 @@ in {
       assertion = builtins.length cfg.nameservers >= 2 && builtins.length cfg.nameservers <= 8
         && lib.unique cfg.nameservers == cfg.nameservers;
       message = "Audi DNS requires two to eight distinct authoritative nameservers.";
-    }];
+    }] ++ bind.assertions "Audi DNS" cfg;
     users.groups.audi-dns = {};
     users.users.audi-dns = { isSystemUser = true; group = "audi-dns"; };
-    networking.firewall = lib.mkIf cfg.openFirewall (import ./listener-firewall.nix {
+    networking.firewall = lib.mkIf (cfg.openFirewall && cfg.bindAddress != null) (import ./listener-firewall.nix {
       inherit lib config; address = cfg.bindAddress;
       tcpPorts = [ cfg.port ]; udpPorts = [ cfg.port ];
     });
@@ -49,14 +52,20 @@ in {
     # DNS MUST run without gateway keys or Lilly privileges. Its only capability
     # is binding a privileged port. No static configuration may inject routes;
     # an empty or stale replica MUST fail closed until authenticated publication.
-    systemd.services.audi-dns = {
+
+    # @cc [owner:ghuntley,label:security;deployment] audi-dns-runtime-bind-address
+    # A runtime bind address MUST arrive only as a systemd credential from its
+    # publishing unit, which DNS follows. Startup MUST refuse a missing,
+    # non-canonical or wildcard address without logging it, and render the
+    # configuration privately under /run/audi-dns, never into the Nix store.
+    systemd.services.audi-dns = lib.mkMerge [ (bind.unitConfig cfg) {
       description = "Audi authoritative DNS";
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ] ++ cfg.secretUnits;
       requires = cfg.secretUnits;
       environment = {
-        AUDI_CONFIG_FILE = runtime;
+        AUDI_CONFIG_FILE = configFile;
         RELEASE_TMP = "/run/audi-dns";
         RELEASE_DISTRIBUTION = "none";
         ERL_CRASH_DUMP = "/dev/null";
@@ -65,7 +74,11 @@ in {
         AUDI_SLO_SNAPSHOT = "/run/audi-dns/slo.json";
         AUDI_SLO_SERVICE = "audi_dns";
       };
-      script = ''
+      script = lib.optionalString runtimeBind ''
+        ${bind.validate}
+        ${bind.read "bind_address" cfg "bind-address"}
+        ${bind.render { template = runtime; output = configFile; }}
+      '' + ''
         ${pkgs.coreutils}/bin/install -m 0600 "$CREDENTIALS_DIRECTORY/dns.token" /run/audi-dns/dns.token
         export RELEASE_COOKIE
         RELEASE_COOKIE="$(${pkgs.coreutils}/bin/head -c 32 /dev/urandom | ${pkgs.coreutils}/bin/basenc --base16 -w0)"
@@ -78,7 +91,8 @@ in {
         UMask = "0077";
         RuntimeDirectory = "audi-dns";
         RuntimeDirectoryMode = "0700";
-        LoadCredential = [ "dns.token:${cfg.credentialFile}" "ca.pem:${cfg.caFile}" ];
+        LoadCredential = [ "dns.token:${cfg.credentialFile}" "ca.pem:${cfg.caFile}" ]
+          ++ bind.credential cfg "bind-address";
         WorkingDirectory = cfg.package;
         Restart = "on-failure";
         RestartSec = 5;
@@ -101,7 +115,7 @@ in {
         RestrictSUIDSGID = true;
         LockPersonality = true;
       };
-    };
+    } ];
     # @cc [owner:ghuntley,label:security;reliability] audi-dns-exporter-custody
     # The exporter MUST read only the Audi DNS-owned numeric snapshot and
     # connect through its DNS-only Unix collector group. Ordinary Audi DNS

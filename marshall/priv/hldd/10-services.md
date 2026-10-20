@@ -345,10 +345,18 @@ throttle cooldown that expires while a request waits on the reset lock no longer
 yields a stale 429; requests skip that lock while a Codex account is healthy.
 `request.saturated` logs a relative `retry_after_ms` and an absolute `until_ms`.
 Upstream Rust tests passed; no dedicated regression test covers the race.
-The current package pin is `7169223`, with a refreshed source archive hash and
-unchanged Cargo lock/vendor hash. No new build or test result accompanies that
-pin; the earlier revision's evidence does not establish current provider behavior
-or production activation.
+Revision `dbaf7b8` holds a streamed response, for at most 60 seconds or 1 MiB,
+until its first output or terminal event. It retries on another pool account when
+upstream fails the stream with a capacity code before any output, the case Codex
+reports as "Selected model is at capacity". The overloaded account keeps its health
+and the sticky session moves to the serving account. When every account overloads,
+the original upstream bytes are returned and the SLO journal records one failure.
+Policy, quota and post-output errors pass through unchanged. Stream `error` events
+now record their nested code, so these failures count as `overloaded`.
+The current package pin is `dbaf7b8`, with a refreshed source archive hash and
+unchanged Cargo lock/vendor hash. Upstream Rust tests passed on the patched source
+and the package built offline; NixOS checks were not run, and live provider
+behavior and production activation remain unverified.
 Provider egress can be pinned to a tailnet exit node (ADR-0185).
 `underclass-egress.service` runs a separate unprivileged userspace `tailscaled`
 with its own state and socket, no TUN device and no routes. Its HTTP proxy

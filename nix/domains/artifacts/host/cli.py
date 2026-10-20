@@ -13,13 +13,14 @@ import sys
 import tempfile
 from collections.abc import Callable, Iterator, Mapping
 from pathlib import Path
-from typing import TypedDict
+from typing import NotRequired, TypedDict
 
 import remote
 from remote import Binding, Facts, Identity, Inventory, StorageFacts
 
 REPOSITORY = "ssh://git@github.com/ghuntley/overalls"
 REMOTE = Path(__file__).with_name("remote.py")
+PLATFORMS = ("hetzner", "ec2", "hcloud")
 
 
 class Failure(Exception):
@@ -38,13 +39,31 @@ class CredentialDocument(TypedDict):
     path: str
 
 
+class TransferEndpoint(TypedDict, total=False):
+    """Relocation SSH endpoint; a fleet host names its address by SOPS secret."""
+
+    address: str
+    addressSecret: str
+    port: int
+    host_key: str
+
+
 class LillySettings(TypedDict, total=False):
     controlPlane: str
     egressInterface: str
     overheads: dict[str, int]
     credentialTtlSeconds: int
-    transferEndpoint: str
+    transferEndpoint: TransferEndpoint
     binding: Mapping[str, object]
+
+
+class UplinkDeclaration(TypedDict):
+    network: str
+
+
+class AddressDeclaration(TypedDict):
+    names: NotRequired[dict[str, str]]
+    uplink: NotRequired[UplinkDeclaration]
 
 
 class Host(TypedDict):
@@ -60,6 +79,7 @@ class Host(TypedDict):
     git: dict[str, str]
     credentials: list[CredentialDocument]
     lilly: LillySettings
+    addresses: NotRequired[AddressDeclaration]
 
 
 class Plan(TypedDict):
@@ -188,11 +208,7 @@ def probe[T](
 
 def validate(h: Host) -> Host:
     safe_name(h["name"])
-    if (
-        not h["reviewed"]
-        or h["platform"] not in ("hetzner", "ec2")
-        or h["firmware"] not in ("bios", "uefi")
-    ):
+    if not h["reviewed"] or h["platform"] not in PLATFORMS or h["firmware"] not in ("bios", "uefi"):
         raise Failure("Review platform, firmware and network before planning")
     if h["inventory"]["arch"] != "x86_64" or not h["inventory"]["machine"] or not h["network"]:
         raise Failure("Reviewed x86_64 hardware and networking required")
@@ -201,9 +217,13 @@ def validate(h: Host) -> Host:
         or h["identity"]["hostId"] == "00000000"
     ):
         raise Failure("Explicit nonzero ZFS host ID required")
-    if set(h["budgets"]) != {"guestMemoryMiB", "guestCpuCores", "arcMaxMiB"} or any(
-        type(h["budgets"][k]) is not int or h["budgets"][k] <= 0
-        for k in ("guestMemoryMiB", "guestCpuCores", "arcMaxMiB")
+    budgets = (
+        {"arcMaxMiB"}
+        if h["platform"] == "hcloud"
+        else {"guestMemoryMiB", "guestCpuCores", "arcMaxMiB"}
+    )
+    if set(h["budgets"]) != budgets or any(
+        type(h["budgets"][k]) is not int or h["budgets"][k] <= 0 for k in budgets
     ):
         raise Failure("Explicit positive production resource budgets required")
     disks = {d["id"]: d for d in h["inventory"]["disks"]}
@@ -230,6 +250,17 @@ def validate(h: Host) -> Host:
             or h["storage"]["quotaBytes"] <= 0
         ):
             raise Failure("Hetzner requires two system disks and a reviewed guest quota")
+    elif h["platform"] == "hcloud":
+        # @cc [owner:ghuntley,label:deployment;capacity] hcloud-single-zfs-root
+        # A Hetzner Cloud host MUST select exactly one system disk, no guest
+        # disks, no guest quota and no Lilly role.
+        if (
+            len(system) != 1
+            or guests
+            or h["storage"]["quotaBytes"] not in (None, 0)
+            or "lilly" in h
+        ):
+            raise Failure("Hetzner Cloud requires one system disk and no guest storage or Lilly")
     elif (
         any(d["kind"] not in ("ebs", "local-nvme") for d in disks.values())
         or len(system) != 1
@@ -295,6 +326,59 @@ def write_new(path: str, value: object) -> None:
         stream.write("\n")
 
 
+def default_routes(routes: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Keep only each default route's interface, without addresses."""
+    kept: list[dict[str, object]] = []
+    for route in routes:
+        entry: dict[str, object] = {"dev": route.get("dev"), "dst": "default"}
+        if route.get("dst") == "default" and entry not in kept:
+            kept.append(entry)
+    return kept
+
+
+def uplink_facts(h: Host, facts: Facts) -> remote.Uplink | None:
+    """Live addressing for the uplink recovery copy, from authenticated facts.
+
+    Fleet addresses live in SOPS, so a freshly installed base system has no
+    document; the recovery copy is its only addressing until enrollment.
+    """
+    declared = h.get("addresses", {}).get("uplink")
+    if declared is None:
+        return None
+    match = h["network"].get(declared["network"])
+    mac = match.get("matchConfig", {}).get("MACAddress") if isinstance(match, dict) else None
+    nic = next((n for n in facts["addresses"] if mac and n.get("address") == mac), None)
+    if nic is None:
+        raise Failure("Declared uplink interface was not observed")
+    addresses = [
+        f"{a['local']}/{a['prefixlen']}"
+        for a in nic["addr_info"]
+        if a["scope"] == "global" and ":" not in a["local"]
+    ]
+    routes = [
+        r
+        for r in facts["routes"]
+        if r.get("dev") == nic["ifname"]
+        and r.get("table", "main") == "main"
+        and r.get("type", "unicast") == "unicast"
+        and isinstance(r.get("gateway"), str)
+        and ":" not in str(r["gateway"])
+    ]
+    gateways = {str(r["gateway"]) for r in routes if r.get("dst") == "default"}
+    if not addresses or len(gateways) != 1:
+        raise Failure("Uplink needs observed IPv4 addresses and one default gateway")
+    (gateway,) = gateways
+    hosts = sorted(
+        {
+            str(r["dst"])
+            for r in routes
+            if r.get("gateway") == gateway and "/" not in str(r.get("dst", "/"))
+        }
+        - {"default"}
+    )
+    return {"addresses": addresses, "gateway": gateway, "routes": hosts}
+
+
 def discover(args: argparse.Namespace) -> None:
     facts: Facts = probe(args)
     disks = facts["inventory"]["disks"]
@@ -304,18 +388,29 @@ def discover(args: argparse.Namespace) -> None:
     for nic in facts["addresses"]:
         if nic["ifname"] == "lo" or not nic.get("address"):
             continue
-        network["10-" + nic["ifname"]] = {
-            "matchConfig": {"MACAddress": nic["address"]},
-            "networkConfig": {"DHCP": "yes"}
-            if args.platform == "ec2"
-            else {
+        entry: dict[str, object] = {"matchConfig": {"MACAddress": nic["address"]}}
+        if args.platform == "ec2":
+            entry["networkConfig"] = {"DHCP": "yes"}
+        elif args.platform == "hcloud":
+            # @cc [owner:ghuntley,label:security;deployment] hcloud-addresses-outside-repository
+            # Hetzner Cloud candidates MUST NOT carry address literals: IPv4
+            # comes from the provider's DHCP, and the fleet tunnel is IPv4-only,
+            # so IPv6 is not configured. Listeners and grants take the address
+            # from the shared SOPS document (fleet-addresses-from-sops).
+            entry["networkConfig"] = {
+                "DHCP": "ipv4",
+                "IPv6AcceptRA": False,
+                "LinkLocalAddressing": "no",
+            }
+        else:
+            entry["networkConfig"] = {
                 "Address": [
                     f"{a['local']}/{a['prefixlen']}"
                     for a in nic["addr_info"]
                     if a["scope"] == "global"
                 ]
-            },
-        }
+            }
+        network["10-" + nic["ifname"]] = entry
     candidate: dict[str, object] = {
         "name": safe_name(args.name),
         "reviewed": False,
@@ -330,14 +425,21 @@ def discover(args: argparse.Namespace) -> None:
             "quotaBytes": None,
             "ashift": 12,
         },
-        "budgets": {
+        "budgets": {"arcMaxMiB": None}
+        if args.platform == "hcloud"
+        else {
             "guestMemoryMiB": None,
             "guestCpuCores": None,
             "arcMaxMiB": None,
         },
         "git": {"repository": REPOSITORY, "knownHosts": ""},
         "credentials": [],
-        "discovery": {"sourceKey": facts["hostKey"], "routes": facts["routes"]},
+        "discovery": {
+            "sourceKey": facts["hostKey"],
+            "routes": default_routes(facts["routes"])
+            if args.platform == "hcloud"
+            else facts["routes"],
+        },
     }
     write_new(args.output, candidate)
 
@@ -421,10 +523,20 @@ def anywhere(args: argparse.Namespace, plan: Plan, phases: str, target: str) -> 
             plan["system"],
             "--kexec",
             plan["kexec"],
+            *kexec_flags(plan["host"]),
             "--phases",
             phases,
         ]
     )
+
+
+def kexec_flags(host: Host) -> list[str]:
+    """@cc [owner:ghuntley,label:deployment] hcloud-legacy-kexec-syscall
+    Hetzner Cloud images refuse kexec_file_load for the unsigned installer
+    kernel (EADDRNOTAVAIL), so hcloud installs MUST force the kexec_load
+    syscall. Other platforms keep the installer's automatic selection.
+    """
+    return ["--kexec-extra-flags", "--kexec-syscall"] if host["platform"] == "hcloud" else []
 
 
 # @cc [owner:ghuntley,label:security] installation-transport-binding
@@ -536,6 +648,11 @@ def install(args: argparse.Namespace) -> None:
             },
             installer_target,
         )
+        uplink = uplink_facts(p["host"], facts)
+        if uplink is not None:
+            phase = "uplink-recovery"
+            save()
+            probe(installer_args, "install-uplink", uplink, installer_target)
         receipt_path = Path(args.plan + ".installed.json")
         remote.atomic(receipt_path, installed)
         phase = "reboot"
@@ -658,7 +775,7 @@ def main() -> int:
         if name in ("plan", "discover"):
             p.add_argument("--output", required=True)
         if name == "discover":
-            p.add_argument("--platform", choices=("hetzner", "ec2"), required=True)
+            p.add_argument("--platform", choices=PLATFORMS, required=True)
             p.add_argument("--name", required=True)
         if name == "install":
             p.add_argument("--plan", required=True)

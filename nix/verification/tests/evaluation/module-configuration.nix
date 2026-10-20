@@ -35,6 +35,19 @@ let
       };
     };
   };
+  runtimeWildcardMarshall = evaluate {
+    imports = [ marshall ];
+    services.marshall.ingress = {
+      zone = "apps.example.test";
+      wildcardAcme = {
+        issuerInstance = "one";
+        directory = "https://ca.example.test/directory";
+        issuerCaFile = "/run/ca.pem";
+        certificateRootsFile = "/run/roots.pem";
+        nameservers = [ { address = "192.0.2.1"; } { addressFile = "/run/fleet/ns2"; port = 5353; } ];
+      };
+    };
+  };
   lilly = {
     networking.hostId = "aabbccdd";
     services.ziggy.secretsFile = "/etc/overalls/ziggy-fixture.enc.json";
@@ -311,6 +324,29 @@ let
       env = cfg.systemd.services.marshall-one.environment;
     in valid cfg && env.MARSHALL_INGRESS_ZONE == "apps.example.test"
       && env.MARSHALL_INGRESS_HTTPS_PORT == "8443";
+    # Static nameservers keep the evaluated JSON; a runtime address reaches
+    # only the selected issuer as a credential rendered at start.
+    wildcardStaticNameservers = wildcardMarshall.systemd.services.marshall-one.environment.MARSHALL_FLEET_ACME_NAMESERVERS
+      == builtins.toJSON [ { address = "192.0.2.1"; port = 53; } { address = "192.0.2.2"; port = 53; } ];
+    wildcardRuntimeNameservers = valid runtimeWildcardMarshall
+      && !(runtimeWildcardMarshall.systemd.services.marshall-one.environment ? MARSHALL_FLEET_ACME_NAMESERVERS)
+      && builtins.elem "acme-nameserver-1:/run/fleet/ns2" runtimeWildcardMarshall.systemd.services.marshall-one.serviceConfig.LoadCredential
+      && !(lib.any (lib.hasPrefix "acme-nameserver") runtimeWildcardMarshall.systemd.services.marshall-two.serviceConfig.LoadCredential)
+      && lib.hasInfix ''MARSHALL_FLEET_ACME_NAMESERVERS="$acme_nameservers"'' runtimeWildcardMarshall.systemd.services.marshall-one.script
+      && !(lib.hasInfix "acme_nameservers" runtimeWildcardMarshall.systemd.services.marshall-two.script);
+    wildcardNameserverOneForm = !valid (evaluate {
+      imports = [ marshall ];
+      services.marshall.ingress = {
+        zone = "apps.example.test";
+        wildcardAcme = {
+          issuerInstance = "one";
+          directory = "https://ca.example.test/directory";
+          issuerCaFile = "/run/ca.pem";
+          certificateRootsFile = "/run/roots.pem";
+          nameservers = [ { address = "192.0.2.1"; addressFile = "/run/fleet/ns1"; } { address = "192.0.2.2"; } ];
+        };
+      };
+    });
     wildcardIssuerCredentialsOnlyOnSelectedReplica = valid wildcardMarshall
       && (wildcardMarshall.systemd.services.marshall-one.environment ? MARSHALL_FLEET_ACME_DIRECTORY)
       && lib.all (name: !(wildcardMarshall.systemd.services."marshall-${name}".environment ? MARSHALL_FLEET_ACME_DIRECTORY)) [ "two" "three" ];
@@ -527,4 +563,17 @@ assert !(onlyMarshall.systemd.services.marshall-one.environment ? MARSHALL_SSH_H
 assert lib.all (name: (builtins.fromJSON pinnedMarshall.systemd.services.${"marshall-" + name}.environment.MARSHALL_SSH_HOST_TRUST).ca == sshCa) [ "one" "two" "three" ];
 assert !(builtins.tryEval (evaluate { imports = [ marshall ]; services.marshall.sshHostCa.publicKey = "invalid"; }).systemd.services.marshall-one.environment.MARSHALL_SSH_HOST_TRUST).success;
 assert lib.assertMsg (failed == []) "NixOS configuration checks failed: ${lib.concatStringsSep ", " failed}";
-pkgs.writeText "overalls-module-configuration-check.json" (builtins.toJSON cases)
+# Runs the issuer's rendered nameserver line against a credential directory.
+pkgs.runCommand "overalls-module-configuration-check.json" {
+  nativeBuildInputs = [ pkgs.gnugrep ];
+  script = pkgs.writeText "marshall-one-script" runtimeWildcardMarshall.systemd.services.marshall-one.script;
+  cases = pkgs.writeText "overalls-module-configuration-cases.json" (builtins.toJSON cases);
+} ''
+  mkdir credentials
+  printf '198.51.100.53\n' > credentials/acme-nameserver-1
+  CREDENTIALS_DIRECTORY="$PWD/credentials"
+  render="$(grep -E '^ *acme_nameservers=' "$script")"
+  eval "$render"
+  test "$acme_nameservers" = '[{"address":"192.0.2.1","port":53},{"address":"198.51.100.53","port":5353}]'
+  cp "$cases" "$out"
+''

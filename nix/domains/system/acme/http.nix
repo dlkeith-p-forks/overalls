@@ -31,7 +31,7 @@ let
       timeout server 4s
       log-format '{"event":"acme.http_request","status":%ST,"duration_ms":%Tt}'
     frontend http
-      bind ${proxy.bindAddress}:80
+      bind ${proxy.bindSpec 80}
       acl public_host hdr(host),lower -m str ${lib.toLower proxy.publicHost} ${lib.toLower proxy.publicHost}:80
       acl challenge path_beg /.well-known/acme-challenge/
       http-request deny deny_status 421 unless public_host
@@ -99,9 +99,9 @@ in
     users.users.marshall-acme-http = { isSystemUser = true; group = "marshall-acme-http"; };
     users.groups.marshall-acme-http = {};
     networking.firewall = mkIf proxy.openFirewall (lib.mkMerge [
-      (import ../listener-firewall.nix {
+      (mkIf (proxy.bindAddressFile == null) (import ../listener-firewall.nix {
         inherit lib config; address = proxy.bindAddress; tcpPorts = [ 80 ];
-      })
+      }))
       {
       extraInputRules = mkIf config.networking.nftables.enable (lib.concatMapStringsSep "\n" (peer:
         "ip saddr ${peer.address} ip daddr ${http.bindAddress} tcp dport ${port} accept") http.peers);
@@ -127,11 +127,15 @@ in
     systemd.services.marshall-acme-http = {
       description = "HTTP-01 ingress and permanent HTTPS redirects";
       wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" "marshall-acme-lookup.service" ];
+      after = [ "network.target" "marshall-acme-lookup.service" ] ++ proxy.addressUnits;
       wants = [ "marshall-acme-lookup.service" ];
-      serviceConfig = hardening // {
+      requires = proxy.addressUnits;
+      serviceConfig = hardening // lib.optionalAttrs (proxy.addressEnvironmentFile != null) {
+        EnvironmentFile = proxy.addressEnvironmentFile;
+      } // {
         Type = "notify";
-        ExecStartPre = "${lib.getExe config.services.haproxy.package} -c -f ${httpConfig}";
+        ExecStartPre = lib.optional (proxy.addressGuard != null) proxy.addressGuard
+          ++ [ "${lib.getExe config.services.haproxy.package} -c -f ${httpConfig}" ];
         ExecStart = "${lib.getExe config.services.haproxy.package} -Ws -f ${httpConfig}";
         AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
         CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
@@ -142,7 +146,9 @@ in
     # Public HTTP-01 MUST be an explicit opt-in that admits only TCP 80 on the
     # proxy's explicit address, sharing the proxy's single perimeter entry.
     overalls.fleetFirewall.publicServices.marshall-proxy = mkIf (http.publicIngress && config.overalls.fleetFirewall.enable) {
-      address = proxy.bindAddress;
+      address = mkIf (proxy.bindAddressFile == null) proxy.bindAddress;
+      addressFile = mkIf (proxy.bindAddressFile != null) proxy.bindAddressFile;
+      addressUnit = mkIf (proxy.bindAddressFile != null) proxy.bindAddressUnit;
       tcpPorts = [ 80 ];
       comment = "Marshall proxy public listeners";
     };

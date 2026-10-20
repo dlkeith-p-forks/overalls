@@ -85,8 +85,8 @@ No Erlang distribution, arbitrary TCP forwarding or cross-host guest relay is ad
   Porsche to share ports on distinct IPs. Wildcard and same-address collisions
   fail. Readiness probes the actual local bind address, including source binding.
   Local NETLINK_ROUTE interface discovery is allowed; it grants no NET_ADMIN.
-- Overalls assigns 136.243.69.37/26 to Audi alongside control/admin .55, with
-  gateway 136.243.69.1. IPv6 is disabled. Both addresses are protected from guest
+- Overalls assigns OVERALLS_SERVICE_IPV4/26 to Audi alongside control/admin .55, with
+  gateway OVERALLS_GATEWAY_IPV4. IPv6 is disabled. Both addresses are protected from guest
   egress. The existing immutable Lilly network binding requires coordinated
   activation; its protection must not be bypassed by the updater.
 - Inception derives paired 10.40 control and 10.41 Audi addresses from one slot,

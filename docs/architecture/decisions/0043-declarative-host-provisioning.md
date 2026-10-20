@@ -166,3 +166,5 @@ provider and enrollment checks from outstanding application deployment work.
 [ADR-0041](0041-declarative-fleet-users.md),
 [ADR-0035](0035-zfs-only-provisioning.md),
 [ADR-0026](0026-host-maintenance-and-retirement.md).
+[ADR-0231](0231-hetzner-cloud-hosts-and-susan-placement.md) adds the KVM-less,
+Lilly-free `hcloud` platform beside Hetzner and EC2.

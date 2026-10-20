@@ -23,9 +23,9 @@ until the new public wildcard path is complete.
 
 The user authorized implementing public Audi and full single-layer Inception,
 with Audi on an additional physical IPv4 address, Porsche alongside Marshall,
-no IPv6 and no compatibility requirement. Overalls retains 136.243.69.55/26 for
-control and administration and adds 136.243.69.37/26 for Audi, using gateway
-136.243.69.1. Public IPs are shared by environments; each environment does not
+no IPv6 and no compatibility requirement. Overalls retains OVERALLS_PRIMARY_IPV4/26 for
+control and administration and adds OVERALLS_SERVICE_IPV4/26 for Audi, using gateway
+OVERALLS_GATEWAY_IPV4. Public IPs are shared by environments; each environment does not
 receive its own public IP. Work starts from origin/main in an isolated worktree.
 
 ## Decision
@@ -417,7 +417,7 @@ the environment remains to be exercised by the native acceptance run.
 
 The physical fleet now applies this record's explicit-address rule on both
 hosts: Dungarees binds its Audi gateway and DNS listeners to its additional
-`136.243.69.32` address exactly as Overalls uses `136.243.69.37`, and both
+`DUNGAREES_SERVICE_IPV4` address exactly as Overalls uses `OVERALLS_SERVICE_IPV4`, and both
 hosts configure the two independent authoritative DNS endpoints over the
 delegated `apps.ghuntley.dev` subzone with per-VM TLS issuance against a
 staging issuer

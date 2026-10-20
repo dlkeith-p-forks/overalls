@@ -45,7 +45,7 @@ class BenchmarkCustodyTest(unittest.TestCase):
             database_known_hosts=output.parent / "database_known_hosts",
             database_port=2222,
             admin_overalls="ghuntley@ghuntley.dev",
-            admin_dungarees="ghuntley@136.243.69.35",
+            admin_dungarees="ghuntley@198.51.100.35",
             admin_key=output.parent / "admin",
             admin_known_hosts=output.parent / "admin_known_hosts",
             admin_port=2222,
@@ -801,7 +801,7 @@ class BenchmarkCustodyTest(unittest.TestCase):
             config = self.config(Path(temporary) / "run")
 
             def load(argv: list[str], _seconds: int) -> str:
-                self.assertIn("ghuntley@136.243.69.35", argv)
+                self.assertIn("ghuntley@198.51.100.35", argv)
                 self.assertEqual(argv[argv.index("-F") + 1], "/dev/null")
                 self.assertEqual(argv[-1], "cat /proc/loadavg")
                 return "0.12 0.34 0.56 1/10 123\n"
@@ -854,7 +854,7 @@ class BenchmarkCustodyTest(unittest.TestCase):
             ]
 
             def journal_read(argv: list[str], _seconds: int) -> str:
-                self.assertIn("ghuntley@136.243.69.35", argv)
+                self.assertIn("ghuntley@198.51.100.35", argv)
                 self.assertIn("sudo -n journalctl", argv[-1])
                 return "\n".join(lines)
 

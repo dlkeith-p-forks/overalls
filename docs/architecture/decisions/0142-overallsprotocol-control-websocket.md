@@ -428,7 +428,7 @@ remain separately scoped.
 
 The ADR-0095 relay
 ([overalls configuration](../../../fleet/hosts/overalls/configuration.nix)) is
-`systemd-socket-proxyd` forwarding bytes from `136.243.69.55:5443` to
+`systemd-socket-proxyd` forwarding bytes from `OVERALLS_PRIMARY_IPV4:5443` to
 Marshall's loopback TLS listener. It has no idle timeout and does not
 interpret HTTP, so upgraded sockets stay open and TLS is end to end.
 
