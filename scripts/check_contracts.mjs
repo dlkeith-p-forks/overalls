@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {execFileSync} from "node:child_process"
-import {existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync} from "node:fs"
+import {closeSync, existsSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, realpathSync, rmSync, writeFileSync} from "node:fs"
 import {tmpdir} from "node:os"
 import {basename, dirname, extname, isAbsolute, join, relative, resolve, sep} from "node:path"
 import {fileURLToPath} from "node:url"
@@ -65,15 +65,26 @@ function regularWithin(directory, path) {
   return true
 }
 
+/** @param {string} directory @returns {string[]} */
 /**
  * @cc [owner:ghuntley,label:verification] inventory-includes-untracked
  * discoverFiles MUST include tracked and nonignored untracked files, deduplicate
  * them, and exclude files with symlink leaves or ancestors so checking does not
- * traverse outside the repository.
+ * traverse outside the repository. Inventories exceeding the subprocess output
+ * buffer MUST remain complete rather than fail with ENOBUFS or silently truncate.
  */
 export function discoverFiles(directory) {
-  const output = execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard", "-z"], {cwd: directory, encoding: "utf8"})
-  return [...new Set(output.split("\0").filter(Boolean))].sort().filter(path => regularWithin(directory, path))
+  const temporary = mkdtempSync(join(tmpdir(), "overalls-contract-inventory-"))
+  const inventory = join(temporary, "paths")
+  const descriptor = openSync(inventory, "wx", 0o600)
+  try {
+    execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard", "-z"], {cwd: directory, stdio: ["ignore", descriptor, "pipe"]})
+    const output = readFileSync(inventory, "utf8")
+    return [...new Set(output.split("\0").filter(Boolean))].sort().filter(path => regularWithin(directory, path))
+  } finally {
+    closeSync(descriptor)
+    rmSync(temporary, {recursive: true, force: true})
+  }
 }
 
 /**

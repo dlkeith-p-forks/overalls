@@ -1,3 +1,5 @@
+Code.require_file("documents.ex", __DIR__)
+
 defmodule Overalls.HLDDViews do
   @moduledoc "Source-derived Ash ownership and allowlisted NixOS placement views."
   @type domain :: %{name: String.t(), source: String.t(), resources: [String.t()]}
@@ -11,7 +13,7 @@ defmodule Overalls.HLDDViews do
           admin_ssh_ports: [1..65_535]
         }
   @directory "marshall/priv/hldd"
-  @snapshot "deployment-topology.json"
+  @snapshot "topology"
   @domain_chapter "21-domains.md"
   @topology_chapter "22-topology.md"
 
@@ -192,9 +194,18 @@ defmodule Overalls.HLDDViews do
   # A supplied evaluated topology MUST equal the recorded public projection.
   @spec check(String.t(), [String.t()], String.t() | nil) :: [String.t()]
   def check(root, paths, evaluated \\ nil) do
+    if File.exists?(chapter_path(root, "deployment-topology.json")),
+      do: raise("legacy deployment-topology.json exists; regenerate topology YAML instead")
+
     domains = domains(root, paths)
     if domains == [], do: raise("missing Ash domain declarations")
-    hosts = root |> chapter_path(@snapshot) |> File.read!() |> hosts()
+
+    hosts =
+      root
+      |> chapter_path(@snapshot)
+      |> Overalls.HLDDDocuments.collection("name")
+      |> JSON.encode!()
+      |> hosts()
 
     expected_hosts =
       paths
@@ -273,7 +284,24 @@ defmodule Overalls.HLDDViews do
       File.write!(path, replace(File.read!(path), body))
     end
 
-    File.write!(chapter_path(root, @snapshot), JSON.encode!(JSON.decode!(json)) <> "\n")
+    directory = chapter_path(root, @snapshot)
+
+    entries =
+      Enum.map(JSON.decode!(json), fn host ->
+        unless is_binary(host["name"]) and Regex.match?(~r/^[a-z][a-z0-9-]*$/, host["name"]),
+          do: raise("invalid topology host name")
+
+        %{"path" => Path.join(directory, host["name"] <> ".yaml"), "data" => host}
+      end)
+
+    Overalls.HLDDDocuments.write(entries)
+    retained = Enum.map(entries, & &1["path"])
+
+    for path <- Overalls.HLDDDocuments.paths(directory, ".yaml"),
+        path not in retained,
+        do: File.rm!(path)
+
+    :ok
   end
 
   @spec chapter_path(String.t(), String.t()) :: String.t()

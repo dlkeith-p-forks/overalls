@@ -244,7 +244,7 @@
           hosts = self.nixosConfigurations;
         };
         hldd = pkgs.runCommand "overalls-hldd-check" {
-          nativeBuildInputs = [ built.toolchain.elixir ];
+          nativeBuildInputs = [ built.toolchain.elixir (pkgs.python313.withPackages (p: [ p.pyyaml ])) ];
           LC_ALL = "C.UTF-8";
           source = ./.;
           optionDeclarations = pkgs.writeText "overalls-hldd-options.json"

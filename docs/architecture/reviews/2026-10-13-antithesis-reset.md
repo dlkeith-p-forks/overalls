@@ -38,7 +38,7 @@ support generated replay, generation advance, interruption, actor death,
 completed-effect recovery and stop/delete observation causality. These are
 ordinary property fixtures, not native launch or storage evidence.
 
-The [scenario ledger](../../../marshall/priv/hldd/scenarios.json) retains the
+The [scenario ledger](../../../marshall/priv/hldd/scenarios) retains the
 existing lifecycle and completed-launch test references, recorded assertion
 names and gaps. The [lifecycle handbook](../../../marshall/priv/hldd/04-lifecycle.md)
 distinguishes those retained tests from the retired Compose workload. The

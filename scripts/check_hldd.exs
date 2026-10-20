@@ -14,13 +14,32 @@ case System.argv() do
         System.halt(1)
     end
 
-  ["record", group, disposition, rationale] ->
-    Overalls.HLDDGate.record(root, group, disposition, rationale)
+  ["status"] ->
+    for row <- Overalls.HLDDGate.status(root), row.status != "current" do
+      IO.puts(
+        "#{row.status} #{row.path} [#{Enum.join(row.groups, ", ")}] -> #{Enum.join(row.chapters, ", ")}"
+      )
+    end
+
+  ["migrate", legacy_root] ->
+    Code.require_file("hldd/migration.ex", __DIR__)
+    Overalls.HLDDMigration.run(root, Path.expand(legacy_root))
+
+  ["record", group, disposition, rationale | options] ->
+    {parsed, [], []} = OptionParser.parse(options, strict: [path: :keep])
+
+    Overalls.HLDDGate.record(
+      root,
+      group,
+      disposition,
+      rationale,
+      Keyword.get_values(parsed, :path)
+    )
 
   _ ->
     IO.puts(
       :stderr,
-      "usage: elixir scripts/check_hldd.exs [record GROUP updated|no-impact RATIONALE]"
+      "usage: elixir scripts/check_hldd.exs [status | migrate LEGACY_ROOT | record GROUP updated|no-impact RATIONALE [--path PATH]...]"
     )
 
     System.halt(1)

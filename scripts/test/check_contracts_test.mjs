@@ -138,6 +138,18 @@ test("Git inventory includes untracked sources but never traverses symlink paren
   })
 })
 
+test("Git inventory remains complete beyond the default subprocess output buffer", () => {
+  const prefix = Array.from({length: 4}, () => "review-directory-".repeat(12)).join("/")
+  const files = Object.fromEntries(Array.from({length: 1500}, (_, index) => [`${prefix}/${index}.ex.md`, "review"]))
+  assert.ok(Buffer.byteLength(Object.keys(files).join("\0")) > 1024 * 1024)
+  /** @param {string} root */
+  const verify = root => {
+    execFileSync("git", ["init", "--quiet"], {cwd: root})
+    assert.deepEqual(discoverFiles(root), Object.keys(files).sort())
+  }
+  fixture(files, verify)
+})
+
 test("malformed later native directives cannot be absorbed into previous prose", () => {
   fixture({"a.ex": `${hashNote}\ndef first, do: :ok\n\n# ${directive}[owner:ghuntley] malformed\n# MUST reject.\ndef second, do: :ok\n`}, (root, paths) => {
     assert.throws(() => checkFiles(root, paths), /a\.ex:5:/)

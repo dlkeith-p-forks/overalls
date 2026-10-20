@@ -14,7 +14,7 @@ proof that the handbook is current: complete its updates and run the blocking ga
 ## Review the change
 
 Read the actual diff, applicable contracts and current ADR supersession chain.
-Use `docs/hldd-maintenance.json` to find affected chapters. Its directory groups
+Use `docs/hldd/groups/*.yaml` to find affected chapters. Its directory groups
 cover additions and deletions; the catch-all includes newly introduced subsystems.
 Inspect both implementation and tests. Existing guides can be stale. Do not copy
 historical implementation claims without checking current evidence.
@@ -30,7 +30,7 @@ identified section, not merely a review receipt.
 
 ## Scenarios, preferred tests and security layers
 
-Update `marshall/priv/hldd/scenarios.json` for user-facing scenarios affected by the
+Update `marshall/priv/hldd/scenarios/<scenario-id>.yaml` for user-facing scenarios affected by the
 change. NixOS machine integration tests and property-based tests are the preferred
 evidence above other test forms. Use units for bounded logic; never present them
 as proof of kernel, network, native guest, TLS, or physical recovery behavior.
@@ -128,16 +128,36 @@ of file selection. Preserve contained horizontal scrolling for wide diagrams.
 
 ## Record and enforce
 
-After reviewing each affected source group, update its receipt explicitly:
+Run `elixir scripts/check_hldd.exs status` first. It lists individual stale paths,
+their review groups and relevant chapters. Review those diffs, then record only
+your changes. Source receipts are Markdown with YAML frontmatter under
+`docs/hldd/reviews/sources/<source-path>.md`; independent chapter receipts live
+under `docs/hldd/reviews/chapters/<chapter-id>.md`. Do not edit hashes by hand.
+A source receipt retains the chapter hashes inspected during that review; later
+chapter edits require their own review and do not invalidate unrelated sources.
+Deleted sources retain reviewed tombstones; restoring them requires another review.
+
+After reviewing each affected source group, record explicitly:
 
 ```sh
 elixir scripts/check_hldd.exs record GROUP updated 'Concrete description of the changed reader-visible facts and evidence'
-elixir scripts/check_hldd.exs record GROUP no-impact 'Specific reason these source changes preserve the documented behavior and evidence'
+elixir scripts/check_hldd.exs record GROUP no-impact 'Specific reason these source changes preserve the documented behavior and evidence' --path path/to/source
 ```
 
 Never bulk-refresh receipts to make the gate green. `no-impact` is a reviewed
 conclusion, not an exception for inconvenient edits. Source/chapter edits after
-recording require another review. The checker is read-only and rejects stale
+recording require another review of that path. `--path` is repeatable and limits
+the operation to the named targets; omit it only after reviewing every stale path
+in the group. `updated` requires a changed chapter in the selected review when
+source changes are recorded. A selected chapter may already be current if its hash
+differs from the chapter snapshot in the previous source receipt. Current receipts
+are never rewritten.
+
+Topology snapshots live in `marshall/priv/hldd/topology/<host>.yaml`. Regenerate
+them with the view command; do not choose one side of a conflicting generated
+projection without evaluating the combined Nix source. Scenario files are rendered
+in stable ID order. Never restore the removed aggregate JSON files after a merge.
+See [migration and merge guidance](../../../docs/hldd/README.md). The checker is read-only and rejects stale
 receipts, missing chapters, broken references and invalid scenario claims.
 
 Run in `devenv shell`:

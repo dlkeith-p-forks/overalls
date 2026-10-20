@@ -1,0 +1,38 @@
+boundary: porsche.watch_subscribe authorizes every named machine and thread for the session; Porsche registers
+  only the returned identifiers, coalesces hints and repeats the subscription each heartbeat; notices
+  carry identifiers only.
+denial: A stranger's thread refuses the whole subscription (403); a pending key without --session gets
+  approval instructions; a revoked key ends the stream with exit 3 at the next heartbeat.
+evidence:
+- assertion: watch subscriptions authorize every named machine and thread
+  execution: present
+  kind: unit
+  path: marshall/test/marshall/ssh/client_commands_test.exs
+  scope: Subscription authority and control route classification.
+- assertion: queued hints drain to one identifier notice per distinct hint
+  execution: present
+  kind: property
+  path: porsche/test/client_commands_test.exs
+  scope: Debounce coalescing and identifier-only notices.
+- assertion: watch streams identifier notices, renews on heartbeat and ends on revocation
+  execution: present
+  kind: unit
+  path: porsche/test/ssh_channel_test.exs
+  scope: OTP SSH exec watch stream.
+- assertion: 'porsche-threads: stdin prompts, thread reads and a revocable watch'
+  execution: present
+  kind: unit
+  path: marshall/test/marshall_web/ssh_transport_test.exs
+  scope: Real SSH, Porsche and HTTPS control.
+gaps: Delivery of a hint from a committed domain change is not exercised (sandboxed tests never commit
+  pg_notify).
+id: mila-watch-stream
+journey: Mila keeps one SSH exec open to learn which machines, threads and its own session changed
+layers:
+- authorization
+- transport
+- recovery
+preferred_gap: Run the porsche-threads fleet machine test with a committed thread change.
+scope: Marshall subscription authority, Porsche routing (Hegel coalescing property), OTP channel stream
+  and a real SSH transport journey.
+status: partial

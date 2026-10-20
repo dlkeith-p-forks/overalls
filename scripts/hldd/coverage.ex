@@ -1,11 +1,19 @@
+Code.require_file("documents.ex", __DIR__)
+
 defmodule Overalls.HLDDCoverage do
   @moduledoc "Validated scenario and security-boundary evidence, rendered without upgrading claims."
   @layers ~w(identity authorization transport execution isolation storage recovery)
-  @path "marshall/priv/hldd/scenarios.json"
+  @path "marshall/priv/hldd/scenarios"
   @output "marshall/priv/hldd/19-coverage.md"
 
   @spec read(String.t()) :: map()
-  def read(root), do: root |> Path.join(@path) |> File.read!() |> JSON.decode!()
+  def read(root) do
+    if File.exists?(Path.join(root, @path <> ".json")),
+      do: raise("legacy scenarios.json exists; reconcile scenario YAML files instead")
+
+    rows = Overalls.HLDDDocuments.collection(Path.join(root, @path), "id")
+    %{"version" => 1, "scenarios" => Enum.sort_by(rows, & &1["id"])}
+  end
 
   # @cc [owner:ghuntley,label:verification] hldd-security-evidence
   # Each scenario MUST name its boundary, expected denial, evidence scope and gaps.
@@ -158,6 +166,8 @@ defmodule Overalls.HLDDCoverage do
 
   @spec render(map()) :: String.t()
   def render(%{"scenarios" => rows}) do
+    rows = Enum.sort_by(rows, & &1["id"])
+
     "# User scenarios and test gaps\n\n" <>
       "NixOS machine integration tests and property-based tests are the preferred evidence. " <>
       "Unit tests establish narrower behavior. **Present** means a test exists and its assertion was inspected; " <>

@@ -1,0 +1,50 @@
+boundary: After the planning transaction commits, Marshall queues one delivery per active, enabled device
+  of current thread writers other than the actor, seals the route to the device X25519 key and sends Susan
+  only a signed ciphertext body; 503s retry under the same delivery id and 410 invalidates the device.
+denial: Viewers, the actor, paused, revoked and invalidated devices receive nothing; a rolled-back question
+  produces nothing; a stranger key cannot open the poke; the operator switch refuses registration with
+  push_disabled.
+evidence:
+- assertion: an agent question notifies current writers' devices after commit, not viewers
+  execution: present
+  kind: unit
+  path: marshall/test/marshall/notifications/producer_test.exs
+  scope: Producer recipients, coalescing and after-commit timing in the BEAM.
+- assertion: 503, 503, 200 sends once successfully; 410 invalidates the device
+  execution: present
+  kind: unit
+  path: marshall/test/contract/marshall/notifications_contract_test.exs
+  scope: Covenant marshall.notifications.I3 with an in-process Susan stub.
+- assertion: the retry mapping matches the ADR-0225 table
+  execution: present
+  kind: property
+  path: marshall/test/marshall/notifications/delivery_worker_test.exs
+  scope: Hegel over status, Retry-After and final attempt.
+- assertion: flipping any bit of a sealed poke is refused
+  execution: present
+  kind: property
+  path: protocol/test/push_poke_test.exs
+  scope: PushPoke round-trip and tamper refusal over generated inputs.
+- assertion: Susan 503, 503, then 200 yields exactly one provider send
+  execution: recorded
+  kind: machine
+  path: nix/verification/tests/machines/push-notifications/driver.py
+  record: docs/architecture/reviews/2026-10-19-mila-m6.md
+  record_assertion: '`push-notifications` passed'
+  scope: Release against fake Susan at the compiled origin with OS-trusted TLS.
+gaps: Real Susan, APNs/FCM delivery and Mila decryption on a device are not exercised.
+id: mila-push-needs-input
+journey: An agent asks a planning question and the thread's writers get a Mila notification that opens
+  the thread, without Susan learning what it is about
+layers:
+- identity
+- authorization
+- transport
+- isolation
+- storage
+- recovery
+preferred_gap: A fleet journey with the Susan service, a fake provider and the Mila client decrypting
+  the poke.
+scope: BEAM unit, Hegel and Covenant tests against PostgreSQL with a Req.Test Susan stub, plus a NixOS
+  machine test of the release against a fake Susan at the compiled origin over OS-trusted TLS.
+status: partial

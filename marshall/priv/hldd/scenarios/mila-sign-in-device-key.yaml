@@ -1,0 +1,55 @@
+boundary: Mila holds one P-256 device key per deployment in platform custody (owner-only file on Linux)
+  and authenticates to Porsche with it; Marshall's existing browser key approval grants the account, and
+  Mila only re-checks whoami.
+denial: A Linux key file readable by group or other users, or malformed, is refused rather than used;
+  a stale or expired approval link is never shown; an unapproved key reaches only approval_required.
+evidence:
+- assertion: sign-in never shows a stale or expired link
+  execution: recorded
+  kind: property
+  path: mila/packages/mila_core/test/domain_test.dart
+  record: docs/architecture/reviews/2026-10-18-mila-m1.md
+  record_assertion: 'Mila core run: **53 passed**'
+  scope: Hegel stateful sign-in machine over a fake clock and Porsche replies.
+- assertion: a key file other users can read is refused, not used
+  execution: recorded
+  kind: unit
+  path: mila/packages/mila_transport/test/device_key_test.dart
+  record: docs/architecture/reviews/2026-10-18-mila-m1.md
+  record_assertion: 'Mila transport run: **19 passed**'
+  scope: 'Linux file custody: 0600 key, 0700 directory, readable and malformed files refused.'
+- assertion: a signed P-256 device key proves possession like any other client key
+  execution: recorded
+  kind: unit
+  path: porsche/test/ssh_proof_test.exs
+  record: docs/architecture/reviews/2026-10-18-mila-m1.md
+  record_assertion: 'Porsche proof run: `porsche/test/ssh_proof_test.exs` **8 passed**'
+  scope: Porsche SSH proof of possession for an ecdsa-sha2-nistp256 client key in the BEAM test VM.
+- assertion: the pinned CA's certificate and the device key reach Porsche
+  execution: recorded
+  kind: machine
+  path: nix/verification/tests/machines/mila-porsche/default.nix
+  record: docs/architecture/reviews/2026-10-18-mila-m1.md
+  record_assertion: '`mila-porsche` **5 subtests passed**'
+  scope: Real Porsche release with the device key from mila-probe; Marshall is absent, so commands end
+    in an authority envelope.
+- assertion: approval in the browser leads to the machine list
+  execution: recorded
+  kind: machine
+  path: nix/verification/tests/machines/mila-desktop/driver.py
+  record: docs/architecture/reviews/2026-10-18-mila-device.md
+  record_assertion: '`mila-desktop` **7 subtests'
+  scope: Linux bundle under X11 against packaged Marshall and Porsche.
+gaps: iOS and Android key custody and link delivery have no device build.
+id: mila-sign-in-device-key
+journey: A user signs Mila in to a deployment by approving its per-deployment device key in the browser
+layers:
+- identity
+- authorization
+- storage
+preferred_gap: Run the signed-in journey in a fleet fixture with a provisioned machine, and record iOS
+  and Android device builds.
+scope: Dart device-key encoding, signature and file-custody tests, the Hegel stateful sign-in machine,
+  and an Elixir proof that Porsche accepts a signed P-256 client key. Native Secure Enclave and Android
+  Keystore custody are not compiled or run.
+status: partial

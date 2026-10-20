@@ -53,6 +53,7 @@ in
   # https://devenv.sh/basics/
   env = {
     GREET = "devenv";
+    OVERALLS_HLDD_PYTHON = "${tyPython}/bin/python3";
     OVERALLS_NIXPKGS_PATH = "${pkgs.path}";
   } // lib.optionalAttrs isLinux {
     OVERALLS_TEST_VMM_DIR = "${vmm}/bin";
@@ -257,7 +258,7 @@ in
       hldd = {
         enable = true;
         name = "hldd-review";
-        entry = "${toolchain.elixir}/bin/elixir scripts/check_hldd.exs";
+        entry = "${pkgs.coreutils}/bin/env OVERALLS_HLDD_PYTHON=${tyPython}/bin/python3 ${toolchain.elixir}/bin/elixir scripts/check_hldd.exs";
         language = "system";
         always_run = true;
         pass_filenames = false;

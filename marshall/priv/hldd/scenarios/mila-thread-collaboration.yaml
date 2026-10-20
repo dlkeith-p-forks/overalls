@@ -1,0 +1,31 @@
+boundary: Every thread action is a Porsche thread command with a request id; text travels on stdin; Marshall's
+  thread domain authorizes and records it.
+denial: Text over 64 KiB or invalid UTF-8 is refused before sending; a busy thread or stale plan is refused
+  by the server and shown; the read marker never moves back.
+evidence:
+- assertion: read markers only move forward
+  execution: present
+  kind: property
+  path: mila/packages/mila_core/test/thread_test.dart
+  scope: UnreadState and readMarkerToSend.
+- assertion: payloads up to the limit are accepted and never enter the line
+  execution: present
+  kind: property
+  path: mila/packages/mila_core/test/thread_test.dart
+  scope: payloadCommand over generated text.
+- assertion: a prompt travels on stdin, never on the command line
+  execution: present
+  kind: unit
+  path: mila/app/test/client_flow_test.dart
+  scope: Widget flow against the fake Porsche.
+gaps: No run against Marshall's thread domain through Porsche.
+id: mila-thread-collaboration
+journey: A user reads an agent thread in Mila, sends a prompt, answers a question and approves a plan
+layers:
+- authorization
+- transport
+- storage
+preferred_gap: A NixOS machine test sending a prompt from the Linux bundle through Porsche to Marshall.
+scope: Hegel properties for read markers, search and payload bounds; fixture decoding; widget flows against
+  the fake Porsche.
+status: partial

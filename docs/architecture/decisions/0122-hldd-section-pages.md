@@ -2,11 +2,11 @@
 
 - ID: ADR-0122
 - Date: 2026-09-25
-- Status: accepted
+- Status: superseded
 - Implementation: implemented
 - Components: Marshall Web, documentation, repository governance
 - Supersedes: ADR-0121
-- Superseded by: none
+- Superseded by: ADR-0250
 
 ## Context
 
@@ -105,6 +105,10 @@ covers literal declarations, not extension-generated resource versions.
 
 None. The reported browser heap was not captured; acceptance is scoped to removing
 all-section delivery and off-page diagrams, with explicit native browser evidence.
+
+ADR-0250 replaces only aggregate review invalidation with independent source and
+chapter receipts. All section delivery and other maintenance requirements remain
+in force; see [independent review records](0250-independent-hldd-review-records.md).
 
 ## Related decisions
 

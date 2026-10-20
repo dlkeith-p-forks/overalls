@@ -1,0 +1,25 @@
+boundary: Mila runs watch with at most 16 filters and re-reads through ordinary commands; it takes no
+  state from watch lines.
+denial: Overlong or malformed lines are refused; silence beyond 40 s reopens; authority loss stops the
+  watch.
+evidence:
+- assertion: the watch supervisor matches its model
+  execution: present
+  kind: property
+  path: mila/packages/mila_core/test/watch_test.dart
+  scope: Hegel StateMachine over open, receive, end and close.
+- assertion: a watch feed reads JSON lines, reconnects after exit 5 and stops on exit 3
+  execution: present
+  kind: unit
+  path: mila/packages/mila_transport/test/ssh_porsche_test.dart
+  scope: Stock OpenSSH ForceCommand emulating watch.
+gaps: No run against Porsche's real watch.
+id: mila-watch-refresh
+journey: Mila refreshes machines, terminals and threads when Porsche's watch stream reports a change
+layers:
+- transport
+- recovery
+- authorization
+preferred_gap: A NixOS machine test observing a thread change through watch.
+scope: Hegel stateful supervisor, framing property and OpenSSH reconnect journey.
+status: partial

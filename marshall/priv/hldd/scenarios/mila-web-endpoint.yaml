@@ -1,0 +1,25 @@
+boundary: web show and web set through Porsche at the shown policy revision; private endpoints open in
+  the system browser where Marshall's browser session authorizes them.
+denial: A non-HTTPS or credentialed URL is not opened; a concurrent change is reported as a conflict;
+  an out-of-range port is refused before sending; the webview refuses non-HTTPS navigation.
+evidence:
+- assertion: terminal and web results decode
+  execution: present
+  kind: unit
+  path: mila/packages/mila_core/test/client_results_test.dart
+  scope: Shared result fixture.
+- assertion: a concurrent change is reported, not overwritten
+  execution: present
+  kind: unit
+  path: mila/app/test/client_flow_test.dart
+  scope: Widget flow against the fake Porsche.
+gaps: iOS and Android webview and share sheet are not built or run.
+id: mila-web-endpoint
+journey: A user opens, copies, shares or changes the visibility of a machine's web address from Mila
+layers:
+- authorization
+- transport
+- identity
+preferred_gap: Record device builds; drive the web tab in mila-desktop.
+scope: Fixture decoding and widget flows against the fake Porsche; no device webview.
+status: partial

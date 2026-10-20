@@ -63,6 +63,10 @@ or [Mila guidance](mila/AGENTS.md) for the component being changed.
 - Prefer NixOS machine integration tests and property-based tests above other
   evidence. Distinguish test presence from recorded passing execution and explain
   missing preferred coverage. Unit tests cannot establish native isolation.
+- Use `elixir scripts/check_hldd.exs status` to identify exact stale paths. Review
+  and record your paths with repeatable `--path` selectors; independent source and
+  chapter receipts live in `docs/hldd/reviews/`. Never restore the legacy aggregate
+  JSON or refresh unrelated receipts after a merge.
 - Run `elixir scripts/check_hldd.exs`, generated-reference checks and the Nix
   `hldd` check. Precommit/prek reject stale review receipts; never refresh receipts
   without reviewing the source and corresponding handbook/scenario changes.

@@ -1,5 +1,9 @@
 # Architecture
 
+[ADR-0250](decisions/0250-independent-hldd-review-records.md) separates HLDD source
+and chapter review currency to let independent work merge without unrelated
+receipt churn. It retains explicit review, scenario evidence and evaluated views.
+
 [ADR-0207](decisions/0207-bundled-multilingual-font-fallback.md) accepts bundled
 Noto script fallbacks while retaining JetBrains Mono as the primary grid font.
 It replaces only ADR-0161's exclusive-typeface clause; current packaged script

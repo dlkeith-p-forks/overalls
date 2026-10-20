@@ -1,0 +1,30 @@
+boundary: Mila's ARB catalogs match the Porsche gettext locales with identical placeholders. Locales without
+  a Flutter framework catalog borrow only framework strings, from Arabic or English; Egyptian Arabic,
+  Arabic and Urdu lay out right to left.
+denial: A missing or extra locale, a dropped placeholder or an undocumented template message fails the
+  catalog tests; locale never changes command arguments or machine JSON.
+evidence:
+- assertion: the Porsche locale list matches the gateway catalogs
+  execution: present
+  kind: unit
+  path: mila/app/test/localization_test.dart
+  scope: Locale set parity with porsche/priv/gettext.
+- assertion: every Porsche locale has a complete catalog with the same placeholders
+  execution: present
+  kind: unit
+  path: mila/app/test/localization_test.dart
+  scope: ARB completeness and placeholder parity.
+- assertion: every Porsche locale renders framework widgets in its direction
+  execution: present
+  kind: unit
+  path: mila/app/test/localization_test.dart
+  scope: Framework fallback delegates and direction for every locale.
+gaps: No device rendering, shaping or native-speaker review; goldens use platform fallback fonts rather
+  than bundled Noto faces.
+id: mila-localized-surfaces
+journey: Mila shows every Porsche locale with its own strings and the right text direction
+layers:
+- transport
+preferred_gap: Run the Linux bundle under the mila-desktop machine test in an RTL locale.
+scope: Flutter widget tests in the test VM with platform font fallback.
+status: partial

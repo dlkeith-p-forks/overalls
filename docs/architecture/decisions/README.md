@@ -1,5 +1,9 @@
 # Architecture decision records
 
+[ADR-0250](0250-independent-hldd-review-records.md) replaces aggregate HLDD review
+invalidation with independent source and chapter receipts, YAML scenario and host
+records, and explicit scoped recording. ADR-0122’s delivery requirements continue.
+
 [ADR-0248](0248-fleet-build-scheduling.md) makes Panterloons the single
 tribuchet build scheduler for itself and Dungarees, which delegates over a
 `grpc://` store; the two hosts substitute from each other over `grpc://`,
@@ -948,7 +952,7 @@ lookup contract; accepted behavior and implementation status are unchanged.
 | [ADR-0070](0070-host-recovery-backups.md) | accepted | implemented | Short-retention host recovery backups |
 
 | [ADR-0121](0121-authenticated-hldd.md) | superseded | implemented | Authenticated handbook and mandatory maintenance |
-| [ADR-0122](0122-hldd-section-pages.md) | accepted | implemented | Separate handbook sections and bounded browser content |
+| [ADR-0122](0122-hldd-section-pages.md) | superseded | implemented | Separate handbook sections and bounded browser content |
 | [ADR-0124](0124-unified-ssh-host-ca.md) | accepted | implemented | One SSH host CA for gateways and guests |
 
 ADR-0119 and inherited ADR-0065 gain generated and native browser evidence in the
@@ -1058,4 +1062,5 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0246](0246-panterloons-control-plane-deployment.md) | accepted | partial | Panterloons control-plane deployment |
 | [ADR-0247](0247-sops-operator-source-grant.md) | accepted | partial | SOPS-held operator source grant |
 | [ADR-0248](0248-fleet-build-scheduling.md) | accepted | partial | Fleet build scheduling through a tribuchet hub and grpc:// stores |
+| [ADR-0250](0250-independent-hldd-review-records.md) | accepted | implemented | Independent HLDD review records |
 | [ADR-0249](0249-mila-rust-core-native-clients.md) | accepted | partial | Mila Rust core with native platform clients |

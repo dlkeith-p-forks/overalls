@@ -33,4 +33,4 @@ scope, and gaps; they are not current runbooks or proof of unrecorded execution.
 - [Architecture decisions](architecture/decisions/README.md)
 - [Architecture reviews](architecture/reviews/README.md)
 - [Documentation contracts](CONTRACTS)
-- [HLDD maintenance metadata](hldd-maintenance.json)
+- [HLDD review workflow](hldd/README.md)

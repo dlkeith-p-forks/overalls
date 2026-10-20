@@ -1,0 +1,28 @@
+boundary: device register binds the device to the session SSH key, reads the push key only from stdin
+  and retains only its digest in receipts and versions; at most ten live devices per user.
+denial: Another user's device id refuses device_not_found; an eleventh device refuses device_limit; a
+  key not owned by the actor refuses; a revoked device is never poked.
+evidence:
+- assertion: SSH key removal and account retirement revoke bound devices
+  execution: present
+  kind: unit
+  path: marshall/test/contract/marshall/notifications_contract_test.exs
+  scope: Covenant marshall.notifications.I5.
+- assertion: device versions and registration receipts keep only the push-key digest
+  execution: present
+  kind: unit
+  path: marshall/test/contract/marshall/notifications_contract_test.exs
+  scope: Covenant marshall.notifications.I6 through SSH.execute.
+gaps: No machine test drives device commands through a real Porsche SSH session.
+id: mila-push-device-custody
+journey: A Mila user registers, pauses and removes a push device over Porsche, and removing the SSH key
+  or retiring the account revokes it
+layers:
+- identity
+- authorization
+- storage
+- recovery
+preferred_gap: Extend mila-porsche to register, list and remove a device through Porsche to Marshall.
+scope: BEAM Covenant and unit tests through SSH.execute and the domain API; Porsche runner and channel
+  tests for stdin and refusal hints.
+status: partial

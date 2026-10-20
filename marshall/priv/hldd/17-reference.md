@@ -1392,8 +1392,25 @@ the same change deletes its handbook text and scenario evidence rather than
 marking it historical; the [removal review](repo:docs/architecture/reviews/2026-10-11-legacy-compatibility-removal.md)
 keeps the per-push record and export digests.
 
-The blocking gate compares source inventories and chapter digests against reviewed
-receipts. It catches edits, additions, deletions, missing chapters and invalid
+The blocking gate compares each source path and chapter against an independent
+Markdown review receipt with YAML frontmatter. Stable YAML group definitions map
+sources to relevant chapters. A source receipt binds its path, bytes and mapping;
+its chapter hashes preserve the documentation inspected at review time. Later
+chapter changes require one chapter review, not repeated reviews of every source.
+Deleted sources keep explicit tombstones, and restored sources need a new review.
+`elixir scripts/check_hldd.exs status` lists exact stale paths. The existing
+`record GROUP updated|no-impact RATIONALE` command records only stale targets;
+repeatable `--path PATH` selectors limit it to the reviewed change. Current receipts
+are untouched. Checks never approve or refresh evidence. `updated` requires a
+changed chapter in the selected review when source changes are recorded.
+
+Group definitions live under `docs/hldd/groups/`, source receipts under
+`docs/hldd/reviews/sources/`, and chapter receipts under
+`docs/hldd/reviews/chapters/`. YAML scenario files are independent by scenario ID;
+allowlisted topology snapshots are independent by host. Their generated chapters
+remain checked against the source and evaluated Nix placement.
+
+The gate It catches edits, additions, deletions, missing chapters and invalid
 references. The Nix check also compares the evaluated option reference. Passing
 these checks establishes currency and structure, not factual correctness.
 Generated build caches and `.nixos-test-history` are excluded consistently from
