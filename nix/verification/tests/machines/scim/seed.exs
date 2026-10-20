@@ -15,19 +15,24 @@ defmodule ScimMachineFixture do
 
     owner = Ash.Seed.seed!(Marshall.Accounts.User, %{email: "native-owner@example.test"})
 
-    team =
-      Ash.Seed.seed!(Marshall.Teams.Team, %{
-        name: "legacy-native",
-        management_mode: :native,
-        created_by_id: owner.id
-      })
+    # The exactly-one-owner constraint is checked at commit, so the native team
+    # and its owner membership are inserted together.
+    {:ok, _} =
+      Marshall.Repo.transaction(fn ->
+        team =
+          Ash.Seed.seed!(Marshall.Teams.Team, %{
+            name: "legacy-native",
+            management_mode: :native,
+            created_by_id: owner.id
+          })
 
-    Ash.Seed.seed!(Marshall.Teams.TeamMember, %{
-      team_id: team.id,
-      user_id: owner.id,
-      recorded_by_id: owner.id,
-      role: :owner
-    })
+        Ash.Seed.seed!(Marshall.Teams.TeamMember, %{
+          team_id: team.id,
+          user_id: owner.id,
+          recorded_by_id: owner.id,
+          role: :owner
+        })
+      end)
 
     token = "scim_" <> Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
 
