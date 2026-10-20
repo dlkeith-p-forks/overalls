@@ -308,6 +308,10 @@ in {
     pkgs.htop pkgs.btop pkgs.vim pkgs.mosh pkgs.jq
     pkgs.direnv pkgs.devenv pkgs.bind.dnsutils
   ] ++ lib.optional (h ? lilly) identityTool;
+  # @cc [owner:ghuntley,label:deployment] fleet-direnv-shell-hook
+  # Every base and enrolled fleet host MUST hook direnv into interactive Bash,
+  # Zsh and Fish shells system-wide. Each .envrc still requires `direnv allow`.
+  programs.direnv.enable = true;
   # @cc [owner:ghuntley,label:deployment] fleet-default-editor
   # Every base and enrolled fleet host MUST set Vim as the default editor.
   environment.variables.EDITOR = "vim";

@@ -29,6 +29,8 @@ let
       && lib.any (package: lib.getName package == "git") c.environment.systemPackages
       && lib.any (package: lib.getName package == "jq") c.environment.systemPackages
       && lib.any (package: lib.getName package == "direnv") c.environment.systemPackages
+      && c.programs.direnv.enable
+      && lib.hasInfix "direnv hook bash" c.programs.bash.interactiveShellInit
       && lib.any (package: lib.getName package == "devenv") c.environment.systemPackages
       && (cloud || builtins.elem "nofail" c.fileSystems."/var/lib/lilly/pool".options)
       && !(c.systemd.services ? disko)
