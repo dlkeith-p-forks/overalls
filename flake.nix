@@ -86,6 +86,7 @@
         freebsd-kernel-candidate = built.nativeKernels.freebsdCandidate;
         freebsd-image-candidate = built.freebsdImageCandidate;
         omnios-image-candidate-kit = built.omniosImageCandidateKit;
+        omnios-image-candidate = built.omniosImageCandidate;
         freebsd-transport-probe-image = built.freebsdTransportProbeImage;
         freebsd-kernel-fault = built.nativeKernels.freebsdFaultCandidate;
         freebsd-fault-probe-image = built.freebsdFaultProbeImage;

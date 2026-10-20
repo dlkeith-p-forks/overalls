@@ -30,7 +30,8 @@ try:
         "for receipt in /work/native-services/transport-*.json; do "
         "jq -e '.native_admission == false and .guest_cid == 3 and .peer_cid == 2"
         " and .malformed_length_refused and .disconnected_history_recovered"
-        " and .production_same_boot_restored"
+        " and .production_same_boot_restored and .loaded_module_digests_checked"
+        ' and (.loaded_transport_modules | keys == ["sockvsock","viosock"])'
         " and ([.exchanges[].size] == [0,1,44,4096,65535,65536,65537,262144,1048576])'"
         ' "$receipt"; cp "$receipt" /work/transport-receipts/; done'
     )

@@ -1,0 +1,86 @@
+{
+  "build_id": "dd5d3f62a766bf99eb22a53f4100d44d69536f83cc58b7029af5d4a690124274",
+  "modules": [
+    {
+      "bytes": 47992,
+      "name": "virtio",
+      "sha256": "7ded2798d30756cc889ba78aecb1a5df734d1e01fcdf01ec4772ddaf493f9a77"
+    },
+    {
+      "bytes": 20896,
+      "name": "vioblk",
+      "sha256": "eb0c947daca0feeec382f394256212c49554a82e9f49dc38875c158e322a6f34"
+    },
+    {
+      "bytes": 37232,
+      "name": "vioif",
+      "sha256": "4cff620893eb2d98a76fe138eab7b302e85ced0cbc5a5b481c0e92b597295756"
+    },
+    {
+      "bytes": 22488,
+      "name": "vioscsi",
+      "sha256": "22ab5328cd9cbaddb55ac2224ba579d056cf9eee625b0092fd7f6426b5520c36"
+    },
+    {
+      "bytes": 17928,
+      "name": "vio9p",
+      "sha256": "b1cac6b7420de2d079eb5a1bf8b50f0b0c36d7b031c9f66451cb5f564b0e61b0"
+    },
+    {
+      "bytes": 11672,
+      "name": "viorand",
+      "sha256": "db2a9bdd0e2f2d47371e22c37c547582d586b069b21405cc6d07fcbb2dca0615"
+    },
+    {
+      "bytes": 220136,
+      "name": "sockfs",
+      "sha256": "8e466975eb6349cca1e562f55f43e9fbdddd7e10e458083139993af3667f5205"
+    },
+    {
+      "bytes": 18992,
+      "name": "viosock",
+      "sha256": "31f4b563b2fbb89db99aff3111c82307737f1925a8785ab2cf5166b0c75823ed"
+    },
+    {
+      "bytes": 20408,
+      "name": "sockvsock",
+      "sha256": "ecde11d3919d4a2b87ac3544f4ee31554566f5ce3cfaae66f4fae64c6b77ba27"
+    }
+  ],
+  "pinned_pool_guid": "6088636317398311714",
+  "objects": {
+    "ov_vsock": "2fb8e2f027f20ba5c7bb490977a98de82577c951bebef6f2ec02709be504a81a",
+    "sock_notsupp": "c38408247324561a1ec311e7a949dc3d6189121814074d0b9d45462bb4046b9c",
+    "sockcommon": "c6157bf5c6778fba9f18ef53a56f3bdf47fc3f1fb90be0d84a85717e27952ff0",
+    "sockcommon_sops": "6cdecaa903577f3bd1c9d0a8d44589619792b28da84d544796c405bfb2284de2",
+    "sockcommon_subr": "ffdd26df4f1f10a31a54813f6627e3728adc1480d802da577475f199539253e0",
+    "sockcommon_vnops": "72c12fc45d8d1cbd00025d41cb0b2f64437b1a1d941989d97b48064da7600884",
+    "sockfilter": "8e1a48ca09e9e2e1973027c8888790df636485a3483c5a9586cc566699de9ffc",
+    "socknotify": "58913807b013f19cb46032653d9fb26f58e4db3bbbcb25e8d99858fb501786d2",
+    "sockparams": "ce248c42988c1a80e2829e923016460180015e402e79e2880d8d930007a5e3be",
+    "sockstr": "cb938e65c9852ec1aab4f2648ad8a811752538c0fc322ad58ae98b41582db82e",
+    "socksubr": "eb818ba19482abfa98504ff4a0c974221f627c7861659fa53671c3e8b6a623b1",
+    "socksyscalls": "74cfcd74eb9b447695175e53bd76f2c8cfc37f1e3ba14985a3ee2db8fcbd88c1",
+    "socktpi": "23fa352933e2df160988f3fc4dfe2842bff03ba279cdb46b42d0b233bc47a1bb",
+    "sockvfsops": "6b67a38368ca1e9a3792e9bf6f773c35058d458175ad41bc04d1d77c299e26d8",
+    "sockvsock": "c79159043da892e89e038fb3a98872ccec8c814855bf91469b1cc251fb450403",
+    "sodirect": "7a7cc9eba060284eb9ad3b15a2a51e76326e573770fdcc88bca78fa88af0a761",
+    "vio9p": "582b4a9ef2bb4f6741bd33114fd110d9c9690321e5c9b8d84e42c6e59baeb2a3",
+    "vioblk": "482c35ac9cc9c9085ad9f0697f951efc23991fea784d2b69beafc71ec9018f9f",
+    "vioif": "55d12d7be8bf1e83031638907e3c7bbfe0f725374755425b77a12dfae3f53305",
+    "viorand": "3b21074ddf6b605e523d4e8ee6bc8ddda32339e18ac374eb1e2db878ceed0810",
+    "vioscsi": "942b5f87b30b97d18c0eb64deb81c65da8c7658b07fc39af0161118310ed9f96",
+    "viosock": "0a28f72d13cd93754b6dbfb5758e985fa7ff5f6f41b30a612ff1324d9b38ad83",
+    "virtio_dma": "00b7362368b427b4f57e71f03e8722427540604941fe23988136aefbfbd1f97e",
+    "virtio_legacy": "f351a0318e018a0aa330e30a5bf93be179f2a7f1cdc766b894930b885b50d942",
+    "virtio_main": "5884fb02fc5f718eaff2afb183f6337ce6ef6629813b523ceb87a24447aa5288",
+    "virtio_modern": "c160bc79c420689f39af13e9b31abe6b21872e42fc3ead8857c3faaddf8ab837"
+  },
+  "raw_sha256": "45983bb74f9064f7aeea7d4f934094bd8c4c0efb4e8a2ad7f4bf0a8ee6390554",
+  "receipt_sha256": "aaf9aeeee25b73c6454a395b69b78eb4a207b59dcbcd363b088e8839592edb04",
+  "unix": {
+    "bytes": 2299392,
+    "name": "platform/i86pc/kernel/amd64/unix",
+    "sha256": "c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21"
+  }
+}

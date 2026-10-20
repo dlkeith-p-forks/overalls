@@ -690,6 +690,26 @@ authority and VMM cleanup but produced no second boot or complete
 isolation/service receipt. This four-pass/one-failure matrix does not qualify
 publication, admission or selection; the failure cause remains unestablished.
 
+The manual OmniOS link/install procedure now also runs as the `kvm`-feature Nix
+derivation [`omnios/assembly.nix`](../../../nix/domains/artifacts/guest/omnios/assembly.nix)
+(`omnios-image-candidate`). The pinned stock guest's Solaris `ld` links the nine
+modules and `native_image.py assemble` installs them into a scratch copy, which
+the loader cannot select because only the administration disk is bootable.
+Two executions produced the identical assembly receipt `b3acafb4`, stock `unix`
+`c56dc5c1` and seven modules byte-identical to the promoted `45983bb7` receipt;
+the changed viosock/sockvsock sources produce new digests. Raw disks still
+differ between executions (ZFS GUIDs, transaction groups, timestamps, SMF
+repository and boot archive), so deterministic guest linkage is recorded but
+bit-reproducible native disk assembly is not. The test-only output keeps
+`native_admission=false` and replaces no promotion. It feeds the formal
+`native-omnios-reset` gate, which passed in 721.76 seconds, and the
+`native-omnios-transport` gate, which passed both clean boots in 761.59 seconds
+and, on the final formatted source, 681.84 seconds, with loaded viosock/sockvsock
+file digests bound to the assembly receipt. A prior
+transport run on the same inputs failed at `shutdown-send` with
+`subprocess-timeout`, matching the unexplained `679f5f8b` isolation failure above.
+Exact hashes are in the [matrix review](../reviews/2026-10-18-guest-os-matrix.md).
+
 ## Open questions
 
 - Which further signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is
@@ -700,7 +720,9 @@ publication, admission or selection; the failure cause remains unestablished.
   separately recorded ordinary 16 GiB fleet lifecycles have passed. The later
   journey includes an independent stopped-owner checkpoint. Readiness under fleet load and
   shell-supervisor death with surviving children still need independent records.
-- Reproducible native full-disk assembly remains unrecorded. The exact FreeBSD
+- Reproducible native full-disk assembly remains unrecorded; OmniOS Nix KVM
+  assembly reproduces its receipt and unchanged module bytes, not its raw disk.
+  The intermittent OmniOS `shutdown-send` timeout is undiagnosed. The exact FreeBSD
   and OmniOS artifacts are promoted by reviewed immutable bytes and hash-bound native
   evidence; candidate manifests alone remain insufficient.
 - OmniOS wrong-CID injection, valid-reset races and DMA safety, physical

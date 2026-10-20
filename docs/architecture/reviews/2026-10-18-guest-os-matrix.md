@@ -1740,3 +1740,78 @@ This covers FreeBSD's fencing when invalid resets race each other and live
 receive traffic. It does not cover a valid transport-reset event racing traffic,
 malformed DMA descriptors, OmniOS, peer-VM or physical-host isolation, or
 production admission.
+
+## Nix KVM OmniOS assembly and formal transport/reset gates (2026-10-20)
+
+The manual OmniOS link/install procedure now has a Nix derivation,
+[`omnios/assembly.nix`](../../../nix/domains/artifacts/guest/omnios/assembly.nix),
+exported as `omnios-image-candidate`. It requires the `kvm` system feature,
+boots the pinned stock r151050 image offline in QEMU twice over the serial
+console, reguids the administration pool, has the guest's Solaris `ld` link the
+nine kit modules and runs `native_image.py assemble` against a separate scratch
+copy. [`check_assembly.py`](../../../nix/domains/artifacts/guest/omnios/check_assembly.py)
+binds the extracted receipts to the kit build ID, pinned pool GUID, stock `unix`
+digest and final raw disk. It also requires each module whose input objects equal
+the promoted kit's objects to reproduce the promoted digest recorded in
+[`promoted-assembly-reference.json`](../../../nix/domains/artifacts/guest/omnios/promoted-assembly-reference.json).
+The output carries a test-only manifest with `transport_build_id`; it keeps
+`native_admission=false`, is not a v6 production manifest and does not replace
+the `45983bb7` promotion selected by `omniosGuest`/`illumosGuest`.
+
+Assembly found one defect in the automated procedure: both disk copies share
+ZFS vdev GUIDs, so the loader and an unqualified `zpool import` could select the
+scratch pool. The derivation now exposes only the administration disk to the
+loader (`-boot strict=on`) and selects the scratch slice by reading its ZFS label.
+
+Two independent executions of the same input-addressed derivation
+(`/nix/store/sfsn6xkinwsryy7c0i90p5a25mbvh4fw-overalls-omnios-native-image-candidate`)
+produced the identical assembly receipt SHA-256
+`b3acafb48c028d8afd668789c8487a8c357030ab03eddb8b0929c747ec14daca`
+for build ID
+`117de5bbcdb4da055359d97f2eb66e97c9390ec2de262e6faf3ce6ad1422cd88`,
+with stock kernel `c56dc5c1` unchanged. The virtio, vioblk, vioif, vioscsi,
+vio9p, viorand and sockfs modules are byte-identical to the promoted `45983bb7`
+receipt. viosock `689f984e` and sockvsock `275d8223` differ because their source
+changed after promotion (listener continuation across a validated reset event).
+The raw disks differ (`b435f4d6` first, then
+`1db6ac1328299414937359b298491016774c73c1f3471ef917058fcff4d0563e`): ZFS
+snapshot/clone GUIDs, transaction groups, timestamps, the SMF repository and the
+rebuilt boot archive are not reproducible. Deterministic guest linkage for
+identical inputs is therefore recorded; a bit-reproducible full disk is not.
+
+The formal catalog gates now consume this candidate instead of remaining
+fail-closed. The persisted `native-omnios-reset` nested-KVM gate passed on disk
+`1db6ac13` in 721.76 seconds (an earlier run on disk `b435f4d6` passed in 541
+seconds; its receipt was not retained). The OmniOS reset receipt SHA-256 is
+`fe8c25708fa2821e88205be8a738053deb228eb105e0ee2766ff0ba350bf62b6`: three API
+statuses 204, idle error 131, pending read error 131 and write error 32 after
+262,144 bytes, original listener reuse and current-CID revalidation, with probe
+`485b984f`, firmware `261c6d43` and VMM `9815649a`.
+
+The `native-omnios-transport` gate failed twice before passing. Its first run
+checked loaded modules while the fixture had stopped production SSH; the check
+now runs after production services are restored. Its second run passed exchanges
+and loaded-module identity on boot 0, then failed at `shutdown-send` with a
+subprocess timeout: `/usr/sbin/poweroff` emitted no console output and its SSH
+command did not return. The unchanged third run passed both clean boots in
+761.59 seconds. The OmniOS transport service receipt SHA-256 is
+`9fa4a5b9fc50d7412b36341ea325efb67486b504bb30963c9402f50761311bd4`, naming all
+25 service checks; the per-boot transport receipts are `5ed72b43` and `8bcfafd9`.
+Each records CIDs 3/2, malformed-length refusal, disconnected-history recovery,
+same-boot production restoration, the nine exchange sizes through 1 MiB and the
+loaded viosock/sockvsock file digests equal to the assembly receipt, with no
+shadowing module on the other native module paths. This binds loaded module names
+and their files, not in-memory kernel text. After a ruff-format quote-style
+edit to the driver (identical jq expression), the final source passed both clean
+boots again in 681.84 seconds on the same disk; that service receipt SHA-256 is
+`48e3dd2bcc59e13356b828e53709525ac280f14f103809623f75af057150157f`, with
+identical loaded viosock/sockvsock digests. The intermittent poweroff hang
+matches the earlier `679f5f8b` isolation `shutdown-send` failure recorded in
+ADR-0190; it has no diagnosis and remains open.
+
+The `native-os-guest-unit` evaluation asserts that the candidate keeps
+`nativeAdmission`, `runtimeValidated`, `imageAssemblyReady` and
+`reproducibleRawDisk` false and differs from the promoted image. Wrong-CID
+injection, reset/DMA stress, bit-reproducible native disks, physical recovery
+and fleet admission remain open. ADR-0190 stays accepted/partial; no admission
+flag, capability row, Ash domain, deployment host or wire protocol changes.

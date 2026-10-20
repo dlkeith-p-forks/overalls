@@ -9,6 +9,36 @@ manifest remains valid after publication. Installation restores the reviewed
 regular sudoers policy to root:root mode `0440` and records that target mode
 separately from its immutable source permissions.
 
+## Nix KVM assembly
+
+`nix build .#omnios-image-candidate` performs the procedure below inside a
+`kvm`-feature Nix build. It decompresses the pinned stock disk twice, checks the
+scratch copy against the kit's whole-disk digest, and boots the administration
+copy offline in QEMU twice through the serial console in single-user mode
+([`serial_session.py`](serial_session.py)). The first boot runs
+`zpool reguid rpool`. The second boot attaches the scratch copy, a read-only
+FAT transfer disk carrying `kit.tar` and [`guest-assemble.sh`](guest-assemble.sh),
+and a writable FAT evidence disk. Both copies share vdev GUIDs, so QEMU runs
+with `-boot strict=on` to expose only the administration disk to the loader,
+and the stage selects the scratch slice by reading each ZFS label directly.
+The guest's Solaris `ld` links the nine modules and `native_image.py assemble`
+installs them. A read-only import then copies the exact receipts and
+installed-module digests to the evidence disk.
+
+[`check_assembly.py`](check_assembly.py) binds those receipts to the Nix build
+ID, the pinned pool GUID, the stock `unix` digest and the final raw disk. Each
+module whose objects equal the promoted `45983bb7` kit's objects must reproduce
+the promoted module digest, recorded in
+[`promoted-assembly-reference.json`](promoted-assembly-reference.json). The
+output contains `disk.raw`, `firmware`, a test-only `manifest.json` with
+`transport_build_id`, and `evidence/`. The raw disk is not bit-reproducible:
+ZFS snapshot/clone GUIDs, transaction groups, timestamps, the SMF repository and
+the rebuilt boot archive differ between native runs. The output keeps
+`native_admission=false` and is not a production v6 manifest; the formal
+`native-omnios-transport` and `native-omnios-reset` checks consume it.
+
+## Manual native assembly
+
 Use a disposable OmniOS r151050 administration VM with a separate scratch copy
 of the pinned raw image attached as another disk. Its administration pool must
 have a different GUID from that source image; two copies of the same source
