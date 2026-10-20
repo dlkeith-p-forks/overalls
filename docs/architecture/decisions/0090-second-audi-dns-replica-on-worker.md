@@ -85,7 +85,7 @@ through the fleet monitor's explicit unit list.
 
 Both host configurations enable the DNS role with explicit IPv4 binds
 (Overalls `OVERALLS_SERVICE_IPV4`, Dungarees `DUNGAREES_SERVICE_IPV4`):
-[Overalls services](../../../fleet/hosts/overalls/services.nix) and
+[Overalls services](../../../fleet/roles/control-plane/services.nix) and
 [Dungarees configuration](../../../fleet/hosts/dungarees/configuration.nix).
 Tunnel ordering and monitor units are wired in
 [fleet-network.nix](../../../fleet/fleet-network.nix) and the host configs.

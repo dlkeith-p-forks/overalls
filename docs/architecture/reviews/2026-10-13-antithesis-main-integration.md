@@ -63,7 +63,7 @@ journeys but gain no acceptance from this merge.
 
 5. **Resolved documentation and formatting conflicts, low.** The ADR and
    review indexes include both branches. The small upstream
-   [Overalls configuration](../../../fleet/hosts/overalls/configuration.nix) contract
+   [Overalls configuration](../../../fleet/roles/control-plane/configuration.nix) contract
    formatting repair separates two comment groups without changing their prose
    or runtime configuration. The HLDD
    continues from current main and adds five Antithesis scenarios and the

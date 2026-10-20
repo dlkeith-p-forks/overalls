@@ -100,14 +100,14 @@ change overalls' declared one-Marshall deployment or establish its acceptance.
   preserve connection budgets and TLS/durability while accepting one replica.
 - [Marshall Nix module](../../../nix/domains/system/marshall.nix) retains the default of
   three while allowing explicit single-instance deployments.
-- [Overalls configuration](../../../fleet/hosts/overalls/configuration.nix)
+- [Overalls configuration](../../../fleet/roles/control-plane/configuration.nix)
   declares the local PostgreSQL bootstrap and runtime secret delivery.
-- [Overalls services](../../../fleet/hosts/overalls/services.nix) deploy one
+- [Overalls services](../../../fleet/roles/control-plane/services.nix) deploy one
   Marshall, verified backend TLS, public ACME HTTPS, Resend SMTP and Lilly's
   locally verified guest image directory.
-- [Image catalog bootstrap](../../../fleet/hosts/overalls/image-catalog.nix)
+- [Image catalog bootstrap](../../../fleet/roles/control-plane/image-catalog.nix)
   registers the same manifest advertised by Lilly through the operator catalog.
-- [Host inventory](../../../fleet/hosts/overalls/host.json) retains actual hardware,
+- the retired Overalls host inventory retains actual hardware,
   network and storage identity. [Host workflow](../../operations/host-provisioning.md) retains
   the published installation and enrollment protocol.
 
@@ -129,7 +129,7 @@ On 2026-10-16 the public hostname moved from `overalls.dev` (no longer
 registered) to `ghuntley.dev`: Marshall's public host, proxy ACME identity,
 mail sender, Porsche origin, fleet control origin and the delegated
 `apps.ghuntley.dev` Audi zone. The internal service CA was then rotated:
-a single new CA in [`service-ca.crt`](../../../fleet/hosts/overalls/service-ca.crt)
+a single new CA in [`service-ca.crt`](../../../fleet/roles/control-plane/service-ca.crt)
 signs the backend certificate (`ghuntley.dev` only) and the PostgreSQL
 certificate, the retired `overalls` CA is no longer trusted, and the CA key is
 custody-only in `secrets/service-ca-recovery.enc.json`.

@@ -13,7 +13,7 @@ ADR-0060 monitoring and ADR-0063 private services apply to the enrolled worker.
 Explicit provider selection preserves ADR-0063 authority and secret custody;
 it adds a backward-compatible runtime option, not a readiness bypass.
 
-Overalls' [declaration](../../../fleet/hosts/overalls/host.json) adds specific
+Overalls' declaration (retired Overalls host declaration) adds specific
 routes to both worker addresses through the existing Hetzner gateway. Both
 machines need routed peer traffic despite sharing the public IPv4 prefix.
 No Overalls disk, installation identity or application authority is replaced.

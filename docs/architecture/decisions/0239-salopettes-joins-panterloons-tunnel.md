@@ -67,8 +67,8 @@ The operator directed both changes on 2026-10-20.
 - [`fleet-network.nix`](../../../fleet/fleet-network.nix) (tunnel membership)
   and [`nix/domains/system/fleet-network.nix`](../../../nix/domains/system/fleet-network.nix)
   (no-peer host).
-- [`overalls/configuration.nix`](../../../fleet/hosts/overalls/configuration.nix),
-  [`overalls/services.nix`](../../../fleet/hosts/overalls/services.nix) and
+- [`overalls/configuration.nix`](../../../fleet/roles/control-plane/configuration.nix),
+  [`overalls/services.nix`](../../../fleet/roles/control-plane/services.nix) and
   [`salopettes/configuration.nix`](../../../fleet/hosts/salopettes/configuration.nix).
 - Remaining gaps: Panterloons is not enrolled, so no handshake between
   Panterloons and Salopettes has run; the public Susan path is not repaired.

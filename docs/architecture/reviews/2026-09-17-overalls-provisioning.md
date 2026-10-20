@@ -9,7 +9,7 @@ using ADR-0043. The existing fleet access and recovery policy is preserved;
 `ghuntley` remains the administrator and recovery recipient. No new architectural
 decision is introduced. ADR-0043 remains accepted and partial.
 
-The [host declaration](../../../fleet/hosts/overalls/host.json) binds the discovered
+The host declaration (retired Overalls host declaration) binds the discovered
 UEFI machine, complete stable disk inventory, MAC-matched IPv4/IPv6 network,
 ZFS host ID and explicit budgets. The two 1.92 TB Samsung NVMe drives form a
 ZFS root mirror with independent EFI boot partitions. Guest quota and logical

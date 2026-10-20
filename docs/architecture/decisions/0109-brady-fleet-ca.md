@@ -58,7 +58,7 @@ where needed. Root rotation requires overlapping trust and new images.
 
 The [public root](../../../secrets/brady-root.pem),
 [secret inventory](../../../nix/policy/secrets/secret-documents.nix),
-[host configurations](../../../fleet/hosts/overalls/services.nix),
+[host configurations](../../../fleet/roles/control-plane/services.nix),
 [shared guest inputs](../../../flake.nix) and
 [Brady TLS adapter](../../../brady/lib/brady/tls/certificates.ex) establish the
 initial custody and chain path. The encrypted recovery and two host documents

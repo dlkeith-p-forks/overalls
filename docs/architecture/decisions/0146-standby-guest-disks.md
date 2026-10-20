@@ -142,7 +142,7 @@ on trace admission or a diagnostic ACK.
 **Incoming production report (2026-10-09 to 2026-10-10):**
 The author of `e3300040` reports the following observations. Current
 [Dungarees](../../../fleet/hosts/dungarees/configuration.nix) and
-[Overalls](../../../fleet/hosts/overalls/services.nix) source declarations enable
+[Overalls](../../../fleet/roles/control-plane/services.nix) source declarations enable
 templates and set 128 standbys per image, but no independent live rollout was
 performed by this observability change.
 

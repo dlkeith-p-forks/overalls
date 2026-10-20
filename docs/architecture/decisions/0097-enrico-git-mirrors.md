@@ -89,7 +89,7 @@ GitHub URL and bounds operations. The [Marshall resource](../../../marshall/lib/
 and [worker](../../../marshall/lib/marshall/enrico/worker.ex) define state and
 refresh reconciliation; the [audit resource](../../../marshall/lib/marshall/enrico/audit_event.ex)
 records actions and outcomes. The [service module](../../../nix/domains/system/enrico.nix)
-and [Overalls declaration](../../../fleet/hosts/overalls/services.nix) define
+and [Overalls declaration](../../../fleet/roles/control-plane/services.nix) define
 runtime custody, storage and private listener. The
 [machine fixture](../../../nix/verification/tests/machines/enrico-service/default.nix)
 exercises a packaged service. The machine, Marshall precommit and fleet build

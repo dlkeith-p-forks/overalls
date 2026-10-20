@@ -469,7 +469,7 @@ preflight. The later captured watcher NixOS lifecycle passes as recorded under
 Starship guests and retained-state profile migration.
 
 Current [Dungarees](../../fleet/hosts/dungarees/configuration.nix) and
-[Overalls](../../fleet/hosts/overalls/services.nix) declarations enable templates
+[Overalls](../../fleet/roles/control-plane/services.nix) declarations enable templates
 with a 32 GiB per-pool budget, 128 standby disks per image and same-pool block-copy
 clones. Incoming `e3300040` reports rollout and sampled NixOS creates of
 10.8–15.1 seconds; those author-reported observations are distinct from this

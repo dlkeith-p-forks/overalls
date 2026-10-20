@@ -461,7 +461,7 @@ The worker box applies separately to each host. It is not a shared guest disk or
 an independently replicated control plane. Domains within Marshall are shown in
 [Ash business domains](#domains).
 
-[Overalls services](repo:fleet/hosts/overalls/services.nix) declare one
+[Overalls services](repo:fleet/roles/control-plane/services.nix) declare one
 `marshall-overalls` instance. The public proxy forwards to loopback port 4443
 with verified TLS. PostgreSQL is loopback-bound with TLS/SCRAM. Porsche uses
 management SSH port 22; administrative OpenSSH uses 2222. Audi and DNS bind
@@ -722,85 +722,6 @@ flowchart LR
 ```
 
 Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `panterloons`. Administrative SSH ports: 2222.
-
-### overalls
-
-```mermaid
-flowchart LR
-  host["overalls"]
-  host --> s0["audi"]
-  host --> s1["audiDns"]
-  host --> s2["audiDnsRequestRecorder"]
-  host --> s3["audiDnsSloExporter"]
-  host --> s4["audiPrivate"]
-  host --> s5["audiPrivateRequestRecorder"]
-  host --> s6["audiPrivateSloExporter"]
-  host --> s7["audiSshRequestRecorder"]
-  host --> s8["audiSshSloExporter"]
-  host --> s9["brady"]
-  host --> s10["bradyRequestRecorder"]
-  host --> s11["bradySloExporter"]
-  host --> s12["enrico"]
-  host --> s13["enricoRequestRecorder"]
-  host --> s14["enricoSloExporter"]
-  host --> s15["galileo"]
-  host --> s16["galileoRequestRecorder"]
-  host --> s17["galileoSloExporter"]
-  host --> s18["grafana"]
-  host --> s19["grafanaPublicProxy"]
-  host --> s20["lilly"]
-  host --> s21["lillyHostd"]
-  host --> s22["lillyPhysicalSloExporter"]
-  host --> s23["lillyTransfer"]
-  host --> s24["marshall"]
-  host --> s25["marshallProxy"]
-  host --> s26["marshallReadySloExporter"]
-  host --> s27["marshallRequestRecorder"]
-  host --> s28["marshallSloExporter"]
-  host --> s29["opentelemetry-collector"]
-  host --> s30["overalls-trace-audi"]
-  host --> s31["overalls-trace-audi-dns"]
-  host --> s32["overalls-trace-audi-private"]
-  host --> s33["overalls-trace-brady"]
-  host --> s34["overalls-trace-enrico"]
-  host --> s35["overalls-trace-galileo"]
-  host --> s36["overalls-trace-lilly"]
-  host --> s37["overalls-trace-marshall-overalls"]
-  host --> s38["overalls-trace-porsche"]
-  host --> s39["overalls-trace-ziggy"]
-  host --> s40["overallsAutoUpdate"]
-  host --> s41["overallsFleetExporter"]
-  host --> s42["overallsLogStore"]
-  host --> s43["overallsLogging"]
-  host --> s44["overallsOtelFleet"]
-  host --> s45["overallsOtelGuest"]
-  host --> s46["porsche"]
-  host --> s47["porscheCancelSloExporter"]
-  host --> s48["porscheCloneSloExporter"]
-  host --> s49["porschePhysicalSloExporter"]
-  host --> s50["porscheRelocateSloExporter"]
-  host --> s51["porscheRequestRecorder"]
-  host --> s52["porscheRetrySloExporter"]
-  host --> s53["porscheSloExporter"]
-  host --> s54["postgresql"]
-  host --> s55["prometheus"]
-  host --> s56["telemetryStorageProbe"]
-  host --> s57["tempo"]
-  host --> s58["underclass"]
-  host --> s59["underclassEgress"]
-  host --> s60["underclassMonitorProbe"]
-  host --> s61["underclassProxySloExporter"]
-  host --> s62["vscodeBrowserNixosExporter"]
-  host --> s63["vscodeBrowserNixosProbe"]
-  host --> s64["vscodeBrowserNixosRequestRecorder"]
-  host --> s65["vscodeBrowserUbuntuExporter"]
-  host --> s66["vscodeBrowserUbuntuProbe"]
-  host --> s67["vscodeBrowserUbuntuRequestRecorder"]
-  host --> s68["ziggy"]
-  host --> s69["ziggySloExporter"]
-```
-
-Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: none. Administrative SSH ports: 2222.
 
 ### panterloons
 

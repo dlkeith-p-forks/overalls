@@ -83,7 +83,7 @@ at 512 MiB; applications may require a higher declared minimum.
 [Ubuntu builder](../../../nix/domains/artifacts/guest/ubuntu/default.nix),
 [lock updater](../../../nix/domains/artifacts/guest/ubuntu/update-lock.py), and
 [shared image list](../../../fleet/guest-images.nix), and
-[deployment catalog](../../../fleet/hosts/overalls/image-catalog.nix) implement
+[deployment catalog](../../../fleet/roles/control-plane/image-catalog.nix) implement
 assembly, pinned resolution and publication configuration.
 [Unit/property checks](../../../nix/verification/tests/evaluation/ubuntu-guest.py) and
 [Nix evaluation assertions](../../../nix/verification/tests/evaluation/ubuntu-guest.nix) and

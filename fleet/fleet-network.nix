@@ -7,10 +7,6 @@ let
   # Each deployment has its own tunnel; addresses repeat across tunnels and
   # no peer may cross from one tunnel to another.
   networks = {
-    # Overalls runs alone until it retires (ADR-0239).
-    overalls = {
-      overalls = { address = "10.90.0.1"; endpoint = "overallsPrimary"; peers = []; };
-    };
     panterloons = {
       panterloons = { address = "10.90.0.1"; endpoint = "panterloonsPrimary"; peers = [ "dungarees" "salopettes" ]; };
       dungarees = { address = "10.90.0.2"; endpoint = "dungareesPrimary"; peers = [ "panterloons" ]; };
@@ -22,7 +18,7 @@ let
   network = lib.findFirst (members: members ? ${name})
     (throw "Host is in no fleet network") (lib.attrValues networks);
   addresses = config.overalls.fleetAddresses;
-  serviceCa = ./hosts/overalls/service-ca.crt;
+  serviceCa = ./roles/control-plane/service-ca.crt;
   local = network.${name};
   document = lib.findFirst (item: item.name == "${name}-fleet-network")
     (throw "Missing fleet network credential") inventory.${name}.credentials;
@@ -60,7 +56,7 @@ in {
     outputs.private-key = { format = "raw"; secrets = [ "WIREGUARD_PRIVATE_KEY" ]; };
   };
   environment.etc."overalls/service-ca.crt".source = serviceCa;
-  environment.etc."overalls/logstore-ca.crt".source = ./hosts/overalls/logstore-ca.crt;
+  environment.etc."overalls/logstore-ca.crt".source = ./roles/control-plane/logstore-ca.crt;
   networking.hosts."10.90.0.1" = [ "logs.fleet.internal" ];
   services.lilly = {
     controlPlaneCAFile = "/etc/overalls/service-ca.crt";

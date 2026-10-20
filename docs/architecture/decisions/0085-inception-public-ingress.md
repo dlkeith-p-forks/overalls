@@ -421,7 +421,7 @@ hosts: Dungarees binds its Audi gateway and DNS listeners to its additional
 hosts configure the two independent authoritative DNS endpoints over the
 delegated `apps.ghuntley.dev` subzone with per-VM TLS issuance against a
 staging issuer
-([Overalls](../../../fleet/hosts/overalls/services.nix),
+([Overalls](../../../fleet/roles/control-plane/services.nix),
 [Dungarees](../../../fleet/hosts/dungarees/configuration.nix); placement and
 perimeter amendments in
 [ADR-0090](0090-second-audi-dns-replica-on-worker.md) and

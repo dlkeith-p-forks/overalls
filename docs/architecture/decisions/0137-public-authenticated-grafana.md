@@ -66,7 +66,7 @@ guest authority or notification destination changes.
 
 The [public Grafana module](../../../nix/domains/system/otel-fleet/public-grafana.nix)
 implements opt-in configuration, forwarding and firewall composition. The
-[Overalls configuration](../../../fleet/hosts/overalls/configuration.nix) enables
+[Overalls configuration](../../../fleet/roles/control-plane/configuration.nix) enables
 it. [Configuration checks](../../../nix/verification/tests/evaluation/public-grafana.nix) and
 [native test](../../../nix/verification/tests/machines/public-grafana/default.nix) are present;
 passing execution and production activation are recorded separately in the

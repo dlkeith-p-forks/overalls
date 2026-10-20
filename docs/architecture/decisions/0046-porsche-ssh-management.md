@@ -351,9 +351,9 @@ separate. It does not perform destructive installation.
 
 The first overalls deployment (`b3c1f2b`) enabled administrative OpenSSH on both
 22 and 2222; a fresh pinned connection on 2222 verified login and passwordless sudo.
-[Its final configuration](../../../fleet/hosts/overalls/services.nix) assigns port
+[Its final configuration](../../../fleet/roles/control-plane/services.nix) assigns port
 22 to Porsche and retains administrative SSH on 2222. The
-[bootstrap unit](../../../fleet/hosts/overalls/porsche-authority.nix) configures
+[bootstrap unit](../../../fleet/roles/control-plane/porsche-authority.nix) configures
 Ash authority from encrypted systemd credentials before Porsche starts. Reapplying
 the declared credential is authoritative, including re-enabling a disabled gateway.
 The [deployment review](../reviews/2026-09-18-porsche-overalls.md) records exact

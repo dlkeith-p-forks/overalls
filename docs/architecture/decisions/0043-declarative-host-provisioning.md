@@ -139,14 +139,14 @@ erasure authorization boundaries.
   outstanding acceptance obligations, including independent physical validation.
 
 The local automated acceptance matrix has passed. The real
-[overalls declaration](../../../fleet/hosts/overalls/host.json) and
+the retired Overalls host declaration and
 [physical Hetzner review](../reviews/2026-09-17-overalls-provisioning.md) now record
 a successful UEFI rescue conversion, mirrored installation, authenticated
 installed boot, secret enrollment and subsequent automatic update. Implementation remains partial pending the remaining physical
 acceptance matrix. Private credentials remain outside Git.
 
 Correction (2026-10-17): "this repository" is now `ghuntley/overalls`, whose
-published branch is `trunk`. Both [host declarations](../../../fleet/hosts/overalls/host.json)
+published branch is `trunk`. Both the retired host declarations
 poll `ssh://git@github.com/ghuntley/overalls` with the same shared deploy key
 and pinned GitHub host key, and the [host tool](../../../nix/domains/artifacts/host/cli.py),
 [remote preflight](../../../nix/domains/artifacts/host/remote.py) and

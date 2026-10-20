@@ -216,7 +216,8 @@ false
 Pinned public Ed25519 keys for SSH and optional recovery.
 
 Type: `list of string matching the pattern ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI[A-Za-z0-9+/]{43}( [^
-]+)?`.
+
+]+)?`.
 
 Default:
 
@@ -1570,7 +1571,8 @@ Default: Required when its service or enclosing record is selected.
 No additional description is declared by the module.
 
 Type: `list of string matching the pattern ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI[A-Za-z0-9+/]{43}( [^
-]+)?`.
+
+]+)?`.
 
 Default:
 
@@ -1593,7 +1595,8 @@ Default: Required when its service or enclosing record is selected.
 No additional description is declared by the module.
 
 Type: `string matching the pattern ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI[A-Za-z0-9+/]{43}( [^
-]+)?`.
+
+]+)?`.
 
 Default: Required when its service or enclosing record is selected.
 
@@ -2211,7 +2214,8 @@ true
 Operator RSA public key (at least 3072 bits). Keep its private key off-host.
 
 Type: `null or string matching the pattern /[^
-]+`.
+
+]+`.
 
 Default:
 
@@ -3551,7 +3555,8 @@ true
 Operator RSA public key (at least 3072 bits). Keep its private key off-host.
 
 Type: `null or string matching the pattern /[^
-]+`.
+
+]+`.
 
 Default:
 
@@ -4509,7 +4514,8 @@ true
 Operator RSA public key (at least 3072 bits). Keep its private key off-host.
 
 Type: `null or string matching the pattern /[^
-]+`.
+
+]+`.
 
 Default:
 
@@ -9317,7 +9323,8 @@ true
 Operator RSA public key (at least 3072 bits). Keep its private key off-host.
 
 Type: `null or string matching the pattern /[^
-]+`.
+
+]+`.
 
 Default:
 

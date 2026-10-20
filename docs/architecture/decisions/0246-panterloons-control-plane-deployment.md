@@ -18,7 +18,7 @@ cutover, and use Dungarees as its worker. Overalls keeps serving until the
 operator copies data by hand and retires it. [ADR-0238](0238-panterloons-deployment-and-per-deployment-tunnels.md)
 already gives Panterloons its own tunnel.
 
-The Overalls roles in `fleet/hosts/overalls/` named their own secrets,
+The Overalls roles in `fleet/roles/control-plane/` for shared roles; the Overalls host identity is retired named their own secrets,
 addresses and administrative listener directly. A fresh deployment also cannot
 start every role at once: Porsche, Audi, Audi DNS, Ziggy and Galileo
 credentials, and the Lilly binding, are issued by that deployment's own
@@ -89,7 +89,7 @@ The operator directed this on 2026-10-20.
 
 ## Implementation evidence
 
-- [`control-plane.nix`](../../../fleet/hosts/overalls/control-plane.nix) and
+- [`control-plane.nix`](../../../fleet/roles/control-plane/control-plane.nix) and
   [Panterloons' configuration](../../../fleet/hosts/panterloons/configuration.nix).
 - [Remote builders](../../../fleet/remote-builders.nix) and its
   [evaluation](../../../nix/verification/tests/evaluation/remote-builders.nix).

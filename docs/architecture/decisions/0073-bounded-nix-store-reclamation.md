@@ -76,7 +76,7 @@ remain open obligations.
   bounded collector and its contract.
 - [Host profile](../../../nix/platform/hosts/profile.nix) enables collection on every
   fleet host by default.
-- [Overalls](../../../fleet/hosts/overalls/configuration.nix) and
+- [Overalls](../../../fleet/roles/control-plane/configuration.nix) and
   [Dungarees](../../../fleet/hosts/dungarees/configuration.nix) carry the
   reviewed 200/400 GiB values with measured rationale.
 - [Evaluation check](../../../nix/verification/tests/evaluation/nix-gc.nix) covers unit,

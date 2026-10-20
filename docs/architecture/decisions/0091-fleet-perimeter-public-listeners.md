@@ -85,7 +85,7 @@ The typed registry, assertions and both backend renderings live in
 rejection and suppression cases are in
 [fleet-firewall.nix evaluation](../../../nix/verification/tests/evaluation/fleet-firewall.nix),
 which passes. The Audi entries are declared in the
-[Overalls](../../../fleet/hosts/overalls/services.nix) and
+[Overalls](../../../fleet/roles/control-plane/services.nix) and
 [Dungarees](../../../fleet/hosts/dungarees/configuration.nix) host
 configurations, and both hosts evaluate with the expected accept rules.
 Deployment and live external reachability checks remain outstanding, so

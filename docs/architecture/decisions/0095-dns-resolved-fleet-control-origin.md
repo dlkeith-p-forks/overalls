@@ -76,7 +76,7 @@ service credentials and verified TLS remain required.
 
 ## Implementation evidence
 
-The [Overalls configuration](../../../fleet/hosts/overalls/configuration.nix)
+The [Overalls configuration](../../../fleet/roles/control-plane/configuration.nix)
 declares the hardened relay and removes the loopback alias. The
 [Dungarees configuration](../../../fleet/hosts/dungarees/configuration.nix)
 removes the overlay alias, while its reviewed

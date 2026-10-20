@@ -97,7 +97,7 @@ requires interval coverage of the current placement/epoch/generation and the
 latest authenticated outcome; disk also requires a native owned allocation.
 [Restart admission](../../../marshall/lib/marshall/compute/restart_capacity.ex)
 protects manual starts, recovery and relocation activation. The
-[host configuration](../../../fleet/hosts/overalls/host.json) declares new ceilings;
+the retired Overalls host configuration declares new ceilings;
 [operator reconciliation](../../../marshall/lib/marshall/compute/capacity_policy.ex)
 updates scheduler margins using host-locked Ash actions before serving.
 The [review](../reviews/2026-09-17-usage-based-overcommit.md) records executed

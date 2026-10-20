@@ -64,7 +64,7 @@ window.
 
 ## Implementation evidence
 
-- Budgets and boot parameters: [overalls](../../../fleet/hosts/overalls/host.json),
+- Budgets and boot parameters: the retired Overalls declaration,
   [dungarees](../../../fleet/hosts/dungarees/host.json),
   [host profile](../../../nix/platform/hosts/profile.nix).
 - Live application and safe decrease:

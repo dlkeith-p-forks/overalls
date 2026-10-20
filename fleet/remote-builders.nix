@@ -3,8 +3,7 @@ let
   inventory = (import ../nix/platform/hosts/inventory.nix { inherit lib; }).hosts;
   keys = builtins.fromJSON (builtins.readFile ./builder-public-keys.json);
   # CPU counts were measured with nproc --all over inventory-pinned
-  # administrative SSH: Overalls on 2026-09-18, the replacement Dungarees and
-  # Panterloons on 2026-10-20. Guest budgets are not CPU discovery.
+  # administrative SSH: the replacement Dungarees and Panterloons on 2026-10-20. Guest budgets are not CPU discovery.
   endpoints = {
     # Builders are reached over Tailscale so no public address is evaluated.
     dungarees = { address = "100.96.244.44"; port = 2222; logicalCpus = 96; };

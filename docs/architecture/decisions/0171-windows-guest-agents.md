@@ -309,7 +309,7 @@ Verified facts that shape this decision:
 - Module and fleet: [Lilly module](../../../nix/domains/system/lilly.nix),
   [guest images](../../../fleet/guest-images.nix),
   [dungarees](../../../fleet/hosts/dungarees/configuration.nix),
-  [overalls image catalog](../../../fleet/hosts/overalls/image-catalog.nix).
+  [overalls image catalog](../../../fleet/roles/control-plane/image-catalog.nix).
 - Agents: [Lyra packaging](../../../nix/domains/artifacts/infrastructure/lyra.nix),
   [probe](../../../lyra/src/bin/overalls-winprobe.rs),
   [SSH files](../../../lyra/src/ssh_files.rs),

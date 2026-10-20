@@ -142,7 +142,7 @@ the mount and re-verified before completion.
 Incoming `e3300040` reports that `blockCloneCopies` has been enabled on both
 hosts since `47139d61` (2026-10-09). Current
 [Dungarees](../../../fleet/hosts/dungarees/configuration.nix) and
-[Overalls](../../../fleet/hosts/overalls/services.nix) declarations set it to
+[Overalls](../../../fleet/roles/control-plane/services.nix) declarations set it to
 `true`. Source configuration and the incoming author's production report do not
 establish an independently captured post-cutover clone measurement.
 

@@ -159,7 +159,7 @@ records the scope and remaining production acceptance.
 The [updater](../../../nix/domains/system/auto-update/runtime.py) now quiesces
 declared socket activators before stopping their consumer services and attempts
 to restore previously running roles after a failed activation. The
-[Overalls declaration](../../../fleet/hosts/overalls/configuration.nix) includes
+[Overalls declaration](../../../fleet/roles/control-plane/configuration.nix) includes
 its socket-activated fleet relay, and the
 [updater machine](../../../nix/verification/tests/machines/auto-update/default.nix) drives a
 continuous client through a candidate switch and failure recovery. This closes

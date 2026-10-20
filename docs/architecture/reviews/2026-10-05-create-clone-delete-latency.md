@@ -171,7 +171,7 @@ remains partially implemented; this checkpoint does not establish its rollout.
 
 This section preserves the incoming author report from `e3300040`. Current
 [Dungarees](../../../fleet/hosts/dungarees/configuration.nix) and
-[Overalls](../../../fleet/hosts/overalls/services.nix) source declarations enable
+[Overalls](../../../fleet/roles/control-plane/services.nix) source declarations enable
 templates, 128 standbys per image and block-copy clones. The report's live
 measurements and incidents were not independently repeated during this
 observability change. Its claimed native pass has no exact wrapper, duration or

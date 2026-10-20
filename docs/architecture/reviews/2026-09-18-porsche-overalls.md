@@ -22,7 +22,7 @@ management listener on 22. The updater includes Porsche and secret-dependent
 operator units in deployment ordering and verifies authenticated readiness through
 the private status socket, rather than relying only on unit activity.
 
-The [host authority unit](../../../fleet/hosts/overalls/porsche-authority.nix)
+The [host authority unit](../../../fleet/roles/control-plane/porsche-authority.nix)
 uses Marshall's trusted Ash action. It copies the systemd credential into its
 private runtime directory at mode 0600 to satisfy the operator file boundary;
 no token is placed in argv, source or the Nix store. The committed bundle is SOPS

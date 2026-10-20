@@ -170,7 +170,7 @@ establishes the WG-addressed path-scoped entry (insert/reader/userlist ACLs,
 TLS from runtime credentials) and hardened bounded VictoriaLogs backend;
 [fleet wiring](../../../fleet/fleet-network.nix) binds `logs.fleet.internal`,
 installs the committed CA and admits peer-only 8443;
-[overalls](../../../fleet/hosts/overalls/services.nix) and
+[overalls](../../../fleet/roles/control-plane/services.nix) and
 [dungarees](../../../fleet/hosts/dungarees/configuration.nix) enable the
 collector with the reviewed source list and runtime-file credentials; the
 store client (`marshall/lib/marshall/logs/store.ex` at overalls revision `a99f74f0`, repository deleted) and

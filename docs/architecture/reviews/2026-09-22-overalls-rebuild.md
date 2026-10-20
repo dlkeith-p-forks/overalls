@@ -19,11 +19,11 @@ are new; the old host binding is not reused.
 
 ## Changes and findings
 
-- The [host declaration](../../../fleet/hosts/overalls/host.json) records the
+- The host declaration (retired Overalls host declaration) records the
   authenticated replacement SSH key, transfer pin, Lilly host/pool registration
   and installation-derived ZFS GUIDs. Stable physical disk identities, IP
   addresses and resource budgets are retained.
-- The [image catalog](../../../fleet/hosts/overalls/image-catalog.nix) no longer
+- The [image catalog](../../../fleet/roles/control-plane/image-catalog.nix) no longer
   changes capacity on the old hard-coded host UUID. New enrollment supplies the
   declared overheads; catalog startup independently registers installed images.
 - PostgreSQL, TLS and password setup were enrolled before application migrations.
@@ -39,7 +39,7 @@ are new; the old host binding is not reused.
   its tailnet HTTPS publication is disabled until the host is authenticated.
 - Reboot exposed a pre-existing administrative SSH startup race: binding
   `OVERALLS_PRIMARY_IPV4:2222` failed before the address existed and exhausted systemd's
-  start limit. The [host configuration](../../../fleet/hosts/overalls/configuration.nix)
+  start limit. The [host configuration](../../../fleet/roles/control-plane/configuration.nix)
   now orders SSH after network-online and retries at five-second intervals.
   The existing Git updater restored administrative access without rescue boot.
 

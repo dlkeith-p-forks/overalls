@@ -59,7 +59,7 @@ Native transfer authentication and source fencing must remain unchanged.
 - [Host profile](../../../nix/platform/hosts/profile.nix) binds declared endpoint ports and identity.
 - [Module checks](../../../nix/verification/tests/evaluation/module-configuration.nix) cover mandatory service and collision rejection.
 - [Enrollment checks](../../../nix/verification/tests/evaluation/enrollment-configuration.nix) cover declaration binding.
-- [Overalls](../../../fleet/hosts/overalls/host.json) and [Dungarees](../../../fleet/hosts/dungarees/host.json) declare endpoints.
+- the retired Overalls declaration and [Dungarees](../../../fleet/hosts/dungarees/host.json) declare endpoints.
 
 Production activation, registration and evacuation acceptance remain pending.
 Executed validation is recorded in the [review](../reviews/2026-09-18-required-lilly-transfer.md).

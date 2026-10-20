@@ -103,7 +103,7 @@ Activation runs in the *live* updater, so the dependents rule could not
 deploy itself on overalls: the first changed-unit updater kept failing the
 same way on every candidate that changed Marshall, with no out-of-band switch
 authorized. The relay socket on overalls is now `PartOf=marshall-overalls.service`
-([overalls configuration](../../../fleet/hosts/overalls/configuration.nix)),
+([overalls configuration](../../../fleet/roles/control-plane/configuration.nix)),
 which the live updater sees as a changed socket and quiesces, so the stop
 completes and the updater carrying the dependents rule becomes live. Any
 future change to the activation rule has the same one-release lag.

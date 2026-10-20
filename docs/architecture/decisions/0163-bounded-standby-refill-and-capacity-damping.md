@@ -101,7 +101,7 @@ shape (ADR-0159).
   [pool-lock waiters](../../../lilly/lib/lilly/host/storage.ex),
   [pool configuration](../../../lilly/lib/lilly/host/pool.ex),
   [Nix module](../../../nix/domains/system/lilly.nix),
-  [overalls](../../../fleet/hosts/overalls/services.nix) and
+  [overalls](../../../fleet/roles/control-plane/services.nix) and
   [dungarees](../../../fleet/hosts/dungarees/configuration.nix).
 - Usage resample: [ZFS observation](../../../lilly/lib/lilly/host/zfs.ex).
   Observation and [dataset preparation](../../../lilly/lib/lilly/host/zfs_dataset.ex)

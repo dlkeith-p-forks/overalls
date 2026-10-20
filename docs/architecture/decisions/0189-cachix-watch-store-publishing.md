@@ -42,7 +42,7 @@ secret-custody checks verify structure; live publication remains unverified.
 
 ## Implementation evidence
 
-Host declarations are in [Overalls](../../../fleet/hosts/overalls/configuration.nix)
+Host declarations are in [Overalls](../../../fleet/roles/control-plane/configuration.nix)
 and [Dungarees](../../../fleet/hosts/dungarees/configuration.nix), with the encrypted document at
 `secrets/overalls-cachix.enc.json` and inventory
 entries in both `host.json` files. The NixOS module supplies the watch agent.

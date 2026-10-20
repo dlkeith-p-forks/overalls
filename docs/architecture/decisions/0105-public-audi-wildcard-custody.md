@@ -151,7 +151,7 @@ using the matching restored fixture keyring and verifies their saved digests. Th
 can allocate an immediate generation under the same PostgreSQL lock as renewal,
 and the [audit view](../../../marshall/lib/marshall_web/live/admin/audit_live.ex)
 shows its actor and subsequent gateway receipts.
-The [Overalls](../../../fleet/hosts/overalls/services.nix) and
+The [Overalls](../../../fleet/roles/control-plane/services.nix) and
 [Dungarees](../../../fleet/hosts/dungarees/configuration.nix) declarations
 select the wildcard issuer and Audi browser origins. Evaluating those host
 declarations proves their NixOS configuration shape, not physical issuance or

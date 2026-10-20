@@ -171,10 +171,10 @@ it is offline.
   [`fleet-network`](../../../nix/verification/tests/machines/fleet-network/default.nix),
   [`fleet-firewall`](../../../nix/verification/tests/evaluation/fleet-firewall.nix) and
   [`host-planning`](../../../nix/verification/tests/evaluation/host-planning.py).
-- Host declarations: [Overalls](../../../fleet/hosts/overalls/host.json) and
+- Host declarations: the retired Overalls declaration and
   [Dungarees](../../../fleet/hosts/dungarees/host.json) carry no address
   literals; both hosts' Lilly protected networks are runtime files
-  ([Overalls](../../../fleet/hosts/overalls/services.nix),
+  ([Overalls](../../../fleet/roles/control-plane/services.nix),
   [Dungarees](../../../fleet/hosts/dungarees/configuration.nix)).
 - Remaining gaps: deployment evidence (the WireGuard handshake with salopettes, Susan health
   over `fleet0`, runtime chains, binds and the recovery copy) is recorded as
