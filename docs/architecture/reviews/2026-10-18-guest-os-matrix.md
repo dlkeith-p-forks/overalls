@@ -1704,3 +1704,174 @@ OmniOS wrong-CID refusal, malformed DMA descriptors, reset races, peer-VM or
 physical-host isolation, or production admission. The production FreeBSD kernel
 does not contain the injection OID.
 
+
+## Native durability: interrupted growth, power loss and relocation
+
+[ADR-0243](../decisions/0243-native-guest-durability-verification.md) adds three
+native machine scenarios for each of FreeBSD and OmniOS. They go beyond the
+same-host process SIGKILL already recorded. Each scenario boots the real native
+image under nested KVM with the patched Firecracker 1.16.1 and fresh MMDS V2
+placement, epoch and boot challenge. Each drive is a regular file inside a host
+ZFS dataset, with Lilly's production `cache_type: Writeback` and `Sync` engine.
+The OmniOS checks use the promoted `packages.omniosGuest`. The FreeBSD checks use
+the source candidate, because the defect below required an image change. Every
+receipt keeps `native_admission: false`.
+
+Architecture impact: ADR-0243 is new. It defines a flush receipt as durable
+across host power loss under Writeback drives and records the verification
+method. ADR-0190 gains evidence. No Ash domain or resource, deployment host or
+service, wire protocol, persistence shape or authorization grant changes. The
+domain and deployment views are unchanged.
+
+### Why the method models power loss
+
+A VMM SIGKILL leaves every completed write in the host page cache, so it cannot
+show that anything survives. For the power-loss scenario, the host ZFS pool sits
+on a `dm-log-writes` target (`/dev/vdc` data, `/dev/vdd` journal). That target
+appends each completed write to the journal in completion order, together with
+every FLUSH and FUA request. Replaying a prefix of the journal reproduces exactly
+the media state that existed at that point, including writes that were never
+flushed. Because the journal records device flushes, any write the host never
+flushed is exposed as volatile: a cut before that write's flush discards it.
+
+The scenario proceeds as follows:
+
+1. Boot the guest and write a marker.
+2. Request a native flush, bracketed by `guest-flush-requested` and
+   `guest-flush-acknowledged` journal marks.
+3. Write further unsynchronized guest data and a host canary in a separate
+   `tank/canary` dataset. Host ZFS commits are deferred by
+   `zfs_txg_timeout=3600` and `zfs_dirty_data_sync_percent=100`.
+4. SIGKILL Firecracker, then write the `power-cut` journal mark.
+5. Replay only the entries before the cut onto a zeroed `/dev/vde` and import
+   the pool from that device.
+
+The host canary MUST then be absent, which proves the cut discarded unflushed
+host state. The acknowledged marker MUST be present with exact bytes. The replay
+receipt counts the device flushes between the two guest marks.
+
+Interrupted growth traces Firecracker's `pwrite`/`write` calls to the disk
+descriptor with `strace --seccomp-bpf`. Firecracker gets SIGKILL after K writes
+at or beyond the old disk end: K=1 in the first stage and K=8 in the second. Each
+recovery boot MUST pass the native integrity check, report the old or the grown
+root size, and then complete growth.
+
+Relocation flushes a 32,768-line workspace file on the source, stops cleanly and
+runs `zfs send -c | socat` to a second NixOS node into `zfs receive -u`. It checks
+that snapshot GUIDs match, destroys the source dataset, then boots on the
+destination under placement `eeeeeeee-…-000000000202`, epoch 1. The destination
+MUST refuse flush, workspace and terminal requests that carry the source
+placement `dddddddd-…-000000000201` and epoch 7.
+
+### FreeBSD flush defect and fix
+
+The first FreeBSD power-loss run used a candidate built from source before this
+change (derivation `97ppr4mc…-vm-test-run-overalls-freebsd-native-power-loss.drv`).
+It failed after replay:
+
+```
+native crash ufs-fsck-exit=0
+native crash command refused: status=1 stdout_bytes=0 stderr_bytes=84 login_event_exact=True
+native_services.ProtocolError: native crash recovery guest command refused
+```
+
+UFS was consistent, but the marker acknowledged before the cut was missing.
+Pinned FreeBSD 14.3 UFS sends no BIO_FLUSH, because `softdep_flushcache` defaults
+to 0. UFSSUSPEND waits only for completed writes, which remained in the virtio
+volatile cache. The [agent](../../../lyra/src/native_guest.rs) now issues
+`DIOCGFLUSH` through the fixed `gpt/swapfs` provider after UFSRESUME and refuses
+the receipt on failure. GEOM refuses BIO_FLUSH without write access, and the
+mounted root holds its own provider exclusively. The
+[ABI gate](../../../nix/domains/artifacts/guest/native-growth.nix) pins the
+ioctl number. The rebuilt candidate
+`/nix/store/2dggg4mlhfdmvqmgvlc9ji2qj9i5rb8s-overalls-freebsd-native-image-candidate`
+recorded 36 device flushes inside the guest-flush segment and kept the marker.
+The promoted FreeBSD selection predates this fix and is not
+durability-qualified; promoting a fixed image is a separate step.
+
+### Results
+
+All six checks passed on the final source (`nix build .#checks.x86_64-linux.<name>`).
+Both power-loss output paths were re-confirmed against the final source with
+`nix build --dry-run`. Growth and relocation were rerun on the final driver;
+the two relocation reruns followed a format-only driver change. Earlier passes
+(FreeBSD 203.28 s, receipt `877a4e53…`; OmniOS 316.12 s, receipt `c175647c…`)
+had the same outcome.
+
+| Check | Result | Test script | Receipt SHA-256 |
+| --- | --- | --- | --- |
+| `native-freebsd-interrupted-growth` | pass | 307.38 s | `8ec0202c14a8796e9317030b7d6836c8697b9d5816736b7d5cc5b1484fefa2fc` |
+| `native-omnios-interrupted-growth` | pass | 430.14 s | `8020cbf0eb4cc9a919ced5e95948298ec927536ae3cb86f288ffbb91b1e25441` |
+| `native-freebsd-power-loss` | pass (after fix) | 192.05 s | `6df64247d3c4939962761bae0f2eda5f5fc77b06618acfa8100ca175f9c0b4e8` |
+| `native-omnios-power-loss` | pass | 267.22 s | `e1354caa587a2e0d913d8c78a006ec8817eabc43d20bc018c673f3da9fd31083` |
+| `native-freebsd-relocation` | pass | 206.07 s | `ecc553c0e00711d1f6d153efa325c13f1fdcd75287a99a0b62f91826b41281f5` |
+| `native-omnios-relocation` | pass | 300.46 s | `a270d5645539e761fc38e562d2fe703ddf5997ac02df8db2f4e4387854809830` |
+
+Interrupted growth (FreeBSD output `casmi4ji…`, runner phase 233 s; OmniOS
+output `a6i6hfli…`, runner phase 335 s):
+
+- **FreeBSD** root capacity went 5,183,107,072 → 7,268,753,408 →
+  9,354,403,840 bytes, with clean UFS snapshot fsck after each kill. Stage 1
+  killed at the first write past the old end. The interim boot saw the old
+  root size and completed growth (receipt outcome `grown`). Stage 2 killed
+  after eight such writes. By then the root already had the new size, and
+  recovery found nothing to do (`unchanged`).
+- **OmniOS** pool size went 8,053,063,680 → 10,200,547,328 → 12,348,030,976
+  bytes, with a zero-error scrub after each kill. In both stages the
+  expansion transaction had already committed before the kill, so the interim
+  boot saw the grown pool. No OmniOS kill point observed a pre-commit state.
+- So only FreeBSD stage 1 interrupted growth before the size change became
+  visible. The other three kills show that a kill during late growth writes
+  leaves a consistent, grown root.
+
+Power loss:
+
+- **FreeBSD** replayed 16,302 writes and 149 flushes before the cut and
+  discarded 224 entries after it. Unsynchronized guest churn was absent after
+  replay. Integrity was checked with a UFS snapshot background fsck.
+- **OmniOS** replayed 4,571 writes and 765 flushes and discarded 326 entries.
+  The flush segments held 4 device flushes (requested) and 10 (acknowledged).
+  The churn file survived only as 0 bytes. The ZFS scrub completed with zero
+  errors.
+- **Both** lost the host canary, kept the exact marker bytes, booted with the
+  same placement under a new epoch, challenge and boot identity, refused pre-cut
+  flush, workspace and terminal authority, and shut down cleanly.
+
+Relocation:
+
+- **FreeBSD** sent about 2.1 GB in 13.79 s. Its source phase took 46 s and its
+  destination phase 60 s.
+- **OmniOS** sent in 11.77 s. Its source phase took 96 s and its destination
+  phase 79 s.
+- **Both** produced workspace SHA-256
+  `8a149c996b193c8e220ade535fec8e2879a6394073b9aa30d21d0bd762ee4b11` on the
+  destination, with two distinct boot IDs and refusal of the source placement's
+  authority.
+
+Observed failures before the passing runs (harness defects fixed forward):
+
+- Relocation: the driver's `wait_for_open_port` consumed socat's single
+  connection, and a received dataset was already auto-mounted.
+- OmniOS power loss: the first canary sat in the guest dataset and was carried
+  by the guest's ZIL commits. It now has its own dataset.
+- OmniOS growth (product, open): two of four early OmniOS runs on ZFS-hosted
+  disks failed at first boot because `svc:/site/overalls-native-growth` entered
+  SMF maintenance ("failing too often"). This happened under both Writeback and
+  Unsafe caching. Later ext4-hosted, diagnostic and final ZFS-hosted runs passed.
+  The cause is unestablished. A failure-only diagnostic now prints the stopped
+  guest's SMF log.
+
+Host checks: nine unittest cases (4 `native_write_log_test.py`, 5 `native_durability_test.py`)
+pass. The tool derivation gates them with pinned ruff and ty. Lyra
+`cargo clippy --all-targets -D warnings` and `cargo test` passed.
+
+### Remaining gaps
+
+- Only one kill point per growth stage. Only FreeBSD stage 1 hit a pre-resize state;
+  OmniOS kills landed after its expansion commit.
+- No physical disk or firmware write cache.
+- No Lilly dataset transfer or Marshall relocation orchestration.
+- No split brain against a live source.
+- The relocated workspace is a flushed file, not a Git checkout.
+- The FreeBSD fix is not yet in a promoted image.
+- The OmniOS growth maintenance failure remains intermittent and unexplained.

@@ -238,6 +238,29 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
     pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
     osName = "illumos"; crash = true; allowNativeAdmission = true;
   };
+  # Native durability (ADR-0190, ADR-0243): interrupted root growth, host power loss
+  # replayed from a dm-log-writes journal, and two-host ZFS relocation.
+  native-freebsd-interrupted-growth = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "interrupted-growth";
+  };
+  native-freebsd-power-loss = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "power-loss";
+  };
+  native-freebsd-relocation = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "relocation";
+  };
+  native-omnios-interrupted-growth = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "interrupted-growth";
+    image = packages.omniosGuest; osName = "illumos"; allowNativeAdmission = true;
+  };
+  native-omnios-power-loss = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "power-loss";
+    image = packages.omniosGuest; osName = "illumos"; allowNativeAdmission = true;
+  };
+  native-omnios-relocation = import ./machines/native-durability {
+    pkgs = testPkgs; inherit packages; scenario = "relocation";
+    image = packages.omniosGuest; osName = "illumos"; allowNativeAdmission = true;
+  };
   windows-firmware = packages.windowsFirmware;
   windows-guest-unit = import ./evaluation/windows-guest.nix { pkgs = buildPkgs; inherit packages; };
   # Long-running: builds the evaluation-ISO Windows image (unattended install

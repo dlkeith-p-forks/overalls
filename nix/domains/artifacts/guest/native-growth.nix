@@ -13,6 +13,8 @@ let
     _Static_assert(sizeof(u_int) == 4, "u_int");
     _Static_assert(DIOCGMEDIASIZE == 0x40086481, "media size ioctl");
     _Static_assert(DIOCGSECTORSIZE == 0x40046480, "sector size ioctl");
+    /* lyra native_guest flush_disk_cache hardcodes this request. */
+    _Static_assert(DIOCGFLUSH == 0x20006487, "cache flush ioctl");
     int overalls_growth_abi(void) { return 0; }
     C
     zig cc -target x86_64-freebsd -std=c11 -Wall -Wextra -Werror -c freebsd.c -o freebsd.o

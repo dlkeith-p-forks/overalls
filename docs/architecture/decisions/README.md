@@ -1,5 +1,11 @@
 # Architecture decision records
 
+[ADR-0243](0243-native-guest-durability-verification.md) makes a native flush
+receipt mean durable across host power loss under Lilly's Writeback drives,
+adds a FreeBSD device cache flush after UFS resume, and verifies interrupted
+root growth, dm-log-writes power-cut replay and two-host relocation for
+FreeBSD and OmniOS without admission or orchestration claims.
+
 [ADR-0237](0237-windows-custodian-same-boot-recovery.md) completes ADR-0208's
 same-boot custodian restart: durable per-boot custodian generations scope jobs,
 pipes and receipts, and a prior lifetime's receipt is retired only after its
@@ -999,3 +1005,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0234](0234-installer-source-administrative-grant.md) | accepted | partial | Installer source grant for administrative SSH |
 | [ADR-0235](0235-panterloons-deployment-and-per-deployment-tunnels.md) | accepted | partial | Panterloons deployment and per-deployment fleet tunnels |
 | [ADR-0237](0237-windows-custodian-same-boot-recovery.md) | accepted | partial | Windows custodian same-boot recovery by logon-session quiescence |
+| [ADR-0243](0243-native-guest-durability-verification.md) | accepted | partial | Native guest durability across interrupted growth, host power loss and relocation |

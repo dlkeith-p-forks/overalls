@@ -861,7 +861,8 @@ receipts and four additional Arch/Alma read-only sudo/helper checks at distinct
 times and recorded revision contexts. Fresh OmniOS `122228` supplies the owner
 checkpoint missing from its earlier `091638` journey. This scoped milestone
 does not establish a simultaneous same-revision run, broader enabled-capability
-acceptance, revocation, native isolation, interrupted growth or physical recovery.
+acceptance, revocation, native isolation or physical recovery; native interrupted
+growth is covered separately by ADR-0243 fixtures, not by this milestone.
 
 Windows fleet staging/registration selects `windowsGuestPublished`, a
 recursive-hash fixed-output copy of the reviewed 64 GiB Desktop Experience
@@ -1312,7 +1313,17 @@ boots/two expansions with complete service oracles, preserved data and strict
 EFI inventories (only bounded root `NvVars` mutable). The final reviewed
 blocking-flush image passed all five services/growth/policy/daemon-recovery/
 same-disk SIGKILL-recovery variants, with exact image and immutable receipt paths
-in the native review. The recorded source-qualified OmniOS growth replay separately covers three clean boots and two expansions; interrupted expansion remains open.
+in the native review. The recorded source-qualified OmniOS growth replay separately covers three clean boots and two expansions.
+[ADR-0243](repo:docs/architecture/decisions/0243-native-guest-durability-verification.md)
+native durability tests then SIGKILL Firecracker at traced growth writes past
+the old disk end in two stages. Each following boot must pass UFS fsck or a
+zero-error ZFS scrub, report the old or new root size and complete growth.
+The same tests replay a dm-log-writes host journal prefix to model power loss.
+They also move a stopped disk between two nested hosts with ZFS send/receive
+and boot it under a new placement. The corrected FreeBSD candidate and the
+promoted OmniOS image passed all three under production Writeback drive
+caching. FreeBSD flush receipts now require a `DIOCGFLUSH` device cache flush
+after UFS resume; the promoted FreeBSD image predates that fix.
 This adds a tenth production executable
 per OS beyond the recorded eighteen-executable package. OmniOS's offline SMF
 profile disables all four stock cloud-init instances and stock SSH; only

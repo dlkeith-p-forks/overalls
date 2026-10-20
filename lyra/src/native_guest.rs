@@ -111,9 +111,10 @@ pub fn writable_root() -> io::Result<()> {
 /// @cc [owner:ghuntley,label:recovery;verification] native-flush-blocking-root
 /// A native flush receipt MUST follow completion of filesystem writes, rather
 /// than their asynchronous scheduling. FreeBSD MUST flush and immediately
-/// resume only the fixed writable UFS root through UFSSUSPEND/UFSRESUME; a failed
-/// suspend or resume MUST refuse the receipt, and descriptor closure MUST invoke
-/// the kernel's resume cleanup. The pinned illumos ZFS sync MUST wait for dirty
+/// resume only the fixed writable UFS root through UFSSUSPEND/UFSRESUME, then
+/// flush the disk's volatile write cache; a failed suspend, resume or cache
+/// flush MUST refuse the receipt, and descriptor closure MUST invoke the
+/// kernel's resume cleanup. The pinned illumos ZFS sync MUST wait for dirty
 /// pool commits.
 pub fn flush_root() -> io::Result<()> {
     #[cfg(target_os = "freebsd")]
@@ -163,7 +164,8 @@ pub fn flush_root() -> io::Result<()> {
         if unsafe { libc::ioctl(device.as_raw_fd(), RESUME) } != 0 {
             return Err(io::Error::last_os_error());
         }
-        Ok(())
+        drop(device);
+        flush_disk_cache()
     }
     #[cfg(any(target_os = "illumos", target_os = "solaris"))]
     {
@@ -174,6 +176,39 @@ pub fn flush_root() -> io::Result<()> {
     }
     #[cfg(not(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris")))]
     Err(io::Error::other("unsupported native filesystem flush"))
+}
+
+/// @cc [owner:ghuntley,label:recovery] native-freebsd-device-cache-flush
+/// Pinned FreeBSD UFS never sends BIO_FLUSH on suspension or fsync
+/// (softdep_flushcache defaults to off), so completed writes may still sit in
+/// the virtio device's volatile cache. After resume the agent MUST send one
+/// DIOCGFLUSH through the image's fixed `gpt/swapfs` partition provider, which
+/// shares the root's disk and is never exclusively held, and MUST refuse the
+/// receipt unless the flush succeeds. The descriptor MUST NOT write data.
+#[cfg(target_os = "freebsd")]
+fn flush_disk_cache() -> io::Result<()> {
+    use std::os::fd::AsRawFd;
+    use std::os::unix::fs::{FileTypeExt, OpenOptionsExt};
+
+    // GEOM refuses BIO_FLUSH on a consumer without write access, and the
+    // mounted root holds its provider exclusively; the swap partition does not.
+    let disk = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .custom_flags(libc::O_NOFOLLOW | libc::O_CLOEXEC)
+        .open("/dev/gpt/swapfs")?;
+    if !disk.metadata()?.file_type().is_char_device() {
+        return Err(io::Error::other("invalid native flush disk"));
+    }
+    // FreeBSD14.3 sys/sys/disk.h: DIOCGFLUSH _IO('d', 135); checked by the
+    // native-growth ABI gate.
+    const DIOCGFLUSH: libc::c_ulong = 0x2000_6487;
+    // SAFETY: DIOCGFLUSH takes no argument and only issues BIO_FLUSH to the
+    // provider's disk; the owned descriptor stays open for the call.
+    if unsafe { libc::ioctl(disk.as_raw_fd(), DIOCGFLUSH) } != 0 {
+        return Err(io::Error::last_os_error());
+    }
+    Ok(())
 }
 
 #[cfg(any(target_os = "freebsd", test))]
