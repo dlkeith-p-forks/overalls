@@ -1,5 +1,9 @@
 # Architecture decision records
 
+[ADR-0247](0247-sops-operator-source-grant.md) restores Geoffrey Huntley's
+operator source as a reviewed fleet-wide grant whose address lives only in the
+fleet-addresses SOPS document.
+
 [ADR-0246](0246-panterloons-control-plane-deployment.md) runs Panterloons as a
 copy of the Overalls deployment from the same parameterised host roles, with
 fresh secrets and a bootstrap stage before its own Marshall issues credentials.
@@ -1041,3 +1045,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0243](0243-native-guest-durability-verification.md) | accepted | partial | Native guest durability across interrupted growth, host power loss and relocation |
 | [ADR-0245](0245-underclass-egress-node-tag.md) | accepted | partial | Underclass egress node tag |
 | [ADR-0246](0246-panterloons-control-plane-deployment.md) | accepted | partial | Panterloons control-plane deployment |
+| [ADR-0247](0247-sops-operator-source-grant.md) | accepted | partial | SOPS-held operator source grant |

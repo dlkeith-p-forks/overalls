@@ -24,68 +24,96 @@
   },
   "credentials": [
     {
-      "name": "panterloons-git",
-      "path": "secrets/panterloons-git.enc.json"
-    },
-    {
-      "name": "panterloons-database",
-      "path": "secrets/panterloons-database.enc.json"
-    },
-    {
-      "name": "panterloons-smtp",
-      "path": "secrets/panterloons-smtp.enc.json"
-    },
-    {
-      "name": "panterloons-backend-tls",
-      "path": "secrets/panterloons-backend-tls.enc.json"
-    },
-    {
-      "name": "panterloons-marshall",
-      "path": "secrets/panterloons-marshall.enc.json"
-    },
-    {
-      "name": "panterloons-github-oauth",
-      "path": "secrets/panterloons-github-oauth.enc.json"
-    },
-    {
-      "name": "panterloons-brady",
-      "path": "secrets/panterloons-brady.enc.json"
-    },
-    {
-      "name": "panterloons-enrico",
-      "path": "secrets/panterloons-enrico.enc.json"
-    },
-    {
-      "name": "panterloons-logstore",
-      "path": "secrets/panterloons-logstore.enc.json"
-    },
-    {
-      "name": "panterloons-remote-builders",
-      "path": "secrets/panterloons-remote-builders.enc.json"
-    },
-    {
-      "name": "panterloons-fleet-network",
-      "path": "secrets/panterloons-fleet-network.enc.json"
-    },
-    {
-      "name": "panterloons-underclass",
-      "path": "secrets/panterloons-underclass.enc.json"
-    },
-    {
-      "name": "panterloons-ssh-host-ca",
-      "path": "secrets/panterloons-ssh-host-ca.enc.json"
-    },
-    {
-      "name": "panterloons-cachix",
-      "path": "secrets/panterloons-cachix.enc.json"
-    },
-    {
       "name": "fleet-addresses",
       "path": "secrets/fleet-addresses.enc.json"
     },
     {
       "name": "fleet-tailscale",
       "path": "secrets/fleet-tailscale.enc.json"
+    },
+    {
+      "name": "panterloons-audi",
+      "path": "secrets/panterloons-audi.enc.json"
+    },
+    {
+      "name": "panterloons-audi-dns",
+      "path": "secrets/panterloons-audi-dns.enc.json"
+    },
+    {
+      "name": "panterloons-audi-private",
+      "path": "secrets/panterloons-audi-private.enc.json"
+    },
+    {
+      "name": "panterloons-backend-tls",
+      "path": "secrets/panterloons-backend-tls.enc.json"
+    },
+    {
+      "name": "panterloons-brady",
+      "path": "secrets/panterloons-brady.enc.json"
+    },
+    {
+      "name": "panterloons-cachix",
+      "path": "secrets/panterloons-cachix.enc.json"
+    },
+    {
+      "name": "panterloons-database",
+      "path": "secrets/panterloons-database.enc.json"
+    },
+    {
+      "name": "panterloons-enrico",
+      "path": "secrets/panterloons-enrico.enc.json"
+    },
+    {
+      "name": "panterloons-fleet-network",
+      "path": "secrets/panterloons-fleet-network.enc.json"
+    },
+    {
+      "name": "panterloons-galileo",
+      "path": "secrets/panterloons-galileo.enc.json"
+    },
+    {
+      "name": "panterloons-git",
+      "path": "secrets/panterloons-git.enc.json"
+    },
+    {
+      "name": "panterloons-github-oauth",
+      "path": "secrets/panterloons-github-oauth.enc.json"
+    },
+    {
+      "name": "panterloons-lilly",
+      "path": "secrets/panterloons-lilly.enc.json"
+    },
+    {
+      "name": "panterloons-logstore",
+      "path": "secrets/panterloons-logstore.enc.json"
+    },
+    {
+      "name": "panterloons-marshall",
+      "path": "secrets/panterloons-marshall.enc.json"
+    },
+    {
+      "name": "panterloons-porsche",
+      "path": "secrets/panterloons-porsche.enc.json"
+    },
+    {
+      "name": "panterloons-remote-builders",
+      "path": "secrets/panterloons-remote-builders.enc.json"
+    },
+    {
+      "name": "panterloons-smtp",
+      "path": "secrets/panterloons-smtp.enc.json"
+    },
+    {
+      "name": "panterloons-ssh-host-ca",
+      "path": "secrets/panterloons-ssh-host-ca.enc.json"
+    },
+    {
+      "name": "panterloons-underclass",
+      "path": "secrets/panterloons-underclass.enc.json"
+    },
+    {
+      "name": "panterloons-ziggy",
+      "path": "secrets/panterloons-ziggy.enc.json"
     }
   ],
   "discovery": {
@@ -147,6 +175,25 @@
     "machine": "d41a37f3-91fe-40d0-be47-54fb66019e2c"
   },
   "lilly": {
+    "binding": {
+      "credential_id": "ecd1cda1-8dbf-49ed-a03e-c4b2a626d8fa",
+      "expires_at": "2031-10-19T16:47:54.950051Z",
+      "host_id": "970abf31-8b44-4a2d-b441-bb1e65beff67",
+      "machine_id": "sha256:6e9d99d5635eb1c98339cd8c21b79a78ca11c1a50606f142f10d4c584cc9c10f",
+      "pools": [
+        {
+          "filesystem_id": "zfs:574333701984978224:9121014441376423738",
+          "id": "2fdb99a4-935b-44f7-90e8-9b2b9751459c",
+          "name": "guests",
+          "storage": {
+            "backend": "zfs",
+            "dataset": "zroot/lilly",
+            "dataset_guid": "9121014441376423738",
+            "zpool_guid": "574333701984978224"
+          }
+        }
+      ]
+    },
     "controlPlane": "https://ghuntley.dev:5443",
     "credentialTtlSeconds": 157680000,
     "egressInterface": "enp193s0f0np0",
@@ -157,8 +204,8 @@
     },
     "transferEndpoint": {
       "addressSecret": "PANTERLOONS_PRIMARY_IPV4",
-      "port": 2223,
-      "host_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIML9xc+noYLHshIEx68vs9wbTO6IaehIrei3EQeDjlYd"
+      "host_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIML9xc+noYLHshIEx68vs9wbTO6IaehIrei3EQeDjlYd",
+      "port": 2223
     }
   },
   "name": "panterloons",

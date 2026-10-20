@@ -333,7 +333,10 @@ let
       && builtins.elem "acme-nameserver-1:/run/fleet/ns2" runtimeWildcardMarshall.systemd.services.marshall-one.serviceConfig.LoadCredential
       && !(lib.any (lib.hasPrefix "acme-nameserver") runtimeWildcardMarshall.systemd.services.marshall-two.serviceConfig.LoadCredential)
       && lib.hasInfix ''MARSHALL_FLEET_ACME_NAMESERVERS="$acme_nameservers"'' runtimeWildcardMarshall.systemd.services.marshall-one.script
-      && !(lib.hasInfix "acme_nameservers" runtimeWildcardMarshall.systemd.services.marshall-two.script);
+      && !(lib.hasInfix "acme_nameservers" runtimeWildcardMarshall.systemd.services.marshall-two.script)
+      # Pre-start never renders the runtime nameservers, so it must not boot
+      # the release with the issuer selected.
+      && lib.hasInfix "-u MARSHALL_FLEET_ACME_DIRECTORY" runtimeWildcardMarshall.systemd.services.marshall-one.preStart;
     wildcardNameserverOneForm = !valid (evaluate {
       imports = [ marshall ];
       services.marshall.ingress = {

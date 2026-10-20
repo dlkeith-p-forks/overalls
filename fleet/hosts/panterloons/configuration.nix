@@ -7,8 +7,7 @@
     name = "panterloons";
     adminAddress = "100.98.214.120";
     otelWorker = "dungarees";
-    # Its own Marshall has not yet issued Porsche, Audi, Ziggy or Galileo
-    # credentials.
-    bootstrap = true;
+    # Dungarees is a gateway peer in its tunnel, as it was for Overalls.
+    audiRelay = true;
   };
 }
