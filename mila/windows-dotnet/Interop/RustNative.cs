@@ -2,6 +2,34 @@ using System.Runtime.InteropServices;
 
 namespace Mila.Windows.Interop;
 
+internal enum MilaRouteKind { Machines, Machine, Threads, Thread, Settings }
+internal readonly record struct MilaRoute(MilaRouteKind Kind, Guid? Id = null);
+
+internal static class MilaRouteParser
+{
+    internal static MilaRoute? Parse(string value)
+    {
+        if (!Uri.TryCreate(value, UriKind.Absolute, out Uri? uri) ||
+            uri.Scheme != "overalls" || !string.IsNullOrEmpty(uri.Query) || !string.IsNullOrEmpty(uri.Fragment) ||
+            !string.IsNullOrEmpty(uri.UserInfo)) return null;
+        string[] parts = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 0) return uri.Host.ToLowerInvariant() switch
+        {
+            "machines" => new(MilaRouteKind.Machines),
+            "threads" => new(MilaRouteKind.Threads),
+            "settings" => new(MilaRouteKind.Settings),
+            _ => null,
+        };
+        if (parts.Length != 1 || !Guid.TryParseExact(parts[0], "D", out Guid id)) return null;
+        return uri.Host.ToLowerInvariant() switch
+        {
+            "machines" => new(MilaRouteKind.Machine, id),
+            "threads" => new(MilaRouteKind.Thread, id),
+            _ => null,
+        };
+    }
+}
+
 /// <summary>
 /// Status values returned by the future Rust native library.
 /// </summary>

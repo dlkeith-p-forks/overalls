@@ -4,6 +4,7 @@ import SwiftUI
 /// generated Rust adapter is integrated in a later change.
 public struct MilaNativeRootView: View {
     private let adapter: any MilaFFIAdapter
+    @State private var status = "Ready"
 
     public init(adapter: any MilaFFIAdapter = UnavailableMilaFFIAdapter()) {
         self.adapter = adapter
@@ -13,13 +14,13 @@ public struct MilaNativeRootView: View {
         VStack(spacing: 12) {
             Text("Mila")
                 .font(.title2)
-            Text("Native UI scaffold")
+            Text("Native Mila")
                 .foregroundStyle(.secondary)
+            Text(status).font(.caption).foregroundStyle(.secondary)
             Button("Check native bridge") {
                 Task {
-                    _ = try? await adapter.call(
-                        MilaFFIRequest(operation: .bootstrap)
-                    )
+                    do { _ = try await adapter.call(MilaFFIRequest(operation: .bootstrap)); status = "Connected" }
+                    catch { status = "Native runtime unavailable" }
                 }
             }
             .buttonStyle(.bordered)

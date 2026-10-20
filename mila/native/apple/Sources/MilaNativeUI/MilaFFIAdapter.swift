@@ -6,6 +6,33 @@ public enum MilaFFIOperation: String, Codable, Sendable {
     case refresh
 }
 
+/// Navigation targets accepted from external activation. Credentials and commands are excluded.
+public enum MilaRoute: Equatable, Sendable {
+    case machines
+    case machine(id: UUID)
+    case threads
+    case thread(id: UUID)
+    case settings
+}
+
+public enum MilaRouteParser {
+    public static func parse(_ value: String) -> MilaRoute? {
+        guard let url = URL(string: value), url.scheme == "overalls",
+              url.user == nil, url.fragment == nil, url.query == nil else { return nil }
+        let parts = url.pathComponents.filter { $0 != "/" }
+        switch (url.host?.lowercased(), parts) {
+        case ("machines", []): return .machines
+        case ("machines", [let id]) where UUID(uuidString: id) != nil:
+            return .machine(id: UUID(uuidString: id)!)
+        case ("threads", []): return .threads
+        case ("threads", [let id]) where UUID(uuidString: id) != nil:
+            return .thread(id: UUID(uuidString: id)!)
+        case ("settings", []): return .settings
+        default: return nil
+        }
+    }
+}
+
 /// A request crossing the native/Rust boundary.
 public struct MilaFFIRequest: Codable, Equatable, Sendable {
     public let operation: MilaFFIOperation

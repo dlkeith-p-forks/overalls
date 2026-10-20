@@ -1,5 +1,36 @@
 package dev.overalls.mila.nativeui
 
+import java.util.UUID
+
+sealed interface MilaRoute {
+    data object Machines : MilaRoute
+    data class Machine(val id: UUID) : MilaRoute
+    data object Threads : MilaRoute
+    data class Thread(val id: UUID) : MilaRoute
+    data object Settings : MilaRoute
+}
+
+/** Parses only navigation routes; query strings and command-like paths are rejected. */
+fun parseMilaRoute(value: String): MilaRoute? {
+    val uri = runCatching { android.net.Uri.parse(value) }.getOrNull() ?: return null
+    if (uri.scheme != "overalls" || uri.encodedQuery != null || uri.fragment != null || uri.authority?.contains('@') == true) return null
+    val parts = uri.pathSegments
+    return when (uri.host?.lowercase() to parts) {
+        "machines" to emptyList() -> MilaRoute.Machines
+        "threads" to emptyList() -> MilaRoute.Threads
+        "settings" to emptyList() -> MilaRoute.Settings
+        else -> when {
+            uri.host?.lowercase() == "machines" && parts.size == 1 ->
+                parts[0].toUuid()?.let(MilaRoute::Machine)
+            uri.host?.lowercase() == "threads" && parts.size == 1 ->
+                parts[0].toUuid()?.let(MilaRoute::Thread)
+            else -> null
+        }
+    }
+}
+
+private fun String.toUuid(): UUID? = runCatching { UUID.fromString(this) }.getOrNull()
+
 /** The operation names exported by the generated Rust FFI binding. */
 @JvmInline
 value class MilaFfiOperation private constructor(val value: String) {

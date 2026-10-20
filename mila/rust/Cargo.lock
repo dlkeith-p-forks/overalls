@@ -501,6 +501,7 @@ dependencies = [
 name = "mila-runtime"
 version = "0.1.0"
 dependencies = [
+ "hegeltest",
  "mila-model",
  "mila-protocol",
  "serde",
