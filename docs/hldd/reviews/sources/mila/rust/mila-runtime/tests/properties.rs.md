@@ -1,5 +1,5 @@
 ---
-digest: b4cf5c9d79c537b7103d1cdd7e7efede43961cb0dd4711127494ddb1d61b15ef
+digest: 2af988a591da80218b92b45c4a01fa206bfc733b2c56a1c8ba329e3b0aa2af06
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed upstream Android DSL compatibility cleanup, the Linux test helper import, and the lock property ensuring generated attempt IDs are truly stale. These preserve the documented native-client behavior and evidence scope; no new native execution is claimed.
+Push poke validation extends existing native FFI validation and preserves documented transport, security and verification boundaries.

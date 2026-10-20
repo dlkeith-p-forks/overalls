@@ -45,6 +45,8 @@ MilaFfiStatus mila_trust_document_validate(const uint8_t *document, size_t lengt
 MilaFfiStatus mila_push_registration_validate(uint8_t provider, uint8_t environment,
                                               const char *token, const char *app_id,
                                               const char *deployment, const char *endpoint);
+/* Validates a bounded Susan push poke envelope; ciphertext is never returned. */
+MilaFfiStatus mila_push_poke_validate(const uint8_t *envelope, size_t length, uint64_t now);
 /* Validates bounded watch filter counts (maximum 64 combined). */
 MilaFfiStatus mila_watch_validate_filters(uint16_t machine_count, uint16_t thread_count);
 /* Validates an offline snapshot for a deployment and returns safe metadata. */

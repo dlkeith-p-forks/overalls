@@ -3,8 +3,8 @@ use mila_runtime::{
     AppLock, LockAvailability, LockDelay, LockEvent, LockPhase, MachineSnapshot, SnapshotMachine,
     MAX_SNAPSHOT_BYTES,
 };
+use mila_runtime::{PokeEnvelope, RuntimeError, SnapshotStore};
 use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
-use mila_runtime::{RuntimeError, SnapshotStore};
 
 #[derive(Default)]
 struct MemoryStore {
@@ -71,6 +71,23 @@ fn arbitrary_registration_inputs_never_panic(tc: TestCase) {
         host,
         None,
     );
+}
+
+#[hegel::test(test_cases = 64)]
+fn arbitrary_poke_metadata_never_panics(tc: TestCase) {
+    let bytes = tc.draw(gs::vecs(gs::default::<u8>()).max_size(5_000));
+    let text = String::from_utf8_lossy(&bytes);
+    let envelope = PokeEnvelope {
+        deployment: text.to_string(),
+        push_key: text.to_string(),
+        delivery_id: text.to_string(),
+        collapse_id: text.to_string(),
+        kind: text.to_string(),
+        issued_at: tc.draw(gs::default::<u64>()),
+        nonce: text.to_string(),
+        ciphertext: text.to_string(),
+    };
+    let _ = envelope.validate(1_000);
 }
 
 #[test]

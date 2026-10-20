@@ -475,6 +475,7 @@ dependencies = [
  "mila-protocol",
  "mila-runtime",
  "mila-transport",
+ "serde_json",
  "uuid",
 ]
 

@@ -5,7 +5,7 @@
 
 use mila_model::MilaRoute;
 use mila_runtime::MachineSnapshot;
-use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
+use mila_runtime::{PokeEnvelope, PushEnvironment, PushProvider, PushRegistrationRequest};
 use mila_transport::{decode_watch_line, TerminalAttachRequest, WatchEvent};
 use std::ffi::{c_char, CStr};
 
@@ -155,6 +155,32 @@ pub unsafe extern "C" fn mila_push_registration_validate(
     )
     .map(|_| MilaFfiStatus::Ok)
     .unwrap_or(MilaFfiStatus::InvalidRequest)
+}
+
+/// Validates a Susan push poke envelope without exposing its ciphertext to a UI.
+/// The deployment is checked by the Rust runtime and the caller receives only
+/// the stable status code.
+///
+/// # Safety
+/// `envelope` must point to `length` readable UTF-8 JSON bytes.
+#[no_mangle]
+pub unsafe extern "C" fn mila_push_poke_validate(
+    envelope: *const u8,
+    length: usize,
+    now: u64,
+) -> MilaFfiStatus {
+    if envelope.is_null() {
+        return MilaFfiStatus::NullInput;
+    }
+    // SAFETY: callers provide a readable byte buffer of `length` bytes.
+    let bytes = std::slice::from_raw_parts(envelope, length);
+    let value = match serde_json::from_slice::<PokeEnvelope>(bytes) {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    value
+        .validate(now)
+        .map_or(MilaFfiStatus::InvalidRequest, |_| MilaFfiStatus::Ok)
 }
 
 /// Checks a bounded watch subscription filter count. UUID values themselves
@@ -387,6 +413,20 @@ mod tests {
         assert_eq!(mila_watch_validate_filters(64, 0), MilaFfiStatus::Ok);
         assert_eq!(
             mila_watch_validate_filters(65, 0),
+            MilaFfiStatus::InvalidRequest
+        );
+    }
+
+    #[test]
+    fn validates_push_poke_without_returning_ciphertext() {
+        let envelope = br#"{"deployment":"mila.example.test","push_key":"AAAAAAAAAAAAAAAA","delivery_id":"d1","collapse_id":"c1","kind":"refresh","issued_at":100,"nonce":"n1","ciphertext":"Y2lwaGVy"}"#;
+        assert_eq!(
+            unsafe { super::mila_push_poke_validate(envelope.as_ptr(), envelope.len(), 100) },
+            MilaFfiStatus::Ok
+        );
+        let expired = br#"{"deployment":"mila.example.test","push_key":"AAAAAAAAAAAAAAAA","delivery_id":"d1","collapse_id":"c1","kind":"refresh","issued_at":0,"nonce":"n1","ciphertext":"Y2lwaGVy"}"#;
+        assert_eq!(
+            unsafe { super::mila_push_poke_validate(expired.as_ptr(), expired.len(), 86_401) },
             MilaFfiStatus::InvalidRequest
         );
     }
