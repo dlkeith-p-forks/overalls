@@ -57,9 +57,11 @@ defmodule Marshall.SSH.ControlRequests do
   # @cc [owner:ghuntley,label:security;product] ssh-profile-policy-refusal
   # Customer sharing policy rejection MUST use the existing forbidden response.
   # A known immutable-profile refusal MUST NOT be reported as transient service
-  # unavailability or expose domain/error details through the gateway.
-  def classify({:error, reason}) when reason in [:forbidden, :sharing_not_allowed],
-    do: {:error, 403, "forbidden"}
+  # unavailability or expose domain/error details through the gateway. The
+  # SCIM native-team fence (ADR-0229) is the same permanent forbidden refusal.
+  def classify({:error, reason})
+      when reason in [:forbidden, :sharing_not_allowed, :scim_managed],
+      do: {:error, 403, "forbidden"}
 
   # @cc [owner:ghuntley,label:product;security] ssh-api-permanent-team-refusals
   # Closed Teams name/state conflicts MUST return 409 conflict, missing team or

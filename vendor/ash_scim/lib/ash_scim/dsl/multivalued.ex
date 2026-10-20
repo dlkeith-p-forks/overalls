@@ -48,6 +48,7 @@ defmodule AshScim.Dsl.Multivalued do
     :mirror_primary_to,
     :returned,
     :mutability,
+    use_identities: [],
     maps: [],
     __spark_metadata__: nil
   ]
@@ -58,6 +59,7 @@ defmodule AshScim.Dsl.Multivalued do
           mirror_primary_to: atom() | nil,
           returned: :always | :never | :default | :request | nil,
           mutability: :read_only | :read_write | :immutable | :write_only | nil,
+          use_identities: [atom()],
           maps: [AshScim.Dsl.Map.t()]
         }
 
@@ -108,6 +110,18 @@ defmodule AshScim.Dsl.Multivalued do
     mutability: [
       type: {:in, [:read_only, :read_write, :immutable, :write_only]},
       doc: "RFC 7643 `mutability`. Defaults to `:read_write`."
+    ],
+    use_identities: [
+      type: {:list, :atom},
+      default: [],
+      doc: """
+      Identities of the related resource used to match inbound entries to
+      existing rows when managing a relationship-backed multivalued
+      (passed to `Ash.Changeset.manage_relationship/4` together with the
+      primary key). Without one, inbound entries never match existing rows,
+      so an append of an existing entry creates a duplicate and a full
+      replace destroys and recreates every row.
+      """
     ]
   ]
 

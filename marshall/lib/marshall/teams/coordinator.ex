@@ -3,7 +3,7 @@ defmodule Marshall.Teams.Coordinator do
   use Ash.Resource.Actions.Implementation
   alias Marshall.Authorization.{Cedar, SystemActor}
   alias Marshall.Compute.Ledger
-  alias Marshall.Teams.{Team, TeamMember, Transfer}
+  alias Marshall.Teams.{Fence, ServiceOwner, Team, TeamMember, Transfer}
   require Marshall.Events
   require Ash.Query
 
@@ -34,6 +34,7 @@ defmodule Marshall.Teams.Coordinator do
           {value, event} =
             case options[:operation] do
               :list -> {list(context.actor, input.arguments), nil}
+              :list_all -> {list_all(input.arguments), nil}
               :set_member -> set_member(input.arguments, context.actor)
               :list_members -> {list_members(input.arguments, context.actor), nil}
               :list_transfers -> {list_transfers(input.arguments, context.actor), nil}
@@ -70,7 +71,7 @@ defmodule Marshall.Teams.Coordinator do
   @spec create(creation_arguments(), Marshall.Accounts.User.t()) ::
           {Team.t(), creation_event() | nil}
   defp create(arguments, actor) do
-    if Marshall.Scim.enabled?(), do: Ledger.rollback(:scim_managed)
+    Fence.require_creation_open!()
     Marshall.Accounts.AccountLifecycle.admit!(actor.id)
 
     Ecto.Adapters.SQL.query!(
@@ -119,7 +120,7 @@ defmodule Marshall.Teams.Coordinator do
   @spec set_member(membership_arguments(), Marshall.Accounts.User.t()) ::
           {membership_result(), membership_event() | nil}
   defp set_member(arguments, actor) do
-    if Marshall.Scim.enabled?(), do: Ledger.rollback(:scim_managed)
+    Fence.require_creation_open!()
 
     user =
       Marshall.Accounts.User
@@ -130,6 +131,7 @@ defmodule Marshall.Teams.Coordinator do
     if user == nil, do: Ledger.rollback(:recipient_not_registered)
     Marshall.Accounts.AccountLifecycle.admit_all!([actor.id, user.id])
     team = lock_team!(arguments.team_id)
+    Fence.require_native!(team)
     member = current_member!(team.id, actor.id)
 
     unless Cedar.allowed?(actor, "team_manage_members", Cedar.team(team)),
@@ -188,11 +190,47 @@ defmodule Marshall.Teams.Coordinator do
       |> Ash.read!(actor: SystemActor.compute())
       |> Enum.map(fn team ->
         membership = Enum.find(memberships, &(&1.team_id == team.id))
-        %{id: team.id, name: team.name, role: membership.role, inserted_at: team.inserted_at}
+
+        %{
+          id: team.id,
+          name: team.name,
+          role: membership.role,
+          management_mode: team.management_mode,
+          inserted_at: team.inserted_at
+        }
       end)
       |> paginate(arguments)
 
     teams
+  end
+
+  # Active teams for every signed-in account: names, mode and visible member
+  # counts only. The hidden service owner is never counted.
+  defp list_all(arguments) do
+    hidden = ServiceOwner.id()
+
+    teams =
+      Team
+      |> Ash.Query.sort(name: :asc, id: :asc)
+      |> Ash.read!(actor: SystemActor.compute())
+
+    counts =
+      TeamMember
+      |> Ash.Query.filter(team_id in ^Enum.map(teams, & &1.id))
+      |> Ash.read!(actor: SystemActor.compute())
+      |> Enum.reject(&(&1.user_id == hidden))
+      |> Enum.frequencies_by(& &1.team_id)
+
+    teams
+    |> Enum.map(fn team ->
+      %{
+        id: team.id,
+        name: team.name,
+        management_mode: team.management_mode,
+        member_count: Map.get(counts, team.id, 0)
+      }
+    end)
+    |> paginate(arguments)
   end
 
   defp list_members(arguments, actor) do
@@ -201,7 +239,8 @@ defmodule Marshall.Teams.Coordinator do
     unless Cedar.allowed?(actor, "team_read", Cedar.team(team)),
       do: Ledger.rollback(:forbidden)
 
-    memberships = Ledger.read!(TeamMember, team_id: team.id)
+    hidden = ServiceOwner.id()
+    memberships = Enum.reject(Ledger.read!(TeamMember, team_id: team.id), &(&1.user_id == hidden))
 
     users =
       Marshall.Accounts.User
@@ -268,6 +307,7 @@ defmodule Marshall.Teams.Coordinator do
         fn ->
           Marshall.Accounts.AccountLifecycle.admit_all!([actor.id, target.id])
           locked = lock_team!(team.id)
+          Fence.require_native!(locked)
           owner = current_member!(locked.id, actor.id)
           target_member = current_member!(locked.id, target.id)
 
@@ -340,7 +380,8 @@ defmodule Marshall.Teams.Coordinator do
                 candidate.to_user_id
               ])
 
-              _team = lock_team!(candidate.team_id)
+              team = lock_team!(candidate.team_id)
+              Fence.require_native!(team)
               transfer = Ledger.lock!(Transfer, transfer_id) || Ledger.rollback(:unknown_transfer)
               transfer = guard.(transfer)
 

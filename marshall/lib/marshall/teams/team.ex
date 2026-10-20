@@ -6,6 +6,9 @@ defmodule Marshall.Teams.Team do
     match: ~r/\A[a-z][a-z0-9-]{0,61}[a-z0-9]\z|\A[a-z]\z/
   ]
 
+  @typedoc "Who governs the team: native roles, SCIM, or a retirement/handoff state."
+  @type management_mode :: :native | :scim_managed | :retiring | :handoff_pending
+
   use Ash.Resource,
     otp_app: :marshall,
     domain: Marshall.Teams,
@@ -21,6 +24,8 @@ defmodule Marshall.Teams.Team do
 
   archive do
     exclude_read_actions([:history])
+    # SCIM DELETE starts retirement; TeamRetirementWorker archives the row.
+    exclude_destroy_actions([:scim_destroy])
   end
 
   paper_trail do
@@ -33,12 +38,22 @@ defmodule Marshall.Teams.Team do
     version_extensions authorizers: [Marshall.Authorization.AshAuthorizer]
   end
 
+  # @cc [owner:ghuntley,label:security;product] scim-group-hidden-owner
+  # SCIM Groups expose and manage only non-owner memberships: the hidden service
+  # owner membership is never listed, matched, replaced or removed through SCIM.
+  # SCIM reads list only :scim_managed teams; native and retiring teams are not
+  # SCIM resources and every SCIM write refuses them.
   scim do
+    read_action :scim_read
+    create_action :scim_create
+    update_action :scim_update
+    destroy_action :scim_destroy
     map :displayName, attribute: :name
     map :externalId, attribute: :scim_external_id
 
     multivalued :members do
-      relationship :members
+      relationship :scim_members
+      use_identities([:scim_match])
       map :value, attribute: :user_id
     end
   end
@@ -46,6 +61,10 @@ defmodule Marshall.Teams.Team do
   actions do
     defaults [:read]
     read :history
+
+    read :scim_read do
+      filter expr(management_mode == :scim_managed)
+    end
 
     create :register do
       accept [:name, :created_by_id]
@@ -61,9 +80,21 @@ defmodule Marshall.Teams.Team do
       accept [:name, :scim_external_id]
       primary? true
       require_atomic? false
+      validate Marshall.Teams.ScimManaged
     end
 
     destroy :archive
+
+    # @cc [owner:ghuntley,label:security;recovery] scim-group-delete-retires
+    # SCIM DELETE MUST NOT archive directly: it revokes team authority, marks the
+    # team retiring with an immediate deadline and enqueues TeamRetirementWorker,
+    # which retires team machines before archiving the team, in one transaction.
+    destroy :scim_destroy do
+      soft? true
+      require_atomic? false
+      validate Marshall.Teams.ScimManaged
+      change Marshall.Teams.ScimRetire
+    end
 
     update :mark_retiring do
       accept [:management_mode, :scim_retirement_deadline]
@@ -88,6 +119,16 @@ defmodule Marshall.Teams.Team do
       argument :after, :uuid
       argument :limit, :integer, allow_nil?: false, default: 50, constraints: [min: 1, max: 100]
       run {Marshall.Teams.Coordinator, operation: :list}
+    end
+
+    # @cc [owner:ghuntley,label:security;product] teams-all-read-only-directory
+    # Every signed-in account may list active teams with their names, management
+    # mode and visible member counts. The listing MUST exclude archived teams and
+    # the hidden service owner and MUST NOT disclose member identities.
+    action :list_all_for_user, {:array, :map} do
+      argument :after, :uuid
+      argument :limit, :integer, allow_nil?: false, default: 50, constraints: [min: 1, max: 100]
+      run {Marshall.Teams.Coordinator, operation: :list_all}
     end
 
     action :set_member, :map do
@@ -137,6 +178,12 @@ defmodule Marshall.Teams.Team do
   relationships do
     belongs_to :created_by, Marshall.Accounts.User, allow_nil?: false
     has_many :members, Marshall.Teams.TeamMember, destination_attribute: :team_id
+
+    has_many :scim_members, Marshall.Teams.TeamMember do
+      destination_attribute :team_id
+      filter expr(role != :owner)
+    end
+
     has_many :machines, Marshall.Compute.VirtualMachine, destination_attribute: :team_id
   end
 

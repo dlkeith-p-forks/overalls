@@ -535,7 +535,8 @@ defmodule AshScim.Router do
        do: record
 
   defp apply_patch_changes(record, resource, attrs, manage_ops, post_update_ops, env) do
-    with {:ok, updated} <-
+    with {:ok, record} <- preload_identity_relationships(record, resource, manage_ops, env),
+         {:ok, updated} <-
            record
            |> Ash.Changeset.for_update(update_action(resource), attrs, scim_changeset_opts(env))
            |> apply_manage_ops(manage_ops)
@@ -607,10 +608,73 @@ defmodule AshScim.Router do
   defp apply_manage_ops(changeset, ops) do
     Enum.reduce(ops, changeset, fn
       {:append, rel, inputs}, cs ->
-        Ash.Changeset.manage_relationship(cs, rel, inputs, append_options())
+        Ash.Changeset.manage_relationship(
+          cs,
+          rel,
+          inputs,
+          append_options() ++ identity_options(cs.resource, rel)
+        )
 
       {:replace_all, rel, inputs}, cs ->
-        Ash.Changeset.manage_relationship(cs, rel, inputs, full_replace_options())
+        Ash.Changeset.manage_relationship(
+          cs,
+          rel,
+          inputs,
+          full_replace_options() ++ identity_options(cs.resource, rel)
+        )
+    end)
+  end
+
+  # Marshall-local change: the encoder loads relationships without an actor,
+  # which an authorizing resource refuses. Load relationship-backed
+  # multivalueds with the request's actor and context before encoding.
+  defp load_multivalued_relationships(%resource{} = record, env) do
+    rels =
+      resource
+      |> AshScim.Info.scim_mappings()
+      |> Enum.flat_map(fn
+        %AshScim.Dsl.Multivalued{relationship: rel} when not is_nil(rel) ->
+          if match?(%Ash.NotLoaded{}, Elixir.Map.get(record, rel)), do: [rel], else: []
+
+        _ ->
+          []
+      end)
+
+    if rels == [] do
+      record
+    else
+      case Ash.load(record, rels, scim_opts([], env)) do
+        {:ok, loaded} -> loaded
+        _ -> record
+      end
+    end
+  end
+
+  # Marshall-local change: an append never loads the current relationship, so
+  # identity matching would see no rows. Load relationships whose multivalued
+  # names `use_identities` before managing them.
+  defp preload_identity_relationships(record, resource, manage_ops, env) do
+    rels =
+      manage_ops
+      |> Enum.map(fn {_kind, rel, _inputs} -> rel end)
+      |> Enum.uniq()
+      |> Enum.filter(&(identity_options(resource, &1) != []))
+
+    if rels == [], do: {:ok, record}, else: Ash.load(record, rels, scim_opts([], env))
+  end
+
+  # Marshall-local change: relationship-backed multivalueds may name related
+  # identities so inbound entries match existing rows (see
+  # `AshScim.Dsl.Multivalued` `use_identities`).
+  defp identity_options(resource, rel) do
+    resource
+    |> AshScim.Info.scim_mappings()
+    |> Enum.find_value([], fn
+      %AshScim.Dsl.Multivalued{relationship: ^rel, use_identities: [_ | _] = identities} ->
+        [use_identities: [:_primary_key | identities]]
+
+      _ ->
+        nil
     end)
   end
 
@@ -768,26 +832,37 @@ defmodule AshScim.Router do
     end
   end
 
+  # Marshall-local change: removal uses the related resource's primary
+  # destroy action (falling back to `:destroy`) rather than a hard-coded
+  # `:destroy`, and may fall back to streaming when that action cannot run
+  # atomically.
   defp bulk_destroy_query(query, env) do
     handle_bulk_result(
       Ash.bulk_destroy(
         query,
-        :destroy,
+        related_destroy_action(query.resource),
         %{},
-        scim_opts([return_errors?: true, strategy: :atomic_batches], env)
+        scim_opts([return_errors?: true, strategy: [:atomic_batches, :stream]], env)
       )
     )
   end
 
-  defp bulk_destroy_records(records, env) do
+  defp bulk_destroy_records([%resource{} | _] = records, env) do
     handle_bulk_result(
       Ash.bulk_destroy(
         records,
-        :destroy,
+        related_destroy_action(resource),
         %{},
-        scim_opts([return_errors?: true, strategy: :atomic_batches], env)
+        scim_opts([return_errors?: true, strategy: [:atomic_batches, :stream]], env)
       )
     )
+  end
+
+  defp related_destroy_action(resource) do
+    case Ash.Resource.Info.primary_action(resource, :destroy) do
+      %{name: name} -> name
+      nil -> :destroy
+    end
   end
 
   defp handle_bulk_result(%Ash.BulkResult{status: :success}), do: :ok
@@ -1030,7 +1105,12 @@ defmodule AshScim.Router do
 
   defp apply_relationship_inputs(changeset, relationships) do
     Enum.reduce(relationships, changeset, fn {rel, inputs}, cs ->
-      Ash.Changeset.manage_relationship(cs, rel, inputs, full_replace_options())
+      Ash.Changeset.manage_relationship(
+        cs,
+        rel,
+        inputs,
+        full_replace_options() ++ identity_options(cs.resource, rel)
+      )
     end)
   end
 
@@ -1062,6 +1142,7 @@ defmodule AshScim.Router do
     conn = Plug.Conn.fetch_query_params(conn)
 
     record
+    |> load_multivalued_relationships(scim_env(conn))
     |> Encoder.encode(base_url: opts.base_url)
     |> Projection.apply(conn.query_params)
   end
