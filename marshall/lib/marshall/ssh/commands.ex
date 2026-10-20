@@ -425,6 +425,7 @@ defmodule Marshall.SSH.Commands do
   defp read(%{command: "team list", options: opts}, actor) do
     Marshall.Teams.list_teams(%{after: opts["after"], limit: 51}, actor: actor)
     |> unwrap!()
+    |> Enum.map(&Map.take(&1, [:id, :name, :role, :inserted_at]))
     |> listing()
   end
 

@@ -499,6 +499,8 @@ defmodule Marshall.Threads.Coordinator do
         _ -> Ledger.rollback(:unknown_team)
       end
 
+    Marshall.Teams.Fence.require_resources_open!(team)
+
     if Marshall.Authorization.Cedar.allowed?(
          actor,
          "team_manage_members",

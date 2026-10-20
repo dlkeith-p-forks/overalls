@@ -17,6 +17,10 @@ defmodule Marshall.Teams.TeamMember do
 
     identity_wheres_to_sql current_member: "archived_at IS NULL",
                            one_owner: "archived_at IS NULL AND role = 'owner'"
+
+    # scim_match only names the current_member fields for SCIM relationship
+    # matching; the partial current_member index enforces uniqueness.
+    skip_unique_indexes [:scim_match]
   end
 
   archive do
@@ -41,8 +45,10 @@ defmodule Marshall.Teams.TeamMember do
       accept [:team_id, :user_id, :role, :recorded_by_id]
     end
 
+    # SCIM group membership: always a plain member recorded by the hidden
+    # service owner. Primary so ash_scim relationship management creates it.
     create :scim_record do
-      accept [:team_id, :user_id, :role]
+      accept [:team_id, :user_id]
       primary? true
       change Marshall.Teams.ScimMembership
     end
@@ -52,13 +58,21 @@ defmodule Marshall.Teams.TeamMember do
     end
 
     destroy :remove
+
+    # SCIM group member removal (PATCH remove, PUT replacement). Primary so
+    # ash_scim's relationship management and bulk removal select it.
+    destroy :scim_remove do
+      primary? true
+      require_atomic? false
+      change {Marshall.Teams.ScimMembership, operation: :removed}
+    end
   end
 
   changes do
     # Control hints (ADR-0140): emitted in the action's transaction.
     change {Marshall.Control.Hints.Change, kind: :user, from: :user_id},
       on: [:create, :update, :destroy],
-      where: [action_is([:replace_role, :remove])]
+      where: [action_is([:replace_role, :remove, :scim_record, :scim_remove])]
   end
 
   attributes do
@@ -74,12 +88,18 @@ defmodule Marshall.Teams.TeamMember do
 
   relationships do
     belongs_to :team, Marshall.Teams.Team, allow_nil?: false
-    belongs_to :user, Marshall.Accounts.User, allow_nil?: false
+    # Public so SCIM member filters (`members[value eq "…"]`) can address it.
+    belongs_to :user, Marshall.Accounts.User, allow_nil?: false, attribute_public?: true
     belongs_to :recorded_by, Marshall.Accounts.User, allow_nil?: false
   end
 
   identities do
     identity :current_member, [:team_id, :user_id], where: expr(is_nil(archived_at))
     identity :one_owner, [:team_id], where: expr(is_nil(archived_at) and role == :owner)
+
+    # Ash cannot match managed relationships on an identity with `where`. Reads
+    # exclude archived rows, so among the rows SCIM matches these fields are the
+    # current_member key; scim_match has no index of its own.
+    identity :scim_match, [:team_id, :user_id]
   end
 end

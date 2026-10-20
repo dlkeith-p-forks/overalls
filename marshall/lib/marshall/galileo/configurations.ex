@@ -399,6 +399,8 @@ defmodule Marshall.Galileo.Configurations do
         _ -> Ledger.rollback(:unknown_team)
       end
 
+    Marshall.Teams.Fence.require_resources_open!(team)
+
     unless Cedar.allowed?(actor, "team_manage_members", Cedar.team(team)),
       do: Ledger.rollback(:forbidden)
   end

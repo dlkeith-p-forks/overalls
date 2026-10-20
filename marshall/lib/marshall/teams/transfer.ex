@@ -68,6 +68,9 @@ defmodule Marshall.Teams.Transfer do
       accept []
       change transition_state(:cancelled)
     end
+
+    # Retained-history archival of a retired team's transfers (ADR-0229).
+    destroy :archive
   end
 
   attributes do

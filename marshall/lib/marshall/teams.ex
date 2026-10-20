@@ -13,6 +13,7 @@ defmodule Marshall.Teams do
 
     resource Marshall.Teams.Team do
       define :list_teams, action: :list_for_user
+      define :list_all_teams, action: :list_all_for_user
       define :run_create_team, action: :create_team
       define :run_set_team_member, action: :set_member
       define :list_team_members, action: :list_members
@@ -40,6 +41,15 @@ defmodule Marshall.Teams do
       Marshall.Compute.Ledger.commit_scope(fn ->
         run_set_team_member(arguments, options)
       end)
+
+  @doc "Whether native team mutation is admitted for `team` (ADR-0229)."
+  defdelegate native_mutable?(team), to: Marshall.Teams.Fence
+
+  @doc "Whether native team creation is admitted (false while SCIM is enabled)."
+  defdelegate creation_open?(), to: Marshall.Teams.Fence
+
+  @doc "The hidden SCIM service owner account, or nil when it is missing."
+  defdelegate service_owner(), to: Marshall.Teams.ServiceOwner, as: :get
 
   @doc "Current membership lookup for trusted coordinators."
   defdelegate member?(team_id, user_id), to: Marshall.Teams.Coordinator

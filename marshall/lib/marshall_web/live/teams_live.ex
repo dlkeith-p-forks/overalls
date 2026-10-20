@@ -9,7 +9,14 @@ defmodule MarshallWeb.TeamsLive do
   def mount(_, _, socket) do
     {:ok,
      socket
-     |> assign(teams: [], members: [], transfer: nil, selected: nil)
+     |> assign(
+       teams: [],
+       all_teams: [],
+       members: [],
+       transfer: nil,
+       selected: nil,
+       creation_open?: Teams.creation_open?()
+     )
      |> reset_form()
      |> refresh()}
   end
@@ -118,14 +125,20 @@ defmodule MarshallWeb.TeamsLive do
     do: {:noreply, put_flash(socket, :error, dgettext("teams", "Invalid request."))}
 
   defp refresh(socket) do
-    case Teams.list_teams(%{}, actor: socket.assigns.current_user) do
-      {:ok, teams} ->
-        selected = socket.assigns.selected || (List.first(teams) && List.first(teams).id)
-        socket |> assign(teams: teams, selected: selected) |> refresh_members()
+    actor = socket.assigns.current_user
+    socket = assign(socket, creation_open?: Teams.creation_open?())
 
-      {:error, _} ->
+    case {Teams.list_teams(%{}, actor: actor), Teams.list_all_teams(%{limit: 100}, actor: actor)} do
+      {{:ok, teams}, {:ok, all_teams}} ->
+        selected = socket.assigns.selected || (List.first(teams) && List.first(teams).id)
+
         socket
-        |> assign(teams: [], members: [], transfer: nil)
+        |> assign(teams: teams, all_teams: all_teams, selected: selected)
+        |> refresh_members()
+
+      _ ->
+        socket
+        |> assign(teams: [], all_teams: [], members: [], transfer: nil)
         |> put_flash(:error, dgettext("teams", "Teams are temporarily unavailable."))
     end
   end
@@ -165,6 +178,19 @@ defmodule MarshallWeb.TeamsLive do
 
   defp selected_team(assigns), do: Enum.find(assigns.teams, &(&1.id == assigns.selected))
 
+  # Native membership and ownership controls render only for a natively
+  # mutable team while SCIM is disabled (ADR-0229); the coordinator refuses
+  # them independently.
+  @spec native?(map(), map() | nil) :: boolean()
+  defp native?(assigns, team),
+    do: assigns.creation_open? and match?(%{management_mode: :native}, team)
+
+  @spec managed_notice?(map()) :: boolean()
+  defp managed_notice?(assigns) do
+    team = selected_team(assigns)
+    not assigns.creation_open? or (team != nil and not native?(assigns, team))
+  end
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -186,11 +212,23 @@ defmodule MarshallWeb.TeamsLive do
             )
           }
         />
-        <p :if={@teams == []} class="empty-state">
+        <div :if={managed_notice?(assigns)} id="teams-managed-notice" role="note" class="stack">
+          <p><strong>{dgettext("teams", "Teams are managed by your identity provider.")}</strong></p>
+          <p class="muted">
+            {dgettext(
+              "teams",
+              "Creating teams, changing members and offering ownership are not available here. Ask your identity provider administrator for changes."
+            )}
+          </p>
+        </div>
+        <p :if={@teams == [] && @creation_open?} class="empty-state">
           {dgettext(
             "teams",
             "You are not in a team yet. Create one below, or ask a team admin to add you."
           )}
+        </p>
+        <p :if={@teams == [] && !@creation_open?} class="empty-state">
+          {dgettext("teams", "You are not in a team yet.")}
         </p>
         <div :if={@teams != []} id="teams" class="stack">
           <nav class="machine-tabs" aria-label={dgettext("teams", "Your teams")}>
@@ -246,7 +284,10 @@ defmodule MarshallWeb.TeamsLive do
                 </table>
               </div>
               <.form
-                :if={selected_team(assigns).role in [:owner, :admin]}
+                :if={
+                  native?(assigns, selected_team(assigns)) &&
+                    selected_team(assigns).role in [:owner, :admin]
+                }
                 for={@member_form}
                 id="member-form"
                 phx-submit="member"
@@ -286,7 +327,10 @@ defmodule MarshallWeb.TeamsLive do
                 )}
               </p>
               <.form
-                :if={selected_team(assigns).role == :owner && !@transfer}
+                :if={
+                  native?(assigns, selected_team(assigns)) && selected_team(assigns).role == :owner &&
+                    !@transfer
+                }
                 for={@transfer_form}
                 id="transfer-offer-form"
                 phx-submit="transfer_offer"
@@ -329,7 +373,7 @@ defmodule MarshallWeb.TeamsLive do
                     value2: @transfer.to_email
                   )}
                 </p>
-                <div class="row actions">
+                <div :if={native?(assigns, selected_team(assigns))} class="row actions">
                   <button
                     :if={@transfer.to_user_id == @current_user.id}
                     id="accept-transfer"
@@ -368,7 +412,34 @@ defmodule MarshallWeb.TeamsLive do
             </UI.panel>
           </div>
         </div>
-        <.form for={@form} id="team-form" phx-submit="create" class="panel stack">
+        <UI.panel id="all-teams" title={dgettext("teams", "All teams")}>
+          <p :if={@all_teams == []} class="muted">{dgettext("teams", "No active teams.")}</p>
+          <div :if={@all_teams != []} class="table-flow">
+            <table>
+              <thead>
+                <tr>
+                  <th class="width-auto">{dgettext("teams", "Team")}</th>
+                  <th class="width-min">{dgettext("teams", "Members")}</th>
+                  <th class="width-min">{dgettext("teams", "Managed by")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr :for={team <- @all_teams} id={"all-teams-#{team.id}"}>
+                  <td class="break">{team.name}</td>
+                  <td>{team.member_count}</td>
+                  <td><span class="status-label">{management_label(team.management_mode)}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </UI.panel>
+        <.form
+          :if={@creation_open?}
+          for={@form}
+          id="team-form"
+          phx-submit="create"
+          class="panel stack"
+        >
           <h2>{dgettext("teams", "Create a team")}</h2>
           <p class="muted">
             {dgettext("teams", "You become its owner and can add members straight away.")}
@@ -391,6 +462,12 @@ defmodule MarshallWeb.TeamsLive do
   defp role_label(:owner), do: dgettext("teams", "Owner")
   defp role_label(:admin), do: dgettext("teams", "Administrator")
   defp role_label(_), do: dgettext("teams", "Member")
+
+  @spec management_label(atom()) :: String.t()
+  defp management_label(:native), do: dgettext("teams", "Marshall")
+  defp management_label(:scim_managed), do: dgettext("teams", "Identity provider")
+  defp management_label(:retiring), do: dgettext("teams", "Retiring")
+  defp management_label(_), do: dgettext("teams", "Awaiting handoff")
 
   @spec role_summary(atom()) :: String.t()
   defp role_summary(:owner),

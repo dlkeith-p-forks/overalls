@@ -165,11 +165,11 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :fail,
       :uncertain
     ],
-    Marshall.Teams.Team => [:read, :register, :archive, :history],
+    Marshall.Teams.Team => [:read, :register, :archive, :history, :mark_retiring],
     Marshall.Teams.Team.Version => [:read, :create],
     Marshall.Teams.TeamMember => [:read, :record, :replace_role, :remove, :history],
     Marshall.Teams.TeamMember.Version => [:read, :create],
-    Marshall.Teams.Transfer => [:read, :offer, :accept, :decline, :cancel, :history],
+    Marshall.Teams.Transfer => [:read, :offer, :accept, :decline, :cancel, :archive, :history],
     Marshall.Teams.Transfer.Version => [:read, :create],
     Marshall.Inference.Daily => [:read, :record, :add, :purge],
     Marshall.Inference.Credential => [:read, :issue, :ensure, :revoke],
@@ -539,6 +539,16 @@ defmodule Marshall.Authorization.AshAuthorizer do
     Marshall.Compute.PhysicalOutcome => [:read, :record]
   }
 
+  # SCIM provisioning writes, admitted only for the hidden service owner that
+  # Marshall.Scim.Auth presents for an authenticated bearer while SCIM is
+  # enabled. Paper-trail versions follow their audited action's actor.
+  @scim %{
+    Marshall.Teams.Team => [:read, :scim_read, :scim_create, :scim_update, :scim_destroy],
+    Marshall.Teams.Team.Version => [:create],
+    Marshall.Teams.TeamMember => [:read, :scim_record, :scim_remove],
+    Marshall.Teams.TeamMember.Version => [:create]
+  }
+
   @impl true
   def initial_state(actor, resource, action, _domain) do
     %{actor: actor, resource: resource, action: action.name}
@@ -686,6 +696,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
                     state.action in [
                       :create_team,
                       :list_for_user,
+                      :list_all_for_user,
                       :set_member,
                       :list_members,
                       :list_transfers
@@ -728,18 +739,32 @@ defmodule Marshall.Authorization.AshAuthorizer do
                     ]) do
               Cedar.allowed?(state.actor, "provision", Cedar.entity("ControlPlane", "marshall"))
             else
-              state.action in Map.get(@internal, state.resource, []) and
-                Cedar.allowed?(
-                  state.actor,
-                  "coordinate",
-                  Cedar.entity("Internal", "#{inspect(state.resource)}:#{state.action}")
-                )
+              if Map.has_key?(@scim, state.resource) and
+                   Marshall.Teams.ServiceOwner.actor?(state.actor) do
+                scim_provisioning?(state)
+              else
+                state.action in Map.get(@internal, state.resource, []) and
+                  Cedar.allowed?(
+                    state.actor,
+                    "coordinate",
+                    Cedar.entity("Internal", "#{inspect(state.resource)}:#{state.action}")
+                  )
+              end
             end
           end
         end
       end
 
     if allowed, do: {:authorized, state}, else: {:error, Ash.Error.Forbidden.exception([])}
+  end
+
+  # @cc [owner:ghuntley,label:security] ash-scim-service-owner-entry
+  # SCIM Group writes MUST be admitted only for the listed resource/action pairs,
+  # only for the persisted hidden service owner and only while SCIM is enabled.
+  # The service owner never receives internal coordinator authority; any other
+  # actor, action or a disabled SCIM configuration MUST fail closed.
+  defp scim_provisioning?(state) do
+    state.action in Map.get(@scim, state.resource, []) and Marshall.Scim.enabled?()
   end
 
   @impl true

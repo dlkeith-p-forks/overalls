@@ -345,6 +345,8 @@ defmodule Marshall.Compute.Admission do
         _ -> Ledger.rollback(:unknown_team)
       end
 
+    Marshall.Teams.Fence.require_resources_open!(team)
+
     unless Marshall.Authorization.Cedar.allowed?(
              actor,
              "team_manage_members",
