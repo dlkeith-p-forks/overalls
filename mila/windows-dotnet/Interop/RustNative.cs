@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Mila.Windows.Interop;
 
@@ -65,6 +66,26 @@ internal readonly record struct MilaNativeVersionResult(
     MilaNativeStatus Status,
     MilaNativeVersion? Version);
 
+/// <summary>Caller-owned output buffer passed to the stable Rust route ABI.</summary>
+[StructLayout(LayoutKind.Sequential)]
+internal readonly struct MilaRouteOutput
+{
+    internal MilaRouteOutput(IntPtr bytes, nuint capacity, IntPtr written)
+    {
+        Bytes = bytes;
+        Capacity = capacity;
+        Written = written;
+    }
+
+    internal readonly IntPtr Bytes;
+    internal readonly nuint Capacity;
+    internal readonly IntPtr Written;
+}
+
+internal readonly record struct MilaNativeRouteResult(
+    MilaNativeStatus Status,
+    string? Canonical);
+
 /// <summary>
 /// Narrow P/Invoke boundary for the Rust implementation.
 ///
@@ -103,7 +124,52 @@ internal static partial class RustNative
         }
     }
 
+    /// <summary>
+    /// Canonicalizes a navigation route using the Rust closed route grammar.
+    /// Managed callers never receive or provide raw pointers; this method owns
+    /// temporary UTF-8 input and output storage for the duration of the call.
+    /// </summary>
+    internal static MilaNativeRouteResult TryFormatRoute(string value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        byte[] inputBytes = Encoding.UTF8.GetBytes(value);
+        IntPtr input = Marshal.AllocHGlobal(inputBytes.Length + 1);
+        IntPtr bytes = Marshal.AllocHGlobal(RouteOutputCapacity);
+        IntPtr written = Marshal.AllocHGlobal(nuint.Size);
+        try
+        {
+            Marshal.Copy(inputBytes, 0, input, inputBytes.Length);
+            Marshal.WriteByte(input, inputBytes.Length, 0);
+            Marshal.WriteIntPtr(written, IntPtr.Zero);
+            MilaRouteOutput output = new(bytes, (nuint)RouteOutputCapacity, written);
+            MilaNativeStatus status = FormatRouteNative(input, output);
+            if (status != MilaNativeStatus.Ok) return new(status, null);
+            nuint length = (nuint)Marshal.ReadIntPtr(written);
+            if (length > RouteOutputCapacity) return new(MilaNativeStatus.InvalidRoute, null);
+            byte[] result = new byte[checked((int)length)];
+            Marshal.Copy(bytes, result, 0, result.Length);
+            return new(status, new UTF8Encoding(false, true).GetString(result));
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (DecoderFallbackException) { return new(MilaNativeStatus.InvalidRoute, null); }
+        finally
+        {
+            Marshal.FreeHGlobal(input);
+            Marshal.FreeHGlobal(bytes);
+            Marshal.FreeHGlobal(written);
+        }
+    }
+
+    private const int RouteOutputCapacity = 4096;
+
     [LibraryImport(LibraryName, EntryPoint = "mila_ffi_get_version")]
     private static partial MilaNativeStatus GetVersionNative(
         out MilaNativeVersion version);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_route_format")]
+    private static partial MilaNativeStatus FormatRouteNative(
+        IntPtr input,
+        MilaRouteOutput output);
 }
