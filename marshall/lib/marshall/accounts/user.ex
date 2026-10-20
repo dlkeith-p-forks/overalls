@@ -48,7 +48,14 @@ defmodule Marshall.Accounts.User do
     repo Marshall.Repo
   end
 
+  # SCIM GET/list use :scim_read, which hides SCIM-deleted and retired
+  # identities and the internal service owner (RFC 7644 section 3.6).
   scim do
+    read_action :scim_read
+    create_action :scim_create
+    update_action :scim_update
+    destroy_action :scim_destroy
+
     map :userName, attribute: :email
     map :externalId, attribute: :scim_external_id
     map :active, attribute: :active
@@ -63,20 +70,45 @@ defmodule Marshall.Accounts.User do
   actions do
     defaults [:read]
 
+    read :scim_read do
+      filter expr(
+               is_nil(scim_deleted_at) and is_nil(deleted_at) and
+                 email != "scim-service-owner@deleted.invalid"
+             )
+    end
+
     create :scim_create do
       accept [:email, :active, :scim_external_id]
       primary? true
+      change {Marshall.Accounts.ScimLifecycle, mode: :create}
     end
 
     update :scim_update do
       accept [:email, :active, :scim_external_id]
       primary? true
       require_atomic? false
-      change Marshall.Accounts.ScimLifecycle
+      change {Marshall.Accounts.ScimLifecycle, mode: :update}
     end
 
+    # @cc [owner:ghuntley,label:security;recovery] scim-delete-soft-retirement
+    # SCIM DELETE MUST NOT remove the row. It deactivates the identity into the
+    # same grace-period retirement as active=false and hides it from SCIM reads.
     destroy :scim_destroy do
-      primary? true
+      soft? true
+      require_atomic? false
+      change {Marshall.Accounts.ScimLifecycle, mode: :delete}
+    end
+
+    # Internal: starts a missing grace period for an inactive SCIM identity.
+    update :scim_retirement_state do
+      accept [:scim_retirement_deadline]
+      require_atomic? false
+    end
+
+    # Internal: the irreversible end of SCIM retirement (ScimFinalize).
+    update :scim_finalize do
+      accept [:deleted_at, :administrator, :active, :email, :mfa_generation, :scim_external_id]
+      require_atomic? false
     end
 
     read :internal_lookup
@@ -289,7 +321,14 @@ defmodule Marshall.Accounts.User do
       authorize_if always()
     end
 
-    policy action([:assign_administrator, :security_state, :store_time_zone, :store_locale]) do
+    policy action([
+             :assign_administrator,
+             :security_state,
+             :scim_retirement_state,
+             :scim_finalize,
+             :store_time_zone,
+             :store_locale
+           ]) do
       authorize_if Marshall.Accounts.Checks.InternalLookup
     end
 
@@ -332,7 +371,7 @@ defmodule Marshall.Accounts.User do
     # Control hints (ADR-0140): emitted in the action's transaction.
     change {Marshall.Control.Hints.Change, kind: :user, from: :id},
       on: [:create, :update, :destroy],
-      where: [action_is([:security_state, :assign_administrator])]
+      where: [action_is([:security_state, :scim_finalize, :assign_administrator])]
   end
 
   attributes do
@@ -354,6 +393,7 @@ defmodule Marshall.Accounts.User do
     attribute :active, :boolean, allow_nil?: false, default: true, public?: true
     attribute :scim_external_id, :string, allow_nil?: true, public?: true
     attribute :scim_retirement_deadline, :utc_datetime_usec, allow_nil?: true, public?: false
+    attribute :scim_deleted_at, :utc_datetime_usec, allow_nil?: true, public?: false
 
     attribute :administrator, :boolean, allow_nil?: false, default: false
 

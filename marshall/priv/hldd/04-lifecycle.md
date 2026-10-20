@@ -517,13 +517,28 @@ storage can be reclaimed; a failed kill reply alone proves neither outcome.
 
 ## SCIM identity retirement
 
-SCIM `DELETE` and `active=false` record a seven-day retirement deadline on the
-user while preserving the UUID. Owned machines are paused through the existing
-lifecycle coordinator; finalization must revoke credentials, ghost the identity
-and enqueue physical deletion through Oban. `active=true` before finalization
-cancels the deadline but does not resume machines automatically. The current
-implementation records the deadline and state-machine shape; durable worker,
-thread archive projection and native execution remain open evidence.
+SCIM `DELETE` (a soft destroy; the row and UUID remain) and `active=false`
+enter one lifecycle in
+[`ScimRetirement`](repo:marshall/lib/marshall/accounts/scim_retirement.ex). The
+committing transaction revokes every stored login, records the deadline from
+the single configured grace period (default seven days), schedules a
+`:scim_retirement` `UserDeletion` and enqueues `Marshall.Scim.RetirementWorker`
+now and at the deadline. Inactive identities are refused by stored-login checks
+and owned-work admission; SCIM `GET` hides deleted and retired users.
+
+The worker decides under the user row lock and database clock. Inside grace it
+pauses running owned machines (stopping those that cannot be checkpointed) and
+records each as a `ScimMachineSuspension` in the coordinator transaction.
+`active=true` inside grace cancels the deletion through its state machine and
+resumes only recorded suspensions; machines the owner paused stay paused. After
+the deadline reactivation is refused, machine deletion is authorized only for an
+inactive identity with an expired deadline, and finalization (after physical
+reclamation) archives threads, retires attachments, clears the OIDC subject and
+ghosts the email to `deleted-<uuid>@deleted.invalid`. A finalized identity
+refuses every SCIM write. Administrator deletion supersedes a pending SCIM
+retirement. BEAM endpoint, Oban and generated-history tests under
+[`test/marshall/scim`](repo:marshall/test/marshall/scim) pass against
+PostgreSQL; native machine execution of this flow remains open evidence.
 
 Launch authority is persisted before native unit submission. A daemon lost before
 submission must refuse that generation; a new public start can issue a distinct
@@ -536,9 +551,9 @@ within a1036.30-second machine script, with composed driver static checks passed
 A timeout or disconnection alone is insufficient evidence of the
 intended daemon loss; the scenario observes actual process retirement.
 
-The maintenance worker also submits idempotent pause intents for every running
-machine owned by an inactive SCIM user before the grace deadline. Compute's
-existing lifecycle coordinator remains the authority for the pause operation.
+The maintenance worker's per-minute sweep re-enqueues every inactive SCIM user
+and every open SCIM suspension, so lost jobs recover. Compute's existing
+lifecycle coordinator remains the authority for pause, stop, wake and delete.
 Initial provisioning, guest data continuity, power loss and hosted
 faults remain separate gaps.
 

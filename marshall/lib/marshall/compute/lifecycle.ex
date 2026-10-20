@@ -66,13 +66,86 @@ defmodule Marshall.Compute.Lifecycle do
     )
   end
 
-  @doc "Trusted SCIM cleanup pauses an inactive user's machine before the grace deadline."
-  @spec pause_for_scim(String.t(), String.t(), String.t()) :: {:ok, term()} | {:error, term()}
-  def pause_for_scim(user_id, vm_id, request_key) do
-    execute(
-      %{vm_id: vm_id, kind: :pause, idempotency_key: request_key},
-      %{actor: %Marshall.Accounts.User{id: user_id}, scim_id: user_id}
-    )
+  # @cc [owner:ghuntley,label:security;recovery] lifecycle-scim-suspension-record
+  # A SCIM suspension MUST be authorized for the inactive, unretired owner under
+  # the VM lock and MUST record its ScimMachineSuspension in the same
+  # transaction as the pause (or, when no checkpoint can be taken, stop)
+  # intent, keyed by the retirement deadline so a later deactivation suspends
+  # again. Machines without that record MUST NOT be resumed by SCIM.
+  @doc """
+  Trusted SCIM retirement suspends an inactive user's running machine. It
+  pauses where a checkpoint can be taken and otherwise stops the machine.
+  """
+  @spec pause_for_scim(String.t(), String.t(), DateTime.t()) ::
+          {:ok, Operation.t()} | {:error, term()}
+  def pause_for_scim(user_id, vm_id, %DateTime{} = deadline) do
+    epoch = DateTime.to_unix(deadline, :microsecond)
+
+    context = %{
+      actor: %Marshall.Accounts.User{id: user_id},
+      scim_id: user_id,
+      scim_deadline: deadline
+    }
+
+    case execute(%{vm_id: vm_id, kind: :pause, idempotency_key: "scim-pause:#{epoch}"}, context) do
+      {:error, %Marshall.Compute.Error{reason: reason}}
+      when reason in [:checkpoint_unavailable, :insufficient_capacity, :workload_not_stable] ->
+        execute(%{vm_id: vm_id, kind: :stop, idempotency_key: "scim-stop:#{epoch}"}, context)
+
+      result ->
+        result
+    end
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] lifecycle-scim-resume-own-suspension
+  # SCIM resumption MUST act only for a live, active owner and only while the
+  # machine still holds the intent SCIM recorded; a machine changed since then
+  # is released, not resumed. It uses the owner's ordinary wake or start path.
+  @doc "Trusted SCIM reactivation resumes one machine that SCIM suspended."
+  @spec resume_for_scim(Marshall.Accounts.ScimMachineSuspension.t()) ::
+          {:ok, :resumed | :released} | {:error, term()}
+  def resume_for_scim(%Marshall.Accounts.ScimMachineSuspension{state: :suspended} = suspension) do
+    vm = List.first(Ledger.read!(VirtualMachine, id: suspension.vm_id))
+
+    case Marshall.Accounts.Security.current(suspension.user_id) do
+      %Marshall.Accounts.User{active: true, deleted_at: nil} = owner ->
+        if (vm && vm.owner_id == owner.id) and vm.desired_state == desired(suspension.kind) do
+          key = "scim-resume:" <> suspension.id
+
+          result =
+            case suspension.kind do
+              :pause ->
+                run(%{arguments: %{kind: :resume, vm_id: vm.id, idempotency_key: key}}, [], %{
+                  actor: owner
+                })
+
+              :stop ->
+                execute(%{vm_id: vm.id, kind: :start, idempotency_key: key}, %{actor: owner})
+            end
+
+          with {:ok, _} <- result, do: close_suspension(suspension, :resume, :resumed)
+        else
+          close_suspension(suspension, :release, :released)
+        end
+
+      _ ->
+        {:error, Marshall.Compute.Error.exception(reason: :forbidden)}
+    end
+  end
+
+  def resume_for_scim(%Marshall.Accounts.ScimMachineSuspension{}), do: {:ok, :released}
+
+  @spec close_suspension(Marshall.Accounts.ScimMachineSuspension.t(), :resume | :release, atom()) ::
+          {:ok, :resumed | :released} | {:error, term()}
+  defp close_suspension(suspension, action, outcome) do
+    Ledger.transaction(fn ->
+      case Ledger.lock!(Marshall.Accounts.ScimMachineSuspension, suspension.id) do
+        %{state: :suspended} = locked -> Ledger.update!(locked, action, %{})
+        _ -> :ok
+      end
+
+      outcome
+    end)
   end
 
   @doc "Trusted SCIM cleanup deletes a team-owned machine after retirement grace."
@@ -140,19 +213,23 @@ defmodule Marshall.Compute.Lifecycle do
                request_key: request.idempotency_key
              ) != [], do: Ledger.rollback(:idempotency_conflict)
 
-          case Ledger.read!(Operation,
-                 vm_id: vm.id,
-                 requested_by_id: context.actor.id,
-                 request_key: request.idempotency_key
-               ) do
-            [operation] ->
-              if operation.kind == request.kind,
-                do: operation,
-                else: Ledger.rollback(:idempotency_conflict)
+          operation =
+            case Ledger.read!(Operation,
+                   vm_id: vm.id,
+                   requested_by_id: context.actor.id,
+                   request_key: request.idempotency_key
+                 ) do
+              [operation] ->
+                if operation.kind == request.kind,
+                  do: operation,
+                  else: Ledger.rollback(:idempotency_conflict)
 
-            [] ->
-              enqueue_locked!(vm, host, hosts, request, context)
-          end
+              [] ->
+                enqueue_locked!(vm, host, hosts, request, context)
+            end
+
+          record_scim_suspension!(vm, operation, context)
+          operation
         end,
         context.actor
       )
@@ -256,6 +333,27 @@ defmodule Marshall.Compute.Lifecycle do
 
   defp vm_id(%{vm_id: id}), do: if(OverallsProtocol.uuid?(id), do: id, else: nil)
 
+  @spec record_scim_suspension!(VirtualMachine.t(), Operation.t(), map()) :: :ok
+  defp record_scim_suspension!(vm, %Operation{kind: kind}, %{
+         scim_id: user_id,
+         scim_deadline: deadline
+       })
+       when kind in [:pause, :stop] do
+    if Ledger.read!(Marshall.Accounts.ScimMachineSuspension, vm_id: vm.id, state: :suspended) ==
+         [],
+       do:
+         Ledger.create!(Marshall.Accounts.ScimMachineSuspension, :record, %{
+           user_id: user_id,
+           vm_id: vm.id,
+           kind: kind,
+           retirement_deadline: deadline
+         })
+
+    :ok
+  end
+
+  defp record_scim_suspension!(_vm, _operation, _context), do: :ok
+
   # Administrator lifecycle requests are recorded inside the same transaction
   # as the durable operation so the audit cannot claim an action that rolled back.
   defp audit_admin!(%{administrator: true} = actor, target_id, kind) do
@@ -335,9 +433,13 @@ defmodule Marshall.Compute.Lifecycle do
 
   defp authorize!(vm, %{deletion_id: id}) do
     case Ledger.read!(Marshall.Accounts.UserDeletion, id: id) do
-      [%{user_id: user_id, completed_at: nil}] when user_id == vm.owner_id ->
-        unless match?(%{deleted_at: %DateTime{}}, Marshall.Accounts.Security.current(user_id)),
-          do: Ledger.rollback(:forbidden)
+      [%{user_id: user_id} = deletion] when user_id == vm.owner_id ->
+        unless Marshall.Accounts.UserDeletion.machine_deletion_authorized?(
+                 deletion,
+                 Marshall.Accounts.Security.current(user_id),
+                 Ledger.now()
+               ),
+               do: Ledger.rollback(:forbidden)
 
       _ ->
         Ledger.rollback(:forbidden)

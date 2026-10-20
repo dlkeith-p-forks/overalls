@@ -1,54 +1,57 @@
 defmodule Marshall.Scim.RetirementWorker do
-  @moduledoc "Durably advances SCIM identity retirement after its grace period."
-  use Oban.Worker, queue: :maintenance, max_attempts: 10
+  @moduledoc """
+  Durably drives SCIM user retirement (`Marshall.Accounts.ScimRetirement`).
 
-  alias Marshall.Accounts.{User, UserDeletion}
-  alias Marshall.Authorization.SystemActor
-  alias Marshall.Compute.{Ledger, Lifecycle, VirtualMachine}
-  require Ash.Query
+  A job with a `"user_id"` reconciles that user: suspend machines during the
+  grace period, resume SCIM-suspended machines after reactivation, and delete
+  machines and finalize the identity after the deadline. The argument-less cron
+  sweep re-enqueues every user that still has retirement work, so a lost or
+  exhausted job is always recovered.
+  """
+  use Oban.Worker, queue: :maintenance, max_attempts: 20
+
+  alias Marshall.Accounts.ScimRetirement
+  require Marshall.Events
+
+  @pending_snooze_seconds 60
 
   @impl Oban.Worker
-  @spec perform(Oban.Job.t()) :: :ok
+  @spec perform(Oban.Job.t()) ::
+          :ok | {:snooze, pos_integer()} | {:error, term()} | {:cancel, :invalid_user_id}
+  def perform(%Oban.Job{args: %{"user_id" => user_id}}) when is_binary(user_id) do
+    with {:ok, user_id} <- Ecto.UUID.cast(user_id) do
+      case ScimRetirement.reconcile(user_id) do
+        {:ok, :pending} ->
+          {:snooze, @pending_snooze_seconds}
+
+        {:ok, _outcome} ->
+          :ok
+
+        {:error, error} ->
+          Marshall.Events.emit("scim.user_retirement_failed",
+            user_id: user_id,
+            reason: reason(error)
+          )
+
+          {:error, error}
+      end
+    else
+      :error -> {:cancel, :invalid_user_id}
+    end
+  end
+
   def perform(%Oban.Job{}) do
-    now = DateTime.utc_now()
-
-    pause_inactive_machines()
-
-    User
-    |> Ash.Query.filter(active == false and scim_retirement_deadline <= ^now)
-    |> Ash.read!(actor: SystemActor.compute())
-    |> Enum.each(&retire/1)
-
+    Enum.each(ScimRetirement.pending_user_ids(), &ScimRetirement.enqueue!/1)
     :ok
   end
 
-  defp pause_inactive_machines do
-    User
-    |> Ash.Query.filter(active == false and is_nil(deleted_at))
-    |> Ash.read!(actor: SystemActor.compute())
-    |> Enum.each(fn user ->
-      VirtualMachine
-      |> Ash.Query.filter(owner_id == ^user.id and desired_state == :running)
-      |> Ash.read!(actor: SystemActor.compute())
-      |> Enum.each(fn vm ->
-        _ = Lifecycle.pause_for_scim(user.id, vm.id, "scim-pause:#{user.id}:#{vm.id}")
-      end)
-    end)
-  end
+  @spec reason(term()) :: atom()
+  defp reason(%Marshall.Compute.Error{reason: reason}) when is_atom(reason), do: reason
 
-  defp retire(user) do
-    case UserDeletion
-         |> Ash.Query.filter(user_id == ^user.id)
-         |> Ash.read_one(actor: SystemActor.compute()) do
-      {:ok, nil} ->
-        Ledger.create!(UserDeletion, :record, %{
-          user_id: user.id,
-          requested_by_id: user.id,
-          email: user.email
-        })
+  defp reason(%Ash.Error.Invalid{errors: [%Marshall.Compute.Error{reason: reason} | _]})
+       when is_atom(reason),
+       do: reason
 
-      _ ->
-        :ok
-    end
-  end
+  defp reason(reason) when is_atom(reason), do: reason
+  defp reason(_), do: :unknown
 end

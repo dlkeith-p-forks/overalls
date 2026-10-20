@@ -91,7 +91,7 @@ defmodule Marshall.Accounts.Login do
   defp active_user?(user_id) do
     User
     |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
-    |> Ash.Query.filter(id == ^user_id and is_nil(deleted_at))
+    |> Ash.Query.filter(id == ^user_id and is_nil(deleted_at) and active == true)
     |> Ash.exists?()
   end
 

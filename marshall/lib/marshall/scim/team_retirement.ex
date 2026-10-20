@@ -11,7 +11,7 @@ defmodule Marshall.Scim.TeamRetirement do
     |> Ash.Query.filter(is_nil(archived_at) and management_mode == :native)
     |> Ash.read!(actor: Marshall.Authorization.SystemActor.compute())
     |> Enum.each(fn team ->
-      deadline = DateTime.add(DateTime.utc_now(), 7 * 24 * 60 * 60, :second)
+      deadline = Marshall.Accounts.ScimRetirement.deadline_from(DateTime.utc_now())
 
       Ledger.update!(team, :mark_retiring, %{
         management_mode: :retiring,

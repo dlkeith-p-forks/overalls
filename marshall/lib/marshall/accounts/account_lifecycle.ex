@@ -17,6 +17,13 @@ defmodule Marshall.Accounts.AccountLifecycle do
     :ok
   end
 
+  @doc "Takes the exclusive account fence that retirement holds against owned-work admission."
+  @spec retirement_fence!(String.t()) :: :ok
+  def retirement_fence!(id) do
+    fence!(id, :exclusive)
+    :ok
+  end
+
   # @cc [owner:ghuntley,label:concurrency;security] ordered-account-admission-fences
   # Multi-account team mutations MUST acquire shared account fences in sorted
   # account-ID order and recheck every identity before locking team rows.
@@ -27,7 +34,9 @@ defmodule Marshall.Accounts.AccountLifecycle do
     |> Enum.sort()
     |> Enum.each(fn id ->
       fence!(id, :shared)
-      unless match?(%User{deleted_at: nil}, Security.current(id)), do: Ledger.rollback(:forbidden)
+
+      unless match?(%User{deleted_at: nil, active: true}, Security.current(id)),
+        do: Ledger.rollback(:forbidden)
     end)
 
     :ok
@@ -109,21 +118,20 @@ defmodule Marshall.Accounts.AccountLifecycle do
     Security.require_admin!(actor)
 
     case Ledger.read!(UserDeletion, user_id: id) do
-      [deletion] ->
+      [%UserDeletion{} = deletion]
+      when deletion.kind == :administrator or deletion.state in [:finalizing, :completed] ->
         {%{id: deletion.id, deleting: true}, nil}
 
-      [] ->
+      # No deletion, or a SCIM retirement still scheduled or cancelled, which
+      # an administrator retirement supersedes immediately.
+      existing ->
         user = Map.fetch!(users, id)
         unless user && is_nil(user.deleted_at), do: Ledger.rollback(:unauthorized)
 
         unless String.downcase(confirmation) == String.downcase(to_string(user.email)),
           do: Ledger.rollback(:confirmation_mismatch)
 
-        retire_guest_account!(id)
-        Marshall.Teams.Coordinator.retire_user!(id, actor.id)
-        retire_integrations!(id)
-        Marshall.GitHub.retire_locked!(id)
-        _ = Marshall.Notifications.revoke_for_user!(id, :account_retired)
+        retire_attachments!(id, actor.id)
 
         if user.administrator do
           remaining =
@@ -147,15 +155,37 @@ defmodule Marshall.Accounts.AccountLifecycle do
         revoke_tokens!(id)
 
         deletion =
-          Ledger.create!(UserDeletion, :record, %{
-            user_id: id,
-            requested_by_id: actor.id,
-            email: email
-          })
+          case existing do
+            [] ->
+              Ledger.create!(UserDeletion, :record, %{
+                user_id: id,
+                requested_by_id: actor.id,
+                email: email
+              })
+
+            [scim] ->
+              Ledger.update!(scim, :escalate, %{requested_by_id: actor.id, email: email})
+          end
 
         Security.audit!(actor.id, id, :user_delete)
         {%{id: deletion.id, deleting: true}, {:account_deleted, id, actor.id}}
     end
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] account-retirement-attachments
+  # Administrator retirement and SCIM finalization MUST retire the same
+  # attached state in the identity-retiring transaction: the guest account,
+  # team memberships and transfers, user-owned integrations, GitHub and
+  # notification subscriptions.
+  @doc "Retires every identity attachment; the caller holds the retirement fence and user lock."
+  @spec retire_attachments!(String.t(), String.t()) :: :ok
+  def retire_attachments!(id, actor_id) do
+    retire_guest_account!(id)
+    Marshall.Teams.Coordinator.retire_user!(id, actor_id)
+    retire_integrations!(id)
+    Marshall.GitHub.retire_locked!(id)
+    _ = Marshall.Notifications.revoke_for_user!(id, :account_retired)
+    :ok
   end
 
   @spec owned_count(String.t()) :: non_neg_integer()
