@@ -1,5 +1,5 @@
 ---
-digest: bd48417e5e715be60eee6510fe8f27bc93c949cb95f19a7b2aeaf6de68115bc5
+digest: 1a0e05a8ca29a66df0db70a49eb815130f4721476b6fc7ef3e73cdb3ef5a4eb1
 disposition: no-impact
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Scanner profile digest binding preserves the documented redaction workflow; no handbook text changed.
+The scanner now loads the generated upstream profile; documented redaction behavior remains unchanged.

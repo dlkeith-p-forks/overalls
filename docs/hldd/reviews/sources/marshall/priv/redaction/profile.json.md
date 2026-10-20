@@ -1,5 +1,5 @@
 ---
-digest: f08cc8d5ea7da49ae7e2aaad5ca449d898eb117c4e036c1450742c2b254ca083
+digest: 1646f01b37797aef1f0f0f6d2c4ace7b09681bcd9be189aafb943a1955592b6f
 disposition: no-impact
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Generated scanner profile patterns refine the existing redaction implementation; no handbook text changed.
+The scanner now loads the generated upstream profile; documented redaction behavior remains unchanged.
