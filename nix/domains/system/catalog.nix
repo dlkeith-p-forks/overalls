@@ -13,7 +13,8 @@
     ./security-audit.nix
     ./access.nix
     ./fleet-firewall.nix
-    ./public-address.nix
+    ./fleet-addresses.nix
+    ./runtime-firewall.nix
     ./tailscale.nix
     (import ./underclass.nix { inherit packages; })
     ./remote-builders.nix
@@ -33,6 +34,7 @@
     (import ./susan.nix { inherit packages; })
     (import ./audi.nix { inherit packages; })
     ./proxy.nix
+    ./runtime-socket.nix
     ./acme/default.nix
     (import ./secrets/default.nix { inherit packages; })
     (import ./auto-update/default.nix { inherit packages; })

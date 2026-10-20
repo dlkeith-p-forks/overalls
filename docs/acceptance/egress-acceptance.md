@@ -16,9 +16,15 @@ Create a unique mode-0700 directory outside Git. Its `run.json` contains:
   "run": "egress-20261002-150000",
   "host": "ghuntley.dev",
   "admin_alias": "overalls-rebuild",
-  "identity": "/home/ghuntley/.ssh/id_rsa"
+  "identity": "/home/ghuntley/.ssh/id_rsa",
+  "protected_address": "203.0.113.10"
 }
 ```
+
+`protected_address` is the host's primary public IPv4 address, which guests must
+not reach. It is a fleet secret (`OVERALLS_PRIMARY_IPV4` in
+`secrets/fleet-addresses.enc.json`); copy it from the decrypted document and keep
+it only in the private directory.
 
 Use an existing registered account key with mode 0600. The runner references it;
 it does not copy, register or revoke keys. `admin_alias` must select an independently

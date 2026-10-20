@@ -5,8 +5,8 @@ let
   # Both CPU counts were measured with nproc --all over inventory-pinned
   # administrative SSH on 2026-09-18. Guest budgets are not CPU discovery.
   endpoints = {
-    dungarees = { address = "136.243.69.35"; port = 2222; logicalCpus = 32; };
-    # Overalls administrative SSH listens only on its Tailscale address.
+    # Builders are reached over Tailscale so no public address is evaluated.
+    dungarees = { address = "100.120.189.15"; port = 2222; logicalCpus = 32; };
     overalls = { address = "100.117.30.53"; port = 2222; logicalCpus = 32; };
   };
 in

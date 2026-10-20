@@ -109,7 +109,7 @@ let
       crashDumpPublicKey = if lilly.crashDumps.enable then lilly.crashDumps.publicKeyFile else null;
       binding = {
         inherit (lilly) hostId stateDirectory vmStateDirectory networkStateDirectory
-          egressInterface protectedCidrs pools guestCpuCores guestMemoryMiB;
+          egressInterface protectedCidrs protectedAddressFiles pools guestCpuCores guestMemoryMiB;
       };
       owner = {
         host_id = lilly.hostId;

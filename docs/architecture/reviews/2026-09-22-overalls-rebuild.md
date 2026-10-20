@@ -4,7 +4,7 @@ Date: 2026-09-22
 
 ## Scope and architecture impact
 
-The operator authorized rebuilding `overalls` at `136.243.69.55`, erasing its
+The operator authorized rebuilding `overalls` at `OVERALLS_PRIMARY_IPV4`, erasing its
 disks and starting with fresh application state. No old filesystem or database
 was recovered. The administrator's existing recovery identity decrypted the
 repository's service credentials; every Overalls document was encrypted for the
@@ -38,7 +38,7 @@ are new; the old host binding is not reused.
 - The fresh host has no Tailscale login state. Underclass continues locally;
   its tailnet HTTPS publication is disabled until the host is authenticated.
 - Reboot exposed a pre-existing administrative SSH startup race: binding
-  `136.243.69.55:2222` failed before the address existed and exhausted systemd's
+  `OVERALLS_PRIMARY_IPV4:2222` failed before the address existed and exhausted systemd's
   start limit. The [host configuration](../../../fleet/hosts/overalls/configuration.nix)
   now orders SSH after network-online and retries at five-second intervals.
   The existing Git updater restored administrative access without rescue boot.

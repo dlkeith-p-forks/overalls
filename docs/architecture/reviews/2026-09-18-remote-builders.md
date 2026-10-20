@@ -12,7 +12,7 @@ placement, protocol, guest resource budget or host identity changes.
 ## Identity and credentials
 
 Strict SSH verification succeeded against inventory for Dungarees at
-136.243.69.35:22 and Overalls at 136.243.69.55:2222, with named administrative
+DUNGAREES_PRIMARY_IPV4:22 and Overalls at OVERALLS_PRIMARY_IPV4:2222, with named administrative
 sudo access. Both report 32 logical CPUs. Overalls' returned host public key
 matches inventory. The different local bare-overalls known-host entry was not
 used or replaced. No unauthenticated observation was promoted into inventory.

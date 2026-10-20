@@ -2,11 +2,16 @@
 
 - ID: ADR-0232
 - Date: 2026-10-20
-- Status: accepted
+- Status: superseded
 - Implementation: partial
 - Components: host inventory, host tool, NixOS host profile, fleet firewall, SOPS secrets
 - Supersedes: none
-- Superseded by: none
+- Superseded by: ADR-0233
+
+> Superseded by [ADR-0233](0233-fleet-addresses-from-sops.md), which
+> generalises this record to every fleet host through one shared document,
+> supports both firewall backends and drops salopettes' IPv6. The rationale
+> below is retained as accepted on 2026-10-20.
 
 ## Context
 
@@ -79,14 +84,16 @@ secret and must come from the Nix SOPS secret system.
 
 ## Implementation evidence
 
-- [`public-address.nix`](../../../nix/domains/system/public-address.nix),
+- `public-address.nix` and `fleet-firewall-runtime.py` were replaced by
+  ADR-0233's `fleet-addresses.nix` and `runtime-firewall.nix`;
   [`fleet-firewall.nix`](../../../nix/domains/system/fleet-firewall.nix),
-  [`fleet-firewall-runtime.py`](../../../nix/domains/system/fleet-firewall-runtime.py),
   [`profile.nix`](../../../nix/platform/hosts/profile.nix) and
   [`cli.py`](../../../nix/domains/artifacts/host/cli.py).
 - [`salopettes`](../../../fleet/hosts/salopettes/configuration.nix) with
-  `secrets/salopettes-address.enc.json`. Deployment evidence on the host is
-  pending enrollment.
+  `secrets/salopettes-address.enc.json` (folded into
+  `secrets/fleet-addresses.enc.json` by ADR-0233). Salopettes enrolled at
+  `3a2e5a5d` with the Susan listener at the SOPS-delivered address, healthz
+  answering 200 and a Let's Encrypt certificate issued.
 
 ## Open questions
 

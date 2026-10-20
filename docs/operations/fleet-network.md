@@ -1,16 +1,27 @@
 # IPv4 fleet control network
 
 The [physical deployment](../../fleet/fleet-network.nix) assigns Overalls
-`10.90.0.1/32` and Dungarees `10.90.0.2/32` on `fleet0`. WireGuard uses UDP
-51820 between their physical IPv4 addresses. Only declared peers may reach that
-UDP destination; each peer owns exactly one tunnel `/32`. IPv6 is disabled.
+`10.90.0.1/32`, Dungarees `10.90.0.2/32` and Salopettes `10.90.0.3/32` on
+`fleet0`. WireGuard uses UDP 51820 between their physical IPv4 addresses. Only
+declared peers may reach that UDP destination; each peer owns exactly one tunnel
+`/32`. IPv6 is disabled. Salopettes peers only with Overalls: Marshall resolves
+`notifications.overalls.dev` to `10.90.0.3` and reaches Susan over the tunnel
+on TCP 443 (ADR-0233).
+
+Public addresses never appear in the repository (ADR-0233). Names such as
+`OVERALLS_PRIMARY_IPV4` below are secrets in
+[`secrets/fleet-addresses.enc.json`](../../secrets/fleet-addresses.enc.json):
+hosts decrypt them into `/run/overalls-secrets/fleet-addresses/`, and operators
+read them with `sops --decrypt` into private storage when a command needs the
+value. Rotating an address is a document change followed by the ordinary
+update; see [the secrets guide](../../secrets/README.md).
 
 ```text
-Public browser -> 136.243.69.55:443 -> Marshall browser listener (4443)
-Public SSH     -> 136.243.69.55:22  -> Porsche
-Public apps    -> 136.243.69.37     -> Audi (Overalls)  -> local Lilly connector -> guest
-Public apps    -> 136.243.69.32     -> Audi (Dungarees) -> local Lilly connector -> guest
-Public DNS     -> 136.243.69.37 / 136.243.69.32 UDP+TCP 53 -> Audi DNS replicas
+Public browser -> OVERALLS_PRIMARY_IPV4:443 -> Marshall browser listener (4443)
+Public SSH     -> OVERALLS_PRIMARY_IPV4:22  -> Porsche
+Public apps    -> OVERALLS_SERVICE_IPV4     -> Audi (Overalls)  -> local Lilly connector -> guest
+Public apps    -> DUNGAREES_SERVICE_IPV4     -> Audi (Dungarees) -> local Lilly connector -> guest
+Public DNS     -> OVERALLS_SERVICE_IPV4 / DUNGAREES_SERVICE_IPV4 UDP+TCP 53 -> Audi DNS replicas
 
 Dungarees fleet clients
   -> verified HTTPS over fleet0
@@ -81,17 +92,17 @@ replace them before activation, following the Ziggy placeholder precedent.
 Operator rollout order:
 
 1. At the external `ghuntley.dev` DNS provider, create
-   `ns1.ghuntley.dev A 136.243.69.37` and `ns2.ghuntley.dev A 136.243.69.32`,
+   `ns1.ghuntley.dev A OVERALLS_SERVICE_IPV4` and `ns2.ghuntley.dev A DUNGAREES_SERVICE_IPV4`,
    then delegate `apps.ghuntley.dev NS ns1.ghuntley.dev, ns2.ghuntley.dev`.
-   Keep the apex `ghuntley.dev A 136.243.69.55` external: the proxy's HTTP-01
+   Keep the apex `ghuntley.dev A OVERALLS_PRIMARY_IPV4` external: the proxy's HTTP-01
    issuance and Porsche's public origin depend on it, and Audi DNS serves no
    apex A record.
 2. On Overalls, enroll services with the Marshall operator CLI, writing each
    token to private storage outside the checkout:
    `audi-dns-rotate audi-overalls-dns /private/overalls-dns.token`,
-   `audi-gateway-rotate audi-overalls HOST_ID 136.243.69.37 10.90.0.1 9445 /private/overalls.token`,
+   `audi-gateway-rotate audi-overalls HOST_ID OVERALLS_SERVICE_IPV4 10.90.0.1 9445 /private/overalls.token`,
    `audi-dns-rotate audi-dungarees-dns /private/dungarees-dns.token`, and
-   `audi-gateway-rotate audi-dungarees HOST_ID 136.243.69.32 10.90.0.2 9445 /private/dungarees.token`.
+   `audi-gateway-rotate audi-dungarees HOST_ID DUNGAREES_SERVICE_IPV4 10.90.0.2 9445 /private/dungarees.token`.
    `HOST_ID` is the host's enrolled Lilly host UUID. Verify each file with
    `audi-dns-verify` / `audi-gateway-verify`.
 3. Encrypt the four values into the inventoried documents
@@ -104,8 +115,8 @@ Operator rollout order:
    before making the shared wildcard key a production dependency. Deploy
    Overalls first (Marshall gains the wildcard issuer and both local Audi
    roles), then Dungarees (worker roles reach Marshall over `fleet0`).
-5. Validate externally: `dig @136.243.69.37 apps.ghuntley.dev SOA` and the same
-   against `.32`; `dig +trace apps.ghuntley.dev NS` from a public resolver;
+5. Validate externally: `dig @OVERALLS_SERVICE_IPV4 apps.ghuntley.dev SOA` and the same
+   against `DUNGAREES_SERVICE_IPV4`; `dig +trace apps.ghuntley.dev NS` from a public resolver;
    confirm TCP 22/443/80 and UDP/TCP 53 reach both addresses from an
    unlisted source; stop one `audi-dns` at a time and confirm the other
    replica keeps answering.

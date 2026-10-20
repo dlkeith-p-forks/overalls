@@ -27,3 +27,8 @@ attempt to restore the consumer roles that were active before stopping them.
 Ordinary updates MUST reject installationBinding changes except ADR-0050's exact
 quota allowlist, verified against unchanged native GUIDs and journaled original
 receipts. Removal, introduction and topology/identity changes require maintenance.
+
+@cc [owner:ghuntley,label:recovery] updater-effective-protected-networks
+The Lilly binding comparison MUST treat protectedCidrs plus readable runtime
+protected address files as one effective set. Unreadable or malformed runtime
+files MUST fail closed to raw comparison.

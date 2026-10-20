@@ -1,5 +1,9 @@
 # Architecture reviews
 
+- [Fleet addresses from SOPS (2026-10-20)](2026-10-20-fleet-addresses-from-sops.md): ADR-0233's
+  shared address document, runtime firewall chain on both backends, runtime
+  WireGuard endpoints, uplink recovery copy and the Susan path over `fleet0`;
+  staged rollout with literals removed per host, per-peer port scoping open.
 - [Windows editor job custodian (2026-10-18)](2026-10-18-windows-editor-job-custodian.md): ADR-0208 replaces broker-owned job lifetime with an independent SYSTEM custodian, atomic job-list creation and a boot-bound local streaming proxy. Portable/static and bounded SYSTEM library checks pass; same-boot custodian replacement remains incomplete and exact-image browser/recovery acceptance remains pending.
 
 - [Localization completion follow-up (2026-10-19)](2026-10-19-localization-completion-follow-up.md): closes raw-source and strict-gate omissions, preserves authentication and machine contracts, and separates committed regression/journey coverage from pending execution.

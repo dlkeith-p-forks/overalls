@@ -1,4 +1,10 @@
 {
+  "addresses": {
+    "names": {
+      "gateway": "OVERALLS_GATEWAY_IPV4",
+      "prefix": "OVERALLS_PREFIX"
+    }
+  },
   "budgets": {
     "arcMaxMiB": 24576,
     "guestCpuCores": 32,
@@ -88,6 +94,10 @@
     {
       "name": "overalls-cachix",
       "path": "secrets/overalls-cachix.enc.json"
+    },
+    {
+      "name": "fleet-addresses",
+      "path": "secrets/fleet-addresses.enc.json"
     }
   ],
   "discovery": {

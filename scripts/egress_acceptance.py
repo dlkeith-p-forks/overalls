@@ -6,6 +6,7 @@ import base64
 import contextlib
 import datetime
 import hashlib
+import ipaddress
 import json
 import os
 import re
@@ -89,6 +90,9 @@ class Acceptance:
         self.prefix = text(config["run"])
         self.host = text(config["host"])
         self.admin = text(config["admin_alias"])
+        # The host's public address is a SOPS-delivered fleet secret, so the
+        # operator supplies it in the private run directory, never the repo.
+        self.protected = ipaddress.IPv4Address(text(config["protected_address"]))
         self.identity = Path(text(config["identity"])).expanduser().resolve(strict=True)
         self.stage = stage
         if (
@@ -96,6 +100,7 @@ class Acceptance:
             or not re.fullmatch(r"[a-z0-9][a-z0-9.-]+", self.host)
             or not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9-]*", self.admin)
             or not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,30}", stage)
+            or not self.protected.is_global
             or not self.identity.is_file()
             or self.identity.stat().st_mode & 0o077
         ):
@@ -445,7 +450,7 @@ git -C "$work/repo" rev-parse HEAD
 curl --noproxy '*' --max-time 30 -fsS {ARTIFACT} -o /dev/null -w '%{{ssl_verify_result}}\\n%{{certs}}' > "$work/chain"
 grep -x 0 "$work/chain"
 grep '^Issuer:.*Overalls Brady' "$work/chain"
-for ip in 10.90.0.1 169.254.169.254 136.243.69.55; do
+for ip in 10.90.0.1 169.254.169.254 {self.protected}; do
   if curl --noproxy '*' --connect-timeout 2 --max-time 3 -fsS "http://$ip/" -o /dev/null; then
     echo unexpected-protected-access; exit 1
   else

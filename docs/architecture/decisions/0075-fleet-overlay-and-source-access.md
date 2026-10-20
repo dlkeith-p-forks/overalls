@@ -101,6 +101,10 @@ documented owner and that direct Tailscale connectivity succeeds on both hosts.
 
 ## Related decisions
 
+[ADR-0233](0233-fleet-addresses-from-sops.md) amends this record: reviewed
+source grants and WireGuard endpoints may name SOPS-delivered runtime
+addresses, admitted through the runtime firewall chain, and salopettes joins
+`fleet0` as `10.90.0.3`, peering only with Overalls.
 [ADR-0091](0091-fleet-perimeter-public-listeners.md) amends this record's
 consequence that anonymous public service ingress is unavailable: reviewed
 destination-scoped Audi listeners are now admitted from any source through the

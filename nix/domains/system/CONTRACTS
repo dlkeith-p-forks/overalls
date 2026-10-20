@@ -17,3 +17,16 @@ destroy storage, replace host identity or kill independently running guests.
 @cc [owner:ghuntley,label:security] module-ipv4-service-sandboxes
 Maintained service address-family allowlists MUST NOT permit AF_INET6. Local
 Unix, vsock and Netlink families remain independent of IPv4 network transport.
+
+@cc [owner:ghuntley,label:security] module-runtime-protected-addresses
+Addresses kept out of the repository MAY join Lilly's and Brady's protected
+networks only through declared root-owned runtime files and their publishing
+units. The effective protected set, not the option spelling, is Lilly's network
+claim: updates MUST compare it, and changing it still requires a Lilly rebind.
+
+@cc [owner:ghuntley,label:security;deployment] module-runtime-listener-addresses
+A listener whose address is runtime data MUST take it from a validated /run
+file published after its named unit, never from the Nix store. Every process
+that runs or checks that listener's configuration, including certificate
+publication probes, MUST use the same validated address and refuse to start
+with a missing, malformed or wildcard value instead of binding every address.

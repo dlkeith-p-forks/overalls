@@ -323,16 +323,29 @@ All values are runtime-only: never put them in Nix expressions, the OCI image or
 logs. The container form mounts the same file names at `/run/secrets/susan`
 (owned by uid 65532, mode 0400).
 
-## Host public addresses
+## Fleet addresses
 
-`salopettes-address.enc.json` holds salopettes' public addresses under
-`overalls-public-address.production`: `PUBLIC_IPV4` and `PUBLIC_IPV6`, the latter
-with its prefix ([ADR-0232](../docs/architecture/decisions/0232-sops-delivered-public-host-addresses.md)).
-Its recipients are the recovery users and salopettes. The repository holds no
-address literal for the host; `overalls.publicAddress` validates both values at
-runtime, opens the Susan listener at the IPv4 address and attaches the IPv6
-address. To rotate the addresses, write the new values to a private 0600 file
-outside the checkout and run
-`nix run .#secrets -- encrypt salopettes-address --input FILE --replace`. The
-updater then restarts the bundle and its dependents; a malformed value keeps the
-listener closed.
+`fleet-addresses.enc.json` holds every fleet public address under
+`overalls-fleet-addresses.production`
+([ADR-0233](../docs/architecture/decisions/0233-fleet-addresses-from-sops.md)):
+
+| Secret | Use |
+| --- | --- |
+| `OVERALLS_PRIMARY_IPV4`, `DUNGAREES_PRIMARY_IPV4` | control, administration, WireGuard endpoints and reviewed-source grants |
+| `OVERALLS_SERVICE_IPV4`, `DUNGAREES_SERVICE_IPV4` | Audi and Audi DNS listeners |
+| `OVERALLS_PREFIX`, `OVERALLS_GATEWAY_IPV4`, `DUNGAREES_PREFIX`, `DUNGAREES_GATEWAY_IPV4` | each dedicated host's own uplink prefix and gateway |
+| `SALOPETTES_IPV4` | the Susan listener and the Salopettes WireGuard endpoint |
+
+Its recipients are the recovery users, Overalls, Dungarees and Salopettes; each
+host selects only the names its configuration uses. The repository holds no
+address literal. `overalls.fleetAddresses` validates every value at runtime
+before any listener, firewall rule, WireGuard endpoint or uplink uses it, and a
+malformed value keeps them closed. A dedicated host's uplink falls back to its
+root-only recovery copy (`/var/lib/overalls-host/uplink.conf`), so a decryption
+failure never strands it.
+
+To rotate, decrypt to a private 0600 file outside the checkout, edit it and run
+`nix run .#secrets -- encrypt fleet-addresses --input FILE --replace`, then
+`nix run .#secrets -- check`. Update DNS for any published name in the same
+change window. Rotating a Lilly-protected address changes Lilly's network claim
+and needs the deliberate rebind flow, not an ordinary update.

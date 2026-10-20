@@ -41,7 +41,7 @@ are rejected; the registry is reviewed like `allowed-hosts.nix`. A
 an address other than its declared listener.
 
 The initial registry entries are the Audi planes: Overalls
-`136.243.69.37` and Dungarees `136.243.69.32`, each TCP 22/53/80/443 and
+`OVERALLS_SERVICE_IPV4` and Dungarees `DUNGAREES_SERVICE_IPV4`, each TCP 22/53/80/443 and
 UDP 53.
 
 ## Alternatives
@@ -76,7 +76,7 @@ unchanged by this decision and remains governed by ADR-0075.
 - The destination addresses stay fenced from guest egress through Lilly's
   `protectedCidrs` on both hosts.
 - Host evaluation shows the rendered per-port accept rules for
-  `136.243.69.37` and `136.243.69.32` alongside the reviewed-source grants.
+  `OVERALLS_SERVICE_IPV4` and `DUNGAREES_SERVICE_IPV4` alongside the reviewed-source grants.
 
 ## Implementation evidence
 
@@ -107,4 +107,6 @@ listeners this exception serves; [ADR-0085](0085-inception-public-ingress.md)
 extends them to nested ingress; [ADR-0090](0090-second-audi-dns-replica-on-worker.md)
 places the second DNS replica.
 [ADR-0232](0232-sops-delivered-public-host-addresses.md) amends this record
-with listeners whose destination address is SOPS-delivered runtime data.
+with listeners whose destination address is SOPS-delivered runtime data;
+[ADR-0233](0233-fleet-addresses-from-sops.md) supersedes it and admits those
+listeners through one runtime chain on both firewall backends.

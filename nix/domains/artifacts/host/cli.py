@@ -13,7 +13,7 @@ import sys
 import tempfile
 from collections.abc import Callable, Iterator, Mapping
 from pathlib import Path
-from typing import TypedDict
+from typing import NotRequired, TypedDict
 
 import remote
 from remote import Binding, Facts, Identity, Inventory, StorageFacts
@@ -48,6 +48,15 @@ class LillySettings(TypedDict, total=False):
     binding: Mapping[str, object]
 
 
+class UplinkDeclaration(TypedDict):
+    network: str
+
+
+class AddressDeclaration(TypedDict):
+    names: NotRequired[dict[str, str]]
+    uplink: NotRequired[UplinkDeclaration]
+
+
 class Host(TypedDict):
     name: str
     reviewed: bool
@@ -61,6 +70,7 @@ class Host(TypedDict):
     git: dict[str, str]
     credentials: list[CredentialDocument]
     lilly: LillySettings
+    addresses: NotRequired[AddressDeclaration]
 
 
 class Plan(TypedDict):
@@ -317,6 +327,49 @@ def default_routes(routes: list[dict[str, object]]) -> list[dict[str, object]]:
     return kept
 
 
+def uplink_facts(h: Host, facts: Facts) -> remote.Uplink | None:
+    """Live addressing for the uplink recovery copy, from authenticated facts.
+
+    Fleet addresses live in SOPS, so a freshly installed base system has no
+    document; the recovery copy is its only addressing until enrollment.
+    """
+    declared = h.get("addresses", {}).get("uplink")
+    if declared is None:
+        return None
+    match = h["network"].get(declared["network"])
+    mac = match.get("matchConfig", {}).get("MACAddress") if isinstance(match, dict) else None
+    nic = next((n for n in facts["addresses"] if mac and n.get("address") == mac), None)
+    if nic is None:
+        raise Failure("Declared uplink interface was not observed")
+    addresses = [
+        f"{a['local']}/{a['prefixlen']}"
+        for a in nic["addr_info"]
+        if a["scope"] == "global" and ":" not in a["local"]
+    ]
+    routes = [
+        r
+        for r in facts["routes"]
+        if r.get("dev") == nic["ifname"]
+        and r.get("table", "main") == "main"
+        and r.get("type", "unicast") == "unicast"
+        and isinstance(r.get("gateway"), str)
+        and ":" not in str(r["gateway"])
+    ]
+    gateways = {str(r["gateway"]) for r in routes if r.get("dst") == "default"}
+    if not addresses or len(gateways) != 1:
+        raise Failure("Uplink needs observed IPv4 addresses and one default gateway")
+    (gateway,) = gateways
+    hosts = sorted(
+        {
+            str(r["dst"])
+            for r in routes
+            if r.get("gateway") == gateway and "/" not in str(r.get("dst", "/"))
+        }
+        - {"default"}
+    )
+    return {"addresses": addresses, "gateway": gateway, "routes": hosts}
+
+
 def discover(args: argparse.Namespace) -> None:
     facts: Facts = probe(args)
     disks = facts["inventory"]["disks"]
@@ -332,15 +385,14 @@ def discover(args: argparse.Namespace) -> None:
         elif args.platform == "hcloud":
             # @cc [owner:ghuntley,label:security;deployment] hcloud-addresses-outside-repository
             # Hetzner Cloud candidates MUST NOT carry address literals: IPv4
-            # comes from the provider's DHCP and the IPv6 address from the
-            # host's SOPS document (public-address-from-sops). Only the
-            # provider's fixed IPv6 gateway is proposed for review.
+            # comes from the provider's DHCP, and the fleet tunnel is IPv4-only,
+            # so IPv6 is not configured. Listeners and grants take the address
+            # from the shared SOPS document (fleet-addresses-from-sops).
             entry["networkConfig"] = {
                 "DHCP": "ipv4",
                 "IPv6AcceptRA": False,
-                "LinkLocalAddressing": "ipv6",
+                "LinkLocalAddressing": "no",
             }
-            entry["routes"] = [{"Destination": "::/0", "Gateway": "fe80::1", "GatewayOnLink": True}]
         else:
             entry["networkConfig"] = {
                 "Address": [
@@ -587,6 +639,11 @@ def install(args: argparse.Namespace) -> None:
             },
             installer_target,
         )
+        uplink = uplink_facts(p["host"], facts)
+        if uplink is not None:
+            phase = "uplink-recovery"
+            save()
+            probe(installer_args, "install-uplink", uplink, installer_target)
         receipt_path = Path(args.plan + ".installed.json")
         remote.atomic(receipt_path, installed)
         phase = "reboot"

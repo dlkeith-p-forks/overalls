@@ -463,10 +463,11 @@ separate public addresses on each host. Enrico is a private quota-bound cache.
 worker-only control-plane configuration.
 [Salopettes assertions](repo:fleet/hosts/salopettes/configuration.nix) enforce
 its Susan-only role. Its public listeners are TCP 80 and 443 at its IPv4
-address, which arrives only through the `salopettes-address` SOPS document
-(ADR-0232). Nginx forwards to Susan's loopback port 4100 without access logs.
-Like the other fleet hosts, it offers a Tailscale exit node once an operator
-joins it to the tailnet.
+address, which arrives only through the shared `fleet-addresses` SOPS document
+(ADR-0233). Nginx forwards to Susan's loopback port 4100 without access logs.
+It joins `fleet0` as `10.90.0.3` with IPv6 off and peers only with Overalls,
+which admits its handshake only from that SOPS-delivered address. Like the
+other fleet hosts, it offers a Tailscale exit node.
 
 Only Overalls Marshall receives the dedicated SSH CA private key through an
 encrypted runtime bundle and systemd credential. Porsche, both Audi gateways
@@ -496,7 +497,7 @@ with a reader-only runtime credential. Marshall has no diagnostic query credenti
 or reader dependency.
 Overalls exposes only
 Grafana through a dedicated authenticated HTTPS proxy frontend on
-`136.243.69.55:3443`, with a matching destination-scoped perimeter grant.
+`OVERALLS_PRIMARY_IPV4:3443`, with a matching destination-scoped perimeter grant.
 The proxy reuses its existing public certificate; Grafana login remains the
 operator authority boundary. Prometheus and Tempo have no public frontend. The
 WireGuard peer key and firewall identify the physical sender, while the Rust
@@ -790,7 +791,7 @@ flowchart LR
   host --> s69["ziggySloExporter"]
 ```
 
-Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`. Administrative SSH ports: 2222.
+Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`, `salopettes`. Administrative SSH ports: 2222.
 
 ### salopettes
 
@@ -803,7 +804,7 @@ flowchart LR
   host --> s3["susan"]
 ```
 
-Arrows mean configured service placement. Configuration: `salopettes`. Marshall instances: none. Fleet address: `disabled`. Fleet peers: none. Administrative SSH ports: 22.
+Arrows mean configured service placement. Configuration: `salopettes`. Marshall instances: none. Fleet address: `10.90.0.3`. Fleet peers: `overalls`. Administrative SSH ports: 22.
 <!-- hldd:view:end -->
 
 ## Configuration and change procedure
@@ -864,8 +865,12 @@ PostgreSQL behind an nginx proxy that terminates ACME HTTP-01 TLS for
 `notifications.overalls.dev` ([host role](repo:fleet/hosts/salopettes/configuration.nix)).
 Salopettes is enrolled like every fleet host, so the trunk auto-updater deploys
 Susan, and it decrypts `overalls-susan` with its own host recipient. Its public
-addresses come from the host-bound `salopettes-address` document (ADR-0232); the
-repository holds no address literal for it. The OCI
+address comes from the shared `fleet-addresses` document (ADR-0233); the
+repository holds no address literal for it. Marshall on Overalls resolves
+`notifications.overalls.dev` to salopettes' `fleet0` address `10.90.0.3`, so its
+pokes cross the authenticated tunnel to TCP 443 and still verify the public
+certificate. Mila devices use the public origin, which needs the DNS record to
+stay unproxied. The OCI
 image [`image-susan`](repo:nix/domains/artifacts/susan-image.nix) remains a
 packaging artifact with no registry: streamLayeredImage with uid 65532, no
 shell, a read-only root, tmpfs `/tmp` and a fixed creation time. Migrations
@@ -873,7 +878,8 @@ run as a separate release command.
 
 ```mermaid
 flowchart LR
-  Internet["Mila apps and Marshalls"] -->|"HTTPS notifications.overalls.dev"| Proxy["salopettes nginx (ACME TLS)"]
+  Internet["Mila apps"] -->|"HTTPS notifications.overalls.dev"| Proxy["salopettes nginx (ACME TLS)"]
+  Marshall["Marshall on overalls"] -->|"HTTPS over fleet0 to 10.90.0.3:443"| Proxy
   Proxy -->|"HTTP 127.0.0.1:4100"| Susan["Susan release on salopettes"]
   Susan --> PG[("Susan PostgreSQL")]
   Susan -->|"HTTPS h2"| APNs["api.push.apple.com / api.sandbox.push.apple.com"]
@@ -888,6 +894,9 @@ These are the failure boundaries:
 - When PostgreSQL is down, `/healthz` answers 503 and pokes answer 503.
 - When a provider has an outage, pokes answer 503 with that provider's
   Retry-After.
+- When the `fleet0` tunnel to salopettes is down, or its address document
+  fails to decrypt on either side, Marshall's pokes fail and are retried; the
+  public origin for Mila devices is unaffected.
 
 Egress is fixed in code, not configuration. The container uses a
 loopback-only, epmd-less distribution ([`Susan.Epmd`](repo:susan/lib/susan/epmd.ex))

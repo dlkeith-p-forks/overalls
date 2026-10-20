@@ -157,6 +157,74 @@ def list_value(value: object) -> list[object]:
     return value
 
 
+OCTET = r"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])"
+RUNTIME_ADDRESS = re.compile(OCTET + r"(\." + OCTET + r"){3}")
+
+
+def runtime_protected_network(path: Path) -> str | None:
+    """Return the /32 network held in a runtime protected-address file."""
+    try:
+        text = path.read_text(encoding="ascii").strip()
+    except (OSError, UnicodeDecodeError):
+        return None
+    first = text.split(".", 1)[0]
+    if (
+        RUNTIME_ADDRESS.fullmatch(text) is None
+        or text in ("0.0.0.0", "255.255.255.255")
+        or first == "127"
+        or int(first) >= 224
+    ):
+        return None
+    return text + "/32"
+
+
+def effective_lilly_binding(
+    binding: Mapping[str, object],
+    read: Callable[[Path], str | None] = runtime_protected_network,
+) -> dict[str, object]:
+    """@cc [owner:ghuntley,label:recovery;security] lilly-protected-binding-effective
+    Lilly bindings MUST compare protected networks by the effective set Lilly
+    claims: the evaluated CIDRs plus each readable runtime address as a /32.
+    Moving a literal into a runtime file with an equal value MUST NOT be a
+    binding change. An unreadable or malformed runtime file MUST leave the
+    binding raw, so only an identical binding compares equal.
+    """
+    result = dict(binding)
+    cidrs = result.pop("protectedCidrs", [])
+    files = result.pop("protectedAddressFiles", [])
+    if not isinstance(cidrs, list) or not isinstance(files, list):
+        return dict(binding)
+    effective: set[str] = set()
+    for item in cidrs:
+        if not isinstance(item, str):
+            return dict(binding)
+        effective.add(item)
+    for item in files:
+        network = read(Path(item)) if isinstance(item, str) else None
+        if network is None:
+            return dict(binding)
+        effective.add(network)
+    result["protectedEffective"] = sorted(effective)
+    return result
+
+
+def lilly_bindings_equivalent(old: object, new: object) -> bool:
+    if old == new:
+        return True
+    if not isinstance(old, dict) or not isinstance(new, dict):
+        return False
+    return effective_lilly_binding(old) == effective_lilly_binding(new)
+
+
+def with_effective_lilly_binding(value: Mapping[str, object]) -> dict[str, object]:
+    """A copy whose Lilly binding is normalised for resource comparisons."""
+    result = dict(value)
+    lilly = result.get("lilly")
+    if isinstance(lilly, dict) and isinstance(lilly.get("binding"), dict):
+        result["lilly"] = {**lilly, "binding": effective_lilly_binding(lilly["binding"])}
+    return result
+
+
 def configuration_value(raw: object) -> Configuration:
     row = object_value(raw)
     return Configuration(
@@ -546,7 +614,11 @@ class Deployment:
         assert self.candidate is not None
         candidate = self.candidate
         resource_compatible = (
-            resource_module.compatible(previous, candidate) if resource_module else False
+            resource_module.compatible(
+                with_effective_lilly_binding(previous), with_effective_lilly_binding(candidate)
+            )
+            if resource_module
+            else False
         )
         if (
             previous.get("installationBinding") != candidate.get("installationBinding")
@@ -584,7 +656,9 @@ class Deployment:
         if old_lilly and (
             not lilly
             or (
-                object_value(old_lilly)["binding"] != object_value(lilly)["binding"]
+                not lilly_bindings_equivalent(
+                    object_value(old_lilly)["binding"], object_value(lilly)["binding"]
+                )
                 and not resource_compatible
             )
         ):
