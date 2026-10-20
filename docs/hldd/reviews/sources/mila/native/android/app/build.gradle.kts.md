@@ -1,17 +1,13 @@
 ---
-digest: 721a662a0a45b4f27d3f9a9b0308788b631def1fdece3361f7efef5fbc02cc0d
+digest: 4efdc3310cda9dbd2bd50979351c0d519ac6fb5a4ea3375e2f57545b5a0ac120
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
-migration:
-  mila:
-    chapter_digest: d5e850eb30cf89acfc1a40386a701ca06a8adc2df7bf317748adda9601b411b1
-    source_digest: 7fa241b31dfb6c46be8875dd1213bee70870f2e70eff829797bba7c8d87b3aa8
 path: mila/native/android/app/build.gradle.kts
 reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 5dc84656f2a81c5674ed8311af44a7f2e9c33262d36f624e11f8ba378a32db61
+  marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
   marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
   marshall/priv/hldd/21-domains.md: 68866597842c524f9f563a37b978a4464974ca2b21a486c94f60ecd1edd6b2da
   marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
@@ -19,4 +15,4 @@ state: present
 version: 2
 ---
 
-mila: Added typed Rust snapshot persistence coordinator using existing SnapshotStore boundary; no documented behavior or topology changed.
+Reviewed upstream Android DSL compatibility cleanup, the Linux test helper import, and the lock property ensuring generated attempt IDs are truly stale. These preserve the documented native-client behavior and evidence scope; no new native execution is claimed.

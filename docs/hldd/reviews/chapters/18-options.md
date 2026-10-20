@@ -1,5 +1,5 @@
 ---
-digest: e857dfadb053b1947da95a6afd7b0d520f208cf5140c332d41f77d4f62ead394
+digest: 6fd711c1ab36fdc4283cfa81d25e1a3bb61aec87f25b79d825e1c471939bf64f
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-The development shell, Git hook and standalone Nix HLDD gate provide pinned Python/PyYAML for the documented YAML workflow in chapter 17. Chapter 18 is regenerated from unchanged option declarations, restoring exact control-character bytes; deployed service behavior is unchanged.
+Reviewed the Underclass source revision and fixed-output hash update to 39f5766. Chapter 18 identifies the new package default; the Nix service integration and declared authority boundaries are unchanged.

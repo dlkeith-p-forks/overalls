@@ -1,5 +1,5 @@
 ---
-digest: 11893583ab1f057ca41b61fa29bc53931f7b5997320efd064082d67870c58f37
+digest: 956dd59ba9773fc0adfcaa87e3e259f1b375f1f06d27d7bcd5f65c6b1102ff06
 disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-Recorded the rejected stale upstream legacy manifest and explicit review of the three incoming source changes. This preserves the migration refusal guarantee and existing evidence boundaries.
+Recorded path-specific review of four concurrent upstream changes and the package reference update. The independent HLDD implementation and its 33-test evidence are unchanged.

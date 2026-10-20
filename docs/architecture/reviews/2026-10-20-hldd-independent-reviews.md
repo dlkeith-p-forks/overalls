@@ -85,3 +85,10 @@ Those three diffs were reviewed explicitly instead: two files correct Ash update
 argument shapes without changing documented redaction authority; the NixOS guest
 package list adds `gh`, now documented as a declaration in chapter 07. No claim
 of rebuilt or deployed guest images was added. Unrelated receipts stayed current.
+
+The subsequent `283dfe85` integration was reviewed by path: Android removes an
+obsolete Kotlin DSL block, the Linux test imports its existing route helper, the
+Rust lock property guarantees its generated attempt is actually stale, and the
+Underclass pin advances with its generated chapter-18 package version. These
+reviews do not claim new native-client execution. The HLDD implementation and its
+33-test result are unchanged by these incoming source fixes.

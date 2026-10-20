@@ -109,13 +109,18 @@ fn registration_restricts_origins_and_secrets() {
 
 #[hegel::test(test_cases = 64)]
 fn lock_never_unlocks_from_stale_or_failed_results(tc: TestCase) {
-    let attempt = tc.draw(gs::default::<u32>());
+    let generated = tc.draw(gs::default::<u32>());
     let lock = AppLock::start(true, LockDelay::Immediate)
         .apply(LockEvent::Availability(LockAvailability::Available))
         .apply(LockEvent::UnlockRequested);
     assert_eq!(lock.phase, LockPhase::Authenticating);
+    let stale_attempt = if generated == lock.attempt {
+        generated.wrapping_add(1)
+    } else {
+        generated
+    };
     let stale = lock.apply(LockEvent::UnlockFinished {
-        attempt: attempt ^ (1 << 31),
+        attempt: stale_attempt,
         success: true,
     });
     assert_eq!(stale.phase, LockPhase::Authenticating);
