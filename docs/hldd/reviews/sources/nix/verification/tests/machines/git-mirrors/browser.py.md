@@ -1,5 +1,5 @@
 ---
-digest: 8e6c23c1b762cdec5aeb5964190e2d46908fe91fa2324eda968597846599cb65
+digest: 0fd132c0999f8be933967d3250ac471f72d444abe3442f67118fb939ae869204
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Browser probe locator now matches the existing Git tree link text; no documented behavior or deployment change.
+Browser probe navigates directly to the existing history route to avoid a flaky LiveView tab click; no documented behavior change.

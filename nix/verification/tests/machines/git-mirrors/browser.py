@@ -183,7 +183,7 @@ def main() -> None:
         first_raw = reader.get_by_role("link", name="Download raw file").get_attribute("href")
         assert first_raw is not None and first in first_raw
         assert download(reader, first_raw) == (200, "first")
-        reader.get_by_role("link", name="history", exact=True).click()
+        visit(reader, REPOSITORY + "?view=history&path=hello.txt")
         expect(reader.get_by_text("first", exact=True)).to_be_visible()
 
         second = commit("second")
@@ -238,7 +238,7 @@ def main() -> None:
         admin.get_by_role("button", name="Remove", exact=True).click()
         expect(admin.locator("#flash-info")).to_contain_text("Removal queued")
         assert download(reader, second_raw)[0] == 404
-        reader.get_by_role("link", name="history", exact=True).click()
+        visit(reader, REPOSITORY + "?view=history&path=hello.txt")
         expect(reader.get_by_role("alert")).to_have_text("Repository unavailable.")
         expect(reader.locator("pre")).to_have_count(0)
         wait_sql(f"SELECT count(*) FROM enrico_repositories WHERE id='{repository_id}';", "0")
