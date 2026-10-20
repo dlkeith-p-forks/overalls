@@ -1,0 +1,120 @@
+{
+  "addresses": {
+    "names": {
+      "gateway": "PANTERLOONS_GATEWAY_IPV4",
+      "prefix": "PANTERLOONS_PREFIX"
+    },
+    "uplink": {
+      "addresses": [
+        "panterloonsPrimary"
+      ],
+      "gateway": "gateway",
+      "hostRoutes": [],
+      "network": "10-eth0",
+      "prefix": "prefix"
+    }
+  },
+  "budgets": {
+    "arcMaxMiB": 24576,
+    "guestCpuCores": 32,
+    "guestMemoryMiB": 95232
+  },
+  "credentials": [],
+  "discovery": {
+    "routes": [
+      {
+        "dev": "eth0",
+        "dst": "default"
+      }
+    ],
+    "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxG4nTBuLse2pjm9nJWroqEHs1D3owurdRI+v5CJlPB"
+  },
+  "firmware": "uefi",
+  "git": {
+    "knownHosts": "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\n",
+    "repository": "ssh://git@github.com/ghuntley/overalls"
+  },
+  "identity": {
+    "hostId": "def98d68",
+    "sshKeys": []
+  },
+  "inventory": {
+    "arch": "x86_64",
+    "disks": [
+      {
+        "active": false,
+        "aliases": [
+          "/dev/disk/by-id/nvme-Micron_7450_MTFDKCC1T9TFR_224844FE5281",
+          "/dev/disk/by-id/nvme-Micron_7450_MTFDKCC1T9TFR_224844FE5281_1",
+          "/dev/disk/by-id/nvme-eui.000000000000000600a0752244fe5281"
+        ],
+        "device": "/dev/disk/by-id/nvme-Micron_7450_MTFDKCC1T9TFR_224844FE5281",
+        "id": "disk-4fa73e753fb025ae621edd0a",
+        "kind": "physical",
+        "model": "Micron_7450_MTFDKCC1T9TFR",
+        "path": "/dev/nvme1n1",
+        "serial": "224844FE5281",
+        "size": 1920383410176,
+        "transport": "nvme"
+      },
+      {
+        "active": false,
+        "aliases": [
+          "/dev/disk/by-id/nvme-MTFDKCC1T9TGP-1BK1DABYY_4924107708CD",
+          "/dev/disk/by-id/nvme-MTFDKCC1T9TGP-1BK1DABYY_4924107708CD_1",
+          "/dev/disk/by-id/nvme-eui.000000000000000c00a075244cafc5ab"
+        ],
+        "device": "/dev/disk/by-id/nvme-MTFDKCC1T9TGP-1BK1DABYY_4924107708CD",
+        "id": "disk-c56c404f5aff7987c397b678",
+        "kind": "physical",
+        "model": "MTFDKCC1T9TGP-1BK1DABYY",
+        "path": "/dev/nvme0n1",
+        "serial": "4924107708CD",
+        "size": 1920383410176,
+        "transport": "nvme"
+      }
+    ],
+    "machine": "d41a37f3-91fe-40d0-be47-54fb66019e2c"
+  },
+  "lilly": {
+    "controlPlane": "https://ghuntley.dev:5443",
+    "credentialTtlSeconds": 157680000,
+    "egressInterface": "enp193s0f0np0",
+    "overheads": {
+      "cores": 0,
+      "memoryBytes": 0,
+      "storageBytes": 0
+    },
+    "transferEndpoint": {
+      "addressSecret": "PANTERLOONS_PRIMARY_IPV4",
+      "port": 2223
+    }
+  },
+  "name": "panterloons",
+  "network": {
+    "10-eth0": {
+      "matchConfig": {
+        "MACAddress": "54:fb:66:01:98:c4"
+      },
+      "networkConfig": {
+        "DNS": [
+          "185.12.64.1",
+          "185.12.64.2"
+        ],
+        "IPv6AcceptRA": false,
+        "LinkLocalAddressing": "no"
+      }
+    }
+  },
+  "platform": "hetzner",
+  "reviewed": true,
+  "storage": {
+    "ashift": 12,
+    "guests": [],
+    "quotaBytes": 1710470725632,
+    "system": [
+      "disk-4fa73e753fb025ae621edd0a",
+      "disk-c56c404f5aff7987c397b678"
+    ]
+  }
+}

@@ -388,6 +388,7 @@ ports; they do not enumerate every systemd unit or firewall rule.
 | --- | --- |
 | `overalls` | Control plane and worker: one Marshall instance, local PostgreSQL, public web proxy, Porsche and Enrico, plus provisioner and guest services, diagnostic log store, Prometheus, Tempo and loopback Grafana behind an authenticated public HTTPS frontend on port 3443. Loss of this host removes the declared control-plane authority and both central telemetry query paths; collection on the worker remains independent. |
 | `dungarees` | Worker using Overalls authority, with its own Lilly, guest storage, private services and OpenTelemetry collector; also a public Audi gateway and DNS replica. It deliberately has no Marshall, PostgreSQL, web proxy, Porsche or central telemetry store. |
+| `panterloons` | Planned second control plane, a separate deployment cloned from Overalls with its own empty Marshall database, to serve `ghuntley.dev` after the operator moves DNS. It is currently a base declaration awaiting installation: no roles, Marshall, PostgreSQL or Lilly yet, and it holds no fleet authority until enrolled. |
 | `salopettes` | Hetzner Cloud `hcloud` host (ADR-0231) running only the Susan push relay, its local PostgreSQL and an nginx TLS proxy for `notifications.overalls.dev`. It has no KVM, Lilly, Marshall, Porsche or Audi and holds no fleet authority: Marshall reaches it only as a public HTTPS client, so its loss delays needs-input pokes, which Marshall retries and expires, but affects no guest, session or control-plane state. |
 
 ## Authority and interactions
@@ -756,6 +757,16 @@ flowchart LR
 ```
 
 Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`, `salopettes`. Administrative SSH ports: 2222.
+
+### panterloons
+
+```mermaid
+flowchart LR
+  host["panterloons"]
+
+```
+
+Arrows mean configured service placement. Configuration: `panterloons-base`. Marshall instances: none. Fleet address: `disabled`. Fleet peers: none. Administrative SSH ports: 22.
 
 ### salopettes
 
