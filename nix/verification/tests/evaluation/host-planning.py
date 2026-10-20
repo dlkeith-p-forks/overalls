@@ -606,13 +606,14 @@ class HostPlanning(unittest.TestCase):
             with patch.object(cli, "run") as run:
                 cli.anywhere(
                     args,
-                    {"install": "install", "system": "system", "kexec": "kexec"},
+                    {"install": "install", "system": "system", "kexec": "kexec", "host": host()},
                     "kexec",
                     args.target,
                 )
             command = run.call_args.args[0]
             self.assertEqual(command[command.index("--ssh-port") + 1], "2222")
             self.assertEqual(command[command.index("--post-kexec-ssh-port") + 1], "22")
+            self.assertNotIn("--kexec-extra-flags", command)
             for invalid in [0, -1, 65536, True, "2222"]:
                 args.ssh_port = invalid
                 with self.assertRaises(cli.Failure):
@@ -757,6 +758,15 @@ class HostPlanning(unittest.TestCase):
         h["budgets"] = {"arcMaxMiB": 512, "guestCpuCores": 1, "guestMemoryMiB": 1024}
         with self.assertRaisesRegex(cli.Failure, "budgets"):
             cli.validate(h)
+
+    def test_hcloud_installer_forces_the_legacy_kexec_syscall(self) -> None:
+        h = host()
+        for platform, flags in (
+            ("hcloud", ["--kexec-extra-flags", "--kexec-syscall"]),
+            ("ec2", []),
+        ):
+            h["platform"] = platform
+            self.assertEqual(cli.kexec_flags(cast("cli.Host", h)), flags)
 
     def test_hcloud_guard_skips_kvm_but_lilly_platforms_require_it(self) -> None:
         h = host()

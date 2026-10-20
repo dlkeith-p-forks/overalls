@@ -794,10 +794,13 @@ Arrows mean configured service placement. Configuration: `overalls`. Marshall in
 ```mermaid
 flowchart LR
   host["salopettes"]
-
+  host --> s0["overallsAutoUpdate"]
+  host --> s1["overallsFleetExporter"]
+  host --> s2["postgresql"]
+  host --> s3["susan"]
 ```
 
-Arrows mean configured service placement. Configuration: `salopettes-base`. Marshall instances: none. Fleet address: `disabled`. Fleet peers: none. Administrative SSH ports: 22.
+Arrows mean configured service placement. Configuration: `salopettes`. Marshall instances: none. Fleet address: `disabled`. Fleet peers: none. Administrative SSH ports: 22.
 <!-- hldd:view:end -->
 
 ## Configuration and change procedure

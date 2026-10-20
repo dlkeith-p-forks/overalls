@@ -445,10 +445,20 @@ def anywhere(args: argparse.Namespace, plan: Plan, phases: str, target: str) -> 
             plan["system"],
             "--kexec",
             plan["kexec"],
+            *kexec_flags(plan["host"]),
             "--phases",
             phases,
         ]
     )
+
+
+def kexec_flags(host: Host) -> list[str]:
+    """@cc [owner:ghuntley,label:deployment] hcloud-legacy-kexec-syscall
+    Hetzner Cloud images refuse kexec_file_load for the unsigned installer
+    kernel (EADDRNOTAVAIL), so hcloud installs MUST force the kexec_load
+    syscall. Other platforms keep the installer's automatic selection.
+    """
+    return ["--kexec-extra-flags", "--kexec-syscall"] if host["platform"] == "hcloud" else []
 
 
 # @cc [owner:ghuntley,label:security] installation-transport-binding

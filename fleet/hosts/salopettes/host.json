@@ -2,7 +2,16 @@
   "budgets": {
     "arcMaxMiB": 1024
   },
-  "credentials": [],
+  "credentials": [
+    {
+      "name": "salopettes-git",
+      "path": "secrets/salopettes-git.enc.json"
+    },
+    {
+      "name": "overalls-susan",
+      "path": "secrets/overalls-susan.enc.json"
+    }
+  ],
   "discovery": {
     "routes": [
       {
@@ -158,7 +167,9 @@
   },
   "identity": {
     "hostId": "c1a12a0a",
-    "sshKeys": []
+    "sshKeys": [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINDfOMMdczZHtJQdcvXErOm/i0Bbbq2yxC6+RDlvtiY0"
+    ]
   },
   "inventory": {
     "arch": "x86_64",

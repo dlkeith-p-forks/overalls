@@ -272,12 +272,13 @@ The plaintext marker `PLACEHOLDER_unencrypted` (excluded from encryption by
 SOPS' `_unencrypted` suffix, ignored by SecretSpec) shows this status without
 decryption. Remove it when the real values are installed.
 
-Susan's hosting is still open (ADR-0224) and no host recipient exists, so the
-document is registered **recovery-only** in
-[`secret-documents.nix`](../nix/policy/secrets/secret-documents.nix) and
-encrypted to the recovery recipients alone. No host config enables
-`services.susan`, so nothing points `services.susan.secretsFile` at it yet. To
-deploy Susan:
+Susan runs on the Hetzner Cloud host salopettes (ADR-0231). Its
+[`host.json`](../fleet/hosts/salopettes/host.json) claims the document, so the
+recovery-only entry in
+[`secret-documents.nix`](../nix/policy/secrets/secret-documents.nix) steps aside
+and the document is encrypted to the recovery recipients plus salopettes, whose
+[configuration](../fleet/hosts/salopettes/configuration.nix) points
+`services.susan.secretsFile` at it. To move Susan to another host:
 
 1. Add `{ "name": "overalls-susan", "path": "secrets/overalls-susan.enc.json" }`
    to the chosen host's `host.json` `credentials`. The recovery-only entry steps

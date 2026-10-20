@@ -4,12 +4,8 @@ let
   origin = "notifications.overalls.dev";
 in
 {
-  # Pin the uplink name so the discovery-derived exporter interface (eth0)
-  # stays correct under NixOS predictable interface naming.
-  systemd.network.links."10-uplink" = {
-    matchConfig.MACAddress = "92:00:0a:36:0d:d5";
-    linkConfig.Name = "eth0";
-  };
+  # Discovery ran under Ubuntu's eth0 name; installed NixOS names it enp1s0.
+  services.overallsFleetExporter.externalInterfaces = lib.mkForce [ "enp1s0" ];
 
   # @cc [owner:ghuntley,label:deployment;security] salopettes-susan-only
   # Salopettes MUST run only the Susan push relay (ADR-0224, ADR-0231), its

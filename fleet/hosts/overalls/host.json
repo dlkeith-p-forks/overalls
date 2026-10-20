@@ -26,7 +26,7 @@
       "path": "secrets/overalls-marshall.enc.json"
     },
     {
-      "name": "overalls-github-oauth-placeholder",
+      "name": "overalls-github-placeholder",
       "path": "secrets/overalls-github-oauth-placeholder.enc.json"
     },
     {

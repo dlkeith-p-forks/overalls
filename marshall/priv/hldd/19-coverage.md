@@ -4182,9 +4182,9 @@ Tested scope: susan-secrets and susan-service machine tests; susan-image for the
 - **machine, recorded**: [keyring rotation is audited and older push keys still open](repo:nix/verification/tests/machines/susan-secrets/driver.py) — Single host plus a wrong-host node.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 - **machine, recorded**: [no secret bytes in image layers or the container filesystem](repo:nix/verification/tests/machines/susan-image/driver.py) — Rootful podman.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 
-**Gaps:** secrets/overalls-susan.enc.json holds placeholder values only (recovery-only); no production host recipient or real APNs/FCM credentials.
+**Gaps:** secrets/overalls-susan.enc.json holds placeholder values only, encrypted to the recovery recipients and the salopettes host (ADR-0231); real APNs/FCM credentials are not installed.
 
-**Preferred test work:** Create the document for the chosen host and repeat susan-secrets against it.
+**Preferred test work:** Replace the placeholders with real provider credentials and repeat susan-secrets against the salopettes document.
 
 ## An agent asks a planning question and the thread's writers get a Mila notification that opens the thread, without Susan learning what it is about
 
