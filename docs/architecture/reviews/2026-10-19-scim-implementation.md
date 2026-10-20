@@ -25,6 +25,13 @@ magic-link fencing, user/team lifecycle fields, and the Control Room route.
 checks pass. Database-backed tests could not run because the local PostgreSQL
 socket was unavailable; NixOS execution remains unrecorded in this environment.
 
+## Correction
+
+The [2026-10-20 completion review](2026-10-20-scim-completion.md) found that
+the boundary described above as implemented did not work end to end (forgeable
+OIDC callback, unrouted Groups, failing HTTP dispatch, incomplete retirement)
+and records the fixes and executed evidence.
+
 ## Affected decisions
 
 ADR-0229, ADR-0066, ADR-0077 and ADR-0201.

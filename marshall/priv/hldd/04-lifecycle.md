@@ -1,10 +1,16 @@
 # Machine lifecycle
 
-SCIM-managed team retirement is coordinated by `Marshall.Scim.TeamRetirementWorker`.
-Enabling SCIM marks native teams retiring, records a seven-day deadline, and
-enqueues durable deletion intents for each attached virtual machine. The worker
-is idempotent and retries through Oban; physical reclamation remains owned by
-`Marshall.Compute.Lifecycle`.
+SCIM team retirement is coordinated by `Marshall.Scim.TeamRetirementWorker`.
+Enabling SCIM marks every native team `:retiring` with the shared SCIM grace
+deadline and schedules the worker in the same transaction. A SCIM Group
+`DELETE` revokes the team's authority at once and retires it with an immediate
+deadline. At the deadline the worker revokes memberships, transfers, VM grants,
+integrations and terminal sessions (`Marshall.Scim.TeamCleanup`, whose failures
+surface so Oban retries), deletes team machines through
+`Marshall.Compute.Lifecycle.delete_for_team/3` under the retiring-team binding
+with the SCIM service owner as audit actor, then archives the team once its
+machines are archived. Re-runs and duplicate jobs are no-ops; teams already
+retiring keep retiring if SCIM is later disabled.
 
 ## Memory-preserving suspension
 
@@ -513,8 +519,6 @@ paused-process confinement. Cleanup never promotes `capturing` to usable RAM.
 Confirmed unit/cgroup absence remains necessary before networking or checkpoint
 storage can be reclaimed; a failed kill reply alone proves neither outcome.
 
-## Native submission and daemon-loss verification
-
 ## SCIM identity retirement
 
 SCIM `DELETE` (a soft destroy; the row and UUID remain) and `active=false`
@@ -537,8 +541,18 @@ reclamation) archives threads, retires attachments, clears the OIDC subject and
 ghosts the email to `deleted-<uuid>@deleted.invalid`. A finalized identity
 refuses every SCIM write. Administrator deletion supersedes a pending SCIM
 retirement. BEAM endpoint, Oban and generated-history tests under
-[`test/marshall/scim`](repo:marshall/test/marshall/scim) pass against
+[`user_lifecycle_oban_test.exs`](repo:marshall/test/marshall/scim/user_lifecycle_oban_test.exs) and its sibling SCIM tests pass against
 PostgreSQL; native machine execution of this flow remains open evidence.
+
+The maintenance worker's per-minute sweep re-enqueues every inactive SCIM user
+and every open SCIM suspension, so lost jobs recover. Compute's existing
+lifecycle coordinator remains the authority for pause, stop, wake and delete.
+Every live-account check (stored logins, SSH key sessions, agents, ingress,
+Galileo, threads and administrator authority) requires `active` as well as no
+`deleted_at`, so a deactivated identity loses all access at once rather than at
+finalization.
+
+## Native submission and daemon-loss verification
 
 Launch authority is persisted before native unit submission. A daemon lost before
 submission must refuse that generation; a new public start can issue a distinct
@@ -551,9 +565,6 @@ within a1036.30-second machine script, with composed driver static checks passed
 A timeout or disconnection alone is insufficient evidence of the
 intended daemon loss; the scenario observes actual process retirement.
 
-The maintenance worker's per-minute sweep re-enqueues every inactive SCIM user
-and every open SCIM suspension, so lost jobs recover. Compute's existing
-lifecycle coordinator remains the authority for pause, stop, wake and delete.
 Initial provisioning, guest data continuity, power loss and hosted
 faults remain separate gaps.
 

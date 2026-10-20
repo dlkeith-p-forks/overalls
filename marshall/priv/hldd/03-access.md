@@ -324,6 +324,13 @@ resources and ownership transfers; a transfer is a durable workflow, not a label
 change. Revocation must
 reach new requests and renewable capabilities already in use.
 
+While SCIM is enabled the directory owns teams: SCIM Groups create and update
+SCIM-managed teams owned by a hidden service owner, and the **Teams** page hides
+team creation, member, invitation and ownership-transfer controls behind an
+explanation. Every signed-in user can still read their own teams and the
+read-only **All teams** list. SCIM-managed teams stay locked against native
+mutation after SCIM is disabled; enabling SCIM retires existing native teams.
+
 [ADR-0175](repo:docs/architecture/decisions/0175-thread-sharing-and-bound-machine-authority.md)
 adds canonical sharing on the durable thread. A viewer reads the task and retained
 transcript and receives existing machine-read actions. An operator may prompt a

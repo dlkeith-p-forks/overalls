@@ -52,12 +52,35 @@ magic-link fencing, team retirement and localized rendering.
 
 ## Implementation evidence
 
-Resource, endpoint, digest-authentication, lifecycle fields, team retirement
-fence, OIDC browser flow, attached-resource cleanup, archive projections, and
-control-room route are implemented in
-[Marshall.Scim](../../../marshall/lib/marshall/scim.ex); durable
-database-backed execution and native NixOS execution remain partial because
-those environments were unavailable during verification.
+Implemented, with evidence in the
+[2026-10-20 completion review](../reviews/2026-10-20-scim-completion.md):
+
+- `/scim/v2` Users and Groups through vendored `ash_scim` (three marked
+  Marshall-local changes) routed for both
+  [Marshall.Accounts](../../../marshall/lib/marshall/accounts.ex) and
+  [Marshall.Teams](../../../marshall/lib/marshall/teams.ex); digest-only bearer
+  authentication in [Marshall.Scim.Auth](../../../marshall/lib/marshall/scim/auth.ex).
+- One retirement lifecycle for SCIM `DELETE` (soft destroy) and `active=false`
+  in [ScimRetirement](../../../marshall/lib/marshall/accounts/scim_retirement.ex)
+  and [RetirementWorker](../../../marshall/lib/marshall/scim/retirement_worker.ex):
+  immediate login revocation and machine pause, cancellation and resume of only
+  SCIM-paused machines inside grace, machine deletion and ghosted finalization
+  after the deadline, driven through `UserDeletion` state-machine transitions.
+- SCIM-managed teams with a hidden [service owner](../../../marshall/lib/marshall/teams/service_owner.ex),
+  native mutation [fences](../../../marshall/lib/marshall/teams/fence.ex) that
+  persist after SCIM is disabled, native-team retirement on enable and Group
+  `DELETE` through [TeamRetirementWorker](../../../marshall/lib/marshall/scim/team_retirement_worker.ex),
+  and a read-only all-teams view.
+- Magic-link refusal and the SCIM sign-in page; OIDC authorization-code sign-in
+  with PKCE and JWKS-verified ID tokens in
+  [Marshall.Scim.Oidc](../../../marshall/lib/marshall/scim/oidc.ex); the
+  Control Room page with separate enable, disable, rotate and OIDC operations
+  under passkey step-up.
+
+Remaining gaps keep this decision `partial`: the administrator handoff that
+releases SCIM-managed teams after SCIM is disabled is not implemented (they stay
+locked); the OIDC client secret is stored in plaintext; SCIM team members are
+always plain members, so directory groups cannot grant team roles.
 
 ## Open questions
 

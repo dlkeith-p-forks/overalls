@@ -4587,3 +4587,42 @@ Tested scope: NixOS machine tests on both firewall backends with test VLAN addre
 **Gaps:** Production rollout evidence on Overalls and Dungarees, removal of their literals, and machine tests that start Porsche, Audi and Lilly with runtime addresses remain open; per-peer fleet port scoping is not implemented.
 
 **Preferred test work:** A three-node NixOS machine test with a runtime-only fleet0 peer carrying Marshall-to-Susan HTTPS.
+
+## An identity provider provisions, deactivates, deletes and reactivates Marshall users over SCIM, and users sign in with single sign-on
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, storage, recovery.
+
+Boundary: Only the current SCIM bearer token (digest-compared) reaches /scim/v2. Deactivation or DELETE revokes logins at once, pauses owned machines and schedules deletion after the shared seven-day grace; reactivation inside grace resumes only SCIM-paused machines; after the deadline machines are deleted and the identity is ghosted and cannot be resurrected. While SCIM is enabled magic-link sign-in is refused and OIDC sign-in requires a JWKS-verified ID token whose sub matches an active SCIM externalId.
+
+Required refusal: Wrong, empty or Basic credentials get 401; forged, unsigned, re-signed, wrong-audience, wrong-issuer, expired or nonce-less ID tokens and replayed or state-mismatched flows are refused; inactive identities are refused by logins, SSH key sessions, agents and admission; reactivation after the deadline and writes to finalized identities are refused.
+
+Tested scope: BEAM endpoint, Oban and Hegel histories against PostgreSQL plus a NixOS machine test of the deployed TLS endpoint; see ADR-0229.
+
+- **machine, recorded**: [Deactivation starts the seven-day retirement and deletion hides the account](repo:nix/verification/tests/machines/scim/default.nix) — Packaged Marshall in a NixOS VM: authenticated SCIM user create, PATCH active=false, DELETE and GET 404 over TLS with a read-only probe of the retirement deadline; deadline expiry is not exercised.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+- **property, recorded**: [SCIM event histories never delete early and never resurrect](repo:marshall/test/marshall/scim/lifecycle_property_test.exs) — Generated deactivate/reactivate/delete/clock/worker histories against the real resources and Oban worker in the BEAM test VM.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+- **property, recorded**: [replacing any character of a signed ID token is always rejected](repo:marshall/test/marshall/scim/oidc_id_token_property_test.exs) — Generated tampering, truncation and algorithm substitution of RS256/ES256 ID tokens against the production verifier.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+- **unit, recorded**: [machines pause at deactivation and are deleted only after the deadline](repo:marshall/test/marshall/scim/user_lifecycle_oban_test.exs) — Oban worker with the deadline moved into the past, against PostgreSQL; no native machine reclamation.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+- **unit, recorded**: [query-supplied identity claims without a code never sign in](repo:marshall/test/marshall_web/scim_oidc_controller_test.exs) — Controller flow against a fake identity provider; no real provider or browser.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+
+**Gaps:** The machine test does not advance past the seven-day deadline, so deadline deletion and finalization are BEAM-only; no browser OIDC journey runs natively; the OIDC client secret is stored in plaintext.
+
+**Preferred test work:** Add a machine test that shortens the configured grace period and observes native machine deletion and finalization, and a browser OIDC journey against a fake provider.
+
+## An identity provider manages Marshall teams through SCIM Groups while people view their teams and all teams read-only
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, recovery.
+
+Boundary: SCIM Groups create, rename, update membership and delete SCIM-managed teams owned only by the hidden service owner. While SCIM is enabled no native team can be created and native membership, invitation and ownership transfer are refused; SCIM-managed teams stay locked after SCIM is disabled. Enabling SCIM retires native teams: after the grace deadline their authority is revoked, machines are deleted through Compute and the team is archived.
+
+Required refusal: Native team mutations, transfers and new team resources on retiring or SCIM-managed teams are refused over the web and SSH; unauthenticated or disabled SCIM Group requests are refused; the service owner cannot be removed or changed.
+
+Tested scope: BEAM HTTP, Oban, LiveView and Hegel membership histories against PostgreSQL plus a NixOS machine test of Group provisioning and native-team retirement scheduling; see ADR-0229 and ADR-0077.
+
+- **machine, recorded**: [Directory users and groups provision Marshall accounts and SCIM-managed teams](repo:nix/verification/tests/machines/scim/default.nix) — Packaged Marshall in a NixOS VM: authenticated Group create with a member, GET membership, and a probe that the team is SCIM-managed with exactly the service owner as owner; plus native-team retirement scheduling on enable.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+- **property, recorded**: [SCIM membership converges to the model with exactly one hidden owner](repo:marshall/test/marshall/scim/team_scim_property_test.exs) — Generated create/add/remove/replace/rename/delete Group histories through the real endpoint against PostgreSQL.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+- **unit, recorded**: [after the grace period the worker deletes team machines, then revokes and archives](repo:marshall/test/marshall/scim/team_retirement_test.exs) — Oban TeamRetirementWorker with the deadline in the past; no native machine reclamation.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+- **unit, recorded**: [SCIM hides creation, membership and ownership controls and explains why](repo:marshall/test/marshall_web/live/teams_scim_live_test.exs) — LiveView rendering for a regular user; no real browser.; [execution record](repo:docs/architecture/reviews/2026-10-20-scim-completion.md).
+
+**Gaps:** Administrator handoff of SCIM-managed teams after SCIM is disabled is not implemented; directory groups cannot grant team roles; native team machine deletion after the deadline is BEAM-only.
+
+**Preferred test work:** Implement and machine-test administrator handoff, and observe native team machine deletion after a shortened grace period.

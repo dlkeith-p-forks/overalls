@@ -1801,3 +1801,19 @@ flowchart TB
 The [preset scenario](#coverage) records bounded application evidence. Native
 preset execution, physical isolation, production migration and fleet convergence
 remain separate acceptance; no browser preference can establish them.
+
+## SCIM provisioning and directory sign-in layers
+
+| Layer | Authority and refusal |
+| --- | --- |
+| Identity | `/scim/v2` accepts only the current bearer token, compared in constant time against its stored SHA-256 digest; rotation invalidates the previous token at once. OIDC sign-in requires an authorization-code exchange with PKCE and an ID token verified against the provider JWKS (RS256/ES256, exact issuer, audience, bounded time, required nonce); its `sub` must match an active SCIM `externalId`. Magic-link sign-in is refused while SCIM is enabled. |
+| Authorization | The SCIM service owner may run only the listed Team/TeamMember SCIM actions while SCIM is enabled and never gains coordinator authority. Native team creation, membership, invitation and transfer are refused while SCIM is enabled and permanently for SCIM-managed teams. Configuration changes require a current administrator with passkey step-up. |
+| Transport | SCIM uses the public TLS endpoint with `application/scim+json`; the bearer token and OIDC tokens/claims never enter diagnostics events. |
+| Execution | Deactivation or deletion revokes stored logins in its transaction; every live-account check requires `active`, so SSH key sessions, agents, ingress, Galileo and threads refuse a deactivated identity immediately. Owned machines pause inside grace and are deleted only after the deadline. |
+| Isolation | Retirement changes no Lilly fence: Compute's lifecycle coordinator performs pause, resume and delete under the SCIM retirement or retiring-team binding. |
+| Storage | Only the token digest is stored; the OIDC client secret is still plaintext in the configuration row (open gap). Finalized users keep their UUID with a ghosted `deleted-<uuid>@deleted.invalid` email and cannot be resurrected. |
+| Recovery | Oban retries user and team retirement; a per-minute sweep re-enqueues inactive users and open suspensions, and cleanup failures surface so jobs retry rather than silently finishing. |
+
+The [SCIM scenarios](#coverage) record the application and machine evidence.
+Administrator handoff of SCIM-managed teams after SCIM is disabled is not
+implemented.

@@ -39,7 +39,9 @@ remains partial.
 
 [ADR-0229](0229-scim-managed-identity-and-teams.md) accepts SCIM-managed users,
 groups, identity retirement, runtime OIDC and authoritative team synchronization;
-implementation remains partial.
+the endpoint, lifecycle, team fences, OIDC flow and Control Room page are
+implemented and machine-tested, while administrator handoff of managed teams and
+encrypted OIDC secret custody keep it partial.
 
 [ADR-0220](0220-mila-client-over-porsche-ssh.md) through [ADR-0228](0228-strict-host-certificates-in-mila.md) introduce Mila, the Flutter client over one Porsche SSH connection with per-deployment P-256 device keys, canonical `overalls://` routes, the client command set, terminal attach, the Susan push relay and Notifications domain, The Monospace Web on Flutter, the patched dartssh2 toolchain and strict host-certificate trust. All nine are partial: code and tests exist for each, while device builds, real APNs/FCM delivery and Susan hosting remain open.
 

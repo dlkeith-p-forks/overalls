@@ -431,18 +431,30 @@ principal still matches. OpenSSH CA keys themselves have no embedded expiry.
 ## SCIM configuration
 
 `Marshall.Scim.Configuration` is the persisted singleton for SCIM enablement,
-token digest rotation and runtime identity settings. The Control Room route
-`/admin/scim` is administrator-only. The public `/scim/v2` plug rejects every
-request until the configuration is enabled and compares bearer credentials
-against the stored digest; plaintext tokens are never persisted or logged.
+token digest rotation and runtime OIDC settings. The Control Room route
+`/admin/scim` is administrator-only and every change passes passkey step-up
+through its own `scim-configure` event grammar. Enable, disable, token rotation
+and OIDC settings are separate operations: only enable and rotate generate a
+bearer token, shown once; OIDC saves never rotate it, and a blank client secret
+keeps the stored secret unless clearing is requested. The public `/scim/v2`
+endpoint rejects every request until the configuration is enabled and compares
+bearer credentials against the stored digest; plaintext tokens are never
+persisted or logged. The OIDC client secret is still stored in plaintext.
 
-Enabling SCIM archives native teams and starts their retirement workflow.
-Disabling SCIM does not reopen managed teams until an administrator performs
-explicit ownership handoff. The SCIM machine scenario exercises protected
-discovery resources, malformed credentials, English and Arabic Control Room
-responses; Hegel lifecycle properties cover duplicate delivery and the
-pause-before-delete ordering. Full administrator provisioning and seven-day
-clock advancement still require a configured integration environment.
+While SCIM is enabled the sign-in page replaces the magic-link form with a
+single sign-on link (or an explanation when OIDC is unconfigured) and the
+server-side magic-link actions refuse requests. OIDC sign-in is an
+authorization-code flow with PKCE: discovery must report the configured https
+issuer, and the ID token is verified against the provider JWKS (RS256/ES256
+only, exact issuer, audience containing the client ID, bounded `exp`/`iat`,
+required matching nonce). The verified `sub` must equal the `externalId` of an
+existing active SCIM user; OIDC never registers accounts.
+
+Enabling SCIM marks native teams retiring and starts their retirement
+workflow. Disabling SCIM does not reopen SCIM-managed teams: they stay locked
+against native mutation. The administrator handoff that would release them is
+not implemented. The grace period for users and teams is one value,
+`Marshall.Accounts.ScimRetirement.grace_seconds/0` (seven days by default).
 
 Marshall's common runtime guards reject invalid inference retention, ingress
 ports, relocation readiness timeouts and default/Inception image identities
