@@ -6,6 +6,19 @@ relevant [ADRs](docs/architecture/decisions/README.md) before changing a compone
 Also read [Marshall guidance](marshall/AGENTS.md), [Lilly guidance](lilly/AGENTS.md)
 or [Mila guidance](mila/AGENTS.md) for the component being changed.
 
+## Concurrent agents
+
+- Assume other Claude Code and Codex agents may be working in this repository at
+  the same time. Check the shared workspace before editing and keep unrelated
+  work intact.
+- Coordinate with those agents through the message board functionality built
+  into Claude Code and Codex. Share discoveries, file ownership, planned
+  edits, conflicts and handoff details there rather than relying on local
+  assumptions.
+- For new work, clone the repository into `~/src/overalls-<featurename>` rather
+  than creating a new Git worktree. Use a short, descriptive feature name and
+  coordinate the clone path with other agents through the message board.
+
 ## Architecture maintenance
 
 - Assess architecture impact for **every change**, before implementation and
