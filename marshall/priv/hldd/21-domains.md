@@ -26,6 +26,7 @@ failure boundary and logon-session same-boot recovery are described in
 | `Marshall.Scim` | SCIM bearer configuration, directory user and group synchronization, managed-team authority, and durable identity/team retirement orchestration. The domain owns the provisioning boundary; Compute remains authoritative for machine lifecycle and Accounts for identity records. |
 | `Marshall.Access` | Persisted machine grants, grant changes and per-user machine pins. Cedar evaluates current ownership, direct VM sharing, team membership and canonical current-thread grants; a cached permission cannot authorize a later mutation. A pin confers no authority; the owner's pin is read by the lifecycle coordinator as a deletion fence (ADR-0193). |
 | `Marshall.Administration` | Administrative job snapshots, retries and audit projections. Read access and elevated administrative mutations have separate checks. |
+| `Marshall.Redaction` | Immutable text-redaction runs and bounded inactive-thread scrub shards. It owns profile fencing and progress; thread and VM domains remain authoritative for content and machine state. |
 | `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |
 | `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants, immutable sharing results and per-reader monotonic transcript read markers. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
 | `Marshall.Compute` | Host enrollment, pools, reservations, VM intent, placements, operation receipts and lifecycle workflows. The ledger owns admission and durable execution authority, including immutable source2 provider/namespace/revision `WorkspaceSource` references pinned in provision/start commands. Current manifest4 image identity/capability gates source admission and new source-bearing command snapshots, including retained starts; the signed pending browser cookie owns no domain authority. |
@@ -179,11 +180,12 @@ flowchart LR
   app --> d10["Marshall.Ingress"]
   app --> d11["Marshall.Notifications"]
   app --> d12["Marshall.Peach"]
-  app --> d13["Marshall.SSH"]
-  app --> d14["Marshall.Scim"]
-  app --> d15["Marshall.Teams"]
-  app --> d16["Marshall.Terminal"]
-  app --> d17["Marshall.Threads"]
+  app --> d13["Marshall.Redaction"]
+  app --> d14["Marshall.SSH"]
+  app --> d15["Marshall.Scim"]
+  app --> d16["Marshall.Teams"]
+  app --> d17["Marshall.Terminal"]
+  app --> d18["Marshall.Threads"]
 ```
 
 ```mermaid
@@ -209,6 +211,7 @@ flowchart LR
 | [`Marshall.Ingress`](repo:marshall/lib/marshall/ingress.ex) | `Marshall.Ingress.EditorAssetsReceipt`, `Marshall.Ingress.Endpoint`, `Marshall.Ingress.Environment`, `Marshall.Ingress.EnvironmentPublication`, `Marshall.Ingress.EnvironmentStream`, `Marshall.Ingress.FleetCertificate`, `Marshall.Ingress.FleetCertificateAccount`, `Marshall.Ingress.FleetCertificateInstallation`, `Marshall.Ingress.Publication`, `Marshall.Ingress.Relay`, `Marshall.Ingress.Route`, `Marshall.Ingress.Service`, `Marshall.Ingress.Session`, `Marshall.Ingress.WebCredential`, `Marshall.Ingress.WebLogin`, `Marshall.Ingress.WebStream` |
 | [`Marshall.Notifications`](repo:marshall/lib/marshall/notifications.ex) | `Delivery`, `Device`, `Marshall.Notifications.InstallIdentity` |
 | [`Marshall.Peach`](repo:marshall/lib/marshall/peach.ex) | `Marshall.Peach.Credential`, `Marshall.Peach.Credential.Version` |
+| [`Marshall.Redaction`](repo:marshall/lib/marshall/redaction.ex) | `Marshall.Redaction.Run`, `Marshall.Redaction.Shard` |
 | [`Marshall.SSH`](repo:marshall/lib/marshall/ssh.ex) | `Marshall.SSH.Approval`, `Marshall.SSH.Gateway`, `Marshall.SSH.GuestLogin`, `Marshall.SSH.HostCertificate`, `Marshall.SSH.Key`, `Marshall.SSH.Request`, `Marshall.SSH.Session` |
 | [`Marshall.Scim`](repo:marshall/lib/marshall/scim.ex) | `Marshall.Scim.Configuration` |
 | [`Marshall.Teams`](repo:marshall/lib/marshall/teams.ex) | `Marshall.Teams.Team`, `Marshall.Teams.TeamMember`, `Marshall.Teams.Transfer` |

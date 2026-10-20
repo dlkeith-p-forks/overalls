@@ -594,3 +594,15 @@ requires a value and no null keys remain. See the
 [thread review](repo:docs/architecture/reviews/2026-10-15-user-threads.md) for the
 separate expansion, contraction and database observations. This rollout does not
 establish native archive/reopen or worker-loss recovery.
+
+## Historical thread redaction
+
+Marshall stores a text-only redaction profile and runs bounded Oban scrubs over
+inactive machine threads. A coordinator snapshots the profile, partitions work
+into short batches, and updates prompts, model output and tool text only after
+the scanner has completed outside the database transaction. Profile and content
+generation fences make retries idempotent; active or running machines are
+deferred to a later inactive sweep. Attachment bytes and image/PDF contents are
+outside this scanner. Administrators use the redaction control-plane page to
+queue and observe runs, while the existing administrative audit ledger records
+operator requests and closed outcomes without content or secret values.

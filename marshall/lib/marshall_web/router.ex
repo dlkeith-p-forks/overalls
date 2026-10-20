@@ -123,6 +123,7 @@ defmodule MarshallWeb.Router do
       live "/threads/:id", ThreadsLive, :show
       live "/admin/usage", InferenceLive, :admin
       live "/admin/audit", Admin.AuditLive, :index
+      live "/admin/redaction", Admin.RedactionLive, :index
       live "/admin/git", Admin.GitLive, :index
       live "/settings", AccountLive, :index
       live "/machines", MachinesLive, :index

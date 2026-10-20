@@ -175,6 +175,26 @@ defmodule Marshall.Events do
     metadata: [reason: :atom]
   )
 
+  defevent("redaction.run_started",
+    message: "Historical thread redaction started",
+    metadata: [run_id: :uuid]
+  )
+
+  defevent("redaction.run_finished",
+    message: "Historical thread redaction finished",
+    metadata: [run_id: :uuid, outcome: :atom, processed: {:int, :optional}, changed: {:int, :optional}]
+  )
+
+  defevent("redaction.run_requested",
+    message: "Historical thread redaction requested",
+    metadata: [run_id: :uuid, actor_id: :uuid]
+  )
+
+  defevent("message_board.posts_purged",
+    message: "Machine-scoped message board posts purged",
+    metadata: [vm_id: :uuid, state: :atom, count: {:int, :optional}]
+  )
+
   defevent("agent.cli_approved",
     message: "Agent CLI session approved",
     metadata: [vm_id: :uuid, actor_id: :uuid]
