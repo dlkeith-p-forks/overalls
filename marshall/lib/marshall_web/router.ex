@@ -157,9 +157,11 @@ defmodule MarshallWeb.Router do
     get("/launch/entry", PageController, :entry)
     post("/launch/pending", RepositoryLaunchController, :stage)
     post("/launch/pending/clear", RepositoryLaunchController, :clear)
-    auth_routes(AuthController, Marshall.Accounts.User, path: "/auth")
+    # Declared before auth_routes: verified routes (~p) otherwise resolve these
+    # literal paths to an earlier, unverifiable strategy route clause.
     get "/auth/oidc/start", ScimOidcController, :start
     get "/auth/oidc/callback", ScimOidcController, :callback
+    auth_routes(AuthController, Marshall.Accounts.User, path: "/auth")
 
     sign_out_route(AuthController, "/sign-out",
       on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
@@ -173,6 +175,7 @@ defmodule MarshallWeb.Router do
 
     # Remove these if you'd like to use your own authentication views
     sign_in_route(
+      live_view: MarshallWeb.ScimSignInLive,
       register_path: "/register",
       gettext_fn: {MarshallWeb.AuthText, :translate},
       on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
