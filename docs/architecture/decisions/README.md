@@ -1,5 +1,9 @@
 # Architecture decision records
 
+[ADR-0246](0246-panterloons-control-plane-deployment.md) runs Panterloons as a
+copy of the Overalls deployment from the same parameterised host roles, with
+fresh secrets and a bootstrap stage before its own Marshall issues credentials.
+
 [ADR-0245](0245-underclass-egress-node-tag.md) makes `underclass-egress up`
 advertise `tag:underclass` so tailnet policy can identify the Underclass
 egress node.
@@ -1029,3 +1033,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0240](0240-account-machine-creation-presets.md) | accepted | partial | Three account machine creation presets |
 | [ADR-0241](0241-sops-tailscale-auto-join.md) | accepted | partial | SOPS-delivered automatic Tailscale joining |
 | [ADR-0245](0245-underclass-egress-node-tag.md) | accepted | partial | Underclass egress node tag |
+| [ADR-0246](0246-panterloons-control-plane-deployment.md) | accepted | partial | Panterloons control-plane deployment |

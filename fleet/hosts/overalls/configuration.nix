@@ -1,4 +1,8 @@
 { config, lib, pkgs, ... }:
+let
+  host = config.overalls.controlPlaneHost;
+  secret = name: ../../../secrets + "/${host.name}-${name}.enc.json";
+in
 {
   # Spread periodic captures across hosts, including Marshall database dumps.
   services.overallsBackups.randomizedDelaySec = 300;
@@ -20,7 +24,7 @@
     cachixTokenFile = "/run/overalls-secrets/cachix/token";
   };
   services.overallsSecrets.bundles.cachix = {
-    encryptedFile = "${../../../secrets/overalls-cachix.enc.json}";
+    encryptedFile = "${secret "cachix"}";
     outputs.token = { format = "raw"; secrets = [ "CACHIX_AUTH_TOKEN" ]; };
   };
   services.marshall.integrations.github = {
@@ -36,16 +40,16 @@
   # Peers awaiting an installed identity are omitted, so Overalls keeps
   # evaluating while a replacement host is a base declaration.
   overalls.remoteBuilders = let machines = import ../../remote-builders.nix { inherit lib; }; in {
-    enable = lib.attrNames machines != [ "overalls" ];
-    localName = "overalls";
+    enable = lib.attrNames machines != [ host.name ];
+    localName = host.name;
     inherit machines;
   };
-  imports = [ ./services.nix ../../fleet-network.nix ];
+  imports = [ ./control-plane.nix ./services.nix ../../fleet-network.nix ];
   services.overallsOtelFleet = {
     enable = true;
     role = "central";
     # Dungarees serves Panterloons (ADR-0238); Overalls observes only itself.
-    hosts = { central = "overalls"; worker = null; };
+    hosts = { central = host.name; worker = host.otelWorker; };
     tempoDataset = "zroot/tempo";
     tempoQuotaGiB = 20;
     publicGrafana = { enable = true; port = 3443; };
@@ -63,11 +67,14 @@
       storageStateFile = "/var/lib/overalls-browser-probes/ubuntu/storage-state.json";
     };
   };
+  # Guest telemetry intake needs the bound Lilly and Audi private services.
+  services.overallsOtelGuest.enable = lib.mkIf host.bootstrap (lib.mkForce false);
   services.overallsAutoUpdate.activationSockets = [ "marshall-fleet-relay.socket" ];
-  # Port 2222 was verified before handing management port 22 to Porsche.
-  services.openssh.ports = [ 2222 ];
-  
-  services.openssh.listenAddresses = [{ addr = "100.117.30.53"; port = 2222; }];
+  # Port 2222 was verified before handing management port 22 to Porsche. A
+  # bootstrapping deployment has no Porsche yet and keeps the base port 22.
+  services.openssh.ports = lib.mkIf (!host.bootstrap) [ 2222 ];
+
+  services.openssh.listenAddresses = lib.mkIf (!host.bootstrap) [{ addr = host.adminAddress; port = 2222; }];
   
   # @cc [owner:ghuntley,label:recovery] overalls-administrative-ssh-boot
   # Address-bound administrative SSH MUST wait for network readiness and retry
@@ -113,18 +120,18 @@
     socketConfig.FreeBind = true;
   };
   overalls.runtimeSockets.marshall-fleet-relay = {
-    addressFile = config.overalls.fleetAddresses.files.overallsPrimary;
+    addressFile = config.overalls.fleetAddresses.files."${host.name}Primary";
     addressUnit = config.overalls.fleetAddresses.unit;
     port = 5443;
   };
   # @cc [owner:ghuntley,label:recovery] overalls-gateway-certificate-transport
   # Initial gateway certificate acquisition MUST activate the local fleet API
   # socket after updater quiescence, rather than wait for post-gateway restore.
-  systemd.services.porsche = {
+  systemd.services.porsche = lib.mkIf (!host.bootstrap) {
     wants = [ "marshall-fleet-relay.socket" ];
     after = [ "marshall-fleet-relay.socket" ];
   };
-  systemd.services.audi = {
+  systemd.services.audi = lib.mkIf (!host.bootstrap) {
     wants = [ "marshall-fleet-relay.socket" ];
     after = [ "marshall-fleet-relay.socket" ];
   };
@@ -148,7 +155,7 @@
   };
 
   services.overallsSecrets.bundles.database = {
-    encryptedFile = "${../../../secrets/overalls-database.enc.json}";
+    encryptedFile = "${secret "database"}";
     outputs = {
       "environment" = { format = "environment"; secrets = [ "DB_PASSWORD" ]; };
       "tls.crt" = { format = "raw"; secrets = [ "DB_CERT" ]; };
