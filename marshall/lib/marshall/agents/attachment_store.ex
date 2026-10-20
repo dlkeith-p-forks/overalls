@@ -1,8 +1,16 @@
 defmodule Marshall.Agents.AttachmentStore do
   @moduledoc "Encrypted-at-rest local attachment blob storage with opaque keys."
 
+  # @cc [owner:ghuntley,label:security] attachment-store-confidentiality
+  # Attachment bytes MUST be encrypted before they are written to the blob
+  # store, and reads MUST authenticate and decrypt the stored envelope.
+
   @type key :: String.t()
   @type error :: :invalid_key | :not_found | :io_error
+
+  @magic "MARATT1"
+  @nonce_bytes 12
+  @tag_bytes 16
 
   @spec put(key(), binary()) :: :ok | {:error, error()}
   def put(key, bytes) when is_binary(key) and is_binary(bytes) do
@@ -11,7 +19,7 @@ defmodule Marshall.Agents.AttachmentStore do
          :ok <- File.mkdir_p(directory),
          temporary =
            Path.join(directory, "." <> Path.basename(key) <> ".tmp-" <> Ecto.UUID.generate()),
-         :ok <- File.write(temporary, bytes, [:binary]),
+         :ok <- File.write(temporary, encrypt(bytes), [:binary]),
          :ok <- File.rename(temporary, Path.join(root(), key)) do
       :ok
     else
@@ -24,7 +32,8 @@ defmodule Marshall.Agents.AttachmentStore do
   @spec get(key()) :: {:ok, binary()} | {:error, error()}
   def get(key) when is_binary(key) do
     with :ok <- validate_key(key),
-         {:ok, bytes} <- File.read(Path.join(root(), key)) do
+         {:ok, envelope} <- File.read(Path.join(root(), key)),
+         {:ok, bytes} <- decrypt(envelope) do
       {:ok, bytes}
     else
       {:error, :enoent} -> {:error, :not_found}
@@ -53,5 +62,36 @@ defmodule Marshall.Agents.AttachmentStore do
   defp validate_key(key) do
     if byte_size(key) in 1..256 and Path.type(key) == :relative and
          not String.contains?(key, ["..", "\\"]), do: :ok, else: {:error, :invalid_key}
+  end
+
+  @spec encrypt(binary()) :: binary()
+  defp encrypt(bytes) do
+    nonce = :crypto.strong_rand_bytes(@nonce_bytes)
+    {ciphertext, tag} = :crypto.crypto_one_time_aead(:aes_256_gcm, encryption_key(), nonce, bytes, @magic, @tag_bytes, true)
+    <<@magic::binary, nonce::binary, tag::binary, ciphertext::binary>>
+  end
+
+  @spec decrypt(binary()) :: {:ok, binary()} | {:error, :io_error}
+  defp decrypt(<<@magic::binary, nonce::binary-size(@nonce_bytes), tag::binary-size(@tag_bytes), ciphertext::binary>>) do
+    case :crypto.crypto_one_time_aead(:aes_256_gcm, encryption_key(), nonce, ciphertext, @magic, tag, false) do
+      :error -> {:error, :io_error}
+      bytes when is_binary(bytes) -> {:ok, bytes}
+    end
+  rescue
+    _ -> {:error, :io_error}
+  end
+
+  defp decrypt(_), do: {:error, :io_error}
+
+  @spec encryption_key() :: <<_::256>>
+  defp encryption_key do
+    configured = Application.get_env(:marshall, __MODULE__, []) |> Keyword.get(:encryption_key)
+
+    case configured do
+      key when is_binary(key) and byte_size(key) == 32 -> key
+      _ ->
+        secret = Application.get_env(:marshall, :secret_key_base, "attachment-development-key")
+        :crypto.hash(:sha256, secret)
+    end
   end
 end
