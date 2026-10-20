@@ -1,8 +1,8 @@
 { pkgs }:
 let
   yaml = pkgs.formats.yaml {};
-  candidateQuery = import ../../../domains/system/otel-fleet/candidate-query.nix;
-  objectiveQuery = import ../../../domains/system/otel-fleet/objective-query.nix;
+  candidateQuery = import ../../../domains/system/otel-fleet/candidate-query.nix {};
+  objectiveQuery = import ../../../domains/system/otel-fleet/objective-query.nix {};
   lifecycleSources = builtins.filter (source: builtins.elem source.service [ "marshall_ready" "lilly_physical" "porsche_physical" ])
     (import ../../../domains/system/otel-fleet/candidate-sources.nix);
   lifecycleCase = source: { host, clock, visible }: {
@@ -19,7 +19,7 @@ let
       exp_samples = pkgs.lib.optional visible { labels = "overalls:${source.ratio}:ratio5m"; value = 0.5; };
     }];
   };
-  underclassReady = import ../../../domains/system/otel-fleet/underclass-ready.nix;
+  underclassReady = import ../../../domains/system/otel-fleet/underclass-ready.nix {};
   # Existing source-marker fixtures represent a live producer unless they
   # explicitly supply a frozen source sampling clock. Keep cadence separate
   # from Prometheus scrape freshness to exercise retained collector values.
@@ -149,7 +149,7 @@ let
     }];
   };
   rules = yaml.generate "overalls-otel-slo-rules.yml" {
-    groups = (import ../../../domains/system/otel-fleet/rules.nix).groups
+    groups = (import ../../../domains/system/otel-fleet/rules.nix {}).groups
       ++ (import ../../../domains/system/otel-fleet/objective-rules.nix {}).groups;
   };
   longObjectiveGroup = builtins.head ((import ../../../domains/system/otel-fleet/objective-rules.nix {
@@ -235,7 +235,7 @@ let
   productionHistoryRule = builtins.head (builtins.filter
     (rule: (rule.record or "") == "overalls:slo_evidence"
       && (rule.labels.slo or "") == "collectors" && (rule.labels.kind or "") == "history_days")
-    (builtins.head (import ../../../domains/system/otel-fleet/diagnostics.nix).groups).rules);
+    (builtins.head (import ../../../domains/system/otel-fleet/diagnostics.nix {}).groups).rules);
   cadenceTest = yaml.generate "overalls-otel-production-cadence.yml" {
     rule_files = []; evaluation_interval = "1h";
     tests = [{

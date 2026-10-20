@@ -150,8 +150,8 @@ in
       certificateRootsFile = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
       acceptTerms = true;
       nameservers = [
+        # Dungarees moved to Panterloons; one Audi DNS replica until cutover.
         { addressFile = addresses.files.overallsService; }
-        { addressFile = addresses.files.dungareesService; }
       ];
     };
     poolSize = 10;

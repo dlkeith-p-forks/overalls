@@ -1,15 +1,15 @@
-{ expectedSamples ? (import ./cadence.nix).sevenDaySamples }:
+{ expectedSamples ? (import ./cadence.nix).sevenDaySamples, hosts ? import ./default-roster.nix }:
 let
-  objectives = import ./objectives.nix;
+  objectives = import ./objectives.nix { inherit hosts; };
   # Burn rate = budget fraction consumed * objective horizon / long window.
   # Two percent in one hour and five percent in six hours use the seven-day
   # horizon; conventional 14.4 and 6 multipliers assume thirty days.
   objectiveHours = 7 * 24;
   fastBurn = 0.02 * objectiveHours / 1;
   slowBurn = 0.05 * objectiveHours / 6;
-  sourceReady = import ./source-ready.nix;
+  sourceReady = import ./source-ready.nix { inherit hosts; };
   coverageReady = import ./coverage-ready.nix;
-  underclassReady = import ./underclass-ready.nix;
+  underclassReady = import ./underclass-ready.nix { inherit hosts; };
   ingressReady = import ./ingress-ready.nix;
   hostChecks = metric: labels: hosts: window: builtins.concatStringsSep " and on() "
     (builtins.map (host: ''
@@ -20,10 +20,10 @@ let
     (count(${metric}{${labels}}) == ${toString (builtins.length hosts)})
     and on() (${hostChecks metric labels hosts "7d"})
   '';
-  collectorCoverage = ''
-    (count_over_time(up{job="overalls-otel",instance="10.90.0.1:9464",overalls_telemetry_origin=""}[7d]) >= ${toString expectedSamples})
-    and on() (count_over_time(up{job="overalls-otel",instance="10.90.0.2:9464",overalls_telemetry_origin=""}[7d]) >= ${toString expectedSamples})
-  '';
+  collectorCoverage = builtins.concatStringsSep "\nand on() " (builtins.map (address:
+    ''(count_over_time(up{job="overalls-otel",instance="${address}:9464",overalls_telemetry_origin=""}[7d]) >= ${toString expectedSamples})'')
+    (import ./roster-addresses.nix hosts)) + "\n";
+  collectors = toString (builtins.length hosts);
   query = source:
     let
       service = source.id;
@@ -36,7 +36,7 @@ let
       if source.kind == "collector" then ''
         min(avg_over_time(up{job="overalls-otel",overalls_telemetry_origin=""}[7d]))
         and on() (${collectorCoverage})
-        and on() (count(up{job="overalls-otel",overalls_telemetry_origin=""}) == 2)
+        and on() (count(up{job="overalls-otel",overalls_telemetry_origin=""}) == ${collectors})
       '' else if source.kind == "ingress" then ''
         (sum(increase(haproxy_frontend_http_responses_total{proxy="marshall_public",code=~"2xx|3xx|4xx"}[7d]))
           / sum(increase(haproxy_frontend_http_requests_total{proxy="marshall_public"}[7d])))
@@ -91,7 +91,7 @@ let
       ${if source.kind == "candidate" then "and on() (${sourceReady source.id}) and on() (${coverageReady source.id 604800})"
         else if source.kind == "monitor" then "and on() (${underclassReady})"
         else if source.kind == "ingress" then ''and on() (${ingressReady}) and on() (min(up{job="overalls-otel",overalls_telemetry_origin=""}) == 1)''
-        else ''and on() (count(up{job="overalls-otel",overalls_telemetry_origin=""}) == 2)''}
+        else ''and on() (count(up{job="overalls-otel",overalls_telemetry_origin=""}) == ${collectors})''}
     '';
     "for" = "5m";
     labels = { severity = "warning"; slo = source.id; status = "provisional"; window = name; };

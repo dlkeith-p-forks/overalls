@@ -1,5 +1,9 @@
 # Architecture decision records
 
+[ADR-0235](0235-panterloons-deployment-and-per-deployment-tunnels.md) makes
+Panterloons a separate deployment with its own fleet tunnel, moves Dungarees to
+it, and gives fleet telemetry a per-deployment host roster.
+
 [ADR-0234](0234-installer-source-administrative-grant.md) records the
 authenticated installer's source at installation and admits only it to
 administrative SSH through an optional runtime firewall rule, so a base system
@@ -986,3 +990,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0232](0232-sops-delivered-public-host-addresses.md) | superseded | partial | SOPS-delivered public host addresses |
 | [ADR-0233](0233-fleet-addresses-from-sops.md) | accepted | partial | Fleet addresses from SOPS and the Susan fleet path |
 | [ADR-0234](0234-installer-source-administrative-grant.md) | accepted | partial | Installer source grant for administrative SSH |
+| [ADR-0235](0235-panterloons-deployment-and-per-deployment-tunnels.md) | accepted | partial | Panterloons deployment and per-deployment fleet tunnels |

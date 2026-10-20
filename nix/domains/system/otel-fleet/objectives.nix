@@ -1,25 +1,27 @@
+{ hosts ? import ./default-roster.nix }:
 let
+  central = [ (builtins.head hosts) ];
   candidates = import ./candidate-sources.nix;
-  hosts = {
-    brady = [ "overalls" "dungarees" ];
-    galileo = [ "overalls" "dungarees" ];
-    enrico = [ "overalls" ];
-    porsche = [ "overalls" ];
-    ziggy = [ "overalls" "dungarees" ];
-    audi_private = [ "overalls" "dungarees" ];
-    audi_dns = [ "overalls" "dungarees" ];
-    marshall_web = [ "overalls" ];
-    audi_ssh = [ "overalls" "dungarees" ];
-    underclass_proxy = [ "overalls" "dungarees" ];
-    marshall_ready = [ "overalls" ];
-    lilly_physical = [ "overalls" ];
-    porsche_physical = [ "overalls" ];
-    porsche_clone = [ "overalls" ];
-    porsche_relocate = [ "overalls" ];
-    porsche_retry = [ "overalls" ];
-    porsche_cancel = [ "overalls" ];
-    vscode_browser_nixos = [ "overalls" ];
-    vscode_browser_ubuntu = [ "overalls" ];
+  serviceHosts = {
+    brady = hosts;
+    galileo = hosts;
+    enrico = central;
+    porsche = central;
+    ziggy = hosts;
+    audi_private = hosts;
+    audi_dns = hosts;
+    marshall_web = central;
+    audi_ssh = hosts;
+    underclass_proxy = hosts;
+    marshall_ready = central;
+    lilly_physical = central;
+    porsche_physical = central;
+    porsche_clone = central;
+    porsche_relocate = central;
+    porsche_retry = central;
+    porsche_cancel = central;
+    vscode_browser_nixos = central;
+    vscode_browser_ubuntu = central;
   };
 in
 # @cc [owner:ghuntley,label:reliability;deployment] provisional-objective-roster
@@ -27,14 +29,14 @@ in
 # remain provisional until source crash accounting and its actual journey have
 # been reviewed. A placement change MUST update this roster in the same change.
 [
-  { id = "collectors"; target = 0.999; kind = "collector"; minRequests = 0; hosts = [ "overalls" "dungarees" ]; }
-  { id = "ingress"; target = 0.995; kind = "ingress"; minRequests = 100; hosts = [ "overalls" "dungarees" ]; }
+  { id = "collectors"; target = 0.999; kind = "collector"; minRequests = 0; inherit hosts; }
+  { id = "ingress"; target = 0.995; kind = "ingress"; minRequests = 100; inherit hosts; }
 ] ++ builtins.map (source: {
   id = source.service;
   target = 0.99;
   kind = "candidate";
   minRequests = 100;
-  hosts = hosts.${source.service};
+  hosts = serviceHosts.${source.service};
 }) candidates ++ [
-  { id = "underclass_monitor"; target = 0.99; kind = "monitor"; minRequests = 0; hosts = [ "overalls" "dungarees" ]; }
+  { id = "underclass_monitor"; target = 0.99; kind = "monitor"; minRequests = 0; inherit hosts; }
 ]

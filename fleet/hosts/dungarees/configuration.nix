@@ -1,7 +1,11 @@
 { config, lib, overallsPackages, pkgs, ... }:
 {
   imports = [ ../../fleet-network.nix ];
-  services.overallsOtelFleet = { enable = true; role = "worker"; };
+  services.overallsOtelFleet = {
+    enable = true;
+    role = "worker";
+    hosts = { central = "panterloons"; worker = "dungarees"; };
+  };
   # Resolve public fleet names through DNS instead of the private fleet tunnel.
   networking.hosts."127.0.0.2" = lib.mkForce [];
   # Use this host's stable systemd offset rather than a shared calendar burst.

@@ -1,19 +1,23 @@
 { pkgs }:
 let
   yaml = pkgs.formats.yaml {};
-  rules = yaml.generate "telemetry-diagnostics-rules.yml" {
-    groups = (import ../../../domains/system/otel-fleet/rules.nix).groups
-      ++ (import ../../../domains/system/otel-fleet/diagnostics.nix).groups
-      ++ (import ../../../domains/system/otel-fleet/infrastructure-rules.nix {}).groups;
+  otel = ../../../domains/system/otel-fleet;
+  ruleGroups = hosts: (import (otel + "/rules.nix") { inherit hosts; }).groups
+    ++ (import (otel + "/diagnostics.nix") { inherit hosts; }).groups
+    ++ (import (otel + "/infrastructure-rules.nix") { inherit hosts; }).groups;
+  rulesFor = hosts: yaml.generate "telemetry-diagnostics-rules-${builtins.concatStringsSep "-" hosts}.yml" {
+    groups = ruleGroups hosts;
   };
-  sources = builtins.filter (s: builtins.elem s.id [ "brady" "marshall_ready" ])
-    (import ../../../domains/system/otel-fleet/objectives.nix);
-  scenario = source: { code, missing ? false, stale ? false, warm ? false, gap ? false, traffic ? 0 }: {
+  rules = rulesFor (import (otel + "/default-roster.nix"));
+  sourcesFor = hosts: builtins.filter (s: builtins.elem s.id [ "brady" "marshall_ready" ])
+    (import (otel + "/objectives.nix") { inherit hosts; });
+  sources = sourcesFor (import (otel + "/default-roster.nix"));
+  collectorSeries = hosts: builtins.map (address:
+    { series = ''up{job="overalls-otel",instance="${address}:9464"}''; values = "1+0x20"; })
+    (import (otel + "/roster-addresses.nix") hosts);
+  scenarioFor = hosts: source: { code, missing ? false, stale ? false, warm ? false, gap ? false, traffic ? 0 }: {
     interval = "30s";
-    input_series = [
-      { series = ''up{job="overalls-otel",instance="10.90.0.1:9464"}''; values = "1+0x20"; }
-      { series = ''up{job="overalls-otel",instance="10.90.0.2:9464"}''; values = "1+0x20"; }
-    ] ++ builtins.concatMap (host:
+    input_series = collectorSeries hosts ++ builtins.concatMap (host:
       let labels = ''overalls_telemetry_origin="application",service_name="${source.id}",host_name="${host}"'';
           series = suffix: values: { series = "overalls_outer_${source.id}_${suffix}{${labels}}"; inherit values; };
       in [
@@ -34,6 +38,32 @@ let
       }];
     }];
   };
+  scenario = scenarioFor (import (otel + "/default-roster.nix"));
+  # @cc [owner:ghuntley,label:verification;deployment] telemetry-roster-per-deployment
+  # A deployment's rules MUST expect exactly its own roster: no host label or
+  # collector from another deployment, and a collector count equal to the roster.
+  rosterTest = hosts: let
+    text = builtins.toJSON (ruleGroups hosts ++ (import (otel + "/objective-rules.nix") { inherit hosts; }).groups
+      ++ [ (import (otel + "/slo-catalog.nix") { inherit hosts; }) ]);
+    foreign = builtins.filter (host: !builtins.elem host hosts) [ "overalls" "dungarees" "panterloons" ];
+    leaks = builtins.filter (host: contains ''host_name=\"${host}\"'') foreign;
+    collectors = toString (builtins.length hosts);
+    # Regex-based hasInfix overflows the evaluator stack on megabyte rule text.
+    contains = needle: builtins.replaceStrings [ needle ] [ "" ] text != text;
+  in assert leaks == [];
+    assert contains ''overalls_telemetry_origin=\"\"}) == ${collectors}'';
+    assert builtins.length hosts == 1 -> !contains "10.90.0.2";
+    yaml.generate "telemetry-roster-${builtins.concatStringsSep "-" hosts}-tests.yml" {
+      fuzzy_compare = true;
+      rule_files = [ (rulesFor hosts) ]; evaluation_interval = "30s";
+      tests = builtins.concatMap (source: builtins.map (scenarioFor hosts source) [
+        { code = 1; missing = true; }
+        { code = 2; stale = true; }
+        { code = 5; }
+        { code = 10; traffic = 10; }
+      ]) (sourcesFor hosts);
+    };
+  rosterTests = builtins.map rosterTest [ [ "panterloons" ] [ "panterloons" "dungarees" ] ];
   # The unified Underclass histogram uses the ordinary source clock and
   # request counter; an overflow beyond 86400 s reports status 9.
   latencyCase = clock: visible: traffic: status: overflowCase traffic clock visible traffic status;
@@ -175,5 +205,6 @@ let
 in pkgs.runCommand "overalls-telemetry-diagnostics" { nativeBuildInputs = [ pkgs.prometheus.cli ]; } ''
   promtool check rules ${rules}
   promtool test rules ${test}
+  ${pkgs.lib.concatMapStringsSep "\n" (test: "promtool test rules ${test}") rosterTests}
   touch "$out"
 ''

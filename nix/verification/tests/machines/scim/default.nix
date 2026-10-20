@@ -21,7 +21,7 @@ pkgs.testers.runNixOSTest {
         web.succeed("curl --silent --show-error --cacert /run/overalls-test/ca.crt --output /tmp/scim-resource.json --write-out '%{http_code}' -H 'Accept: application/scim+json' https://localhost:4443/scim/v2/ResourceTypes | grep -Eq '^(401|404)$'")
         web.succeed("curl --silent --show-error --cacert /run/overalls-test/ca.crt --output /tmp/scim-schema.json --write-out '%{http_code}' -H 'Accept: application/scim+json' https://localhost:4443/scim/v2/Schemas | grep -Eq '^(401|404)$'")
     with subtest("Control Room remains available for localized administration"):
-        web.succeed("curl --silent --show-error --cacert /run/overalls-test/ca.crt -H 'Accept-Language: en' https://localhost:4443/admin/scim | grep -Eiq 'SCIM|sign in'")
-        web.succeed("curl --silent --show-error --cacert /run/overalls-test/ca.crt -H 'Accept-Language: ar' https://localhost:4443/admin/scim | grep -Eiq 'SCIM|sign in'")
+        web.succeed("curl --silent --show-error --location --cacert /run/overalls-test/ca.crt -H 'Accept-Language: en' https://localhost:4443/admin/scim | grep -Eiq 'SCIM|sign in'")
+        web.succeed("curl --silent --show-error --location --cacert /run/overalls-test/ca.crt -H 'Accept-Language: ar' https://localhost:4443/admin/scim | grep -Eiq 'SCIM|sign in'")
   '';
 }

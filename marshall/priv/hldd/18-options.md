@@ -7878,6 +7878,32 @@ true
 ```
 
 
+## `services.overallsOtelFleet.hosts.central`
+
+Host name of this deployment's central telemetry host (fleet address 10.90.0.1).
+
+Type: `string matching the pattern [a-z][a-z0-9-]*`.
+
+Default:
+
+```nix
+"overalls"
+```
+
+
+## `services.overallsOtelFleet.hosts.worker`
+
+Host name of this deployment's worker telemetry host (fleet address 10.90.0.2), or null for a single-host deployment.
+
+Type: `null or string matching the pattern [a-z][a-z0-9-]*`.
+
+Default:
+
+```nix
+"dungarees"
+```
+
+
 ## `services.overallsOtelFleet.metricsRetentionDays`
 
 Prometheus time retention in days; distinct from the seven-day SLO window.
@@ -7930,6 +7956,22 @@ Central metrics/traces/Grafana store or worker collector.
 Type: `one of "central", "worker"`.
 
 Default: Required when its service or enclosing record is selected.
+
+
+## `services.overallsOtelFleet.roster`
+
+Telemetry roster derived from hosts: the central host first, then the worker.
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[
+  "overalls"
+  "dungarees"
+]
+```
 
 
 ## `services.overallsOtelFleet.tempoDataset`

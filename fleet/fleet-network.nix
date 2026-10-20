@@ -4,26 +4,41 @@ let
   publicKeys = builtins.fromJSON (builtins.readFile ./fleet-public-keys.json);
   # Physical endpoints are fleet address names (nix/policy/network/fleet-addresses.nix);
   # the values arrive only through the shared fleet-addresses SOPS document.
-  machines = {
-    overalls = { address = "10.90.0.1"; endpoint = "overallsPrimary"; peers = [ "dungarees" "salopettes" ]; };
-    dungarees = { address = "10.90.0.2"; endpoint = "dungareesPrimary"; peers = [ "overalls" ]; };
-    # Salopettes reaches only Overalls: Marshall delivers Susan pokes over fleet0.
-    salopettes = { address = "10.90.0.3"; endpoint = "salopettesPrimary"; peers = [ "overalls" ]; };
+  # Each deployment has its own tunnel; addresses repeat across tunnels and
+  # no peer may cross from one tunnel to another.
+  networks = {
+    overalls = {
+      overalls = { address = "10.90.0.1"; endpoint = "overallsPrimary"; peers = [ "salopettes" ]; };
+      # Salopettes reaches only Overalls: Marshall delivers Susan pokes over fleet0.
+      salopettes = { address = "10.90.0.3"; endpoint = "salopettesPrimary"; peers = [ "overalls" ]; };
+    };
+    panterloons = {
+      panterloons = { address = "10.90.0.1"; endpoint = "panterloonsPrimary"; peers = [ "dungarees" ]; };
+      dungarees = { address = "10.90.0.2"; endpoint = "dungareesPrimary"; peers = [ "panterloons" ]; };
+    };
   };
   name = config.networking.hostName;
+  network = lib.findFirst (members: members ? ${name})
+    (throw "Host is in no fleet network") (lib.attrValues networks);
   addresses = config.overalls.fleetAddresses;
   serviceCa = ./hosts/overalls/service-ca.crt;
-  local = machines.${name};
+  local = network.${name};
   document = lib.findFirst (item: item.name == "${name}-fleet-network")
     (throw "Missing fleet network credential") inventory.${name}.credentials;
   encryptedFile = ../. + ("/" + document.path);
 in {
+  assertions = [{
+    assertion = lib.all (machine: lib.all (peer: network ? ${peer}) machine.peers) (lib.attrValues network);
+    message = "Fleet network peers must belong to the same deployment tunnel.";
+  }];
   networking.wireguard.useNetworkd = false;
   # @cc [owner:ghuntley,label:security] production-fleet-peer-custody
   # Physical fleet peers MUST use distinct encrypted host credentials and pinned
-  # public keys. Only Overalls may admit fleet API traffic; Salopettes admits
-  # only the Susan relay and metrics, and peers only with Overalls. Guest prefixes MUST
-  # remain protected, and transport failure MUST NOT select the browser API.
+  # public keys, and peer only inside their own deployment's tunnel. Only that
+  # tunnel's control plane (10.90.0.1) may admit fleet API traffic; Salopettes
+  # admits only the Susan relay and metrics, and peers only with Overalls. Guest
+  # prefixes MUST remain protected, and transport failure MUST NOT select the
+  # browser API.
   overalls.fleetNetwork = {
     inherit (local) address;
     endpointAddressFile = addresses.files.${local.endpoint};
@@ -31,11 +46,11 @@ in {
     enable = true;
     privateKeyFile = "/run/overalls-secrets/fleet-network/private-key";
     secretUnits = [ "overalls-secrets-fleet-network.service" ];
-    tcpPorts = if name == "overalls" then [ 4317 5443 5445 8443 9464 9467 ]
+    tcpPorts = if local.address == "10.90.0.1" then [ 4317 5443 5445 8443 9464 9467 ]
       else if name == "salopettes" then [ 443 9464 9467 ] else [ 9464 9467 ];
     peers = lib.genAttrs local.peers (peer: {
-      inherit (machines.${peer}) address;
-      endpointAddressFile = addresses.files.${machines.${peer}.endpoint};
+      inherit (network.${peer}) address;
+      endpointAddressFile = addresses.files.${network.${peer}.endpoint};
       publicKey = publicKeys.${peer};
     });
   };

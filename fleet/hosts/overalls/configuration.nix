@@ -44,6 +44,8 @@
   services.overallsOtelFleet = {
     enable = true;
     role = "central";
+    # Dungarees serves Panterloons (ADR-0235); Overalls observes only itself.
+    hosts = { central = "overalls"; worker = null; };
     tempoDataset = "zroot/tempo";
     tempoQuotaGiB = 20;
     publicGrafana = { enable = true; port = 3443; };

@@ -5,7 +5,7 @@ let
   # NOT overwrite an existing panel through a duplicate ID.
   firstId = 14 + builtins.length (import ./durable-services.nix)
     + builtins.length (import ./candidate-sources.nix)
-    + builtins.length (import ./slo-catalog.nix);
+    + builtins.length (import ./slo-catalog.nix {});
   mappings = builtins.listToAttrs (builtins.genList (i: {
     name = toString i;
     value = { text = builtins.elemAt [ "Ready" "Source missing" "Source stale" "Warming up"
