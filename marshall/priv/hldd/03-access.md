@@ -554,3 +554,13 @@ Evidence: [current read-access decision](repo:docs/architecture/decisions/0119-a
 [login hooks](repo:marshall/lib/marshall_web/live_user_auth.ex),
 [Cedar policy](repo:marshall/priv/cedar/compute.cedar),
 [guest account design](repo:docs/architecture/decisions/0158-durable-guest-identities.md).
+
+## Creation preference authority
+
+The fifth account section saves three independent machine creation presets on
+Accounts User. The save action accepts no target account, locks the actor's live
+row and checks current stored-login presence. Invalid profile, image or shape and
+revoked-login attempts leave preferences unchanged. The internal storage update
+is reserved to trusted coordinators. Preferences never authorize machine access,
+reserve host capacity or alter existing profile permissions; new machine creation
+still crosses current Compute admission and its image/host checks.

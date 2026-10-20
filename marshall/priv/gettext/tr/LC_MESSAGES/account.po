@@ -472,3 +472,47 @@ msgstr "sizinle aynı saatte"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "yönetim değişiklikleri için doğrulama"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Geçerli bir imaj, profil ve makine boyutu seçin."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Disk (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "İmaj"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "İmajlar kullanılamıyor. Daha sonra tekrar deneyin."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Makine varsayılanları"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Makine varsayılanları kaydedildi."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Bellek (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Ön ayarlar yalnızca yeni makineler için geçerlidir."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Varsayılanları kaydet"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Çalışma"

@@ -149,3 +149,11 @@ msgstr "هل أنت متأكد من رغبتك في تسجيل الخروج؟"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "تسجيل الخروج"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "تعذرت مصادقتك باستخدام تسجيل الدخول الموحد."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "لم يتم إعداد تسجيل الدخول الموحد."

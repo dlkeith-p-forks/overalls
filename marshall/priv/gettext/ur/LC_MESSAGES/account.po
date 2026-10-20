@@ -472,3 +472,47 @@ msgstr "آپ ہی کے جیسا وقت"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "انتظامی تبدیلیوں کے لیے تصدیق"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "درست امیج، پروفائل اور مشین کا سائز منتخب کریں۔"
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "ڈسک (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "امیج"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "امیجز دستیاب نہیں ہیں۔ بعد میں دوبارہ کوشش کریں۔"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "مشین کی طے شدہ ترتیبات"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "مشین کی طے شدہ ترتیبات محفوظ ہو گئیں۔"
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "میموری (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "پیش سیٹ صرف نئی مشینوں پر لاگو ہوتے ہیں۔"
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "طے شدہ ترتیبات محفوظ کریں"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "کام"

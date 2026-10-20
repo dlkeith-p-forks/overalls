@@ -1,16 +1,19 @@
 defmodule MarshallWeb.AccountLive do
   @moduledoc """
-  The signed-in account page at `/settings` (ADR-0196): one LiveView with four
+  The signed-in account page at `/settings` (ADR-0196): one LiveView with five
   anchored sections. Profile (`#profile`) holds the email and the display time
   zone of ADR-0195, language, and Git preferences of ADR-0199; Sign-in and passkeys (`#security`) holds passkey
   enrollment, verification, the elevation return path of ADR-0160 and passkey
   management; SSH keys (`#ssh-keys`) holds the owner-scoped keys of ADR-0046.
   Git preferences (`#git-settings`) retain ADR-0198 account-owned identity defaults.
+  Machine defaults (`#machine-defaults`) hold three independent creation presets.
   The security mount of `MarshallWeb.LiveUserAuth` guards every section.
   """
   use MarshallWeb, :live_view
   alias Marshall.Accounts.{TimeZones, User}
+  alias Marshall.Compute
   alias Marshall.SSH
+  alias MarshallWeb.MachineDefaults
   on_mount {MarshallWeb.AuthenticationPrivacy, :default}
   on_mount {MarshallWeb.LiveUserAuth, :security}
 
@@ -45,7 +48,8 @@ defmodule MarshallWeb.AccountLive do
      |> reset_key_form()
      |> refresh_security()
      |> refresh_keys()
-     |> refresh_git_settings()}
+     |> refresh_git_settings()
+     |> refresh_machine_defaults()}
   end
 
   @impl true
@@ -276,6 +280,15 @@ defmodule MarshallWeb.AccountLive do
     end
   end
 
+  def handle_event("save_machine_defaults", %{"launch_defaults" => params}, socket),
+    do: save_machine_defaults(socket, :launch, params)
+
+  def handle_event("save_machine_defaults", %{"machine_defaults" => params}, socket),
+    do: save_machine_defaults(socket, :machine, params)
+
+  def handle_event("save_machine_defaults", %{"thread_defaults" => params}, socket),
+    do: save_machine_defaults(socket, :thread, params)
+
   def handle_event(_, _, socket),
     do: {:noreply, put_flash(socket, :error, dgettext("account", "Invalid request."))}
 
@@ -295,6 +308,97 @@ defmodule MarshallWeb.AccountLive do
         )
     )
   end
+
+  @spec refresh_machine_defaults(socket()) :: socket()
+  defp refresh_machine_defaults(socket) do
+    case Marshall.Accounts.Security.current(socket.assigns.current_user.id) do
+      %User{active: true, deleted_at: nil} = actor ->
+        case Compute.catalog(%{}, actor: actor) do
+          {:ok, %{images: images} = catalog} ->
+            assign_machine_default_forms(socket, actor, images, catalog)
+
+          _ ->
+            assign_machine_default_forms(socket, actor, [], %{images: []})
+        end
+
+      _ ->
+        push_navigate(socket, to: ~p"/sign-in")
+    end
+  end
+
+  @spec assign_machine_default_forms(socket(), User.t(), [map()], map()) :: socket()
+  defp assign_machine_default_forms(socket, actor, images, catalog) do
+    assign(socket,
+      machine_defaults_catalog: catalog,
+      machine_defaults_available: images != [],
+      launch_defaults_form:
+        to_form(MachineDefaults.for_user(actor, :launch, images, source_required?: true),
+          as: :launch_defaults
+        ),
+      machine_defaults_form:
+        to_form(MachineDefaults.for_user(actor, :machine, images), as: :machine_defaults),
+      thread_defaults_form:
+        to_form(MachineDefaults.for_user(actor, :thread, images), as: :thread_defaults)
+    )
+  end
+
+  @spec save_machine_defaults(socket(), MarshallWeb.MachineDefaults.preset(), map()) :: reply()
+  defp save_machine_defaults(socket, preset, params) when is_map(params) do
+    with {:ok, profile} <- profile_value(params["profile"]),
+         {:ok, vcpu} <- positive_integer(params["vcpu"]),
+         {:ok, memory} <- positive_integer(params["memory_mib"]),
+         {:ok, disk} <- positive_integer(params["disk_gib"]),
+         image_id when is_binary(image_id) and image_id != "" <- params["image_id"],
+         {:ok, _} <-
+           User
+           |> Ash.ActionInput.for_action(
+             :save_machine_defaults,
+             %{
+               preset: preset,
+               profile: profile,
+               image_id: image_id,
+               vcpu: vcpu,
+               memory_bytes: memory * 1_048_576,
+               disk_bytes: disk * 1_073_741_824
+             },
+             actor: socket.assigns.current_user
+           )
+           |> Ash.run_action() do
+      {:noreply,
+       socket
+       |> refresh_machine_defaults()
+       |> put_flash(:info, dgettext("account", "Machine defaults saved."))}
+    else
+      _ ->
+        {:noreply,
+         put_flash(
+           socket,
+           :error,
+           dgettext(
+             "account",
+             "Choose a valid image, profile and machine size."
+           )
+         )}
+    end
+  end
+
+  defp save_machine_defaults(socket, _preset, _params),
+    do: {:noreply, put_flash(socket, :error, dgettext("account", "Invalid request."))}
+
+  @spec profile_value(term()) :: {:ok, :standard | :oss} | :error
+  defp profile_value("standard"), do: {:ok, :standard}
+  defp profile_value("oss"), do: {:ok, :oss}
+  defp profile_value(_), do: :error
+
+  @spec positive_integer(term()) :: {:ok, pos_integer()} | :error
+  defp positive_integer(value) when is_binary(value) and byte_size(value) <= 12 do
+    case Integer.parse(value) do
+      {integer, ""} when integer > 0 -> {:ok, integer}
+      _ -> :error
+    end
+  end
+
+  defp positive_integer(_), do: :error
 
   @spec refresh_security(socket()) :: socket()
   defp refresh_security(socket) do
@@ -507,6 +611,9 @@ defmodule MarshallWeb.AccountLive do
             <li>
               <a href="#git-settings">{dgettext("account", "Git identity")}</a>
               <span class="muted">{dgettext("account", "new machines and commit attribution")}</span>
+            </li>
+            <li>
+              <a href="#machine-defaults">{dgettext("account", "Machine defaults")}</a>
             </li>
           </ol>
         </nav>
@@ -831,8 +938,102 @@ defmodule MarshallWeb.AccountLive do
             </Layouts.action>
           </.form>
         </section>
+
+        <hr />
+
+        <section
+          id="machine-defaults"
+          class="account-section stack"
+          aria-labelledby="machine-defaults-title"
+        >
+          <h2 id="machine-defaults-title">
+            <span>5.</span> {dgettext("account", "Machine defaults")}
+          </h2>
+          <p class="muted">
+            {dgettext(
+              "account",
+              "Presets apply to new machines only."
+            )}
+          </p>
+          <p :if={!@machine_defaults_available} id="machine-defaults-unavailable" class="error">
+            {dgettext(
+              "account",
+              "Images are unavailable. Try again later."
+            )}
+          </p>
+          <.machine_defaults_form
+            form={@launch_defaults_form}
+            id="launch-defaults-form"
+            title="/launch"
+            images={
+              Enum.filter(@machine_defaults_catalog.images, &MachineDefaults.source_capable?(&1.id))
+            }
+          />
+          <.machine_defaults_form
+            form={@machine_defaults_form}
+            id="machine-defaults-form"
+            title="/machines/new"
+            images={@machine_defaults_catalog.images}
+          />
+          <.machine_defaults_form
+            form={@thread_defaults_form}
+            id="thread-defaults-form"
+            title="/threads"
+            images={@machine_defaults_catalog.images}
+          />
+        </section>
       </div>
     </Layouts.app>
+    """
+  end
+
+  @spec machine_defaults_form(map()) :: Phoenix.LiveView.Rendered.t()
+  defp machine_defaults_form(assigns) do
+    ~H"""
+    <.form for={@form} id={@id} phx-submit="save_machine_defaults" class="panel">
+      <h3><code>{@title}</code></h3>
+      <.input
+        field={@form[:profile]}
+        type="select"
+        label={dgettext("account", "Profile")}
+        options={[
+          {dgettext("account", "Work"), "standard"},
+          {"OSS", "oss"}
+        ]}
+      />
+      <.input
+        field={@form[:image_id]}
+        type="select"
+        label={dgettext("account", "Image")}
+        options={Enum.map(@images, &{&1.name || &1.id, &1.id})}
+        required
+      />
+      <div class="grid">
+        <.input
+          field={@form[:vcpu]}
+          type="number"
+          label={dgettext("account", "CPU")}
+          min="1"
+          max="32"
+          required
+        />
+        <.input
+          field={@form[:memory_mib]}
+          type="number"
+          label={dgettext("account", "Memory (MiB)")}
+          min="512"
+          required
+        />
+        <.input
+          field={@form[:disk_gib]}
+          type="number"
+          label={dgettext("account", "Disk (GiB)")}
+          min="2"
+          required
+        />
+      </div>
+      <button type="submit" class="console-button primary">{dgettext("account", "Save defaults")}</button>
+    </.form>
     """
   end
 end

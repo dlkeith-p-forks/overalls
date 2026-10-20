@@ -154,14 +154,87 @@
       ]
     },
     {
+      "id": "account-machine-presets",
+      "journey": "Save separate launch, machine and thread creation presets and create or replay a machine",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "Accounts stores only the authenticated actor’s three independent groups. Browser forms seed matching initial values; Compute remains admission authority. An admitted launch reuses its original owner/key request before source-checked admission.",
+      "denial": "Malformed sizes, forbidden profiles, disabled or source-incapable launch images, foreign target identifiers and revoked logins cannot persist defaults. Explicit machine drafts remain subject to ordinary admission.",
+      "scope": "ADR-0240 account persistence, preset isolation, browser form seeding, draft retention, source fallback and original-request launch replay in the BEAM test VM.",
+      "status": "partial",
+      "gaps": "Native guest execution, real-browser layout beyond English/Arabic/Japanese, cross-node first-admission preference races and production migration/rollout remain unverified. Existing isolation and storage evidence retains its original scope.",
+      "preferred_gap": "Execute the revised NixOS default-profile journey that saves an OSS preset, and extend it to all three preset forms and an actual thread/launch. Add generated preference-update/replay interleavings across independent nodes.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/machine_defaults_test.exs",
+          "assertion": "three presets persist independently and seed their creation surfaces",
+          "scope": "Self-only persisted groups, default profiles, independent forms and draft refresh/reload in real LiveViews with sandboxed PostgreSQL.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-account-machine-presets.md",
+          "record_assertion": "The final focused Marshall run passed 92 checks"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/machine_defaults_test.exs",
+          "assertion": "settings reject invalid defaults and revoked logins without changing any preset",
+          "scope": "Typed save-action refusals and mounted-page revoked-login refusal without account mutation.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-account-machine-presets.md",
+          "record_assertion": "The final focused Marshall run passed 92 checks"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/machine_defaults_test.exs",
+          "assertion": "launch uses its saved profile and sizes and replay keeps the original request",
+          "scope": "Ordinary Compute admission, immutable source and VM identity after changed account preferences; owner isolation of original-request projection.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-account-machine-presets.md",
+          "record_assertion": "The final focused Marshall run passed 92 checks"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall_web/default_profile_history_test.exs",
+          "assertion": "profile drafts survive refresh and reload before duplicate submission",
+          "scope": "Generated omitted/explicit browser profiles, refresh, reload, stable key and duplicate admission; current omitted profile is Standard.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-account-machine-presets.md",
+          "record_assertion": "The final focused Marshall run passed 92 checks"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/default-oss/browser.py",
+          "assertion": "stage = \"account machine preset\"",
+          "scope": "Packaged native browser fixture saves an OSS preset, reloads settings and retains it through creation/reload before existing guest policy probes. Revised source is present; execution pending.",
+          "execution": "present"
+        },
+        {
+          "kind": "manual",
+          "path": "marshall/lib/marshall_web/live/account_live.ex",
+          "assertion": "id=\"machine-defaults\"",
+          "scope": "Disposable real Chromium: independent saves/reloads, matching machine/thread initial values, 36 route/locale/theme/viewport combinations (settings and both create forms; English/Arabic/Japanese; light/dark; 1440/390 px), grid, overflow, direction, primary font, contrast and same-origin/CSP. Inspected representative screenshots; no guest execution or independent linguistic acceptance.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-account-machine-presets.md",
+          "record_assertion": "The disposable real-Chromium fixture passed independent saves and reloads for"
+        }
+      ]
+    },
+    {
       "id": "account-settings-page",
-      "journey": "Open the single account page, move between its profile, sign-in, SSH key and Git sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
+      "journey": "Open the single account page, move between its profile, sign-in, SSH key, Git and machine-default sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
       "layers": [
         "identity",
         "authorization",
         "transport"
       ],
-      "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey, SSH key and Git sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH, User.set_time_zone and User.git_settings; fragments (#profile, #security, #ssh-keys, #git-settings) carry no authority and return_to keeps its allowlist.",
+      "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey, SSH key, Git and machine-default sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH, User.set_time_zone, User.git_settings and User.save_machine_defaults; fragments (#profile, #security, #ssh-keys, #git-settings, #machine-defaults) carry no authority and return_to keeps its allowlist.",
       "denial": "Refuse anonymous visitors with a sign-in redirect; answer 404 on /settings/profile, /settings/security and /settings/ssh-keys; refuse unknown events with a fixed flash and no change; a revoked login halts the next SSH key event or clock tick with a sign-in redirect; a weaker mount (optional, current_user or none) fails the pin test.",
       "scope": "LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval confirmation, which stays on the approval page with the Open Mila link (ADR-0221) rather than navigating to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.",
       "status": "partial",
@@ -179,7 +252,7 @@
           "kind": "unit",
           "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "the page renders every section behind one Account navigation entry",
-          "scope": "All four section ids and index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile",
+          "scope": "All five section ids and index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile",
           "execution": "present"
         },
         {
@@ -207,7 +280,7 @@
           "kind": "manual",
           "path": "marshall/scripts/monospace_browser_probe.py",
           "assertion": "check_account",
-          "scope": "Current synthetic browser fixture targets the Account route and all four sections, retains Git preference and zone round trips, anchor positioning, grid alignment and light/dark/mobile screenshots. Source and static checks do not record browser execution of this repaired probe.",
+          "scope": "Current synthetic browser fixture targets the Account route and all five sections, retains Git preference and zone round trips, anchor positioning, grid alignment and light/dark/mobile screenshots. Source and static checks do not record browser execution of this repaired probe.",
           "execution": "present"
         }
       ]
@@ -1284,7 +1357,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -3587,7 +3660,7 @@
     },
     {
       "id": "underclass-overload-failover",
-      "journey": "Receive a served response instead of \u201cSelected model is at capacity\u201d when one pool account's upstream stream overloads before output",
+      "journey": "Receive a served response instead of “Selected model is at capacity” when one pool account's upstream stream overloads before output",
       "layers": [
         "authorization",
         "recovery"
@@ -4442,7 +4515,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
           "assertion": "every label carries the zone's offset in force at that instant",
-          "scope": "Every curated zone over random instants 2000\u20132040 plus fixed DST edges; half-hour and 45-minute zones pinned",
+          "scope": "Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned",
           "execution": "present"
         },
         {
@@ -4639,23 +4712,23 @@
     },
     {
       "id": "default-oss-creation",
-      "journey": "Create a machine in the browser or Porsche SSH without choosing a profile",
+      "journey": "Create a machine using a saved browser preset or the Porsche SSH default",
       "layers": [
         "authorization",
         "isolation"
       ],
-      "boundary": "Both creation entries select OSS by default; an explicit Customer choice remains restricted by the persisted profile policy.",
+      "boundary": "Browser machine creation now starts with Standard (Work) and resolves the account machine preset; Porsche retains OSS. The revised native browser fixture saves an OSS preset before its existing native OSS policy checks. Explicit Customer remains restricted by persisted profile policy.",
       "denial": "Reject unauthorized admission and Customer sharing, egress and agent execution even when a user selects Customer explicitly.",
-      "scope": "Generated browser draft/default/reload histories and SSH semantic-input retry histories; native ordinary-user creation and profile enforcement journey. Campaign 015 separately checks the packaged standalone browser helper with pinned ty; recorded native execution retains its original source and scope.",
+      "scope": "Historical native OSS-default and generated profile-retry results retain their original source scope. Current browser Work defaults and preset persistence have revised test sources; native execution of those revisions remains separate.",
       "status": "partial",
-      "gaps": "The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun. Current explicit Audi startup after Ziggy/Galileo readiness passed static and actual composed-driver typing checks; corrected fixture runtime remains pending.",
+      "gaps": "The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun. Current explicit Audi startup after Ziggy/Galileo readiness passed static and actual composed-driver typing checks; corrected fixture runtime remains pending. The revised native browser preset journey has not run; historical fixed-OSS results do not establish current account preset behavior.",
       "preferred_gap": "Add native unauthorized creation and owner guest-SSH cases; retain separate packet/tool and complete legacy feature-matrix acceptance after campaign 011's shared trust fixture repair.",
       "evidence": [
         {
           "kind": "unit",
           "path": "marshall/test/marshall_web/machines_live_test.exs",
-          "assertion": "profile: :oss",
-          "scope": "Browser form and Ash-backed admission in the application test database",
+          "assertion": "configured image supplies rounded defaults and still provisions through Ash",
+          "scope": "Current Work-default browser form and Ash-backed admission in the application test database; saved preset behavior has separate scenario coverage.",
           "execution": "present"
         },
         {
@@ -4669,7 +4742,7 @@
           "kind": "property",
           "path": "marshall/test/marshall_web/default_profile_history_test.exs",
           "assertion": "profile drafts survive refresh and reload before duplicate submission",
-          "scope": "Independent last-choice model through omitted/explicit profiles, refresh, reload, persisted profile and one durable admission.",
+          "scope": "Historical fixed-OSS baseline: Independent last-choice model through omitted/explicit profiles, refresh, reload, persisted profile and one durable admission.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-25-default-oss-verification.md",
           "record_assertion": "33 checks (3 properties, 30 tests)"
@@ -4678,7 +4751,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/ssh/commands_test.exs",
           "assertion": "omitted and explicit profiles stay pinned through retry histories",
-          "scope": "Pinned profile and unchanged complete VM history/operation/reservation/receipt identities across same-input retries and changed semantic-input refusals.",
+          "scope": "Historical fixed-OSS baseline: Pinned profile and unchanged complete VM history/operation/reservation/receipt identities across same-input retries and changed semantic-input refusals.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-25-default-oss-verification.md",
           "record_assertion": "33 checks (3 properties, 30 tests)"
@@ -4687,7 +4760,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/default-oss/driver.py",
           "assertion": "actual OSS guests reach the live local origin and Customer egress times out",
-          "scope": "Packaged browser/Porsche creation, ordinary persisted users, real boot trust, OSS sharing and DNS/HTTP controls, and Customer sharing/read/registration/egress refusal in real nested Firecracker guests.",
+          "scope": "Historical fixed-OSS baseline: Packaged browser/Porsche creation, ordinary persisted users, real boot trust, OSS sharing and DNS/HTTP controls, and Customer sharing/read/registration/egress refusal in real nested Firecracker guests.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-25-default-oss-verification.md",
           "record_assertion": "Native default-OSS journey passed in 435.39 seconds"
@@ -5654,7 +5727,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -6821,7 +6894,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -11690,7 +11763,7 @@
           "assertion": "foreign-linux-pam-nosuid-account",
           "scope": "Isolated VM/chroot using the exact pinned installer and PAM: missing-helper9, valid0, expired13, password-change12, unknown10 on nosuid runtime storage; root-owned04755 copy, unchanged0555 source, idempotence and twelve unsafe/argument/nonroot refusals. vmTools source ownership is replaced by a byte-identical root-owned overlay only inside the disposable chroot. No foreign guest SSH/sudo or nonroot elevation acceptance.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
-          "record_assertion": "The maintained VM gate records missing-helper9 \u2192 repaired0"
+          "record_assertion": "The maintained VM gate records missing-helper9 → repaired0"
         },
         {
           "kind": "manual",

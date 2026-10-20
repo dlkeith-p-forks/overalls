@@ -100,11 +100,6 @@ msgstr "Yanayin haɓaka Overalls don injunan gida. Yana amfani da hoton da aka k
 msgid "A good day to make something."
 msgstr "Kyakkyawan rana don yin wani abu."
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "Sabuwar na'ura ta OSS za ta rufe ma'ajiyar lokacin da ta tashi."
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1968,3 +1963,11 @@ msgstr "rafin canja wuri ya katse; zai ci gaba kai tsaye."
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "Tabbatar"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "Sabuwar na'ura za ta kwafi ma'ajiyar lamba idan ta tashi."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

@@ -100,11 +100,6 @@ msgstr "Overalls-kehitysympäristö sisäkkäisille koneille. Se käyttää eril
 msgid "A good day to make something."
 msgstr "Hyvä päivä tehdä jotain."
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "Uusi OSS-kone kloonaa tietovaraston käynnistyessään."
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1968,3 +1963,11 @@ msgstr "siirtovirta katkesi; se jatkuu automaattisesti."
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "Vahvista"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "Uusi kone kloonaa tietovaraston käynnistyessään."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

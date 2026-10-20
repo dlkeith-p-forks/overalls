@@ -152,3 +152,11 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Abmelden"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "Die Einmalanmeldung konnte dich nicht authentifizieren."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "Die Einmalanmeldung ist nicht eingerichtet."

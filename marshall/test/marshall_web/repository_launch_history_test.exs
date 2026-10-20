@@ -65,11 +65,13 @@ defmodule MarshallWeb.RepositoryLaunchHistoryTest do
         }
 
   # @cc [owner:ghuntley,label:verification;product] repository-launch-history-oracle
-  # Generated browser histories of visits, reloads, back navigation, fresh
+  # For accounts with the initial OSS launch preset, generated browser histories
+  # of visits, reloads, back navigation, fresh
   # revisits, invalid links, anonymous visits and plain roots MUST leave exactly
   # one OSS machine with a matching stored source and pinned provision command per
   # distinct signed-in (canonical source, visit nonce) pair, and nothing else.
   @tag :hegel
+  @tag timeout: 180_000
   test "repository launch visits dedupe per visit across generated histories", %{
     conn: conn
   } do

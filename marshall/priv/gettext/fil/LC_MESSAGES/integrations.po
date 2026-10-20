@@ -375,3 +375,15 @@ msgstr "example-integration"
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"
+
+#, elixir-autogen, elixir-format
+msgid "Could not disconnect GitHub."
+msgstr "Hindi madiskonekta ang GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "Could not update the GitHub connection."
+msgstr "Hindi ma-update ang koneksyon sa GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "GitHub disconnected."
+msgstr "Nadiskonekta ang GitHub."

@@ -472,3 +472,47 @@ msgstr "sama aika kuin sinulla"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "vahvistus ylläpitomuutoksia varten"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Valitse kelvollinen levykuva, profiili ja koneen koko."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Levy (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Levykuva"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Levykuvia ei ole saatavilla. Yritä myöhemmin uudelleen."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Koneiden oletusasetukset"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Koneiden oletusasetukset tallennettu."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Muisti (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Esiasetukset koskevat vain uusia koneita."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Tallenna oletusasetukset"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Työ"

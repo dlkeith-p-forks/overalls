@@ -106,7 +106,7 @@ msgid "Invalid administrative request."
 msgstr ""
 
 #: lib/marshall_web/live/admin/access_live.ex:60
-#: lib/marshall_web/live/admin/scim_live.ex:42
+#: lib/marshall_web/live/admin/scim_live.ex:50
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr ""
@@ -348,52 +348,52 @@ msgstr ""
 msgid "start this node evacuation"
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:69
+#: lib/marshall_web/live/admin/scim_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:98
+#: lib/marshall_web/live/admin/scim_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:92
+#: lib/marshall_web/live/admin/scim_live.ex:109
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:93
+#: lib/marshall_web/live/admin/scim_live.ex:110
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:75
+#: lib/marshall_web/live/admin/scim_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "SCIM configuration"
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:36
+#: lib/marshall_web/live/admin/scim_live.ex:44
 #, elixir-autogen, elixir-format
 msgid "SCIM configuration could not be updated."
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:29
+#: lib/marshall_web/live/admin/scim_live.ex:37
 #, elixir-autogen, elixir-format
 msgid "SCIM configuration updated."
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:79
+#: lib/marshall_web/live/admin/scim_live.ex:87
 #, elixir-autogen, elixir-format
 msgid "SCIM is disabled."
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:78
+#: lib/marshall_web/live/admin/scim_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "SCIM is enabled."
 msgstr ""
 
-#: lib/marshall_web/live/admin/scim_live.ex:67
+#: lib/marshall_web/live/admin/scim_live.ex:75
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr ""

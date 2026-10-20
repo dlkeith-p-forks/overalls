@@ -45,6 +45,9 @@ defmodule Marshall.Compute.Views do
 
           :catalog ->
             catalog()
+
+          :repository_launch_request ->
+            repository_launch_request(input.arguments.idempotency_key, context.actor)
         end
       end)
 
@@ -54,6 +57,31 @@ defmodule Marshall.Compute.Views do
 
       other ->
         other
+    end
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] launch-replay-original-request
+  # A launch replay MUST expose only the current actor's original admission
+  # request under that key, including archived VM history and original sizes.
+  # It MUST NOT authorize a mutation; Compute.provision must still validate the
+  # current actor, source and idempotent request before returning a VM.
+  @spec repository_launch_request(String.t(), Marshall.Accounts.User.t()) :: map()
+  defp repository_launch_request(key, actor) do
+    case Ledger.history!(VirtualMachine, owner_id: actor.id, idempotency_key: key) do
+      [vm] ->
+        request =
+          vm
+          |> Map.take([:architecture, :image_id, :profile, :vcpu, :memory_bytes, :disk_bytes])
+          |> Map.merge(
+            Map.new(vm.provisioning_sizes, fn {field, value} ->
+              {String.to_existing_atom(field), value}
+            end)
+          )
+
+        %{request: request}
+
+      [] ->
+        %{request: nil}
     end
   end
 

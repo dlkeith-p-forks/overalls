@@ -472,3 +472,47 @@ msgstr "wakati sawa na wewe"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "uthibitisho wa mabadiliko ya kiutawala"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Chagua taswira, wasifu na ukubwa halali wa mashine."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Diski (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Picha"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Taswira hazipatikani. Jaribu tena baadaye."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Mipangilio chaguomsingi ya mashine"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Mipangilio chaguomsingi ya mashine imehifadhiwa."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Kumbukumbu (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Mipangilio iliyowekwa hutumika kwa mashine mpya pekee."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Hifadhi mipangilio chaguomsingi"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Kazi"

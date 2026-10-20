@@ -375,3 +375,15 @@ msgstr "mfano-muunganisho"
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"
+
+#, elixir-autogen, elixir-format
+msgid "Could not disconnect GitHub."
+msgstr "Haikuweza kukata muunganisho wa GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "Could not update the GitHub connection."
+msgstr "Haikuweza kusasisha muunganisho wa GitHub."
+
+#, elixir-autogen, elixir-format
+msgid "GitHub disconnected."
+msgstr "Muunganisho wa GitHub umekatwa."

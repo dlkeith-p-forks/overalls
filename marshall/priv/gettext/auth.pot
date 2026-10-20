@@ -138,3 +138,13 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr ""
+
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:76
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr ""
+
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:39
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr ""

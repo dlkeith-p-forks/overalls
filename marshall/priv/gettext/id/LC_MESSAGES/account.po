@@ -470,3 +470,47 @@ msgstr "waktu sama dengan Anda"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "verifikasi untuk perubahan administratif"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Pilih citra, profil, dan ukuran mesin yang valid."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Disk penyimpanan (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Citra"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Citra tidak tersedia. Coba lagi nanti."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Pengaturan bawaan mesin"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Pengaturan bawaan mesin disimpan."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Memori (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Prasetel hanya berlaku untuk mesin baru."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Simpan pengaturan bawaan"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Kerja"

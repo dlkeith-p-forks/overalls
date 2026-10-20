@@ -472,3 +472,47 @@ msgstr "sama aeg mis sinul"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "haldusmuudatuste kinnitus"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Vali sobiv tõmmis, profiil ja masina suurus."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Ketas (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Tõmmis"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Tõmmised pole saadaval. Proovi hiljem uuesti."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Masina vaikeväärtused"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Masina vaikeväärtused on salvestatud."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Mälu (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Eelseadistused kehtivad ainult uutele masinatele."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Salvesta vaikeväärtused"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Töö"

@@ -480,3 +480,47 @@ msgstr "نفس توقيتك"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "التحقق للتغييرات الإدارية"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "اختار صورة وبروفايل وحجم ماكينة صالحين."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "القرص (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "الصورة"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "الصور مش متاحة. جرّب تاني بعدين."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "الإعدادات الافتراضية للماكينة"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "الإعدادات الافتراضية للماكينة اتحفظت."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "الذاكرة (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "الإعدادات الجاهزة بتتطبق على الماكينات الجديدة بس."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "احفظ الإعدادات الافتراضية"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "عمل"

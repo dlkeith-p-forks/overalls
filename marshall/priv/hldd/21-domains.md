@@ -22,7 +22,7 @@ failure boundary and logon-session same-boot recovery are described in
 
 | Domain | Responsibility and authority |
 | --- | --- |
-| `Marshall.Accounts` | User identity, login tokens, email verification, passkeys, account deletion and permanent GuestAccount UUID/UID reservations. Immutable `u<uid>` guest identity belongs to the User UUID independently of its email. Authentication identifies a caller; resource policy still decides access. |
+| `Marshall.Accounts` | User identity, login tokens, email verification, passkeys, account deletion, three machine creation presets and permanent GuestAccount UUID/UID reservations. Immutable `u<uid>` guest identity belongs to the User UUID independently of its email. Authentication identifies a caller; resource policy still decides access. |
 | `Marshall.Scim` | SCIM bearer configuration, directory user and group synchronization, managed-team authority, and durable identity/team retirement orchestration. The domain owns the provisioning boundary; Compute remains authoritative for machine lifecycle and Accounts for identity records. |
 | `Marshall.Access` | Persisted machine grants, grant changes and per-user machine pins. Cedar evaluates current ownership, direct VM sharing, team membership and canonical current-thread grants; a cached permission cannot authorize a later mutation. A pin confers no authority; the owner's pin is read by the lifecycle coordinator as a deletion fence (ADR-0193). |
 | `Marshall.Administration` | Administrative job snapshots, retries and audit projections. Read access and elevated administrative mutations have separate checks. |
@@ -308,3 +308,10 @@ inventory. There is no complete generated cross-domain authorization matrix;
 add stale/foreign-authority histories and a native allowed/refused journey when
 changing a sensitive action. Extension-generated resource versions are not
 enumerated by this source view; inspect their retention and redaction separately.
+
+Accounts owns the launch, machine and thread preference groups. Browser surfaces
+resolve their initial values, while Compute owns current admission and the
+owner/key-scoped original-request projection for launch replay. No preference
+write grants VM authority, changes an admitted machine or changes deployment
+placement. The projection includes archived admission history solely to repeat
+ordinary idempotent admission with its original source and shape.

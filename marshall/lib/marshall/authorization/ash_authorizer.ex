@@ -663,7 +663,8 @@ defmodule Marshall.Authorization.AshAuthorizer do
                       :resolve_for_user,
                       :list_for_user,
                       :pinned_for_user,
-                      :catalog
+                      :catalog,
+                      :repository_launch_request
                     ]) or
                  (state.resource == Marshall.Access.Grant and
                     state.action in [:set_access, :list_grants]) or

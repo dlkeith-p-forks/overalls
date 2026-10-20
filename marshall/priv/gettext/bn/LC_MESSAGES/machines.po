@@ -100,11 +100,6 @@ msgstr "নেস্টেড মেশিনের জন্য Overalls ডে
 msgid "A good day to make something."
 msgstr "কিছু বানানোর জন্য শুভ দিন।"
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "নতুন OSS মেশিন চালু হলে রিপোজিটরি ক্লোন করবে।"
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1968,3 +1963,11 @@ msgstr "স্থানান্তরের স্ট্রিম বাধা�
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "নিশ্চিত করুন"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "নতুন মেশিন চালু হলে রিপোজিটরি ক্লোন করবে।"
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

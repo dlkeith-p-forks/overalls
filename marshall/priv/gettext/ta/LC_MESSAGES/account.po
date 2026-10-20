@@ -474,3 +474,47 @@ msgstr "உங்களுடைய அதே நேரம்"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "நிர்வாக மாற்றங்களுக்கான சரிபார்ப்பு"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "செல்லுபடியாகும் இமேஜ், சுயவிவரம் மற்றும் இயந்திர அளவைத் தேர்ந்தெடுக்கவும்."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "வட்டு (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "படிமம்"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "இமேஜ்கள் கிடைக்கவில்லை. பிறகு மீண்டும் முயற்சிக்கவும்."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "இயந்திர இயல்புநிலைகள்"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "இயந்திர இயல்புநிலைகள் சேமிக்கப்பட்டன."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "நினைவகம் (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "முன்னமைவுகள் புதிய இயந்திரங்களுக்கு மட்டுமே பொருந்தும்."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "இயல்புநிலைகளைச் சேமி"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "வேலை"

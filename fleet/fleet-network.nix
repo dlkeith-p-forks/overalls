@@ -7,14 +7,15 @@ let
   # Each deployment has its own tunnel; addresses repeat across tunnels and
   # no peer may cross from one tunnel to another.
   networks = {
+    # Overalls runs alone until it retires (ADR-0239).
     overalls = {
-      overalls = { address = "10.90.0.1"; endpoint = "overallsPrimary"; peers = [ "salopettes" ]; };
-      # Salopettes reaches only Overalls: Marshall delivers Susan pokes over fleet0.
-      salopettes = { address = "10.90.0.3"; endpoint = "salopettesPrimary"; peers = [ "overalls" ]; };
+      overalls = { address = "10.90.0.1"; endpoint = "overallsPrimary"; peers = []; };
     };
     panterloons = {
-      panterloons = { address = "10.90.0.1"; endpoint = "panterloonsPrimary"; peers = [ "dungarees" ]; };
+      panterloons = { address = "10.90.0.1"; endpoint = "panterloonsPrimary"; peers = [ "dungarees" "salopettes" ]; };
       dungarees = { address = "10.90.0.2"; endpoint = "dungareesPrimary"; peers = [ "panterloons" ]; };
+      # Salopettes reaches only Panterloons: Marshall delivers Susan pokes over fleet0.
+      salopettes = { address = "10.90.0.3"; endpoint = "salopettesPrimary"; peers = [ "panterloons" ]; };
     };
   };
   name = config.networking.hostName;
@@ -36,7 +37,7 @@ in {
   # Physical fleet peers MUST use distinct encrypted host credentials and pinned
   # public keys, and peer only inside their own deployment's tunnel. Only that
   # tunnel's control plane (10.90.0.1) may admit fleet API traffic; Salopettes
-  # admits only the Susan relay and metrics, and peers only with Overalls. Guest
+  # admits only the Susan relay and metrics, and peers only with Panterloons. Guest
   # prefixes MUST remain protected, and transport failure MUST NOT select the
   # browser API.
   overalls.fleetNetwork = {

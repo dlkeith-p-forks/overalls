@@ -472,3 +472,47 @@ msgstr "lokaci ɗaya da kai"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "tabbatarwa don canje-canjen gudanarwa"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Zaɓi hoton tsarin, bayanin martaba da girman na'ura masu inganci."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Faifai (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Hoto"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Hotunan tsarin ba sa samuwa. Sake gwadawa daga baya."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Saitunan asali na na'ura"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "An adana saitunan asali na na'ura."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Ƙwaƙwalwar ajiya (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Saitunan da aka riga aka tsara na sabbin na'urori ne kawai."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Adana saitunan asali"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Aiki"

@@ -40,6 +40,8 @@ The user explicitly restored the original repository and branch when requesting
 publication. Repository references are an intentional exception to the branding
 cleanup. Publishing source does not establish existing-state deployment acceptance.
 
+[ADR-0240](0240-account-machine-creation-presets.md) amends only browser default selection: machine and thread creation now use their independent account presets, starting with Standard (Work); repository launch starts with OSS. The original OSS default above records this decision’s historical baseline. Profile enums and permissions are unchanged.
+
 ## Alternatives
 
 Removing the profile would remove requested capabilities. Aliasing the old name or

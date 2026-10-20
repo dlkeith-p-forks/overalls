@@ -143,3 +143,11 @@ msgstr "Bạn có chắc muốn đăng xuất không?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Đăng xuất"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "Đăng nhập một lần không thể xác thực bạn."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "Đăng nhập một lần chưa được cấu hình."

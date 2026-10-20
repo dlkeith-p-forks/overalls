@@ -148,3 +148,11 @@ msgstr "로그아웃하시겠습니까?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "로그아웃"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "통합 로그인으로 인증할 수 없습니다."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "통합 로그인이 구성되지 않았습니다."

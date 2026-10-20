@@ -16,17 +16,17 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:243
+#: lib/marshall_web/live/admin/workloads_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:176
+#: lib/marshall_web/live/admin/workloads_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr ""
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Lifecycle request was rejected."
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:233
+#: lib/marshall_web/live/admin/workloads_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr ""
@@ -81,7 +81,7 @@ msgstr ""
 msgid "Relocation request was rejected."
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:192
+#: lib/marshall_web/live/admin/workloads_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr ""
@@ -91,7 +91,7 @@ msgstr ""
 msgid "Shape"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:221
+#: lib/marshall_web/live/admin/workloads_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr ""
@@ -101,12 +101,12 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:230
+#: lib/marshall_web/live/admin/workloads_live.ex:236
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:184
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr ""
@@ -136,42 +136,42 @@ msgstr ""
 msgid "· every 15 seconds"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:270
+#: lib/marshall_web/live/admin/workloads_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:269
+#: lib/marshall_web/live/admin/workloads_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:268
+#: lib/marshall_web/live/admin/workloads_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:265
+#: lib/marshall_web/live/admin/workloads_live.ex:271
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:266
+#: lib/marshall_web/live/admin/workloads_live.ex:272
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:267
+#: lib/marshall_web/live/admin/workloads_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:271
+#: lib/marshall_web/live/admin/workloads_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr ""
 
-#: lib/marshall_web/live/admin/workloads_live.ex:258
+#: lib/marshall_web/live/admin/workloads_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Unplaced"
 msgstr ""

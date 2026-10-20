@@ -512,3 +512,47 @@ msgstr "то же время, что и у вас"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "проверка административных изменений"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Выберите допустимые образ, профиль и размер машины."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Диск (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Образ"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Образы недоступны. Повторите попытку позже."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Параметры машин по умолчанию"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Параметры машин по умолчанию сохранены."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Память (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Предустановки применяются только к новым машинам."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Сохранить параметры по умолчанию"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Работать"

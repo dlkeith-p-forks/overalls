@@ -44,7 +44,7 @@
   services.overallsOtelFleet = {
     enable = true;
     role = "central";
-    # Dungarees serves Panterloons (ADR-0235); Overalls observes only itself.
+    # Dungarees serves Panterloons (ADR-0238); Overalls observes only itself.
     hosts = { central = "overalls"; worker = null; };
     tempoDataset = "zroot/tempo";
     tempoQuotaGiB = 20;
@@ -117,11 +117,6 @@
     addressUnit = config.overalls.fleetAddresses.unit;
     port = 5443;
   };
-  # @cc [owner:ghuntley,label:deployment;security] overalls-susan-fleet-path
-  # Marshall's compiled Susan origin MUST resolve to salopettes' fleet0
-  # address so pokes cross the authenticated tunnel; TLS still verifies the
-  # public notifications.overalls.dev certificate (ADR-0233).
-  networking.hosts."10.90.0.3" = [ "notifications.overalls.dev" ];
   # @cc [owner:ghuntley,label:recovery] overalls-gateway-certificate-transport
   # Initial gateway certificate acquisition MUST activate the local fleet API
   # socket after updater quiescence, rather than wait for post-gateway restore.

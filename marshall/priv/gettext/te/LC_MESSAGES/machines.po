@@ -103,11 +103,6 @@ msgstr ""
 msgid "A good day to make something."
 msgstr "ఏదైనా సృష్టించడానికి మంచి రోజు."
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "కొత్త OSS యంత్రం ప్రారంభమైనప్పుడు రిపోజిటరీని క్లోన్ చేస్తుంది."
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -2059,3 +2054,11 @@ msgstr "బదిలీ స్ట్రీమ్‌కు అంతరాయం 
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "నిర్ధారించండి"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "కొత్త మెషీన్ బూట్ అయినప్పుడు రిపోజిటరీని క్లోన్ చేస్తుంది."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

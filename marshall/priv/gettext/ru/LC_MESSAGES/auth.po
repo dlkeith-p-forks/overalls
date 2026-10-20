@@ -150,3 +150,11 @@ msgstr "Вы действительно хотите выйти?"
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Выйти"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "Единый вход не смог подтвердить вашу личность."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "Единый вход не настроен."

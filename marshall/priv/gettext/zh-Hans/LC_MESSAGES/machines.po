@@ -101,11 +101,6 @@ msgstr ""
 msgid "A good day to make something."
 msgstr "今天适合创造些什么。"
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "新的 OSS 机器启动时会克隆仓库。"
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1972,3 +1967,11 @@ msgstr "传输流已中断；会自动恢复。"
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "确认"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "新机器启动时会克隆代码仓库。"
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

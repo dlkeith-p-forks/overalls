@@ -141,3 +141,11 @@ msgstr "நிச்சயமாக வெளியேற விரும்ப�
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "வெளியேறு"
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on could not authenticate you."
+msgstr "ஒற்றை உள்நுழைவால் உங்களை அங்கீகரிக்க முடியவில்லை."
+
+#, elixir-autogen, elixir-format
+msgid "Single sign-on is not configured."
+msgstr "ஒற்றை உள்நுழைவு உள்ளமைக்கப்படவில்லை."

@@ -471,3 +471,47 @@ msgstr "same time as you"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Choose a valid image, profile and machine size."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Images are unavailable. Try again later."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Machine defaults"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Machine defaults saved."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Presets apply to new machines only."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Save defaults"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr ""

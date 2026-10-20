@@ -9,7 +9,7 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
   @typep selection :: nil | :oss | :customer | :standard
 
   # @cc [owner:ghuntley,label:verification;product] browser-profile-draft-oracle
-  # Omitted profiles MUST start as OSS. Generated explicit choices, refreshes and
+  # Omitted profiles MUST start as Standard (Work). Generated explicit choices, refreshes and
   # reloads MUST preserve the last choice and request identity through admission;
   # replaying the same URL MUST create no additional VM, reservation or operation.
   @tag :hegel
@@ -108,7 +108,7 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
   end
 
   @spec expected_profile(selection()) :: String.t()
-  defp expected_profile(nil), do: "oss"
+  defp expected_profile(nil), do: "standard"
   defp expected_profile(profile), do: Atom.to_string(profile)
 
   @spec signed_in(Plug.Conn.t(), Marshall.Accounts.User.t()) :: Plug.Conn.t()

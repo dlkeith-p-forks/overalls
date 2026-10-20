@@ -472,3 +472,47 @@ msgstr "আপনার মতো একই সময়"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "প্রশাসনিক পরিবর্তনের যাচাই"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "সঠিক ইমেজ, প্রোফাইল ও মেশিনের আকার বেছে নিন।"
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "ডিস্ক (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "ইমেজ"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "ইমেজ পাওয়া যাচ্ছে না। পরে আবার চেষ্টা করুন।"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "মেশিনের ডিফল্ট সেটিংস"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "মেশিনের ডিফল্ট সেটিংস সংরক্ষিত হয়েছে।"
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "মেমরি (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "প্রিসেট শুধু নতুন মেশিনে প্রযোজ্য।"
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "ডিফল্ট সেটিংস সংরক্ষণ করুন"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "কাজ"

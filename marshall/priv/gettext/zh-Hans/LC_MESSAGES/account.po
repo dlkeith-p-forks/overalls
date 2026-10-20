@@ -472,3 +472,47 @@ msgstr "与您时间相同"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "管理员更改验证"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "请选择有效的镜像、配置和机器规格。"
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "磁盘 (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "镜像"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "镜像暂不可用，请稍后重试。"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "机器默认设置"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "机器默认设置已保存。"
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "内存 (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "预设仅适用于新机器。"
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "保存默认设置"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "工作"

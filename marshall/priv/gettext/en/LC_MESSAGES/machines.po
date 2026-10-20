@@ -100,11 +100,6 @@ msgstr ""
 msgid "A good day to make something."
 msgstr ""
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr ""
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1968,3 +1963,11 @@ msgstr "the transfer stream was interrupted; it resumes automatically."
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "Confirm"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "A new machine will clone the repository when it boots."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

@@ -103,11 +103,6 @@ msgstr ""
 msgid "A good day to make something."
 msgstr "काहीतरी घडवण्यासाठी चांगला दिवस."
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "नवीन OSS मशीन सुरू होताना रिपॉझिटरी क्लोन करेल."
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -2040,3 +2035,11 @@ msgstr "हस्तांतरणाचा प्रवाह खंडित 
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "पुष्टी करा"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "नवीन मशीन बूट झाल्यावर रिपॉझिटरी क्लोन करेल."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

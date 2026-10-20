@@ -479,3 +479,47 @@ msgstr "あなたと同じ時刻"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "管理上の変更の検証"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "有効なイメージ、プロファイル、マシンサイズを選択してください。"
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "ディスク (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "画像"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "イメージを利用できません。後でもう一度お試しください。"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "マシンの既定値"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "マシンの既定値を保存しました。"
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "メモリ (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "プリセットは新しいマシンにのみ適用されます。"
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "既定値を保存"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "仕事"

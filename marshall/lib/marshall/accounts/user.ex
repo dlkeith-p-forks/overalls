@@ -89,6 +89,28 @@ defmodule Marshall.Accounts.User do
       require_atomic? false
     end
 
+    update :store_machine_defaults do
+      accept [
+        :launch_default_profile,
+        :launch_default_image_id,
+        :launch_default_vcpu,
+        :launch_default_memory_bytes,
+        :launch_default_disk_bytes,
+        :machine_default_profile,
+        :machine_default_image_id,
+        :machine_default_vcpu,
+        :machine_default_memory_bytes,
+        :machine_default_disk_bytes,
+        :thread_default_profile,
+        :thread_default_image_id,
+        :thread_default_vcpu,
+        :thread_default_memory_bytes,
+        :thread_default_disk_bytes
+      ]
+
+      require_atomic? false
+    end
+
     update :security_state do
       accept [
         :mfa_enabled,
@@ -140,6 +162,39 @@ defmodule Marshall.Accounts.User do
         constraints: [max_length: 35, trim?: false, allow_empty?: true]
 
       run Marshall.Accounts.ProfileLocale
+    end
+
+    # @cc [owner:ghuntley,label:security;product] machine-defaults-self-only
+    # Machine creation defaults MUST update only the authenticated actor's row.
+    # The preset, profile, image and sizes MUST be validated by
+    # Marshall.Accounts.MachineDefaults before any write; callers MUST NOT select
+    # another user through an argument.
+    action :save_machine_defaults, :map do
+      argument :preset, :atom,
+        allow_nil?: false,
+        constraints: [one_of: [:launch, :machine, :thread]]
+
+      argument :profile, :atom,
+        allow_nil?: false,
+        constraints: [one_of: [:standard, :oss]]
+
+      argument :image_id, :string,
+        allow_nil?: false,
+        constraints: [min_length: 1, max_length: 128]
+
+      argument :vcpu, :integer,
+        allow_nil?: false,
+        constraints: [min: 1, max: 32]
+
+      argument :memory_bytes, :integer,
+        allow_nil?: false,
+        constraints: [min: 1]
+
+      argument :disk_bytes, :integer,
+        allow_nil?: false,
+        constraints: [min: 1]
+
+      run Marshall.Accounts.MachineDefaults
     end
 
     action :invite_user, :map do
@@ -289,7 +344,13 @@ defmodule Marshall.Accounts.User do
       authorize_if always()
     end
 
-    policy action([:assign_administrator, :security_state, :store_time_zone, :store_locale]) do
+    policy action([
+             :assign_administrator,
+             :security_state,
+             :store_time_zone,
+             :store_locale,
+             :store_machine_defaults
+           ]) do
       authorize_if Marshall.Accounts.Checks.InternalLookup
     end
 
@@ -315,7 +376,7 @@ defmodule Marshall.Accounts.User do
       authorize_if expr(id == ^actor(:id) and is_nil(deleted_at))
     end
 
-    policy action([:security, :set_time_zone, :set_locale]) do
+    policy action([:security, :set_time_zone, :set_locale, :save_machine_defaults]) do
       authorize_if actor_present()
     end
 
@@ -345,6 +406,45 @@ defmodule Marshall.Accounts.User do
       default: "noreply@overalls.dev"
 
     attribute :commit_trailers_enabled, :boolean, allow_nil?: false, default: true
+
+    attribute :launch_default_profile, :atom,
+      allow_nil?: false,
+      default: :oss,
+      constraints: [one_of: [:standard, :oss]]
+
+    attribute :launch_default_image_id, :string,
+      allow_nil?: true,
+      constraints: [max_length: 128]
+
+    attribute :launch_default_vcpu, :integer, allow_nil?: true, constraints: [min: 1, max: 32]
+    attribute :launch_default_memory_bytes, :integer, allow_nil?: true, constraints: [min: 1]
+    attribute :launch_default_disk_bytes, :integer, allow_nil?: true, constraints: [min: 1]
+
+    attribute :machine_default_profile, :atom,
+      allow_nil?: false,
+      default: :standard,
+      constraints: [one_of: [:standard, :oss]]
+
+    attribute :machine_default_image_id, :string,
+      allow_nil?: true,
+      constraints: [max_length: 128]
+
+    attribute :machine_default_vcpu, :integer, allow_nil?: true, constraints: [min: 1, max: 32]
+    attribute :machine_default_memory_bytes, :integer, allow_nil?: true, constraints: [min: 1]
+    attribute :machine_default_disk_bytes, :integer, allow_nil?: true, constraints: [min: 1]
+
+    attribute :thread_default_profile, :atom,
+      allow_nil?: false,
+      default: :standard,
+      constraints: [one_of: [:standard, :oss]]
+
+    attribute :thread_default_image_id, :string,
+      allow_nil?: true,
+      constraints: [max_length: 128]
+
+    attribute :thread_default_vcpu, :integer, allow_nil?: true, constraints: [min: 1, max: 32]
+    attribute :thread_default_memory_bytes, :integer, allow_nil?: true, constraints: [min: 1]
+    attribute :thread_default_disk_bytes, :integer, allow_nil?: true, constraints: [min: 1]
 
     attribute :mfa_enabled, :boolean, allow_nil?: false, default: false
     attribute :mfa_reset_required, :boolean, allow_nil?: false, default: false

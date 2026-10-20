@@ -470,3 +470,47 @@ msgstr "cùng giờ với bạn"
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "xác minh cho thay đổi quản trị"
+
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image, profile and machine size."
+msgstr "Chọn ảnh hệ thống, hồ sơ và kích thước máy hợp lệ."
+
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Đĩa (GiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Ảnh máy"
+
+#, elixir-autogen, elixir-format
+msgid "Images are unavailable. Try again later."
+msgstr "Ảnh hệ thống không khả dụng. Hãy thử lại sau."
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults"
+msgstr "Mặc định cho máy"
+
+#, elixir-autogen, elixir-format
+msgid "Machine defaults saved."
+msgstr "Đã lưu mặc định cho máy."
+
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Bộ nhớ (MiB)"
+
+#, elixir-autogen, elixir-format
+msgid "Presets apply to new machines only."
+msgstr "Cấu hình đặt sẵn chỉ áp dụng cho máy mới."
+
+#, elixir-autogen, elixir-format
+msgid "Save defaults"
+msgstr "Lưu mặc định"
+
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Công việc"

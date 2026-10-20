@@ -78,21 +78,18 @@ defmodule MarshallWeb.MachinesLive do
       end
 
     if socket.assigns.live_action == :new do
-      profile =
-        creation_params(params["machine"])["profile"] || socket.assigns.form.params["profile"]
+      submitted = creation_params(params["machine"])
 
       values =
         socket.assigns.form.params
-        |> Map.put_new(
-          "image_id",
-          MachineDefaults.default_image(profile, socket.assigns.catalog.images)
-        )
-        |> Map.merge(creation_params(params["machine"]))
+        |> seed_machine_defaults(socket.assigns, submitted)
+        |> Map.merge(submitted)
         |> MachineDefaults.creation_defaults(socket.assigns.catalog.images)
 
       socket =
         assign(socket,
           form: to_form(values, as: :machine),
+          machine_defaults_seeded: true,
           page_title: dgettext("machines", "Create machine")
         )
 
@@ -526,21 +523,57 @@ defmodule MarshallWeb.MachinesLive do
   end
 
   # @cc [owner:ghuntley,label:product;security] browser-new-default-profile
-  # A fresh machine form MUST select OSS. Explicit Customer and other supported
-  # selections MUST survive draft changes, reloads and submission.
+  # A fresh machine form MUST use the account's machine preset, defaulting to
+  # Standard (Work). Explicit supported selections MUST survive draft changes,
+  # reloads and submission without changing the saved preset.
   defp new_form(socket),
     do:
       assign(socket,
+        machine_defaults_seeded: false,
         form:
           to_form(
             %{
-              "profile" => "oss",
               "team_id" => "",
               "request_key" => Ash.UUID.generate()
             },
             as: :machine
           )
       )
+
+  @spec seed_machine_defaults(map(), map(), map()) :: map()
+  defp seed_machine_defaults(values, %{machine_defaults_seeded: true}, _submitted), do: values
+
+  defp seed_machine_defaults(values, assigns, submitted) do
+    defaults =
+      MachineDefaults.for_user(
+        assigns.current_user,
+        :machine,
+        assigns.catalog.images
+      )
+
+    # Explicit image/profile links receive that environment's ordinary size
+    # defaults rather than the saved shape of a different environment.
+    defaults =
+      if Map.has_key?(submitted, "image_id") or Map.has_key?(submitted, "profile") do
+        defaults
+        |> Map.drop(~w(vcpu memory_mib disk_gib))
+        |> Map.merge(submitted)
+        |> then(fn params ->
+          if params["profile"] == "inception",
+            do:
+              Map.put(
+                params,
+                "image_id",
+                MachineDefaults.default_image("inception", assigns.catalog.images)
+              ),
+            else: params
+        end)
+      else
+        defaults
+      end
+
+    Map.merge(defaults, values)
+  end
 
   defp blank_to_nil(""), do: nil
   defp blank_to_nil(value), do: value
@@ -601,7 +634,9 @@ defmodule MarshallWeb.MachinesLive do
     options =
       Enum.map(images, fn image ->
         name =
-          if Map.get(image, :android, false), do: gettext("Android (API 36)"), else: image.name
+          if Map.get(image, :android, false),
+            do: dgettext("machines", "Android (API 36)"),
+            else: image.name
 
         {name, image.id}
       end)

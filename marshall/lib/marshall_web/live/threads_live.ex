@@ -4,7 +4,7 @@ defmodule MarshallWeb.ThreadsLive do
 
   alias Marshall.{Compute, Threads}
   alias Marshall.Accounts.TimeZones
-  alias MarshallWeb.{ThreadCommands, WorkspaceComponents}
+  alias MarshallWeb.{MachineDefaults, ThreadCommands, WorkspaceComponents}
 
   on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
 
@@ -32,6 +32,7 @@ defmodule MarshallWeb.ThreadsLive do
         generation_query_error: nil,
         catalog: %{images: []},
         form: to_form(default_form(), as: :thread),
+        thread_defaults_seeded: false,
         error: nil,
         detail_error: nil,
         activity_filter: "all",
@@ -935,7 +936,7 @@ defmodule MarshallWeb.ThreadsLive do
     |> stream(:threads, visible_threads, reset: true)
     |> stream(:activity_threads, activity_threads, reset: true)
     |> stream(:events, Enum.reverse(events), reset: true)
-    |> maybe_seed_image(catalog)
+    |> maybe_seed_defaults(catalog)
     |> refresh_grants()
     |> refresh_controls()
     |> refresh_dialog()
@@ -1188,18 +1189,23 @@ defmodule MarshallWeb.ThreadsLive do
      ), generation.ordinal}
   end
 
-  defp maybe_seed_image(socket, %{images: [image | _]}) do
-    image_id = Map.get(socket.assigns.form.params, "image_id")
+  @spec maybe_seed_defaults(socket(), map()) :: socket()
+  defp maybe_seed_defaults(
+         %{assigns: %{live_action: :new, thread_defaults_seeded: false}} = socket,
+         %{images: images}
+       )
+       when is_list(images) and images != [] do
+    values =
+      socket.assigns.form.params
+      |> Map.merge(MachineDefaults.for_user(socket.assigns.current_user, :thread, images))
 
-    if image_id in [nil, ""],
-      do:
-        assign(socket,
-          form: to_form(Map.put(socket.assigns.form.params, "image_id", image.id), as: :thread)
-        ),
-      else: socket
+    assign(socket,
+      form: to_form(values, as: :thread),
+      thread_defaults_seeded: true
+    )
   end
 
-  defp maybe_seed_image(socket, _catalog), do: socket
+  defp maybe_seed_defaults(socket, _catalog), do: socket
 
   defp default_form do
     %{

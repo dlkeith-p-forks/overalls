@@ -110,6 +110,14 @@ defmodule Marshall.Compute.VirtualMachine do
       run {Marshall.Compute.Views, operation: :catalog}
     end
 
+    action :repository_launch_request, :map do
+      argument :idempotency_key, :string,
+        allow_nil?: false,
+        constraints: [min_length: 1, max_length: 128]
+
+      run {Marshall.Compute.Views, operation: :repository_launch_request}
+    end
+
     action :clone, :map do
       argument :vm_id, :uuid, allow_nil?: false
 

@@ -100,11 +100,6 @@ msgstr "உள்ளமை இயந்திரங்களுக்கான O
 msgid "A good day to make something."
 msgstr "ஏதாவது உருவாக்க நல்ல நாள்."
 
-#: lib/marshall_web/live/launch_live.ex:220
-#, elixir-autogen, elixir-format
-msgid "A new OSS machine will clone the repository when it boots."
-msgstr "புதிய OSS இயந்திரம் துவங்கும்போது களஞ்சியத்தை குளோன் செய்யும்."
-
 #: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
@@ -1968,3 +1963,11 @@ msgstr "பரிமாற்ற ஓட்டம் தடைப்பட்ட�
 #, elixir-autogen, elixir-format
 msgid "Confirm"
 msgstr "உறுதிப்படுத்து"
+
+#, elixir-autogen, elixir-format
+msgid "A new machine will clone the repository when it boots."
+msgstr "புதிய இயந்திரம் தொடங்கும்போது களஞ்சியத்தை நகலெடுக்கும்."
+
+#, elixir-autogen, elixir-format
+msgid "Android (API 36)"
+msgstr "Android (API 36)"

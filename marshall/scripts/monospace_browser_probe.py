@@ -406,7 +406,7 @@ def check_account(page: Page, origin: str, theme: str) -> None:
     expect(page.locator("#nav-usage")).to_have_attribute("href", "/usage")
     expect(page.locator("#workspace-sidebar a[href^='/settings/']")).to_have_count(0)
     expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
-    sections = ("profile", "security", "ssh-keys", "git-settings")
+    sections = ("profile", "security", "ssh-keys", "git-settings", "machine-defaults")
     for anchor in sections:
         expect(page.locator(f"#account-index a[href='#{anchor}']")).to_be_visible()
         expect(page.locator(f"section#{anchor}.account-section")).to_be_visible()
