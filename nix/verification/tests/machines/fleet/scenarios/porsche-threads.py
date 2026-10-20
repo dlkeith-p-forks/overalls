@@ -5,7 +5,7 @@
 # in receipts; a watch MUST open through Marshall's subscription authority and
 # renew on heartbeat (revocation is covered by the BEAM transport test). Runs after
 # the complete porsche.py scenario, reusing its client keys, known_hosts and
-# porsche_arguments helper.
+# porsche_arguments helper, and re-registers the keys that scenario removes.
 from typing import TypedDict
 
 
@@ -80,6 +80,13 @@ def porsche_threads_result(value: dict[str, object]) -> dict[str, object]:
 
 
 with subtest("Porsche thread, web and watch commands drive Marshall domains"):
+    # porsche.py ends by removing the browser-registered keys; register the
+    # same public keys again (removal archives the old rows) before dispatch.
+    # The operator writes refreshed tokens exclusively, so drop the earlier
+    # add's token file first.
+    m1.succeed("rm -f " + shlex.quote(root + "/porsche-users-add.json"))
+    porsche_browser("add")
+    assert porsche_command("whoami")["status"] == "succeeded"
     thread_id = str(
         operator(
             m1,

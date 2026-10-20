@@ -68,6 +68,12 @@ Observed before this decision:
    form. It permits no unrestricted `https:` source; scripts, connections and
    the other directives retain their original restrictions.
 
+   [ADR-0230](0230-terminal-image-decoder-webassembly.md) amends only the
+   `script-src` clause: the current policy is `script-src 'self'
+   'wasm-unsafe-eval'` so the vendored xterm image addon can compile its sixel
+   WebAssembly decoder. JavaScript `eval`, inline and foreign script remain
+   refused.
+
    [ADR-0202](0202-github-com-owner-integration.md) additionally permits the
    fixed `https://github.com` form destination for the CSRF-protected OAuth
    start POST and its provider redirect. Browsers can apply `form-action` to
@@ -251,4 +257,6 @@ applications remain same-site with the control plane.
 [ADR-0205](0205-overview-newsletter.md) amends the form-action clause only;
 [ADR-0202](0202-github-com-owner-integration.md) adds the fixed GitHub OAuth
 form origin without changing other directives;
+[ADR-0230](0230-terminal-image-decoder-webassembly.md) adds
+`'wasm-unsafe-eval'` to the script-src clause only;
 [review 2026-10-18](../reviews/2026-10-18-marshall-security-headers.md).

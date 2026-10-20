@@ -26,7 +26,10 @@ defmodule Marshall.Scim.LifecyclePropertyTest do
         assert apply_event(:active, final) == final
       end
 
-      assert Enum.reduce(events ++ events, initial, &apply_event/2) == final
+      # Duplicate delivery repeats each event in place. Replaying the whole
+      # history would let an earlier deadline act on a later delete.
+      duplicated = Enum.flat_map(events, &[&1, &1])
+      assert Enum.reduce(duplicated, initial, &apply_event/2) == final
     end
   end
 

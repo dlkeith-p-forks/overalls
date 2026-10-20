@@ -24,10 +24,13 @@ defmodule MarshallWeb.SecurityHeaders do
 
   # Only the xterm.js and Mermaid vendor renderers need `'unsafe-inline'`: both
   # create `<style>` elements and set `style` attributes (`setAttribute("style")`),
-  # which a nonce cannot cover. Scripts stay strictly same-origin.
+  # which a nonce cannot cover. Scripts stay strictly same-origin; the vendored
+  # xterm image addon compiles its bundled sixel decoder with WebAssembly, so
+  # `'wasm-unsafe-eval'` (ADR-0230) admits WebAssembly compilation only, never
+  # JavaScript `eval`, inline or foreign script.
   @production_directives [
     {"default-src", "'self'"},
-    {"script-src", "'self'"},
+    {"script-src", "'self' 'wasm-unsafe-eval'"},
     {"style-src", "'self' 'unsafe-inline'"},
     {"img-src", "'self' data:"},
     {"font-src", "'self'"},
@@ -116,8 +119,9 @@ defmodule MarshallWeb.SecurityHeaders do
   end
 
   # @cc [owner:ghuntley,label:security] production-csp-no-inline-script
-  # The production policy MUST keep script-src at 'self' alone: no inline,
-  # eval, data:, blob: or foreign script source. Development additions MUST be
+  # The production policy MUST keep script-src at 'self' plus
+  # 'wasm-unsafe-eval' (ADR-0230): no inline, JavaScript eval, data:, blob: or
+  # foreign script source. Development additions MUST be
   # selected only by the compile-time development_tooling flag, never by a
   # request, header or runtime option.
   @doc "The Content-Security-Policy value; `true` adds the development-tooling sources."

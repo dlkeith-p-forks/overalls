@@ -451,7 +451,7 @@ rescue
   error ->
     IO.puts(
       :stderr,
-      "Relocation guest assertion failed at #{Process.get(:fixture_stage, :arguments)} " <>
+      "Relocation guest assertion failed at #{inspect(Process.get(:fixture_stage, :arguments))} " <>
         "(#{inspect(error.__struct__)}); terminal bytes withheld"
     )
 

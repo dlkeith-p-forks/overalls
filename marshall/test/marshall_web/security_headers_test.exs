@@ -3,7 +3,7 @@ defmodule MarshallWeb.SecurityHeadersTest do
 
   alias MarshallWeb.SecurityHeaders
 
-  @csp "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; " <>
+  @csp "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; " <>
          "img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; " <>
          "base-uri 'self'; form-action 'self' https://ghuntley.com https://github.com; frame-ancestors 'self'; frame-src 'self'; " <>
          "worker-src 'self'; manifest-src 'self'"
@@ -64,7 +64,10 @@ defmodule MarshallWeb.SecurityHeadersTest do
 
   test "development tooling relaxes only script, style, connect, frame and image sources" do
     development = SecurityHeaders.policy(true)
-    assert development =~ "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:*;"
+
+    assert development =~
+             "script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' 'unsafe-eval' http://localhost:*;"
+
     assert development =~ "connect-src 'self' http://localhost:* ws://localhost:*;"
     assert development =~ "style-src 'self' 'unsafe-inline' http://localhost:*;"
     assert development =~ "frame-src 'self' http://localhost:*;"
@@ -84,7 +87,9 @@ defmodule MarshallWeb.SecurityHeadersTest do
       |> String.split("; ")
       |> Enum.filter(&String.starts_with?(&1, "script-src "))
 
-    assert script == "script-src 'self'"
+    assert script == "script-src 'self' 'wasm-unsafe-eval'"
+    refute script =~ "'unsafe-eval'"
+    refute script =~ "'unsafe-inline'"
   end
 
   test "form redirects admit GitHub OAuth only alongside the fixed newsletter origin" do

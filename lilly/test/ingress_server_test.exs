@@ -24,7 +24,12 @@ defmodule Lilly.IngressServerTest do
 
   setup do
     directory =
-      Path.join(System.tmp_dir!(), "lilly-ingress-#{System.unique_integer([:positive])}")
+      Path.join(
+        System.tmp_dir!(),
+        # unique_integer restarts in every VM; a random suffix cannot collide
+        # with a directory a crashed or concurrent run left behind.
+        "lilly-ingress-" <> Base.encode16(:crypto.strong_rand_bytes(8), case: :lower)
+      )
 
     File.mkdir!(directory)
     {:ok, %{uid: uid}} = File.stat(directory)

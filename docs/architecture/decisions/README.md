@@ -1,5 +1,10 @@
 # Architecture decision records
 
+[ADR-0230](0230-terminal-image-decoder-webassembly.md) accepts
+`'wasm-unsafe-eval'` in Marshall's production `script-src` so the terminal image
+addon decodes sixel, amending only ADR-0194's script clause; implementation
+remains partial.
+
 [ADR-0229](0229-scim-managed-identity-and-teams.md) accepts SCIM-managed users,
 groups, identity retirement, runtime OIDC and authoritative team synchronization;
 implementation remains partial.
@@ -956,3 +961,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0227](0227-flutter-toolchain-and-dartssh2-overlay.md) | accepted | partial | Flutter toolchain, patched dartssh2 overlay and Mila checks in Nix |
 | [ADR-0228](0228-strict-host-certificates-in-mila.md) | accepted | partial | Strict SSH host-certificate verification in Mila |
 | [ADR-0229](0229-scim-managed-identity-and-teams.md) | accepted | partial | SCIM-managed identity and teams |
+| [ADR-0230](0230-terminal-image-decoder-webassembly.md) | accepted | partial | WebAssembly compilation for the terminal image decoder |

@@ -31,7 +31,9 @@ defmodule Marshall.Accounts.ScimFinalize do
 
         :ok
       end,
-      SystemActor.compute()
+      # Retirement already opened the attributed ledger transaction; the
+      # SystemActor above authorizes reads and is not an audit actor.
+      :inherit
     )
 
     :ok
