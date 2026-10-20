@@ -288,6 +288,50 @@ pub trait SnapshotStore {
     fn write(&self, deployment: &str, bytes: &[u8]) -> Result<(), RuntimeError>;
 }
 
+/// Loads the newest valid snapshot for a deployment from a platform store.
+///
+/// Native clients use this boundary so persistence remains outside the UI and
+/// malformed or cross-deployment bytes never become visible to callers.
+pub fn load_snapshot<S: SnapshotStore>(
+    store: &S,
+    host: &str,
+    port: Option<u16>,
+) -> Result<Option<MachineSnapshot>, RuntimeError> {
+    let Some(bytes) = store.read(host)? else {
+        return Ok(None);
+    };
+    MachineSnapshot::decode(&bytes, host, port).map(Some)
+}
+
+/// Persists a fresh snapshot only when it is at least as new as the cached one.
+///
+/// The comparison happens after decoding the existing bytes, so a stale native
+/// response cannot overwrite newer offline data and invalid data is rejected
+/// before a write occurs.
+pub fn save_snapshot_if_newer<S: SnapshotStore>(
+    store: &S,
+    current: Option<&MachineSnapshot>,
+    fresh: MachineSnapshot,
+) -> Result<MachineSnapshot, RuntimeError> {
+    let existing = load_snapshot(store, &fresh.host, fresh.port)?;
+    let baseline = match (current, existing.as_ref()) {
+        (Some(explicit), Some(stored)) => Some(if explicit.saved_at >= stored.saved_at {
+            explicit
+        } else {
+            stored
+        }),
+        (Some(explicit), None) => Some(explicit),
+        (None, Some(stored)) => Some(stored),
+        (None, None) => None,
+    };
+    let selected = MachineSnapshot::merge(baseline.cloned(), fresh)?;
+    if baseline.is_none_or(|snapshot| snapshot != &selected) {
+        let bytes = selected.encode()?;
+        store.write(&selected.host, &bytes)?;
+    }
+    Ok(selected)
+}
+
 /// Platform custody selected by the native wrapper; private key bytes never
 /// cross this boundary. The associated handle is intentionally opaque.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
