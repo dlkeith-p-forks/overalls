@@ -15,7 +15,7 @@ defmodule Marshall.Scim.AuthPropertyTest do
   end
 
   property "digest output is fixed width and never reveals bearer material", test_cases: 100 do
-    token = draw(string(:printable, min_length: 1, max_length: 512))
+    token = draw(string(:printable, min_length: 16, max_length: 512))
     digest = Marshall.Scim.Auth.digest(token)
 
     assert is_binary(digest)

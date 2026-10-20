@@ -14,7 +14,7 @@ defmodule MarshallWeb.LiveAdminAuth do
                              ~w(set-role revoke-sessions revoke-key revoke-session revoke-grant invite delete-user reset-mfa register refresh remove)},
                             {"admin_operate",
                              ~w(evacuate control approve replan lifecycle relocate rotate-certificate admin-override)},
-                            {"admin_configure", ~w(configure)},
+                            {"admin_configure", ~w(configure scim-configure)},
                             {"admin_jobs", ~w(retry)}
                           ],
                           event <- events,

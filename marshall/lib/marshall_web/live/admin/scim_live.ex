@@ -38,7 +38,7 @@ defmodule MarshallWeb.Admin.ScimLive do
   # blank secret MUST keep the stored secret unless clearing is requested.
   @impl true
   @spec handle_event(String.t(), map(), socket()) :: {:noreply, socket()}
-  def handle_event("configure", %{"operation" => operation} = raw, socket)
+  def handle_event("scim-configure", %{"operation" => operation} = raw, socket)
       when is_map_key(@operations, operation) do
     operation = Map.fetch!(@operations, operation)
     oidc = oidc_params(raw)
@@ -247,7 +247,7 @@ defmodule MarshallWeb.Admin.ScimLive do
                 "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
               )}
             </p>
-            <.form for={%{}} as={:scim} id="scim-enable-form" phx-submit="configure">
+            <.form for={%{}} as={:scim} id="scim-enable-form" phx-submit="scim-configure">
               <input type="hidden" name="operation" value="enable" />
               <Layouts.action tone="primary" type="submit" id="scim-enable">
                 {dgettext("admin_access", "Enable SCIM and generate token")}
@@ -262,7 +262,7 @@ defmodule MarshallWeb.Admin.ScimLive do
               )}
             </p>
             <div class="row">
-              <.form for={%{}} as={:scim} id="scim-rotate-form" phx-submit="configure">
+              <.form for={%{}} as={:scim} id="scim-rotate-form" phx-submit="scim-configure">
                 <input type="hidden" name="operation" value="rotate_token" />
                 <Layouts.action
                   type="submit"
@@ -277,7 +277,7 @@ defmodule MarshallWeb.Admin.ScimLive do
                   {dgettext("admin_access", "Rotate bearer token")}
                 </Layouts.action>
               </.form>
-              <.form for={%{}} as={:scim} id="scim-disable-form" phx-submit="configure">
+              <.form for={%{}} as={:scim} id="scim-disable-form" phx-submit="scim-configure">
                 <input type="hidden" name="operation" value="disable" />
                 <Layouts.action
                   tone="danger"
@@ -304,7 +304,7 @@ defmodule MarshallWeb.Admin.ScimLive do
         </UI.panel>
 
         <UI.panel id="scim-oidc" title={dgettext("admin_access", "Single sign-on (OIDC)")}>
-          <.form for={@oidc_form} id="scim-oidc-form" phx-submit="configure" class="stack">
+          <.form for={@oidc_form} id="scim-oidc-form" phx-submit="scim-configure" class="stack">
             <input type="hidden" name="operation" value="save_oidc" />
             <.input
               field={@oidc_form[:oidc_issuer]}

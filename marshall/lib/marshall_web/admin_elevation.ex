@@ -50,6 +50,7 @@ defmodule MarshallWeb.AdminElevation do
       "rotate-certificate" => dgettext("admin_access", "rotate the fleet certificate"),
       "admin-override" => dgettext("admin_access", "open this machine with administrator access"),
       "configure" => dgettext("admin_access", "change this node's admission settings"),
+      "scim-configure" => dgettext("admin_access", "change SCIM provisioning"),
       "retry" => dgettext("admin_access", "retry this background job")
     }
   end
@@ -94,6 +95,27 @@ defmodule MarshallWeb.AdminElevation do
         {"overhead_cores", :nonnegative},
         {"overhead_memory_bytes", :nonnegative}
       ])
+
+  def normalize("scim-configure", %{"operation" => operation} = params)
+      when operation in ~w(enable disable rotate_token),
+      do: fields(params, [{"operation", [operation]}])
+
+  def normalize("scim-configure", %{"operation" => "save_oidc", "oidc" => oidc} = outer)
+      when map_size(outer) == 2 and is_map(oidc) do
+    schema = [
+      {"oidc_issuer", 2048},
+      {"oidc_client_id", 512},
+      {"oidc_client_secret", 4096},
+      {"clear_oidc_client_secret", ["true", "false"]}
+    ]
+
+    # Blank and omitted OIDC fields are meaningful (keep the stored secret), so
+    # only the present, non-empty subset is bounded and retained.
+    present = for {key, value} <- oidc, value != "", into: %{}, do: {key, value}
+
+    with {:ok, values} <- fields(present, Enum.filter(schema, &is_map_key(present, elem(&1, 0)))),
+         do: {:ok, %{"operation" => "save_oidc", "oidc" => values}}
+  end
 
   def normalize("register", %{"git" => params} = outer) when map_size(outer) == 1 do
     with {:ok, values} <- fields(params, [{"owner", 100}, {"repo", 100}]),

@@ -255,6 +255,44 @@ defmodule MarshallWeb.AdminElevationTest do
     assert :error = AdminElevation.normalize("anything", %{})
   end
 
+  test "SCIM configuration grammar retains only its named operation and bounded OIDC fields" do
+    for operation <- ~w(enable disable rotate_token) do
+      assert {:ok, %{"operation" => ^operation}} =
+               AdminElevation.normalize("scim-configure", %{"operation" => operation})
+    end
+
+    assert {:ok,
+            %{
+              "operation" => "save_oidc",
+              "oidc" => %{"oidc_issuer" => "https://idp.example.test", "oidc_client_id" => "c"}
+            }} =
+             AdminElevation.normalize("scim-configure", %{
+               "operation" => "save_oidc",
+               "oidc" => %{
+                 "oidc_issuer" => "https://idp.example.test",
+                 "oidc_client_id" => "c",
+                 "oidc_client_secret" => ""
+               }
+             })
+
+    assert :error =
+             AdminElevation.normalize("scim-configure", %{"operation" => "enable", "extra" => "x"})
+
+    assert :error = AdminElevation.normalize("scim-configure", %{"operation" => "destroy"})
+
+    assert :error =
+             AdminElevation.normalize("scim-configure", %{
+               "operation" => "save_oidc",
+               "oidc" => %{"oidc_token_endpoint" => "https://evil.example.test"}
+             })
+
+    assert :error =
+             AdminElevation.normalize("scim-configure", %{
+               "operation" => "save_oidc",
+               "oidc" => %{"clear_oidc_client_secret" => "yes"}
+             })
+  end
+
   test "intent binding includes login, resource and request identity and expires after five minutes" do
     actor = Fixture.user(true)
 
