@@ -1286,9 +1286,31 @@ native review. This is separate from the final service image and does not
 establish reset-race stress, DMA reclamation, physical or OmniOS behavior.
 The persisted `native-freebsd-reset` nested-KVM gate subsequently passed in
 232 seconds with the same socket outcomes and exact image/kernel/probe/firmware/
-VMM receipts in the review. Both native test probes cross-compile; only FreeBSD
-has recorded event execution. Its private fixture Unix API adds no production
-control or ordinary guest TCP surface.
+VMM receipts in the review. Both native test probes cross-compile. Its private
+fixture Unix API adds no production control or ordinary guest TCP surface.
+
+OmniOS module assembly also runs as a Nix derivation,
+[`omnios-image-candidate`](repo:nix/domains/artifacts/guest/omnios/assembly.nix).
+It needs the `kvm` system feature and boots the pinned stock image offline in
+QEMU twice. The guest's Solaris `ld` links the nine modules, and
+`native_image.py assemble` installs them into a separate scratch copy. Both
+copies share ZFS vdev GUIDs, so only the administration disk is bootable and the
+scratch slice is selected by its ZFS label. The receipt checker binds the build
+ID, pool GUID, stock `unix` digest and raw disk. Every module built from
+unchanged objects must match the promoted `45983bb7` digest. Two executions
+produced the identical assembly receipt; the raw disks differ in ZFS GUIDs,
+transaction groups, timestamps, the SMF repository and the boot archive. The
+output keeps `native_admission=false` and replaces no promotion.
+
+The formal `native-omnios-transport` and `native-omnios-reset` nested-KVM gates
+consume that candidate. Reset passed in 721.76 seconds: three 204 API responses,
+idle/read/write refusals, original listener reuse and current-CID revalidation.
+Transport passed both clean boots in 761.59 seconds with the complete service
+oracle, the nine echo sizes through 1 MiB, same-boot production restoration and
+loaded viosock/sockvsock file digests equal to the assembly receipt. An earlier
+transport run on the same inputs timed out sending SSH `poweroff`; that
+intermittent shutdown failure is undiagnosed. Wrong-CID injection, DMA/race
+stress, bit-reproducible disks and admission remain open.
 
 Native boot now includes a root-only mounted-root growth helper before MMDS
 identity and network. It verifies both GPT copies/CRCs, exact disk/partition

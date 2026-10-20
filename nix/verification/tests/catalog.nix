@@ -215,8 +215,21 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   native-freebsd-crash-recovery = import ./machines/native-services { pkgs = testPkgs; inherit packages; crash = true; };
   # OmniOS/illumos uses the separately promoted image. The explicit admission
   # opt-in keeps these test receipts scoped to verification; each runner still
-  # emits native_admission=false. Formal OmniOS transport/reset remain absent
-  # because their runners require a non-admitted candidate image plus probe.
+  # emits native_admission=false. Formal OmniOS transport/reset instead use the
+  # non-admitted Nix KVM-assembled candidate, whose test-only manifest binds the
+  # transport token, assembly receipt and raw disk the runners require.
+  native-omnios-transport = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosImageCandidate;
+    osName = "illumos"; transport = true;
+    transportProbe = "${packages.lyra.native.probes}/bin/x86_64-unknown-illumos-overalls-native-transport-probe";
+    transportBuildId = packages.omniosImageCandidate.buildId;
+  };
+  native-omnios-reset = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosImageCandidate;
+    osName = "illumos"; transportReset = true;
+    transportProbe = "${import ./evaluation/native-reset-probes.nix { pkgs = buildPkgs; inherit packages; }}/bin/illumos-reset-probe";
+    transportBuildId = packages.omniosImageCandidate.buildId;
+  };
   native-omnios-services = import ./machines/native-services {
     pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
     osName = "illumos"; allowNativeAdmission = true;

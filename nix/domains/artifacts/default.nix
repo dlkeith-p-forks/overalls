@@ -391,6 +391,14 @@ rec {
     git = (import ./guest/native-git.nix { inherit pkgs; }).illumos;
     source = nativeGuests.mkOmniOSSource;
   };
+  # KVM-backed assembly of that kit inside a pinned stock administration guest.
+  # It is a test-only candidate: catalog selection stays on the promotion.
+  omniosImageCandidate = import ./guest/omnios/assembly.nix {
+    inherit pkgs;
+    kit = omniosImageCandidateKit;
+    source = nativeGuests.mkOmniOSSource;
+    firmware = windowsFirmware.fd;
+  };
   freebsdTransportProbeImage = mkFreeBSDImageCandidate {
     extraRoot = pkgs.runCommand "overalls-freebsd-transport-probe-root" {} ''
       install -D -m 0555 \

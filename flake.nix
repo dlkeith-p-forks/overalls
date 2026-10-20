@@ -86,6 +86,7 @@
         freebsd-kernel-candidate = built.nativeKernels.freebsdCandidate;
         freebsd-image-candidate = built.freebsdImageCandidate;
         omnios-image-candidate-kit = built.omniosImageCandidateKit;
+        omnios-image-candidate = built.omniosImageCandidate;
         freebsd-transport-probe-image = built.freebsdTransportProbeImage;
         native-vsock-core-check = built.nativeKernels.vsockCoreCheck;
         illumos-sdk = built.nativeKernels.illumosToolchain.sysroot;

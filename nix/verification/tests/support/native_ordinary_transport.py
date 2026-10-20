@@ -177,7 +177,77 @@ printf finished > {directory}/state
     return Fixture(directory, expected, mode)
 
 
-def verify(context: runner.BootContext, probe: Path, build_id: str, kernel_sha256: str) -> None:
+TRANSPORT_MODULES = {
+    "viosock": "/kernel/drv/amd64/viosock",
+    "sockvsock": "/kernel/socketmod/amd64/sockvsock",
+}
+SHADOW_MODULE_PATHS = (
+    "/platform/i86pc/kernel/drv/amd64/viosock",
+    "/usr/kernel/drv/amd64/viosock",
+    "/platform/i86pc/kernel/socketmod/amd64/sockvsock",
+    "/usr/kernel/socketmod/amd64/sockvsock",
+)
+
+
+def transport_modules(image: Path) -> dict[str, str]:
+    """Return the assembled viosock/sockvsock digests from the exact receipt."""
+    assembly = reset.document((image / "evidence/assembly-receipt.json").read_bytes())
+    modules = assembly.get("modules")
+    if not isinstance(modules, list):
+        raise ValueError("assembly receipt has no module records")
+    result: dict[str, str] = {}
+    for item in modules:
+        record = reset.mapping(item)
+        name = record.get("name")
+        digest = record.get("sha256")
+        if not isinstance(name, str) or name not in TRANSPORT_MODULES:
+            continue
+        if name in result or not isinstance(digest, str) or not services.valid_hex(digest, 64):
+            raise ValueError("ambiguous or invalid transport module record")
+        result[name] = digest
+    if set(result) != set(TRANSPORT_MODULES):
+        raise ValueError("assembly receipt lacks transport module digests")
+    return result
+
+
+def loaded_modules(context: runner.BootContext, expected: dict[str, str]) -> dict[str, str]:
+    """@cc [owner:ghuntley,label:verification;security] booted-transport-module-identity
+    The running kernel MUST list both viosock and sockvsock as loaded modules,
+    no shadowing copy may exist on the other native module paths, and the sole
+    loadable files MUST equal the assembly receipt digests. This binds loaded
+    module names and their files, not a hash of in-memory kernel text.
+    """
+    listing = (
+        "/usr/sbin/modinfo | /usr/bin/awk "
+        '\'$6 == "viosock" || $6 == "sockvsock" { print "loaded=" $6 }\' | /usr/bin/sort -u'
+    )
+    shadows = " ".join(SHADOW_MODULE_PATHS)
+    digests = "; ".join(
+        f'printf "{name}=%s\\n" "$(/usr/bin/digest -a sha256 {path})"'
+        for name, path in TRANSPORT_MODULES.items()
+    )
+    script = f'set -eu; {listing}; for path in {shadows}; do test ! -e "$path"; done; {digests}'
+    lines = root_command(context, script).decode("ascii").splitlines()
+    loaded = sorted(line.removeprefix("loaded=") for line in lines if line.startswith("loaded="))
+    observed: dict[str, str] = {}
+    for line in lines:
+        name, separator, value = line.partition("=")
+        if separator and name in TRANSPORT_MODULES:
+            observed[name] = value
+    if loaded != sorted(TRANSPORT_MODULES):
+        raise RuntimeError("native transport modules are not both loaded")
+    if observed != expected:
+        raise RuntimeError("loaded native transport module files differ from assembly")
+    return observed
+
+
+def verify(
+    context: runner.BootContext,
+    probe: Path,
+    build_id: str,
+    kernel_sha256: str,
+    modules: dict[str, str],
+) -> None:
     """Replay exact ordinary transport, then restore the same production boot."""
     fixture = launch(context, probe, mode="ordinary")
     deadline = time.monotonic() + 30
@@ -191,8 +261,13 @@ def verify(context: runner.BootContext, probe: Path, build_id: str, kernel_sha25
                 raise RuntimeError("isolated native transport did not become ready") from None
             time.sleep(0.25)
     exchanges = transport.exercise(context.uds, build_id)
+    print("native transport phase=exchanges-verified", flush=True)
     runner.wait_readiness(context.process, context.uds, context.boot)
     services.kernel(context.uds, context.boot, "illumos", kernel_sha256)
+    # Production SSH returns only with the restored listeners; production
+    # agents keep both AF_VSOCK modules loaded for the module identity check.
+    loaded = loaded_modules(context, modules)
+    print("native transport phase=loaded-modules-verified", flush=True)
     completion = root_command(
         context,
         f'set -eu; test "$(/usr/bin/cat {fixture.directory}/state)" = finished; '
@@ -213,6 +288,8 @@ def verify(context: runner.BootContext, probe: Path, build_id: str, kernel_sha25
         "malformed_length_refused": True,
         "disconnected_history_recovered": True,
         "production_same_boot_restored": True,
+        "loaded_transport_modules": loaded,
+        "loaded_module_digests_checked": True,
         "exchanges": [asdict(result) for result in exchanges],
         "native_admission": False,
         "scope": "test-only transport after a complete-service baseline; no reset or DMA acceptance",
@@ -270,6 +347,7 @@ def main() -> None:
     parser.add_argument("--build-id", required=True)
     arguments = parser.parse_args(namespace=Options())
     kernel_sha256 = validate_image(arguments.image, arguments.build_id)
+    modules = transport_modules(arguments.image)
     runner.run(
         arguments.image,
         arguments.vmm,
@@ -278,7 +356,7 @@ def main() -> None:
         arguments.work,
         os_name="illumos",
         verify_boot=lambda context: verify(
-            context, arguments.probe, arguments.build_id, kernel_sha256
+            context, arguments.probe, arguments.build_id, kernel_sha256, modules
         ),
     )
 
