@@ -57,8 +57,8 @@ The following checks passed in the isolated clone:
 
 Marshall's complete `mix precommit` was attempted. After fixing the inventory
 buffer failure, it stops at existing native Mila contract syntax errors in
-`mila-crypto`, `mila-ffi`, `mila-model`, `mila-protocol` and `mila-runtime`. The normal
-Mix test invocation separately stops at duplicate migration version
+`mila-crypto`, `mila-ffi`, `mila-model`, `mila-protocol` and `mila-runtime`. An earlier normal
+Mix test invocation separately stopped at duplicate migration version
 `20261020120000` (SCIM retirement and message boards), and compilation reports the
 existing missing `require Marshall.Events` in message-board cleanup. The owning
 Codex sessions were notified. These are not passing full-suite or Dialyzer results.
@@ -92,3 +92,10 @@ Rust lock property guarantees its generated attempt is actually stale, and the
 Underclass pin advances with its generated chapter-18 package version. These
 reviews do not claim new native-client execution. The HLDD implementation and its
 33-test result are unchanged by these incoming source fixes.
+
+Upstream `1d231757` subsequently fixes that duplicate migration number and repairs
+Redaction domain registration, generated run IDs and declared shard transition
+actions. The five changed source paths (including both sides of the migration
+rename) were reviewed explicitly; the declared workflow and authority remain the
+same. This records the migration-order correction without claiming a passing
+Marshall full-suite run.

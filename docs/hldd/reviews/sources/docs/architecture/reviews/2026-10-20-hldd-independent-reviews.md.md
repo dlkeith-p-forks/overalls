@@ -1,5 +1,5 @@
 ---
-digest: 956dd59ba9773fc0adfcaa87e3e259f1b375f1f06d27d7bcd5f65c6b1102ff06
+digest: 6a09dba2eba86c3f789958b0f5bb0a637c17db6e4c5e7aa70a818525c7b9df59
 disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-Recorded path-specific review of four concurrent upstream changes and the package reference update. The independent HLDD implementation and its 33-test evidence are unchanged.
+Recorded upstream resolution of the previously observed duplicate migration version and reviewed the adjacent Redaction compile fixes without upgrading execution evidence.

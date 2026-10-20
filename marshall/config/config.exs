@@ -199,7 +199,8 @@ config :marshall,
     Marshall.Threads,
     Marshall.Notifications,
     Marshall.Administration,
-    Marshall.Scim
+    Marshall.Scim,
+    Marshall.Redaction
   ],
   capacity_freshness_ms: 5_000,
   pool_busy_grace_ms: 15_000,

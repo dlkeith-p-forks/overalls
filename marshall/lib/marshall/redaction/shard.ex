@@ -33,6 +33,21 @@ defmodule Marshall.Redaction.Shard do
     update :transition do
       accept([:state, :processed, :changed, :skipped, :error])
     end
+
+    update :start do
+      accept([])
+      change(transition_state(:running))
+    end
+
+    update :complete do
+      accept([:processed, :changed, :skipped])
+      change(transition_state(:completed))
+    end
+
+    update :fail do
+      accept([:error])
+      change(transition_state(:failed))
+    end
   end
 
   attributes do
