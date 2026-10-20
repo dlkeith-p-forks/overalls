@@ -129,9 +129,37 @@ defmodule Marshall.Redaction.Coordinator do
   end
 
   defp more_rows?(profile) do
-    event? = from(e in "agent_events", where: fragment("?->>'redaction_profile' IS DISTINCT FROM ?", e.body, ^profile), limit: 1, select: e.id) |> Marshall.Repo.exists?()
-    turn? = from(t in "agent_turns", where: is_nil(t.redaction_profile) or t.redaction_profile != ^profile, limit: 1, select: t.id) |> Marshall.Repo.exists?()
-    command? = from(c in "agent_commands", where: is_nil(c.redaction_profile) or c.redaction_profile != ^profile, limit: 1, select: c.id) |> Marshall.Repo.exists?()
+    event? =
+      from(e in "agent_events",
+        join: t in "agent_threads", on: t.id == e.thread_id,
+        join: r in "agent_roots", on: r.id == t.root_id,
+        join: v in "compute_virtual_machines", on: v.id == r.vm_id,
+        where: v.desired_state in ["paused", "stopped"],
+        where: fragment("?->>'redaction_profile' IS DISTINCT FROM ?", e.body, ^profile),
+        limit: 1, select: e.id
+      )
+      |> Marshall.Repo.exists?()
+
+    turn? =
+      from(t in "agent_turns",
+        join: th in "agent_threads", on: th.id == t.thread_id,
+        join: r in "agent_roots", on: r.id == th.root_id,
+        join: v in "compute_virtual_machines", on: v.id == r.vm_id,
+        where: v.desired_state in ["paused", "stopped"],
+        where: is_nil(t.redaction_profile) or t.redaction_profile != ^profile,
+        limit: 1, select: t.id
+      )
+      |> Marshall.Repo.exists?()
+
+    command? =
+      from(c in "agent_commands",
+        join: r in "agent_roots", on: r.id == c.root_id,
+        join: v in "compute_virtual_machines", on: v.id == r.vm_id,
+        where: v.desired_state in ["paused", "stopped"],
+        where: is_nil(c.redaction_profile) or c.redaction_profile != ^profile,
+        limit: 1, select: c.id
+      )
+      |> Marshall.Repo.exists?()
     event? or turn? or command?
   end
 
