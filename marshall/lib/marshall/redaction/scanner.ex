@@ -7,25 +7,16 @@ defmodule Marshall.Redaction.Scanner do
   @profile_path Application.app_dir(:marshall, "priv/redaction/profile.json")
   @external_resource @profile_path
 
-  @rules [
-    {"github-token", ~r/\bgh[pousr]_[A-Za-z0-9_]{20,}\b/},
-    {"openai-key", ~r/\bsk-[A-Za-z0-9]{20,}\b/},
-    {"aws-access-key", ~r/\bAKIA[0-9A-Z]{16}\b/},
-    {"private-key",
-     ~r/-----BEGIN(?: [A-Z0-9]+)* PRIVATE KEY-----.*?(?:-----END(?: [A-Z0-9]+)* PRIVATE KEY-----|$)/s},
-    {"jwt", ~r/\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/}
-  ]
-
   @spec profile_digest() :: String.t()
   def profile_digest do
     profile = File.read!(@profile_path)
-    :crypto.hash(:sha256, profile <> inspect(@rules)) |> Base.encode16(case: :lower)
+    :crypto.hash(:sha256, profile) |> Base.encode16(case: :lower)
   end
 
   @spec redact(String.t()) :: result()
   def redact(value) when is_binary(value) do
     {redacted, counts} =
-      Enum.reduce(@rules, {value, %{}}, fn {rule, regex}, {text, found} ->
+      Enum.reduce(rules(), {value, %{}}, fn {rule, regex}, {text, found} ->
         count = length(Regex.scan(regex, text))
         next = Regex.replace(regex, text, "[REDACTED:#{rule}]")
         {next, if(count == 0, do: found, else: Map.update(found, rule, count, &(&1 + count)))}
@@ -35,6 +26,29 @@ defmodule Marshall.Redaction.Scanner do
       value: redacted,
       findings: Enum.map(counts, fn {rule, count} -> %{rule: rule, count: count} end)
     }
+  end
+
+  @spec rules() :: [{String.t(), Regex.t()}]
+  defp rules do
+    case :persistent_term.get({__MODULE__, :rules}, :missing) do
+      :missing ->
+        loaded =
+          @profile_path
+          |> File.read!()
+          |> Jason.decode!()
+          |> Map.fetch!("rules")
+          |> Enum.flat_map(fn %{"id" => id, "pattern" => pattern} ->
+            case Regex.compile(pattern, "s") do
+              {:ok, regex} -> [{id, regex}]
+              {:error, _} -> []
+            end
+          end)
+
+        :persistent_term.put({__MODULE__, :rules}, loaded)
+        loaded
+
+      loaded -> loaded
+    end
   end
 
   @spec redact_json(term()) :: {term(), [finding()]}
