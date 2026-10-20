@@ -1,5 +1,11 @@
 # Architecture decision records
 
+[ADR-0243](0243-native-guest-durability-verification.md) makes a native flush
+receipt mean durable across host power loss under Lilly's Writeback drives,
+adds a FreeBSD device cache flush after UFS resume, and verifies interrupted
+root growth, dm-log-writes power-cut replay and two-host relocation for
+FreeBSD and OmniOS without admission or orchestration claims.
+
 [ADR-0241](0241-sops-tailscale-auto-join.md) delivers a shared Tailscale
 authentication key through SOPS so enrolled hosts join the tailnet
 automatically; base systems still join by explicit operator action.
@@ -1012,3 +1018,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0239](0239-salopettes-joins-panterloons-tunnel.md) | accepted | partial | Salopettes joins the Panterloons tunnel |
 | [ADR-0240](0240-account-machine-creation-presets.md) | accepted | partial | Three account machine creation presets |
 | [ADR-0241](0241-sops-tailscale-auto-join.md) | accepted | partial | SOPS-delivered automatic Tailscale joining |
+| [ADR-0243](0243-native-guest-durability-verification.md) | accepted | partial | Native guest durability across interrupted growth, host power loss and relocation |

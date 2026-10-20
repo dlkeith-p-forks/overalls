@@ -1177,7 +1177,7 @@ image while `illumos` is the protocol family.
 | Execution | Lilly repeats image admission before fresh launch, then requires current placement, epoch, boot challenge, kernel attestation and readiness. |
 | Isolation | Jailer, per-TAP/router policy and ZFS boundaries remain. The native policy evidence uses a Linux sibling sink and does not prove direct native-peer or physical isolation. |
 | Storage | Promotion hashes actual disk/firmware and five scenario evidence sets before writing the manifest. Cache input is bound by recursive NAR hash; missing publication fails closed. |
-| Recovery | Exact FreeBSD and OmniOS same-disk SIGKILL evidence retains its scope; native physical power loss, relocation and fleet recovery remain separate. Retained stock records remain readable with false capabilities. |
+| Recovery | Exact FreeBSD and OmniOS same-disk SIGKILL evidence retains its scope. Separate ADR-0243 native tests cover interrupted growth, dm-log-writes host power-cut replay and two-host ZFS relocation; the promoted FreeBSD image predates the required device cache flush. Physical media and fleet recovery remain separate. Retained stock records remain readable with false capabilities. |
 
 The [activation review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md)
 records the sealed artifact and publication boundary. Current rebuilt native
@@ -1223,7 +1223,8 @@ invalid resets injected through the driver's configuration-change path, during
 live receive traffic, fenced the socket domain: the blocked reader woke, new
 sockets failed with `ENXIO` and the host could not reconnect. Production kernels
 carry neither injection OID. OmniOS wrong-CID injection, malformed DMA, valid
-reset events racing traffic, native crash durability and broader isolation evidence
+reset events racing traffic, physical-media durability beyond the ADR-0243
+host power-cut, growth and relocation tests, and broader isolation evidence
 remain gaps; scoped growth/recovery and IPv4/router/TAP results are recorded
 separately below. The
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md)
@@ -1295,6 +1296,22 @@ three withheld-readiness probes and same-boot restoration, as well as SIGKILL
 and same-disk recovery. Those receipts remain distinct from the earlier failed
 candidate. Neither fixture establishes physical stable-media/host power-loss
 durability or fleet recovery.
+
+[ADR-0243](repo:docs/architecture/decisions/0243-native-guest-durability-verification.md)
+makes a flush receipt mean durable across host power loss under Lilly's
+Writeback drives. Its power-loss test places the host ZFS pool on
+`dm-log-writes`, kills the VMM, marks the journal and boots only the replayed
+prefix, so unflushed host and virtual-device writes are discarded. A pre-fix
+FreeBSD candidate passed fsck yet lost its acknowledged marker because UFS sends
+no device cache flush; the agent now refuses a receipt unless `DIOCGFLUSH`
+succeeds. The corrected FreeBSD candidate and promoted OmniOS image each passed
+power-cut replay with exact acknowledged bytes and a lost host canary, while
+pre-cut flush, workspace and terminal authority was refused. Relocation by ZFS
+send/receive booted under a new placement and refused the source placement's
+authority. Interrupted growth recovered a consistent root after VMM SIGKILL at
+traced growth writes. These are nested-KVM fixtures only: they exercise no
+physical disk cache, no Lilly transfer or Marshall relocation, no live-source
+split brain and only one kill point per growth stage.
 
 A separate test-only FreeBSD probe passed one actual Firecracker pause,
 full-snapshot and resume transport event. An idle socket with no peer lost its

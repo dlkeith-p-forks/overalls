@@ -142,7 +142,10 @@ rows remain all false. A separate exact-image registry and immutable promotion
 paths activate only the reviewed FreeBSD and exact OmniOS images' readiness, trust, terminal,
 workspace, flush, SSH and agent controls; editor and Inception remain false.
 Retained stock images, altered identities and unreviewed OmniOS candidates
-refuse new admission. The selected OmniOS fleet aliases now point to the exact
+refuse new admission.
+[ADR-0243](decisions/0243-native-guest-durability-verification.md) requires
+flush receipts to survive host power loss and records native interrupted-growth,
+power-cut replay and relocation evidence. The selected OmniOS fleet aliases now point to the exact
 immutable promotion; candidate constructors retain their false admission flags.
 A separate [cross-platform editor review](reviews/2026-10-18-cross-platform-editor-status.md)
 keeps the editor capability Linux-only and records the missing current-revision

@@ -710,6 +710,17 @@ transport run on the same inputs failed at `shutdown-send` with
 `subprocess-timeout`, matching the unexplained `679f5f8b` isolation failure above.
 Exact hashes are in the [matrix review](../reviews/2026-10-18-guest-os-matrix.md).
 
+[ADR-0243](0243-native-guest-durability-verification.md) adds native durability
+evidence beyond same-host SIGKILL. The promoted OmniOS `omniosGuest` image passed
+interrupted growth, dm-log-writes power-cut replay and two-host ZFS relocation.
+A pre-fix FreeBSD candidate lost an acknowledged marker after the power-cut
+replay because UFS never flushes the virtio write cache. The FreeBSD agent now
+sends `DIOCGFLUSH` before a flush receipt, and the corrected candidate passed
+all three scenarios. The currently promoted FreeBSD image predates that fix and
+is not durability-qualified; promotion of a fixed image remains a separate
+obligation under this decision. The [matrix review](../reviews/2026-10-18-guest-os-matrix.md)
+records the receipts.
+
 ## Open questions
 
 - Which further signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is
@@ -739,4 +750,5 @@ Exact hashes are in the [matrix review](../reviews/2026-10-18-guest-os-matrix.md
 - [ADR-0011](0011-nixos-guest-and-console.md), [ADR-0068](0068-nix-built-ubuntu-guests.md): existing Linux image contracts.
 - [ADR-0113](0113-guest-trust-at-boot.md), [ADR-0154](0154-guest-boot-profile.md): boot-bound guest evidence.
 - [ADR-0146](0146-standby-guest-disks.md), [ADR-0159](0159-remove-legacy-compatibility.md): standby and convergence ordering.
+- [ADR-0243](0243-native-guest-durability-verification.md): native flush durability, interrupted growth, power loss and relocation evidence.
 - [ADR-0169](0169-firmware-booted-windows-guests.md), [ADR-0170](0170-lilly-firmware-guest-launch.md), [ADR-0171](0171-windows-guest-agents.md), [ADR-0173](0173-windows-images-winget-desktop-experience.md): Windows decisions.
