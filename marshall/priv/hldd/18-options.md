@@ -503,9 +503,39 @@ Default: Required when its service or enclosing record is selected.
 
 Explicit local IPv4 destination address; never a wildcard.
 
-Type: `string matching the pattern [0-9]{1,3}(\.[0-9]{1,3}){3}`.
+Type: `null or string matching the pattern [0-9]{1,3}(\.[0-9]{1,3}){3}`.
 
-Default: Required when its service or enclosing record is selected.
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetFirewall.publicServices.<name>.addressFile`
+
+Runtime file holding the explicit local IPv4 destination, for addresses kept out of the repository (for example a decrypted SOPS bundle). Requires the iptables backend.
+
+Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetFirewall.publicServices.<name>.addressUnit`
+
+Unit that publishes addressFile; the listener rules follow it.
+
+Type: `null or string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+null
+```
 
 
 ## `overalls.fleetFirewall.publicServices.<name>.comment`
@@ -779,6 +809,69 @@ Default:
 
 ```nix
 [ ]
+```
+
+
+## `overalls.publicAddress.enable`
+
+Whether to enable a host public address delivered through SOPS instead of the repository.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+Example:
+
+```nix
+true
+```
+
+
+## `overalls.publicAddress.encryptedFile`
+
+Host-bound SOPS document with PUBLIC_IPV4 and PUBLIC_IPV6 (address/prefix) under project overalls-public-address.
+
+Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.publicAddress.ipv4File`
+
+Runtime file holding the decrypted IPv4 address, for destination-scoped listeners.
+
+Type: `string`.
+
+Default:
+
+```nix
+"/run/overalls-secrets/public-address/ipv4"
+```
+
+
+## `overalls.publicAddress.network`
+
+systemd-networkd network (without .network) that receives the IPv6 address.
+
+Type: `string matching the pattern [A-Za-z0-9][A-Za-z0-9_.-]{0,63}`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.publicAddress.unit`
+
+Unit after which the runtime addresses are validated and applied.
+
+Type: `string`.
+
+Default:
+
+```nix
+"overalls-public-address.service"
 ```
 
 
@@ -8559,7 +8652,7 @@ Type: `package`.
 Default:
 
 ```nix
-<derivation underclass-0.1.0-7169223>
+<derivation underclass-0.1.0-dbaf7b8>
 ```
 
 

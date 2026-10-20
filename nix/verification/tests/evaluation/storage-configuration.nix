@@ -2,8 +2,8 @@
 let
   lib = pkgs.lib;
   checks = lib.mapAttrs (name: machine:
-    let c = machine.config; mirror = lib.hasPrefix "hetzner" name;
-      pool = c.disko.devices.zpool.${if mirror then "zroot" else "guests"};
+    let c = machine.config; mirror = lib.hasPrefix "hetzner" name; cloud = lib.hasPrefix "hcloud" name;
+      pool = c.disko.devices.zpool.${if mirror || cloud then "zroot" else "guests"};
     in lib.all (a: a.assertion) c.assertions
       && c.boot.loader.grub.devices == []
       && builtins.length c.boot.loader.grub.mirroredBoots == (if mirror then 2 else 1)
@@ -13,6 +13,10 @@ let
       && pool.rootFsOptions.reservation == "none"
       && pool.rootFsOptions.refreservation == "none"
       && (if mirror then pool.mode == "mirror" && pool.datasets.lilly.options.quota == "536870912"
+          # hcloud-single-zfs-root: one disk, a ZFS root and no guest dataset.
+          else if cloud then pool.mode == "" && pool.datasets ? root && !(pool.datasets ? lilly)
+            && c.fileSystems."/".fsType == "zfs" && c.fileSystems."/".device == "zroot/root"
+            && !(c.fileSystems ? "/var/lib/lilly/pool") && !(builtins.elem "ena" c.boot.kernelModules)
           else pool.mode == "" && !(pool.datasets.lilly.options ? quota) && c.fileSystems."/".fsType == "ext4")
       && !c.services.marshall.enable && !c.services.lilly.enable && !c.services.overallsAutoUpdate.enable
       && !c.services.cloud-init.enable && !c.services.amazon-ssm-agent.enable
@@ -26,7 +30,7 @@ let
       && lib.any (package: lib.getName package == "jq") c.environment.systemPackages
       && lib.any (package: lib.getName package == "direnv") c.environment.systemPackages
       && lib.any (package: lib.getName package == "devenv") c.environment.systemPackages
-      && builtins.elem "nofail" c.fileSystems."/var/lib/lilly/pool".options
+      && (cloud || builtins.elem "nofail" c.fileSystems."/var/lib/lilly/pool".options)
       && !(c.systemd.services ? disko)
   ) fixtures;
 in

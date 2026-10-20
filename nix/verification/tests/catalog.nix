@@ -112,6 +112,8 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   # the OCI image. Susan is deployed independently of every Marshall.
   susan-service = import ./machines/susan-service service;
   susan-secrets = import ./machines/susan-secrets service;
+  # SOPS-delivered public addresses and runtime firewall listeners (ADR-0231).
+  public-address = import ./machines/public-address service;
   susan-image = import ./machines/susan-image { pkgs = testPkgs; inherit packages; };
   porsche-crash-dumps = import ./machines/porsche-crash-dumps service;
   administrative-ssh = import ./machines/administrative-ssh service;

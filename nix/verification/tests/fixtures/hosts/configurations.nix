@@ -12,14 +12,14 @@ let
       # declared identities onto the image builder's private virtual devices.
 
       disko.devices.disk = lib.mkMerge [
-        (lib.genAttrs (if platform == "hetzner" then [ "system0" "system1" ] else [ "system0" "local1" "local2" ]) (_: { imageSize = "12G"; }))
+        (lib.genAttrs (if platform == "hetzner" then [ "system0" "system1" ] else if platform == "hcloud" then [ "system0" ] else [ "system0" "local1" "local2" ]) (_: { imageSize = "12G"; }))
         { system0.device = lib.mkForce "/dev/vda"; }
         (lib.optionalAttrs (platform == "hetzner") { system1.device = lib.mkForce "/dev/vdb"; })
         (lib.optionalAttrs (platform == "ec2") { local1.device = lib.mkForce "/dev/vdb"; local2.device = lib.mkForce "/dev/vdc"; })
       ];
       system.build.overallsTestImages = lib.overrideDerivation config.system.build.diskoImages (previous: {
         buildCommand = previous.buildCommand + ''
-          ${config.boot.zfs.package}/bin/zpool export ${if platform == "hetzner" then "zroot" else "guests"}
+          ${config.boot.zfs.package}/bin/zpool export ${if platform == "ec2" then "guests" else "zroot"}
         '';
       });
     }) ];
@@ -29,4 +29,6 @@ in {
   hetzner-bios = make "hetzner" "bios";
   ec2-uefi = make "ec2" "uefi";
   ec2-bios = make "ec2" "bios";
+  hcloud-uefi = make "hcloud" "uefi";
+  hcloud-bios = make "hcloud" "bios";
 }

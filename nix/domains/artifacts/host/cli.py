@@ -20,6 +20,7 @@ from remote import Binding, Facts, Identity, Inventory, StorageFacts
 
 REPOSITORY = "ssh://git@github.com/ghuntley/overalls"
 REMOTE = Path(__file__).with_name("remote.py")
+PLATFORMS = ("hetzner", "ec2", "hcloud")
 
 
 class Failure(Exception):
@@ -188,11 +189,7 @@ def probe[T](
 
 def validate(h: Host) -> Host:
     safe_name(h["name"])
-    if (
-        not h["reviewed"]
-        or h["platform"] not in ("hetzner", "ec2")
-        or h["firmware"] not in ("bios", "uefi")
-    ):
+    if not h["reviewed"] or h["platform"] not in PLATFORMS or h["firmware"] not in ("bios", "uefi"):
         raise Failure("Review platform, firmware and network before planning")
     if h["inventory"]["arch"] != "x86_64" or not h["inventory"]["machine"] or not h["network"]:
         raise Failure("Reviewed x86_64 hardware and networking required")
@@ -201,9 +198,13 @@ def validate(h: Host) -> Host:
         or h["identity"]["hostId"] == "00000000"
     ):
         raise Failure("Explicit nonzero ZFS host ID required")
-    if set(h["budgets"]) != {"guestMemoryMiB", "guestCpuCores", "arcMaxMiB"} or any(
-        type(h["budgets"][k]) is not int or h["budgets"][k] <= 0
-        for k in ("guestMemoryMiB", "guestCpuCores", "arcMaxMiB")
+    budgets = (
+        {"arcMaxMiB"}
+        if h["platform"] == "hcloud"
+        else {"guestMemoryMiB", "guestCpuCores", "arcMaxMiB"}
+    )
+    if set(h["budgets"]) != budgets or any(
+        type(h["budgets"][k]) is not int or h["budgets"][k] <= 0 for k in budgets
     ):
         raise Failure("Explicit positive production resource budgets required")
     disks = {d["id"]: d for d in h["inventory"]["disks"]}
@@ -230,6 +231,17 @@ def validate(h: Host) -> Host:
             or h["storage"]["quotaBytes"] <= 0
         ):
             raise Failure("Hetzner requires two system disks and a reviewed guest quota")
+    elif h["platform"] == "hcloud":
+        # @cc [owner:ghuntley,label:deployment;capacity] hcloud-single-zfs-root
+        # A Hetzner Cloud host MUST select exactly one system disk, no guest
+        # disks, no guest quota and no Lilly role.
+        if (
+            len(system) != 1
+            or guests
+            or h["storage"]["quotaBytes"] not in (None, 0)
+            or "lilly" in h
+        ):
+            raise Failure("Hetzner Cloud requires one system disk and no guest storage or Lilly")
     elif (
         any(d["kind"] not in ("ebs", "local-nvme") for d in disks.values())
         or len(system) != 1
@@ -295,6 +307,16 @@ def write_new(path: str, value: object) -> None:
         stream.write("\n")
 
 
+def default_routes(routes: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Keep only each default route's interface, without addresses."""
+    kept: list[dict[str, object]] = []
+    for route in routes:
+        entry: dict[str, object] = {"dev": route.get("dev"), "dst": "default"}
+        if route.get("dst") == "default" and entry not in kept:
+            kept.append(entry)
+    return kept
+
+
 def discover(args: argparse.Namespace) -> None:
     facts: Facts = probe(args)
     disks = facts["inventory"]["disks"]
@@ -304,18 +326,30 @@ def discover(args: argparse.Namespace) -> None:
     for nic in facts["addresses"]:
         if nic["ifname"] == "lo" or not nic.get("address"):
             continue
-        network["10-" + nic["ifname"]] = {
-            "matchConfig": {"MACAddress": nic["address"]},
-            "networkConfig": {"DHCP": "yes"}
-            if args.platform == "ec2"
-            else {
+        entry: dict[str, object] = {"matchConfig": {"MACAddress": nic["address"]}}
+        if args.platform == "ec2":
+            entry["networkConfig"] = {"DHCP": "yes"}
+        elif args.platform == "hcloud":
+            # @cc [owner:ghuntley,label:security;deployment] hcloud-addresses-outside-repository
+            # Hetzner Cloud candidates MUST NOT carry address literals: IPv4
+            # comes from the provider's DHCP and the IPv6 address from the
+            # host's SOPS document (public-address-from-sops). Only the
+            # provider's fixed IPv6 gateway is proposed for review.
+            entry["networkConfig"] = {
+                "DHCP": "ipv4",
+                "IPv6AcceptRA": False,
+                "LinkLocalAddressing": "ipv6",
+            }
+            entry["routes"] = [{"Destination": "::/0", "Gateway": "fe80::1", "GatewayOnLink": True}]
+        else:
+            entry["networkConfig"] = {
                 "Address": [
                     f"{a['local']}/{a['prefixlen']}"
                     for a in nic["addr_info"]
                     if a["scope"] == "global"
                 ]
-            },
-        }
+            }
+        network["10-" + nic["ifname"]] = entry
     candidate: dict[str, object] = {
         "name": safe_name(args.name),
         "reviewed": False,
@@ -330,14 +364,21 @@ def discover(args: argparse.Namespace) -> None:
             "quotaBytes": None,
             "ashift": 12,
         },
-        "budgets": {
+        "budgets": {"arcMaxMiB": None}
+        if args.platform == "hcloud"
+        else {
             "guestMemoryMiB": None,
             "guestCpuCores": None,
             "arcMaxMiB": None,
         },
         "git": {"repository": REPOSITORY, "knownHosts": ""},
         "credentials": [],
-        "discovery": {"sourceKey": facts["hostKey"], "routes": facts["routes"]},
+        "discovery": {
+            "sourceKey": facts["hostKey"],
+            "routes": default_routes(facts["routes"])
+            if args.platform == "hcloud"
+            else facts["routes"],
+        },
     }
     write_new(args.output, candidate)
 
@@ -421,10 +462,20 @@ def anywhere(args: argparse.Namespace, plan: Plan, phases: str, target: str) -> 
             plan["system"],
             "--kexec",
             plan["kexec"],
+            *kexec_flags(plan["host"]),
             "--phases",
             phases,
         ]
     )
+
+
+def kexec_flags(host: Host) -> list[str]:
+    """@cc [owner:ghuntley,label:deployment] hcloud-legacy-kexec-syscall
+    Hetzner Cloud images refuse kexec_file_load for the unsigned installer
+    kernel (EADDRNOTAVAIL), so hcloud installs MUST force the kexec_load
+    syscall. Other platforms keep the installer's automatic selection.
+    """
+    return ["--kexec-extra-flags", "--kexec-syscall"] if host["platform"] == "hcloud" else []
 
 
 # @cc [owner:ghuntley,label:security] installation-transport-binding
@@ -658,7 +709,7 @@ def main() -> int:
         if name in ("plan", "discover"):
             p.add_argument("--output", required=True)
         if name == "discover":
-            p.add_argument("--platform", choices=("hetzner", "ec2"), required=True)
+            p.add_argument("--platform", choices=PLATFORMS, required=True)
             p.add_argument("--name", required=True)
         if name == "install":
             p.add_argument("--plan", required=True)

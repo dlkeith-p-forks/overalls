@@ -70,7 +70,21 @@ network inventory before publishing `fleet/hosts/example/host.json`. Select disk
 by stable IDs, firmware, a persistent nonzero host ID, budgets, public Git trust,
 and `reviewed = true`. Hetzner uses mirrored system disks; EC2 separates persistent
 EBS system state from local NVMe guest storage. Local NVMe loss is guest data loss
-unless a usable backup exists.
+unless a usable backup exists. `--platform hcloud` (ADR-0231) describes a Hetzner
+Cloud virtual server: one system disk with a ZFS `zroot/root` root, no guest
+storage, quota or Lilly, only the `arcMaxMiB` budget, and no KVM probe in the
+guard or storage receipt. Its declaration holds no address literals
+(ADR-0232): IPv4 comes from DHCP, and the profile refuses static addresses.
+Discovery proposes DHCP, the `fe80::1` IPv6 gateway and only each default
+route's interface. `overalls.publicAddress` decrypts a host-bound SOPS document
+holding the public IPv4 and IPv6 addresses, validates both, and applies the IPv6
+address as a runtime networkd drop-in under `/run`. Fleet firewall public
+services may name that runtime IPv4 file (`addressFile`). Then a static jump
+leads to a dedicated chain, which admits nothing until a unit has validated the
+address and filled it. Firewall reloads keep it, rotation replaces it, and a
+malformed document leaves it empty; this variant requires the iptables backend.
+The `public-address` machine test covers these paths.
+Salopettes, the Susan host, is the only `hcloud` host.
 
 Generate a plan for the exact published revision:
 

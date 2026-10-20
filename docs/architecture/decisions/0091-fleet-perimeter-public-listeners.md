@@ -106,3 +106,5 @@ Amends [ADR-0075](0075-fleet-overlay-and-source-access.md).
 listeners this exception serves; [ADR-0085](0085-inception-public-ingress.md)
 extends them to nested ingress; [ADR-0090](0090-second-audi-dns-replica-on-worker.md)
 places the second DNS replica.
+[ADR-0232](0232-sops-delivered-public-host-addresses.md) amends this record
+with listeners whose destination address is SOPS-delivered runtime data.

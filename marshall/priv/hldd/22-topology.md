@@ -388,6 +388,7 @@ ports; they do not enumerate every systemd unit or firewall rule.
 | --- | --- |
 | `overalls` | Control plane and worker: one Marshall instance, local PostgreSQL, public web proxy, Porsche and Enrico, plus provisioner and guest services, diagnostic log store, Prometheus, Tempo and loopback Grafana behind an authenticated public HTTPS frontend on port 3443. Loss of this host removes the declared control-plane authority and both central telemetry query paths; collection on the worker remains independent. |
 | `dungarees` | Worker using Overalls authority, with its own Lilly, guest storage, private services and OpenTelemetry collector; also a public Audi gateway and DNS replica. It deliberately has no Marshall, PostgreSQL, web proxy, Porsche or central telemetry store. |
+| `salopettes` | Hetzner Cloud `hcloud` host (ADR-0231) running only the Susan push relay, its local PostgreSQL and an nginx TLS proxy for `notifications.overalls.dev`. It has no KVM, Lilly, Marshall, Porsche or Audi and holds no fleet authority: Marshall reaches it only as a public HTTPS client, so its loss delays needs-input pokes, which Marshall retries and expires, but affects no guest, session or control-plane state. |
 
 ## Authority and interactions
 
@@ -460,6 +461,12 @@ management SSH port 22; administrative OpenSSH uses 2222. Audi and DNS bind
 separate public addresses on each host. Enrico is a private quota-bound cache.
 [Dungarees assertions](repo:fleet/hosts/dungarees/configuration.nix) enforce its
 worker-only control-plane configuration.
+[Salopettes assertions](repo:fleet/hosts/salopettes/configuration.nix) enforce
+its Susan-only role. Its public listeners are TCP 80 and 443 at its IPv4
+address, which arrives only through the `salopettes-address` SOPS document
+(ADR-0232). Nginx forwards to Susan's loopback port 4100 without access logs.
+Like the other fleet hosts, it offers a Tailscale exit node once an operator
+joins it to the tailnet.
 
 Only Overalls Marshall receives the dedicated SSH CA private key through an
 encrypted runtime bundle and systemd credential. Porsche, both Audi gateways
@@ -784,6 +791,19 @@ flowchart LR
 ```
 
 Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`. Administrative SSH ports: 2222.
+
+### salopettes
+
+```mermaid
+flowchart LR
+  host["salopettes"]
+  host --> s0["overallsAutoUpdate"]
+  host --> s1["overallsFleetExporter"]
+  host --> s2["postgresql"]
+  host --> s3["susan"]
+```
+
+Arrows mean configured service placement. Configuration: `salopettes`. Marshall instances: none. Fleet address: `disabled`. Fleet peers: none. Administrative SSH ports: 22.
 <!-- hldd:view:end -->
 
 ## Configuration and change procedure
@@ -837,19 +857,24 @@ delays notifications and Mila's watch stream still works while open.
 
 ## Susan placement and fixed egress
 
-Susan is a separate deployment, not a role on fleet hosts. It is either the
-NixOS service [`services.susan`](repo:nix/domains/system/susan.nix) with a local
-PostgreSQL or the OCI image
-[`image-susan`](repo:nix/domains/artifacts/susan-image.nix). The image is
-streamLayeredImage with uid 65532, no shell, a read-only root, tmpfs `/tmp` and
-a fixed creation time. Migrations run as a separate release command. Hosting,
-registry and TLS placement are open (ADR-0224), so no inventory host enables it
-yet and the generated topology has no Susan node.
+Susan is a separate deployment that shares no authority with Marshall hosts.
+ADR-0231 places it alone on the Hetzner Cloud host `salopettes`, as the NixOS
+service [`services.susan`](repo:nix/domains/system/susan.nix) with a local
+PostgreSQL behind an nginx proxy that terminates ACME HTTP-01 TLS for
+`notifications.overalls.dev` ([host role](repo:fleet/hosts/salopettes/configuration.nix)).
+Salopettes is enrolled like every fleet host, so the trunk auto-updater deploys
+Susan, and it decrypts `overalls-susan` with its own host recipient. Its public
+addresses come from the host-bound `salopettes-address` document (ADR-0232); the
+repository holds no address literal for it. The OCI
+image [`image-susan`](repo:nix/domains/artifacts/susan-image.nix) remains a
+packaging artifact with no registry: streamLayeredImage with uid 65532, no
+shell, a read-only root, tmpfs `/tmp` and a fixed creation time. Migrations
+run as a separate release command.
 
 ```mermaid
 flowchart LR
-  Internet["Mila apps and Marshalls"] -->|"HTTPS notifications.overalls.dev"| Proxy["TLS proxy (placement open)"]
-  Proxy -->|"HTTP 127.0.0.1:4100"| Susan["Susan release / container"]
+  Internet["Mila apps and Marshalls"] -->|"HTTPS notifications.overalls.dev"| Proxy["salopettes nginx (ACME TLS)"]
+  Proxy -->|"HTTP 127.0.0.1:4100"| Susan["Susan release on salopettes"]
   Susan --> PG[("Susan PostgreSQL")]
   Susan -->|"HTTPS h2"| APNs["api.push.apple.com / api.sandbox.push.apple.com"]
   Susan -->|"HTTPS"| Google["oauth2.googleapis.com, fcm.googleapis.com"]

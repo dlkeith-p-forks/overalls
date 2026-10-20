@@ -39,7 +39,8 @@ nix run .#host -- discover --platform hetzner --name example \
   --identity /private/operator-key --output /private/example.candidate.json
 ```
 
-Use `--platform ec2` for EC2 bare metal. Discovery writes a new candidate and
+Use `--platform ec2` for EC2 bare metal, or `--platform hcloud` for a Hetzner Cloud
+virtual server (see [Hetzner Cloud hosts](#hetzner-cloud-hosts)). Discovery writes a new candidate and
 refuses to overwrite an existing file. It proposes DHCP for EC2 and interface
 addresses for Hetzner; the original routes are preserved as discovery evidence.
 Review Hetzner gateways, on-link routes, DNS, IPv6 and MAC matches explicitly.
@@ -153,6 +154,32 @@ Updates follow this repository over SSH on `main`, with the existing ten-second
 interval and jitter. Platform, firmware, disk inventory, boot/pool topology and
 persistent identity changes are rejected by ordinary updates. Use deliberate
 maintenance instead of trying to roll such a change through the timer.
+
+## Hetzner Cloud hosts
+
+`hcloud` ([ADR-0231](../architecture/decisions/0231-hetzner-cloud-hosts-and-susan-placement.md))
+is for KVM-less service hosts. A fresh Hetzner Cloud image forces a root password
+change on first login; change it, add the operator public key to root's
+`authorized_keys`, and pin the server's Ed25519 key before discovery. Review:
+
+- `storage.system` names the single disk; `storage.guests` stays empty and
+  `storage.quotaBytes` stays null.
+- `budgets` is exactly `{"arcMaxMiB": N}`; there is no `lilly` section.
+- The proposed network uses `DHCP = "ipv4"`, a default via `fe80::1` for IPv6,
+  and `LinkLocalAddressing = "ipv6"` so that the IPv6 gateway stays reachable.
+  It carries no address literals; the profile refuses them
+  ([ADR-0232](../architecture/decisions/0232-sops-delivered-public-host-addresses.md)).
+- For public addresses, write a private 0600 JSON file outside the checkout:
+  `{"overalls-public-address": {"production": {"PUBLIC_IPV4": "...", "PUBLIC_IPV6": ".../64"}}}`.
+  List `NAME-address` in `credentials`, then run
+  `nix run .#secrets -- encrypt NAME-address --input FILE` once the host key is
+  enrolled. Enable `overalls.publicAddress` and point public listeners at its
+  `ipv4File` and `unit`. To rotate an address, use `encrypt ... --replace`; no
+  code changes.
+
+The guard and the storage receipt skip KVM and bind `zroot/root`. Plan, install,
+enroll and verify are otherwise identical, including the trunk auto-updater.
+[Salopettes](../../fleet/hosts/salopettes/configuration.nix) is the reference role.
 
 ## EC2 storage loss and deliberate recovery
 

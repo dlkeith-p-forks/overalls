@@ -272,12 +272,13 @@ The plaintext marker `PLACEHOLDER_unencrypted` (excluded from encryption by
 SOPS' `_unencrypted` suffix, ignored by SecretSpec) shows this status without
 decryption. Remove it when the real values are installed.
 
-Susan's hosting is still open (ADR-0224) and no host recipient exists, so the
-document is registered **recovery-only** in
-[`secret-documents.nix`](../nix/policy/secrets/secret-documents.nix) and
-encrypted to the recovery recipients alone. No host config enables
-`services.susan`, so nothing points `services.susan.secretsFile` at it yet. To
-deploy Susan:
+Susan runs on the Hetzner Cloud host salopettes (ADR-0231). Its
+[`host.json`](../fleet/hosts/salopettes/host.json) claims the document, so the
+recovery-only entry in
+[`secret-documents.nix`](../nix/policy/secrets/secret-documents.nix) steps aside
+and the document is encrypted to the recovery recipients plus salopettes, whose
+[configuration](../fleet/hosts/salopettes/configuration.nix) points
+`services.susan.secretsFile` at it. To move Susan to another host:
 
 1. Add `{ "name": "overalls-susan", "path": "secrets/overalls-susan.enc.json" }`
    to the chosen host's `host.json` `credentials`. The recovery-only entry steps
@@ -321,3 +322,17 @@ Rotation:
 All values are runtime-only: never put them in Nix expressions, the OCI image or
 logs. The container form mounts the same file names at `/run/secrets/susan`
 (owned by uid 65532, mode 0400).
+
+## Host public addresses
+
+`salopettes-address.enc.json` holds salopettes' public addresses under
+`overalls-public-address.production`: `PUBLIC_IPV4` and `PUBLIC_IPV6`, the latter
+with its prefix ([ADR-0232](../docs/architecture/decisions/0232-sops-delivered-public-host-addresses.md)).
+Its recipients are the recovery users and salopettes. The repository holds no
+address literal for the host; `overalls.publicAddress` validates both values at
+runtime, opens the Susan listener at the IPv4 address and attaches the IPv6
+address. To rotate the addresses, write the new values to a private 0600 file
+outside the checkout and run
+`nix run .#secrets -- encrypt salopettes-address --input FILE --replace`. The
+updater then restarts the bundle and its dependents; a malformed value keeps the
+listener closed.

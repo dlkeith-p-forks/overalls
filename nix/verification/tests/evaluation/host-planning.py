@@ -9,7 +9,7 @@ import unittest
 from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
-from typing import TypedDict, cast
+from typing import NotRequired, TypedDict, cast
 from unittest.mock import patch
 
 import cli  # ty: ignore[unresolved-import] # PYTHONPATH nix/domains/artifacts/host
@@ -51,8 +51,9 @@ class StorageRecord(TypedDict):
 
 
 class BudgetsRecord(TypedDict):
-    guestMemoryMiB: int
-    guestCpuCores: int
+    # Hetzner Cloud hosts declare only the ARC budget (no Lilly guests).
+    guestMemoryMiB: NotRequired[int]
+    guestCpuCores: NotRequired[int]
     arcMaxMiB: int
 
 
@@ -605,13 +606,14 @@ class HostPlanning(unittest.TestCase):
             with patch.object(cli, "run") as run:
                 cli.anywhere(
                     args,
-                    {"install": "install", "system": "system", "kexec": "kexec"},
+                    {"install": "install", "system": "system", "kexec": "kexec", "host": host()},
                     "kexec",
                     args.target,
                 )
             command = run.call_args.args[0]
             self.assertEqual(command[command.index("--ssh-port") + 1], "2222")
             self.assertEqual(command[command.index("--post-kexec-ssh-port") + 1], "22")
+            self.assertNotIn("--kexec-extra-flags", command)
             for invalid in [0, -1, 65536, True, "2222"]:
                 args.ssh_port = invalid
                 with self.assertRaises(cli.Failure):
@@ -719,6 +721,104 @@ class HostPlanning(unittest.TestCase):
             cli.validate(h)
         h["storage"]["quotaBytes"] = 1234
         cli.validate(h)
+
+    def test_hcloud_single_zfs_root_without_guest_storage(self) -> None:
+        def cloud() -> HostRecord:
+            h = host()
+            h["platform"] = "hcloud"
+            h["inventory"]["disks"] = [disk("root", "physical")]
+            h["storage"].update(system=["root"], guests=[], quotaBytes=None)
+            h["budgets"] = {"arcMaxMiB": 512}
+            return h
+
+        cli.validate(cloud())
+        h = cloud()
+        h["storage"]["quotaBytes"] = 0
+        cli.validate(h)
+        h = cloud()
+        h["inventory"]["disks"].append(disk("second", "physical"))
+        h["storage"]["system"] = ["root", "second"]
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        h["inventory"]["disks"].append(disk("local1", "physical"))
+        h["storage"]["guests"] = ["local1"]
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        h["storage"]["quotaBytes"] = 1234
+        with self.assertRaisesRegex(cli.Failure, "one system disk"):
+            cli.validate(h)
+        h = cloud()
+        # A Lilly role is refused on a platform without reviewed KVM.
+        cast("dict[str, object]", h)["lilly"] = {"controlPlane": "https://example.test"}
+        with self.assertRaisesRegex(cli.Failure, "Lilly"):
+            cli.validate(h)
+        h = cloud()
+        h["budgets"] = {"arcMaxMiB": 512, "guestCpuCores": 1, "guestMemoryMiB": 1024}
+        with self.assertRaisesRegex(cli.Failure, "budgets"):
+            cli.validate(h)
+
+    def test_hcloud_discovery_keeps_addresses_out_of_the_candidate(self) -> None:
+        facts = {
+            "inventory": host()["inventory"],
+            "firmware": "uefi",
+            "hostKey": "ssh-ed25519 AAAAfixture",
+            "addresses": [
+                {"ifname": "lo", "address": "00:00:00:00:00:00", "addr_info": []},
+                {
+                    "ifname": "eth0",
+                    "address": "92:00:00:00:00:01",
+                    "addr_info": [
+                        {"local": "192.0.2.7", "prefixlen": 32, "scope": "global"},
+                        {"local": "2001:db8:7::1", "prefixlen": 64, "scope": "global"},
+                    ],
+                },
+            ],
+            "routes": [
+                {"dev": "eth0", "dst": "default", "gateway": "172.31.1.1", "prefsrc": "192.0.2.7"},
+                {"dev": "eth0", "dst": "192.0.2.7", "prefsrc": "192.0.2.7", "type": "local"},
+                {"dev": "eth0", "dst": "2001:db8:7::/64"},
+                {"dev": "eth0", "dst": "default", "gateway": "fe80::1"},
+            ],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "candidate.json"
+            args = SimpleNamespace(platform="hcloud", name="cloudy", output=str(output))
+            with patch.object(cli, "probe", return_value=facts):
+                cli.discover(args)
+            text = output.read_text()
+        candidate = json.loads(text)
+        for literal in ("192.0.2.7", "2001:db8"):
+            self.assertNotIn(literal, text)
+        uplink = candidate["network"]["10-eth0"]
+        self.assertEqual(uplink["networkConfig"]["DHCP"], "ipv4")
+        self.assertNotIn("Address", uplink["networkConfig"])
+        self.assertEqual(candidate["discovery"]["routes"], [{"dev": "eth0", "dst": "default"}])
+
+    def test_hcloud_installer_forces_the_legacy_kexec_syscall(self) -> None:
+        h = host()
+        for platform, flags in (
+            ("hcloud", ["--kexec-extra-flags", "--kexec-syscall"]),
+            ("ec2", []),
+        ):
+            h["platform"] = platform
+            self.assertEqual(cli.kexec_flags(cast("cli.Host", h)), flags)
+
+    def test_hcloud_guard_skips_kvm_but_lilly_platforms_require_it(self) -> None:
+        h = host()
+        for platform, calls in (("hcloud", 0), ("ec2", 1)):
+            h["platform"] = platform
+            with (
+                patch.object(remote, "inventory", return_value=copy.deepcopy(h["inventory"])),
+                patch.object(remote, "firmware", return_value="uefi"),
+                patch.object(remote, "kvm") as probed,
+                patch.object(sys, "argv", ["remote", "guard"]),
+                patch.object(sys, "stdin", __import__("io").StringIO(json.dumps(h))),
+                patch("builtins.print"),
+            ):
+                remote.main()
+            self.assertEqual(probed.call_count, calls)
 
     def test_reordered_devices_match(self) -> None:
         expected = host()["inventory"]

@@ -111,6 +111,14 @@ def kvm() -> None:
         os.close(vm)
 
 
+def guest_platform(host: Declaration) -> bool:
+    """@cc [owner:ghuntley,label:deployment;security] hcloud-no-kvm-no-lilly
+    Hetzner Cloud hosts MUST NOT require KVM and MUST bind their ZFS root
+    dataset instead of a Lilly guest dataset. Every other platform keeps both.
+    """
+    return host["platform"] != "hcloud"
+
+
 def active(node: BlockDevice) -> bool:
     return (
         bool(any(node.get("mountpoints") or []))
@@ -252,15 +260,18 @@ def storage(host: Declaration, root: str = "", binding: Binding | None = None) -
     match(host["inventory"], current)
     if firmware() != host["firmware"]:
         raise ValueError("firmware changed")
-    kvm()
+    guests = guest_platform(host)
+    if guests:
+        kvm()
     if host["platform"] == "ec2" and run(["findmnt", "-n", "-o", "FSTYPE", root or "/"]) != "ext4":
         raise ValueError("EC2 system storage is not ext4")
-    pool = "zroot" if host["platform"] == "hetzner" else "guests"
-    dataset = pool + "/lilly"
+    pool = "guests" if host["platform"] == "ec2" else "zroot"
+    dataset = pool + ("/lilly" if guests else "/root")
+    mount = root + "/var/lib/lilly/pool" if guests else root or "/"
     if run(["zfs", "get", "-H", "-o", "value", "mounted", dataset]) != "yes":
-        raise ValueError("guest dataset not mounted")
-    if run(["findmnt", "-n", "-o", "SOURCE", root + "/var/lib/lilly/pool"]) != dataset:
-        raise ValueError("guest mount identity differs")
+        raise ValueError("bound dataset not mounted")
+    if run(["findmnt", "-n", "-o", "SOURCE", mount]) != dataset:
+        raise ValueError("bound mount identity differs")
     for key, value in (("compression", "lz4"), ("reservation", "0"), ("refreservation", "0")):
         if run(["zfs", "get", "-Hp", "-o", "value", key, dataset]) != value:
             raise ValueError("guest storage policy differs")
@@ -350,7 +361,8 @@ def main() -> None:
         match(host["inventory"], inventory(require_zfs=True), erase=True)
         if host["firmware"] != firmware():
             raise ValueError("firmware changed")
-        kvm()
+        if guest_platform(host):
+            kvm()
         result = {"safe": True}
     elif action == "verify":
         host = json.loads(Path(sys.argv[2]).read_text())
