@@ -11,7 +11,8 @@
       ],
       "gateway": "gateway",
       "hostRoutes": [
-        "panterloonsPrimary"
+        "panterloonsPrimary",
+        "panterloonsService"
       ],
       "network": "10-eth0",
       "prefix": "prefix"

@@ -11,7 +11,8 @@
       ],
       "gateway": "gateway",
       "hostRoutes": [
-        "dungareesPrimary"
+        "dungareesPrimary",
+        "dungareesService"
       ],
       "network": "10-eth0",
       "prefix": "prefix"
