@@ -49,13 +49,13 @@ in {
   };
 
   # @cc [owner:ghuntley,label:security] fleet-tunnel-host-only-ipv4
-  # Fleet transport MUST route only explicitly keyed peer /32 IPv4 addresses.
+  # Fleet transport MUST route only explicitly keyed peer /32 IPv4 addresses; a
+  # control plane alone in its deployment's tunnel has none (ADR-0239).
   # It MUST NOT route guest subnets, forward packets between interfaces, enable
   # IPv6, trust the tunnel interface globally or expose fleet TCP ports outside
   # that interface. Missing private key custody MUST fail tunnel startup.
   config = lib.mkIf cfg.enable {
     assertions = [
-      { assertion = peers != []; message = "Fleet networking requires explicit keyed peers."; }
       { assertion = lib.unique addresses == addresses && !(builtins.elem cfg.address addresses);
         message = "Fleet IPv4 addresses must be unique and exclude the local host."; }
       { assertion = lib.unique keys == keys; message = "Fleet peers must have distinct public keys."; }

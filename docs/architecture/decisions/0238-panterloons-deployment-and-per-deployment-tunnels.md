@@ -1,6 +1,6 @@
-# ADR-0235: Panterloons deployment and per-deployment fleet tunnels
+# ADR-0238: Panterloons deployment and per-deployment fleet tunnels
 
-- ID: ADR-0235
+- ID: ADR-0238
 - Date: 2026-10-20
 - Status: accepted
 - Implementation: partial
@@ -9,6 +9,10 @@
 - Superseded by: none
 
 ## Context
+
+This decision was first published under the number 0235 (commit 644810bd). It
+was renumbered because the Mila desktop work had already reserved that number
+and the next one.
 
 The Dungarees hardware failed and was replaced on 2026-10-20. The operator also
 provisioned Panterloons, a second control-plane host intended to replace
@@ -46,6 +50,8 @@ secrets and an empty database, and Dungarees joins it.
   cutover; the operator accepted one replica for that period. The issuer's
   peer list therefore accepts one to eight distinct peers (previously two to
   eight) in both the Nix module and Marshall's configuration parser.
+  [ADR-0239](0239-salopettes-joins-panterloons-tunnel.md) reverts this bullet
+  and moves Salopettes into the Panterloons tunnel.
 - Public names stay on Overalls until the operator repoints DNS. ADR-0095 still
   applies: no host maps the control origin locally, so Panterloons cannot issue
   public certificates and its clients are refused by Overalls until cutover.
@@ -75,8 +81,6 @@ secrets and an empty database, and Dungarees joins it.
 ## Invariants and verification
 
 - Evaluation asserts that tunnel peers share a deployment.
-- `fleet_acme_test.exs` accepts one and eight peers and refuses zero, nine and
-  duplicate peers.
 - The otel rule evaluation tests cover the default roster and single-host and
   Panterloons rosters.
 - `secrets check` confirms fleet-address recipients; the `fleet-addresses`
@@ -89,9 +93,6 @@ secrets and an empty database, and Dungarees joins it.
   [`allowed-hosts.nix`](../../../nix/policy/network/allowed-hosts.nix).
 - [`otel-fleet/default.nix`](../../../nix/domains/system/otel-fleet/default.nix)
   (`hosts` roster) and the rule files it parameterizes.
-- [`marshall.nix`](../../../nix/domains/system/marshall.nix) and
-  [`fleet_acme_config.ex`](../../../marshall/lib/marshall/ingress/fleet_acme_config.ex)
-  (one to eight wildcard DNS peers).
 - Remaining gaps: Panterloons' roles and secrets, Dungarees' enrollment into
   Panterloons, the Susan origin for Panterloons, automatic Tailscale joining,
   and the DNS cutover are not yet implemented.
@@ -102,6 +103,7 @@ None.
 
 ## Related decisions
 
+Amended by [ADR-0239](0239-salopettes-joins-panterloons-tunnel.md).
 Amends [ADR-0090](0090-second-audi-dns-replica-on-worker.md) (the worker replica
 moves with Dungarees), [ADR-0129](0129-fleet-otel-slos.md) (per-deployment
 roster) and [ADR-0233](0233-fleet-addresses-from-sops.md) (new address names).

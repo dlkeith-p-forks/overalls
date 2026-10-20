@@ -187,6 +187,8 @@ it is offline.
 
 ## Related decisions
 
+[ADR-0239](0239-salopettes-joins-panterloons-tunnel.md) moves Salopettes and
+the Susan fleet path to the Panterloons tunnel.
 [ADR-0234](0234-installer-source-administrative-grant.md) amends the base-system
 case: a base system without this document admits its recorded installer source
 to administrative SSH. Supersedes [ADR-0232](0232-sops-delivered-public-host-addresses.md). Amends

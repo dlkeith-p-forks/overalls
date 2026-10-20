@@ -150,8 +150,8 @@ in
       certificateRootsFile = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
       acceptTerms = true;
       nameservers = [
-        # Dungarees moved to Panterloons; one Audi DNS replica until cutover.
         { addressFile = addresses.files.overallsService; }
+        { addressFile = addresses.files.dungareesService; }
       ];
     };
     poolSize = 10;
@@ -313,7 +313,8 @@ in
   };
 
   services.audi = {
-    relay.enable = true;
+    # Overalls is alone in its tunnel (ADR-0239); no gateway peer can relay.
+    relay.enable = false;
     enable = true;
     hostId = config.services.lilly.hostId;
     controlPlane = "https://ghuntley.dev:5443";

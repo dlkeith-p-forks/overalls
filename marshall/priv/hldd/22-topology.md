@@ -757,7 +757,7 @@ flowchart LR
   host --> s69["ziggySloExporter"]
 ```
 
-Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `salopettes`. Administrative SSH ports: 2222.
+Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: none. Administrative SSH ports: 2222.
 
 ### panterloons
 
@@ -780,7 +780,7 @@ flowchart LR
   host --> s3["susan"]
 ```
 
-Arrows mean configured service placement. Configuration: `salopettes`. Marshall instances: none. Fleet address: `10.90.0.3`. Fleet peers: `overalls`. Administrative SSH ports: 22.
+Arrows mean configured service placement. Configuration: `salopettes`. Marshall instances: none. Fleet address: `10.90.0.3`. Fleet peers: `panterloons`. Administrative SSH ports: 22.
 <!-- hldd:view:end -->
 
 ## Configuration and change procedure
