@@ -93,8 +93,9 @@ narrowest relaxation that does so.
   passed", so its final `assert not self.browser_errors` held, including the
   binary-sequence and sixel replay stage. On trunk's `script-src 'self'` the
   same subtest failed that assertion with 55 `wasm` page errors.
-- Remaining gap: a complete `porsche-fleet` run under the amended policy is not
-  yet recorded.
+- The complete `porsche-fleet` NixOS machine test passed on trunk `1fc0fbbb`
+  (all 22 subtests, script 2600.6 s), including the same terminal v2 subtest
+  (301.6 s) with no browser errors.
 
 ## Open questions
 
