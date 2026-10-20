@@ -9,7 +9,8 @@ let
     "porsche" "audi" "audiDns" "audiPrivate" "brady" "ziggy" "galileo"
     "enrico" "peach" "susan" "underclass" "overallsFleetExporter" "overallsBackups" "overallsAutoUpdate"
     "overallsLogging" "overallsLogStore" "overallsOtelGuest" "overallsOtelFleet"
-    "opentelemetry-collector" "prometheus" "tempo" "grafana" ];
+    "opentelemetry-collector" "prometheus" "tempo" "grafana"
+    "tribuchet-hub" "tribuchet-worker" "nix-grpc-daemon" ];
 in map (name:
   let
     enrolled = builtins.hasAttr name flake.nixosConfigurations;

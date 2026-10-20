@@ -887,6 +887,12 @@ peers remain pinned, restricted SSH caches, while every host builds locally
 because reciprocal build delegation deadlocked concurrent host updates. See the
 [review addendum](reviews/2026-09-18-remote-builders.md) for the incident and
 rollout evidence.
+[ADR-0248](decisions/0248-fleet-build-scheduling.md) supersedes it for Panterloons
+and Dungarees: Panterloons' nix-daemon sends builds to a tribuchet hub that
+schedules them onto workers on both hosts, Dungarees delegates through
+Panterloons' mTLS `grpc://` store, and the pair substitute from each other over
+`grpc://`. Other hosts remain cache-only. See the
+[fleet build scheduling review](reviews/2026-10-20-fleet-build-scheduling.md).
 
 The [Dungarees deployment review](reviews/2026-09-18-dungarees-provisioning.md)
 records the second physical Lilly worker, mirrored storage, separate enrollment

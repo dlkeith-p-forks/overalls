@@ -96,6 +96,10 @@
       "path": "secrets/panterloons-porsche.enc.json"
     },
     {
+      "name": "panterloons-fleet-builds",
+      "path": "secrets/panterloons-fleet-builds.enc.json"
+    },
+    {
       "name": "panterloons-remote-builders",
       "path": "secrets/panterloons-remote-builders.enc.json"
     },

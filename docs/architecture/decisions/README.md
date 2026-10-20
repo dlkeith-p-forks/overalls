@@ -1,5 +1,10 @@
 # Architecture decision records
 
+[ADR-0248](0248-fleet-build-scheduling.md) makes Panterloons the single
+tribuchet build scheduler for itself and Dungarees, which delegates over a
+`grpc://` store; the two hosts substitute from each other over `grpc://`,
+superseding ADR-0086 for them while other hosts stay cache-only.
+
 [ADR-0247](0247-sops-operator-source-grant.md) restores Geoffrey Huntley's
 operator source as a reviewed fleet-wide grant whose address lives only in the
 fleet-addresses SOPS document.
@@ -923,7 +928,7 @@ investigation from implementation scope on September 18.
 | [ADR-0062](0062-interactive-monitoring-dashboards.md) | superseded | implemented | Interactive monitoring dashboards |
 
 | [ADR-0067](0067-reciprocal-nix-builders.md) | superseded | implemented | Reciprocal Nix builders and authenticated SSH caches |
-| [ADR-0086](0086-reciprocal-nix-caches.md) | accepted | partial | Reciprocal Nix caches without peer build delegation |
+| [ADR-0086](0086-reciprocal-nix-caches.md) | superseded | partial | Reciprocal Nix caches without peer build delegation |
 | [ADR-0085](0085-inception-public-ingress.md) | superseded | partial | IPv4 service separation and public Inception ingress |
 | [ADR-0074](0074-durable-lifecycle-state-machines.md) | superseded | partial | Durable lifecycle state machines and audit |
 
@@ -1048,3 +1053,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0245](0245-underclass-egress-node-tag.md) | accepted | partial | Underclass egress node tag |
 | [ADR-0246](0246-panterloons-control-plane-deployment.md) | accepted | partial | Panterloons control-plane deployment |
 | [ADR-0247](0247-sops-operator-source-grant.md) | accepted | partial | SOPS-held operator source grant |
+| [ADR-0248](0248-fleet-build-scheduling.md) | accepted | partial | Fleet build scheduling through a tribuchet hub and grpc:// stores |

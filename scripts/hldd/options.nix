@@ -4,7 +4,7 @@ let
   lib = flake.inputs.nixpkgs.lib;
   evaluated = lib.nixosSystem {
     system = "x86_64-linux";
-    modules = [ flake.nixosModules.default ];
+    modules = [ flake.nixosModules.default flake.nixosModules.fleetBuilds ];
   };
   entries = lib.optionAttrSetToDocList evaluated.options;
   safely = value: let result = builtins.tryEval (builtins.deepSeq value value);

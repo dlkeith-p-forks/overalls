@@ -210,6 +210,45 @@ a keyed peer disables its builder cache instead of failing evaluation, so the
 other hosts keep updating through the reinstall. The `remote-builders-configuration`
 evaluation case `unkeyed-omitted` checks the omission.
 
+## Fleet build scheduling
+
+Panterloons and Dungarees share one build pool
+([ADR-0248](repo:docs/architecture/decisions/0248-fleet-build-scheduling.md));
+other hosts stay cache-only under ADR-0086. Panterloons is the scheduler: its
+nix-daemon hands every `x86_64-linux` build to a socket-activated tribuchet hub
+(`tribuchet-hub.socket`, tailnet port 7437), which places it on a tribuchet
+worker on either host. Dungarees has one build machine, Panterloons'
+`grpc://` store on tailnet port 50051, so its builds reach the same hub.
+Panterloons configures no build machines and workers never delegate, so a build
+is never forwarded twice. The two hosts substitute from each other over
+`grpc://`; non-participants keep their ssh-ng caches to both.
+
+| Setting | Source |
+| --- | --- |
+| Participants, scheduler, addresses, CPUs | `fleet/fleet-builds.nix`, derived from `fleet/remote-builders.nix` and inventory |
+| Public certificates | `fleet/fleet-builds/*.crt` (tribuchet CA, hub, workers; grpc CA, per-host `build-NAME`) |
+| Private keys | `secrets/NAME-fleet-builds.enc.json`, bundle `fleet-builds` |
+| Module | `nix/domains/system/fleet-builds.nix` (`overalls.fleetBuilds`) |
+
+Operation:
+
+- `curl -s 127.0.0.1:7438/workers` on Panterloons lists connected workers;
+  `/metrics` on the same port exposes queue, slot and build counters.
+- Worker and hub restarts keep running builds (agents own builder processes);
+  `systemctl stop nix-grpc-daemon` drains delegated builds first.
+- With the hub, its workers or Panterloons' grpc daemon unavailable, builds run
+  locally: the hub's patched Nix declines to local execution (the external
+  builder wrapper also declines when the hub socket refuses connections) and
+  Dungarees' build hook falls back to its own daemon. Derivations needing `nested-kvm` are
+  declined by workers and build on Panterloons.
+- Rotation reissues every certificate from new CAs (the issuing CA keys were
+  discarded, and tribuchet has no revocation), then re-encrypts both host
+  documents with `nix run .#secrets -- encrypt NAME-fleet-builds`.
+
+Evaluation check `fleet-builds-configuration` asserts the topology on the real
+host configurations; machine check `fleet-builds` exercises delegation,
+spreading, grpc substitution, refusals and outages on two VMs.
+
 ## Build and activate a release
 
 ```sh

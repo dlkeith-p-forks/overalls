@@ -44,6 +44,10 @@
       "path": "secrets/dungarees-logstore.enc.json"
     },
     {
+      "name": "dungarees-fleet-builds",
+      "path": "secrets/dungarees-fleet-builds.enc.json"
+    },
+    {
       "name": "dungarees-remote-builders",
       "path": "secrets/dungarees-remote-builders.enc.json"
     },

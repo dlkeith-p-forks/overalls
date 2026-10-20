@@ -15,6 +15,12 @@ in {
   options.overalls.remoteBuilders = {
     enable = lib.mkEnableOption "reciprocal pinned SSH caches with restricted machine access";
     localName = mkOption { type = nameType; default = config.networking.hostName; };
+    substitutePeers = mkOption {
+      type = types.listOf nameType;
+      default = lib.attrNames peers;
+      defaultText = lib.literalMD "every registered peer";
+      description = "Peers used as ssh-ng substituters; fleet builds replace some with grpc:// (ADR-0248).";
+    };
     machines = mkOption {
       default = {};
       type = types.attrsOf (types.submodule {
@@ -41,6 +47,7 @@ in {
   # Peer machines MUST stay cache-only: the module MUST NOT delegate derivation
   # builds to fleet peers. Reciprocal build delegation forwards builds between
   # the peers' daemons and deadlocks concurrent host updates; see ADR-0086.
+  # Fleet-build participants delegate only through fleet-builds.nix (ADR-0248).
   config = lib.mkIf cfg.enable {
     assertions = [
       { assertion = !(builtins.hasAttr "nix-ssh" (config.overalls.access.users or {}));
@@ -61,7 +68,8 @@ in {
       settings = {
         require-sigs = true;
         fallback = true;
-        substituters = lib.mapAttrsToList (name: _: "${endpoint name}?trusted=true&ssh-key=${keyFile}&priority=50") peers;
+        substituters = lib.mapAttrsToList (name: _: "${endpoint name}?trusted=true&ssh-key=${keyFile}&priority=50")
+          (lib.filterAttrs (name: _: builtins.elem name cfg.substitutePeers) peers);
       };
       sshServe = {
         enable = true;

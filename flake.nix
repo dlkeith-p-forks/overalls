@@ -20,9 +20,22 @@
       url = "github:nix-community/disko/ff8702b4de27f72b4c78573dfb89ec74e36abdf1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Fleet build scheduling (ADR-0248): host modules and packages follow the
+    # stable NixOS input; crane stays separately locked.
+    tribuchet = {
+      url = "github:Mic92/tribuchet/1a1002096f3c1f6d7b32b3ef9822e542b095a948";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "";
+      inputs.nix-darwin.follows = "";
+    };
+    nix-grpc-store = {
+      url = "github:Mic92/nix-grpc-store/17f4ff97a6fdac3c68458a0f15210762eba261ea";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.niks3.inputs.treefmt-nix.follows = "";
+    };
   };
 
-  outputs = { self, buildNixpkgs, nixpkgs, disko, nixos-images, nix-compact }:
+  outputs = { self, buildNixpkgs, nixpkgs, disko, nixos-images, nix-compact, tribuchet, nix-grpc-store }:
     let
       system = "x86_64-linux";
       pkgs = buildNixpkgs.legacyPackages.${system};
@@ -37,7 +50,7 @@
       hostSystem = name: enrolled: nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { overallsPackages = hostPackages; };
-        modules = [ self.nixosModules.default (import ./nix/platform/hosts/profile.nix {
+        modules = [ self.nixosModules.default self.nixosModules.fleetBuilds (import ./nix/platform/hosts/profile.nix {
           host = inventory.hosts.${name}; diskoModule = disko.nixosModules.disko; inherit enrolled;
         }) ] ++ nixpkgs.lib.optionals (enrolled && builtins.pathExists (./fleet/hosts + "/${name}/configuration.nix"))
           [ (./fleet/hosts + "/${name}/configuration.nix") ];
@@ -153,6 +166,9 @@
 
       nixosModules = {
         default = import ./nix/domains/system/catalog.nix { packages = built; nixCompact = nix-compact; };
+        # Kept out of the default catalog: only flake-built hosts and tests that
+        # pass the locked inputs import tribuchet and nix-grpc-store (ADR-0248).
+        fleetBuilds = import ./nix/domains/system/fleet-builds.nix { inherit tribuchet; nixGrpcStore = nix-grpc-store; };
         services = {
           marshall = import ./nix/domains/system/marshall.nix { packages = built; };
           lilly = import ./nix/domains/system/lilly.nix { packages = built; };
@@ -221,6 +237,11 @@
         nix-compact-native = nix-compact.lib.mkNativeCheck { inherit pkgs; };
         nix-compact-native-host = nix-compact.lib.mkNativeCheck { pkgs = nixpkgs.legacyPackages.${system}; };
         nix-compact-configuration = import ./nix/domains/artifacts/nix-compact/configuration-check.nix { inherit nixpkgs; nixCompact = nix-compact; };
+        fleet-builds-configuration = import ./nix/verification/tests/evaluation/fleet-builds.nix {
+          inherit nixpkgs; pkgs = nixpkgs.legacyPackages.${system};
+          module = self.nixosModules.default; fleetModule = self.nixosModules.fleetBuilds;
+          hosts = self.nixosConfigurations;
+        };
         hldd = pkgs.runCommand "overalls-hldd-check" {
           nativeBuildInputs = [ built.toolchain.elixir ];
           LC_ALL = "C.UTF-8";

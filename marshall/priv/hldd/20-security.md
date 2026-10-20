@@ -935,6 +935,27 @@ chains. A configured CA file must be an absolute regular file or startup is refu
 [runtime configuration](repo:marshall/test/marshall/operations/runtime_config_test.exs)
 unit tests check option selection only; no test presents a chain from a distrusted root.
 
+## Fleet build trust layers
+
+Fleet build scheduling ([ADR-0248](repo:docs/architecture/decisions/0248-fleet-build-scheduling.md))
+is a privileged trust pool between Panterloons and Dungarees.
+
+| Layer | Allowed | Refused |
+| --- | --- | --- |
+| Identity | Tribuchet workers present a leaf from the tribuchet CA; grpc peers present `build-NAME` from a separate grpc CA. | A worker certificate from any other CA fails the hub's mTLS handshake; a grpc certificate cannot register as a worker. |
+| Authorization | Panterloons' grpc daemon grants `build-dungarees` the `trusted` role (unsigned imports, builds); Dungarees grants `build-panterloons` `read-only`. | Any other CN is denied; the read-only peer cannot import unsigned paths. |
+| Transport | Hub 7437 and grpc 50051 are never in `allowedTCPPorts`; only the trusted `tailscale0` interface reaches them, and certificates carry tailnet IP SANs. | Public interfaces drop both ports. |
+| Execution | Tribuchet agents run builds in their own namespaces and per-build cgroups under 65536-uid blocks; workers import inputs as the trusted `tribuchet` daemon user. | Workers never delegate, and the scheduler has no build machines, so builds are not forwarded twice. |
+| Storage | Keys live only in per-host SOPS documents and the root-only `fleet-builds` bundle; the grpc daemon receives its key through `LoadCredential`. | `nobody` cannot read the bundle; CA private keys are not retained. |
+| Recovery | Missing credentials or an unreachable scheduler leave local builds working. | A leaked key cannot be revoked; rotation reissues both CAs. |
+
+Output authenticity rests on the authenticated session: a compromised worker or
+a holder of Dungarees' grpc key can place malicious outputs in Panterloons'
+store, as ADR-0067 already accepted for `nix-ssh`. Global signature checking
+stays enabled for every other substituter. The `fleet-builds` machine check
+exercises the CN, read-only and rogue-CA refusals with fixture CAs on a plain
+VM network; no test runs over the real tailnet.
+
 ## Public HTTP-01 listener
 
 Overalls admits TCP 80 on the proxy address from any source (ADR-0181) so the

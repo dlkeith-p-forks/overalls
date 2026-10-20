@@ -2,13 +2,18 @@
 
 - ID: ADR-0086
 - Date: 2026-09-21
-- Status: accepted
+- Status: superseded
 - Implementation: partial
 - Components: NixOS, fleet access, secret delivery, automatic updates
 - Supersedes: ADR-0067
-- Superseded by: none
+- Superseded by: ADR-0248
 
 ## Context
+
+[ADR-0248](0248-fleet-build-scheduling.md) replaces cache-only operation for
+Panterloons and Dungarees with a single tribuchet scheduler and `grpc://`
+stores, and carries this record forward unchanged for every other host. This
+record retains its rationale and historical implementation evidence.
 
 Fleet automatic updates failed on every candidate after the reciprocal builder
 rollout. Both hosts' updaters build against the same Git branch on the same
@@ -102,6 +107,7 @@ None for the accepted design.
 
 ## Related decisions
 
+[ADR-0248](0248-fleet-build-scheduling.md),
 [ADR-0067](0067-reciprocal-nix-builders.md),
 [ADR-0044](0044-recovery-only-secret-documents.md),
 [ADR-0041](0041-declarative-fleet-users.md),

@@ -38,6 +38,11 @@
     localName = "dungarees";
     machines = import ../../remote-builders.nix { inherit lib; };
   };
+  # Dungarees delegates to the Panterloons hub and serves a worker (ADR-0248).
+  overalls.fleetBuilds = {
+    enable = true;
+    localName = "dungarees";
+  } // import ../../fleet-builds.nix { inherit lib; };
   networking.enableIPv6 = false;
   overalls.tailscale.exitNode = true;
   services.openssh.ports = [ 2222 ];
