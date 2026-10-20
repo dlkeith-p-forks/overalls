@@ -3,6 +3,7 @@
 import argparse
 import copy
 import fcntl
+import ipaddress
 import json
 import os
 import re
@@ -53,7 +54,7 @@ class RegistrationRequest(TypedDict, total=False):
     overhead_memory_bytes: int
     credential_ttl_seconds: int
     pools: list[PoolRequest]
-    transfer_endpoint: str
+    transfer_endpoint: cli.TransferEndpoint
 
 
 class CredentialEnvelope(TypedDict):
@@ -83,7 +84,7 @@ class RegistrationMetadata(TypedDict, total=False):
     name: str
     machine_id: str
     architecture: str
-    transfer_endpoint: str | None
+    transfer_endpoint: cli.TransferEndpoint | None
     host_id: str
     credential_id: str
     expires_at: str
@@ -201,6 +202,55 @@ def declaration_request(
     if "transferEndpoint" in settings:
         request["transfer_endpoint"] = settings["transferEndpoint"]
     return request
+
+
+FLEET_ADDRESSES = "secrets/fleet-addresses.enc.json"
+
+
+def transfer_secret(request: RegistrationRequest) -> str | None:
+    endpoint = request.get("transfer_endpoint")
+    if endpoint is None or "addressSecret" not in endpoint:
+        return None
+    secret = endpoint["addressSecret"]
+    if "address" in endpoint or not re.fullmatch(r"[A-Z][A-Z0-9_]{0,62}_IPV4", secret):
+        raise cli.Failure("A transfer endpoint names exactly one fleet address secret")
+    return secret
+
+
+def resolve_transfer_endpoint(
+    request: RegistrationRequest, root: Path, env: dict[str, str]
+) -> RegistrationRequest:
+    """@cc [owner:ghuntley,label:security] enrollment-transfer-address-from-sops
+    A fleet host's relocation endpoint address MUST come from the shared fleet
+    address document, decrypted only with the operator's recovery identity, and
+    MUST be a canonical explicit unicast IPv4 address before it reaches Marshall. Failures
+    MUST NOT print the value.
+    """
+    secret = transfer_secret(request)
+    if secret is None:
+        return request
+    sealed = custody.read_regular(custody.document_path(root, FLEET_ADDRESSES))
+    document = json.loads(custody.decrypt(sealed, "json", env))
+    value = document.get("overalls-fleet-addresses", {}).get("production", {}).get(secret)
+    try:
+        address = ipaddress.IPv4Address(value if isinstance(value, str) else "")
+    except ValueError:
+        raise cli.Failure("The transfer endpoint's fleet address is missing or invalid") from None
+    if (
+        str(address) != value
+        or address.is_unspecified
+        or address.is_loopback
+        or address.is_multicast
+        or address.is_link_local
+    ):
+        raise cli.Failure("The transfer endpoint's fleet address is missing or invalid")
+    endpoint = request["transfer_endpoint"]
+    resolved: cli.TransferEndpoint = {"address": value}
+    if "port" in endpoint:
+        resolved["port"] = endpoint["port"]
+    if "host_key" in endpoint:
+        resolved["host_key"] = endpoint["host_key"]
+    return {**request, "transfer_endpoint": resolved}
 
 
 def manifest(root: Path) -> FleetManifest:
@@ -378,6 +428,14 @@ def _prepare(args: argparse.Namespace, root: Path) -> None:
     if args.command == "rotate-credential" and not host["lilly"].get("binding"):
         raise cli.Failure("Rotation requires an existing registration binding")
     request, host_key = observed_request(args, host)
+    if transfer_secret(request) is not None:
+        if Path(args.recovery_key).resolve().is_relative_to(root):
+            raise cli.Failure("Recovery identity must be outside Git")
+        with (
+            tempfile.TemporaryDirectory(prefix="overalls-enrollment-") as directory,
+            custody.identity(args.recovery_key, Path(directory).resolve()) as (env, _),
+        ):
+            request = resolve_transfer_endpoint(request, root, env)
     state_root = (
         Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")).resolve()
         / "overalls/enrollment"

@@ -39,12 +39,21 @@ class CredentialDocument(TypedDict):
     path: str
 
 
+class TransferEndpoint(TypedDict, total=False):
+    """Relocation SSH endpoint; a fleet host names its address by SOPS secret."""
+
+    address: str
+    addressSecret: str
+    port: int
+    host_key: str
+
+
 class LillySettings(TypedDict, total=False):
     controlPlane: str
     egressInterface: str
     overheads: dict[str, int]
     credentialTtlSeconds: int
-    transferEndpoint: str
+    transferEndpoint: TransferEndpoint
     binding: Mapping[str, object]
 
 

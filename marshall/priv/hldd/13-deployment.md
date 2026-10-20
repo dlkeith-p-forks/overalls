@@ -156,6 +156,9 @@ operations. Use the declared named administrator and pinned keys.
 Lilly preparation additionally binds physical machine and pool identities to a
 disabled Marshall host. Use `prepare-enrollment` with the installed receipt,
 Marshall administrative target, private recovery key, and pinned transport.
+A fleet host's transfer endpoint names its address by secret (`addressSecret`);
+preparation resolves it from the shared fleet address document with the
+recovery key, and a missing or invalid value refuses before Marshall is called.
 Publish its ciphertext and public bindings, activate, verify fresh execution
 readiness, then explicitly enable scheduling. Preparing credentials alone does
 not make a host eligible.

@@ -102,6 +102,45 @@ Not run: the `public-grafana` machine test. The HAProxy fork reported a
 dashboard panel-count failure there that it attributes to pre-existing work and
 did not compare against trunk.
 
+## Deployment evidence
+
+- **Salopettes, stage A (`9ac8b01e`).** The updater activated stage A. Its
+  state:
+  - no failed units;
+  - `overalls-fleet-addresses`, `overalls-runtime-firewall`,
+    `wireguard-fleet0`, `overalls-fleet-endpoint-overalls`, Susan and nginx
+    active;
+  - no global IPv6 address;
+  - `fleet0` at `10.90.0.3/32` sending handshakes to the runtime endpoint;
+  - the runtime chain holds the handshake rule, the Susan TCP 80/443
+    destination rules and both reviewed-source grants, all at SOPS-delivered
+    addresses;
+  - Susan `/healthz` answers 200.
+
+  No handshake is received yet, because Overalls has not activated stage A.
+- **Overalls, stage A.** Not activated: its updater fails at the build phase
+  on the pre-existing `OverallsProtocol.GuestAgents.parse/1` failure in the
+  default image identity derivation, which another session owns.
+- **Dungarees.** Offline.
+
+## Stage B (Dungarees declaration)
+
+The Dungarees declaration loses every address literal:
+
+- uplink addresses and routes become `addresses.uplink`, the runtime drop-in;
+- discovery keeps only the default route's interface;
+- the Lilly transfer endpoint names `DUNGAREES_PRIMARY_IPV4` by secret, and
+  `prepare-enrollment` resolves it with the recovery key.
+
+A drop-in rendered from the private values reproduces the five literal routes
+and both addresses exactly. Its Lilly protected networks stay literal: the
+updater compares the raw binding while the address files are missing, so
+moving them before Dungarees has run stage A would refuse its update when it
+returns.
+
+- Recorded run: `enrollment-preparation` **passed** (12 tests, including the
+  transfer address from the fleet document and its refusals).
+
 ## Follow-up
 
 - Stage A deployment evidence:

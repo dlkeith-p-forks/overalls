@@ -3,6 +3,19 @@
     "names": {
       "gateway": "DUNGAREES_GATEWAY_IPV4",
       "prefix": "DUNGAREES_PREFIX"
+    },
+    "uplink": {
+      "network": "10-eth0",
+      "addresses": [
+        "dungareesPrimary",
+        "dungareesService"
+      ],
+      "prefix": "prefix",
+      "gateway": "gateway",
+      "hostRoutes": [
+        "overallsPrimary",
+        "overallsService"
+      ]
     }
   },
   "budgets": {
@@ -72,135 +85,7 @@
     "routes": [
       {
         "dev": "eth0",
-        "dst": "default",
-        "flags": [],
-        "gateway": "136.243.69.1"
-      },
-      {
-        "dev": "eth0",
-        "dst": "136.243.69.0/26",
-        "flags": [],
-        "gateway": "136.243.69.1"
-      },
-      {
-        "dev": "eth0",
-        "dst": "136.243.69.1",
-        "flags": [],
-        "scope": "link"
-      },
-      {
-        "dev": "lo",
-        "dst": "127.0.0.0/8",
-        "flags": [],
-        "prefsrc": "127.0.0.1",
-        "protocol": "kernel",
-        "scope": "host",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "lo",
-        "dst": "127.0.0.1",
-        "flags": [],
-        "prefsrc": "127.0.0.1",
-        "protocol": "kernel",
-        "scope": "host",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "lo",
-        "dst": "127.255.255.255",
-        "flags": [],
-        "prefsrc": "127.0.0.1",
-        "protocol": "kernel",
-        "scope": "link",
-        "table": "local",
-        "type": "broadcast"
-      },
-      {
-        "dev": "eth0",
-        "dst": "136.243.69.35",
-        "flags": [],
-        "prefsrc": "136.243.69.35",
-        "protocol": "kernel",
-        "scope": "host",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "eth0",
-        "dst": "136.243.69.63",
-        "flags": [],
-        "prefsrc": "136.243.69.35",
-        "protocol": "kernel",
-        "scope": "link",
-        "table": "local",
-        "type": "broadcast"
-      },
-      {
-        "dev": "eth0",
-        "dst": "2a01:4f8:212:231f::/64",
-        "flags": [],
-        "metric": 256,
-        "pref": "medium",
-        "protocol": "kernel"
-      },
-      {
-        "dev": "eth0",
-        "dst": "fe80::/64",
-        "flags": [],
-        "metric": 256,
-        "pref": "medium",
-        "protocol": "kernel"
-      },
-      {
-        "dev": "eth0",
-        "dst": "default",
-        "flags": [],
-        "gateway": "fe80::1",
-        "metric": 1024,
-        "pref": "medium"
-      },
-      {
-        "dev": "lo",
-        "dst": "::1",
-        "flags": [],
-        "metric": 0,
-        "pref": "medium",
-        "protocol": "kernel",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "eth0",
-        "dst": "2a01:4f8:212:231f::2",
-        "flags": [],
-        "metric": 0,
-        "pref": "medium",
-        "protocol": "kernel",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "eth0",
-        "dst": "fe80::9e6b:ff:fedc:7062",
-        "flags": [],
-        "metric": 0,
-        "pref": "medium",
-        "protocol": "kernel",
-        "table": "local",
-        "type": "local"
-      },
-      {
-        "dev": "eth0",
-        "dst": "ff00::/8",
-        "flags": [],
-        "metric": 256,
-        "pref": "medium",
-        "protocol": "kernel",
-        "table": "local",
-        "type": "multicast"
+        "dst": "default"
       }
     ],
     "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMtfutt4THjYXg9SXARzcr+fL9ylsx/gSWGm01ZqoOpl"
@@ -283,7 +168,7 @@
       "storageBytes": 0
     },
     "transferEndpoint": {
-      "address": "136.243.69.35",
+      "addressSecret": "DUNGAREES_PRIMARY_IPV4",
       "host_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7YqQClUFnB1POZHExl0fqKLqXmEUlBzKtMD6/knJ+M",
       "port": 2223
     }
@@ -295,43 +180,13 @@
         "MACAddress": "9c:6b:00:dc:70:62"
       },
       "networkConfig": {
-        "Address": [
-          "136.243.69.35/26",
-          "136.243.69.32/26"
-        ],
         "DNS": [
           "185.12.64.1",
           "185.12.64.2"
         ],
         "IPv6AcceptRA": false,
         "LinkLocalAddressing": "no"
-      },
-      "routes": [
-        {
-          "Destination": "136.243.69.1/32",
-          "Scope": "link"
-        },
-        {
-          "Destination": "0.0.0.0/0",
-          "Gateway": "136.243.69.1",
-          "GatewayOnLink": true
-        },
-        {
-          "Destination": "136.243.69.0/26",
-          "Gateway": "136.243.69.1",
-          "GatewayOnLink": true
-        },
-        {
-          "Destination": "136.243.69.55/32",
-          "Gateway": "136.243.69.1",
-          "GatewayOnLink": true
-        },
-        {
-          "Destination": "136.243.69.37/32",
-          "Gateway": "136.243.69.1",
-          "GatewayOnLink": true
-        }
-      ]
+      }
     }
   },
   "platform": "hetzner",

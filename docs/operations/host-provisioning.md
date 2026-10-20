@@ -168,14 +168,13 @@ change on first login; change it, add the operator public key to root's
 - The proposed network uses `DHCP = "ipv4"`, a default via `fe80::1` for IPv6,
   and `LinkLocalAddressing = "ipv6"` so that the IPv6 gateway stays reachable.
   It carries no address literals; the profile refuses them
-  ([ADR-0232](../architecture/decisions/0232-sops-delivered-public-host-addresses.md)).
-- For public addresses, write a private 0600 JSON file outside the checkout:
-  `{"overalls-public-address": {"production": {"PUBLIC_IPV4": "...", "PUBLIC_IPV6": ".../64"}}}`.
-  List `NAME-address` in `credentials`, then run
-  `nix run .#secrets -- encrypt NAME-address --input FILE` once the host key is
-  enrolled. Enable `overalls.publicAddress` and point public listeners at its
-  `ipv4File` and `unit`. To rotate an address, use `encrypt ... --replace`; no
-  code changes.
+  ([ADR-0233](../architecture/decisions/0233-fleet-addresses-from-sops.md)).
+- Public addresses of every fleet host live in the shared
+  `secrets/fleet-addresses.enc.json` (see the [secrets guide](../../secrets/README.md)).
+  Add the host's names to `nix/policy/network/fleet-addresses.nix`, list the
+  `fleet-addresses` document in `credentials`, and re-encrypt it once the host
+  key is enrolled. Point public listeners at `overalls.fleetAddresses.files`
+  and its `unit`. To rotate an address, change the document; no code changes.
 
 The guard and the storage receipt skip KVM and bind `zroot/root`. Plan, install,
 enroll and verify are otherwise identical, including the trunk auto-updater.
@@ -226,7 +225,10 @@ actual overheads and the installed uplink):
 
 The lifetime defaults to five 365-day years; supported values are 1..157680000
 seconds. `transferEndpoint` optionally accepts the existing complete pinned SSH
-transfer endpoint. Configure image manifests and any extra networking through the
+transfer endpoint. A fleet host names its address by secret instead
+(`"addressSecret": "NAME_PRIMARY_IPV4"` beside `port` and `host_key`);
+preparation decrypts `secrets/fleet-addresses.enc.json` with the recovery key and
+sends the validated address to Marshall, so no address enters the declaration. Configure image manifests and any extra networking through the
 existing host role module. Do not hand-set generated Lilly host or pool IDs.
 Host names for this workflow may have at most 26 characters so `NAME-lilly`
 fits the secret inventory name limit.
