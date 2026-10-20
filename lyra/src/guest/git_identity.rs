@@ -279,6 +279,7 @@ mod tests {
         let git = std::env::var_os("OVERALLS_TEST_GIT").unwrap_or_else(|| "git".into());
         let result = std::process::Command::new(git)
             .args(["var", "GIT_AUTHOR_IDENT"])
+            .current_dir(root.path())
             .env_clear()
             .env("HOME", root.path())
             .env("GIT_CONFIG_SYSTEM", &system)
