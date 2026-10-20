@@ -25,9 +25,15 @@ defmodule Marshall.Compute.GitIdentityTest do
 
         manifest =
           case kind do
-            :linux -> Map.delete(image_manifest(), "git_identity_version")
-            :windows -> Map.delete(windows_v1_image_manifest(), "git_identity_version")
-            :native -> OverallsProtocol.NativeAdmission.reviewed_manifest()
+            :linux ->
+              Map.delete(image_manifest(), "git_identity_version")
+
+            :windows ->
+              Map.delete(windows_v1_image_manifest(), "git_identity_version")
+
+            # The reviewed FreeBSD image carries Git identity; illumos does not.
+            :native ->
+              OverallsProtocol.NativeAdmission.reviewed_manifest(:illumos)
           end
 
         assert {:ok, image} = Marshall.Compute.Images.register(manifest, "unsupported")

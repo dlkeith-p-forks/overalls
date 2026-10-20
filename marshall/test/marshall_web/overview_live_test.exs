@@ -98,7 +98,7 @@ defmodule MarshallWeb.OverviewLiveTest do
     assert has_element?(
              view,
              "#overview-machine-#{shared.id} p",
-             ~r/vCPU · .* GiB memory · .* GiB disk · Shared/
+             ~r/vCPU · .* GiB RAM · .* GiB disk · Shared/
            )
 
     assert has_element?(view, "#overview-machine-os-#{shared.id}", "synthetic-test-image")
