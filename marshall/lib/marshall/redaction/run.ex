@@ -30,7 +30,7 @@ defmodule Marshall.Redaction.Run do
     defaults([:read])
 
     create :open do
-      accept([:id, :scope, :profile_digest, :high_water_mark])
+      accept([:scope, :profile_digest, :high_water_mark])
     end
 
     update :start do
