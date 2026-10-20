@@ -39,6 +39,9 @@ pub struct MilaFfiAbiVersion {
 }
 
 /// Writes the ABI version into caller-owned storage.
+///
+/// # Safety
+/// `out_version` must be null or point to writable storage for one `MilaFfiAbiVersion`.
 #[no_mangle]
 pub unsafe extern "C" fn mila_ffi_get_version(
     out_version: *mut MilaFfiAbiVersion,
