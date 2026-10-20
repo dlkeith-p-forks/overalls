@@ -367,6 +367,103 @@ pub struct SnapshotMachine {
     pub manage: bool,
 }
 
+/// Mutations the native clients may present for a cached machine.
+///
+/// This keeps action visibility identical across Swift, Kotlin, GTK and WinUI;
+/// clients must not reimplement permission or state rules in each UI toolkit.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum MachineAction {
+    Start,
+    Stop,
+    Pause,
+    Resume,
+    Pin,
+    Unpin,
+    Delete,
+}
+
+impl SnapshotMachine {
+    /// Returns actions in the stable order used by the native clients.
+    /// @cc [owner:ghuntley,label:protocol;security] mila-runtime-machine-actions
+    pub fn available_actions(&self) -> Vec<MachineAction> {
+        let mut actions = Vec::with_capacity(3);
+        if self.write {
+            match self.observed_state.as_deref() {
+                Some("stopped") => actions.push(MachineAction::Start),
+                Some("paused") => actions.push(MachineAction::Resume),
+                Some("running") => {
+                    actions.push(MachineAction::Pause);
+                    actions.push(MachineAction::Stop);
+                }
+                _ => {}
+            }
+        }
+        actions.push(if self.pinned {
+            MachineAction::Unpin
+        } else {
+            MachineAction::Pin
+        });
+        if self.manage && self.owner.is_some() && !self.pinned {
+            actions.push(MachineAction::Delete);
+        }
+        actions
+    }
+}
+
+#[cfg(test)]
+mod machine_action_tests {
+    use super::{MachineAction, SnapshotMachine};
+
+    fn machine(
+        state: Option<&str>,
+        pinned: bool,
+        owner: bool,
+        write: bool,
+        manage: bool,
+    ) -> SnapshotMachine {
+        SnapshotMachine {
+            id: "id".into(),
+            name: "name".into(),
+            desired_state: "running".into(),
+            observed_state: state.map(str::to_owned),
+            pinned,
+            owner: owner.then(|| "me".into()),
+            read: true,
+            write,
+            manage,
+        }
+    }
+
+    #[test]
+    fn action_visibility_matches_client_policy() {
+        assert_eq!(
+            machine(Some("running"), false, true, true, true).available_actions(),
+            vec![
+                MachineAction::Pause,
+                MachineAction::Stop,
+                MachineAction::Pin,
+                MachineAction::Delete
+            ]
+        );
+        assert_eq!(
+            machine(Some("stopped"), true, true, true, true).available_actions(),
+            vec![MachineAction::Start, MachineAction::Unpin]
+        );
+        assert_eq!(
+            machine(Some("paused"), false, false, false, true).available_actions(),
+            vec![MachineAction::Pin]
+        );
+    }
+
+    #[test]
+    fn unknown_state_fails_closed_to_pin_only() {
+        assert_eq!(
+            machine(Some("migrating"), false, true, true, true).available_actions(),
+            vec![MachineAction::Pin, MachineAction::Delete]
+        );
+    }
+}
+
 /// A complete machine listing for one deployment.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
