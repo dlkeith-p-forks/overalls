@@ -653,6 +653,9 @@ def install(args: argparse.Namespace) -> None:
             phase = "uplink-recovery"
             save()
             probe(installer_args, "install-uplink", uplink, installer_target)
+        phase = "base-source"
+        save()
+        probe(installer_args, "install-base-source", target=installer_target)
         receipt_path = Path(args.plan + ".installed.json")
         remote.atomic(receipt_path, installed)
         phase = "reboot"

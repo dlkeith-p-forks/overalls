@@ -97,6 +97,7 @@ class Uplink(TypedDict):
 
 
 UPLINK_RECOVERY = Path("/mnt/var/lib/overalls-host/uplink.conf")
+BASE_SOURCE = Path("/mnt/var/lib/overalls-host/base-source")
 
 
 class Facts(TypedDict):
@@ -356,6 +357,32 @@ def install_uplink(uplink: Uplink) -> dict[str, int]:
     return {"addresses": len(uplink["addresses"]), "routes": len(uplink["routes"])}
 
 
+def install_base_source() -> dict[str, int]:
+    """Record the authenticated installing operator's source for the base system.
+
+    A base system has no fleet-address document, so its perimeter would admit
+    nobody but Tailscale. This root-only file lets that one source reach the
+    administrative SSH port until enrollment delivers the reviewed sources.
+    """
+    fields = os.environ.get("SSH_CONNECTION", "").split()
+    if len(fields) != 4:
+        raise ValueError("installer connection source unavailable")
+    source = ipaddress.IPv4Address(fields[0])
+    if source.is_unspecified or source.is_loopback or source.is_multicast or source.is_link_local:
+        raise ValueError("installer connection source is not an explicit unicast IPv4 address")
+    if BASE_SOURCE.exists():
+        raise ValueError("base source already exists")
+    BASE_SOURCE.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    temp = BASE_SOURCE.with_suffix(".tmp")
+    with open(temp, "w", opener=lambda p, f: os.open(p, f, 0o600)) as stream:
+        stream.write(f"{source}\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temp, BASE_SOURCE)
+    # The address never reaches operator output.
+    return {"sources": 1}
+
+
 def verify(host: Declaration, receipt: bool = False) -> StorageFacts:
     observed = storage(host)
     baseline = Path("/var/lib/overalls-host/storage.json")
@@ -430,6 +457,8 @@ def main() -> None:
         atomic(path, result)
     elif action == "install-uplink":
         result = install_uplink(json.load(sys.stdin))
+    elif action == "install-base-source":
+        result = install_base_source()
     else:
         raise ValueError("unknown operation")
     print(json.dumps(result, sort_keys=True))

@@ -187,7 +187,9 @@ it is offline.
 
 ## Related decisions
 
-Supersedes [ADR-0232](0232-sops-delivered-public-host-addresses.md). Amends
+[ADR-0234](0234-installer-source-administrative-grant.md) amends the base-system
+case: a base system without this document admits its recorded installer source
+to administrative SSH. Supersedes [ADR-0232](0232-sops-delivered-public-host-addresses.md). Amends
 [ADR-0075](0075-fleet-overlay-and-source-access.md) (runtime WireGuard
 endpoints, runtime-source grants and the third peer),
 [ADR-0091](0091-fleet-perimeter-public-listeners.md) (runtime-address listeners

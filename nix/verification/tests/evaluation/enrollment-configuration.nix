@@ -50,6 +50,18 @@ assert good.services.lillyTransfer.port == host.lilly.transferEndpoint.port;
 assert good.networking.firewall.allowedTCPPorts == [];
 # Fleet addresses are SOPS-delivered, so a host without the document gets no grant.
 assert good.overalls.fleetFirewall.allowedHosts == {};
+# Only the recorded installing operator reaches administrative SSH, and only
+# while its root-only installation file exists.
+assert builtins.attrNames good.overalls.runtimeFirewall.rules == [ "base-installer" ];
+assert good.overalls.runtimeFirewall.rules.base-installer == {
+  source = null; sourceFile = "/run/overalls-host/base-source";
+  destination = null; destinationFile = null; interface = null;
+  protocol = "tcp"; ports = good.services.openssh.ports; optional = true;
+  comment = "Installing operator administrative SSH";
+  units = [ "overalls-base-source.service" ];
+};
+assert good.systemd.services.overalls-base-source.unitConfig.ConditionPathExists
+  == "/var/lib/overalls-host/base-source";
 assert builtins.hasContext good.services.overallsSecrets.bundles.git.encryptedFile;
 assert builtins.hasContext good.services.overallsSecrets.bundles.lilly.encryptedFile;
 assert good.services.underclass.enable;

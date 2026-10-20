@@ -94,6 +94,12 @@ closed. Consumers:
   authenticated discovery facts, so a base system without the document still
   has its network. The profile refuses IPv4 address and route literals on such
   a host.
+- **Installer source.** A base system has no reviewed public source, so
+  `install` records the authenticated installer connection's source IPv4 in the
+  root-only `/var/lib/overalls-host/base-source`. Every host admits that one
+  source to its administrative SSH ports through an optional runtime rule
+  (ADR-0234), which keeps enrollment reachable, also across a move to another
+  deployment. Deleting the file withdraws the grant.
 - **Firewall.** One `overalls-runtime` chain, reached by a static jump on
   either backend, carries runtime source grants, destination-scoped public
   listeners and WireGuard handshakes. Its refill unit flushes, validates and

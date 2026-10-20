@@ -3,7 +3,8 @@
 Addresses come from root-owned runtime files (normally a decrypted SOPS
 bundle), so they never enter the repository or the Nix store. Every address is
 validated before anything is admitted; one malformed address leaves the whole
-chain empty, so a bad rotation never keeps an old address open.
+chain empty, so a bad rotation never keeps an old address open. An optional
+rule whose runtime file is absent is skipped; every other rule still applies.
 """
 
 import contextlib
@@ -25,6 +26,7 @@ class RuleSpec(TypedDict):
     ports: list[int]
     interface: str | None
     comment: str
+    optional: bool
 
 
 class Specification(TypedDict):
@@ -127,10 +129,16 @@ def flush(spec: Specification) -> None:
         iptables(["-N", chain])
 
 
+def present(spec: RuleSpec) -> bool:
+    """Return False only for an optional rule whose runtime file is absent."""
+    files = [file for file in (spec["sourceFile"], spec["destinationFile"]) if file is not None]
+    return not spec["optional"] or all(Path(file).exists() for file in files)
+
+
 def apply(spec: Specification) -> None:
     # Close first: validation failures must never leave earlier rules open.
     flush(spec)
-    rules = [resolve(rule) for rule in spec["rules"]]
+    rules = [resolve(rule) for rule in spec["rules"] if present(rule)]
     chain = spec["chain"]
     if spec["backend"] == "nftables":
         nft("".join(nft_rule(chain, rule) + "\n" for rule in rules))

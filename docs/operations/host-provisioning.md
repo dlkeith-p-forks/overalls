@@ -103,6 +103,16 @@ public key and storage GUID baseline are retrieved before reboot. The private
 key never travels to the operator. The installed base boots independently of
 enrollment publication.
 
+The base system has no fleet-address document, so its perimeter grants no
+reviewed public source. Installation therefore records the source IPv4 of the
+authenticated installer connection in the root-only file
+`/var/lib/overalls-host/base-source`, and every host admits that one source to
+its administrative SSH ports only ([ADR-0234](../architecture/decisions/0234-installer-source-administrative-grant.md)).
+Run discovery, planning, installation and enrollment from the same machine.
+The grant survives enrollment, including a move to another deployment; delete
+the file to withdraw it. Hosts installed earlier have no file and stay
+reachable only through their reviewed sources or Tailscale.
+
 `PLAN.state.json` records the current phase. `PLAN.installed.json` records the
 new public key and storage receipt; preserve this file. An interrupted install
 never silently resumes formatting. A new invocation requires the erasure digest

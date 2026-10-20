@@ -1,5 +1,10 @@
 # Architecture decision records
 
+[ADR-0234](0234-installer-source-administrative-grant.md) records the
+authenticated installer's source at installation and admits only it to
+administrative SSH through an optional runtime firewall rule, so a base system
+without the fleet-address document stays reachable for enrollment.
+
 [ADR-0233](0233-fleet-addresses-from-sops.md) keeps every fleet public address
 out of the repository: one shared SOPS document, runtime uplinks with a recovery
 copy, a runtime firewall chain on both backends, runtime WireGuard endpoints and
@@ -980,3 +985,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0231](0231-hetzner-cloud-hosts-and-susan-placement.md) | accepted | partial | Hetzner Cloud fleet hosts and Susan placement |
 | [ADR-0232](0232-sops-delivered-public-host-addresses.md) | superseded | partial | SOPS-delivered public host addresses |
 | [ADR-0233](0233-fleet-addresses-from-sops.md) | accepted | partial | Fleet addresses from SOPS and the Susan fleet path |
+| [ADR-0234](0234-installer-source-administrative-grant.md) | accepted | partial | Installer source grant for administrative SSH |

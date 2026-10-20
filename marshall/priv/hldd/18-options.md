@@ -1538,6 +1538,19 @@ null
 ```
 
 
+## `overalls.runtimeFirewall.rules.<name>.optional`
+
+Skip only this rule while its runtime file is absent; a present but malformed address still empties the chain.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+
 ## `overalls.runtimeFirewall.rules.<name>.ports`
 
 No additional description is declared by the module.

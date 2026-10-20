@@ -16,7 +16,7 @@ let
     backend = if nft then "nftables" else "iptables";
     rules = lib.mapAttrsToList (name: rule: {
       inherit name;
-      inherit (rule) source sourceFile destination destinationFile protocol ports interface comment;
+      inherit (rule) source sourceFile destination destinationFile protocol ports interface comment optional;
     }) cfg.rules;
   });
   script = action: lib.escapeShellArgs [ "${pkgs.python3}/bin/python3" "${./runtime-firewall.py}" action specification ];
@@ -35,6 +35,11 @@ in
         ports = mkOption { type = types.listOf types.port; default = []; };
         interface = mkOption { type = types.nullOr (types.strMatching "[a-z][a-z0-9]{0,14}"); default = null; };
         comment = mkOption { type = types.strMatching "[A-Za-z0-9][A-Za-z0-9 ._()/-]{0,95}"; };
+        optional = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Skip only this rule while its runtime file is absent; a present but malformed address still empties the chain.";
+        };
         units = mkOption {
           type = types.listOf (types.strMatching "[a-zA-Z0-9_.@-]+\\.service");
           description = "Units that publish the runtime files; the rules follow them.";

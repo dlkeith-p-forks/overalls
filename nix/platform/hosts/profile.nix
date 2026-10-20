@@ -188,6 +188,34 @@ in {
       addressUnit = config.overalls.fleetAddresses.unit;
       inherit (grant) comment;
     }) (import ../../policy/network/allowed-hosts.nix));
+  # @cc [owner:ghuntley,label:security;deployment] base-installer-source
+  # The authenticated installing operator's source, recorded root-only at
+  # installation, MUST be admitted only to the administrative SSH ports, so a
+  # base system without the fleet-address document (and an enrollment that
+  # moves the host to another deployment's reviewed sources) stays reachable.
+  # The address MUST stay out of the repository; deleting the recorded file
+  # withdraws the grant at the next boot or activation.
+  systemd.services.overalls-base-source = {
+    description = "Publish the installing operator source for administrative SSH";
+    wantedBy = [ "multi-user.target" ];
+    unitConfig.ConditionPathExists = "/var/lib/overalls-host/base-source";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      RuntimeDirectory = "overalls-host";
+      RuntimeDirectoryMode = "0700";
+      RuntimeDirectoryPreserve = "yes";
+      ExecStart = "${pkgs.coreutils}/bin/install -m 0600 /var/lib/overalls-host/base-source /run/overalls-host/base-source";
+    };
+  };
+  overalls.runtimeFirewall.rules.base-installer = {
+    sourceFile = "/run/overalls-host/base-source";
+    protocol = "tcp";
+    ports = config.services.openssh.ports;
+    comment = "Installing operator administrative SSH";
+    optional = true;
+    units = [ "overalls-base-source.service" ];
+  };
   # @cc [owner:ghuntley,label:deployment] fleet-tailscale-mesh
   # Every base and enrolled fleet host MUST run the Tailscale client daemon so
   # operators retain a management path independent of the provider network.

@@ -1436,5 +1436,41 @@ class UplinkRecovery(unittest.TestCase):
                 remote.uplink_drop_in(cast("remote.Uplink", bad))
 
 
+class BaseInstallerSource(unittest.TestCase):
+    """Install records only the authenticated operator source; documentation addresses only."""
+
+    def install(self, directory: str, connection: str | None) -> Path:
+        target = Path(directory) / "overalls-host" / "base-source"
+        environment = {} if connection is None else {"SSH_CONNECTION": connection}
+        with (
+            patch.object(remote, "BASE_SOURCE", target),
+            patch.dict(remote.os.environ, environment, clear=True),
+        ):
+            self.assertEqual(remote.install_base_source(), {"sources": 1})
+        return target
+
+    def test_source_is_private_written_once_and_holds_only_the_address(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self.install(directory, "198.51.100.7 51234 192.0.2.10 22")
+            self.assertEqual(target.read_text(), "198.51.100.7\n")
+            self.assertEqual(target.stat().st_mode & 0o777, 0o600)
+            self.assertEqual(target.parent.stat().st_mode & 0o777, 0o700)
+            with self.assertRaises(ValueError):
+                self.install(directory, "198.51.100.7 51234 192.0.2.10 22")
+
+    def test_source_refuses_missing_ipv6_or_non_unicast_connections(self) -> None:
+        for connection in (
+            None,
+            "",
+            "2001:db8::7 51234 2001:db8::2 22",
+            "127.0.0.1 51234 127.0.0.1 22",
+            "0.0.0.0 51234 192.0.2.10 22",
+            "169.254.0.7 51234 192.0.2.10 22",
+            "not-an-address 51234 192.0.2.10 22",
+        ):
+            with tempfile.TemporaryDirectory() as directory, self.assertRaises(ValueError):
+                self.install(directory, connection)
+
+
 if __name__ == "__main__":
     unittest.main()
