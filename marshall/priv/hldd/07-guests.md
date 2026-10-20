@@ -1277,7 +1277,12 @@ firmware and VMM digests while keeping admission false. The newer recorded
 refusals. The final ordinary catalog gate subsequently passed in 246 seconds
 with exact image `19658a4a`, token, firmware and VMM receipts in the review.
 It does not test the complete native
-services, wrong-CID injection, device reset, physical isolation or recovery.
+services, device reset, physical isolation or recovery. Wrong-CID refusal is
+covered separately by `native-freebsd-wrong-cid`. That test boots a test-only
+FreeBSD fault kernel, whose distinct build identity keeps it out of every
+promoted image. Before its probe listens, it requires the kernel decoder to
+refuse injected wrong-CID and length-mismatched frames, and requires a correctly
+addressed control frame to reach the listener.
 A separate test-only FreeBSD image passed one actual Firecracker pause,
 full-snapshot and resume transport event: idle socket identity refused with
 `ECONNRESET`, pending accept/read/write calls woke with errors and fresh sockets
@@ -1885,8 +1890,14 @@ display preface in a typed fixed-port relay before forwarding to loopback RFB.
 The guest firewall declares TCP 22 globally and admits the relay's TCP 5900 only
 on `eth0`, the guest TAP interface; raw RFB remains on loopback TCP 5901. This
 interface restriction is separate from signed tickets, current-generation
-checks and Lilly's namespace ingress authority. It records the firewall
-declaration, not a passing native packet-filter test. The profile reserves
+checks and Lilly's namespace ingress authority. On the host side, Lilly's
+namespace output policy admits new TCP 5900 connections only when they carry the
+dedicated Android display mark and target a non-Customer guest range. Web ingress
+refuses port 5900 both in target admission and in the web-mark rule, so a published
+web application port cannot reach the relay, whose preface check does not verify
+ticket signatures. Unit tests cover the target refusal and the generated rule, and
+an unprivileged `nft -c` parse accepted it. Neither records a passing native
+packet-filter test. The profile reserves
 8 GiB memory and 32 GiB writable disk. Signed ticket verification, browser
 controller/viewer leases and native Firecracker acceptance remain outside this
 guest-only evidence.

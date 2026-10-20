@@ -20,12 +20,16 @@ def digest(path: Path) -> str:
         return hashlib.file_digest(source, "sha256").hexdigest()
 
 
-def run(image: Path, vmm: Path, build_id: str, os_name: str, work: Path) -> None:
+def run(
+    image: Path, vmm: Path, build_id: str, os_name: str, work: Path, fault_injection: bool
+) -> None:
     """@cc [owner:ghuntley,label:verification;recovery] disposable-native-machine-probe
     Acceptance MUST require an actual nested-KVM Firecracker boot and exchanges
     with the guest's compiled transport identity. The writable disk MUST be a
     fresh disposable copy, never published or reused after forced VM disposal.
     This transport check MUST NOT claim production service or image admission.
+    With fault injection, the receipt MAY record wrong-CID refusal only because
+    the fault probe exposes its build token after those kernel checks pass.
     """
     work.mkdir(parents=True, exist_ok=False)
     disk = work / "disk.raw"
@@ -79,6 +83,8 @@ def run(image: Path, vmm: Path, build_id: str, os_name: str, work: Path) -> None
                 "firmware_sha256": digest(firmware),
                 "vmm_sha256": digest(vmm),
                 "malformed_length_refused": True,
+                "fault_injection": fault_injection,
+                "wrong_cid_injection_refused": fault_injection,
                 "disconnected_history_recovered": True,
                 "exchanges": [asdict(result) for result in exchanges],
                 "native_admission": False,
@@ -103,8 +109,16 @@ def main() -> None:
     parser.add_argument("--build-id", required=True)
     parser.add_argument("--os", choices=("freebsd", "illumos"), required=True)
     parser.add_argument("--work", type=Path, required=True)
+    parser.add_argument("--fault-injection", action="store_true")
     arguments = parser.parse_args()
-    run(arguments.image, arguments.vmm, arguments.build_id, arguments.os, arguments.work)
+    run(
+        arguments.image,
+        arguments.vmm,
+        arguments.build_id,
+        arguments.os,
+        arguments.work,
+        arguments.fault_injection,
+    )
 
 
 if __name__ == "__main__":

@@ -66,6 +66,8 @@ let
     ConditionKernelCommandLine=lilly.execution_epoch
 
     [Service]
+    Type=notify
+    NotifyAccess=main
     ExecStart=${vscodeWebBroker}/bin/overalls-vscode-web-broker ${editorConfiguration}
     Environment=OVERALLS_SSH_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
     Environment=PATH=/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

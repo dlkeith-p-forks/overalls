@@ -1,0 +1,5 @@
+# Test-only FreeBSD native kernel: GENERIC-OVERALLS plus received-frame
+# injection (ovfb_fault.h) for wrong-CID and malformed-frame machine tests.
+# Its distinct ident and configuration hash keep a separate build identity.
+include GENERIC-OVERALLS
+ident OVERALLS_NATIVE_FAULT

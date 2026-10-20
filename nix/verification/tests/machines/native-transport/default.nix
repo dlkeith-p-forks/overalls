@@ -1,6 +1,6 @@
-{ pkgs, packages }:
+{ pkgs, packages, faultInjection ? false }:
 let
-  image = packages.freebsdTransportProbeImage;
+  image = if faultInjection then packages.freebsdFaultProbeImage else packages.freebsdTransportProbeImage;
   probeTools = pkgs.runCommand "overalls-native-transport-tools" {
     nativeBuildInputs = [ pkgs.python3 pkgs.ruff pkgs.ty ];
   } ''
@@ -14,14 +14,16 @@ let
   '';
 in
 assert !image.nativeAdmission;
+assert (image.kernel.faultInjection or false) == faultInjection;
 # @cc [owner:ghuntley,label:verification] native-transport-machine-scope
 # This check MUST boot the source-built FreeBSD kernel and test-only native
 # listener through the actual patched Firecracker under nested KVM. It MUST
 # verify the compiled transport token, host CID, refusals, reconnects and byte
 # equality across credit-window boundaries. It MUST NOT claim native service,
-# physical isolation, recovery or catalog admission acceptance.
+# physical isolation, recovery or catalog admission acceptance. The fault
+# variant MUST boot only the separately identified test-only injection kernel.
 pkgs.testers.runNixOSTest {
-  name = "overalls-freebsd-native-transport";
+  name = if faultInjection then "overalls-freebsd-native-wrong-cid" else "overalls-freebsd-native-transport";
   requiredFeatures.nested-kvm = true;
   globalTimeout = 900;
   nodes.host = { lib, ... }: {
@@ -39,5 +41,6 @@ pkgs.testers.runNixOSTest {
   testScript = ''
     vmm = "${packages.vmm}/bin/firecracker"
     build_id = "${image.kernel.buildId}"
+    fault_injection = ${if faultInjection then "True" else "False"}
   '' + builtins.readFile ./driver.py;
 }

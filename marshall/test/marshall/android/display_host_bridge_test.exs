@@ -47,24 +47,35 @@ defmodule Marshall.Android.DisplayHostBridgeTest do
     assert_receive {:android_display_input_accepted, 4, <<"key">>}
   end
 
-  test "host stream loss tears down the composed bridge and closes its channel" do
+  test "host stream loss tears down the composed bridge" do
     parent = self()
     host = spawn(fn -> host_loop(parent) end)
     {:ok, relay} = DisplayRelay.start_link(5)
-
-    {:ok, bridge} =
-      DisplayHostBridge.start_link(host, relay, 5, %{
-        type: :android_display_open,
-        channel: 17,
-        generation: 5,
-        ticket: "ticket",
-        mode: :viewer
-      })
+    {:ok, bridge} = open_bridge(host, relay, 5)
 
     ref = Process.monitor(bridge)
     send(host, :stop)
     assert_receive {:DOWN, ^ref, :process, ^bridge, :normal}, 500
-    assert_receive {:host_close, 17}
+  end
+
+  test "bridge shutdown closes its channel on a live host stream" do
+    parent = self()
+    host = spawn(fn -> host_loop(parent) end)
+    {:ok, relay} = DisplayRelay.start_link(5)
+    {:ok, bridge} = open_bridge(host, relay, 5)
+
+    :ok = GenServer.stop(bridge)
+    assert_receive {:host_close, 17}, 500
+  end
+
+  defp open_bridge(host, relay, generation) do
+    DisplayHostBridge.start_link(host, relay, generation, %{
+      type: :android_display_open,
+      channel: 17,
+      generation: generation,
+      ticket: "ticket",
+      mode: :viewer
+    })
   end
 
   defp host_loop(parent) do

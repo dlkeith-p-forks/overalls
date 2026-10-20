@@ -1664,3 +1664,43 @@ The exact candidate's first image/manifest/refusal phase took 1,071.11 seconds,
 which motivates this verification budget without establishing lifecycle success.
 The already-running immutable derivation retains its older driver and remains
 in placement/start qualification; exact native lifecycle acceptance is pending.
+
+### FreeBSD native wrong-CID injection
+
+The FreeBSD wrong-CID gap now has native machine evidence. Firecracker stamps
+host CID 2 on every frame it delivers, so a host cannot send a guest a
+wrong-CID frame. A separately identified, test-only `GENERIC-OVERALLS-FAULT`
+kernel appends `ovfb_fault.h` to the unchanged driver source. It exposes a
+root-only `debug.overalls_vsock_inject` OID that passes one raw frame through
+the same `ovfb_receive` path, under the same domain lock as the receive task.
+The fault kernel has its own configuration hash and build identity, and the
+production recipe asserts that `ovfb_fault_inject` is absent from its symbols.
+
+Before the fault probe exposes its build token, it injects REQUEST frames to a
+live listener with these CIDs:
+
+- sources 4, 3, 0, 1, `u32::MAX` and `u64::MAX`
+- source 2 with an upper 32-bit bit set
+- destinations 2, 4, 0 and `u32::MAX`
+- destination 3 with an upper bit set
+
+It also injects one length-mismatched frame. Each of these must return
+`EBADMSG` and leave the listener unreadable. A correctly addressed CID 2 to 3
+REQUEST must then succeed and make the listener readable, which shows the
+refusals happen at the decoder and not on an unreachable path.
+
+`native-freebsd-wrong-cid` (derivation
+`/nix/store/cvgbh3kpajp9rf4qcxlxyxfc0rh3rlxy-vm-test-run-overalls-freebsd-native-wrong-cid.drv`)
+passed under nested KVM and the patched Firecracker 1.16.1. The test script took
+192.4 seconds; the runner took 170.8 seconds. The run used fault token
+`ade4982ba9bb4dbf28cc2ed9a7d61934cf15974b01d06d4a6886183a318f1421`, image
+`f9cc0149627f650381dd39aca5cbf2742674ae32845955acc92c49958f363976`, firmware
+`261c6d43…` and VMM `9815649a…`. The receipt has SHA-256
+`a854e30edb03e68de75b7ec6525535053148237f83580f4c21392b297b891eaf`. The same run
+also passed the ordinary token, CID 2/3, ABI refusal and nine-size exchanges.
+
+This covers kernel-level CID validation for FreeBSD only. It is not evidence for
+OmniOS wrong-CID refusal, malformed DMA descriptors, reset races, peer-VM or
+physical-host isolation, or production admission. The production FreeBSD kernel
+does not contain the injection OID.
+

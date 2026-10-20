@@ -104,8 +104,9 @@ browser journey; those remain separately recorded acceptance obligations.
    builder command shape and distinct distribution markers only. Protocol tests
    and the Lilly jail test prove bounded metadata and the native firmware
    configuration only. The recorded native receipts prove only their named
-   FreeBSD and OmniOS nested-KVM scenarios; they do not imply wrong-CID or
-   reset/DMA safety, direct peer-VM or host isolation, physical durability,
+   FreeBSD and OmniOS nested-KVM scenarios. The separate test-only FreeBSD
+   fault-kernel receipt establishes FreeBSD kernel wrong-CID frame refusal only.
+   They do not imply OmniOS wrong-CID refusal or reset/DMA safety, direct peer-VM or host isolation, physical durability,
    relocation or Marshall fleet acceptance.
 7. **Native admission is boot-bound and fail closed.** Before credentials or
    readiness, Lilly requires an `attested` response from the jail-local probe

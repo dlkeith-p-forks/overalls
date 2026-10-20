@@ -6,7 +6,7 @@ defmodule Lilly.Network.Ingress do
   # Ingress connect MUST require explicit operator enablement, revalidate derived
   # namespace/TAP/address identities, bind the socket to that TAP, and set the
   # service-specific ingress mark. SSH MUST use port 22; web uses the admitted
-  # app port. Editor MUST use port4444, a complete closed binding and the derived
+  # app port and MUST NOT select the editor port 4444 or Android display relay port 5900. Editor MUST use port4444, a complete closed binding and the derived
   # gateway source IPv4; its bounded ready frame MUST precede opaque bytes. Nested services MUST derive their paired address and fixed port
   # from an Inception guest. No service may supply a peer address.
   # Customer MUST reject web service sockets, including port 22, regardless of peer authority.
@@ -269,7 +269,8 @@ defmodule Lilly.Network.Ingress do
 
   defp target_validated(guest, %{service: service, port: port})
        when (service == :ssh and port == 22) or
-              (service == :web and is_integer(port) and port in 1..65535 and port != 4444) or
+              (service == :web and is_integer(port) and port in 1..65535 and
+                 port not in [4444, 5900]) or
               (service == :editor and port == 4444) do
     if OverallsProtocol.ProfilePolicy.allows?(guest.profile, service),
       do: {:ok, {guest.address, port, Policy.ingress_mark(service)}},

@@ -372,17 +372,17 @@ rec {
   freebsdGuest = import ./guest/native-promotion/freebsd-14.3-db752667-f0d9275b.nix { inherit pkgs; elixir = toolchain.elixir; };
   # Candidate assembly is an explicit build target. The staging constructor
   # stays closed; the catalog consumes only the separately promoted identity.
-  mkFreeBSDImageCandidate = extraArgs: import ./guest/freebsd/candidate.nix ({
-    inherit pkgs;
-    kernel = nativeKernels.freebsdCandidate;
-    agentNames = nativeAgentPayload.manifest.agents;
-    stagedImage = mkFreeBSDGuest {
-      imageName = "overalls-freebsd-native-staging";
-      gitIdentityVersion = 1;
-      kernel = nativeKernels.freebsdCandidate;
-      stagingOnly = true;
-    };
-  } // extraArgs);
+  mkFreeBSDImageCandidate = { kernel ? nativeKernels.freebsdCandidate, ... }@extraArgs:
+    import ./guest/freebsd/candidate.nix ({
+      inherit pkgs kernel;
+      agentNames = nativeAgentPayload.manifest.agents;
+      stagedImage = mkFreeBSDGuest {
+        imageName = "overalls-freebsd-native-staging";
+        gitIdentityVersion = 1;
+        inherit kernel;
+        stagingOnly = true;
+      };
+    } // builtins.removeAttrs extraArgs [ "kernel" ]);
   freebsdImageCandidate = mkFreeBSDImageCandidate { };
   omniosImageCandidateKit = import ./guest/omnios/candidate.nix {
     inherit pkgs;
@@ -400,6 +400,20 @@ rec {
     runtimeRcLocal = pkgs.writeText "overalls-freebsd-transport-probe-rc.local" ''
       #!/bin/sh
       exec /usr/local/libexec/overalls-native-transport-probe
+    '';
+  };
+  # Test-only: the fault-injection kernel with the same probe. Its distinct
+  # build identity keeps it out of every promoted or catalog image.
+  freebsdFaultProbeImage = mkFreeBSDImageCandidate {
+    kernel = nativeKernels.freebsdFaultCandidate;
+    extraRoot = pkgs.runCommand "overalls-freebsd-fault-probe-root" {} ''
+      install -D -m 0555 \
+        ${lyra.native.probes}/bin/x86_64-unknown-freebsd-overalls-native-transport-probe \
+        "$out/usr/local/libexec/overalls-native-transport-probe"
+    '';
+    runtimeRcLocal = pkgs.writeText "overalls-freebsd-fault-probe-rc.local" ''
+      #!/bin/sh
+      exec /usr/local/libexec/overalls-native-transport-probe --require-fault-injection
     '';
   };
   # Stock constructors remain closed. Only the separately reviewed immutable

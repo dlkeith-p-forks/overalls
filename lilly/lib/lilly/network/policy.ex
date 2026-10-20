@@ -161,7 +161,8 @@ defmodule Lilly.Network.Policy do
 
   # @cc [owner:ghuntley,label:security] marked-local-ingress-services
   # The optional ingress exception MUST allow only locally originated marked
-  # SSH-marked TCP to port 22 or web-marked TCP to admitted app ports, and
+  # SSH-marked TCP to port 22, web-marked TCP to admitted app ports other than
+  # 4444 and 5900, Android-display-marked TCP to non-Customer port 5900, and
   # established replies carrying those connection marks. Only Lilly applies the
   # web mark after exact execution admission; the firewall cannot parse HTTP.
   # Customer MUST accept only SSH-marked port-22 and editor-marked port-4444 connections and their established replies;
@@ -170,8 +171,9 @@ defmodule Lilly.Network.Policy do
   defp ingress_open(%Config{ingress: true}),
     do:
       "meta mark #{@ingress_mark} oifname \"lv*\" ip daddr { 10.10.0.0/16, 10.20.0.0/16, 10.30.0.0/16, 10.40.0.0/16, 10.41.0.0/16 } tcp dport 22 ct state { new, established } ct mark set #{@ingress_mark} counter accept; " <>
-        "meta mark #{@web_mark} oifname \"lv*\" ip daddr { 10.20.0.0/16, 10.30.0.0/16, 10.40.0.0/16, 10.41.0.0/16 } tcp dport != 4444 ct state { new, established } ct mark set #{@web_mark} counter accept; " <>
-        "meta mark #{@editor_mark} oifname \"lv*\" ip daddr { 10.10.0.0/16, 10.20.0.0/16, 10.30.0.0/16, 10.40.0.0/16, 10.41.0.0/16 } tcp dport 4444 ct state { new, established } ct mark set #{@editor_mark} counter accept;"
+        "meta mark #{@web_mark} oifname \"lv*\" ip daddr { 10.20.0.0/16, 10.30.0.0/16, 10.40.0.0/16, 10.41.0.0/16 } tcp dport != { 4444, 5900 } ct state { new, established } ct mark set #{@web_mark} counter accept; " <>
+        "meta mark #{@editor_mark} oifname \"lv*\" ip daddr { 10.10.0.0/16, 10.20.0.0/16, 10.30.0.0/16, 10.40.0.0/16, 10.41.0.0/16 } tcp dport 4444 ct state { new, established } ct mark set #{@editor_mark} counter accept; " <>
+        "meta mark #{@android_display_mark} oifname \"lv*\" ip daddr { 10.20.0.0/16, 10.30.0.0/16, 10.40.0.0/16, 10.41.0.0/16 } tcp dport 5900 ct state { new, established } ct mark set #{@android_display_mark} counter accept;"
 
   defp ingress_open(_), do: ""
 
@@ -199,7 +201,7 @@ defmodule Lilly.Network.Policy do
 
   defp ingress_reply(%Config{ingress: true}),
     do:
-      "iifname \"lv*\" meta l4proto tcp ct mark { #{@ingress_mark}, #{@web_mark}, #{@editor_mark} } ct state established ct direction reply counter accept;"
+      "iifname \"lv*\" meta l4proto tcp ct mark { #{@ingress_mark}, #{@web_mark}, #{@editor_mark}, #{@android_display_mark} } ct state established ct direction reply counter accept;"
 
   defp ingress_reply(_), do: ""
 

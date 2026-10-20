@@ -167,6 +167,15 @@ let
     sourceHash = "sha256-UM1Imo9/iER87f7VPAI0R6I1UxHROkHyeUxQhgk1/AA=";
     abiPatch = freebsdPatch;
   };
+  # Test-only: received-frame injection for native wrong-CID machine tests.
+  freebsdFaultCandidate = import ./freebsd {
+    inherit pkgs;
+    source = freebsdSource;
+    sourceRevision = freebsdRevision;
+    sourceHash = "sha256-UM1Imo9/iER87f7VPAI0R6I1UxHROkHyeUxQhgk1/AA=";
+    abiPatch = freebsdPatch;
+    faultInjection = true;
+  };
   vsockCoreCheck = import ./common { inherit pkgs; };
   illumosToolchain = import ./illumos/sdk.nix { inherit pkgs; };
   illumosCandidate = import ./illumos {
@@ -226,7 +235,7 @@ let
 in
 {
   inherit freebsdSource illumosSource omniosBuildSource illumosSdk freebsd illumos pins
-    freebsdCandidate vsockCoreCheck illumosToolchain illumosCandidate;
+    freebsdCandidate freebsdFaultCandidate vsockCoreCheck illumosToolchain illumosCandidate;
   freebsdKernel = freebsd;
   illumosKernel = illumos;
   freebsdRevision = freebsdRevision;

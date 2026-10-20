@@ -263,8 +263,120 @@ mod native {
         Ok(())
     }
 
-    pub fn run() -> io::Result<()> {
+    /// One received frame header in the virtio-vsock little-endian layout.
+    #[cfg(target_os = "freebsd")]
+    fn frame(source: u64, target: u64, source_port: u32, target_port: u32) -> [u8; 44] {
+        let mut bytes = [0_u8; 44];
+        bytes[0..8].copy_from_slice(&source.to_le_bytes());
+        bytes[8..16].copy_from_slice(&target.to_le_bytes());
+        bytes[16..20].copy_from_slice(&source_port.to_le_bytes());
+        bytes[20..24].copy_from_slice(&target_port.to_le_bytes());
+        bytes[28..30].copy_from_slice(&1_u16.to_le_bytes());
+        bytes[30..32].copy_from_slice(&1_u16.to_le_bytes());
+        bytes[36..40].copy_from_slice(&65_536_u32.to_le_bytes());
+        bytes
+    }
+
+    #[cfg(target_os = "freebsd")]
+    fn inject(bytes: &[u8]) -> Result<(), libc::c_int> {
+        // SAFETY: the OID name is NUL-terminated; bytes is a live input buffer
+        // and no output buffer is requested.
+        let result = unsafe {
+            libc::sysctlbyname(
+                c"debug.overalls_vsock_inject".as_ptr(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                bytes.as_ptr().cast(),
+                bytes.len(),
+            )
+        };
+        if result == 0 {
+            Ok(())
+        } else {
+            Err(io::Error::last_os_error().raw_os_error().unwrap_or(0))
+        }
+    }
+
+    #[cfg(target_os = "freebsd")]
+    fn pending(listener: &OwnedFd) -> io::Result<bool> {
+        let mut poll = libc::pollfd {
+            fd: listener.as_raw_fd(),
+            events: libc::POLLIN,
+            revents: 0,
+        };
+        // SAFETY: poll is one live descriptor record for this bounded wait.
+        let ready = unsafe { libc::poll(&raw mut poll, 1, 200) };
+        if ready < 0 {
+            return Err(io::Error::last_os_error());
+        }
+        Ok(ready == 1 && poll.revents & libc::POLLIN != 0)
+    }
+
+    /// @cc [owner:ghuntley,label:verification;security] native-test-wrong-cid-injection
+    /// On the separately identified fault kernel, frames with any source other
+    /// than host CID 2, any destination other than guest CID 3, or CIDs with
+    /// upper 32-bit bits set MUST be refused by the kernel decoder (EBADMSG)
+    /// and MUST NOT make a listener readable. A correctly addressed request
+    /// MUST pass the same injection path and make the listener readable, so
+    /// the refusals are not an artifact of an unreachable path. These checks
+    /// MUST execute before the test listener can return a build token.
+    #[cfg(target_os = "freebsd")]
+    fn wrong_cid_injection() -> io::Result<()> {
+        const PORT_UNDER_TEST: u32 = 1100;
+        let fd = socket()?;
+        let mut address = Address::new(u32::MAX);
+        address.port = PORT_UNDER_TEST;
+        // SAFETY: address is the reviewed 16-byte native ABI for this call.
+        if unsafe { libc::bind(fd.as_raw_fd(), (&raw const address).cast(), 16) } != 0
+            // SAFETY: fd is a bound native stream socket.
+            || unsafe { libc::listen(fd.as_raw_fd(), 4) } != 0
+        {
+            return Err(io::Error::last_os_error());
+        }
+        let wide = 1_u64 << 32;
+        let refused = [
+            (4, 3),
+            (3, 3),
+            (0, 3),
+            (1, 3),
+            (u64::from(u32::MAX), 3),
+            (u64::MAX, 3),
+            (2 | wide, 3),
+            (2, 2),
+            (2, 4),
+            (2, 0),
+            (2, u64::from(u32::MAX)),
+            (2, 3 | wide),
+        ];
+        for (source, target) in refused {
+            if inject(&frame(source, target, 5000, PORT_UNDER_TEST)) != Err(libc::EBADMSG) {
+                return Err(io::Error::other("wrong-CID frame was not refused"));
+            }
+            if pending(&fd)? {
+                return Err(io::Error::other("wrong-CID frame reached the listener"));
+            }
+        }
+        let mut truncated = frame(2, 3, 5000, PORT_UNDER_TEST).to_vec();
+        truncated[24..28].copy_from_slice(&8_u32.to_le_bytes());
+        if inject(&truncated) != Err(libc::EBADMSG) || pending(&fd)? {
+            return Err(io::Error::other("length-mismatched frame was not refused"));
+        }
+        if inject(&frame(2, 3, 5001, PORT_UNDER_TEST)).is_err() || !pending(&fd)? {
+            return Err(io::Error::other(
+                "injection path did not reach the listener",
+            ));
+        }
+        Ok(())
+    }
+
+    pub fn run(require_fault_injection: bool) -> io::Result<()> {
         boundaries()?;
+        if require_fault_injection {
+            #[cfg(target_os = "freebsd")]
+            wrong_cid_injection()?;
+            #[cfg(not(target_os = "freebsd"))]
+            return Err(io::Error::other("fault injection is FreeBSD-only"));
+        }
         let listener = Listener::bind(PORT, 8)?;
         let initial = kernel_probe::verified_build_id(&listener)?;
         loop {
@@ -280,7 +392,17 @@ mod native {
 
 #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
 fn main() -> ! {
-    std::process::exit(if native::run().is_ok() { 0 } else { 1 });
+    let mut arguments = std::env::args().skip(1);
+    let require_fault_injection = match (arguments.next().as_deref(), arguments.next()) {
+        (None, None) => false,
+        (Some("--require-fault-injection"), None) => true,
+        _ => std::process::exit(64),
+    };
+    std::process::exit(if native::run(require_fault_injection).is_ok() {
+        0
+    } else {
+        1
+    });
 }
 
 #[cfg(not(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris")))]

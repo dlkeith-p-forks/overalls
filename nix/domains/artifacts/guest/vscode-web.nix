@@ -30,6 +30,8 @@ in
     environment.OVERALLS_SSH_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt";
     unitConfig.ConditionKernelCommandLine = [ "lilly.ipv4" "lilly.placement" "lilly.execution_epoch" ];
     serviceConfig = {
+      Type = "notify";
+      NotifyAccess = "main";
       ExecStart = "${vscodeWebBroker}/bin/overalls-vscode-web-broker ${configuration}";
       Restart = "on-failure";
       RestartSec = 2;

@@ -278,7 +278,14 @@ replaced control session, so Audi revoked the stream. Renewal no longer pins
 that session. The later Alma and Arch suites both passed this exact restart
 survival stage. Alma completed all twelve stages. Arch's first capture later
 failed folder navigation after broker restart; its same-image diagnostic replay
-passed all twelve stages, without establishing the original 502's cause. See the separate
+passed all twelve stages, without establishing the original 502's cause. One
+candidate cause was a startup race: the broker unit used the default
+`Type=simple`, so `systemctl restart` returned before the TCP 4444 listener was
+bound and a fresh gateway connection could be refused. The NixOS and foreign-Linux
+broker units are now `Type=notify` with `NotifyAccess=main`, and the broker sends
+`READY=1` only after binding its listener and restricting it to the device. A unit
+test covers path and abstract notify sockets. No new Arch browser run has yet shown
+that this repairs the original 502. See the separate
 [family execution review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
 
 The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant's

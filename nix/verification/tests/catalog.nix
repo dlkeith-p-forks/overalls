@@ -202,6 +202,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
     android = true;
   };
   native-freebsd-transport = import ./machines/native-transport { pkgs = testPkgs; inherit packages; };
+  native-freebsd-wrong-cid = import ./machines/native-transport { pkgs = testPkgs; inherit packages; faultInjection = true; };
   native-freebsd-services = import ./machines/native-services { pkgs = testPkgs; inherit packages; };
   github-tools-freebsd-retained = import ./machines/native-services {
     pkgs = testPkgs; inherit packages; image = packages.freebsdGuest; github = true;

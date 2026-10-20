@@ -751,6 +751,29 @@ fn connection(mut client: TcpStream, runtime: Arc<Runtime>) -> Result<(), Refusa
     Ok(())
 }
 
+// systemd MUST NOT report the broker started until its listener is bound, so a
+// restart cannot race the gateway into a refused connection. Outside a
+// Type=notify unit there is no socket and readiness is implicit.
+fn notify_ready() {
+    if let Some(path) = std::env::var_os("NOTIFY_SOCKET") {
+        notify_ready_to(&path);
+    }
+}
+
+fn notify_ready_to(path: &std::ffi::OsStr) {
+    use std::os::linux::net::SocketAddrExt;
+    use std::os::unix::net::{SocketAddr, UnixDatagram};
+    let bytes = path.as_encoded_bytes();
+    let address = match bytes.split_first() {
+        Some((b'@', name)) => SocketAddr::from_abstract_name(name),
+        Some((b'/', _)) => SocketAddr::from_pathname(Path::new(path)),
+        _ => return,
+    };
+    if let (Ok(address), Ok(socket)) = (address, UnixDatagram::unbound()) {
+        let _ = socket.send_to_addr(b"READY=1", &address);
+    }
+}
+
 fn serve(configuration: Configuration) -> Result<(), Refusal> {
     if unsafe { libc::geteuid() } != 0 {
         return Err(Refusal::Account);
@@ -778,6 +801,7 @@ fn serve(configuration: Configuration) -> Result<(), Refusal> {
         connections: AtomicUsize::new(0),
     });
     emit(Event::Started, None);
+    notify_ready();
     for accepted in listener.incoming() {
         let client = accepted.map_err(|_| Refusal::Transport)?;
         if client.peer_addr().map_err(|_| Refusal::Transport)?.ip() != runtime.boot.gateway {
@@ -820,6 +844,38 @@ pub(crate) fn main() -> ExitCode {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn readiness_reaches_path_and_abstract_notify_sockets() {
+        use std::os::linux::net::SocketAddrExt;
+        use std::os::unix::net::{SocketAddr, UnixDatagram};
+        let directory = std::env::temp_dir().join(format!("broker-notify-{}", std::process::id()));
+        fs::create_dir_all(&directory).unwrap();
+        let path = directory.join("notify");
+        let _ = fs::remove_file(&path);
+        let receiver = UnixDatagram::bind(&path).unwrap();
+        receiver
+            .set_read_timeout(Some(Duration::from_secs(1)))
+            .unwrap();
+        notify_ready_to(path.as_os_str());
+        let mut buffer = [0_u8; 32];
+        let length = receiver.recv(&mut buffer).unwrap();
+        assert_eq!(&buffer[..length], b"READY=1");
+        fs::remove_dir_all(&directory).unwrap();
+
+        let name = format!("broker-notify-{}", std::process::id());
+        let abstract_receiver =
+            UnixDatagram::bind_addr(&SocketAddr::from_abstract_name(name.as_bytes()).unwrap())
+                .unwrap();
+        abstract_receiver
+            .set_read_timeout(Some(Duration::from_secs(1)))
+            .unwrap();
+        notify_ready_to(std::ffi::OsStr::new(&format!("@{name}")));
+        let length = abstract_receiver.recv(&mut buffer).unwrap();
+        assert_eq!(&buffer[..length], b"READY=1");
+
+        notify_ready_to(std::ffi::OsStr::new("relative"));
+    }
 
     fn launch_binding() -> Binding {
         Binding {

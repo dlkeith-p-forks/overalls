@@ -1,6 +1,10 @@
-{ pkgs, source, sourceRevision, sourceHash, abiPatch }:
+{ pkgs, source, sourceRevision, sourceHash, abiPatch, faultInjection ? false }:
 let
   inherit (pkgs) lib;
+  # The fault kernel is a separately identified, test-only build that appends
+  # received-frame injection to the unchanged driver source. Its configuration
+  # inputs differ, so it can never share the production build identity.
+  kernelConfigurationName = if faultInjection then "GENERIC-OVERALLS-FAULT" else "GENERIC-OVERALLS";
   # FreeBSD 14.3 ships Clang 19.1.7. Use the corresponding pinned compiler,
   # including its separately packaged intrinsic headers, for host and target.
   llvm = pkgs.llvmPackages_19;
@@ -10,6 +14,9 @@ let
   configurationInputs = {
     kernel_configuration = builtins.hashFile "sha256" ./GENERIC-OVERALLS;
     build_recipe = builtins.hashFile "sha256" ./default.nix;
+  } // lib.optionalAttrs faultInjection {
+    fault_configuration = builtins.hashFile "sha256" ./GENERIC-OVERALLS-FAULT;
+    fault_injection = builtins.hashFile "sha256" ./ovfb_fault.h;
   };
   configurationHash = builtins.hashString "sha256" (builtins.toJSON configurationInputs);
   patchInputs = {
@@ -41,7 +48,7 @@ in
 # static domain/driver overlay and shared wire core, using pinned host tools and
 # target compiler. Artifact bytes/digest MUST come from the resulting ELF. Build
 # and symbol success MUST NOT establish runtime transport or native admission.
-pkgs.runCommand "overalls-freebsd-kernel-candidate-${sourceRevision}" {
+pkgs.runCommand "overalls-freebsd-kernel-${if faultInjection then "fault" else "candidate"}-${sourceRevision}" {
   nativeBuildInputs = [
     pkgs.python3 llvm.clang llvm.clang-unwrapped llvm.lld llvm.llvm
     pkgs.flex pkgs.byacc pkgs.bison pkgs.gnumake pkgs.pkg-config pkgs.which
@@ -51,7 +58,8 @@ pkgs.runCommand "overalls-freebsd-kernel-candidate-${sourceRevision}" {
   passthru = {
     inherit acceptCheck;
     inherit source sourceRevision sourceHash compiler patchHash configurationHash configurationInputs patchInputs buildId;
-    configuration = ./GENERIC-OVERALLS;
+    inherit faultInjection;
+    configuration = if faultInjection then ./GENERIC-OVERALLS-FAULT else ./GENERIC-OVERALLS;
     nativeAdmission = false;
     runtimeValidated = false;
   };
@@ -84,6 +92,12 @@ pkgs.runCommand "overalls-freebsd-kernel-candidate-${sourceRevision}" {
   #define OV_VSOCK_BUILD_ID "${buildId}"
   BUILD
   cp ${./GENERIC-OVERALLS} sys/amd64/conf/GENERIC-OVERALLS
+  ${lib.optionalString faultInjection ''
+    cp ${./GENERIC-OVERALLS-FAULT} sys/amd64/conf/GENERIC-OVERALLS-FAULT
+    cp ${./ovfb_fault.h} sys/dev/virtio/vsock/ovfb_fault.h
+    chmod u+w sys/dev/virtio/vsock/virtio_vsock.c
+    printf '\n#define OVFB_FAULT_INJECTION 1\n#include "ovfb_fault.h"\n' >> sys/dev/virtio/vsock/virtio_vsock.c
+  ''}
   cat >> sys/conf/files <<'FILES'
   dev/virtio/vsock/virtio_vsock.c optional virtio_vsock
   dev/virtio/vsock/ov_vsock.c optional virtio_vsock
@@ -110,9 +124,9 @@ pkgs.runCommand "overalls-freebsd-kernel-candidate-${sourceRevision}" {
       TARGET=amd64 TARGET_ARCH=amd64 __MAKE_CONF=/dev/null SRCCONF=/dev/null \
       HOST_INCLUDE_ROOT=${pkgs.stdenv.cc.libc.dev}/include \
       WITHOUT_TOOLCHAIN=yes WITHOUT_CLANG=yes WITHOUT_LLD=yes WITHOUT_LLDB=yes \
-      KERNCONF=GENERIC-OVERALLS NO_MODULES=yes "$stage"
+      KERNCONF=${kernelConfigurationName} NO_MODULES=yes "$stage"
   done
-  kernel=$(find "$MAKEOBJDIRPREFIX" -type f -path '*/GENERIC-OVERALLS/kernel' -print -quit)
+  kernel=$(find "$MAKEOBJDIRPREFIX" -type f -path '*/${kernelConfigurationName}/kernel' -print -quit)
   test -n "$kernel"
   mkdir -p "$out/share/overalls/native-kernel"
   cp "$kernel" "$out/kernel"
@@ -144,6 +158,11 @@ pkgs.runCommand "overalls-freebsd-kernel-candidate-${sourceRevision}" {
   for symbol in ov_vsock_decode ov_vsock_receive ovfb_domain ovfb_driver; do
     grep -Eq " [Ttd] $symbol$" "$evidence/symbols"
   done
+  ${if faultInjection then ''
+    grep -Eq " [Tt] ovfb_fault_inject$" "$evidence/symbols"
+  '' else ''
+    if grep -Eq " [Tt] ovfb_fault_inject$" "$evidence/symbols"; then exit 1; fi
+  ''}
   bytes=$(stat -c %s "$out/kernel")
   test "$bytes" -gt 1024
   test "$bytes" -lt 134217728
@@ -160,7 +179,8 @@ pkgs.runCommand "overalls-freebsd-kernel-candidate-${sourceRevision}" {
     '{version:1,os:"freebsd",source_hash:$source_hash,patch_inputs:$patch_inputs,
       build_id:$build_id,boot_identity_oid:"kern.overalls_vsock_build_id",
       kernel:$kernel[0],compiled:true,linked:true,symbol_checked:true,public_abi_checked:true,
+      fault_injection:${lib.boolToString faultInjection},
       runtime_validated:false,native_admission:false}' > "$evidence/build-receipt.json"
   printf '%s\n' '${buildId}' > "$evidence/build-id"
-  cp ${./GENERIC-OVERALLS} "$evidence/kernel.conf"
+  cp ${if faultInjection then ./GENERIC-OVERALLS-FAULT else ./GENERIC-OVERALLS} "$evidence/kernel.conf"
 ''
