@@ -4,7 +4,7 @@ Date: 2026-09-18
 
 ## Scope and architecture impact
 
-Install the authorized new Hetzner machine at `136.243.69.35` as `dungarees`,
+Install the authorized new Hetzner machine at `DUNGAREES_PRIMARY_IPV4` as `dungarees`,
 using the reviewed [declaration](../../../fleet/hosts/dungarees/host.json).
 Preserve ADR-0048's inherited provisioning and storage policy and ADR-0045's
 separate worker enrollment. The worker joins the existing Overalls control
@@ -39,7 +39,7 @@ The base installation completed from revision
 `d290588a10356e9f9c9adb42e033d99b3da9ddbd39744c4f7accc8edcbd9cfd0`.
 The installed host booted, authenticated named-user SSH/sudo succeeded, storage
 verification passed, both mirror members are healthy, and no failed systemd
-units were reported. The supplied additional address `136.243.69.32/26` is
+units were reported. The supplied additional address `DUNGAREES_SERVICE_IPV4/26` is
 included in the enrolled configuration, with a corresponding Overalls peer route.
 
 The real OpenAI key supplied through private operator custody passed model-list
@@ -107,7 +107,7 @@ not fleet-load or HA validation.
 Both hosts accepted revision `2ffa5b78be905ff0cc3618a9d1a1c6a6ba298918` through
 their updater. Native storage/identity receipt verification passed; mirrored ZFS
 is healthy. SSH remains available over IPv4, including Dungarees' additional
-`136.243.69.32` address. No failed systemd units were found on Dungarees.
+`DUNGAREES_SERVICE_IPV4` address. No failed systemd units were found on Dungarees.
 
 Ziggy's precommit gate passed with 24 tests/properties and forced Dialyzer.
 Audi's first full run had one short-TTL property expire before its worker started;

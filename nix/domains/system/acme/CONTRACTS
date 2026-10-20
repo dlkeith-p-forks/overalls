@@ -17,3 +17,8 @@ another certificate. Reload MUST preserve active WebSocket connections.
 The last validated certificate MUST be persisted before requesting a reload.
 Proxy startup MUST revalidate that certificate and MAY use it when issuance or
 publication fails; an expired, untrusted or missing cache MUST fail startup.
+
+@cc [owner:ghuntley,label:security] certificate-runtime-listener-address
+When the proxy address is runtime data, publication and HTTP-01 ingress MUST
+read it from the proxy's validated environment, never from the publication
+file, and MUST fail rather than probe or bind a wildcard address.

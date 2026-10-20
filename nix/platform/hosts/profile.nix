@@ -73,6 +73,7 @@ let
   lillyEnrolled = enrolled && lillyBinding != null;
   transferEndpoint = lillySettings.transferEndpoint or null;
   lillyDocument = lib.findFirst (d: d.name == "${h.name}-lilly") null h.credentials;
+  addressDocument = lib.findFirst (d: d.name == "fleet-addresses") null h.credentials;
   backupDocument = lib.findFirst (d: d.name == "${h.name}-backup") null h.credentials;
   underclassDocument = lib.findFirst (d: d.name == "${h.name}-underclass") null h.credentials;
   underclassEnrolled = enrolled && underclassDocument != null;
@@ -134,6 +135,14 @@ in {
         (network.networkConfig.DHCP or null) == "ipv4" && !(network.networkConfig ? Address) && !(network ? address)
         && lib.all (route: !(route ? PreferredSource)) (network.routes or [])) (builtins.attrValues h.network);
       message = "Hetzner Cloud networks use DHCP for IPv4 and keep addresses out of the repository"; }
+    # @cc [owner:ghuntley,label:security;deployment] uplink-addresses-outside-repository
+    # A host with a runtime uplink MUST NOT also declare static IPv4 addresses,
+    # preferred sources or IPv4 gateways for it.
+    { assertion = !(h ? addresses && h.addresses ? uplink) || lib.all (network:
+        !(network.networkConfig ? Address) && !(network ? address)
+        && lib.all (route: !(route ? PreferredSource) && !(lib.hasInfix "." (route.Gateway or ""))
+          && !(lib.hasInfix "." (route.Destination or ""))) (network.routes or [])) (builtins.attrValues h.network);
+      message = "Runtime uplink networks keep IPv4 addresses and routes out of the repository"; }
     { assertion = lillyBinding == null || lib.all (p: builtins.attrNames p == [ "filesystem_id" "id" "name" "storage" ]) lillyBinding.pools; message = "Lilly binding pools must carry exactly id, name, filesystem_id and storage"; }
     { assertion = !mirror || h.storage.quotaBytes > 0; message = "Shared root storage requires a reviewed guest quota"; }
     { assertion = !ec2 || (guestDisks != [] && lib.sort builtins.lessThan guestDisks == lib.sort builtins.lessThan (map (d: d.id) (lib.filter (d: d.kind == "local-nvme") h.inventory.disks)) && disks.${builtins.head bootDisks}.kind == "ebs"); message = "EC2 requires EBS root and every local NVMe drive"; }
@@ -157,8 +166,28 @@ in {
   networking.useNetworkd = true;
   systemd.network.enable = true;
   systemd.network.networks = h.network;
+  # @cc [owner:ghuntley,label:security;deployment] host-addresses-from-declaration
+  # A host's public addresses MUST come from the shared fleet-addresses SOPS
+  # document named by its declaration; the declaration holds only logical
+  # names and secret names. A base system without the credential uses the
+  # uplink recovery copy written at installation.
+  overalls.fleetAddresses = lib.mkIf (h ? addresses) {
+    enable = true;
+    names = import ../../policy/network/fleet-addresses.nix // (h.addresses.names or {});
+    uplink = h.addresses.uplink or null;
+    encryptedFile = if addressDocument == null then null
+      else "${repositoryRoot + ("/" + addressDocument.path)}";
+  };
   overalls.access.enable = true;
   overalls.fleetFirewall.enable = true;
+  # Reviewed fleet sources follow the decrypted fleet addresses; a base system
+  # without the document admits them only through Tailscale.
+  overalls.fleetFirewall.allowedHosts = lib.mkIf (h ? addresses && addressDocument != null)
+    (lib.mapAttrs (_: grant: {
+      addressFile = config.overalls.fleetAddresses.files.${grant.name};
+      addressUnit = config.overalls.fleetAddresses.unit;
+      inherit (grant) comment;
+    }) (import ../../policy/network/allowed-hosts.nix));
   # @cc [owner:ghuntley,label:deployment] fleet-tailscale-mesh
   # Every base and enrolled fleet host MUST run the Tailscale client daemon so
   # operators retain a management path independent of the provider network.

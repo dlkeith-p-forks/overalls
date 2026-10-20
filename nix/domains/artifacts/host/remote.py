@@ -2,6 +2,7 @@
 
 import fcntl
 import hashlib
+import ipaddress
 import json
 import os
 import platform
@@ -85,6 +86,17 @@ class Address(TypedDict):
     ifname: str
     address: str | None
     addr_info: list[AddrInfo]
+
+
+class Uplink(TypedDict):
+    """Live uplink facts for the recovery copy; the values stay off the repository."""
+
+    addresses: list[str]
+    gateway: str
+    routes: list[str]
+
+
+UPLINK_RECOVERY = Path("/mnt/var/lib/overalls-host/uplink.conf")
 
 
 class Facts(TypedDict):
@@ -302,6 +314,48 @@ def atomic(path: Path, value: object) -> None:
     os.close(fd)
 
 
+def uplink_drop_in(uplink: Uplink) -> str:
+    """Render the networkd drop-in exactly as overalls-fleet-uplink does.
+
+    The host-planning check compares this with fleet-addresses.py, so a base
+    system booting without the SOPS document gets the same addressing.
+    """
+    interfaces = [ipaddress.IPv4Interface(address) for address in uplink["addresses"]]
+    gateway = ipaddress.IPv4Address(uplink["gateway"])
+    routes = [ipaddress.IPv4Address(route) for route in uplink["routes"]]
+    if not interfaces or any(i.network != interfaces[0].network for i in interfaces):
+        raise ValueError("uplink addresses must share one on-link network")
+    if gateway not in interfaces[0].network:
+        raise ValueError("uplink gateway must be on-link")
+    lines = ["[Network]", *(f"Address={i.with_prefixlen}" for i in interfaces), ""]
+    lines += ["[Route]", f"Destination={gateway}/32", "Scope=link", ""]
+    lines += ["[Route]", f"Gateway={gateway}", "GatewayOnLink=yes", ""]
+    for destination in [str(interfaces[0].network), *(f"{route}/32" for route in routes)]:
+        lines += [
+            "[Route]",
+            f"Destination={destination}",
+            f"Gateway={gateway}",
+            "GatewayOnLink=yes",
+            "",
+        ]
+    return "\n".join(lines)
+
+
+def install_uplink(uplink: Uplink) -> dict[str, int]:
+    text = uplink_drop_in(uplink)
+    if UPLINK_RECOVERY.exists():
+        raise ValueError("uplink recovery copy already exists")
+    UPLINK_RECOVERY.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    temp = UPLINK_RECOVERY.with_suffix(".tmp")
+    with open(temp, "w", opener=lambda p, f: os.open(p, f, 0o600)) as stream:
+        stream.write(text)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temp, UPLINK_RECOVERY)
+    # Only counts are reported; the addresses never reach operator output.
+    return {"addresses": len(uplink["addresses"]), "routes": len(uplink["routes"])}
+
+
 def verify(host: Declaration, receipt: bool = False) -> StorageFacts:
     observed = storage(host)
     baseline = Path("/var/lib/overalls-host/storage.json")
@@ -374,6 +428,8 @@ def main() -> None:
         if path.exists():
             raise ValueError("installation baseline already exists")
         atomic(path, result)
+    elif action == "install-uplink":
+        result = install_uplink(json.load(sys.stdin))
     else:
         raise ValueError("unknown operation")
     print(json.dumps(result, sort_keys=True))

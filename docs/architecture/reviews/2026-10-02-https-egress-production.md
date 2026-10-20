@@ -51,7 +51,7 @@ per stage. Baseline cache hits were two for NixOS and three for Ubuntu; after
 restart both had three. The events bound the actual VM, placement, owning account,
 execution epoch and generation. Cache reuse did not infer identity from an IP's
 previous occupant. Protected requests to `10.90.0.1`, `169.254.169.254` and
-`136.243.69.55` timed out. The Customer test used a public address resolved outside
+`OVERALLS_PRIMARY_IPV4` timed out. The Customer test used a public address resolved outside
 the guest, so denied guest DNS alone could not pass it.
 
 A second campaign, `egress-20261002-151600`, exercised the completed runner's

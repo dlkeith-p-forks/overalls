@@ -7,6 +7,16 @@ let
   hostCertificate = import ./ssh-host-certificate.nix { inherit pkgs packages; inherit (cfg) caFile credentialFile; role = "audi"; origin = cfg.controlPlane; };
   dumps = import ./crash-dumps { inherit lib pkgs; };
   fleetOtelEnabled = lib.attrByPath [ "services" "overallsOtelFleet" "enable" ] false config;
+  bind = import ./runtime-bind.nix { inherit lib pkgs; };
+  runtimeBind = cfg.bindAddressFile != null;
+  porsche = config.services.porsche or { enable = false; };
+  porscheEnabled = porsche.enable or false;
+  # Shared SSH port with a colocated Porsche: the listeners must use distinct
+  # explicit addresses. Static pairs are checked at evaluation; a runtime
+  # address on either side is checked by Audi's start step.
+  sharedPort = porscheEnabled && cfg.port == porsche.port;
+  runtimeOverlapCheck = sharedPort && (runtimeBind || porsche.bindAddressFile != null);
+  configFile = if runtimeBind then "/run/audi/config.json" else runtime;
   runtime = pkgs.writeText "audi-runtime.json" (builtins.toJSON ({
     version = 1;
     status_socket = "/run/audi/status.sock";
@@ -91,7 +101,7 @@ in {
       default = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
       description = "CA certificates authenticating the Marshall HTTPS endpoint.";
     };
-    bindAddress = mkOption { type = paths.ipv4; default = "0.0.0.0"; };
+  } // bind.options { description = "the Audi gateway listeners"; } cfg // {
     port = mkOption { type = types.port; default = 22; };
     # @cc [owner:ghuntley,label:security] audi-administrative-access-mode
     # Physical-host defaults MUST retain administrative SSH on 2222. Explicit
@@ -142,9 +152,14 @@ in {
         message = "Audi browser origin must differ from its private Marshall machine API."; }
       { assertion = !cfg.tls.enable || builtins.length (lib.unique [ cfg.port cfg.tls.httpPort cfg.tls.httpsPort ]) == 3;
         message = "Audi SSH, HTTP and HTTPS must use distinct ports."; }
-      { assertion = !(lib.attrByPath [ "services" "porsche" "enable" ] false config) || cfg.port != config.services.porsche.port
-          || (cfg.bindAddress != "0.0.0.0" && config.services.porsche.bindAddress != "0.0.0.0"
-            && cfg.bindAddress != config.services.porsche.bindAddress);
+      # @cc [owner:ghuntley,label:security] audi-porsche-listener-separation
+      # Colocated Audi and Porsche SSH listeners on one port MUST bind distinct
+      # explicit addresses. Static pairs are refused at evaluation; when either
+      # address is runtime data, Audi's start MUST refuse an equal address and
+      # each static side MUST still be explicit.
+      { assertion = !sharedPort
+          || (cfg.bindAddress != "0.0.0.0" && porsche.bindAddress != "0.0.0.0"
+            && (runtimeOverlapCheck || cfg.bindAddress != porsche.bindAddress));
         message = "Audi and Porsche SSH listeners must not overlap in address and port."; }
       { assertion = cfg.port != 22 || cfg.administrativeAccess == "console" || (config.services.openssh.enable
           && builtins.elem 2222 config.services.openssh.ports
@@ -156,7 +171,7 @@ in {
         message = "Audi and administrative OpenSSH must use distinct ports."; }
       { assertion = !cfg.crashDumps.enable || cfg.crashDumps.publicKeyFile != null;
         message = "Audi encrypted dumps require an operator public key file."; }
-    ];
+    ] ++ bind.assertions "Audi" cfg;
     # @cc [owner:ghuntley,label:security] audi-relay-firewall-peer-only
     # Relay traffic MUST use the existing source-restricted fleet0 input rules.
     # Enabling relay MUST NOT expose its port through public service admission.
@@ -166,7 +181,7 @@ in {
     users.groups.overalls-otel-audi-ssh-source = lib.mkIf fleetOtelEnabled {};
     systemd.tmpfiles.rules = lib.optional fleetOtelEnabled
       "d /run/audi-ssh-slo 0750 audi overalls-otel-audi-ssh-source -";
-    networking.firewall = mkIf cfg.openFirewall (import ./listener-firewall.nix {
+    networking.firewall = mkIf (cfg.openFirewall && cfg.bindAddress != null) (import ./listener-firewall.nix {
       inherit lib config;
       address = cfg.bindAddress;
       tcpPorts = [ cfg.port ] ++ lib.optionals cfg.tls.enable [ cfg.tls.httpPort cfg.tls.httpsPort ];
@@ -180,14 +195,20 @@ in {
     # administrative SSH. Restart MUST NOT replace an existing host key.
     systemd.services.audi-ssh-certificate = hostCertificate.service;
     systemd.timers.audi-ssh-certificate = hostCertificate.timer;
-    systemd.services.audi = lib.mkMerge [ hostCertificate.startup {
+    # @cc [owner:ghuntley,label:security;deployment] audi-runtime-bind-address
+    # A runtime bind address MUST arrive only as a systemd credential from its
+    # publishing unit, which Audi follows. Startup MUST refuse a missing,
+    # non-canonical or wildcard address without logging it, and render the
+    # configuration privately under /run/audi, never into the Nix store.
+    systemd.services.audi = lib.mkMerge [ hostCertificate.startup (bind.unitConfig cfg) {
       description = "Audi guest SSH gateway";
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-online.target" ];
-      after = [ "network-online.target" ] ++ cfg.secretUnits;
+      after = [ "network-online.target" ] ++ cfg.secretUnits
+        ++ lib.optional (runtimeOverlapCheck && porsche.bindAddressUnit != null) porsche.bindAddressUnit;
       requires = cfg.secretUnits;
       environment = {
-        AUDI_CONFIG_FILE = runtime;
+        AUDI_CONFIG_FILE = configFile;
         RELEASE_TMP = "/run/audi";
         RELEASE_DISTRIBUTION = "none";
         ERL_CRASH_DUMP = "/dev/null";
@@ -199,6 +220,18 @@ in {
       path = [ pkgs.openssh ];
       preStart = ''
         set -eu
+      '' + lib.optionalString (runtimeBind || runtimeOverlapCheck) ''
+        ${bind.validate}
+        ${bind.read "bind_address" cfg "bind-address"}
+      '' + lib.optionalString runtimeOverlapCheck ''
+        ${bind.read "porsche_address" porsche "porsche-bind-address"}
+        if [ "$bind_address" = "$porsche_address" ]; then
+          echo "Audi and Porsche SSH listeners must not share an address" >&2
+          exit 1
+        fi
+      '' + lib.optionalString runtimeBind ''
+        ${bind.render { template = runtime; output = configFile; }}
+      '' + ''
         ${pkgs.coreutils}/bin/install -m 0400 "$CREDENTIALS_DIRECTORY/gateway.token" /run/audi/gateway.token
         ${pkgs.coreutils}/bin/mkdir -p -m 0700 /var/lib/audi/keys
         if ! test -e /var/lib/audi/keys/ssh_host_ed25519_key && ! test -L /var/lib/audi/keys/ssh_host_ed25519_key; then
@@ -221,7 +254,9 @@ in {
         SupplementaryGroups = lib.optionals fleetOtelEnabled [ "audi" ];
         UMask = "0077";
         LoadCredential = [ "gateway.token:${cfg.credentialFile}" "ca.pem:${cfg.caFile}" ]
-          ++ lib.optionals cfg.tls.enable [ "certificate-roots.pem:${cfg.tls.certificateRootsFile}" ];
+          ++ lib.optionals cfg.tls.enable [ "certificate-roots.pem:${cfg.tls.certificateRootsFile}" ]
+          ++ bind.credential cfg "bind-address"
+          ++ lib.optionals runtimeOverlapCheck (bind.credential porsche "porsche-bind-address");
         StateDirectory = [ "audi" ] ++ lib.optional cfg.crashDumps.enable "audi-crash-dumps";
         StateDirectoryMode = "0700";
         RuntimeDirectory = [ "audi" ];

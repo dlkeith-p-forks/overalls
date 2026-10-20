@@ -122,4 +122,7 @@ autoupdate on a single ZFS disk.
 [ADR-0043](0043-declarative-host-provisioning.md) gains the `hcloud` platform;
 [ADR-0224](0224-susan-push-relay.md) gains its host and TLS placement;
 [ADR-0225](0225-marshall-notifications-domain.md) retries Susan outages;
-[ADR-0232](0232-sops-delivered-public-host-addresses.md) amends its addressing.
+[ADR-0232](0232-sops-delivered-public-host-addresses.md) amends its addressing;
+[ADR-0233](0233-fleet-addresses-from-sops.md) supersedes ADR-0232, disables
+IPv6 on salopettes and adds it to `fleet0` so Marshall reaches Susan over the
+tunnel.

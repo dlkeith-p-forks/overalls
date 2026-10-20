@@ -225,25 +225,276 @@ Default:
 ```
 
 
+## `overalls.fleetAddresses.enable`
+
+Whether to enable fleet public addresses delivered through SOPS instead of the repository.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+Example:
+
+```nix
+true
+```
+
+
+## `overalls.fleetAddresses.encryptedFile`
+
+Shared SOPS document (project overalls-fleet-addresses); null on a base system, which uses only the uplink recovery copy.
+
+Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetAddresses.environmentFile`
+
+EnvironmentFile with every selected secret by its secret name.
+
+Type: `string`.
+
+Default:
+
+```nix
+"/run/overalls-secrets/fleet-addresses/addresses.env"
+```
+
+
+## `overalls.fleetAddresses.files`
+
+Runtime file per logical name, for consumers such as firewall rules and listeners.
+
+Type: `attribute set of string`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `overalls.fleetAddresses.names`
+
+Logical name to secret name; secrets ending _IPV4 are addresses and _PREFIX are prefix lengths.
+
+Type: `attribute set of string matching the pattern [A-Z][A-Z0-9_]{0,62}_(IPV4|PREFIX)`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `overalls.fleetAddresses.unit`
+
+Unit after which every runtime address has been validated.
+
+Type: `string`.
+
+Default:
+
+```nix
+"overalls-fleet-addresses.service"
+```
+
+
+## `overalls.fleetAddresses.uplink`
+
+Static uplink addressing applied as a runtime networkd drop-in.
+
+Type: `null or (submodule)`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetAddresses.uplink._module.args`
+
+Additional arguments passed to each module in addition to ones
+like `lib`, `config`,
+and `pkgs`, `modulesPath`.
+
+This option is also available to all submodules. Submodules do not
+inherit args from their parent module, nor do they provide args to
+their parent module or sibling submodules. The sole exception to
+this is the argument `name` which is provided by
+parent modules to a submodule and contains the attribute name
+the submodule is bound to, or a unique generated name if it is
+not bound to an attribute.
+
+Some arguments are already passed by default, of which the
+following *cannot* be changed with this option:
+- {var}`lib`: The nixpkgs library.
+- {var}`config`: The results of all options after merging the values from all modules together.
+- {var}`options`: The options declared in all modules.
+- {var}`specialArgs`: The `specialArgs` argument passed to `evalModules`.
+- All attributes of {var}`specialArgs`
+
+  Whereas option values can generally depend on other option values
+  thanks to laziness, this does not apply to `imports`, which
+  must be computed statically before anything else.
+
+  For this reason, callers of the module system can provide `specialArgs`
+  which are available during import resolution.
+
+  For NixOS, `specialArgs` includes
+  {var}`modulesPath`, which allows you to import
+  extra modules from the nixpkgs package tree without having to
+  somehow make the module aware of the location of the
+  `nixpkgs` or NixOS directories.
+  ```
+  { modulesPath, ... }: {
+    imports = [
+      (modulesPath + "/profiles/minimal.nix")
+    ];
+  }
+  ```
+
+For NixOS, the default value for this option includes at least this argument:
+- {var}`pkgs`: The nixpkgs package set according to
+  the {option}`nixpkgs.pkgs` option.
+
+
+Type: `lazy attribute set of raw value`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `overalls.fleetAddresses.uplink._module.check`
+
+Whether to check whether all option definitions have matching declarations.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+true
+```
+
+
+## `overalls.fleetAddresses.uplink._module.freeformType`
+
+If set, merge all definitions that don't have an associated option
+together using this type. The result then gets combined with the
+values of all declared options to produce the final `
+config` value.
+
+If this is `null`, definitions without an option
+will throw an error unless {option}`_module.check` is
+turned off.
+
+
+Type: `null or optionType`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetAddresses.uplink._module.specialArgs`
+
+Externally provided module arguments that can't be modified from
+within a configuration, but can be used in module imports.
+
+
+Type: `unspecified value`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.fleetAddresses.uplink.addresses`
+
+No additional description is declared by the module.
+
+Type: `non-empty (list of string matching the pattern [a-z][A-Za-z0-9]{0,31})`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.fleetAddresses.uplink.gateway`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern [a-z][A-Za-z0-9]{0,31}`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.fleetAddresses.uplink.hostRoutes`
+
+Addresses routed as /32 through the gateway.
+
+Type: `list of string matching the pattern [a-z][A-Za-z0-9]{0,31}`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `overalls.fleetAddresses.uplink.network`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern [A-Za-z0-9][A-Za-z0-9_.-]{0,63}`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.fleetAddresses.uplink.prefix`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern [a-z][A-Za-z0-9]{0,31}`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.fleetAddresses.uplink.recoveryFile`
+
+Last applied drop-in, used when the document cannot be decrypted, and written by host installation.
+
+Type: `string`.
+
+Default:
+
+```nix
+"/var/lib/overalls-host/uplink.conf"
+```
+
+
 ## `overalls.fleetFirewall.allowedHosts`
 
-Named IPv4 sources allowed to reach every fleet host over TCP and UDP.
+Named IPv4 sources allowed to reach every fleet host over TCP and UDP; fleet hosts fill it from the reviewed policy in nix/policy/network/allowed-hosts.nix.
 
 Type: `attribute set of (submodule)`.
 
 Default:
 
 ```nix
-{
-  dungarees = {
-    address = "136.243.69.35";
-    comment = "Dungarees fleet host";
-  };
-  overalls = {
-    address = "136.243.69.55";
-    comment = "Overalls fleet host";
-  };
-}
+{ }
 ```
 
 
@@ -352,9 +603,39 @@ Default: Required when its service or enclosing record is selected.
 
 Reviewed IPv4 source address.
 
-Type: `string matching the pattern [0-9]{1,3}(\.[0-9]{1,3}){3}`.
+Type: `null or string matching the pattern [0-9]{1,3}(\.[0-9]{1,3}){3}`.
 
-Default: Required when its service or enclosing record is selected.
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetFirewall.allowedHosts.<name>.addressFile`
+
+Runtime file holding the reviewed IPv4 source, for addresses kept out of the repository.
+
+Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetFirewall.allowedHosts.<name>.addressUnit`
+
+Unit that publishes addressFile.
+
+Type: `null or string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+null
+```
 
 
 ## `overalls.fleetFirewall.allowedHosts.<name>.comment`
@@ -514,7 +795,7 @@ null
 
 ## `overalls.fleetFirewall.publicServices.<name>.addressFile`
 
-Runtime file holding the explicit local IPv4 destination, for addresses kept out of the repository (for example a decrypted SOPS bundle). Requires the iptables backend.
+Runtime file holding the explicit local IPv4 destination, for addresses kept out of the repository (for example a decrypted SOPS bundle).
 
 Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
 
@@ -605,9 +886,39 @@ true
 
 Physical IPv4 destination admitted for WireGuard handshakes.
 
-Type: `string`.
+Type: `null or string`.
 
-Default: Required when its service or enclosing record is selected.
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetNetwork.endpointAddressFile`
+
+Runtime file holding the physical IPv4 destination, kept out of the repository.
+
+Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetNetwork.endpointUnits`
+
+Units that publish the runtime endpoint files of this host and its peers.
+
+Type: `list of string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+[ ]
+```
 
 
 ## `overalls.fleetNetwork.peers`
@@ -737,9 +1048,26 @@ Default: Required when its service or enclosing record is selected.
 
 No additional description is declared by the module.
 
-Type: `string`.
+Type: `null or string`.
 
-Default: Required when its service or enclosing record is selected.
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.fleetNetwork.peers.<name>.endpointAddressFile`
+
+Runtime file holding the peer's physical IPv4 endpoint.
+
+Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+null
+```
 
 
 ## `overalls.fleetNetwork.peers.<name>.port`
@@ -809,69 +1137,6 @@ Default:
 
 ```nix
 [ ]
-```
-
-
-## `overalls.publicAddress.enable`
-
-Whether to enable a host public address delivered through SOPS instead of the repository.
-
-Type: `boolean`.
-
-Default:
-
-```nix
-false
-```
-
-Example:
-
-```nix
-true
-```
-
-
-## `overalls.publicAddress.encryptedFile`
-
-Host-bound SOPS document with PUBLIC_IPV4 and PUBLIC_IPV6 (address/prefix) under project overalls-public-address.
-
-Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
-
-Default: Required when its service or enclosing record is selected.
-
-
-## `overalls.publicAddress.ipv4File`
-
-Runtime file holding the decrypted IPv4 address, for destination-scoped listeners.
-
-Type: `string`.
-
-Default:
-
-```nix
-"/run/overalls-secrets/public-address/ipv4"
-```
-
-
-## `overalls.publicAddress.network`
-
-systemd-networkd network (without .network) that receives the IPv6 address.
-
-Type: `string matching the pattern [A-Za-z0-9][A-Za-z0-9_.-]{0,63}`.
-
-Default: Required when its service or enclosing record is selected.
-
-
-## `overalls.publicAddress.unit`
-
-Unit after which the runtime addresses are validated and applied.
-
-Type: `string`.
-
-Default:
-
-```nix
-"overalls-public-address.service"
 ```
 
 
@@ -1111,6 +1376,370 @@ Default:
 ```
 
 
+## `overalls.runtimeFirewall.rules`
+
+Input accept rules whose source or destination IPv4 address is runtime data (for example a decrypted SOPS bundle) kept out of the repository and the Nix store.
+
+Type: `attribute set of (submodule)`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>._module.args`
+
+Additional arguments passed to each module in addition to ones
+like `lib`, `config`,
+and `pkgs`, `modulesPath`.
+
+This option is also available to all submodules. Submodules do not
+inherit args from their parent module, nor do they provide args to
+their parent module or sibling submodules. The sole exception to
+this is the argument `name` which is provided by
+parent modules to a submodule and contains the attribute name
+the submodule is bound to, or a unique generated name if it is
+not bound to an attribute.
+
+Some arguments are already passed by default, of which the
+following *cannot* be changed with this option:
+- {var}`lib`: The nixpkgs library.
+- {var}`config`: The results of all options after merging the values from all modules together.
+- {var}`options`: The options declared in all modules.
+- {var}`specialArgs`: The `specialArgs` argument passed to `evalModules`.
+- All attributes of {var}`specialArgs`
+
+  Whereas option values can generally depend on other option values
+  thanks to laziness, this does not apply to `imports`, which
+  must be computed statically before anything else.
+
+  For this reason, callers of the module system can provide `specialArgs`
+  which are available during import resolution.
+
+  For NixOS, `specialArgs` includes
+  {var}`modulesPath`, which allows you to import
+  extra modules from the nixpkgs package tree without having to
+  somehow make the module aware of the location of the
+  `nixpkgs` or NixOS directories.
+  ```
+  { modulesPath, ... }: {
+    imports = [
+      (modulesPath + "/profiles/minimal.nix")
+    ];
+  }
+  ```
+
+For NixOS, the default value for this option includes at least this argument:
+- {var}`pkgs`: The nixpkgs package set according to
+  the {option}`nixpkgs.pkgs` option.
+
+
+Type: `lazy attribute set of raw value`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>._module.check`
+
+Whether to check whether all option definitions have matching declarations.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+true
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>._module.freeformType`
+
+If set, merge all definitions that don't have an associated option
+together using this type. The result then gets combined with the
+values of all declared options to produce the final `
+config` value.
+
+If this is `null`, definitions without an option
+will throw an error unless {option}`_module.check` is
+turned off.
+
+
+Type: `null or optionType`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>._module.specialArgs`
+
+Externally provided module arguments that can't be modified from
+within a configuration, but can be used in module imports.
+
+
+Type: `unspecified value`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.runtimeFirewall.rules.<name>.comment`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern [A-Za-z0-9][A-Za-z0-9 ._()/-]{0,95}`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.runtimeFirewall.rules.<name>.destination`
+
+Static local IPv4 destination.
+
+Type: `null or string`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>.destinationFile`
+
+Runtime file holding the local IPv4 destination.
+
+Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>.interface`
+
+No additional description is declared by the module.
+
+Type: `null or string matching the pattern [a-z][a-z0-9]{0,14}`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>.ports`
+
+No additional description is declared by the module.
+
+Type: `list of 16 bit unsigned integer; between 0 and 65535 (both inclusive)`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>.protocol`
+
+tcp or udp with ports, or any for every TCP and UDP port.
+
+Type: `one of "tcp", "udp", "any"`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.runtimeFirewall.rules.<name>.source`
+
+Static IPv4 source.
+
+Type: `null or string`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>.sourceFile`
+
+Runtime file holding the IPv4 source.
+
+Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.runtimeFirewall.rules.<name>.units`
+
+Units that publish the runtime files; the rules follow them.
+
+Type: `list of string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `overalls.runtimeSockets`
+
+Socket units whose IPv4 ListenStream address is runtime data (for example a decrypted SOPS bundle output), keyed by the socket unit name without .socket. The socket's static listenStreams stay empty; a validating unit supplies the address as a runtime drop-in.
+
+Type: `attribute set of (submodule)`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `overalls.runtimeSockets.<name>._module.args`
+
+Additional arguments passed to each module in addition to ones
+like `lib`, `config`,
+and `pkgs`, `modulesPath`.
+
+This option is also available to all submodules. Submodules do not
+inherit args from their parent module, nor do they provide args to
+their parent module or sibling submodules. The sole exception to
+this is the argument `name` which is provided by
+parent modules to a submodule and contains the attribute name
+the submodule is bound to, or a unique generated name if it is
+not bound to an attribute.
+
+Some arguments are already passed by default, of which the
+following *cannot* be changed with this option:
+- {var}`lib`: The nixpkgs library.
+- {var}`config`: The results of all options after merging the values from all modules together.
+- {var}`options`: The options declared in all modules.
+- {var}`specialArgs`: The `specialArgs` argument passed to `evalModules`.
+- All attributes of {var}`specialArgs`
+
+  Whereas option values can generally depend on other option values
+  thanks to laziness, this does not apply to `imports`, which
+  must be computed statically before anything else.
+
+  For this reason, callers of the module system can provide `specialArgs`
+  which are available during import resolution.
+
+  For NixOS, `specialArgs` includes
+  {var}`modulesPath`, which allows you to import
+  extra modules from the nixpkgs package tree without having to
+  somehow make the module aware of the location of the
+  `nixpkgs` or NixOS directories.
+  ```
+  { modulesPath, ... }: {
+    imports = [
+      (modulesPath + "/profiles/minimal.nix")
+    ];
+  }
+  ```
+
+For NixOS, the default value for this option includes at least this argument:
+- {var}`pkgs`: The nixpkgs package set according to
+  the {option}`nixpkgs.pkgs` option.
+
+
+Type: `lazy attribute set of raw value`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `overalls.runtimeSockets.<name>._module.check`
+
+Whether to check whether all option definitions have matching declarations.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+true
+```
+
+
+## `overalls.runtimeSockets.<name>._module.freeformType`
+
+If set, merge all definitions that don't have an associated option
+together using this type. The result then gets combined with the
+values of all declared options to produce the final `
+config` value.
+
+If this is `null`, definitions without an option
+will throw an error unless {option}`_module.check` is
+turned off.
+
+
+Type: `null or optionType`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `overalls.runtimeSockets.<name>._module.specialArgs`
+
+Externally provided module arguments that can't be modified from
+within a configuration, but can be used in module imports.
+
+
+Type: `unspecified value`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.runtimeSockets.<name>.addressFile`
+
+Runtime file holding the explicit IPv4 listen address.
+
+Type: `string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.runtimeSockets.<name>.addressUnit`
+
+Unit that publishes addressFile; the socket address follows it.
+
+Type: `string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `overalls.runtimeSockets.<name>.port`
+
+Listen port on the runtime address.
+
+Type: `16 bit unsigned integer; between 0 and 65535 (both inclusive)`.
+
+Default: Required when its service or enclosing record is selected.
+
+
 ## `overalls.sysctl.enable`
 
 Whether to enable Overalls host BBR and fq profile.
@@ -1164,14 +1793,40 @@ Default:
 
 ## `services.audi.bindAddress`
 
-No additional description is declared by the module.
+Static IPv4 listener address for the Audi gateway listeners; null when bindAddressFile supplies it at runtime.
 
-Type: `string`.
+Type: `null or string`.
 
 Default:
 
 ```nix
-"0.0.0.0"
+if bindAddressFile == null then "0.0.0.0" else null
+```
+
+
+## `services.audi.bindAddressFile`
+
+Runtime file under /run holding the canonical IPv4 listener address for the Audi gateway listeners, kept out of the repository and the Nix store.
+
+Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.audi.bindAddressUnit`
+
+Unit that publishes bindAddressFile; the Audi gateway listeners starts after it and stops with it.
+
+Type: `null or string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+null
 ```
 
 
@@ -1548,14 +2203,40 @@ Default: Required when its service or enclosing record is selected.
 
 ## `services.audiDns.bindAddress`
 
-No additional description is declared by the module.
+Static IPv4 listener address for the Audi DNS listener; null when bindAddressFile supplies it at runtime.
 
-Type: `string`.
+Type: `null or string`.
 
 Default:
 
 ```nix
-"0.0.0.0"
+if bindAddressFile == null then "0.0.0.0" else null
+```
+
+
+## `services.audiDns.bindAddressFile`
+
+Runtime file under /run holding the canonical IPv4 listener address for the Audi DNS listener, kept out of the repository and the Nix store.
+
+Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.audiDns.bindAddressUnit`
+
+Unit that publishes bindAddressFile; the Audi DNS listener starts after it and stops with it.
+
+Type: `null or string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+null
 ```
 
 
@@ -3298,6 +3979,32 @@ true
 ```
 
 
+## `services.lilly.protectedAddressFiles`
+
+Runtime files, each holding one canonical IPv4 address, denied to guests as /32 networks in addition to protectedCidrs; for addresses kept out of the repository.
+
+Type: `list of string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `services.lilly.protectedAddressUnits`
+
+Units that publish protectedAddressFiles; Lilly and Brady start after them.
+
+Type: `list of string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
 ## `services.lilly.protectedCidrs`
 
 Additional canonical IPv4 networks denied to guests, including public management endpoints.
@@ -3991,9 +4698,26 @@ Default: Required when its service or enclosing record is selected.
 
 No additional description is declared by the module.
 
-Type: `string`.
+Type: `null or string`.
 
-Default: Required when its service or enclosing record is selected.
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.ingress.wildcardAcme.nameservers.*.addressFile`
+
+Runtime file holding the replica's IPv4 address; list its publishing unit in secretUnits.
+
+Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+null
+```
 
 
 ## `services.marshall.ingress.wildcardAcme.nameservers.*.port`
@@ -5018,6 +5742,45 @@ Default:
 ```
 
 
+## `services.marshallProxy.addressEnvironmentFile`
+
+EnvironmentFile carrying the validated runtime address variable for every HAProxy consumer.
+
+Type: `null or string`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshallProxy.addressGuard`
+
+ExecStartPre/ExecReload command refusing a missing or non-canonical runtime address; consumers order it first.
+
+Type: `null or string`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshallProxy.addressUnits`
+
+Units every HAProxy consumer of the proxy address must follow.
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
 ## `services.marshallProxy.backendCAFile`
 
 CA bundle authenticating Marshall backend certificates.
@@ -5186,6 +5949,45 @@ Default:
 
 ```nix
 "0.0.0.0"
+```
+
+
+## `services.marshallProxy.bindAddressFile`
+
+Runtime file holding the explicit listener IPv4 address (for example a decrypted SOPS bundle output), used instead of bindAddress so the address never enters the Nix store. Every HAProxy listener derived from this proxy binds it.
+
+Type: `null or string matching the pattern /run/[A-Za-z0-9_./-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshallProxy.bindAddressUnit`
+
+Unit that publishes bindAddressFile; the proxy address unit follows it.
+
+Type: `null or string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshallProxy.bindSpec`
+
+HAProxy bind argument for a port on the proxy address: the literal, or the quoted runtime environment reference.
+
+Type: `function that evaluates to a(n) string`.
+
+Default:
+
+```nix
+<function>
 ```
 
 
@@ -8081,14 +8883,40 @@ Default:
 
 ## `services.porsche.bindAddress`
 
-No additional description is declared by the module.
+Static IPv4 listener address for the Porsche SSH listener; null when bindAddressFile supplies it at runtime.
 
-Type: `string`.
+Type: `null or string`.
 
 Default:
 
 ```nix
-"0.0.0.0"
+if bindAddressFile == null then "0.0.0.0" else null
+```
+
+
+## `services.porsche.bindAddressFile`
+
+Runtime file under /run holding the canonical IPv4 listener address for the Porsche SSH listener, kept out of the repository and the Nix store.
+
+Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.porsche.bindAddressUnit`
+
+Unit that publishes bindAddressFile; the Porsche SSH listener starts after it and stops with it.
+
+Type: `null or string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+null
 ```
 
 

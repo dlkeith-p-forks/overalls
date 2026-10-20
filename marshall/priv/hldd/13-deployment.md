@@ -73,18 +73,41 @@ EBS system state from local NVMe guest storage. Local NVMe loss is guest data lo
 unless a usable backup exists. `--platform hcloud` (ADR-0231) describes a Hetzner
 Cloud virtual server: one system disk with a ZFS `zroot/root` root, no guest
 storage, quota or Lilly, only the `arcMaxMiB` budget, and no KVM probe in the
-guard or storage receipt. Its declaration holds no address literals
-(ADR-0232): IPv4 comes from DHCP, and the profile refuses static addresses.
-Discovery proposes DHCP, the `fe80::1` IPv6 gateway and only each default
-route's interface. `overalls.publicAddress` decrypts a host-bound SOPS document
-holding the public IPv4 and IPv6 addresses, validates both, and applies the IPv6
-address as a runtime networkd drop-in under `/run`. Fleet firewall public
-services may name that runtime IPv4 file (`addressFile`). Then a static jump
-leads to a dedicated chain, which admits nothing until a unit has validated the
-address and filled it. Firewall reloads keep it, rotation replaces it, and a
-malformed document leaves it empty; this variant requires the iptables backend.
-The `public-address` machine test covers these paths.
+guard or storage receipt. Its declaration holds no address literals: IPv4
+comes from DHCP, IPv6 is off, and the profile refuses static addresses.
+Discovery proposes DHCP IPv4 and keeps only each default route's interface.
 Salopettes, the Susan host, is the only `hcloud` host.
+
+No fleet host's public address is in the repository (ADR-0233). The shared
+document `secrets/fleet-addresses.enc.json` holds each dedicated host's primary
+and service IPv4 addresses, its own prefix and gateway, and salopettes' IPv4.
+`overalls.fleetAddresses` decrypts it into one root-only file per name, and
+`overalls-fleet-addresses.service` validates every value before any consumer
+starts. A malformed or missing document fails that unit, so its dependents stay
+closed. Consumers:
+
+- **Uplink.** A dedicated host's static uplink is a runtime networkd drop-in
+  with the addresses, the on-link gateway, the default route, the subnet and
+  `/32` routes to the other host. Each applied drop-in is kept as a root-only
+  recovery copy in `/var/lib/overalls-host/uplink.conf`. The unit falls back to
+  it when the document is unreadable, and `install` writes it from the
+  authenticated discovery facts, so a base system without the document still
+  has its network. The profile refuses IPv4 address and route literals on such
+  a host.
+- **Firewall.** One `overalls-runtime` chain, reached by a static jump on
+  either backend, carries runtime source grants, destination-scoped public
+  listeners and WireGuard handshakes. Its refill unit flushes, validates and
+  then adds the rules, and it runs again after every firewall reload or
+  restart. Rotation replaces the rules, and one malformed address leaves the
+  chain empty.
+- **WireGuard.** A host's own endpoint and each peer's endpoint may be runtime
+  files; a per-peer unit applies them with `wg set`.
+- **Services.** Porsche, Audi and Audi DNS render their bind into `/run` at
+  start; HAProxy and the relay socket bind through a start-time guard; Lilly
+  and Brady append runtime protected `/32` networks.
+
+The `fleet-addresses` and `fleet-network` machine tests cover these paths on
+both firewall backends.
 
 Generate a plan for the exact published revision:
 
@@ -133,6 +156,9 @@ operations. Use the declared named administrator and pinned keys.
 Lilly preparation additionally binds physical machine and pool identities to a
 disabled Marshall host. Use `prepare-enrollment` with the installed receipt,
 Marshall administrative target, private recovery key, and pinned transport.
+A fleet host's transfer endpoint names its address by secret (`addressSecret`);
+preparation resolves it from the shared fleet address document with the
+recovery key, and a missing or invalid value refuses before Marshall is called.
 Publish its ciphertext and public bindings, activate, verify fresh execution
 readiness, then explicitly enable scheduling. Preparing credentials alone does
 not make a host eligible.

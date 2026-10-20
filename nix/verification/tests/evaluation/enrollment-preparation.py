@@ -112,6 +112,7 @@ class Preparation(unittest.TestCase):
                 env,
             )
         (self.root / "secrets/git-bootstrap.enc.json").write_text(sealed)
+        self.recipients: list[str] = documents["git-bootstrap"]["recipients"]
         self.request = p.declaration_request(
             self.host, {"poolGuid": "1", "datasetGuid": "2"}, "sha256:" + "a" * 64
         )
@@ -285,6 +286,48 @@ class Preparation(unittest.TestCase):
         with self.assertRaises(p.cli.Failure):
             p.prepare(self.args)
         self.assertEqual(self.calls, [])
+
+    def test_transfer_endpoint_address_comes_from_the_fleet_document(self) -> None:
+        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7YqQClUFnB1POZHExl0fqKLqXmEUlBzKtMD6/knJ+M"
+        with p.custody.identity(self.work / "recovery", self.work) as (env, _):
+            sealed = p.seal(
+                {
+                    "overalls-fleet-addresses": {
+                        "production": {
+                            "EXAMPLE_PRIMARY_IPV4": "192.0.2.35",
+                            "LOOP_IPV4": "127.0.0.1",
+                        }
+                    }
+                },
+                self.recipients,
+                env,
+            )
+            (self.root / p.FLEET_ADDRESSES).write_text(sealed)
+            named = copy.deepcopy(self.request)
+            named["transfer_endpoint"] = {
+                "addressSecret": "EXAMPLE_PRIMARY_IPV4",
+                "port": 2223,
+                "host_key": key,
+            }
+            resolved = p.resolve_transfer_endpoint(named, self.root, env)
+            self.assertEqual(
+                resolved["transfer_endpoint"],
+                {"address": "192.0.2.35", "port": 2223, "host_key": key},
+            )
+            self.assertEqual(
+                p.resolve_transfer_endpoint(self.request, self.root, env), self.request
+            )
+            for endpoint in (
+                {"addressSecret": "MISSING_IPV4", "port": 2223},
+                {"addressSecret": "LOOP_IPV4", "port": 2223},
+                {"addressSecret": "EXAMPLE_PRIMARY_IPV4", "address": "192.0.2.35"},
+                {"addressSecret": "example_primary_ipv4"},
+            ):
+                refused = copy.deepcopy(self.request)
+                refused["transfer_endpoint"] = endpoint
+                with self.assertRaises(p.cli.Failure) as failure:
+                    p.resolve_transfer_endpoint(refused, self.root, env)
+                self.assertNotIn("127.0.0.1", str(failure.exception))
 
     def test_ttl_boundaries(self) -> None:
         for ttl in (1, 31536000, 157680000):

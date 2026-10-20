@@ -9,7 +9,7 @@ import unittest
 from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
-from typing import NotRequired, TypedDict, cast
+from typing import ClassVar, NotRequired, TypedDict, cast
 from unittest.mock import patch
 
 import cli  # ty: ignore[unresolved-import] # PYTHONPATH nix/domains/artifacts/host
@@ -22,6 +22,11 @@ if spec is None or spec.loader is None:
 updater = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(updater)
 resource_helper = sys.argv.pop(1)
+fleet_spec = importlib.util.spec_from_file_location("fleet_addresses", sys.argv.pop(1))
+if fleet_spec is None or fleet_spec.loader is None:
+    raise RuntimeError("fleet address helper unavailable")
+fleet_addresses = importlib.util.module_from_spec(fleet_spec)
+fleet_spec.loader.exec_module(fleet_addresses)
 
 
 class DiskRecord(TypedDict):
@@ -794,6 +799,9 @@ class HostPlanning(unittest.TestCase):
         uplink = candidate["network"]["10-eth0"]
         self.assertEqual(uplink["networkConfig"]["DHCP"], "ipv4")
         self.assertNotIn("Address", uplink["networkConfig"])
+        # The fleet tunnel is IPv4-only, so no IPv6 is proposed either.
+        self.assertEqual(uplink["networkConfig"]["LinkLocalAddressing"], "no")
+        self.assertNotIn("routes", uplink)
         self.assertEqual(candidate["discovery"]["routes"], [{"dev": "eth0", "dst": "default"}])
 
     def test_hcloud_installer_forces_the_legacy_kexec_syscall(self) -> None:
@@ -895,6 +903,81 @@ class HostPlanning(unittest.TestCase):
                     "lilly": {"binding": {"hostId": "old-host"}},
                 }
             )
+
+    def test_lilly_binding_compares_the_effective_protected_set(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            primary = Path(directory) / "primary"
+            primary.write_text("192.0.2.10\n")
+            other = Path(directory) / "other"
+            other.write_text("198.51.100.7")
+            malformed = Path(directory) / "malformed"
+            malformed.write_text("192.0.2.010")
+            literal = {
+                "hostId": "host",
+                "protectedCidrs": ["10.90.0.0/24", "192.0.2.10/32"],
+                "guestCpuCores": 2,
+            }
+            legacy = {k: v for k, v in literal.items() if k != "protectedAddressFiles"}
+            moved = {
+                "hostId": "host",
+                "protectedCidrs": ["10.90.0.0/24"],
+                "protectedAddressFiles": [str(primary)],
+                "guestCpuCores": 2,
+            }
+            # A literal moved into an equal runtime file, and a binding that
+            # predates the key, keep the effective policy.
+            self.assertTrue(updater.lilly_bindings_equivalent(legacy, moved))
+            self.assertTrue(
+                updater.lilly_bindings_equivalent(legacy, {**literal, "protectedAddressFiles": []})
+            )
+            for changed in (
+                {**moved, "protectedAddressFiles": [str(other)]},
+                {**moved, "protectedAddressFiles": [str(malformed)]},
+                {**moved, "protectedAddressFiles": [str(Path(directory) / "missing")]},
+                {**moved, "guestCpuCores": 4},
+                {**moved, "hostId": "other"},
+            ):
+                self.assertFalse(updater.lilly_bindings_equivalent(legacy, changed))
+            # Identical runtime-only bindings stay equal even before the
+            # files exist, so ordinary updates never depend on decryption.
+            unread = {**moved, "protectedAddressFiles": [str(Path(directory) / "missing")]}
+            self.assertTrue(updater.lilly_bindings_equivalent(unread, copy.deepcopy(unread)))
+            self.assertEqual(
+                enrollment.protected_networks(moved), ["10.90.0.0/24", "192.0.2.10/32"]
+            )
+            self.assertEqual(
+                enrollment.stable_binding({"binding": legacy}),
+                enrollment.stable_binding({"binding": moved}),
+            )
+            with self.assertRaisesRegex(ValueError, "runtime protected address"):
+                enrollment.protected_networks({**moved, "protectedAddressFiles": [str(malformed)]})
+
+            runner = object.__new__(updater.Deployment)
+            runner.config = {}
+            installation = {"platform": "hetzner"}
+            runner.candidate = {
+                "installationBinding": installation,
+                "diagnosticPreflight": [],
+                "marshall": None,
+                "lilly": {"binding": moved},
+            }
+            previous = {
+                "installationBinding": installation,
+                "consumers": [],
+                "marshall": None,
+                "lilly": {"binding": legacy},
+            }
+            # The binding passes, so preflight proceeds to the owner baseline.
+            with (
+                patch.object(Path, "exists", return_value=False),
+                self.assertRaisesRegex(updater.UpdateError, "missing_lilly_baseline"),
+            ):
+                runner.preflight(previous)
+            runner.candidate["lilly"] = {
+                "binding": {**moved, "protectedAddressFiles": [str(other)]}
+            }
+            with self.assertRaisesRegex(updater.UpdateError, "lilly_binding_change"):
+                runner.preflight(previous)
 
     def test_resource_preflight_uses_closed_failure_reason(self) -> None:
         installation = {"platform": "hetzner"}
@@ -1239,6 +1322,118 @@ class HostPlanning(unittest.TestCase):
             self.assertRaises(ValueError),
         ):
             remote.main()
+
+
+class UplinkRecovery(unittest.TestCase):
+    """Install writes the copy the base system boots with; documentation addresses only."""
+
+    MAC = "02:00:00:00:00:01"
+    UPLINK: ClassVar["remote.Uplink"] = {
+        "addresses": ["192.0.2.10/26", "192.0.2.20/26"],
+        "gateway": "192.0.2.1",
+        "routes": ["198.51.100.7"],
+    }
+
+    def host(self, uplink: bool = True) -> dict[str, object]:
+        host: dict[str, object] = {
+            "network": {"10-eth0": {"matchConfig": {"MACAddress": self.MAC}}}
+        }
+        if uplink:
+            host["addresses"] = {"uplink": {"network": "10-eth0"}}
+        return host
+
+    def facts(self, routes: list[dict[str, object]] | None = None) -> dict[str, object]:
+        return {
+            "addresses": [
+                {
+                    "ifname": "lo",
+                    "address": "00:00:00:00:00:00",
+                    "addr_info": [{"local": "127.0.0.1", "prefixlen": 8, "scope": "host"}],
+                },
+                {
+                    "ifname": "eth0",
+                    "address": self.MAC,
+                    "addr_info": [
+                        {"local": "192.0.2.10", "prefixlen": 26, "scope": "global"},
+                        {"local": "192.0.2.20", "prefixlen": 26, "scope": "global"},
+                        {"local": "2001:db8::2", "prefixlen": 64, "scope": "global"},
+                        {"local": "fe80::1", "prefixlen": 64, "scope": "link"},
+                    ],
+                },
+            ],
+            "routes": routes
+            if routes is not None
+            else [
+                {"dst": "default", "gateway": "192.0.2.1", "dev": "eth0"},
+                {"dst": "192.0.2.0/26", "gateway": "192.0.2.1", "dev": "eth0"},
+                {"dst": "198.51.100.7", "gateway": "192.0.2.1", "dev": "eth0"},
+                {"dst": "192.0.2.1", "dev": "eth0", "scope": "link"},
+                {"dst": "192.0.2.10", "dev": "eth0", "table": "local", "type": "local"},
+                {"dst": "default", "gateway": "fe80::1", "dev": "eth0"},
+            ],
+        }
+
+    def test_facts_select_the_declared_interface_ipv4_and_host_routes(self) -> None:
+        self.assertEqual(cli.uplink_facts(self.host(), self.facts()), self.UPLINK)
+        self.assertIsNone(cli.uplink_facts(self.host(uplink=False), self.facts()))
+
+    def test_facts_refuse_missing_interface_or_ambiguous_gateway(self) -> None:
+        moved = self.host()
+        moved["network"] = {"10-eth0": {"matchConfig": {"MACAddress": "02:00:00:00:00:09"}}}
+        with self.assertRaises(cli.Failure):
+            cli.uplink_facts(moved, self.facts())
+        ambiguous: list[list[dict[str, object]]] = [
+            [],
+            [
+                {"dst": "default", "gateway": "192.0.2.1", "dev": "eth0"},
+                {"dst": "default", "gateway": "192.0.2.2", "dev": "eth0"},
+            ],
+        ]
+        for routes in ambiguous:
+            with self.assertRaises(cli.Failure):
+                cli.uplink_facts(self.host(), self.facts(routes))
+
+    def test_install_copy_matches_the_runtime_uplink_drop_in(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            values = {
+                "one": "192.0.2.10",
+                "two": "192.0.2.20",
+                "prefix": "26",
+                "gateway": "192.0.2.1",
+                "peer": "198.51.100.7",
+            }
+            for name, value in values.items():
+                (Path(directory) / name).write_text(value + "\n")
+            runtime = fleet_addresses.render(
+                {"directory": directory, "names": {}, "uplink": None},
+                {
+                    "network": "10-eth0",
+                    "addresses": ["one", "two"],
+                    "prefix": "prefix",
+                    "gateway": "gateway",
+                    "hostRoutes": ["peer"],
+                    "recoveryFile": "/unused",
+                },
+            )
+        self.assertEqual(remote.uplink_drop_in(self.UPLINK), runtime)
+
+    def test_install_copy_is_private_written_once_and_validated(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "overalls-host" / "uplink.conf"
+            with patch.object(remote, "UPLINK_RECOVERY", target):
+                self.assertEqual(remote.install_uplink(self.UPLINK), {"addresses": 2, "routes": 1})
+                self.assertEqual(target.stat().st_mode & 0o777, 0o600)
+                self.assertEqual(target.parent.stat().st_mode & 0o777, 0o700)
+                with self.assertRaises(ValueError):
+                    remote.install_uplink(self.UPLINK)
+        for bad in (
+            {**self.UPLINK, "gateway": "198.51.100.1"},
+            {**self.UPLINK, "addresses": ["192.0.2.10/26", "198.51.100.10/26"]},
+            {**self.UPLINK, "addresses": []},
+            {**self.UPLINK, "routes": ["not-an-address"]},
+        ):
+            with self.assertRaises(ValueError):
+                remote.uplink_drop_in(cast("remote.Uplink", bad))
 
 
 if __name__ == "__main__":

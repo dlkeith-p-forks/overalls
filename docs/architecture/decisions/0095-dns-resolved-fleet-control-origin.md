@@ -65,12 +65,12 @@ service credentials and verified TLS remain required.
 
 - Neither host may map `ghuntley.dev` or `overalls` to loopback or an overlay
   address in `networking.hosts`.
-- The relay must bind exactly `136.243.69.55:5443`, forward bytes only to
+- The relay must bind exactly `OVERALLS_PRIMARY_IPV4:5443`, forward bytes only to
   `127.0.0.1:5443`, and retain systemd hardening.
 - The fleet firewall must continue to suppress ordinary global openings; only
   reviewed sources may reach the relay.
-- Dungarees must route `136.243.69.55` and the remote Audi address
-  `136.243.69.37` through `136.243.69.1`.
+- Dungarees must route `OVERALLS_PRIMARY_IPV4` and the remote Audi address
+  `OVERALLS_SERVICE_IPV4` through `DUNGAREES_GATEWAY_IPV4`.
 - Both host closures must build, and live validation must establish verified
   control exchange plus ordinary public-certificate HTTPS without `--insecure`.
 

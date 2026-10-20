@@ -29,6 +29,7 @@ class EgressAcceptanceTest(unittest.TestCase):
                     run="egress-20261002",
                     host="example.invalid",
                     admin_alias="fixture-admin",
+                    protected_address="8.8.8.8",
                     identity=str(key),
                 )
             )

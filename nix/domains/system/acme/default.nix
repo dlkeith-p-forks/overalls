@@ -22,7 +22,10 @@ let
     issuer = if config.security.acme.useRoot then "root" else "acme";
     group = config.services.haproxy.group;
     hostname = proxy.publicHost;
-    listenAddress = proxy.bindAddress;
+    # A runtime proxy address reaches the probe only through the validated
+    # environment variable, never through this store file.
+    listenAddress = if proxy.bindAddressFile == null then proxy.bindAddress else null;
+    listenAddressVariable = if proxy.bindAddressFile == null then null else "MARSHALL_PROXY_BIND_IPV4";
     listenPort = proxy.port;
     inherit (cfg) caFile minimumValiditySeconds;
     bundleLibrary = "${../secrets/prepare.py}";
@@ -111,9 +114,12 @@ in
     # completed oneshot, so later updates do not propagate a proxy stop.
     systemd.services.marshall-certificate = {
       description = "Validate and publish Marshall's issued proxy certificate";
-      after = [ "acme-${proxy.publicHost}.service" "systemd-tmpfiles-setup.service" ];
-      requires = [ "acme-${proxy.publicHost}.service" ];
-      serviceConfig = {
+      after = [ "acme-${proxy.publicHost}.service" "systemd-tmpfiles-setup.service" ] ++ proxy.addressUnits;
+      requires = [ "acme-${proxy.publicHost}.service" ] ++ proxy.addressUnits;
+      serviceConfig = lib.optionalAttrs (proxy.addressEnvironmentFile != null) {
+        EnvironmentFile = proxy.addressEnvironmentFile;
+        ExecStartPre = [ proxy.addressGuard ];
+      } // {
         Type = "oneshot";
         User = "root";
         Group = "root";

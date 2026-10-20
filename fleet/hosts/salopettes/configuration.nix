@@ -1,15 +1,15 @@
 { config, lib, ... }:
 let
   origin = "notifications.overalls.dev";
+  addresses = config.overalls.fleetAddresses;
 in
 {
-  # The public addresses live only in the host-bound SOPS document; IPv4 comes
-  # up by DHCP, so the base system and recovery never need the secret.
-  overalls.publicAddress = {
-    enable = true;
-    encryptedFile = "${../../../secrets/salopettes-address.enc.json}";
-    network = "10-uplink";
-  };
+  # Marshall on Overalls reaches Susan over the fleet WireGuard (ADR-0233);
+  # the fleet tunnel is IPv4-only, so salopettes runs without IPv6. Its public
+  # address lives only in the shared fleet-addresses SOPS document, and IPv4
+  # comes up by DHCP, so the base system never needs the secret.
+  imports = [ ../../fleet-network.nix ];
+  networking.enableIPv6 = false;
 
   # Discovery ran under Ubuntu's eth0 name; installed NixOS names it enp1s0.
   services.overallsFleetExporter.externalInterfaces = lib.mkForce [ "enp1s0" ];
@@ -64,11 +64,11 @@ in
     defaults.email = "noreply@ghuntley.dev";
   };
 
-  # The listener binds every address; the firewall admits it only at the
-  # SOPS-delivered IPv4 address.
+  # The listener binds every address; the firewall admits the public path only
+  # at the SOPS-delivered IPv4 address, and Overalls through fleet0.
   overalls.fleetFirewall.publicServices.susan = {
-    addressFile = config.overalls.publicAddress.ipv4File;
-    addressUnit = config.overalls.publicAddress.unit;
+    addressFile = addresses.files.salopettesPrimary;
+    addressUnit = addresses.unit;
     tcpPorts = [ 80 443 ];
     comment = "Susan push relay HTTPS and ACME";
   };

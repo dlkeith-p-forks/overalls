@@ -38,6 +38,27 @@ let
     services.marshallProxy.acme = { enable = true; email = "noreply@overalls.test"; http01.publicIngress = publicIngress; };
     security.acme.acceptTerms = true;
   });
+  # Runtime proxy address (ADR-0232): the literal stays the wildcard default and
+  # every HAProxy consumer reads one validated environment file.
+  runtimeProxy = {
+    bindAddress = "0.0.0.0";
+    bindAddressFile = "/run/overalls-public-address/ipv4";
+    bindAddressUnit = "overalls-public-address.service";
+  };
+  runtime = extra: evaluate (lib.recursiveUpdate (lib.recursiveUpdate (settings 3443 false) {
+    services.marshallProxy = runtimeProxy // {
+      certificateFile = "/var/lib/overalls-certificates/marshall/full.pem";
+      acme = { enable = true; email = "noreply@overalls.test"; http01.publicIngress = true; };
+    };
+    security.acme.acceptTerms = true;
+  }) extra);
+  guarded = cfg: service: let unit = cfg.systemd.services.${service}; in
+    unit.serviceConfig.EnvironmentFile == "/run/marshall-proxy-address/address.env"
+      && builtins.elem cfg.services.marshallProxy.addressGuard (lib.toList unit.serviceConfig.ExecStartPre)
+      && builtins.elem "marshall-proxy-address.service" unit.requires
+      && builtins.elem "marshall-proxy-address.service" unit.after;
+  publication = cfg: builtins.fromJSON (builtins.unsafeDiscardStringContext (builtins.readFile (lib.last (lib.splitString " "
+    cfg.systemd.services.marshall-certificate.serviceConfig.ExecStart))));
   proxyPorts = cfg: (cfg.overalls.fleetFirewall.publicServices.marshall-proxy or { tcpPorts = []; }).tcpPorts;
   disabled = evaluate {};
   checkPort = port: nft:
@@ -109,6 +130,36 @@ let
       && proxyPorts cfg == [ 3443 ]
       && !lib.hasInfix "tcp dport 80 " cfg.networking.firewall.extraInputRules;
     http01PublicAlone = let cfg = http01 false true; in valid cfg && proxyPorts cfg == [ 80 ];
+    runtimeProxyWired = let cfg = runtime {}; haproxy = cfg.systemd.services.haproxy; in valid cfg
+      && lib.hasInfix ''bind "''${MARSHALL_PROXY_BIND_IPV4}:443" ssl'' cfg.services.haproxy.config
+      && lib.hasInfix ''bind "''${MARSHALL_PROXY_BIND_IPV4}:3443" ssl'' cfg.services.haproxy.config
+      && !lib.hasInfix "0.0.0.0" cfg.services.haproxy.config
+      && guarded cfg "haproxy" && guarded cfg "marshall-acme-http" && guarded cfg "marshall-certificate"
+      # The guard precedes the cached-certificate check on start and reload.
+      && lib.head haproxy.serviceConfig.ExecStartPre == cfg.services.marshallProxy.addressGuard
+      && lib.head haproxy.serviceConfig.ExecReload == cfg.services.marshallProxy.addressGuard
+      && cfg.systemd.services.marshall-proxy-address.requires == [ "overalls-public-address.service" ]
+      && lib.hasInfix "/run/overalls-public-address/ipv4" cfg.systemd.services.marshall-proxy-address.serviceConfig.ExecStart
+      && (publication cfg).listenAddress == null
+      && (publication cfg).listenAddressVariable == "MARSHALL_PROXY_BIND_IPV4"
+      && cfg.overalls.fleetFirewall.publicServices.marshall-proxy.address == null
+      && cfg.overalls.fleetFirewall.publicServices.marshall-proxy.addressFile == "/run/overalls-public-address/ipv4"
+      && cfg.overalls.fleetFirewall.publicServices.marshall-proxy.addressUnit == "overalls-public-address.service"
+      && lib.sort lib.lessThan (proxyPorts cfg) == [ 80 3443 ]
+      && cfg.networking.firewall.allowedTCPPorts == [];
+    staticProxyUnchanged = let cfg = http01 true true; in
+      lib.hasInfix "bind 192.0.2.10:443 ssl" cfg.services.haproxy.config
+        && !(cfg.systemd.services.haproxy.serviceConfig ? EnvironmentFile)
+        && !(cfg.systemd.services ? marshall-proxy-address)
+        && (publication cfg).listenAddress == "192.0.2.10"
+        && (publication cfg).listenAddressVariable == null;
+    runtimeUnitRequired = rejected (runtime { services.marshallProxy.bindAddressUnit = null; });
+    runtimeLiteralRejected = rejected (runtime { services.marshallProxy.bindAddress = "192.0.2.10"; });
+    runtimeWithoutFleetFirewallRejected = rejected (runtime { overalls.fleetFirewall.enable = false; });
+    runtimeStoreFileRejected = rejected (runtime { services.marshallProxy.bindAddressFile = "/nix/store/address"; });
+    runtimeSocketConflictRejected = rejected (runtime {
+      systemd.sockets.other = { listenStreams = [ "198.51.100.7:3443" ]; };
+    });
     proxyRequired = rejected (lib.recursiveUpdate (settings 3443 true) {
       services.marshallProxy.enable = false;
     });

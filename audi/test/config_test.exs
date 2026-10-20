@@ -131,7 +131,7 @@ defmodule Audi.ConfigTest do
     assert view[:name] == Audi.TLS.Store.view(Audi.TLS.Store)
     assert worker[:probe_peer] == {{127, 0, 0, 1}, 443}
 
-    for {bind, expected} <- [{"0.0.0.0", {127, 0, 0, 1}}, {"136.243.69.37", {136, 243, 69, 37}}] do
+    for {bind, expected} <- [{"0.0.0.0", {127, 0, 0, 1}}, {"192.0.2.37", {192, 0, 2, 37}}] do
       value =
         Map.merge(c.value, %{
           "tls" => tls,

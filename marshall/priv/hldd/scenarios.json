@@ -15060,11 +15060,11 @@
         "transport",
         "recovery"
       ],
-      "boundary": "hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly, and no address literals (IPv4 by DHCP); salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at the IPv4 address delivered by its host-bound SOPS document.",
+      "boundary": "hcloud hosts have exactly one ZFS zroot/root system disk, no guest storage, quota, KVM probe or Lilly, and no address literals (IPv4 by DHCP, IPv6 off); salopettes runs only Susan, its PostgreSQL and an nginx ACME proxy with public TCP 80/443 at the IPv4 address delivered by the shared fleet-addresses SOPS document.",
       "denial": "Two system disks, guest disks, a guest quota, Lilly budgets, a lilly section or static hcloud addresses are refused before planning; Lilly platforms still require working KVM in the guard; a missing or malformed address document keeps the public listener closed.",
-      "scope": "Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions, fleet firewall evaluation and the public-address NixOS machine test.",
+      "scope": "Host-tool unit tests, NixOS profile evaluation of the hcloud fixtures and the salopettes role assertions, fleet firewall evaluation and the fleet-addresses NixOS machine test.",
       "status": "partial",
-      "gaps": "Physical installation, enrollment and ACME issuance on salopettes are recorded in ADR-0231 once performed; real APNs/FCM credentials remain placeholders.",
+      "gaps": "Physical installation, enrollment and ACME issuance on salopettes are recorded in ADR-0232; real APNs/FCM credentials remain placeholders.",
       "preferred_gap": "A host-conversion NixOS machine test with a single virtio disk under the hcloud platform.",
       "evidence": [
         {
@@ -15092,14 +15092,77 @@
           "kind": "unit",
           "path": "nix/verification/tests/evaluation/host-planning.py",
           "assertion": "def test_hcloud_discovery_keeps_addresses_out_of_the_candidate(",
-          "scope": "Discovery candidate for hcloud with documentation-range addresses: DHCP, no literals, redacted default routes.",
+          "scope": "Discovery candidate for hcloud with documentation-range addresses: DHCP IPv4 only, link-local off, no IPv6 route, no literals, redacted default routes.",
           "execution": "present"
         },
         {
           "kind": "machine",
-          "path": "nix/verification/tests/machines/public-address/default.nix",
-          "assertion": "The SOPS-delivered public address MUST open a destination-scoped listener",
-          "scope": "Two-node VLAN with a host-sealed SOPS document: closed before decryption, only the declared port at the decrypted address, firewall reload and restart, rotation, malformed-document closure and the IPv6 networkd drop-in. Test addresses only; no Hetzner Cloud network.",
+          "path": "nix/verification/tests/machines/fleet-addresses/default.nix",
+          "assertion": "SOPS-delivered fleet addresses MUST open runtime source and destination",
+          "scope": "Client and nftables/iptables nodes with host-sealed SOPS documents: closed before decryption, only the declared rules at the decrypted addresses, firewall reload and restart, rotation and malformed-document closure. Test addresses only; no Hetzner Cloud network.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-fleet-addresses-from-sops.md",
+          "record_assertion": "Recorded run: NixOS machine test `fleet-addresses` **passed**"
+        }
+      ]
+    },
+    {
+      "id": "fleet-addresses-from-sops",
+      "journey": "An operator rotates a fleet public address by changing one SOPS document, and Marshall reaches Susan on salopettes over fleet0",
+      "layers": [
+        "authorization",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery",
+        "transport"
+      ],
+      "boundary": "Fleet public addresses live only in secrets/fleet-addresses.enc.json; overalls-fleet-addresses validates every value before the runtime firewall chain, WireGuard endpoints, uplink drop-in and service binds use it; Overalls admits salopettes' handshake only from its decrypted address and resolves notifications.overalls.dev to 10.90.0.3.",
+      "denial": "A missing, malformed or wildcard address keeps every runtime rule, endpoint and listener closed; a rotation flushes before admitting; an unreadable document leaves a dedicated host on its root-only uplink recovery copy; static IPv4 address or route literals beside a runtime uplink are refused at evaluation.",
+      "scope": "NixOS machine tests on both firewall backends with test VLAN addresses, the fleet-network runtime-endpoint subtest, the proxy and relay socket runtime-address test, and evaluation of the fleet firewall, host planning and service modules.",
+      "status": "partial",
+      "gaps": "Production rollout evidence on Overalls and Dungarees, removal of their literals, and machine tests that start Porsche, Audi and Lilly with runtime addresses remain open; per-peer fleet port scoping is not implemented.",
+      "preferred_gap": "A three-node NixOS machine test with a runtime-only fleet0 peer carrying Marshall-to-Susan HTTPS.",
+      "evidence": [
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/fleet-addresses/default.nix",
+          "assertion": "SOPS-delivered fleet addresses MUST open runtime source and destination",
+          "scope": "Runtime grants and listeners on nftables and iptables, reload refill, rotation, malformed closure, uplink drop-in and recovery copy. Test VLAN addresses only.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-fleet-addresses-from-sops.md",
+          "record_assertion": "Recorded run: NixOS machine test `fleet-addresses` **passed**"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/fleet-network/default.nix",
+          "assertion": "runtime endpoints stay closed until published, then apply",
+          "scope": "A peer whose endpoints and handshake rule are runtime-only: closed before publication, malformed endpoint refused, wg endpoint and runtime rule applied.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-fleet-addresses-from-sops.md",
+          "record_assertion": "Recorded run: NixOS machine test `fleet-network` **passed**"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/proxy-runtime-address/default.nix",
+          "assertion": "Real HAProxy and systemd socket units MUST bind only the validated runtime",
+          "scope": "HAProxy and the relay socket bind only the published address; empty, wildcard and malformed values leave both down.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-20-fleet-addresses-from-sops.md",
+          "record_assertion": "Recorded run: NixOS machine test `proxy-runtime-address` **passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/host-planning.py",
+          "assertion": "def test_install_copy_matches_the_runtime_uplink_drop_in(",
+          "scope": "The install-time recovery copy is byte-equal to the runtime uplink drop-in; documentation addresses.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/fleet-firewall.nix",
+          "assertion": "runtimeServiceRules = valid runtimeIptables && valid runtimeNft",
+          "scope": "Evaluated runtime chain jump on both backends, rule names, publishing units and reload propagation.",
           "execution": "present"
         }
       ]
