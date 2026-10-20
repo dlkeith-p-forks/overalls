@@ -9849,7 +9849,7 @@ Type: `package`.
 Default:
 
 ```nix
-<derivation underclass-0.1.0-e8e28c3>
+<derivation underclass-0.1.0-37a2888>
 ```
 
 

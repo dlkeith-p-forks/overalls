@@ -1,13 +1,13 @@
 { lib, rustPlatform, fetchFromGitHub, makeWrapper }:
 rustPlatform.buildRustPackage rec {
   pname = "underclass";
-  version = "0.1.0-e8e28c3";
+  version = "0.1.0-37a2888";
 
   src = fetchFromGitHub {
     owner = "ghuntley";
     repo = "underclass";
-    rev = "e8e28c3be4a6a4142bcaa462587edf02200d1243";
-    hash = "sha256-+3gN3kjVt4vxcIszqEkLN0X+eWYrsfHFNRlJLsb3Q+g=";
+    rev = "37a28884e683f34a4a0db6e0b4d4e256a65ddf4e";
+    hash = "sha256-lJ/5uAVkFaYtUSN5TyFqXam9H+CXLsJtYD+H2fDXIiU=";
   };
 
   cargoHash = "sha256-trXMnTioYNjr74HjFcDjMvJ8GYUG0UTiPVi68PNBzEk=";

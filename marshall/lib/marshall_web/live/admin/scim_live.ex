@@ -167,6 +167,8 @@ defmodule MarshallWeb.Admin.ScimLive do
       {:ok, users} -> length(users)
       _ -> nil
     end
+  rescue
+    _ -> nil
   end
 
   @spec count_retiring_teams() :: non_neg_integer() | nil
