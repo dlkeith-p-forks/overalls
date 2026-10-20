@@ -217,7 +217,7 @@ let
       };
       mila-rust = {
         locks = [ "mila/rust/Cargo.lock" ];
-        build = mila.rust;
+        build = (import ./mila/rust.nix { inherit pkgs; }).package;
         hashes = { };
       };
       otel-guest-receiver = {
