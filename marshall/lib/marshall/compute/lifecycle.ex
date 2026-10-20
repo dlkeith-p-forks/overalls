@@ -80,7 +80,7 @@ defmodule Marshall.Compute.Lifecycle do
   def delete_for_team(team_id, vm_id, request_key) do
     execute(
       %{vm_id: vm_id, kind: :delete, idempotency_key: request_key},
-      %{actor: Marshall.Authorization.SystemActor.compute(), team_id: team_id}
+      %{actor: Marshall.Teams.ServiceOwner.get!(), team_id: team_id}
     )
   end
 

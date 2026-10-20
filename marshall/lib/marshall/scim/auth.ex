@@ -40,12 +40,5 @@ defmodule Marshall.Scim.Auth do
     end
   end
 
-  defp service_owner do
-    Marshall.Accounts.User
-    |> Ash.Query.for_read(:internal_lookup, %{},
-      actor: Marshall.Authorization.SystemActor.compute()
-    )
-    |> Ash.Query.filter(email == "scim-service-owner@deleted.invalid")
-    |> Ash.read_one!(actor: Marshall.Authorization.SystemActor.compute())
-  end
+  defp service_owner, do: Marshall.Teams.ServiceOwner.get()
 end
