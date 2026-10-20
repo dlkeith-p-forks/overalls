@@ -1,5 +1,5 @@
 ---
-digest: 3df02681d233595128ebe11010a13be1ba8cf9e7a14640804938b98aae2d029b
+digest: 7e48cb8eef1becc001b59ad6b371477f3031593d656cba066be55b146f1725d3
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed upstream Android DSL compatibility cleanup, the Linux test helper import, and the lock property ensuring generated attempt IDs are truly stale. These preserve the documented native-client behavior and evidence scope; no new native execution is claimed.
+Reviewed native adapter compilation fixes; route parsing and formatting preserve existing documented native UI boundaries.

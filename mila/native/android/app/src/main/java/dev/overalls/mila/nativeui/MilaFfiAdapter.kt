@@ -15,17 +15,16 @@ fun parseMilaRoute(value: String): MilaRoute? {
     val uri = runCatching { android.net.Uri.parse(value) }.getOrNull() ?: return null
     if (uri.scheme != "overalls" || uri.encodedQuery != null || uri.fragment != null || uri.authority?.contains('@') == true) return null
     val parts = uri.pathSegments
-    return when (uri.host?.lowercase() to parts) {
-        "machines" to emptyList() -> MilaRoute.Machines
-        "threads" to emptyList() -> MilaRoute.Threads
-        "settings" to emptyList() -> MilaRoute.Settings
-        else -> when {
-            uri.host?.lowercase() == "machines" && parts.size == 1 ->
-                parts[0].toUuid()?.let(MilaRoute::Machine)
-            uri.host?.lowercase() == "threads" && parts.size == 1 ->
-                parts[0].toUuid()?.let(MilaRoute::Thread)
-            else -> null
-        }
+    val host = uri.host?.lowercase() ?: return null
+    return when {
+        host == "machines" && parts.isEmpty() -> MilaRoute.Machines
+        host == "threads" && parts.isEmpty() -> MilaRoute.Threads
+        host == "settings" && parts.isEmpty() -> MilaRoute.Settings
+        host == "machines" && parts.size == 1 ->
+            parts[0].toUuid()?.let(MilaRoute::Machine)
+        host == "threads" && parts.size == 1 ->
+            parts[0].toUuid()?.let(MilaRoute::Thread)
+        else -> null
     }
 }
 
