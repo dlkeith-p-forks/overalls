@@ -1,0 +1,17 @@
+[package]
+name = "mila-native-linux"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.82"
+license = "MIT"
+description = "Isolated GTK4/libadwaita native presentation seam for Mila"
+publish = false
+
+# This crate is deliberately standalone. It is not a member of mila/rust's workspace
+# until the generated runtime binding is ready to be integrated by a host build.
+
+[dependencies]
+# Keep the GTK and libadwaita bindings on the same generation. The host's GTK runtime
+# remains responsible for supplying the system libraries at build and run time.
+gtk = { package = "gtk4", version = "0.9" }
+adw = { package = "libadwaita", version = "0.7" }

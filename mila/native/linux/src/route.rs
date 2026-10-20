@@ -1,0 +1,391 @@
+//! Typed, bounded navigation routes for `overalls://` activation.
+
+use std::{fmt, str::FromStr};
+
+const MAX_ROUTE_BYTES: usize = 2_048;
+
+/// A route selected by a link. It contains navigation data only; it has no command semantics.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ActivationRoute {
+    authority: Authority,
+    target: Target,
+}
+
+impl ActivationRoute {
+    /// Parses one canonical route from the desktop activation boundary.
+    ///
+    /// The parser intentionally accepts the same route families as Mila's shared model while
+    /// keeping this native scaffold independent from the existing Rust workspace.
+    pub fn parse(value: &str) -> Result<Self, RouteError> {
+        if value.len() > MAX_ROUTE_BYTES
+            || value
+                .chars()
+                .any(|character| character.is_control() || character == ' ')
+            || value.contains('#')
+        {
+            return Err(RouteError::Invalid);
+        }
+        let rest = value
+            .strip_prefix("overalls://")
+            .ok_or(RouteError::Invalid)?;
+        let (location, query) = match rest.split_once('?') {
+            Some((location, query)) if !query.contains('?') => (location, Some(query)),
+            Some(_) => return Err(RouteError::Invalid),
+            None => (rest, None),
+        };
+        if location.contains(['%', '@']) {
+            return Err(RouteError::Invalid);
+        }
+        let mut pieces = location.split('/');
+        let authority = Authority::parse(pieces.next().ok_or(RouteError::Invalid)?)?;
+        let segments = pieces.collect::<Vec<_>>();
+        if segments.iter().any(|segment| segment.is_empty()) {
+            return Err(RouteError::Invalid);
+        }
+        let target = Target::parse(&segments, query)?;
+        Ok(Self { authority, target })
+    }
+
+    /// Returns the canonical route string used for display and subsequent activation.
+    pub fn canonical(&self) -> String {
+        let authority = self.authority.to_string();
+        format!("overalls://{authority}{}", self.target.path())
+    }
+
+    /// Returns the navigation target without exposing authority internals to the UI.
+    pub const fn target(&self) -> &Target {
+        &self.target
+    }
+}
+
+impl FromStr for ActivationRoute {
+    type Err = RouteError;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        Self::parse(value)
+    }
+}
+
+/// A validated route authority. Host names are lower-case DNS labels with an optional port.
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct Authority {
+    host: String,
+    port: Option<u16>,
+}
+
+impl Authority {
+    fn parse(value: &str) -> Result<Self, RouteError> {
+        let (host, port) = match value.split_once(':') {
+            Some((host, port)) if !port.is_empty() && !port.contains(':') => {
+                let parsed = port.parse::<u16>().map_err(|_| RouteError::Invalid)?;
+                if parsed == 0 || port != parsed.to_string() {
+                    return Err(RouteError::Invalid);
+                }
+                (host, Some(parsed))
+            }
+            Some(_) => return Err(RouteError::Invalid),
+            None => (value, None),
+        };
+        if !valid_hostname(host) {
+            return Err(RouteError::Invalid);
+        }
+        Ok(Self {
+            host: host.to_owned(),
+            port,
+        })
+    }
+}
+
+impl fmt::Display for Authority {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self.port {
+            Some(port) => write!(formatter, "{}:{port}", self.host),
+            None => formatter.write_str(&self.host),
+        }
+    }
+}
+
+fn valid_hostname(value: &str) -> bool {
+    value.len() <= 253
+        && !value.is_empty()
+        && value.split('.').all(|label| {
+            !label.is_empty()
+                && label.len() <= 63
+                && label
+                    .bytes()
+                    .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'-')
+                && !label.starts_with('-')
+                && !label.ends_with('-')
+        })
+}
+
+/// The closed set of destinations that a link can select.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum Target {
+    Machines,
+    Threads,
+    Settings,
+    Machine { id: String, page: MachinePage },
+    Thread { id: String },
+    Launch { source: String },
+    SshApproved { session_id: String },
+}
+
+impl Target {
+    fn parse(segments: &[&str], query: Option<&str>) -> Result<Self, RouteError> {
+        match (segments, query) {
+            (["machines"], None) => Ok(Self::Machines),
+            (["threads"], None) => Ok(Self::Threads),
+            (["settings"], None) => Ok(Self::Settings),
+            (["machines", id], None) if canonical_id(id) => Ok(Self::Machine {
+                id: (*id).to_owned(),
+                page: MachinePage::Overview,
+            }),
+            (["machines", id, page], None) if canonical_id(id) => Ok(Self::Machine {
+                id: (*id).to_owned(),
+                page: MachinePage::parse(page)?,
+            }),
+            (["machines", id, "terminals", session_id], None)
+                if canonical_id(id) && canonical_id(session_id) =>
+            {
+                Ok(Self::Machine {
+                    id: (*id).to_owned(),
+                    page: MachinePage::Terminal {
+                        session_id: (*session_id).to_owned(),
+                    },
+                })
+            }
+            (["machines", id, "threads", thread_id], None)
+                if canonical_id(id) && canonical_id(thread_id) =>
+            {
+                Ok(Self::Machine {
+                    id: (*id).to_owned(),
+                    page: MachinePage::Thread {
+                        thread_id: (*thread_id).to_owned(),
+                    },
+                })
+            }
+            (["threads", id], None) if canonical_id(id) => Ok(Self::Thread {
+                id: (*id).to_owned(),
+            }),
+            (["launch"], Some(query)) => {
+                let source = parse_query(query, "source")?;
+                if !valid_workspace_source(&source) {
+                    return Err(RouteError::Invalid);
+                }
+                Ok(Self::Launch { source })
+            }
+            (["ssh", "approved"], Some(query)) => Ok(Self::SshApproved {
+                session_id: parse_query(query, "session").and_then(|value| {
+                    canonical_id(&value)
+                        .then_some(value)
+                        .ok_or(RouteError::Invalid)
+                })?,
+            }),
+            _ => Err(RouteError::Invalid),
+        }
+    }
+
+    fn path(&self) -> String {
+        match self {
+            Self::Machines => "/machines".to_owned(),
+            Self::Threads => "/threads".to_owned(),
+            Self::Settings => "/settings".to_owned(),
+            Self::Machine { id, page } => format!("/machines/{id}{}", page.path()),
+            Self::Thread { id } => format!("/threads/{id}"),
+            Self::Launch { source } => format!("/launch?source={}", encode_component(source)),
+            Self::SshApproved { session_id } => format!("/ssh/approved?session={session_id}"),
+        }
+    }
+}
+
+/// A page beneath a machine route.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum MachinePage {
+    Overview,
+    Info,
+    Web,
+    Terminals,
+    Terminal { session_id: String },
+    Threads,
+    Thread { thread_id: String },
+}
+
+impl MachinePage {
+    fn parse(value: &str) -> Result<Self, RouteError> {
+        match value {
+            "info" => Ok(Self::Info),
+            "web" => Ok(Self::Web),
+            "terminals" => Ok(Self::Terminals),
+            "threads" => Ok(Self::Threads),
+            _ => Err(RouteError::Invalid),
+        }
+    }
+
+    fn path(&self) -> String {
+        match self {
+            Self::Overview => String::new(),
+            Self::Info => "/info".to_owned(),
+            Self::Web => "/web".to_owned(),
+            Self::Terminals => "/terminals".to_owned(),
+            Self::Terminal { session_id } => format!("/terminals/{session_id}"),
+            Self::Threads => "/threads".to_owned(),
+            Self::Thread { thread_id } => format!("/threads/{thread_id}"),
+        }
+    }
+}
+
+fn canonical_id(value: &str) -> bool {
+    value.len() == 36
+        && value.as_bytes().iter().enumerate().all(|(index, byte)| {
+            if matches!(index, 8 | 13 | 18 | 23) {
+                *byte == b'-'
+            } else {
+                byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase()
+            }
+        })
+}
+
+fn parse_query(query: &str, expected_key: &str) -> Result<String, RouteError> {
+    let (key, value) = query.split_once('=').ok_or(RouteError::Invalid)?;
+    if key != expected_key || value.is_empty() || value.contains(['=', '&']) {
+        return Err(RouteError::Invalid);
+    }
+    decode_component(value).ok_or(RouteError::Invalid)
+}
+
+fn valid_workspace_source(value: &str) -> bool {
+    let Some(rest) = value.strip_prefix("https://github.com/") else {
+        return false;
+    };
+    if rest.contains(['?', '#', '%', '@', '\\']) {
+        return false;
+    }
+    let pieces = rest.trim_end_matches(".git").split('/').collect::<Vec<_>>();
+    if pieces.len() != 2 && pieces.len() != 4 {
+        return false;
+    }
+    if pieces[..2].iter().any(|part| !valid_label(part)) {
+        return false;
+    }
+    if pieces.len() == 2 {
+        return true;
+    }
+    pieces[2] == "pull"
+        && pieces[3].parse::<u32>().is_ok_and(|number| number > 0)
+        && !pieces[3].starts_with('0')
+}
+
+fn valid_label(value: &str) -> bool {
+    !value.is_empty()
+        && value.len() <= 100
+        && value
+            .as_bytes()
+            .first()
+            .is_some_and(|byte| byte.is_ascii_alphanumeric())
+        && value
+            .as_bytes()
+            .last()
+            .is_some_and(|byte| byte.is_ascii_alphanumeric())
+        && value.bytes().all(|byte| {
+            byte.is_ascii_alphanumeric() || byte == b'-' || byte == b'_' || byte == b'.'
+        })
+        && value != "."
+        && value != ".."
+}
+
+fn decode_component(value: &str) -> Option<String> {
+    let mut bytes = Vec::with_capacity(value.len());
+    let raw = value.as_bytes();
+    let mut index = 0;
+    while index < raw.len() {
+        if raw[index] == b'%' {
+            if index + 2 >= raw.len() {
+                return None;
+            }
+            let high = (raw[index + 1] as char).to_digit(16)? as u8;
+            let low = (raw[index + 2] as char).to_digit(16)? as u8;
+            bytes.push(high * 16 + low);
+            index += 3;
+        } else {
+            bytes.push(raw[index]);
+            index += 1;
+        }
+    }
+    String::from_utf8(bytes).ok()
+}
+
+fn encode_component(value: &str) -> String {
+    value
+        .bytes()
+        .flat_map(|byte| match byte {
+            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' | b'~' => {
+                vec![char::from(byte).to_string()]
+            }
+            _ => vec![format!("%{byte:02X}")],
+        })
+        .collect()
+}
+
+/// Route parse failures intentionally expose no input or query data.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum RouteError {
+    Invalid,
+}
+
+impl fmt::Display for RouteError {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        formatter.write_str("invalid overalls route")
+    }
+}
+
+impl std::error::Error for RouteError {}
+
+#[cfg(test)]
+mod tests {
+    use super::{ActivationRoute, MachinePage, Target};
+
+    const HOST: &str = "overalls://fleet.example";
+    const ID: &str = "01234567-89ab-cdef-0123-456789abcdef";
+
+    #[test]
+    fn accepts_canonical_navigation_routes() {
+        let route = ActivationRoute::parse(&format!("{HOST}/machines/{ID}/info")).expect("route");
+        assert_eq!(route.canonical(), format!("{HOST}/machines/{ID}/info"));
+        assert_eq!(
+            route.target(),
+            &Target::Machine {
+                id: ID.to_owned(),
+                page: MachinePage::Info,
+            }
+        );
+    }
+
+    #[test]
+    fn rejects_unsafe_or_unknown_routes() {
+        for value in [
+            "http://fleet.example/machines",
+            "overalls://Fleet.example/machines",
+            "overalls://fleet.example/machines/%2F",
+            "overalls://fleet.example/machines/not-an-id",
+            "overalls://fleet.example/machines#fragment",
+            "overalls://user@fleet.example/machines",
+            "overalls://fleet.example/unknown",
+        ] {
+            assert!(ActivationRoute::parse(value).is_err(), "accepted {value}");
+        }
+    }
+
+    #[test]
+    fn launch_query_round_trips_without_executing_it() {
+        let route = ActivationRoute::parse(
+            "overalls://fleet.example/launch?source=https%3A%2F%2Fgithub.com%2Fowner%2Frepo",
+        )
+        .expect("route");
+        assert_eq!(
+            route.canonical(),
+            "overalls://fleet.example/launch?source=https%3A%2F%2Fgithub.com%2Fowner%2Frepo"
+        );
+        assert!(matches!(route.target(), Target::Launch { .. }));
+    }
+}

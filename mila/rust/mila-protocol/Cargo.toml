@@ -1,0 +1,15 @@
+[package]
+name = "mila-protocol"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+mila-model = { path = "../mila-model" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+hegeltest.workspace = true

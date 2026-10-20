@@ -1,0 +1,16 @@
+@cc [owner:ghuntley,label:architecture;desktop] mila-linux-single-instance
+The application MUST use one stable GApplication id and HANDLES_OPEN activation so a second
+launch forwards every `overalls://` URI to the existing process instead of creating another window.
+
+@cc [owner:ghuntley,label:security;navigation] mila-linux-links-navigate-only
+An accepted `overalls://` URI MUST select a typed navigation target only; activation MUST NOT issue a
+runtime command, change a deployment, approve a session, or add credentials.
+
+@cc [owner:ghuntley,label:security;protocol] mila-linux-route-closed-table
+URI parsing MUST enforce the bounded closed route table and reject malformed authorities, unknown
+paths, fragments, userinfo, encoded path segments, and non-canonical identifiers.
+
+@cc [owner:ghuntley,label:security;architecture] mila-linux-typed-runtime-boundary
+The native UI/runtime seam MUST exchange typed request and response values through a Rust trait;
+raw pointers, credentials, authentication tokens, and terminal bytes MUST NOT appear in its API or
+be logged by the scaffold.

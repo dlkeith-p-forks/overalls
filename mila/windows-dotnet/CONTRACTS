@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:security] mila-windows-native-abi
+The managed Windows native boundary MUST expose fixed-layout value types and an explicit status; raw pointers, untyped payloads, credentials, tokens and terminal bytes MUST NOT cross into the managed client.
+
+@cc [owner:ghuntley,label:reliability] mila-windows-native-placeholder
+Until the Rust library is staged beside the executable, every native probe MUST return `MilaNativeStatus.Unavailable` without terminating the managed client.

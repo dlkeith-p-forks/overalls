@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Mila
+Comment=Overalls native Linux client
+Exec=mila-native-linux %U
+Terminal=false
+Categories=Network;Utility;
+MimeType=x-scheme-handler/overalls;
+StartupNotify=true

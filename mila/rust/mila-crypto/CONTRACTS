@@ -1,0 +1,2 @@
+@cc [owner:ghuntley,label:security] mila-crypto-no-secret-diagnostics
+Private key bytes, signatures and derived authentication tokens MUST NOT be logged or formatted by production APIs.
