@@ -1816,6 +1816,12 @@ injection, reset/DMA stress, bit-reproducible native disks, physical recovery
 and fleet admission remain open. ADR-0190 stays accepted/partial; no admission
 flag, capability row, Ash domain, deployment host or wire protocol changes.
 
+After these runs, merge review added one blank line before the `@cc` block in
+`guest-assemble.sh` so the contract checker sees the directive at the start of
+its comment block. That comment-only change alters the script bytes and so the
+`omnios-image-candidate` derivation; the hashes above describe the earlier
+input, and a fresh candidate build is needed before reusing them as current.
+
 ## Native durability: interrupted growth, power loss and relocation
 
 [ADR-0243](../decisions/0243-native-guest-durability-verification.md) adds three

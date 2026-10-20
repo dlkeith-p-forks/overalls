@@ -3,7 +3,7 @@
 # It runs as root in a single-user disposable administration boot whose own
 # pool was re-GUIDed in an earlier boot. The read-only transfer disk carries
 # the exact candidate kit; the writable evidence disk receives exact receipts.
-#
+
 # @cc [owner:ghuntley,label:build;isolation;verification] omnios-guest-assembly-stage
 # The stage MUST locate exactly one importable scratch pool whose label is
 # not the running administration pool, select its ZFS slice by label GUID,
