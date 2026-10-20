@@ -276,15 +276,20 @@ and [custodian wrapper](../../../nix/domains/artifacts/guest/windows/start-custo
 declare both independent tasks and separate copied trust bundles. Complete
 two-role peer, capacity, task and failure execution remains required.
 
-A fresh custodian currently refuses any existing receipt in its same physical
-boot namespace. A dead root and vanished job name cannot establish that old
-descendants have drained, so it neither adopts nor replaces that worker. A new
-physical boot gets a separate namespace. This conservative refusal preserves
-custody safety but does not implement clause 11's same-boot custodian restart
-to a new worker; a stronger descendant-quiescence mechanism and native evidence
-are still missing. A retained custodian can replace only its exact owned job
-after zero-descendant accounting. This gap must remain visible in the candidate's
-acceptance record.
+An earlier checkpoint refused every existing receipt in the same physical boot
+namespace, because a dead root and vanished job name cannot establish that old
+descendants have drained. That conservative refusal did not implement clause
+11. [ADR-0237](0237-windows-custodian-same-boot-recovery.md) now supplies the
+quiescence mechanism without changing this decision: each custodian lifetime
+takes a durable per-boot generation that scopes job, pipe and version-2 receipt
+names, and a cold receipt from an earlier generation is retired only after its
+job name has vanished and a complete process snapshot shows zero processes of
+the worker's exact account logon session, terminating only re-verified
+stragglers of that session. Ambiguity still refuses. The source, portable
+properties and Windows compilation are ADR-0237 evidence; native custodian
+crash and straggler execution remain missing and must stay visible in the
+candidate's acceptance record. A retained custodian still replaces only its
+exact owned job after zero-descendant accounting.
 A retained live root's failed readiness/pipe probe refuses without authorizing
 termination; only a verified-dead held root permits drainage of its exact owned
 job. Process-observation errors also refuse. Current roster/SAM validation runs
@@ -304,8 +309,8 @@ The
 [architecture review](../reviews/2026-10-18-windows-editor-job-custodian.md)
 records native old-design observations, current source boundaries and remaining
 acceptance gaps. Implementation remains partial because same-boot custodian
-recovery is incomplete and the new failure boundary is not yet accepted in an
-immutable image.
+recovery has source and portable evidence only, and the new failure boundary is
+not yet accepted in an immutable image.
 
 ## Open questions
 
@@ -314,13 +319,14 @@ atomic launch, complete descendant termination and restart deadlines, including
 custodian loss with root and child processes alive. Final source review must
 reconcile receipt transactions, quarantine and capacity accounting, peer identity,
 cancellation and both task installations. The version-1 local framing remains
-closed and bounded; it does not expand process-management authority. A safe
-same-boot replacement after custodian loss still needs a stronger quiescence
-mechanism. No unresolved acceptance gap authorizes production selection or changes
+closed and bounded; it does not expand process-management authority. Same-boot
+replacement after custodian loss follows ADR-0237's logon-session quiescence
+proof and still needs native execution. No unresolved acceptance gap authorizes production selection or changes
 the existing false capability row.
 
 ## Related decisions
 
+[ADR-0237](0237-windows-custodian-same-boot-recovery.md),
 [ADR-0200](0200-windows-browser-editor-candidate.md),
 [ADR-0153](0153-official-source-browser-editor.md),
 [ADR-0158](0158-durable-guest-identities.md),

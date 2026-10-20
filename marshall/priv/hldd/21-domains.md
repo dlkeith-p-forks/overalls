@@ -15,7 +15,7 @@ not an Ash domain or resource. `Marshall.Editor` retains current login/write,
 permanent account and exact execution/release authority; Audi and Lilly retain
 their transport/execution fences. The custodian owns only native admitted-worker
 launch, receipts, exact pipes and Job Object lifetime inside the guest. Its
-failure boundary and incomplete same-boot recovery are described in
+failure boundary and logon-session same-boot recovery are described in
 [deployment topology](#topology) and [recovery](#recovery).
 
 ## Responsibilities

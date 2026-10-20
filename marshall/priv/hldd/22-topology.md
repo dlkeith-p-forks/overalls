@@ -201,9 +201,10 @@ The custodian has 64 stable lifetime account slots, while each role separately
 bounds live/retired pipe state to 128 reservations.
 
 The accepted custodian-death behavior requires bounded descendant termination and
-a new worker preserving files. Current source requests kill-on-close but refuses
-every prior same-boot receipt after custodian restart; automatic same-boot
-replacement remains incomplete. A new physical boot gets a new namespace.
+a new worker preserving files. Current source requests kill-on-close and, per
+[ADR-0237](repo:docs/architecture/decisions/0237-windows-custodian-same-boot-recovery.md), takes a durable per-boot generation on restart. It replaces an earlier
+generation's worker only after logon-session quiescence, without native execution
+evidence yet. A new physical boot gets a new namespace.
 Independent-task peer/capacity/failure execution and a complete newly bound image's
 browser journey remain gaps. The old candidate and its failed broker recovery
 cannot qualify this replacement. See

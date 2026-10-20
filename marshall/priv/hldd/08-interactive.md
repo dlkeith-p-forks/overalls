@@ -139,10 +139,16 @@ saved a file and used a real PowerShell PTY, then failed broker recovery. A
 bounded native diagnostic showed that closing its final job handle could leave
 the child alive while the job name disappeared. Those old-design observations
 do not accept the replacement. New custodian source and two-task installation
-exist, but a fresh custodian refuses every prior same-boot receipt until a new
-physical boot namespace because root exit alone cannot prove descendant drainage.
-Same-boot custodian recovery, two-account separation, current revocation and the
-complete exact-image browser journey remain gaps. No candidate is promoted.
+exist. Root exit alone cannot prove descendant drainage, so [ADR-0237](repo:docs/architecture/decisions/0237-windows-custodian-same-boot-recovery.md) recovers a
+custodian crash in the same boot by logon-session quiescence: each custodian
+lifetime takes a durable per-boot generation that scopes its jobs, worker pipes
+and receipts, and an earlier generation's receipt is retired only after its job
+name vanished and no process of the worker's exact account logon session
+remains. The custodian terminates only re-verified stragglers of that session;
+other sessions of the same account and personal files are untouched, and any
+ambiguous observation keeps the account refused. Native custodian-crash
+execution, two-account separation, current revocation and the complete
+exact-image browser journey remain gaps. No candidate is promoted.
 Exact earlier identities and evidence digests remain in the
 [cross-platform review](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
 The [custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md)

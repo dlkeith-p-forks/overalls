@@ -47,9 +47,10 @@ peer and current execution/release authority.
 Its separate `windows-editor-v1` manifest-v7 and bundle-v4 candidate contract
 requires the immutable editor tuple. The candidate remains outside the selected
 production catalog; `windows-v1` keeps editor false. Implementation remains
-partial: a fresh custodian refuses prior same-boot receipts until a new physical
-boot namespace, and native custodian failure/recovery plus exact-image browser
-acceptance remain unrecorded.
+partial. [ADR-0237](decisions/0237-windows-custodian-same-boot-recovery.md)
+lets a restarted custodian retire an earlier generation's receipt only after the
+worker's exact account logon session has no remaining process; native custodian
+failure/recovery plus exact-image browser acceptance remain unrecorded.
 
 [ADR-0199](decisions/0199-memory-suspension-and-demand-wake.md) accepts
 memory-preserving suspension, paused relocation and demand wake with automatic

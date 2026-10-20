@@ -7,8 +7,9 @@
 
 use crate::Refusal;
 use crate::windows_model::{
-    AccountSid, LocalPath, PipePeer, ProcessIdentity, WorkerIdentity, WorkerPath, command_line,
-    verify_peer,
+    AccountSid, CustodianGeneration, LocalPath, LogonSession, PipePeer, PriorWorker,
+    ProcessIdentity, ProcessObservation, TokenObservation, TokenOwner, WorkerIdentity, WorkerPath,
+    command_line, verify_peer,
 };
 use crate::windows_pipe::Pipe;
 use std::fs::{File, OpenOptions};
@@ -21,8 +22,9 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::thread;
 use std::time::{Duration, Instant};
 use windows_sys::Win32::Foundation::{
-    CloseHandle, ERROR_ALREADY_EXISTS, ERROR_FILE_NOT_FOUND, ERROR_NOT_ALL_ASSIGNED, FILETIME,
-    GetLastError, HANDLE, LUID, LocalFree, SetLastError, WAIT_OBJECT_0,
+    CloseHandle, ERROR_ALREADY_EXISTS, ERROR_FILE_NOT_FOUND, ERROR_INVALID_PARAMETER,
+    ERROR_NO_MORE_FILES, ERROR_NOT_ALL_ASSIGNED, FILETIME, GetLastError, HANDLE, LUID, LocalFree,
+    SetLastError, WAIT_OBJECT_0, WAIT_TIMEOUT,
 };
 use windows_sys::Win32::NetworkManagement::NetManagement::{
     NetApiBufferFree, NetUserGetInfo, UF_ACCOUNTDISABLE, USER_INFO_4,
@@ -43,7 +45,8 @@ use windows_sys::Win32::Security::{
     OWNER_SECURITY_INFORMATION, PSECURITY_DESCRIPTOR, QUOTA_LIMITS, SE_ASSIGNPRIMARYTOKEN_NAME,
     SE_DACL_PROTECTED, SE_INCREASE_QUOTA_NAME, SE_PRIVILEGE_ENABLED, SE_TCB_NAME,
     SECURITY_ATTRIBUTES, SecurityImpersonation, TOKEN_ADJUST_PRIVILEGES, TOKEN_ALL_ACCESS,
-    TOKEN_PRIVILEGES, TOKEN_QUERY, TOKEN_SOURCE, TOKEN_USER, TokenPrimary, TokenUser,
+    TOKEN_PRIVILEGES, TOKEN_QUERY, TOKEN_SOURCE, TOKEN_STATISTICS, TOKEN_USER, TokenPrimary,
+    TokenStatistics, TokenUser,
 };
 use windows_sys::Win32::Storage::FileSystem::{
     BY_HANDLE_FILE_INFORMATION, CreateDirectoryW, FILE_ATTRIBUTE_DIRECTORY,
@@ -53,12 +56,15 @@ use windows_sys::Win32::Storage::FileSystem::{
     MOVEFILE_WRITE_THROUGH, MoveFileExW, READ_CONTROL, SECURITY_IDENTIFICATION,
     SECURITY_SQOS_PRESENT,
 };
+use windows_sys::Win32::System::Diagnostics::ToolHelp::{
+    CreateToolhelp32Snapshot, PROCESSENTRY32W, Process32FirstW, Process32NextW, TH32CS_SNAPPROCESS,
+};
 use windows_sys::Win32::System::JobObjects::{
     CreateJobObjectW, IsProcessInJob, JOB_OBJECT_LIMIT_ACTIVE_PROCESS,
     JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE, JOBOBJECT_BASIC_ACCOUNTING_INFORMATION,
     JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectBasicAccountingInformation,
-    JobObjectExtendedLimitInformation, QueryInformationJobObject, SetInformationJobObject,
-    TerminateJobObject,
+    JobObjectExtendedLimitInformation, OpenJobObjectW, QueryInformationJobObject,
+    SetInformationJobObject, TerminateJobObject,
 };
 use windows_sys::Win32::System::Pipes::{GetNamedPipeServerProcessId, WaitNamedPipeW};
 use windows_sys::Win32::System::Threading::{
@@ -66,12 +72,17 @@ use windows_sys::Win32::System::Threading::{
     CreateProcessAsUserW, DeleteProcThreadAttributeList, EXTENDED_STARTUPINFO_PRESENT,
     GetCurrentProcess, GetProcessId, GetProcessTimes, InitializeProcThreadAttributeList,
     OpenProcess, OpenProcessToken, PROC_THREAD_ATTRIBUTE_JOB_LIST, PROCESS_INFORMATION,
-    PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_SYNCHRONIZE, QueryFullProcessImageNameW,
-    ResumeThread, STARTUPINFOEXW, UpdateProcThreadAttribute, WaitForSingleObject,
+    PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_SYNCHRONIZE, PROCESS_TERMINATE,
+    QueryFullProcessImageNameW, ResumeThread, STARTUPINFOEXW, TerminateProcess,
+    UpdateProcThreadAttribute, WaitForSingleObject,
 };
 use windows_sys::Win32::UI::Shell::GetUserProfileDirectoryW;
 
 const JOB_ALL_ACCESS: u32 = 0x001f003f;
+const JOB_OBJECT_QUERY: u32 = 0x0004;
+/// Idle and System are the only kernel creators; user tokens cannot name them.
+const KERNEL_PARENTS: [u32; 2] = [0, 4];
+const PROCESS_LIST_LIMIT: usize = 65536;
 
 fn system_sid() -> [u32; 3] {
     [0x00000101, 0x05000000, 18]
@@ -554,6 +565,216 @@ fn token_sid(token: HANDLE) -> Result<AccountSid, Refusal> {
     copy_sid(record.User.Sid).map_err(|_| Refusal::Custody)
 }
 
+/// The LSA logon session that every process created from this token inherits.
+fn token_logon(token: HANDLE) -> Result<LogonSession, Refusal> {
+    let mut statistics: TOKEN_STATISTICS = unsafe { zeroed() };
+    let mut length = 0;
+    if unsafe {
+        GetTokenInformation(
+            token,
+            TokenStatistics,
+            (&raw mut statistics).cast(),
+            size_of_val(&statistics) as u32,
+            &mut length,
+        )
+    } == 0
+        || length as usize != size_of_val(&statistics)
+    {
+        return Err(Refusal::Custody);
+    }
+    LogonSession::from_luid(
+        statistics.AuthenticationId.LowPart,
+        statistics.AuthenticationId.HighPart,
+    )
+}
+
+/// Classify a live process token without trusting any caller-supplied claim.
+fn process_token(process: &OwnedHandle) -> TokenObservation {
+    let mut token = null_mut();
+    if unsafe { OpenProcessToken(raw(process), TOKEN_QUERY, &mut token) } == 0 {
+        return TokenObservation::Unreadable;
+    }
+    let Ok(token) = owned(token, Refusal::Custody) else {
+        return TokenObservation::Unreadable;
+    };
+    let mut buffer = [0_usize; 32];
+    let mut length = 0;
+    if unsafe {
+        GetTokenInformation(
+            raw(&token),
+            TokenUser,
+            buffer.as_mut_ptr().cast(),
+            size_of_val(&buffer) as u32,
+            &mut length,
+        )
+    } == 0
+        || length as usize > size_of_val(&buffer)
+        || (length as usize) < size_of::<TOKEN_USER>()
+    {
+        return TokenObservation::Unreadable;
+    }
+    let user = unsafe { (*buffer.as_ptr().cast::<TOKEN_USER>()).User.Sid };
+    if user.is_null() || unsafe { IsValidSid(user) } == 0 {
+        return TokenObservation::Unreadable;
+    }
+    // A valid SID that is not a complete ordinary account is another principal.
+    let Ok(sid) = copy_sid(user) else {
+        return TokenObservation::NonAccount;
+    };
+    match token_logon(raw(&token)) {
+        Ok(logon) => TokenObservation::Account(TokenOwner { sid, logon }),
+        Err(_) => TokenObservation::Unreadable,
+    }
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-prior-job-absence
+/// A prior generation's exact job name MUST be reported present whenever it
+/// opens, and absent only on ERROR_FILE_NOT_FOUND. Any other failure MUST
+/// refuse. The probe MUST NOT retain, adopt, terminate or modify that job.
+pub fn prior_job_present(
+    identity: &WorkerIdentity,
+    generation: CustodianGeneration,
+) -> Result<bool, Refusal> {
+    job_name_present(&identity.job_name(generation))
+}
+
+fn job_name_present(name: &str) -> Result<bool, Refusal> {
+    let name = wide(name);
+    unsafe {
+        SetLastError(0);
+    }
+    let handle = unsafe { OpenJobObjectW(JOB_OBJECT_QUERY, 0, name.as_ptr()) };
+    if !handle.is_null() {
+        drop(owned(handle, Refusal::Custody)?);
+        return Ok(true);
+    }
+    if unsafe { GetLastError() } == ERROR_FILE_NOT_FOUND {
+        Ok(false)
+    } else {
+        Err(Refusal::Custody)
+    }
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-process-observation
+/// Recovery MUST observe one complete bounded kernel process snapshot. Each
+/// entry is opened with query/synchronize rights only; an exited entry, an
+/// unopenable kernel-parented entry, a readable token and its exact kernel
+/// creation identity are the only facts reported. Every other failure MUST be
+/// reported as unobservable/unreadable, and snapshot failure MUST refuse.
+pub fn observe_processes() -> Result<Vec<ProcessObservation>, Refusal> {
+    let snapshot = owned(
+        unsafe { CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) },
+        Refusal::Custody,
+    )?;
+    let mut entry: PROCESSENTRY32W = unsafe { zeroed() };
+    entry.dwSize = size_of::<PROCESSENTRY32W>() as u32;
+    if unsafe { Process32FirstW(raw(&snapshot), &mut entry) } == 0 {
+        return Err(Refusal::Custody);
+    }
+    let mut observations = Vec::new();
+    loop {
+        if observations.len() >= PROCESS_LIST_LIMIT {
+            return Err(Refusal::Capacity);
+        }
+        observations.push(observe_process(
+            entry.th32ProcessID,
+            entry.th32ParentProcessID,
+        ));
+        entry = unsafe { zeroed() };
+        entry.dwSize = size_of::<PROCESSENTRY32W>() as u32;
+        if unsafe { Process32NextW(raw(&snapshot), &mut entry) } == 0 {
+            // Only normal end-of-list completes the snapshot.
+            return if unsafe { GetLastError() } == ERROR_NO_MORE_FILES {
+                Ok(observations)
+            } else {
+                Err(Refusal::Custody)
+            };
+        }
+    }
+}
+
+fn observe_process(pid: u32, parent: u32) -> ProcessObservation {
+    if KERNEL_PARENTS.contains(&pid) {
+        return ProcessObservation::KernelCreated;
+    }
+    unsafe {
+        SetLastError(0);
+    }
+    let handle = unsafe {
+        OpenProcess(
+            PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_SYNCHRONIZE,
+            0,
+            pid,
+        )
+    };
+    let Ok(process) = owned(handle, Refusal::Custody) else {
+        return match unsafe { GetLastError() } {
+            ERROR_INVALID_PARAMETER => ProcessObservation::Exited,
+            _ if KERNEL_PARENTS.contains(&parent) => ProcessObservation::KernelCreated,
+            _ => ProcessObservation::Unobservable,
+        };
+    };
+    match unsafe { WaitForSingleObject(raw(&process), 0) } {
+        WAIT_OBJECT_0 => return ProcessObservation::Exited,
+        WAIT_TIMEOUT => {}
+        _ => return ProcessObservation::Unobservable,
+    }
+    match process_identity(&process) {
+        Ok(identity) => ProcessObservation::Opened {
+            process: identity,
+            token: process_token(&process),
+        },
+        Err(_) => ProcessObservation::Unobservable,
+    }
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-straggler-termination
+/// A straggler MAY be terminated only through a handle whose kernel PID and
+/// creation identity equal the planned process and whose primary token still
+/// has the prior worker's exact account SID and logon session. PID reuse is
+/// left to the next complete observation. Any other mismatch, or failure to
+/// observe exit within two seconds, MUST refuse.
+pub fn terminate_straggler(prior: &PriorWorker, target: ProcessIdentity) -> Result<(), Refusal> {
+    unsafe {
+        SetLastError(0);
+    }
+    let handle = unsafe {
+        OpenProcess(
+            PROCESS_TERMINATE | PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_SYNCHRONIZE,
+            0,
+            target.pid,
+        )
+    };
+    let process = match owned(handle, Refusal::Custody) {
+        Ok(process) => process,
+        Err(_) if unsafe { GetLastError() } == ERROR_INVALID_PARAMETER => return Ok(()),
+        Err(reason) => return Err(reason),
+    };
+    if process_identity(&process)? != target {
+        // A different process now owns this PID; rescan classifies it afresh.
+        return Ok(());
+    }
+    match unsafe { WaitForSingleObject(raw(&process), 0) } {
+        WAIT_OBJECT_0 => return Ok(()),
+        WAIT_TIMEOUT => {}
+        _ => return Err(Refusal::Custody),
+    }
+    match process_token(&process) {
+        TokenObservation::Account(owner)
+            if owner.sid == prior.sid && owner.logon == prior.logon => {}
+        _ => return Err(Refusal::Custody),
+    }
+    if unsafe { TerminateProcess(raw(&process), 1) } == 0
+        && unsafe { WaitForSingleObject(raw(&process), 0) } != WAIT_OBJECT_0
+    {
+        return Err(Refusal::Custody);
+    }
+    if unsafe { WaitForSingleObject(raw(&process), 2_000) } != WAIT_OBJECT_0 {
+        return Err(Refusal::Custody);
+    }
+    Ok(())
+}
+
 fn privilege(name: *const u16) -> Result<(), Refusal> {
     let mut token = null_mut();
     if unsafe {
@@ -747,8 +968,11 @@ fn profile_directory(token: HANDLE) -> Result<LocalPath, Refusal> {
 }
 
 /// A named job owned solely by SYSTEM; closing its final handle kills its workers.
-fn new_job(identity: &WorkerIdentity) -> Result<OwnedHandle, Refusal> {
-    new_job_named(&identity.job_name())
+fn new_job(
+    identity: &WorkerIdentity,
+    generation: CustodianGeneration,
+) -> Result<OwnedHandle, Refusal> {
+    new_job_named(&identity.job_name(generation))
 }
 
 fn new_job_named(name: &str) -> Result<OwnedHandle, Refusal> {
@@ -1125,6 +1349,8 @@ pub struct Worker {
     process: OwnedHandle,
     job: OwnedHandle,
     identity: WorkerIdentity,
+    generation: CustodianGeneration,
+    logon: LogonSession,
     executable: LocalPath,
     process_identity: ProcessIdentity,
     suspended_thread: Option<OwnedHandle>,
@@ -1138,7 +1364,11 @@ impl Worker {
     /// It MUST return suspended, without inherited handles, until the custodian
     /// publishes the receipt. Custodian loss at every intermediate point MUST
     /// kill the child; the TCP gateway MUST never hold a worker job handle.
-    pub fn launch(identity: WorkerIdentity, package: &Package) -> Result<Self, LaunchFailure> {
+    pub fn launch(
+        identity: WorkerIdentity,
+        generation: CustodianGeneration,
+        package: &Package,
+    ) -> Result<Self, LaunchFailure> {
         package_file(&package.node)?;
         package_file(&package.server)?;
         package_file(&package.extra_ca_certs)?;
@@ -1149,13 +1379,16 @@ impl Worker {
         privilege(SE_INCREASE_QUOTA_NAME)?;
         privilege(SE_TCB_NAME)?;
         let token = account_token(&identity)?;
+        // Recorded before launch so a later custodian can prove quiescence of
+        // exactly this worker's processes without its job handle.
+        let logon = token_logon(raw(&token))?;
         let home = profile_directory(raw(&token))?;
         let mut command = command_line(&[
             package.node.as_str().to_owned(),
             package.server.as_str().to_owned(),
             "--without-connection-token".to_owned(),
             "--socket-path".to_owned(),
-            identity.pipe_name(),
+            identity.pipe_name(generation),
             "--server-data-dir".to_owned(),
             format!(r"{}\.overalls-code-server", home.as_str()),
             "--enable-remote-auto-shutdown".to_owned(),
@@ -1198,7 +1431,7 @@ impl Worker {
             .flat_map(|(key, value)| wide(&format!("{key}={value}")))
             .chain([0])
             .collect();
-        let job = new_job(&identity)?;
+        let job = new_job(&identity, generation)?;
         let attributes = JobAttributes::new(&job)?;
         let mut startup: STARTUPINFOEXW = unsafe { zeroed() };
         startup.StartupInfo.cb = size_of::<STARTUPINFOEXW>() as u32;
@@ -1258,6 +1491,8 @@ impl Worker {
                 process,
                 job,
                 identity,
+                generation,
+                logon,
                 executable: package.node.clone(),
                 process_identity,
                 suspended_thread: Some(thread),
@@ -1278,8 +1513,12 @@ impl Worker {
         self.process_identity
     }
 
-    pub fn matches(&self, identity: &WorkerIdentity) -> bool {
-        &self.identity == identity
+    pub fn matches(&self, identity: &WorkerIdentity, generation: CustodianGeneration) -> bool {
+        &self.identity == identity && self.generation == generation
+    }
+
+    pub fn logon_session(&self) -> LogonSession {
+        self.logon
     }
 
     /// Resume only after the complete private receipt has been published.
@@ -1320,7 +1559,7 @@ impl Worker {
     /// connection without killing or deleting the possible server.
     pub fn connect(&self) -> Result<Pipe, Refusal> {
         let reservation = Pipe::reserve().map_err(|_| Refusal::Capacity)?;
-        let pipe_name = wide(&self.identity.pipe_name());
+        let pipe_name = wide(&self.identity.pipe_name(self.generation));
         if unsafe { WaitNamedPipeW(pipe_name.as_ptr(), 2_000) } == 0 {
             return Err(Refusal::Readiness);
         }
@@ -1328,7 +1567,7 @@ impl Worker {
             .read(true)
             .write(true)
             .custom_flags(SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION | FILE_FLAG_OVERLAPPED)
-            .open(self.identity.pipe_name())
+            .open(self.identity.pipe_name(self.generation))
             .map_err(|_| Refusal::Readiness)?;
         let mut pid = 0;
         if unsafe { GetNamedPipeServerProcessId(pipe.as_raw_handle(), &mut pid) } == 0
@@ -1370,6 +1609,28 @@ impl Worker {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// SYSTEM-only native check of the two recovery observations. It does not
+    /// launch a personal worker, kill a straggler or crash a custodian.
+    #[test]
+    fn native_closed_job_name_vanishes_and_snapshot_reports_system_tokens() {
+        require_system().expect("native custody tests require SYSTEM");
+        let name = format!(r"Global\overalls-editor-prior-test-{}", std::process::id());
+        assert_eq!(job_name_present(&name), Ok(false));
+        let job = new_job_named(&name).unwrap();
+        assert_eq!(job_name_present(&name), Ok(true));
+        drop(job);
+        assert_eq!(job_name_present(&name), Ok(false));
+        let observations = observe_processes().unwrap();
+        let own = std::process::id();
+        assert!(observations.iter().any(|observation| matches!(
+            observation,
+            ProcessObservation::Opened {
+                process,
+                token: TokenObservation::NonAccount,
+            } if process.pid == own
+        )));
+    }
 
     /// This requires an explicitly SYSTEM-run native test executable. Cross
     /// compilation does not exercise atomic launch or kill-on-close timing.

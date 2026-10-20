@@ -1361,9 +1361,12 @@ tests and scratch cleanup. Four new native cases cover a disposable suspended
 SYSTEM root's atomic job membership/kill-on-close exit, exclusive SYSTEM pipe
 custody, same-test-process mutual identity and forged-creation refusal. Personal
 S4U/Code OSS launch, descendants, independent role tasks, capacity/custodian faults
-and the complete browser journey remain pending. A fresh custodian refuses every prior same-boot receipt
-until a new physical boot namespace; safe same-boot replacement remains
-unimplemented. The immutable old candidate is unqualified and unselected. The
+and the complete browser journey remain pending. [ADR-0237](repo:docs/architecture/decisions/0237-windows-custodian-same-boot-recovery.md) adds same-boot
+custodian-crash recovery: durable per-boot generations scope jobs, pipes and
+version-2 receipts, and an earlier generation's receipt is retired only after
+logon-session quiescence. Its 35 host library tests, Windows all-target Clippy
+and pinned runtime build pass; no native crash recovery has run. The immutable
+old candidate is unqualified and unselected. The
 [custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md)
 records source reconciliation and the missing exact-image browser/recovery evidence.
 

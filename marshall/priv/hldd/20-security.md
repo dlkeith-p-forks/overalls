@@ -1545,9 +1545,14 @@ undrained cancellation state. Exhaustion must refuse new work while preserving
 existing custody. A retained custodian drains its exact job to zero descendants
 before replacement only after its held root is verified dead; live-root probe and
 process-observation errors refuse without termination. Failed accounting
-quarantines. A fresh custodian refuses
-all prior same-boot receipts until a new physical boot namespace; accepted
-same-boot crash replacement remains incomplete. Full independent-role peer refusal,
+quarantines. After a custodian crash, [ADR-0237](repo:docs/architecture/decisions/0237-windows-custodian-same-boot-recovery.md) lets a new custodian generation
+retire an earlier generation's receipt only when its job name vanished and a
+complete snapshot shows no process of the exact account SID and recorded S4U
+logon session. Its sole new destructive authority terminates re-verified
+stragglers of that session; another account, another session of the same account,
+processes older than the recorded root and personal files are outside it, and
+ambiguous observation refuses. This is portable-property evidence only; native
+crash recovery is unexecuted. Full independent-role peer refusal,
 personal launch rollback, sustained cancellation/exhaustion and custodian
 death/root-child termination bounds still need native execution.
 

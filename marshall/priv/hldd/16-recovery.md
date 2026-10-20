@@ -157,12 +157,32 @@ Live-root readiness/pipe failures and process-observation errors refuse without
 authorizing termination. Current roster/SAM validation runs inside the UID lock.
 
 Custodian death requests termination of its owned descendants through final job
-handle closure. Current source conservatively refuses any old receipt encountered
-by a fresh custodian in the same physical boot namespace: a dead root or missing
-job name cannot prove old descendants are gone. A new physical boot has a new
-namespace. Safe same-boot automatic replacement preserving personal files remains
-unimplemented; native termination, task restart, root-plus-descendant drainage
-and bounded exhaustion tests remain pending. The old stock browser fixture passed
+handle closure. A dead root or missing job name cannot prove old descendants are
+gone, so [ADR-0237](repo:docs/architecture/decisions/0237-windows-custodian-same-boot-recovery.md) defines same-boot recovery. The restarted custodian reserves its
+exclusive local endpoint, then durably publishes a strictly greater generation in
+the boot namespace's SYSTEM-only `generation.json`; job, worker-pipe and version-2
+receipt names carry that generation. On the next admission for an account with a
+cold receipt, the custodian requires an earlier generation, the exact current
+worker identity and a vanished generation-scoped job. It then takes complete
+process snapshots and terminates only processes created no earlier than the
+recorded root whose token has the exact account SID and recorded S4U logon
+session, re-verifying each through its own handle. Only an observation with zero
+such processes removes the receipt and launches a new worker; personal files
+remain. Unobservable possible descendants, stuck termination, identity drift or a
+surviving job keep the receipt and refuse until they clear or a new physical
+boot changes namespace.
+
+| Cold receipt condition | Result |
+| --- | --- |
+| Generation not earlier than current, or version 1 | Refuse; receipt kept |
+| Stable identity differs from the admitted account | Refuse; receipt kept |
+| Prior generation's job name still opens, or probe fails | Refuse; receipt kept |
+| Ambiguous process or termination failure within eight passes | Refuse; receipt kept |
+| Zero exact-session processes observed | Receipt removed; new worker launched |
+
+These rules have portable property evidence only; native custodian-crash
+termination, straggler handling, task restart, root-plus-descendant drainage and
+bounded exhaustion tests remain pending. The old stock browser fixture passed
 its initial workbench/save/PTY stage, then failed broker recovery; it does not
 qualify the replacement or its immutable candidate. See the
 [custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).

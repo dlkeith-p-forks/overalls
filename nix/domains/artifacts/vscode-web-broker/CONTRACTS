@@ -77,12 +77,18 @@ pipes. At most one process-wide completion reaper may run. A broker request
 thread MUST NOT remain blocked on a worker pipe after worker loss.
 
 @cc [owner:ghuntley,label:security;recovery] windows-custodian-restart-quarantine
-A fresh custodian MUST refuse every existing same-boot worker receipt without
-its original retained job handle. A dead root, missing named job or requested
-kill-on-close MUST NOT be treated as proof that all descendants have stopped.
-Old non-custodian receipts MUST NOT enter the custodian-v1 boot namespace.
-Same-boot automatic recovery after custodian loss remains unimplemented until
-whole-job quiescence can be established; a new physical boot changes namespace.
+A fresh custodian MUST reserve its exclusive endpoint, then durably take a
+strictly greater per-boot generation that names its jobs, worker pipes and
+version-2 receipts. A dead root, missing named job or requested kill-on-close
+MUST NOT alone prove that descendants have stopped. A cold same-boot receipt
+MAY be retired only when a strictly earlier generation wrote it for the exact
+current identity, its generation-scoped job no longer opens, and a complete
+process observation shows zero processes of its recorded account logon
+session after terminating only re-verified stragglers of that session. Current
+or future generations, identity drift, ambiguous observation and failed
+termination MUST refuse and retain the receipt. Other accounts, other sessions
+of the same account and personal files MUST NOT be affected. Old
+non-custodian or version-1 receipts MUST NOT authorize recovery.
 
 @cc [owner:ghuntley,label:security;capacity] windows-custodian-private-stream
 The TCP gateway MUST forward only its validated current preface over the fixed
