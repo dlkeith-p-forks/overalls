@@ -395,11 +395,14 @@ in
       # @cc [owner:ghuntley,label:security;deployment] marshall-prestart-mail-authority
       # Pre-start release evaluation MUST apply the module's selected mail
       # transport, clearing inherited provider credentials in local-relay mode
-      # exactly as the serving and migration launchers do.
+      # exactly as the serving and migration launchers do. It never issues
+      # certificates, so it drops the fleet ACME issuer, whose runtime
+      # nameserver addresses only the serving script renders (ADR-0233).
       preStart = ''
           export RELEASE_COOKIE
           RELEASE_COOKIE="$(${pkgs.coreutils}/bin/head -c 32 /dev/urandom | ${pkgs.coreutils}/bin/basenc --base16 -w0)"
           ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_FLEET_TLS_PORT -u MARSHALL_FLEET_BIND_IP \
+            -u MARSHALL_FLEET_ACME_DIRECTORY \
             -u MARSHALL_GITHUB_CLIENT_ID -u MARSHALL_GITHUB_CLIENT_SECRET_FILE -u MARSHALL_GITHUB_REDIRECT_URI \
             -u MARSHALL_GITHUB_TOOLS_MANIFEST_FILE -u MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE \
             ${mailEnvironment} \
