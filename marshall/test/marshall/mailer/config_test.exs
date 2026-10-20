@@ -69,6 +69,25 @@ defmodule Marshall.Mailer.ConfigTest do
     end
   end
 
+  test "remote SMTP trusts the system store unless an absolute CA file is configured" do
+    assert {:ok, config, _} = Config.from_env(env("implicit"))
+    assert config[:sockopts][:cacerts] == :public_key.cacerts_get()
+    refute Keyword.has_key?(config[:sockopts], :cacertfile)
+
+    ca = Path.expand("../../fixtures/tls/ca.pem", __DIR__)
+
+    assert {:ok, config, _} =
+             Config.from_env(Map.put(env("starttls"), "MARSHALL_SMTP_CA_CERTFILE", ca))
+
+    assert config[:tls_options][:cacertfile] == String.to_charlist(ca)
+    refute Keyword.has_key?(config[:tls_options], :cacerts)
+
+    for ca <- ["relative/ca.pem", "/nonexistent/ca.pem"] do
+      assert {:error, :invalid_mail_configuration} =
+               Config.from_env(Map.put(env("implicit"), "MARSHALL_SMTP_CA_CERTFILE", ca))
+    end
+  end
+
   test "missing credentials, insecure modes and invalid addresses fail without echoing secrets" do
     valid = env("implicit")
 

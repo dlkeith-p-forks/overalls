@@ -926,6 +926,15 @@ change, so a host still on the previous bundle cannot verify Marshall until it
 activates. No automated test exercises the bundle; live validation is a verified
 `openssl s_client` handshake and healthy updater activation on both hosts.
 
+When `MARSHALL_DB_CA_CERTFILE` or `MARSHALL_SMTP_CA_CERTFILE` is absent, Marshall
+verifies PostgreSQL and remote SMTP against the operating-system trust store, never
+the Hex `castore` bundle, so host-distrusted public roots (the eMudhra roots in the
+[public trust module](repo:nix/domains/system/public-trust.nix)) also refuse those
+chains. A configured CA file must be an absolute regular file or startup is refused.
+[Mailer](repo:marshall/test/marshall/mailer/config_test.exs) and
+[runtime configuration](repo:marshall/test/marshall/operations/runtime_config_test.exs)
+unit tests check option selection only; no test presents a chain from a distrusted root.
+
 ## Public HTTP-01 listener
 
 Overalls admits TCP 80 on the proxy address from any source (ADR-0181) so the
