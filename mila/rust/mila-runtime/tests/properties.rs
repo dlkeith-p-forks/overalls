@@ -1,5 +1,8 @@
 use hegel::{generators as gs, TestCase};
-use mila_runtime::{MachineSnapshot, SnapshotMachine, MAX_SNAPSHOT_BYTES};
+use mila_runtime::{
+    AppLock, LockAvailability, LockDelay, LockEvent, LockPhase, MachineSnapshot, SnapshotMachine,
+    MAX_SNAPSHOT_BYTES,
+};
 use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
 
 #[hegel::test(test_cases = 64)]
@@ -85,4 +88,34 @@ fn registration_restricts_origins_and_secrets() {
         Some("https://evil.example/channel".into())
     )
     .is_err());
+}
+
+#[hegel::test(test_cases = 64)]
+fn lock_never_unlocks_from_stale_or_failed_results(tc: TestCase) {
+    let attempt = tc.draw(gs::default::<u32>());
+    let lock = AppLock::start(true, LockDelay::Immediate)
+        .apply(LockEvent::Availability(LockAvailability::Available))
+        .apply(LockEvent::UnlockRequested);
+    assert_eq!(lock.phase, LockPhase::Authenticating);
+    let stale = lock.apply(LockEvent::UnlockFinished {
+        attempt: attempt ^ (1 << 31),
+        success: true,
+    });
+    assert_eq!(stale.phase, LockPhase::Authenticating);
+    let failed = stale.apply(LockEvent::UnlockFinished {
+        attempt: stale.attempt,
+        success: false,
+    });
+    assert_eq!(failed.phase, LockPhase::Locked);
+    assert!(failed.obscured());
+}
+
+#[test]
+fn lock_relocks_after_elapsed_background_delay() {
+    let lock = AppLock::start(false, LockDelay::OneMinute)
+        .apply(LockEvent::Availability(LockAvailability::Available))
+        .apply(LockEvent::Enable)
+        .apply(LockEvent::Backgrounded(10))
+        .apply(LockEvent::Foregrounded(60_010));
+    assert_eq!(lock.phase, LockPhase::Locked);
 }
