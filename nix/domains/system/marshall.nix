@@ -35,7 +35,11 @@ let
   acmeRender = lib.optionalString acmeRuntime ''
     acme_nameservers="$(${pkgs.jq}/bin/jq -cn ${acmeArguments} ${lib.escapeShellArg acmeFilter})" || exit 1
   '';
-  sloCatalog = pkgs.writeText "marshall-fleet-slo-catalog.json" (builtins.toJSON (import ./otel-fleet/slo-catalog.nix));
+  sloCatalog = pkgs.writeText "marshall-fleet-slo-catalog.json" (builtins.toJSON (import ./otel-fleet/slo-catalog.nix {
+    # The deployment's telemetry roster; hosts without fleet telemetry keep the default.
+    hosts = lib.attrByPath [ "services" "overallsOtelFleet" "roster" ]
+      (import ./otel-fleet/default-roster.nix) config;
+  }));
 in
 {
   imports = [ ./marshall-operator.nix ./crash-dumps/retention.nix (import ./smtp-relay { inherit packages; }) ];
@@ -296,11 +300,11 @@ in
 
       { assertion = cfg.ingress.wildcardAcme == null ||
           (cfg.ingress.zone != null && builtins.elem cfg.ingress.wildcardAcme.issuerInstance names &&
-           builtins.length cfg.ingress.wildcardAcme.nameservers >= 2 &&
+           builtins.length cfg.ingress.wildcardAcme.nameservers >= 1 &&
            builtins.length cfg.ingress.wildcardAcme.nameservers <= 8 &&
            builtins.length (lib.unique cfg.ingress.wildcardAcme.nameservers) == builtins.length cfg.ingress.wildcardAcme.nameservers
            && lib.all (nameserver: (nameserver.address == null) != (nameserver.addressFile == null)) acmeNameservers);
-        message = "Wildcard ACME requires a local issuer instance, ingress zone and two to eight distinct DNS peers."; }
+        message = "Wildcard ACME requires a local issuer instance, ingress zone and one to eight distinct DNS peers."; }
       { assertion = !cfg.crashDumps.enable || cfg.crashDumps.publicKeyFile != null; message = "Encrypted dumps require an operator public key file."; }
       { assertion = names != [] && builtins.length names <= cfg.replicaCount;
         message = "Marshall requires 1..replicaCount local instances."; }

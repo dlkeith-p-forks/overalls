@@ -12,10 +12,7 @@
       ],
       "prefix": "prefix",
       "gateway": "gateway",
-      "hostRoutes": [
-        "dungareesPrimary",
-        "dungareesService"
-      ]
+      "hostRoutes": []
     }
   },
   "budgets": {

@@ -1,5 +1,7 @@
-{ loggingEnabled ? true, fleetExporterEnabled ? true }:
+{ loggingEnabled ? true, fleetExporterEnabled ? true, hosts ? import ./default-roster.nix }:
 let
+  any = builtins.concatStringsSep " or ";
+  addresses = import ./roster-addresses.nix hosts;
   fresh = " and on(host_name,unit) (time() - overalls_gauge_trace_observed_at_seconds >= 0) and on(host_name,unit) (time() - overalls_gauge_trace_observed_at_seconds < 90)";
   alert = name: expr: summary: {
     alert = name; inherit expr;
@@ -13,7 +15,7 @@ in {
     name = "overalls-infrastructure-health"; interval = "30s";
     rules = (if loggingEnabled then [
       (alert "OverallsLoggingHealthMissing"
-        ''up{job="overalls-logging-health"} == 0 or absent(up{job="overalls-logging-health",instance="10.90.0.1:9467"}) or absent(up{job="overalls-logging-health",instance="10.90.0.2:9467"})''
+        ''up{job="overalls-logging-health"} == 0 or ${any (builtins.map (address: ''absent(up{job="overalls-logging-health",instance="${address}:9467"})'') addresses)}''
         "Independent logging health is unavailable")
       (alert "OverallsLoggingCollectorUnavailable"
         ''overalls_logging_collector_metrics_valid == 0 or overalls_logging_output_counters_valid == 0''
@@ -55,7 +57,7 @@ in {
         "An application SDK failed a trace custody handoff")
     ] else []) ++ (if fleetExporterEnabled then [
       (alert "OverallsFleetCollectionMissing"
-        ''absent(overalls_fleet_collection_valid{host_name="overalls"}) or absent(overalls_fleet_collection_valid{host_name="dungarees"})''
+        ''${any (builtins.map (host: ''absent(overalls_fleet_collection_valid{host_name="${host}"})'') hosts)}''
         "An enrolled fleet infrastructure exporter is unavailable")
       (alert "OverallsFleetCollectionUnavailable" ''overalls_fleet_collection_valid == 0 or time() - overalls_fleet_sampled_at_seconds > 45''
         "Fleet infrastructure observation is invalid or stale")

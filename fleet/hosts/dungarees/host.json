@@ -13,8 +13,7 @@
       "prefix": "prefix",
       "gateway": "gateway",
       "hostRoutes": [
-        "overallsPrimary",
-        "overallsService"
+        "panterloonsPrimary"
       ]
     }
   },

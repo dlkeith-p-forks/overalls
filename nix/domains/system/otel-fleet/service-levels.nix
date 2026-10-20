@@ -31,7 +31,7 @@ in {
         attributes = [
           { key = "service.name"; value = service; action = "upsert"; }
           { key = "overalls.telemetry.origin"; value = "application"; action = "upsert"; }
-          { key = "host.name"; value = "overalls"; action = "upsert"; }
+          { key = "host.name"; value = cfg.hosts.central; action = "upsert"; }
         ];
       }) services);
       service.pipelines = builtins.listToAttrs (map (service: lib.nameValuePair "metrics/${service}" {

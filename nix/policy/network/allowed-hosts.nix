@@ -12,4 +12,8 @@
     name = "dungareesPrimary";
     comment = "Dungarees fleet host";
   };
+  panterloons = {
+    name = "panterloonsPrimary";
+    comment = "Panterloons fleet host";
+  };
 }

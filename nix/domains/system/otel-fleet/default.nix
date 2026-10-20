@@ -3,18 +3,19 @@ let
   cfg = config.services.overallsOtelFleet;
   address = config.overalls.fleetNetwork.address;
   central = cfg.role == "central";
+  hosts = cfg.roster;
   cadence = import ./cadence.nix;
   loggingEnabled = lib.attrByPath [ "services" "overallsLogging" "enable" ] false config;
   logsEnabled = lib.attrByPath [ "services" "overallsLogStore" "enable" ] false config;
   fleetExporterEnabled = lib.attrByPath [ "services" "overallsFleetExporter" "enable" ] false config;
-  candidateQuery = import ./candidate-query.nix;
+  candidateQuery = import ./candidate-query.nix { inherit hosts; };
   latencySources = import ./candidate-sources.nix;
-  sloCatalog = import ./slo-catalog.nix;
-  underclassReady = import ./underclass-ready.nix;
+  sloCatalog = import ./slo-catalog.nix { inherit hosts; };
+  underclassReady = import ./underclass-ready.nix { inherit hosts; };
   rules = pkgs.writeText "overalls-otel-baseline-rules.yml" (builtins.toJSON {
-    groups = (import ./rules.nix).groups ++ (import ./objective-rules.nix {}).groups
-      ++ (import ./diagnostics.nix).groups ++ (import ./infrastructure-rules.nix {
-        inherit loggingEnabled fleetExporterEnabled;
+    groups = (import ./rules.nix { inherit hosts; }).groups ++ (import ./objective-rules.nix { inherit hosts; }).groups
+      ++ (import ./diagnostics.nix { inherit hosts; }).groups ++ (import ./infrastructure-rules.nix {
+        inherit hosts loggingEnabled fleetExporterEnabled;
       }).groups ++ (import ./storage.nix {
         inherit config lib pkgs;
       }).rules;
@@ -172,6 +173,25 @@ in {
       type = lib.types.enum [ "central" "worker" ];
       description = "Central metrics/traces/Grafana store or worker collector.";
     };
+    hosts = {
+      central = lib.mkOption {
+        type = lib.types.strMatching "[a-z][a-z0-9-]*";
+        default = "overalls";
+        description = "Host name of this deployment's central telemetry host (fleet address 10.90.0.1).";
+      };
+      worker = lib.mkOption {
+        type = lib.types.nullOr (lib.types.strMatching "[a-z][a-z0-9-]*");
+        default = "dungarees";
+        description = "Host name of this deployment's worker telemetry host (fleet address 10.90.0.2), or null for a single-host deployment.";
+      };
+    };
+    roster = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      readOnly = true;
+      internal = true;
+      default = [ cfg.hosts.central ] ++ lib.optional (cfg.hosts.worker != null) cfg.hosts.worker;
+      description = "Telemetry roster derived from hosts: the central host first, then the worker.";
+    };
     tempoDataset = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
@@ -192,9 +212,13 @@ in {
       { assertion = config.overalls.fleetNetwork.enable;
         message = "Fleet OpenTelemetry requires authenticated fleet WireGuard."; }
       { assertion = !central || address == "10.90.0.1";
-        message = "Central OpenTelemetry storage belongs on Overalls."; }
+        message = "Central OpenTelemetry storage belongs on the deployment's 10.90.0.1 host."; }
       { assertion = central || address == "10.90.0.2";
-        message = "Worker OpenTelemetry collection belongs on Dungarees."; }
+        message = "Worker OpenTelemetry collection belongs on the deployment's 10.90.0.2 host."; }
+      { assertion = cfg.hosts.worker != cfg.hosts.central;
+        message = "Fleet telemetry roster hosts must be distinct."; }
+      { assertion = central || cfg.hosts.worker != null;
+        message = "A worker collector requires a worker in the deployment's telemetry roster."; }
       { assertion = cfg.tempoDataset == null || (central && builtins.match "[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+" cfg.tempoDataset != null);
         message = "Tempo dataset must be a central host ZFS dataset."; }
       # @cc [owner:ghuntley,label:security;reliability] collector-socket-custody
@@ -651,7 +675,7 @@ in {
       } {
         job_name = "overalls-otel";
         scrape_interval = "${toString cadence.scrapeSeconds}s";
-        static_configs = [{ targets = [ "10.90.0.1:9464" "10.90.0.2:9464" ]; }];
+        static_configs = [{ targets = map (address: "${address}:9464") (import ./roster-addresses.nix hosts); }];
       } {
         job_name = "overalls-ingress-source";
         scrape_interval = "30s";
@@ -661,10 +685,9 @@ in {
       }] ++ lib.optional loggingEnabled {
         job_name = "overalls-logging-health";
         scrape_interval = "30s";
-        static_configs = [
-          { targets = [ "10.90.0.1:9467" ]; labels.host_name = "overalls"; }
-          { targets = [ "10.90.0.2:9467" ]; labels.host_name = "dungarees"; }
-        ];
+        static_configs = lib.zipListsWith (host: address: {
+          targets = [ "${address}:9467" ]; labels.host_name = host;
+        }) hosts (import ./roster-addresses.nix hosts);
       };
     };
     systemd.services.prometheus = lib.mkIf central {

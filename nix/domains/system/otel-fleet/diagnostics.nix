@@ -1,14 +1,16 @@
+{ hosts ? import ./default-roster.nix }:
 let
-  sources = import ./objectives.nix;
+  sources = import ./objectives.nix { inherit hosts; };
+  collectors = toString (builtins.length hosts);
   candidates = import ./candidate-sources.nix;
   coverageReady = import ./coverage-ready.nix;
-  sourceReady = import ./source-ready.nix;
-  roster = import ./source-roster.nix;
+  sourceReady = import ./source-ready.nix { inherit hosts; };
+  roster = import ./source-roster.nix { inherit hosts; };
   cadence = import ./cadence.nix;
   collector = ''up{job="overalls-otel",overalls_telemetry_origin=""}'';
-  collectorPresent = ''count(${collector}) == 2'';
+  collectorPresent = ''count(${collector}) == ${collectors}'';
   collectorFresh = ''max(time() - timestamp(${collector})) < 45'';
-  collectorHistory = ''count(count_over_time(${collector}[7d]) >= ${toString cadence.sevenDaySamples}) == 2'';
+  collectorHistory = ''count(count_over_time(${collector}[7d]) >= ${toString cadence.sevenDaySamples}) == ${collectors}'';
   check = code: good: { inherit code good; };
   checks = source: window: let
     s = source.id;
@@ -39,7 +41,7 @@ let
       (check 3 ''max(${selector "source_start_time"}) < time() - 300'')
       (check 4 (coverageReady s 300))
     ] else if source.kind == "ingress" then [ (check 2 (import ./ingress-ready.nix)) ]
-    else if source.kind == "monitor" then [ (check 2 (import ./underclass-ready.nix)) ] else []) ++
+    else if source.kind == "monitor" then [ (check 2 (import ./underclass-ready.nix { inherit hosts; })) ] else []) ++
     (if window == "objective" then [ (check 6 collectorHistory) ] ++
       (if source.kind == "candidate" then [
         (check 6 (coverageReady s horizon))
@@ -81,7 +83,7 @@ let
     (rule "history_days" history)
     (rule "required_requests" "vector(${toString source.minRequests})")
   ] ++ (if source.kind == "monitor" then [
-    (rule "freshness_seconds" ''clamp_min(max(time() - overalls_underclass_monitor_sample_time{overalls_telemetry_origin="application",service_name="underclass_monitor",host_name=~"overalls|dungarees"}), 0)'')
+    (rule "freshness_seconds" ''clamp_min(max(time() - overalls_underclass_monitor_sample_time{overalls_telemetry_origin="application",service_name="underclass_monitor",host_name=~"${builtins.concatStringsSep "|" hosts}"}), 0)'')
   ] else [])
   ++ (if source.kind == "ingress" then [
     (rule "requests5m" ''sum(increase(haproxy_frontend_http_requests_total{proxy="marshall_public"}[5m]))'')

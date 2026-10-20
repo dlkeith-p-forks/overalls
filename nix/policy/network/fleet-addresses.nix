@@ -8,4 +8,5 @@
   dungareesPrimary = "DUNGAREES_PRIMARY_IPV4";
   dungareesService = "DUNGAREES_SERVICE_IPV4";
   salopettesPrimary = "SALOPETTES_IPV4";
+  panterloonsPrimary = "PANTERLOONS_PRIMARY_IPV4";
 }

@@ -78,6 +78,15 @@ comes from DHCP, IPv6 is off, and the profile refuses static addresses.
 Discovery proposes DHCP IPv4 and keeps only each default route's interface.
 Salopettes, the Susan host, is the only `hcloud` host.
 
+Each deployment has its own `fleet0` tunnel (ADR-0235). Overalls (`10.90.0.1`)
+peers with Salopettes (`10.90.0.3`); Panterloons (`10.90.0.1`) peers with
+Dungarees (`10.90.0.2`). Evaluation refuses a peer outside the host's own
+tunnel, and only a tunnel's `10.90.0.1` admits control-plane ports. Fleet
+telemetry follows the same split through `services.overallsOtelFleet.hosts`:
+Overalls observes only itself, Panterloons observes itself and Dungarees.
+Until the operator moves `ghuntley.dev` DNS, public names reach Overalls, whose
+wildcard issuer runs with its single Audi DNS replica.
+
 No fleet host's public address is in the repository (ADR-0233). The shared
 document `secrets/fleet-addresses.enc.json` holds each dedicated host's primary
 and service IPv4 addresses, its own prefix and gateway, and salopettes' IPv4.
@@ -115,7 +124,8 @@ closed. Consumers:
   compares the raw binding and refuses the update. A host that has never run
   the address bundle therefore needs its protected files and uplink recovery
   copy seeded by an operator (root-only, the bundle's modes) before its first
-  update that moves the literals; Dungarees needs this when it returns.
+  update that moves the literals; hosts installed by the host tool already have
+  the recovery copy.
 
 The `fleet-addresses` and `fleet-network` machine tests cover these paths on
 both firewall backends.

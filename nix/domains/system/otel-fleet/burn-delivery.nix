@@ -2,7 +2,7 @@
 let
   fleet = config.services.overallsOtelFleet;
   cfg = fleet.burnAlerts;
-  objectives = import ./objectives.nix;
+  objectives = import ./objectives.nix { hosts = fleet.roster; };
   runtimePath = value: value == null || (lib.hasPrefix "/" value && !lib.hasPrefix "/nix/store/" value);
 in {
   options.services.overallsOtelFleet.burnAlerts = {

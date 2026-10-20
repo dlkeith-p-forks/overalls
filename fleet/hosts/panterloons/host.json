@@ -9,7 +9,9 @@
         "panterloonsPrimary"
       ],
       "gateway": "gateway",
-      "hostRoutes": [],
+      "hostRoutes": [
+        "dungareesPrimary"
+      ],
       "network": "10-eth0",
       "prefix": "prefix"
     }

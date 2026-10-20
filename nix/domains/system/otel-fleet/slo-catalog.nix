@@ -1,9 +1,10 @@
+{ hosts ? import ./default-roster.nix }:
 let
   sources = import ./candidate-sources.nix;
-  candidateQuery = import ./candidate-query.nix;
-  underclassReady = import ./underclass-ready.nix;
-  objectives = import ./objectives.nix;
-  objectiveQuery = import ./objective-query.nix;
+  candidateQuery = import ./candidate-query.nix { inherit hosts; };
+  underclassReady = import ./underclass-ready.nix { inherit hosts; };
+  objectives = import ./objectives.nix { inherit hosts; };
+  objectiveQuery = import ./objective-query.nix { inherit hosts; };
   objective = id: builtins.head (builtins.filter (entry: entry.id == id) objectives);
   withObjective = entry: entry // {
     target = (objective entry.id).target;

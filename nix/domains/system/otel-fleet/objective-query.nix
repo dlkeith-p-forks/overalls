@@ -1,10 +1,11 @@
+{ hosts ? import ./default-roster.nix }:
 let
-  sourceReady = import ./source-ready.nix;
+  sourceReady = import ./source-ready.nix { inherit hosts; };
   coverageReady = import ./coverage-ready.nix;
-  underclassReady = import ./underclass-ready.nix;
+  underclassReady = import ./underclass-ready.nix { inherit hosts; };
   ingressReady = import ./ingress-ready.nix;
   collectorFresh = ''
-    (count(up{job="overalls-otel",overalls_telemetry_origin=""}) == 2)
+    (count(up{job="overalls-otel",overalls_telemetry_origin=""}) == ${toString (builtins.length hosts)})
     and (max(time() - timestamp(up{job="overalls-otel",overalls_telemetry_origin=""})) < 45)
   '';
 in

@@ -6,7 +6,7 @@ let
   # administrative SSH on 2026-09-18. Guest budgets are not CPU discovery.
   endpoints = {
     # Builders are reached over Tailscale so no public address is evaluated.
-    dungarees = { address = "100.120.189.15"; port = 2222; logicalCpus = 32; };
+    dungarees = { address = "100.96.244.44"; port = 2222; logicalCpus = 32; };
     overalls = { address = "100.117.30.53"; port = 2222; logicalCpus = 32; };
   };
 in

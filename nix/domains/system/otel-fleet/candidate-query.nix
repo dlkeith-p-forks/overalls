@@ -1,5 +1,6 @@
+{ hosts ? import ./default-roster.nix }:
 let
-  sourceReady = import ./source-ready.nix;
+  sourceReady = import ./source-ready.nix { inherit hosts; };
 in
 # @cc [owner:ghuntley,label:reliability;verification] candidate-panels-require-live-traffic
 # A retained recording MUST disappear at read time when the current five-minute
