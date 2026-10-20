@@ -339,7 +339,8 @@ impl PokeEnvelope {
             || self.ciphertext.is_empty()
             || self.ciphertext.len() > 4096
             || !base64url(&self.ciphertext)
-            || self.issued_at > now.saturating_add(300) || now.saturating_sub(self.issued_at) > 86_400
+            || self.issued_at > now.saturating_add(300)
+            || now.saturating_sub(self.issued_at) > 86_400
         {
             return Err(RuntimeError::InvalidPoke);
         }
