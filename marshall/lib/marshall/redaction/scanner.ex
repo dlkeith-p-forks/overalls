@@ -4,6 +4,9 @@ defmodule Marshall.Redaction.Scanner do
   @type finding :: %{rule: String.t(), count: non_neg_integer()}
   @type result :: %{value: String.t(), findings: [finding()]}
 
+  @profile_path Application.app_dir(:marshall, "priv/redaction/profile.json")
+  @external_resource @profile_path
+
   @rules [
     {"github-token", ~r/\bgh[pousr]_[A-Za-z0-9_]{20,}\b/},
     {"openai-key", ~r/\bsk-[A-Za-z0-9]{20,}\b/},
@@ -14,7 +17,10 @@ defmodule Marshall.Redaction.Scanner do
   ]
 
   @spec profile_digest() :: String.t()
-  def profile_digest, do: :crypto.hash(:sha256, inspect(@rules)) |> Base.encode16(case: :lower)
+  def profile_digest do
+    profile = File.read!(@profile_path)
+    :crypto.hash(:sha256, profile <> inspect(@rules)) |> Base.encode16(case: :lower)
+  end
 
   @spec redact(String.t()) :: result()
   def redact(value) when is_binary(value) do
