@@ -162,7 +162,8 @@ jobs:
           # Git Bash cannot pass the Windows runner's `D:\\...` path to tar's
           # `-C` option. Extract beside the archive and resolve the root there.
           tar -xzf mila-source-bundle-*.tar.gz
-          root=$(cd mila-source-bundle-* && pwd -W)
+          root=$(find . -maxdepth 1 -type d -name 'mila-source-bundle-*' -print -quit)
+          root=$(cd "$root" && pwd -W)
           (cd "$root" && sha256sum --quiet -c SHA256SUMS)
           echo "MILA_ROOT=$root" >> "$GITHUB_ENV"
           echo "PUB_CACHE=$root/pub-cache" >> "$GITHUB_ENV"
