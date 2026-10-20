@@ -281,7 +281,7 @@ msgid "Opening terminal; recovering the same request if the connection was inter
 msgstr "We dey open terminal; if connection cut, we go recover di same request."
 
 #: lib/marshall_web/components/workspace_components.ex:338
-#: lib/marshall_web/live/admin/workloads_live.ex:212
+#: lib/marshall_web/live/admin/workloads_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "Make e pause"
@@ -349,7 +349,7 @@ msgid "Request control"
 msgstr "Ask for control"
 
 #: lib/marshall_web/components/workspace_components.ex:329
-#: lib/marshall_web/live/admin/workloads_live.ex:203
+#: lib/marshall_web/live/admin/workloads_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "Make machine continue"

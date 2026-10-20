@@ -14,70 +14,70 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/integrations_live.ex:353
+#: lib/marshall_web/live/integrations_live.ex:405
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "**** (vain kirjoitettavissa)"
 
-#: lib/marshall_web/live/integrations_live.ex:378
+#: lib/marshall_web/live/integrations_live.ex:430
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Toiminnot"
 
-#: lib/marshall_web/live/integrations_live.ex:423
+#: lib/marshall_web/live/integrations_live.ex:475
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "Lisää integraatio"
 
-#: lib/marshall_web/live/integrations_live.ex:288
-#: lib/marshall_web/live/integrations_live.ex:417
+#: lib/marshall_web/live/integrations_live.ex:340
+#: lib/marshall_web/live/integrations_live.ex:469
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "Liitä"
 
-#: lib/marshall_web/live/integrations_live.ex:414
+#: lib/marshall_web/live/integrations_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "Liitä kone tunnisteella"
 
-#: lib/marshall_web/live/integrations_live.ex:145
+#: lib/marshall_web/live/integrations_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "Awaiting GitHub authorization"
 msgstr "Odotetaan GitHub-valtuutusta"
 
-#: lib/marshall_web/live/integrations_live.ex:458
+#: lib/marshall_web/live/integrations_live.ex:510
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "Perustunnistus käyttäjä:salasana"
 
-#: lib/marshall_web/live/integrations_live.ex:452
+#: lib/marshall_web/live/integrations_live.ex:504
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "Bearer-tunniste"
 
-#: lib/marshall_web/live/integrations_live.ex:336
-#: lib/marshall_web/live/integrations_live.ex:438
+#: lib/marshall_web/live/integrations_live.ex:388
+#: lib/marshall_web/live/integrations_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Kommentti"
 
-#: lib/marshall_web/live/integrations_live.ex:249
+#: lib/marshall_web/live/integrations_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
 msgstr "Yhdistä GitHub"
 
-#: lib/marshall_web/live/integrations_live.ex:232
+#: lib/marshall_web/live/integrations_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
 msgstr "Yhdistä GitHub-tilisi Gitiä, vetopyyntöjä, Actionsia, julkaisuja ja muita kehitystyönkulkuja varten. GitHub-tunnistetiedot pysyvät reunalla."
 
-#: lib/marshall_web/live/integrations_live.ex:142
-#: lib/marshall_web/live/integrations_live.ex:143
+#: lib/marshall_web/live/integrations_live.ex:194
+#: lib/marshall_web/live/integrations_live.ex:195
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "Yhdistetty"
 
-#: lib/marshall_web/live/integrations_live.ex:244
+#: lib/marshall_web/live/integrations_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Connected as %{login}"
 msgstr "Yhdistetty käyttäjänä %{login}"
@@ -102,38 +102,38 @@ msgstr "Integraatiota ei voitu poistaa."
 msgid "Could not save this integration. Check the name, HTTPS target and header values."
 msgstr "Integraatiota ei voitu tallentaa. Tarkista nimi, HTTPS-kohde ja otsakearvot."
 
-#: lib/marshall_web/live/integrations_live.ex:447
+#: lib/marshall_web/live/integrations_live.ex:499
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "Tunnistetiedot"
 
-#: lib/marshall_web/live/integrations_live.ex:279
-#: lib/marshall_web/live/integrations_live.ex:395
+#: lib/marshall_web/live/integrations_live.ex:331
+#: lib/marshall_web/live/integrations_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "Irrota"
 
-#: lib/marshall_web/live/integrations_live.ex:259
+#: lib/marshall_web/live/integrations_live.ex:311
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
 msgstr "Katkaise GitHub-yhteys"
 
-#: lib/marshall_web/live/integrations_live.ex:256
+#: lib/marshall_web/live/integrations_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub from your machines?"
 msgstr "Katkaistaanko koneidesi GitHub-yhteys?"
 
-#: lib/marshall_web/live/integrations_live.ex:144
+#: lib/marshall_web/live/integrations_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "Yhteys katkaistu"
 
-#: lib/marshall_web/live/integrations_live.ex:149
+#: lib/marshall_web/live/integrations_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "Disconnecting GitHub"
 msgstr "Katkaistaan GitHub-yhteyttä"
 
-#: lib/marshall_web/live/integrations_live.ex:146
+#: lib/marshall_web/live/integrations_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Finishing active GitHub requests"
 msgstr "Viimeistellään aktiivisia GitHub-pyyntöjä"
@@ -148,12 +148,12 @@ msgstr "GitHub yhdistetty."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "GitHubia ei voitu yhdistää. Yritä uudelleen Integraatiot-sivulta."
 
-#: lib/marshall_web/live/integrations_live.ex:443
+#: lib/marshall_web/live/integrations_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "HTTPS-kohde"
 
-#: lib/marshall_web/live/integrations_live.ex:346
+#: lib/marshall_web/live/integrations_live.ex:398
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "Syötetyt tunnistetiedot"
@@ -168,222 +168,228 @@ msgstr "Integraatio %{value1} tallennettu."
 msgid "Integration removed."
 msgstr "Integraatio poistettu."
 
-#: lib/marshall_web/live/integrations_live.ex:217
+#: lib/marshall_web/live/integrations_live.ex:269
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "Integraatiot"
 
-#: lib/marshall_web/live/integrations_live.ex:136
+#: lib/marshall_web/live/integrations_live.ex:188
 #, elixir-autogen, elixir-format
 msgid "Integrations are temporarily unavailable."
 msgstr "Integraatiot eivät ole tilapäisesti saatavilla."
 
-#: lib/marshall_web/live/integrations_live.ex:113
+#: lib/marshall_web/live/integrations_live.ex:137
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Virheellinen pyyntö."
 
-#: lib/marshall_web/live/integrations_live.ex:376
+#: lib/marshall_web/live/integrations_live.ex:428
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Kone"
 
-#: lib/marshall_web/live/integrations_live.ex:276
-#: lib/marshall_web/live/integrations_live.ex:415
+#: lib/marshall_web/live/integrations_live.ex:328
+#: lib/marshall_web/live/integrations_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "Koneen UUID"
 
 #: lib/marshall_web/live/integrations_live.ex:86
+#: lib/marshall_web/live/integrations_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "Machine attached."
 msgstr "Kone liitetty."
 
 #: lib/marshall_web/live/integrations_live.ex:102
+#: lib/marshall_web/live/integrations_live.ex:156
 #, elixir-autogen, elixir-format
 msgid "Machine detached."
 msgstr "Kone irrotettu."
 
-#: lib/marshall_web/live/integrations_live.ex:264
+#: lib/marshall_web/live/integrations_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Machines excluded from your GitHub identity"
 msgstr "GitHub-identiteettisi ulkopuolelle jätetyt koneet"
 
-#: lib/marshall_web/live/integrations_live.ex:357
+#: lib/marshall_web/live/integrations_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "Koneet, joilla on käyttöoikeus"
 
-#: lib/marshall_web/live/integrations_live.ex:433
+#: lib/marshall_web/live/integrations_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "Nimi"
 
-#: lib/marshall_web/live/integrations_live.ex:425
+#: lib/marshall_web/live/integrations_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr "Nimeä päätepiste ja osoita se HTTPS-rajapintaan tai merkitse se vertaisyhteydeksi toiseen koneeseen. Salaisuudet ovat vain kirjoitettavissa: ne tallennetaan syöttämistä varten eikä niitä näytetä enää uudelleen."
 
-#: lib/marshall_web/live/integrations_live.ex:219
+#: lib/marshall_web/live/integrations_live.ex:271
 #, elixir-autogen, elixir-format
 msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
 msgstr "Nimetyt päätepisteet, joihin koneesi yhdistävät osoitteessa https://NAME.integration.internal. Tunnistetiedot syötetään reunalla eikä niitä voi koskaan lukea koneelta."
 
-#: lib/marshall_web/live/integrations_live.ex:362
+#: lib/marshall_web/live/integrations_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "Ei erikseen liitettyjä koneita. Nykyisten tiimin jäsenten koneilla on käyttöoikeus."
 
-#: lib/marshall_web/live/integrations_live.ex:349
+#: lib/marshall_web/live/integrations_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "Ei syötettyjä otsakkeita."
 
-#: lib/marshall_web/live/integrations_live.ex:295
+#: lib/marshall_web/live/integrations_live.ex:347
 #, elixir-autogen, elixir-format
 msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
 msgstr "Ei vielä integraatioita. Lisää sellainen alta, jotta koneesi saavat nimetyn yhteyden rajapintaan tai toiseen koneeseen."
 
-#: lib/marshall_web/live/integrations_live.ex:367
+#: lib/marshall_web/live/integrations_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "Yhdelläkään koneella ei ole käyttöoikeutta. Liitä kone käyttääksesi tätä integraatiota."
 
-#: lib/marshall_web/live/integrations_live.ex:331
+#: lib/marshall_web/live/integrations_live.ex:383
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Omistaja"
 
-#: lib/marshall_web/live/integrations_live.ex:495
+#: lib/marshall_web/live/integrations_live.ex:547
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "Vertaisintegraatio"
 
-#: lib/marshall_web/live/integrations_live.ex:328
+#: lib/marshall_web/live/integrations_live.ex:380
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "Vertaiskone"
 
-#: lib/marshall_web/live/integrations_live.ex:500
+#: lib/marshall_web/live/integrations_live.ex:552
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "Vertaiskoneen tunniste"
 
-#: lib/marshall_web/live/integrations_live.ex:311
-#: lib/marshall_web/live/integrations_live.ex:334
+#: lib/marshall_web/live/integrations_live.ex:363
+#: lib/marshall_web/live/integrations_live.ex:386
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "Henkilökohtainen integraatio"
 
-#: lib/marshall_web/live/integrations_live.ex:148
+#: lib/marshall_web/live/integrations_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "Reconnect required"
 msgstr "Uudelleenyhdistäminen vaaditaan"
 
-#: lib/marshall_web/live/integrations_live.ex:147
+#: lib/marshall_web/live/integrations_live.ex:199
 #, elixir-autogen, elixir-format
 msgid "Refreshing GitHub connection"
 msgstr "Päivitetään GitHub-yhteyttä"
 
-#: lib/marshall_web/live/integrations_live.ex:319
+#: lib/marshall_web/live/integrations_live.ex:371
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Poista"
 
-#: lib/marshall_web/live/integrations_live.ex:316
+#: lib/marshall_web/live/integrations_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "Poistetaanko tämä integraatio?"
 
-#: lib/marshall_web/live/integrations_live.ex:501
+#: lib/marshall_web/live/integrations_live.ex:553
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "Pakollinen vertaisintegraatioille"
 
-#: lib/marshall_web/live/integrations_live.ex:477
+#: lib/marshall_web/live/integrations_live.ex:529
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "Reititys, tiimin omistajuus ja vertaisyhteydet"
 
-#: lib/marshall_web/live/integrations_live.ex:507
+#: lib/marshall_web/live/integrations_live.ex:559
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "Tallenna integraatio"
 
-#: lib/marshall_web/live/integrations_live.ex:439
+#: lib/marshall_web/live/integrations_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
 msgstr "Lyhyt kuvaus vieraan reflektiota varten"
 
-#: lib/marshall_web/live/integrations_live.ex:465
+#: lib/marshall_web/live/integrations_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "Kiinteän otsakkeen nimi"
 
-#: lib/marshall_web/live/integrations_live.ex:471
+#: lib/marshall_web/live/integrations_live.ex:523
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "Kiinteän otsakkeen arvo"
 
-#: lib/marshall_web/live/integrations_live.ex:483
+#: lib/marshall_web/live/integrations_live.ex:535
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "Poista etuliite"
 
-#: lib/marshall_web/live/integrations_live.ex:341
+#: lib/marshall_web/live/integrations_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "Poistaa etuliitteen"
 
-#: lib/marshall_web/live/integrations_live.ex:325
+#: lib/marshall_web/live/integrations_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "Kohde"
 
-#: lib/marshall_web/live/integrations_live.ex:333
+#: lib/marshall_web/live/integrations_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "Tiimi %{team}"
 
-#: lib/marshall_web/live/integrations_live.ex:488
+#: lib/marshall_web/live/integrations_live.ex:540
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "Tiimin tunniste"
 
-#: lib/marshall_web/live/integrations_live.ex:310
-#: lib/marshall_web/live/integrations_live.ex:489
+#: lib/marshall_web/live/integrations_live.ex:362
+#: lib/marshall_web/live/integrations_live.ex:541
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "Tiimin omistama integraatio"
 
-#: lib/marshall_web/live/integrations_live.ex:150
+#: lib/marshall_web/live/integrations_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "Temporarily unavailable"
 msgstr "Tilapäisesti poissa käytöstä"
 
-#: lib/marshall_web/live/integrations_live.ex:238
+#: lib/marshall_web/live/integrations_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "Koneesi käyttävät automaattisesti yhdistettyä GitHub-identiteettiäsi. Jaettua konetta käyttävät yhteistyökumppanit voivat käyttää sen omistajan GitHub-oikeuksia. Irrotetuilla koneilla säilyy anonyymi pääsy julkiseen GitHub-sisältöön."
 
-#: lib/marshall_web/live/integrations_live.ex:434
+#: lib/marshall_web/live/integrations_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "esimerkki-integraatio"
 
-#: lib/marshall_web/live/integrations_live.ex:466
+#: lib/marshall_web/live/integrations_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"
 
+#: lib/marshall_web/live/integrations_live.ex:123
 #, elixir-autogen, elixir-format
 msgid "Could not disconnect GitHub."
 msgstr "GitHub-yhteyttä ei voitu katkaista."
 
+#: lib/marshall_web/live/integrations_live.ex:162
+#: lib/marshall_web/live/integrations_live.ex:165
 #, elixir-autogen, elixir-format
 msgid "Could not update the GitHub connection."
 msgstr "GitHub-yhteyttä ei voitu päivittää."
 
+#: lib/marshall_web/live/integrations_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "GitHub disconnected."
 msgstr "GitHub-yhteys katkaistu."

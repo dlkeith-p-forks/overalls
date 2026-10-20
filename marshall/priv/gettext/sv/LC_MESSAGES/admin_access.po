@@ -109,7 +109,7 @@ msgid "Invalid administrative request."
 msgstr "Ogiltig administrativ begäran."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
-#: lib/marshall_web/live/admin/scim_live.ex:42
+#: lib/marshall_web/live/admin/scim_live.ex:58
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Ogiltig begäran."
@@ -316,7 +316,7 @@ msgstr "planera om arbetsbelastningens flytt"
 msgid "reset this account's passkeys"
 msgstr "återställa kontots passnycklar"
 
-#: lib/marshall_web/admin_elevation.ex:53
+#: lib/marshall_web/admin_elevation.ex:54
 #, elixir-autogen, elixir-format
 msgid "retry this background job"
 msgstr "försöka köra bakgrundsjobbet igen"
@@ -351,52 +351,183 @@ msgstr "logga ut kontot överallt"
 msgid "start this node evacuation"
 msgstr "starta nodens evakuering"
 
-#: lib/marshall_web/live/admin/scim_live.ex:69
+#: lib/marshall_web/live/admin/scim_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr "Konfigurera katalogprovisionering, identitetslivscykel och hanterade team."
 
-#: lib/marshall_web/live/admin/scim_live.ex:98
+#: lib/marshall_web/live/admin/scim_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr "Kopiera denna bearer-token nu. Den visas inte igen."
 
-#: lib/marshall_web/live/admin/scim_live.ex:92
+#: lib/marshall_web/live/admin/scim_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr "Inaktivera SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:93
+#: lib/marshall_web/live/admin/scim_live.ex:253
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr "Aktivera SCIM och skapa token"
 
-#: lib/marshall_web/live/admin/scim_live.ex:75
-#, elixir-autogen, elixir-format
-msgid "SCIM configuration"
-msgstr "SCIM-konfiguration"
-
-#: lib/marshall_web/live/admin/scim_live.ex:36
+#: lib/marshall_web/live/admin/scim_live.ex:87
 #, elixir-autogen, elixir-format
 msgid "SCIM configuration could not be updated."
 msgstr "SCIM-konfigurationen kunde inte uppdateras."
 
-#: lib/marshall_web/live/admin/scim_live.ex:29
-#, elixir-autogen, elixir-format
-msgid "SCIM configuration updated."
-msgstr "SCIM-konfigurationen har uppdaterats."
-
-#: lib/marshall_web/live/admin/scim_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "SCIM is disabled."
-msgstr "SCIM är inaktiverat."
-
-#: lib/marshall_web/live/admin/scim_live.ex:78
-#, elixir-autogen, elixir-format
-msgid "SCIM is enabled."
-msgstr "SCIM är aktiverat."
-
-#: lib/marshall_web/live/admin/scim_live.ex:67
+#: lib/marshall_web/live/admin/scim_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "SCIM-provisionering"
+
+#: lib/marshall_web/live/admin/scim_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "A client secret is set. Leave blank to keep it."
+msgstr "En klienthemlighet är angiven. Lämna tomt för att behålla den."
+
+#: lib/marshall_web/live/admin/scim_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Accounts pending retirement"
+msgstr "Konton som väntar på avveckling"
+
+#: lib/marshall_web/live/admin/scim_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Clear the stored client secret"
+msgstr "Rensa den lagrade klienthemligheten"
+
+#: lib/marshall_web/live/admin/scim_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM provisioning? Managed teams stay locked until an administrator hands them off."
+msgstr "Inaktivera SCIM-provisionering? Hanterade team förblir låsta tills en administratör lämnar över dem."
+
+#: lib/marshall_web/live/admin/scim_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
+msgstr "Att aktivera SCIM inaktiverar inloggning med magisk länk, arkiverar egna team efter en respitperiod på sju dagar och genererar en bearer-token."
+
+#: lib/marshall_web/live/admin/scim_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Enter an absolute https:// issuer URL."
+msgstr "Ange en absolut https://-URL för utfärdaren."
+
+#: lib/marshall_web/live/admin/scim_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "No client secret is set."
+msgstr "Ingen klienthemlighet är angiven."
+
+#: lib/marshall_web/live/admin/scim_live.ex:320
+#, elixir-autogen, elixir-format
+msgid "OIDC client ID"
+msgstr "OIDC-klient-ID"
+
+#: lib/marshall_web/live/admin/scim_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "OIDC client secret"
+msgstr "OIDC-klienthemlighet"
+
+#: lib/marshall_web/live/admin/scim_live.ex:312
+#, elixir-autogen, elixir-format
+msgid "OIDC issuer"
+msgstr "OIDC-utfärdare"
+
+#: lib/marshall_web/live/admin/scim_live.ex:215
+#: lib/marshall_web/live/admin/scim_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Provisioning"
+msgstr "Provisionering"
+
+#: lib/marshall_web/live/admin/scim_live.ex:277
+#, elixir-autogen, elixir-format
+msgid "Rotate bearer token"
+msgstr "Rotera bearer-token"
+
+#: lib/marshall_web/live/admin/scim_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Rotate the SCIM bearer token? The directory must be updated with the new token."
+msgstr "Rotera SCIM-bearer-token? Katalogen måste uppdateras med den nya token."
+
+#: lib/marshall_web/live/admin/scim_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Rotating the bearer token immediately invalidates the previous token."
+msgstr "Att rotera bearer-token ogiltigförklarar omedelbart den tidigare token."
+
+#: lib/marshall_web/live/admin/scim_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "SCIM bearer token rotated."
+msgstr "SCIM-bearer-token roterad."
+
+#: lib/marshall_web/live/admin/scim_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning disabled."
+msgstr "SCIM-provisionering inaktiverad."
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning enabled."
+msgstr "SCIM-provisionering aktiverad."
+
+#: lib/marshall_web/live/admin/scim_live.ex:348
+#, elixir-autogen, elixir-format
+msgid "Save single sign-on settings"
+msgstr "Spara inställningar för enkel inloggning"
+
+#: lib/marshall_web/live/admin/scim_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Single sign-on"
+msgstr "Enkel inloggning"
+
+#: lib/marshall_web/live/admin/scim_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Single sign-on (OIDC)"
+msgstr "Enkel inloggning (OIDC)"
+
+#: lib/marshall_web/live/admin/scim_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Single sign-on settings saved."
+msgstr "Inställningar för enkel inloggning sparade."
+
+#: lib/marshall_web/live/admin/scim_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Status"
+
+#: lib/marshall_web/live/admin/scim_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Teams retiring"
+msgstr "Team under avveckling"
+
+#: lib/marshall_web/live/admin/scim_live.ex:314
+#, elixir-autogen, elixir-format
+msgid "The exact https:// issuer URL from provider discovery."
+msgstr "Den exakta https://-URL:en för utfärdaren från leverantörens discovery."
+
+#: lib/marshall_web/live/admin/scim_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "[configured]"
+msgstr "[konfigurerad]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:223
+#, elixir-autogen, elixir-format
+msgid "[disabled]"
+msgstr "[inaktiverad]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "[enabled]"
+msgstr "[aktiverad]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "[not configured]"
+msgstr "[inte konfigurerad]"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "change SCIM provisioning"
+msgstr "ändra SCIM-provisionering"
+
+#: lib/marshall_web/live/admin/scim_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "otillgänglig"

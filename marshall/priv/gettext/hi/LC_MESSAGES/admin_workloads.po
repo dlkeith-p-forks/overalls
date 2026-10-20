@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "कार्रवाइयाँ"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "इस VM को संग्रहित करें?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:243
+#: lib/marshall_web/live/admin/workloads_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "हटाएँ"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:176
+#: lib/marshall_web/live/admin/workloads_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "विवरण"
@@ -67,7 +67,7 @@ msgstr "जीवनचक्र अनुरोध कतार में ज�
 msgid "Lifecycle request was rejected."
 msgstr "जीवनचक्र अनुरोध अस्वीकार हुआ।"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:233
+#: lib/marshall_web/live/admin/workloads_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "स्थानांतरित करें"
@@ -87,7 +87,7 @@ msgstr "स्थानांतरण अनुरोध कतार में
 msgid "Relocation request was rejected."
 msgstr "स्थानांतरण अनुरोध अस्वीकार हुआ।"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:192
+#: lib/marshall_web/live/admin/workloads_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "आकार बदलें"
@@ -97,7 +97,7 @@ msgstr "आकार बदलें"
 msgid "Shape"
 msgstr "संसाधन आकार"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:221
+#: lib/marshall_web/live/admin/workloads_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "शुरू करें"
@@ -107,12 +107,12 @@ msgstr "शुरू करें"
 msgid "State"
 msgstr "स्थिति"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:230
+#: lib/marshall_web/live/admin/workloads_live.ex:236
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "बंद करें"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:184
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "टर्मिनल"
@@ -142,42 +142,42 @@ msgstr "वर्कलोड सूची फ़िलहाल उपलब्
 msgid "· every 15 seconds"
 msgstr "· हर 15 सेकंड"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:270
+#: lib/marshall_web/live/admin/workloads_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "हटाया गया"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:269
+#: lib/marshall_web/live/admin/workloads_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "विफल"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:268
+#: lib/marshall_web/live/admin/workloads_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "रुकी हुई"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:265
+#: lib/marshall_web/live/admin/workloads_live.ex:271
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "लंबित"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:266
+#: lib/marshall_web/live/admin/workloads_live.ex:272
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "चल रहा है"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:267
+#: lib/marshall_web/live/admin/workloads_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "बंद"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:271
+#: lib/marshall_web/live/admin/workloads_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "अज्ञात"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:258
+#: lib/marshall_web/live/admin/workloads_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Unplaced"
 msgstr "अभी आवंटित नहीं"

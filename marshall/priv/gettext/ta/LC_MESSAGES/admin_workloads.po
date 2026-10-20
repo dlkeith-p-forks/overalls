@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "செயல்கள்"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "இந்த மெய்நிகர் இயந்திரத்தைக் காப்பகப்படுத்தவா?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:243
+#: lib/marshall_web/live/admin/workloads_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "நீக்கு"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:176
+#: lib/marshall_web/live/admin/workloads_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "விவரங்கள்"
@@ -64,7 +64,7 @@ msgstr "வாழ்க்கைச் சுழற்சிக் கோரி�
 msgid "Lifecycle request was rejected."
 msgstr "வாழ்க்கைச் சுழற்சிக் கோரிக்கை மறுக்கப்பட்டது."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:233
+#: lib/marshall_web/live/admin/workloads_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "நகர்த்து"
@@ -84,7 +84,7 @@ msgstr "இடமாற்றக் கோரிக்கை வரிசைய�
 msgid "Relocation request was rejected."
 msgstr "இடமாற்றக் கோரிக்கை மறுக்கப்பட்டது."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:192
+#: lib/marshall_web/live/admin/workloads_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "அளவை மாற்று"
@@ -94,7 +94,7 @@ msgstr "அளவை மாற்று"
 msgid "Shape"
 msgstr "வடிவம்"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:221
+#: lib/marshall_web/live/admin/workloads_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "தொடங்கு"
@@ -104,12 +104,12 @@ msgstr "தொடங்கு"
 msgid "State"
 msgstr "நிலை"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:230
+#: lib/marshall_web/live/admin/workloads_live.ex:236
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "நிறுத்து"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:184
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "முனையம்"
@@ -139,42 +139,42 @@ msgstr "பணிச்சுமைப் பட்டியல் தற்க�
 msgid "· every 15 seconds"
 msgstr "· ஒவ்வொரு 15 வினாடிகளுக்கும்"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:270
+#: lib/marshall_web/live/admin/workloads_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "நீக்கப்பட்டது"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:269
+#: lib/marshall_web/live/admin/workloads_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "தோல்வியடைந்தது"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:268
+#: lib/marshall_web/live/admin/workloads_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "இடைநிறுத்தப்பட்டது"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:265
+#: lib/marshall_web/live/admin/workloads_live.ex:271
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "நிலுவையில்"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:266
+#: lib/marshall_web/live/admin/workloads_live.ex:272
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "இயங்குகிறது"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:267
+#: lib/marshall_web/live/admin/workloads_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "நிறுத்தப்பட்டது"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:271
+#: lib/marshall_web/live/admin/workloads_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "தெரியாதது"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:258
+#: lib/marshall_web/live/admin/workloads_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Unplaced"
 msgstr "இன்னும் ஒதுக்கப்படவில்லை"

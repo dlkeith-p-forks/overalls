@@ -282,7 +282,7 @@ msgid "Opening terminal; recovering the same request if the connection was inter
 msgstr "터미널 개방; 연결이 중단된 경우 동일한 요청을 복구합니다."
 
 #: lib/marshall_web/components/workspace_components.ex:338
-#: lib/marshall_web/live/admin/workloads_live.ex:212
+#: lib/marshall_web/live/admin/workloads_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "일시 중지"
@@ -350,7 +350,7 @@ msgid "Request control"
 msgstr "제어 요청"
 
 #: lib/marshall_web/components/workspace_components.ex:329
-#: lib/marshall_web/live/admin/workloads_live.ex:203
+#: lib/marshall_web/live/admin/workloads_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "머신 다시 시작"

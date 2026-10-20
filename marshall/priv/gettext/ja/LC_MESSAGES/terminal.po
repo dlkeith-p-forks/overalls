@@ -282,7 +282,7 @@ msgid "Opening terminal; recovering the same request if the connection was inter
 msgstr "ターミナルを開く;接続が中断された場合に同じリクエストを回復します。"
 
 #: lib/marshall_web/components/workspace_components.ex:338
-#: lib/marshall_web/live/admin/workloads_live.ex:212
+#: lib/marshall_web/live/admin/workloads_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "一時停止"
@@ -350,7 +350,7 @@ msgid "Request control"
 msgstr "操作権を要求"
 
 #: lib/marshall_web/components/workspace_components.ex:329
-#: lib/marshall_web/live/admin/workloads_live.ex:203
+#: lib/marshall_web/live/admin/workloads_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "マシンを再開"

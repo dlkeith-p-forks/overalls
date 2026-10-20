@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Ayyuka"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Ajiye wannan VM?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:243
+#: lib/marshall_web/live/admin/workloads_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Share"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:176
+#: lib/marshall_web/live/admin/workloads_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Cikakkun bayanai"
@@ -64,7 +64,7 @@ msgstr "An yi layi da buƙatun rayuwa."
 msgid "Lifecycle request was rejected."
 msgstr "An ƙi buƙatar buƙatun rayuwa."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:233
+#: lib/marshall_web/live/admin/workloads_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Matsar"
@@ -84,7 +84,7 @@ msgstr "An yi layi da buƙatar ƙaura."
 msgid "Relocation request was rejected."
 msgstr "An ƙi amincewa da buƙatar ƙaura."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:192
+#: lib/marshall_web/live/admin/workloads_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Maimaita girman"
@@ -94,7 +94,7 @@ msgstr "Maimaita girman"
 msgid "Shape"
 msgstr "Siffar"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:221
+#: lib/marshall_web/live/admin/workloads_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Fara"
@@ -104,12 +104,12 @@ msgstr "Fara"
 msgid "State"
 msgstr "Jiha"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:230
+#: lib/marshall_web/live/admin/workloads_live.ex:236
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Tsaya"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:184
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Tasha"
@@ -139,42 +139,42 @@ msgstr "Jerin nauyin aiki ba ya samuwa na ɗan lokaci."
 msgid "· every 15 seconds"
 msgstr "· kowane dakiku 15"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:270
+#: lib/marshall_web/live/admin/workloads_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "An goge"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:269
+#: lib/marshall_web/live/admin/workloads_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Ba a yi nasara ba"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:268
+#: lib/marshall_web/live/admin/workloads_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "An dakata"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:265
+#: lib/marshall_web/live/admin/workloads_live.ex:271
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Ana jiran"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:266
+#: lib/marshall_web/live/admin/workloads_live.ex:272
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Gudu"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:267
+#: lib/marshall_web/live/admin/workloads_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "Tsaya"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:271
+#: lib/marshall_web/live/admin/workloads_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Ba a sani ba"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:258
+#: lib/marshall_web/live/admin/workloads_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Unplaced"
 msgstr "Ba a sanya ba"

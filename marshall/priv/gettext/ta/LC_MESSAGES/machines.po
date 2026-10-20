@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/machines_live.ex:1276
+#: lib/marshall_web/live/machines_live.ex:1317
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " மேலும் அதிகரிக்கிறது"
 
-#: lib/marshall_web/live/machines_live.ex:1272
+#: lib/marshall_web/live/machines_live.ex:1313
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} வினாடிகள்%{suffix}"
@@ -29,10 +29,10 @@ msgstr "%{seconds} வினாடிகள்%{suffix}"
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
 
-#: lib/marshall_web/live/machines_live.ex:1040
-#: lib/marshall_web/live/machines_live.ex:1043
-#: lib/marshall_web/live/overview_live.ex:315
-#: lib/marshall_web/live/overview_live.ex:320
+#: lib/marshall_web/live/machines_live.ex:1081
+#: lib/marshall_web/live/machines_live.ex:1084
+#: lib/marshall_web/live/overview_live.ex:321
+#: lib/marshall_web/live/overview_live.ex:326
 #: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -43,20 +43,20 @@ msgstr "%{value1} GiB"
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:1037
-#: lib/marshall_web/live/overview_live.ex:312
+#: lib/marshall_web/live/machines_live.ex:1078
+#: lib/marshall_web/live/overview_live.ex:318
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:159
-#: lib/marshall_web/live/machines_live.ex:782
+#: lib/marshall_web/live/admin/workloads_live.ex:160
+#: lib/marshall_web/live/machines_live.ex:823
 #: lib/marshall_web/live/overview_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB வட்டு"
 
-#: lib/marshall_web/live/machines_live.ex:985
+#: lib/marshall_web/live/machines_live.ex:1026
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB நினைவகம் · %{value3} GiB வட்டு"
@@ -79,18 +79,18 @@ msgstr "%{value1} → %{value2} GiB"
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:724
+#: lib/marshall_web/live/machines_live.ex:765
 #: lib/marshall_web/live/overview_live.ex:161
 #, elixir-autogen, elixir-format
 msgid "+ Create machine"
 msgstr "+ இயந்திரம் உருவாக்கு"
 
-#: lib/marshall_web/live/machines_live.ex:1344
+#: lib/marshall_web/live/machines_live.ex:1385
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ குளோனை வரிசைப்படுத்து"
 
-#: lib/marshall_web/live/machines_live.ex:584
+#: lib/marshall_web/live/machines_live.ex:617
 #, elixir-autogen, elixir-format
 msgid "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
 msgstr "உள்ளமை இயந்திரங்களுக்கான Overalls மேம்பாட்டு சூழல். தனிப்பட்ட படிமம், கூடுதல் 256 GiB தரவு வட்டு மற்றும் உயர்ந்த வளக் குறைந்தபட்சங்களைப் பயன்படுத்துகிறது. AI முகவர் துணை முகவர்களைத் தொடங்கலாம்."
@@ -100,31 +100,31 @@ msgstr "உள்ளமை இயந்திரங்களுக்கான O
 msgid "A good day to make something."
 msgstr "ஏதாவது உருவாக்க நல்ல நாள்."
 
-#: lib/marshall_web/live/overview_live.ex:223
+#: lib/marshall_web/live/overview_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "சிறிய முன்னோட்டம். நீங்கள் அணுகக்கூடிய அனைத்து இயந்திரங்களும் இதில் உள்ளன "
 
-#: lib/marshall_web/live/machines_live.ex:758
-#: lib/marshall_web/live/machines_live.ex:796
-#: lib/marshall_web/live/machines_live.ex:1076
+#: lib/marshall_web/live/machines_live.ex:799
+#: lib/marshall_web/live/machines_live.ex:837
+#: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "அணுகல்"
 
-#: lib/marshall_web/live/machines_live.ex:384
+#: lib/marshall_web/live/machines_live.ex:381
 #, elixir-autogen, elixir-format
 msgid "Access updated."
 msgstr "அணுகல் புதுப்பிக்கப்பட்டது."
 
-#: lib/marshall_web/live/machines_live.ex:1090
-#: lib/marshall_web/live/machines_live.ex:1097
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1131
+#: lib/marshall_web/live/machines_live.ex:1138
+#: lib/marshall_web/live/machines_live.ex:1157
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "கணக்கு"
 
-#: lib/marshall_web/machine_workspace.ex:90
+#: lib/marshall_web/machine_workspace.ex:93
 #, elixir-autogen, elixir-format
 msgid "Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it."
 msgstr "நிர்வாகச் சரிபார்ப்பு காலாவதியானது. மீண்டும் திறக்க Fleet பணிச்சுமைகளில் இயந்திரத்தைத் தேர்ந்தெடுத்து உங்கள் அணுகுவிசையைச் சரிபார்க்கவும்."
@@ -134,14 +134,14 @@ msgstr "நிர்வாகச் சரிபார்ப்பு கால�
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr "நிர்வாகச் சரிபார்ப்பு காலாவதியானது. அளவு மாற்ற வரைவு இந்தப் பக்கத்தின் முகவரியில் சேமிக்கப்பட்டுள்ளது."
 
-#: lib/marshall_web/live/machines_live.ex:698
+#: lib/marshall_web/live/machines_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "All retained copies deleted"
 msgstr "தக்கவைக்கப்பட்ட அனைத்து நகல்களும் நீக்கப்பட்டன"
 
-#: lib/marshall_web/live/machines_live.ex:1092
-#: lib/marshall_web/live/machines_live.ex:1109
-#: lib/marshall_web/live/machines_live.ex:1128
+#: lib/marshall_web/live/machines_live.ex:1133
+#: lib/marshall_web/live/machines_live.ex:1150
+#: lib/marshall_web/live/machines_live.ex:1169
 #, elixir-autogen, elixir-format
 msgid "Allows"
 msgstr "அனுமதிக்கிறது"
@@ -166,7 +166,7 @@ msgstr "நிறுத்தப்பட்ட நிலையில் பு�
 msgid "Applying the new CPU, memory and disk sizes on the host."
 msgstr "புரவலனில் புதிய CPU, நினைவகம் மற்றும் வட்டு அளவுகள் பயன்படுத்தப்படுகின்றன."
 
-#: lib/marshall_web/live/launch_live.ex:204
+#: lib/marshall_web/live/launch_live.ex:208
 #, elixir-autogen, elixir-format
 msgid "Back to overview"
 msgstr "கண்ணோட்டத்திற்குத் திரும்பு"
@@ -176,13 +176,13 @@ msgstr "கண்ணோட்டத்திற்குத் திரும�
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "அதன் வட்டைப் பாதுகாப்பாகப் பதிவு செய்ய மூல இயந்திரம் சிறிது நேரம் நிறுத்தப்படுகிறது."
 
-#: lib/marshall_web/live/overview_live.ex:295
+#: lib/marshall_web/live/overview_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr "Chrome அல்லது Firefox நீட்டிப்பைப் பயன்படுத்தி GitHub, GitLab, Codeberg அல்லது Bitbucket களஞ்சியத்தை Overalls-க்குக் கொண்டு வாருங்கள்."
 
-#: lib/marshall_web/live/machines_live.ex:1036
-#: lib/marshall_web/live/overview_live.ex:311
+#: lib/marshall_web/live/machines_live.ex:1077
+#: lib/marshall_web/live/overview_live.ex:317
 #: lib/marshall_web/live/resize_live.ex:315
 #: lib/marshall_web/live/resize_live.ex:359
 #: lib/marshall_web/live/resize_live.ex:447
@@ -191,7 +191,7 @@ msgstr "Chrome அல்லது Firefox நீட்டிப்பைப் �
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/machines_live.ex:955
+#: lib/marshall_web/live/machines_live.ex:996
 #, elixir-autogen, elixir-format
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
@@ -202,7 +202,7 @@ msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU மற்றும் நினைவகத்தை அதிகரிக்கவோ குறைக்கவோ முடியும். வட்டு அளவை அதிகரிக்க மட்டுமே முடியும்."
 
 #: lib/marshall_web/components/clone_components.ex:116
-#: lib/marshall_web/live/machines_live.ex:1004
+#: lib/marshall_web/live/machines_live.ex:1045
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "ரத்துசெய்"
@@ -212,7 +212,7 @@ msgstr "ரத்துசெய்"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "ரத்துசெய்தலை ஏற்க முடியவில்லை. அளவுகள் ஏற்கெனவே பயன்படுத்தப்படுகின்றன அல்லது இயந்திர நிலை உறுதிப்படுத்தப்படவில்லை."
 
-#: lib/marshall_web/live/machines_live.ex:1290
+#: lib/marshall_web/live/machines_live.ex:1331
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "இடமாற்றத்தை ரத்துசெய்"
@@ -222,7 +222,7 @@ msgstr "இடமாற்றத்தை ரத்துசெய்"
 msgid "Cancel resize"
 msgstr "அளவு மாற்றத்தை ரத்துசெய்"
 
-#: lib/marshall_web/live/machines_live.ex:322
+#: lib/marshall_web/live/machines_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "ரத்துசெய்தல் கோரப்பட்டது. மீட்டெடுத்த பின்னரும் தூய்மைப்படுத்தல் தொடரலாம்."
@@ -244,7 +244,7 @@ msgstr "நிலைப்பதிவு தொடங்குவதற்க�
 msgid "Cancelling"
 msgstr "ரத்துசெய்யப்படுகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:693
+#: lib/marshall_web/live/machines_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Cancelling and restoring the source"
 msgstr "ரத்துசெய்து மூல இயந்திரம் மீட்டெடுக்கப்படுகிறது"
@@ -264,12 +264,12 @@ msgstr "ரத்துசெய்யப்படுகிறது: நிற�
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "ரத்துசெய்யப்படுகிறது: நிறுத்தம் உறுதிப்படுத்தப்படக் காத்திருக்கிறது; அளவுகள் மாறாது."
 
-#: lib/marshall_web/live/machines_live.ex:1288
+#: lib/marshall_web/live/machines_live.ex:1329
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "ரத்துசெய்யப்படுகிறது…"
 
-#: lib/marshall_web/live/overview_live.ex:326
+#: lib/marshall_web/live/overview_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "நீங்கள் இயந்திரத்தை உருவாக்கும்போது கொள்ளளவு மீண்டும் சரிபார்க்கப்படும்."
@@ -279,32 +279,32 @@ msgstr "நீங்கள் இயந்திரத்தை உருவா�
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "மூல வட்டு பதிவுசெய்யப்படுகிறது. நிலைப்பதிவு தயாரான பின் நகலெடுத்தல் தொடங்கும்."
 
-#: lib/marshall_web/live/overview_live.ex:273
+#: lib/marshall_web/live/overview_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "உங்கள் இன்பாக்ஸைப் பார்த்து, சந்தாவை உறுதிப்படுத்த இணைப்பைக் கிளிக் செய்யவும்."
 
-#: lib/marshall_web/live/machines_live.ex:688
+#: lib/marshall_web/live/machines_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "இலக்கின் தயார்நிலை சரிபார்க்கப்படுகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:683
+#: lib/marshall_web/live/machines_live.ex:724
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "பரிமாற்ற இணைப்பு சரிபார்க்கப்படுகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:896
+#: lib/marshall_web/live/machines_live.ex:937
 #, elixir-autogen, elixir-format
 msgid "Choose an image"
 msgstr "படிமத்தைத் தேர்ந்தெடு"
 
-#: lib/marshall_web/live/machines_live.ex:854
+#: lib/marshall_web/live/machines_live.ex:895
 #, elixir-autogen, elixir-format
 msgid "Choose an image and the resources for your environment."
 msgstr "உங்கள் சூழலுக்கான படிமத்தையும் வளங்களையும் தேர்ந்தெடுக்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:889
+#: lib/marshall_web/live/machines_live.ex:930
 #, elixir-autogen, elixir-format
 msgid "Choose your environment"
 msgstr "உங்கள் சூழலைத் தேர்ந்தெடு"
@@ -319,7 +319,7 @@ msgstr "நகலாக்கம் ரத்துசெய்யப்பட�
 msgid "Clone complete"
 msgstr "நகலாக்கம் முடிந்தது"
 
-#: lib/marshall_web/live/machines_live.ex:1310
+#: lib/marshall_web/live/machines_live.ex:1351
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "இயந்திரத்தை நகலாக்கு"
@@ -329,17 +329,17 @@ msgstr "இயந்திரத்தை நகலாக்கு"
 msgid "Clone needs attention"
 msgstr "நகலாக்கத்திற்கு கவனம் தேவை"
 
-#: lib/marshall_web/live/machines_live.ex:265
+#: lib/marshall_web/live/machines_live.ex:262
 #, elixir-autogen, elixir-format
 msgid "Clone queued. You can queue another copy."
 msgstr "நகலாக்கம் வரிசையில் சேர்க்கப்பட்டது. மற்றொரு நகலை வரிசையில் சேர்க்கலாம்."
 
-#: lib/marshall_web/live/machines_live.ex:1361
+#: lib/marshall_web/live/machines_live.ex:1402
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "நகலாக்கக் கோரிக்கைகள்"
 
-#: lib/marshall_web/live/machines_live.ex:1372
+#: lib/marshall_web/live/machines_live.ex:1413
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "நகலாக்கக் கோரிக்கைகள் தற்காலிகமாகக் கிடைக்கவில்லை. தானாக மீண்டும் முயல்கிறது."
@@ -349,7 +349,7 @@ msgstr "நகலாக்கக் கோரிக்கைகள் தற்�
 msgid "Clone stages"
 msgstr "நகலாக்க நிலைகள்"
 
-#: lib/marshall_web/live/machines_live.ex:1214
+#: lib/marshall_web/live/machines_live.ex:1255
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "கருத்து"
@@ -364,13 +364,13 @@ msgstr "முடிந்தது"
 msgid "Confirmed resources"
 msgstr "உறுதிப்படுத்தப்பட்ட வளங்கள்"
 
-#: lib/marshall_web/live/machines_live.ex:759
-#: lib/marshall_web/live/machines_live.ex:810
+#: lib/marshall_web/live/machines_live.ex:800
+#: lib/marshall_web/live/machines_live.ex:851
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "இணை"
 
-#: lib/marshall_web/live/overview_live.ex:340
+#: lib/marshall_web/live/overview_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "ஒருங்கிணைப்பை இணை ↗"
@@ -385,24 +385,24 @@ msgstr "நகலெடுக்கப்படுகிறது"
 msgid "Copying files"
 msgstr "கோப்புகள் நகலெடுக்கப்படுகின்றன"
 
-#: lib/marshall_web/live/machines_live.ex:685
+#: lib/marshall_web/live/machines_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "Copying the stopped disks"
 msgstr "நிறுத்தப்பட்ட வட்டுகள் நகலெடுக்கப்படுகின்றன"
 
-#: lib/marshall_web/live/launch_live.ex:202
+#: lib/marshall_web/live/launch_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Create a machine"
 msgstr "ஓர் இயந்திரத்தை உருவாக்கு"
 
-#: lib/marshall_web/live/machines_live.ex:1318
+#: lib/marshall_web/live/machines_live.ex:1359
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr "இந்த இயந்திரத்தின் தனிப்பட்ட, சுயாதீன நகலை உருவாக்கவும். இயங்கும் இயந்திரங்கள் ஒவ்வொரு நிலைப்பதிவுக்கும் சிறிது நேரம் நிறுத்தப்பட்டு, நகலெடுத்தல் தொடரும்போது மீண்டும் இயங்கும். நகல்கள் வரிசையாகச் செயலாக்கப்பட்டு, தங்கள் முறை தொடங்கும்போது மூல இயந்திரத்தின் மின் நிலையைப் பின்பற்றும்."
 
-#: lib/marshall_web/live/machines_live.ex:96
-#: lib/marshall_web/live/machines_live.ex:853
-#: lib/marshall_web/live/machines_live.ex:1002
+#: lib/marshall_web/live/machines_live.ex:93
+#: lib/marshall_web/live/machines_live.ex:894
+#: lib/marshall_web/live/machines_live.ex:1043
 #, elixir-autogen, elixir-format
 msgid "Create machine"
 msgstr "இயந்திரத்தை உருவாக்கு"
@@ -422,90 +422,90 @@ msgstr "நிலைப்பதிவிலிருந்து சுயா�
 msgid "Creating cloned machine"
 msgstr "நகல் இயந்திரம் உருவாக்கப்படுகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:1000
+#: lib/marshall_web/live/machines_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "Creating…"
 msgstr "உருவாக்கப்படுகிறது…"
 
-#: lib/marshall_web/live/machines_live.ex:738
+#: lib/marshall_web/live/machines_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Current headroom is temporarily unavailable."
 msgstr "தற்போதைய மீதமுள்ள கொள்ளளவு தற்காலிகமாகக் கிடைக்கவில்லை."
 
-#: lib/marshall_web/live/machines_live.ex:730
-#: lib/marshall_web/live/machines_live.ex:872
+#: lib/marshall_web/live/machines_live.ex:771
+#: lib/marshall_web/live/machines_live.ex:913
 #, elixir-autogen, elixir-format
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "தற்போதைய மீதிக் கொள்ளளவு: %{value1} vCPU · %{value2} GiB நினைவகம் · %{value3} GiB வட்டு"
 
-#: lib/marshall_web/live/overview_live.ex:307
+#: lib/marshall_web/live/overview_live.ex:313
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "தற்போதைய வழங்கல் மீதிக் கொள்ளளவு"
 
-#: lib/marshall_web/live/machines_live.ex:550
-#: lib/marshall_web/live/machines_live.ex:630
+#: lib/marshall_web/live/machines_live.ex:583
+#: lib/marshall_web/live/machines_live.ex:671
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "வாடிக்கையாளர்"
 
-#: lib/marshall_web/live/machines_live.ex:1062
+#: lib/marshall_web/live/machines_live.ex:1103
 #, elixir-autogen, elixir-format
 msgid "Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled."
 msgstr "வாடிக்கையாளர் இயந்திரங்கள் உரிமையாளரின் SSH மற்றும் முனைய அணுகலை மட்டுமே அனுமதிக்கும். வெளிச்செல்லும் பிணையம், பணியிடப் பகிர்வு மற்றும் இணையச் சேவை வெளியீடு முடக்கப்பட்டுள்ளன."
 
-#: lib/marshall_web/live/machines_live.ex:1416
+#: lib/marshall_web/live/machines_live.ex:1457
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "நீக்கு"
 
-#: lib/marshall_web/live/machines_live.ex:1399
+#: lib/marshall_web/live/machines_live.ex:1440
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "இயந்திரத்தை நீக்கு"
 
-#: lib/marshall_web/live/machines_live.ex:1413
+#: lib/marshall_web/live/machines_live.ex:1454
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "இந்த இயந்திரத்தையும் அதன் வட்டையும் நீக்கவா? இதை மீட்க முடியாது."
 
-#: lib/marshall_web/live/machines_live.ex:634
+#: lib/marshall_web/live/machines_live.ex:675
 #, elixir-autogen, elixir-format
 msgid "Deleting"
 msgstr "நீக்கப்படுகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:695
+#: lib/marshall_web/live/machines_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "தக்கவைக்கப்பட்ட நகல்கள் நீக்கப்படுகின்றன"
 
-#: lib/marshall_web/live/machines_live.ex:689
+#: lib/marshall_web/live/machines_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "இலக்கு தொடக்கம் தோல்வியடைந்தது; மூல நகல் பாதுகாக்கப்பட்டது"
 
-#: lib/marshall_web/live/machines_live.ex:691
+#: lib/marshall_web/live/machines_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "இலக்கு தயார்நிலை தோல்வியடைந்தது; மூல நகல் பாதுகாக்கப்பட்டது"
 
-#: lib/marshall_web/live/machines_live.ex:692
+#: lib/marshall_web/live/machines_live.ex:733
 #, elixir-autogen, elixir-format
 msgid "Destination ready; cleaning up the source"
 msgstr "இலக்கு தயார்; மூல இயந்திரம் தூய்மைப்படுத்தப்படுகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:351
+#: lib/marshall_web/live/machines_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Destination restart requested. The source copy remains retained until readiness succeeds."
 msgstr "இலக்கு மறுதொடக்கம் கோரப்பட்டது. தயார்நிலை வெற்றிபெறும் வரை மூல நகல் பாதுகாக்கப்படும்."
 
-#: lib/marshall_web/live/machines_live.ex:1079
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Direct machine grants"
 msgstr "நேரடி இயந்திர அனுமதிகள்"
 
-#: lib/marshall_web/live/machines_live.ex:1042
-#: lib/marshall_web/live/overview_live.ex:319
+#: lib/marshall_web/live/machines_live.ex:1083
+#: lib/marshall_web/live/overview_live.ex:325
 #: lib/marshall_web/live/resize_live.ex:321
 #: lib/marshall_web/live/resize_live.ex:375
 #: lib/marshall_web/live/resize_live.ex:484
@@ -513,7 +513,7 @@ msgstr "நேரடி இயந்திர அனுமதிகள்"
 msgid "Disk"
 msgstr "வட்டு"
 
-#: lib/marshall_web/live/machines_live.ex:974
+#: lib/marshall_web/live/machines_live.ex:1015
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB)"
 msgstr "வட்டு (GiB)"
@@ -523,12 +523,12 @@ msgstr "வட்டு (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "வட்டு (GiB) — அதிகபட்சம் 500 GiB"
 
-#: lib/marshall_web/live/overview_live.ex:245
+#: lib/marshall_web/live/overview_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "மூடவும்"
 
-#: lib/marshall_web/live/overview_live.ex:263
+#: lib/marshall_web/live/overview_live.ex:269
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "மின்னஞ்சல் முகவரி"
@@ -538,42 +538,42 @@ msgstr "மின்னஞ்சல் முகவரி"
 msgid "Enable JavaScript to open a repository link, or"
 msgstr "களஞ்சிய இணைப்பைத் திறக்க JavaScript-ஐ இயக்கவும், அல்லது"
 
-#: lib/marshall_web/live/machines_live.ex:627
+#: lib/marshall_web/live/machines_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Ends that person's access to this machine."
 msgstr "இந்த இயந்திரத்திற்கு அந்த நபரின் அணுகலை முடிக்கும்."
 
-#: lib/marshall_web/live/overview_live.ex:278
+#: lib/marshall_web/live/overview_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "செல்லுபடியாகும் மின்னஞ்சல் முகவரியை உள்ளிடவும்."
 
-#: lib/marshall_web/live/machines_live.ex:162
+#: lib/marshall_web/live/machines_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "Enter whole numbers for CPU, memory and disk size."
 msgstr "CPU, நினைவகம் மற்றும் வட்டு அளவுக்கு முழு எண்களை உள்ளிடவும்."
 
-#: lib/marshall_web/live/machines_live.ex:1110
+#: lib/marshall_web/live/machines_live.ex:1151
 #, elixir-autogen, elixir-format
 msgid "Everything; cannot be changed here."
 msgstr "அனைத்தும்; இங்கே மாற்ற முடியாது."
 
-#: lib/marshall_web/live/overview_live.ex:349
+#: lib/marshall_web/live/overview_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "உங்கள் பயன்பாட்டை ஆராயுங்கள் ↗"
 
-#: lib/marshall_web/live/machines_live.ex:1311
+#: lib/marshall_web/live/machines_live.ex:1352
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "கோப்புகளும் சேமித்த அடையாளச் சான்றுகளும் நகலில் சேர்க்கப்படும்"
 
-#: lib/marshall_web/live/machines_live.ex:1351
+#: lib/marshall_web/live/machines_live.ex:1392
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "கோப்புகளும் சேமித்த அடையாளச் சான்றுகளும் நகலில் சேர்க்கப்படும்."
 
-#: lib/marshall_web/live/overview_live.ex:346
+#: lib/marshall_web/live/overview_live.ex:352
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "உங்கள் குழுவினரைக் கண்டறியுங்கள் ↗"
@@ -588,17 +588,17 @@ msgstr "முடிக்கப்படுகிறது"
 msgid "Finishing up"
 msgstr "இறுதிப்பணிகள் நடைபெறுகின்றன"
 
-#: lib/marshall_web/live/overview_live.ex:248
+#: lib/marshall_web/live/overview_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Overalls மற்றும் AI பற்றிய ஆலோசனைகள், நுணுக்கங்கள், புதுப்பிப்புகளை மின்னஞ்சலில் பெறுங்கள்."
 
-#: lib/marshall_web/live/machines_live.ex:949
+#: lib/marshall_web/live/machines_live.ex:990
 #, elixir-autogen, elixir-format
 msgid "Give it room to grow"
 msgstr "வளர இடமளியுங்கள்"
 
-#: lib/marshall_web/live/machines_live.ex:1148
+#: lib/marshall_web/live/machines_live.ex:1189
 #, elixir-autogen, elixir-format
 msgid "Grant, change or remove access"
 msgstr "அணுகலை வழங்கு, மாற்று அல்லது நீக்கு"
@@ -608,40 +608,40 @@ msgstr "அணுகலை வழங்கு, மாற்று அல்ல�
 msgid "Grow the filesystem on next boot"
 msgstr "அடுத்த தொடக்கத்தில் கோப்பு முறைமையைப் பெரிதாக்கு"
 
-#: lib/marshall_web/live/overview_live.ex:330
+#: lib/marshall_web/live/overview_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "மீதமுள்ள கொள்ளளவு தற்காலிகமாகக் கிடைக்கவில்லை."
 
-#: lib/marshall_web/live/machines_live.ex:757
-#: lib/marshall_web/live/machines_live.ex:792
-#: lib/marshall_web/live/machines_live.ex:1045
+#: lib/marshall_web/live/machines_live.ex:798
+#: lib/marshall_web/live/machines_live.ex:833
+#: lib/marshall_web/live/machines_live.ex:1086
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "புரவலன்"
 
-#: lib/marshall_web/live/machines_live.ex:895
+#: lib/marshall_web/live/machines_live.ex:936
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "படிமம்"
 
-#: lib/marshall_web/live/machines_live.ex:858
+#: lib/marshall_web/live/machines_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "Images and capacity are temporarily unavailable. Your choices are retained."
 msgstr "படிமங்களும் கொள்ளளவும் தற்காலிகமாகக் கிடைக்கவில்லை. உங்கள் தேர்வுகள் பாதுகாக்கப்படும்."
 
-#: lib/marshall_web/live/machines_live.ex:556
-#: lib/marshall_web/live/machines_live.ex:631
+#: lib/marshall_web/live/machines_live.ex:589
+#: lib/marshall_web/live/machines_live.ex:672
 #, elixir-autogen, elixir-format
 msgid "Inception"
 msgstr "Inception"
 
-#: lib/marshall_web/live/machines_live.ex:407
+#: lib/marshall_web/live/machines_live.ex:404
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "செல்லாத கோரிக்கை."
 
-#: lib/marshall_web/live/machines_live.ex:1208
+#: lib/marshall_web/live/machines_live.ex:1249
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "குறிச்சொற்கள்"
@@ -652,12 +652,12 @@ msgstr "குறிச்சொற்கள்"
 msgid "Launch"
 msgstr "தொடங்கு"
 
-#: lib/marshall_web/live/launch_live.ex:124
+#: lib/marshall_web/live/launch_live.ex:128
 #, elixir-autogen, elixir-format
 msgid "Launch refused"
 msgstr "தொடக்கம் மறுக்கப்பட்டது"
 
-#: lib/marshall_web/live/launch_live.ex:214
+#: lib/marshall_web/live/launch_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Launching"
 msgstr "தொடங்குகிறது"
@@ -667,12 +667,12 @@ msgstr "தொடங்குகிறது"
 msgid "Launching repository"
 msgstr "களஞ்சியம் தொடங்குகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:1334
+#: lib/marshall_web/live/machines_live.ex:1375
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "பெயரை உருவாக்க காலியாக விடவும்"
 
-#: lib/marshall_web/live/machines_live.ex:1348
+#: lib/marshall_web/live/machines_live.ex:1389
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "பெயரை உருவாக்க காலியாக விடவும்."
@@ -684,77 +684,77 @@ msgstr "பெயரை உருவாக்க காலியாக விட
 msgid "Leave stopped"
 msgstr "நிறுத்தப்பட்ட நிலையிலேயே வை"
 
-#: lib/marshall_web/live/machines_live.ex:753
+#: lib/marshall_web/live/machines_live.ex:794
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "இயந்திரம்"
 
-#: lib/marshall_web/live/machines_live.ex:231
+#: lib/marshall_web/live/machines_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
 msgstr "கணினியின் மெட்டாடேட்டா சேமிக்கப்பட்டது."
 
-#: lib/marshall_web/live/machines_live.ex:839
+#: lib/marshall_web/live/machines_live.ex:880
 #, elixir-autogen, elixir-format
 msgid "Machine pages"
 msgstr "இயந்திரப் பக்கங்கள்"
 
-#: lib/marshall_web/live/machines_live.ex:151
+#: lib/marshall_web/live/machines_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Machine requested."
 msgstr "இயந்திரம் கோரப்பட்டது."
 
-#: lib/marshall_web/live/machines_live.ex:213
+#: lib/marshall_web/live/machines_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Machine update requested."
 msgstr "இயந்திரப் புதுப்பிப்பு கோரப்பட்டது."
 
-#: lib/marshall_web/live/machines_live.ex:111
-#: lib/marshall_web/live/machines_live.ex:719
-#: lib/marshall_web/live/overview_live.ex:225
+#: lib/marshall_web/live/machines_live.ex:108
+#: lib/marshall_web/live/machines_live.ex:760
+#: lib/marshall_web/live/overview_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "இயந்திரங்கள்"
 
-#: lib/marshall_web/live/machines_live.ex:467
+#: lib/marshall_web/live/machines_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Machines are temporarily unavailable."
 msgstr "இயந்திரங்கள் தற்காலிகமாகக் கிடைக்கவில்லை."
 
-#: lib/marshall_web/live/overview_live.ex:229
+#: lib/marshall_web/live/overview_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "இயந்திரங்களை ஏற்ற முடியவில்லை. மீண்டும் முயல புதுப்பிக்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:932
+#: lib/marshall_web/live/machines_live.ex:973
 #, elixir-autogen, elixir-format
 msgid "Make it yours"
 msgstr "உங்களுக்கேற்றதாக மாற்றுங்கள்"
 
-#: lib/marshall_web/live/overview_live.ex:334
+#: lib/marshall_web/live/overview_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "வீட்டில் இருப்பதுபோல் உணருங்கள்"
 
-#: lib/marshall_web/live/machines_live.ex:1059
+#: lib/marshall_web/live/machines_live.ex:1100
 #, elixir-autogen, elixir-format
 msgid "Management access is required to change the remaining settings."
 msgstr "மீதமுள்ள அமைப்புகளை மாற்ற நிர்வாக அணுகல் தேவை."
 
-#: lib/marshall_web/live/machines_live.ex:614
-#: lib/marshall_web/live/machines_live.ex:1171
-#: lib/marshall_web/live/machines_live.ex:1180
+#: lib/marshall_web/live/machines_live.ex:655
+#: lib/marshall_web/live/machines_live.ex:1212
+#: lib/marshall_web/live/machines_live.ex:1221
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "மேலாளர்"
 
-#: lib/marshall_web/live/machines_live.ex:1266
+#: lib/marshall_web/live/machines_live.ex:1307
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "கட்டுப்பாட்டுத் தளத்தின் நிறுத்தம் மற்றும் தயார்நிலைக் கவனிப்புகளுக்கு இடையே அளவிடப்படுகிறது; விருந்தினர் கிடைப்புநிலை மாறுபடலாம்."
 
-#: lib/marshall_web/live/machines_live.ex:1039
-#: lib/marshall_web/live/overview_live.ex:314
+#: lib/marshall_web/live/machines_live.ex:1080
+#: lib/marshall_web/live/overview_live.ex:320
 #: lib/marshall_web/live/resize_live.ex:318
 #: lib/marshall_web/live/resize_live.ex:365
 #: lib/marshall_web/live/resize_live.ex:478
@@ -762,33 +762,33 @@ msgstr "கட்டுப்பாட்டுத் தளத்தின் �
 msgid "Memory"
 msgstr "நினைவகம்"
 
-#: lib/marshall_web/live/machines_live.ex:963
+#: lib/marshall_web/live/machines_live.ex:1004
 #: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "நினைவகம் (MiB)"
 
-#: lib/marshall_web/live/machines_live.ex:1254
+#: lib/marshall_web/live/machines_live.ex:1295
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "முறை"
 
-#: lib/marshall_web/live/machines_live.ex:696
+#: lib/marshall_web/live/machines_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Move cancelled; cleanup complete"
 msgstr "இடமாற்றம் ரத்துசெய்யப்பட்டது; தூய்மைப்படுத்தல் முடிந்தது"
 
-#: lib/marshall_web/live/machines_live.ex:697
+#: lib/marshall_web/live/machines_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Move complete"
 msgstr "இடமாற்றம் முடிந்தது"
 
-#: lib/marshall_web/live/machines_live.ex:1234
+#: lib/marshall_web/live/machines_live.ex:1275
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "இந்த இயந்திரத்தைத் தானாகத் தேர்ந்தெடுக்கப்பட்ட புரவலனுக்கு நகர்த்தவா? இயந்திரம் சிறிது நேரம் கிடைக்காமல் இருக்கலாம்."
 
-#: lib/marshall_web/live/machines_live.ex:1240
+#: lib/marshall_web/live/machines_live.ex:1281
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "வேறொரு புரவலனுக்கு நகர்த்து"
@@ -799,7 +799,7 @@ msgstr "வேறொரு புரவலனுக்கு நகர்த்�
 msgid "Needs attention"
 msgstr "கவனம் தேவை"
 
-#: lib/marshall_web/live/machines_live.ex:1333
+#: lib/marshall_web/live/machines_live.ex:1374
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "புதிய இயந்திரப் பெயர் (விருப்பம்)"
@@ -809,28 +809,28 @@ msgstr "புதிய இயந்திரப் பெயர் (விர�
 msgid "New sizes"
 msgstr "புதிய அளவுகள்"
 
-#: lib/marshall_web/live/machines_live.ex:844
-#: lib/marshall_web/live/machines_live.ex:1143
+#: lib/marshall_web/live/machines_live.ex:885
+#: lib/marshall_web/live/machines_live.ex:1184
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "அடுத்த பக்கம் →"
 
-#: lib/marshall_web/live/overview_live.ex:337
+#: lib/marshall_web/live/overview_live.ex:343
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "அடுத்த படிகள்"
 
-#: lib/marshall_web/live/machines_live.ex:1366
+#: lib/marshall_web/live/machines_live.ex:1407
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "இன்னும் நகலாக்கக் கோரிக்கைகள் இல்லை. நகலை வரிசையில் சேர்த்து அதன் முன்னேற்றத்தை இங்கே பின்தொடரவும்."
 
-#: lib/marshall_web/live/machines_live.ex:1136
+#: lib/marshall_web/live/machines_live.ex:1177
 #, elixir-autogen, elixir-format
 msgid "No direct machine grants."
 msgstr "நேரடி இயந்திர அனுமதிகள் இல்லை."
 
-#: lib/marshall_web/live/machines_live.ex:869
+#: lib/marshall_web/live/machines_live.ex:910
 #, elixir-autogen, elixir-format
 msgid "No images are available on ready hosts right now."
 msgstr "தற்போது தயாரான புரவலன்களில் படிமங்கள் கிடைக்கவில்லை."
@@ -840,28 +840,28 @@ msgstr "தற்போது தயாரான புரவலன்களி�
 msgid "No machines in this preview yet. Create one or ask an owner to share access."
 msgstr "இந்த முன்னோட்டத்தில் இன்னும் இயந்திரங்கள் இல்லை. ஒன்றை உருவாக்கவும் அல்லது அணுகலைப் பகிர உரிமையாளரிடம் கேட்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:744
+#: lib/marshall_web/live/machines_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "No machines on this page. Create a machine or ask an owner to share access."
 msgstr "இப்பக்கத்தில் இயந்திரங்கள் இல்லை. ஒன்றை உருவாக்கவும் அல்லது அணுகலைப் பகிர உரிமையாளரிடம் கேட்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:662
+#: lib/marshall_web/live/machines_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "No registered account matches that email address."
 msgstr "அந்த மின்னஞ்சல் முகவரிக்குப் பொருந்தும் பதிவுசெய்த கணக்கு இல்லை."
 
-#: lib/marshall_web/live/machines_live.ex:330
-#: lib/marshall_web/live/machines_live.ex:362
+#: lib/marshall_web/live/machines_live.ex:327
+#: lib/marshall_web/live/machines_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "No relocation is available."
 msgstr "இடமாற்றம் கிடைக்கவில்லை."
 
-#: lib/marshall_web/live/machines_live.ex:1262
+#: lib/marshall_web/live/machines_live.ex:1303
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "காணப்பட்ட செயலிழப்பு நேரம்"
 
-#: lib/marshall_web/live/launch_live.ex:132
+#: lib/marshall_web/live/launch_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Only public repositories on GitHub, GitLab, Codeberg or Bitbucket can be launched."
 msgstr "GitHub, GitLab, Codeberg அல்லது Bitbucket-இல் உள்ள பொதுக் களஞ்சியங்களை மட்டுமே தொடங்க முடியும்."
@@ -871,44 +871,44 @@ msgstr "GitHub, GitLab, Codeberg அல்லது Bitbucket-இல் உள�
 msgid "Open clone"
 msgstr "நகலைத் திற"
 
-#: lib/marshall_web/live/overview_live.ex:291
+#: lib/marshall_web/live/overview_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "உங்கள் உலாவியிலிருந்து களஞ்சியங்களைத் திறங்கள்"
 
-#: lib/marshall_web/live/machines_live.ex:823
+#: lib/marshall_web/live/machines_live.ex:864
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "முனையத்தைத் திற"
 
-#: lib/marshall_web/live/machines_live.ex:821
+#: lib/marshall_web/live/machines_live.ex:862
 #, elixir-autogen, elixir-format
 msgid "Open terminal for %{value1}"
 msgstr "%{value1}-க்கு முனையத்தைத் திற"
 
-#: lib/marshall_web/live/overview_live.ex:216
+#: lib/marshall_web/live/overview_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "முனையத்தைத் திற ↗"
 
-#: lib/marshall_web/live/machines_live.ex:619
+#: lib/marshall_web/live/machines_live.ex:660
 #, elixir-autogen, elixir-format
 msgid "Open this machine's web apps. No terminal."
 msgstr "இந்த இயந்திரத்தின் இணையப் பயன்பாடுகளைத் திறங்கள். முனையம் இல்லை."
 
-#: lib/marshall_web/live/machines_live.ex:1032
+#: lib/marshall_web/live/machines_live.ex:1073
 #, elixir-autogen, elixir-format
 msgid "Operating system"
 msgstr "இயக்க முறைமை"
 
-#: lib/marshall_web/live/machines_live.ex:613
-#: lib/marshall_web/live/machines_live.ex:1170
-#: lib/marshall_web/live/machines_live.ex:1179
+#: lib/marshall_web/live/machines_live.ex:654
+#: lib/marshall_web/live/machines_live.ex:1211
+#: lib/marshall_web/live/machines_live.ex:1220
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "இயக்குநர்"
 
-#: lib/marshall_web/live/machines_live.ex:570
+#: lib/marshall_web/live/machines_live.ex:603
 #, elixir-autogen, elixir-format
 msgid "Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents."
 msgstr "வெளிச்செல்லும் இணைப்புகள், பகிர்வு, இணையப் பயன்பாடுகள், SSH, முனையம் மற்றும் செயற்கை நுண்ணறிவு முகவர் கருவிகள். முகவர் கிளை முகவர்களைத் தொடங்க முடியாது."
@@ -918,9 +918,9 @@ msgstr "வெளிச்செல்லும் இணைப்புகள�
 msgid "Overview"
 msgstr "கண்ணோட்டம்"
 
-#: lib/marshall_web/live/machines_live.ex:798
-#: lib/marshall_web/live/machines_live.ex:936
-#: lib/marshall_web/live/machines_live.ex:1107
+#: lib/marshall_web/live/machines_live.ex:839
+#: lib/marshall_web/live/machines_live.ex:977
+#: lib/marshall_web/live/machines_live.ex:1148
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "உரிமையாளர்"
@@ -932,7 +932,7 @@ msgstr "உரிமையாளர்"
 msgid "Pending"
 msgstr "நிலுவையில்"
 
-#: lib/marshall_web/live/machines_live.ex:1426
+#: lib/marshall_web/live/machines_live.ex:1467
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "இந்த இயந்திரத்தையும் அதன் வட்டையும் நிரந்தரமாக நீக்குங்கள். இதை மீட்க முடியாது."
@@ -942,13 +942,13 @@ msgstr "இந்த இயந்திரத்தையும் அதன் 
 msgid "Permission to clone this machine is no longer available."
 msgstr "இந்த இயந்திரத்தை நகலாக்கும் அனுமதி இனி இல்லை."
 
-#: lib/marshall_web/live/machines_live.ex:938
-#: lib/marshall_web/live/overview_live.ex:198
+#: lib/marshall_web/live/machines_live.ex:979
+#: lib/marshall_web/live/overview_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "தனிப்பட்டது"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1292
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "நிலை"
@@ -978,12 +978,12 @@ msgstr "நகல் தயாராகிறது"
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "நிலைப்பதிவுக்கு முன் இடம் தயார்செய்யப்பட்டு மூல இயந்திரம் சரிபார்க்கப்படுகிறது."
 
-#: lib/marshall_web/live/machines_live.ex:682
+#: lib/marshall_web/live/machines_live.ex:723
 #, elixir-autogen, elixir-format
 msgid "Preparing transfer"
 msgstr "பரிமாற்றம் தயாராகிறது"
 
-#: lib/marshall_web/live/launch_live.ex:216
+#: lib/marshall_web/live/launch_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Preparing your machine…"
 msgstr "உங்கள் இயந்திரம் தயாராகிறது…"
@@ -993,20 +993,20 @@ msgstr "உங்கள் இயந்திரம் தயாராகிற�
 msgid "Preparing your repository…"
 msgstr "உங்கள் களஞ்சியம் தயாராகிறது…"
 
-#: lib/marshall_web/live/machines_live.ex:563
+#: lib/marshall_web/live/machines_live.ex:596
 #, elixir-autogen, elixir-format
 msgid "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
 msgstr "தனிப்பட்டது, உரிமையாளருக்கு மட்டுமே. SSH மற்றும் முனைய அணுகல்; வெளிச்செல்லும் இணைப்புகள், பகிர்வு, இணையப் பயன்பாடுகள் அல்லது செயற்கை நுண்ணறிவு முகவர் இல்லை."
 
-#: lib/marshall_web/live/machines_live.ex:756
-#: lib/marshall_web/live/machines_live.ex:788
-#: lib/marshall_web/live/machines_live.ex:911
-#: lib/marshall_web/live/machines_live.ex:1048
+#: lib/marshall_web/live/machines_live.ex:797
+#: lib/marshall_web/live/machines_live.ex:829
+#: lib/marshall_web/live/machines_live.ex:952
+#: lib/marshall_web/live/machines_live.ex:1089
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "சுயவிவரம்"
 
-#: lib/marshall_web/live/machines_live.ex:917
+#: lib/marshall_web/live/machines_live.ex:958
 #, elixir-autogen, elixir-format
 msgid "Profiles choose access and agent features. Machines remain isolated from one another."
 msgstr "சுயவிவரங்கள் அணுகல் மற்றும் முகவர் அம்சங்களைத் தேர்ந்தெடுக்கும். இயந்திரங்கள் ஒன்றிலிருந்து ஒன்று தனிமைப்படுத்தப்பட்டிருக்கும்."
@@ -1023,47 +1023,47 @@ msgstr "வரிசை இடம் %{value1}"
 msgid "Queued"
 msgstr "வரிசையில் சேர்க்கப்பட்டது"
 
-#: lib/marshall_web/live/machines_live.ex:1342
+#: lib/marshall_web/live/machines_live.ex:1383
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "வரிசையில் சேர்க்கப்படுகிறது…"
 
-#: lib/marshall_web/live/machines_live.ex:621
+#: lib/marshall_web/live/machines_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Read and write in the terminal."
 msgstr "முனையத்தில் படிக்கவும் எழுதவும்."
 
-#: lib/marshall_web/live/overview_live.ex:352
+#: lib/marshall_web/live/overview_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "களக் குறிப்புகளைப் படிக்கவும் ↗"
 
-#: lib/marshall_web/live/machines_live.ex:620
+#: lib/marshall_web/live/machines_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Read the terminal."
 msgstr "முனையத்தைப் படிக்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:983
+#: lib/marshall_web/live/machines_live.ex:1024
 #, elixir-autogen, elixir-format
 msgid "Ready when you are"
 msgstr "நீங்கள் தயாரானதும் தயார்"
 
-#: lib/marshall_web/live/machines_live.ex:1205
+#: lib/marshall_web/live/machines_live.ex:1246
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "பிரதிபலிப்பு மெட்டாடேட்டா"
 
-#: lib/marshall_web/live/overview_live.ex:368
+#: lib/marshall_web/live/overview_live.ex:374
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "புதுப்பி"
 
-#: lib/marshall_web/live/overview_live.ex:366
+#: lib/marshall_web/live/overview_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "புதுப்பிக்கப்படுகிறது…"
 
-#: lib/marshall_web/live/machines_live.ex:1160
+#: lib/marshall_web/live/machines_live.ex:1201
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "பதிவுசெய்த மின்னஞ்சல்"
@@ -1073,12 +1073,12 @@ msgstr "பதிவுசெய்த மின்னஞ்சல்"
 msgid "Registering the copied disk as your private machine."
 msgstr "நகலெடுத்த வட்டு உங்கள் தனிப்பட்ட இயந்திரமாகப் பதிவுசெய்யப்படுகிறது."
 
-#: lib/marshall_web/live/machines_live.ex:1223
+#: lib/marshall_web/live/machines_live.ex:1264
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "இயந்திரத்தை இடமாற்று"
 
-#: lib/marshall_web/live/machines_live.ex:301
+#: lib/marshall_web/live/machines_live.ex:298
 #, elixir-autogen, elixir-format
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "இடமாற்றம் கோரப்பட்டது. இலக்கு தானாகத் தேர்ந்தெடுக்கப்படும்."
@@ -1088,8 +1088,8 @@ msgstr "இடமாற்றம் கோரப்பட்டது. இலக
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "நிறுத்தப்பட்ட நிலையிலேயே இருக்கும்; அடுத்த தொடக்கத்தில் கோப்பு முறைமை பெரிதாகும்"
 
-#: lib/marshall_web/live/machines_live.ex:1172
-#: lib/marshall_web/live/machines_live.ex:1181
+#: lib/marshall_web/live/machines_live.ex:1213
+#: lib/marshall_web/live/machines_live.ex:1222
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "அணுகலை நீக்கு"
@@ -1104,7 +1104,7 @@ msgstr "ரத்துசெய்தல் கோரப்படுகிற�
 msgid "Requesting resize…"
 msgstr "அளவு மாற்றம் கோரப்படுகிறது…"
 
-#: lib/marshall_web/live/machines_live.ex:1296
+#: lib/marshall_web/live/machines_live.ex:1337
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "மறுதொடக்கம் கோரப்படுகிறது…"
@@ -1114,12 +1114,12 @@ msgstr "மறுதொடக்கம் கோரப்படுகிறத�
 msgid "Requesting retry…"
 msgstr "மீண்டும் முயற்சி கோரப்படுகிறது…"
 
-#: lib/marshall_web/live/machines_live.ex:1232
+#: lib/marshall_web/live/machines_live.ex:1273
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "கோரப்படுகிறது…"
 
-#: lib/marshall_web/live/machines_live.ex:1028
+#: lib/marshall_web/live/machines_live.ex:1069
 #: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
@@ -1172,9 +1172,9 @@ msgstr "அளவு மாற்ற நிலைகள்"
 msgid "Resizing"
 msgstr "அளவு மாற்றப்படுகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:755
-#: lib/marshall_web/live/machines_live.ex:781
-#: lib/marshall_web/live/machines_live.ex:1019
+#: lib/marshall_web/live/machines_live.ex:796
+#: lib/marshall_web/live/machines_live.ex:822
+#: lib/marshall_web/live/machines_live.ex:1060
 #, elixir-autogen, elixir-format
 msgid "Resources"
 msgstr "வளங்கள்"
@@ -1216,7 +1216,7 @@ msgstr "மீண்டும் முயல்"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "மீண்டும் முயற்சியை ஏற்க முடியவில்லை. கொள்ளளவு அல்லது இயந்திர நிலை மாறியிருக்கலாம்."
 
-#: lib/marshall_web/live/machines_live.ex:1298
+#: lib/marshall_web/live/machines_live.ex:1339
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "இலக்குத் தொடக்கத்தை மீண்டும் முயல்"
@@ -1231,15 +1231,15 @@ msgstr "அளவு மாற்றத்தை மீண்டும் மு
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "இயந்திரத்தை மீண்டும் திறக்க தொகுதிப் பணிச்சுமைகளுக்குத் திரும்பி உங்கள் அணுகல் சாவியைச் சரிபார்க்கவும் →"
 
-#: lib/marshall_web/live/machines_live.ex:615
+#: lib/marshall_web/live/machines_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "ரத்துசெய்யப்பட்டது"
 
-#: lib/marshall_web/live/machines_live.ex:1091
-#: lib/marshall_web/live/machines_live.ex:1106
-#: lib/marshall_web/live/machines_live.ex:1125
+#: lib/marshall_web/live/machines_live.ex:1132
+#: lib/marshall_web/live/machines_live.ex:1147
 #: lib/marshall_web/live/machines_live.ex:1166
+#: lib/marshall_web/live/machines_live.ex:1207
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "பங்கு"
@@ -1249,12 +1249,12 @@ msgstr "பங்கு"
 msgid "Room for your next idea"
 msgstr "உங்கள் அடுத்த யோசனைக்கான இடம்"
 
-#: lib/marshall_web/live/overview_live.ex:306
+#: lib/marshall_web/live/overview_live.ex:312
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "வளர்வதற்கான இடம்"
 
-#: lib/marshall_web/live/machines_live.ex:973
+#: lib/marshall_web/live/machines_live.ex:1014
 #, elixir-autogen, elixir-format
 msgid "Root disk (GiB)"
 msgstr "மூல வட்டு (GiB)"
@@ -1264,42 +1264,42 @@ msgstr "மூல வட்டு (GiB)"
 msgid "Running"
 msgstr "இயங்குகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1230
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "அணுகலைச் சேமி"
 
-#: lib/marshall_web/live/machines_live.ex:1220
+#: lib/marshall_web/live/machines_live.ex:1261
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "மெட்டாடேட்டாவைச் சேமிக்கவும்"
 
-#: lib/marshall_web/live/machines_live.ex:1187
+#: lib/marshall_web/live/machines_live.ex:1228
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "சேமிக்கப்படுகிறது…"
 
-#: lib/marshall_web/live/machines_live.ex:604
+#: lib/marshall_web/live/machines_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "Selected image unavailable"
 msgstr "தேர்ந்தெடுத்த படிமம் கிடைக்கவில்லை"
 
-#: lib/marshall_web/live/overview_live.ex:304
+#: lib/marshall_web/live/overview_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "உலாவி நீட்டிப்பை அமைக்கவும் ↗"
 
-#: lib/marshall_web/live/overview_live.ex:199
+#: lib/marshall_web/live/overview_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "பகிரப்பட்டது"
 
-#: lib/marshall_web/live/machines_live.ex:800
+#: lib/marshall_web/live/machines_live.ex:841
 #, elixir-autogen, elixir-format
 msgid "Shared by"
 msgstr "பகிர்ந்தவர்"
 
-#: lib/marshall_web/live/machines_live.ex:1217
+#: lib/marshall_web/live/machines_live.ex:1258
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "முகவர்களுக்கான சுருக்கமான விளக்கம்"
@@ -1344,7 +1344,7 @@ msgstr "மூல இயந்திர மீட்பிற்குக் க
 msgid "Source recovery retry requested."
 msgstr "மூல இயந்திர மீட்பை மீண்டும் முயலக் கோரப்பட்டது."
 
-#: lib/marshall_web/live/machines_live.ex:694
+#: lib/marshall_web/live/machines_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Source restored; destination cleanup pending"
 msgstr "மூல இயந்திரம் மீட்டெடுக்கப்பட்டது; இலக்கு தூய்மைப்படுத்தல் நிலுவையில்"
@@ -1364,13 +1364,13 @@ msgstr "இந்தக் கோரிக்கை தொடங்கியப�
 msgid "Source was stopped when this request began."
 msgstr "இந்தக் கோரிக்கை தொடங்கியபோது மூல இயந்திரம் நிறுத்தப்பட்டிருந்தது."
 
-#: lib/marshall_web/live/machines_live.ex:551
-#: lib/marshall_web/live/machines_live.ex:632
+#: lib/marshall_web/live/machines_live.ex:584
+#: lib/marshall_web/live/machines_live.ex:673
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "வழக்கமான"
 
-#: lib/marshall_web/live/machines_live.ex:640
+#: lib/marshall_web/live/machines_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Starting"
 msgstr "தொடங்குகிறது"
@@ -1380,13 +1380,13 @@ msgstr "தொடங்குகிறது"
 msgid "Starting the machine with its new resources."
 msgstr "புதிய வளங்களுடன் இயந்திரம் தொடங்குகிறது."
 
-#: lib/marshall_web/live/machines_live.ex:754
-#: lib/marshall_web/live/machines_live.ex:773
+#: lib/marshall_web/live/machines_live.ex:795
+#: lib/marshall_web/live/machines_live.ex:814
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "நிலைமை"
 
-#: lib/marshall_web/live/overview_live.ex:237
+#: lib/marshall_web/live/overview_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "புதிய தகவல்களை அறிந்திருங்கள்"
@@ -1413,7 +1413,7 @@ msgstr "இயந்திரத்தை நிறுத்து"
 msgid "Stopped"
 msgstr "நிறுத்தப்பட்டது"
 
-#: lib/marshall_web/live/machines_live.ex:637
+#: lib/marshall_web/live/machines_live.ex:678
 #: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
@@ -1434,17 +1434,17 @@ msgstr "நகலெடுத்தல் நிறுத்தப்பட்�
 msgid "Stopping the machine so its resources can change safely."
 msgstr "வளங்களைப் பாதுகாப்பாக மாற்ற இயந்திரம் நிறுத்தப்படுகிறது."
 
-#: lib/marshall_web/live/machines_live.ex:684
+#: lib/marshall_web/live/machines_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "மூல இயந்திரம் நிறுத்தப்படுகிறது"
 
-#: lib/marshall_web/live/overview_live.ex:265
+#: lib/marshall_web/live/overview_live.ex:271
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "சந்தா பெறவும்"
 
-#: lib/marshall_web/live/machines_live.ex:687
+#: lib/marshall_web/live/machines_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "அமைவு மாற்றப்படுகிறது"
@@ -1454,42 +1454,42 @@ msgstr "அமைவு மாற்றப்படுகிறது"
 msgid "Taking snapshot"
 msgstr "நிலைப்பதிவு எடுக்கப்படுகிறது"
 
-#: lib/marshall_web/live/machines_live.ex:1081
+#: lib/marshall_web/live/machines_live.ex:1122
 #, elixir-autogen, elixir-format
 msgid "Team membership and thread sharing can also grant machine access."
 msgstr "குழு உறுப்பினர் நிலையும் உரையாடல் பகிர்வும் இயந்திர அணுகலை வழங்கலாம்."
 
-#: lib/marshall_web/live/machines_live.ex:830
+#: lib/marshall_web/live/machines_live.ex:871
 #, elixir-autogen, elixir-format
 msgid "Terminal unavailable"
 msgstr "முனையம் கிடைக்கவில்லை"
 
-#: lib/marshall_web/live/machines_live.ex:624
+#: lib/marshall_web/live/machines_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "முனையம், வாழ்க்கைச் சுழற்சி, அளவு மாற்றம், நகலாக்கம் மற்றும் பகிர்வு."
 
-#: lib/marshall_web/live/launch_live.ex:138
+#: lib/marshall_web/live/launch_live.ex:142
 #, elixir-autogen, elixir-format
 msgid "That link is not a supported public repository URL."
 msgstr "அந்த இணைப்பு ஆதரிக்கப்படும் பொதுக் களஞ்சிய URL அல்ல."
 
-#: lib/marshall_web/live/launch_live.ex:144
+#: lib/marshall_web/live/launch_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "That repository name is not valid."
 msgstr "அந்தக் களஞ்சியப் பெயர் செல்லாது."
 
-#: lib/marshall_web/live/launch_live.ex:141
+#: lib/marshall_web/live/launch_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "That repository namespace is not valid."
 msgstr "அந்தக் களஞ்சியப் பெயர்வெளி செல்லாது."
 
-#: lib/marshall_web/live/launch_live.ex:147
+#: lib/marshall_web/live/launch_live.ex:151
 #, elixir-autogen, elixir-format
 msgid "That repository reference cannot be launched."
 msgstr "அந்தக் களஞ்சியக் குறிப்பைத் தொடங்க முடியாது."
 
-#: lib/marshall_web/live/machines_live.ex:1150
+#: lib/marshall_web/live/machines_live.ex:1191
 #, elixir-autogen, elixir-format
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr "கணக்கு ஏற்கெனவே பதிவுசெய்யப்பட்டிருக்க வேண்டும். பங்கைச் சேமிப்பது அந்த நபரின் நேரடி இயந்திரப் பங்கை மாற்றும்; நேரடி அனுமதியை நீக்க அணுகலை நீக்கு என்பதைத் தேர்ந்தெடுக்கவும்."
@@ -1504,12 +1504,12 @@ msgstr "நகலைத் திறக்கலாம். அதன் மி�
 msgid "The clone could not start. Open it to review its status and power controls."
 msgstr "நகலைத் தொடங்க முடியவில்லை. அதன் நிலையையும் மின் கட்டுப்பாடுகளையும் பார்க்க திறக்கவும்."
 
-#: lib/marshall_web/live/launch_live.ex:164
+#: lib/marshall_web/live/launch_live.ex:168
 #, elixir-autogen, elixir-format
 msgid "The default image cannot open repositories. Choose an image with the current workspace service."
 msgstr "இயல்புநிலைப் படிமத்தால் களஞ்சியங்களைத் திறக்க முடியாது. தற்போதைய பணியிடச் சேவையுள்ள படிமத்தைத் தேர்ந்தெடுக்கவும்."
 
-#: lib/marshall_web/live/launch_live.ex:160
+#: lib/marshall_web/live/launch_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "The default machine image is not available right now."
 msgstr "இயல்புநிலை இயந்திரப் படிமம் இப்போது கிடைக்கவில்லை."
@@ -1519,12 +1519,12 @@ msgstr "இயல்புநிலை இயந்திரப் படிம�
 msgid "The last step did not finish. Retry resumes from the recorded phase without repeating completed work."
 msgstr "கடைசிப் படி முடியவில்லை. மீண்டும் முயற்சி முடிந்த பணிகளை மீண்டும் செய்யாமல் பதிவுசெய்த நிலையிலிருந்து தொடரும்."
 
-#: lib/marshall_web/live/launch_live.ex:173
+#: lib/marshall_web/live/launch_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "The machine could not be created. Try again, or create one manually."
 msgstr "இயந்திரத்தை உருவாக்க முடியவில்லை. மீண்டும் முயலவும் அல்லது கைமுறையாக உருவாக்கவும்."
 
-#: lib/marshall_web/machine_workspace.ex:230
+#: lib/marshall_web/machine_workspace.ex:233
 #, elixir-autogen, elixir-format
 msgid "The machine could not be updated. Refresh and try again."
 msgstr "இயந்திரத்தைப் புதுப்பிக்க முடியவில்லை. புதுப்பித்து மீண்டும் முயலவும்."
@@ -1534,22 +1534,22 @@ msgstr "இயந்திரத்தைப் புதுப்பிக்�
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "இந்த வரைவு உருவாக்கப்பட்டபின் இயந்திரம் மாறியுள்ளது. மேலுள்ள உறுதிப்படுத்தப்பட்ட வளங்களைச் சரிபார்க்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:1244
+#: lib/marshall_web/live/machines_live.ex:1285
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr "இயந்திரம் நிறுத்தப்பட்டு, ஒருமுறை நகலெடுக்கப்பட்டு தானாகத் தேர்ந்தெடுக்கப்பட்ட புரவலனில் தொடங்கப்படும். எங்கள் உருவாக்கத் தொகுதி புரவலன்களுக்கு இடையே 1 Gbit/s இணைப்பைப் பயன்படுத்துவதால் இடமாற்றம் சற்று நீளலாம்; Overalls தயாரிப்புச் சூழலில் AWS-இல் இயங்கும்போது இடமாற்றங்கள் மிக வேகமாக இருக்கும் என எதிர்பார்க்கப்படுகிறது."
 
-#: lib/marshall_web/live/machines_live.ex:1256
+#: lib/marshall_web/live/machines_live.ex:1297
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "இயந்திரம் நிறுத்தப்பட்டு, ஒருமுறை நகலெடுக்கப்பட்டு இலக்கில் தொடங்கப்படும்."
 
-#: lib/marshall_web/live/machines_live.ex:663
+#: lib/marshall_web/live/machines_live.ex:704
 #, elixir-autogen, elixir-format
 msgid "The owner's access cannot be changed."
 msgstr "உரிமையாளரின் அணுகலை மாற்ற முடியாது."
 
-#: lib/marshall_web/machine_workspace.ex:185
+#: lib/marshall_web/machine_workspace.ex:188
 #, elixir-autogen, elixir-format
 msgid "The pin could not be changed. Refresh and try again."
 msgstr "பொருத்தத்தை மாற்ற முடியவில்லை. புதுப்பித்து மீண்டும் முயலவும்."
@@ -1559,7 +1559,7 @@ msgstr "பொருத்தத்தை மாற்ற முடியவி�
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "இந்த இயந்திரத்தின் முந்தைய நகல் இன்னும் அதன் நிலைப்பதிவை விடுவிக்கிறது. சிறிது நேரத்தில் மீண்டும் முயலவும்."
 
-#: lib/marshall_web/live/machines_live.ex:673
+#: lib/marshall_web/live/machines_live.ex:714
 #, elixir-autogen, elixir-format
 msgid "The request could not be completed. Check the values and try again."
 msgstr "கோரிக்கையை முடிக்க முடியவில்லை. மதிப்புகளைச் சரிபார்த்து மீண்டும் முயலவும்."
@@ -1574,12 +1574,12 @@ msgstr "கோரிக்கை சிக்கலை எதிர்கொண�
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "அளவு மாற்றம் முடிந்தது; உறுதிப்படுத்தப்பட்ட அளவுகளுடன் இப்பக்கம் புதுப்பிக்கப்படும்."
 
-#: lib/marshall_web/live/machines_live.ex:577
+#: lib/marshall_web/live/machines_live.ex:610
 #, elixir-autogen, elixir-format
 msgid "The same network and access options as Standard, with AI agents that can start child agents."
 msgstr "வழக்கமான நிலையில் உள்ள அதே பிணைய மற்றும் அணுகல் தேர்வுகளுடன், கிளை முகவர்களைத் தொடங்கக்கூடிய செயற்கை நுண்ணறிவு முகவர்கள்."
 
-#: lib/marshall_web/live/machines_live.ex:659
+#: lib/marshall_web/live/machines_live.ex:700
 #, elixir-autogen, elixir-format
 msgid "The selected image needs more memory or disk space."
 msgstr "தேர்ந்தெடுத்த படிமத்திற்கு அதிக நினைவகம் அல்லது வட்டு இடம் தேவை."
@@ -1604,12 +1604,12 @@ msgstr "இந்தக் கோரிக்கை தொடங்குமு�
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr "நகலாக்கம் தொடங்குமுன் மூலம் பணியில் இருந்தது அல்லது மாறியது. தயாரானபோது மீண்டும் முயலவும்."
 
-#: lib/marshall_web/live/launch_live.ex:157
+#: lib/marshall_web/live/launch_live.ex:161
 #, elixir-autogen, elixir-format
 msgid "There is not enough available capacity for a new machine right now."
 msgstr "இப்போது புதிய இயந்திரத்திற்குப் போதுமான கொள்ளளவு இல்லை."
 
-#: lib/marshall_web/live/machines_live.ex:652
+#: lib/marshall_web/live/machines_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "There is not enough available capacity for this machine."
 msgstr "இந்த இயந்திரத்திற்குப் போதுமான கொள்ளளவு இல்லை."
@@ -1619,7 +1619,7 @@ msgstr "இந்த இயந்திரத்திற்குப் போ�
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "இந்த நகலுக்குப் போதுமான கொள்ளளவு இல்லை. இடம் கிடைக்கும்போது மீண்டும் முயலவும்."
 
-#: lib/marshall_web/live/machines_live.ex:654
+#: lib/marshall_web/live/machines_live.ex:695
 #, elixir-autogen, elixir-format
 msgid "This image is no longer available. Refresh and choose another image."
 msgstr "இந்தப் படிமம் இனி கிடைக்காது. புதுப்பித்து மற்றொரு படிமத்தைத் தேர்ந்தெடுக்கவும்."
@@ -1629,22 +1629,22 @@ msgstr "இந்தப் படிமம் இனி கிடைக்கா
 msgid "This launch could not be completed. Sign in and open the link again."
 msgstr "இந்தத் தொடக்கத்தை முடிக்க முடியவில்லை. உள்நுழைந்து இணைப்பை மீண்டும் திறக்கவும்."
 
-#: lib/marshall_web/live/launch_live.ex:150
+#: lib/marshall_web/live/launch_live.ex:154
 #, elixir-autogen, elixir-format
 msgid "This launch link could not be read. Open it again."
 msgstr "இந்தத் தொடக்க இணைப்பைப் படிக்க முடியவில்லை. மீண்டும் திறக்கவும்."
 
-#: lib/marshall_web/live/launch_live.ex:153
+#: lib/marshall_web/live/launch_live.ex:157
 #, elixir-autogen, elixir-format
 msgid "This launch link has expired. Open it again."
 msgstr "இந்தத் தொடக்க இணைப்பு காலாவதியானது. மீண்டும் திறக்கவும்."
 
-#: lib/marshall_web/machine_workspace.ex:179
+#: lib/marshall_web/machine_workspace.ex:182
 #, elixir-autogen, elixir-format
 msgid "This machine is being deleted and cannot be pinned."
 msgstr "இந்த இயந்திரம் நீக்கப்படுகிறது; பொருத்த முடியாது."
 
-#: lib/marshall_web/live/machines_live.ex:665
+#: lib/marshall_web/live/machines_live.ex:706
 #, elixir-autogen, elixir-format
 msgid "This machine is being deleted."
 msgstr "இந்த இயந்திரம் நீக்கப்படுகிறது."
@@ -1654,12 +1654,12 @@ msgstr "இந்த இயந்திரம் நீக்கப்படு�
 msgid "This machine is unavailable or you no longer have management access."
 msgstr "இந்த இயந்திரம் கிடைக்கவில்லை அல்லது உங்களுக்கு இனி நிர்வாக அணுகல் இல்லை."
 
-#: lib/marshall_web/machine_workspace.ex:101
+#: lib/marshall_web/machine_workspace.ex:104
 #, elixir-autogen, elixir-format
 msgid "This machine is unavailable or your access has ended."
 msgstr "இந்த இயந்திரம் கிடைக்கவில்லை அல்லது உங்கள் அணுகல் முடிந்துவிட்டது."
 
-#: lib/marshall_web/live/machines_live.ex:660
+#: lib/marshall_web/live/machines_live.ex:701
 #, elixir-autogen, elixir-format
 msgid "This machine's host is currently unavailable."
 msgstr "இந்த இயந்திரத்தின் புரவலன் தற்போது கிடைக்கவில்லை."
@@ -1674,7 +1674,7 @@ msgstr "இந்தக் களஞ்சிய இணைப்பிலிர�
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "இந்தக் கோரிக்கையை முடிக்க முடியவில்லை. கீழுள்ள சிக்கலையும் கிடைக்கும் செயல்களையும் பார்க்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:668
+#: lib/marshall_web/live/machines_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "This request has already been used. Refresh before trying again."
 msgstr "இந்தக் கோரிக்கை ஏற்கெனவே பயன்படுத்தப்பட்டது. மீண்டும் முயலும் முன் புதுப்பிக்கவும்."
@@ -1684,39 +1684,39 @@ msgstr "இந்தக் கோரிக்கை ஏற்கெனவே ப
 msgid "This request has ended without publishing a clone."
 msgstr "நகலை வெளியிடாமல் இந்தக் கோரிக்கை முடிந்தது."
 
-#: lib/marshall_web/live/machines_live.ex:794
-#: lib/marshall_web/live/machines_live.ex:1034
-#: lib/marshall_web/live/machines_live.ex:1046
+#: lib/marshall_web/live/machines_live.ex:835
+#: lib/marshall_web/live/machines_live.ex:1075
+#: lib/marshall_web/live/machines_live.ex:1087
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "கிடைக்கவில்லை"
 
-#: lib/marshall_web/live/machines_live.ex:616
+#: lib/marshall_web/live/machines_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "தெரியாதது"
 
-#: lib/marshall_web/live/machines_live.ex:666
+#: lib/marshall_web/live/machines_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "Unpin this machine before deleting it."
 msgstr "இந்த இயந்திரத்தை நீக்குமுன் பொருத்தத்தை நீக்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:1420
+#: lib/marshall_web/live/machines_live.ex:1461
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "நீக்குவதற்குப் பொருத்தத்தை நீக்கவும். நீங்கள் பொருத்தியிருக்கும் வரை இதை எதுவும் நீக்க முடியாது."
 
-#: lib/marshall_web/live/overview_live.ex:285
+#: lib/marshall_web/live/overview_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "எப்போது வேண்டுமானாலும் சந்தாவை ரத்து செய்யலாம்."
 
-#: lib/marshall_web/live/overview_live.ex:361
+#: lib/marshall_web/live/overview_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "புதுப்பிக்கப்பட்டது"
 
-#: lib/marshall_web/live/machines_live.ex:1362
+#: lib/marshall_web/live/machines_live.ex:1403
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "தானாகப் புதுப்பிக்கப்படும்"
@@ -1726,7 +1726,7 @@ msgstr "தானாகப் புதுப்பிக்கப்படு�
 msgid "Use current machine state, keeping these sizes"
 msgstr "இந்த அளவுகளை வைத்துக்கொண்டு தற்போதைய இயந்திர நிலையைப் பயன்படுத்து"
 
-#: lib/marshall_web/live/machines_live.ex:686
+#: lib/marshall_web/live/machines_live.ex:727
 #, elixir-autogen, elixir-format
 msgid "Verifying the destination disks"
 msgstr "இலக்கு வட்டுகள் சரிபார்க்கப்படுகின்றன"
@@ -1736,9 +1736,9 @@ msgstr "இலக்கு வட்டுகள் சரிபார்க்�
 msgid "View all →"
 msgstr "அனைத்தையும் பார் →"
 
-#: lib/marshall_web/live/machines_live.ex:612
-#: lib/marshall_web/live/machines_live.ex:1169
-#: lib/marshall_web/live/machines_live.ex:1178
+#: lib/marshall_web/live/machines_live.ex:653
+#: lib/marshall_web/live/machines_live.ex:1210
+#: lib/marshall_web/live/machines_live.ex:1219
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "பார்வையாளர்"
@@ -1768,23 +1768,23 @@ msgstr "இந்த இயந்திரத்தின் முந்தை�
 msgid "Waiting for the source to stop."
 msgstr "மூல இயந்திரம் நிற்கக் காத்திருக்கிறது."
 
-#: lib/marshall_web/live/overview_live.ex:280
+#: lib/marshall_web/live/overview_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "செய்திமடல் சேவையை அணுக முடியவில்லை. பிறகு மீண்டும் முயலவும்."
 
-#: lib/marshall_web/live/launch_live.ex:194
+#: lib/marshall_web/live/launch_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "We couldn't launch that repository"
 msgstr "அந்தக் களஞ்சியத்தைத் தொடங்க முடியவில்லை"
 
-#: lib/marshall_web/live/machines_live.ex:611
+#: lib/marshall_web/live/machines_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "இணையப் பயன்பாடுகள்"
 
-#: lib/marshall_web/live/machines_live.ex:1168
-#: lib/marshall_web/live/machines_live.ex:1177
+#: lib/marshall_web/live/machines_live.ex:1209
+#: lib/marshall_web/live/machines_live.ex:1218
 #, elixir-autogen, elixir-format
 msgid "Web apps only"
 msgstr "இணையப் பயன்பாடுகள் மட்டும்"
@@ -1794,37 +1794,37 @@ msgstr "இணையப் பயன்பாடுகள் மட்டும�
 msgid "What happens"
 msgstr "என்ன நடக்கும்"
 
-#: lib/marshall_web/live/machines_live.ex:1077
+#: lib/marshall_web/live/machines_live.ex:1118
 #, elixir-autogen, elixir-format
 msgid "Who can reach this machine, and what each role allows."
 msgstr "இந்த இயந்திரத்தை யார் அணுகலாம், ஒவ்வொரு பங்கும் எதை அனுமதிக்கும்."
 
-#: lib/marshall_web/machine_workspace.ex:172
+#: lib/marshall_web/machine_workspace.ex:175
 #, elixir-autogen, elixir-format
 msgid "You can pin up to %{value1} machines. Unpin one before pinning another."
 msgstr "நீங்கள் %{value1} இயந்திரங்கள் வரை பொருத்தலாம். மற்றொன்றைப் பொருத்துமுன் ஒன்றின் பொருத்தத்தை நீக்கவும்."
 
-#: lib/marshall_web/live/machines_live.ex:664
+#: lib/marshall_web/live/machines_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "You no longer have permission for this action."
 msgstr "இந்தச் செயலுக்கு உங்களுக்கு இனி அனுமதி இல்லை."
 
-#: lib/marshall_web/live/launch_live.ex:169
+#: lib/marshall_web/live/launch_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Your account cannot create machines."
 msgstr "உங்கள் கணக்கால் இயந்திரங்களை உருவாக்க முடியாது."
 
-#: lib/marshall_web/live/machines_live.ex:720
+#: lib/marshall_web/live/machines_live.ex:761
 #, elixir-autogen, elixir-format
 msgid "Your development environments, personal and shared."
 msgstr "உங்கள் தனிப்பட்ட மற்றும் பகிரப்பட்ட உருவாக்கச் சூழல்கள்."
 
-#: lib/marshall_web/live/machines_live.ex:1051
+#: lib/marshall_web/live/machines_live.ex:1092
 #, elixir-autogen, elixir-format
 msgid "Your disk is retained when the machine is stopped."
 msgstr "இயந்திரம் நிறுத்தப்படும்போது உங்கள் வட்டு பாதுகாக்கப்படும்."
 
-#: lib/marshall_web/live/machines_live.ex:992
+#: lib/marshall_web/live/machines_live.ex:1033
 #, elixir-autogen, elixir-format
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "இயந்திரம் நிறுத்தப்படும்போது உங்கள் வட்டு உங்களிடமே இருக்கும்."
@@ -1864,18 +1864,18 @@ msgstr "சற்று இளைப்பாற இடமுள்ள உங்
 msgid "continue to Overalls"
 msgstr "Overalls-க்குத் தொடரவும்"
 
-#: lib/marshall_web/live/machines_live.ex:1210
+#: lib/marshall_web/live/machines_live.ex:1251
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "உற்பத்தி, திட்டத்தின்-பெயர்"
 
-#: lib/marshall_web/live/machines_live.ex:840
-#: lib/marshall_web/live/machines_live.ex:1140
+#: lib/marshall_web/live/machines_live.ex:881
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← முதல் பக்கம்"
 
-#: lib/marshall_web/live/machines_live.ex:851
+#: lib/marshall_web/live/machines_live.ex:892
 #, elixir-autogen, elixir-format
 msgid "← Machines"
 msgstr "← இயந்திரங்கள்"
@@ -1964,10 +1964,12 @@ msgstr "பரிமாற்ற ஓட்டம் தடைப்பட்ட�
 msgid "Confirm"
 msgstr "உறுதிப்படுத்து"
 
+#: lib/marshall_web/live/launch_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "A new machine will clone the repository when it boots."
 msgstr "புதிய இயந்திரம் தொடங்கும்போது களஞ்சியத்தை நகலெடுக்கும்."
 
+#: lib/marshall_web/live/machines_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "Android (API 36)"
 msgstr "Android (API 36)"

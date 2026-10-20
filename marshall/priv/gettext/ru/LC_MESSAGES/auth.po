@@ -66,6 +66,7 @@ msgstr "Отправка ссылки…"
 
 #: lib/marshall/accounts/deliver_auth_email.ex:150
 #: lib/marshall_web/auth_text.ex:20
+#: lib/marshall_web/scim_sign_in_live.ex:50
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Войти"
@@ -99,6 +100,7 @@ msgid "Unavailable"
 msgstr "Недоступно"
 
 #: lib/marshall_web/controllers/auth_controller.ex:43
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:45
 #, elixir-autogen, elixir-format
 msgid "You are now signed in"
 msgstr "Вы вошли"
@@ -151,10 +153,47 @@ msgstr "Вы действительно хотите выйти?"
 msgid "Sign out"
 msgstr "Выйти"
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:50
 #, elixir-autogen, elixir-format
 msgid "Single sign-on could not authenticate you."
 msgstr "Единый вход не смог подтвердить вашу личность."
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:21
 #, elixir-autogen, elixir-format
 msgid "Single sign-on is not configured."
 msgstr "Единый вход не настроен."
+
+#: lib/marshall_web/scim_sign_in_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Email sign-in is disabled because your organization manages accounts through its directory, and single sign-on is not configured yet. Contact your administrator."
+msgstr "Вход по электронной почте отключён, так как ваша организация управляет учётными записями через свой каталог, а единый вход ещё не настроен. Обратитесь к администратору."
+
+#: lib/marshall/accounts/scim_magic_link_disabled.ex:17
+#, elixir-autogen, elixir-format
+msgid "Magic-link sign-in is disabled while SCIM is enabled."
+msgstr "Вход по волшебной ссылке отключён, пока включён SCIM."
+
+#: lib/marshall_web/scim_sign_in_live.ex:56
+#, elixir-autogen, elixir-format
+msgid "Sign in with single sign-on"
+msgstr "Войти через единый вход"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:63
+#, elixir-autogen, elixir-format
+msgid "The SCIM service account cannot be changed"
+msgstr "Служебную учётную запись SCIM нельзя изменить"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:89
+#, elixir-autogen, elixir-format
+msgid "The retirement grace period has ended; this identity cannot be changed"
+msgstr "Льготный период вывода из эксплуатации истёк; эту идентичность нельзя изменить"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:60
+#, elixir-autogen, elixir-format
+msgid "This identity is permanently retired"
+msgstr "Эта идентичность окончательно выведена из эксплуатации"
+
+#: lib/marshall_web/scim_sign_in_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Your organization manages Overalls accounts through its directory."
+msgstr "Ваша организация управляет учётными записями Overalls через свой каталог."

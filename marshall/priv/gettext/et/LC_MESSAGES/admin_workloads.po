@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Toimingud"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Kas arhiveerida see virtuaalmasin?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:243
+#: lib/marshall_web/live/admin/workloads_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Kustuta"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:176
+#: lib/marshall_web/live/admin/workloads_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Üksikasjad"
@@ -64,7 +64,7 @@ msgstr "Elutsükli taotlus lisatud järjekorda."
 msgid "Lifecycle request was rejected."
 msgstr "Elutsükli taotlus lükati tagasi."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:233
+#: lib/marshall_web/live/admin/workloads_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Teisalda"
@@ -84,7 +84,7 @@ msgstr "Teisaldamistaotlus lisatud järjekorda."
 msgid "Relocation request was rejected."
 msgstr "Teisaldamistaotlus lükati tagasi."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:192
+#: lib/marshall_web/live/admin/workloads_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Muuda suurust"
@@ -94,7 +94,7 @@ msgstr "Muuda suurust"
 msgid "Shape"
 msgstr "Konfiguratsioon"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:221
+#: lib/marshall_web/live/admin/workloads_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Käivita"
@@ -104,12 +104,12 @@ msgstr "Käivita"
 msgid "State"
 msgstr "Olek"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:230
+#: lib/marshall_web/live/admin/workloads_live.ex:236
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Peata"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:184
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Terminal"
@@ -139,42 +139,42 @@ msgstr "Töökoormuste loend pole ajutiselt saadaval."
 msgid "· every 15 seconds"
 msgstr "· iga 15 sekundi järel"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:270
+#: lib/marshall_web/live/admin/workloads_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Kustutatud"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:269
+#: lib/marshall_web/live/admin/workloads_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Ebaõnnestunud"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:268
+#: lib/marshall_web/live/admin/workloads_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "Peatatud"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:265
+#: lib/marshall_web/live/admin/workloads_live.ex:271
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Ootel"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:266
+#: lib/marshall_web/live/admin/workloads_live.ex:272
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Töötab"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:267
+#: lib/marshall_web/live/admin/workloads_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "Peatatud"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:271
+#: lib/marshall_web/live/admin/workloads_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Teadmata"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:258
+#: lib/marshall_web/live/admin/workloads_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Unplaced"
 msgstr "Paigutamata"

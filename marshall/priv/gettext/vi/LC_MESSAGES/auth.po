@@ -64,6 +64,7 @@ msgstr "Đang gửi liên kết…"
 
 #: lib/marshall/accounts/deliver_auth_email.ex:150
 #: lib/marshall_web/auth_text.ex:20
+#: lib/marshall_web/scim_sign_in_live.ex:50
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Đăng nhập"
@@ -94,6 +95,7 @@ msgid "Unavailable"
 msgstr "Không khả dụng"
 
 #: lib/marshall_web/controllers/auth_controller.ex:43
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:45
 #, elixir-autogen, elixir-format
 msgid "You are now signed in"
 msgstr "Bạn đã đăng nhập"
@@ -144,10 +146,47 @@ msgstr "Bạn có chắc muốn đăng xuất không?"
 msgid "Sign out"
 msgstr "Đăng xuất"
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:50
 #, elixir-autogen, elixir-format
 msgid "Single sign-on could not authenticate you."
 msgstr "Đăng nhập một lần không thể xác thực bạn."
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:21
 #, elixir-autogen, elixir-format
 msgid "Single sign-on is not configured."
 msgstr "Đăng nhập một lần chưa được cấu hình."
+
+#: lib/marshall_web/scim_sign_in_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Email sign-in is disabled because your organization manages accounts through its directory, and single sign-on is not configured yet. Contact your administrator."
+msgstr "Đăng nhập bằng email đã bị tắt vì tổ chức của bạn quản lý tài khoản thông qua thư mục của mình và đăng nhập một lần chưa được cấu hình. Hãy liên hệ với quản trị viên của bạn."
+
+#: lib/marshall/accounts/scim_magic_link_disabled.ex:17
+#, elixir-autogen, elixir-format
+msgid "Magic-link sign-in is disabled while SCIM is enabled."
+msgstr "Đăng nhập bằng liên kết kỳ diệu bị tắt khi SCIM đang bật."
+
+#: lib/marshall_web/scim_sign_in_live.ex:56
+#, elixir-autogen, elixir-format
+msgid "Sign in with single sign-on"
+msgstr "Đăng nhập bằng đăng nhập một lần"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:63
+#, elixir-autogen, elixir-format
+msgid "The SCIM service account cannot be changed"
+msgstr "Không thể thay đổi tài khoản dịch vụ SCIM"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:89
+#, elixir-autogen, elixir-format
+msgid "The retirement grace period has ended; this identity cannot be changed"
+msgstr "Thời gian ân hạn ngừng sử dụng đã kết thúc; không thể thay đổi danh tính này"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:60
+#, elixir-autogen, elixir-format
+msgid "This identity is permanently retired"
+msgstr "Danh tính này đã ngừng sử dụng vĩnh viễn"
+
+#: lib/marshall_web/scim_sign_in_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Your organization manages Overalls accounts through its directory."
+msgstr "Tổ chức của bạn quản lý tài khoản Overalls thông qua thư mục của mình."

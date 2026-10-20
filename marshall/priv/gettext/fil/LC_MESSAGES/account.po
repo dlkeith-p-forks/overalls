@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
 
-#: lib/marshall_web/live/account_live.ex:500
+#: lib/marshall_web/live/account_live.ex:604
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
@@ -31,434 +31,436 @@ msgstr "Nauuna sa iyo nang %{span}"
 msgid "%{span} behind you"
 msgstr "Nahuhuli sa iyo nang %{span}"
 
-#: lib/marshall_web/live/account_live.ex:515
+#: lib/marshall_web/live/account_live.ex:622
 #, elixir-autogen, elixir-format
 msgid "1. Profile"
 msgstr "1. Propayl"
 
-#: lib/marshall_web/live/account_live.ex:595
+#: lib/marshall_web/live/account_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "2. Sign-in and passkeys"
 msgstr "2. Mag-sign-in at mga passkey"
 
-#: lib/marshall_web/live/account_live.ex:718
+#: lib/marshall_web/live/account_live.ex:825
 #, elixir-autogen, elixir-format
 msgid "3. SSH keys"
 msgstr "3. SSH key"
 
-#: lib/marshall_web/live/account_live.ex:809
+#: lib/marshall_web/live/account_live.ex:916
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
 msgstr "4. Pagkakakilanlan sa Git"
 
-#: lib/marshall_web/live/account_live.ex:35
-#: lib/marshall_web/live/account_live.ex:480
+#: lib/marshall_web/live/account_live.ex:38
+#: lib/marshall_web/live/account_live.ex:584
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Account ng gumagamit"
 
 # Prior translation for retired source "Add Overalls commit attribution": "Idagdag ang pagkilala sa Overalls sa commit"
-#: lib/marshall_web/live/account_live.ex:827
+#: lib/marshall_web/live/account_live.ex:934
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "Pagkilala sa commit"
 
-#: lib/marshall_web/live/account_live.ex:801
+#: lib/marshall_web/live/account_live.ex:908
 #, elixir-autogen, elixir-format
 msgid "Add SSH key"
 msgstr "Magdagdag ng SSH key"
 
-#: lib/marshall_web/live/account_live.ex:773
+#: lib/marshall_web/live/account_live.ex:880
 #, elixir-autogen, elixir-format
 msgid "Add a key"
 msgstr "Magdagdag ng susi"
 
-#: lib/marshall_web/live/account_live.ex:633
+#: lib/marshall_web/live/account_live.ex:740
 #, elixir-autogen, elixir-format
 msgid "Add passkey"
 msgstr "Magdagdag ng passkey"
 
-#: lib/marshall_web/live/account_live.ex:701
-#: lib/marshall_web/live/account_live.ex:767
+#: lib/marshall_web/live/account_live.ex:808
+#: lib/marshall_web/live/account_live.ex:874
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "Idinagdag"
 
-#: lib/marshall_web/live/account_live.ex:799
+#: lib/marshall_web/live/account_live.ex:906
 #, elixir-autogen, elixir-format
 msgid "Adding…"
 msgstr "Idinaragdag…"
 
-#: lib/marshall_web/live/account_live.ex:370
+#: lib/marshall_web/live/account_live.ex:474
 #, elixir-autogen, elixir-format
 msgid "Choose a language from the list."
 msgstr "Pumili ng wika mula sa listahan."
 
-#: lib/marshall_web/live/account_live.ex:224
+#: lib/marshall_web/live/account_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Choose a time zone from the list."
 msgstr "Pumili ng time zone mula sa listahan."
 
-#: lib/marshall_web/live/account_live.ex:586
+#: lib/marshall_web/live/account_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Clear saved zone"
 msgstr "I-clear ang naka-save na zone"
 
-#: lib/marshall_web/live/account_live.ex:171
+#: lib/marshall_web/live/account_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
 msgstr "Hindi maidagdag ang key na ito. Mag-paste ng isang sinusuportahang pampublikong key; hindi ito dapat kabilang sa ibang account."
 
-#: lib/marshall_web/live/account_live.ex:240
+#: lib/marshall_web/live/account_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Could not clear your time zone."
 msgstr "Hindi ma-clear ang iyong time zone."
 
-#: lib/marshall_web/live/account_live.ex:206
+#: lib/marshall_web/live/account_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Could not remove this key."
 msgstr "Hindi maalis ang key na ito."
 
-#: lib/marshall_web/live/account_live.ex:191
+#: lib/marshall_web/live/account_live.ex:195
 #, elixir-autogen, elixir-format
 msgid "Could not rename this key. Use at most 128 characters."
 msgstr "Hindi mapalitan ang pangalan ng key na ito. Gumamit ng hanggang 128 character."
 
-#: lib/marshall_web/live/account_live.ex:134
+#: lib/marshall_web/live/account_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
 msgstr "Tinanggihan ang pagbabago ng kredensyal. Ang mga pangalan ay dapat na 1–80 character, ang mga pagbabago ay nangangailangan ng passkey na na-verify sa huling 15 minuto, at ang mga administrator ay dapat magtago ng kahit isang passkey."
 
-#: lib/marshall_web/live/account_live.ex:757
+#: lib/marshall_web/live/account_live.ex:864
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "Paglalarawan"
 
-#: lib/marshall_web/live/account_live.ex:451
+#: lib/marshall_web/live/account_live.ex:555
 #, elixir-autogen, elixir-format
 msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
 msgstr "Nakita mula sa iyong browser: %{value1}. I-save ito para makita ng iba ang iyong lokal na oras."
 
-#: lib/marshall_web/live/account_live.ex:544
+#: lib/marshall_web/live/account_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Email"
 msgstr "Email"
 
-#: lib/marshall_web/live/account_live.ex:651
+#: lib/marshall_web/live/account_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "End this verification before the fifteen minutes are up."
 msgstr "Tapusin ang pag-verify na ito bago matapos ang labinlimang minuto."
 
-#: lib/marshall_web/live/account_live.ex:274
+#: lib/marshall_web/live/account_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
 msgstr "Maglagay ng wastong pangalan at email address sa Git."
 
-#: lib/marshall_web/live/account_live.ex:763
+#: lib/marshall_web/live/account_live.ex:870
 #, elixir-autogen, elixir-format
 msgid "Fingerprint"
 msgstr "Tatak ng susi"
 
-#: lib/marshall_web/live/account_live.ex:820
+#: lib/marshall_web/live/account_live.ex:927
 #, elixir-autogen, elixir-format
 msgid "Git email"
 msgstr "Email sa Git"
 
-#: lib/marshall_web/live/account_live.ex:508
+#: lib/marshall_web/live/account_live.ex:612
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Pagkakakilanlan sa Git"
 
-#: lib/marshall_web/live/account_live.ex:267
+#: lib/marshall_web/live/account_live.ex:271
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
 msgstr "Na-save ang mga setting ng Git."
 
-#: lib/marshall_web/live/account_live.ex:813
+#: lib/marshall_web/live/account_live.ex:920
 #, elixir-autogen, elixir-format
 msgid "Git username"
 msgstr "Username sa Git"
 
-#: lib/marshall_web/live/account_live.ex:280
+#: lib/marshall_web/live/account_live.ex:293
+#: lib/marshall_web/live/account_live.ex:386
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Di-wastong kahilingan."
 
-#: lib/marshall_web/live/account_live.ex:707
+#: lib/marshall_web/live/account_live.ex:814
 #, elixir-autogen, elixir-format
 msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
 msgstr "Panatilihin ang isang backup na passkey. Kung nawalan ka ng access, maaaring i-reset ng ibang administrator ang iyong mga passkey."
 
-#: lib/marshall_web/live/account_live.ex:720
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
 msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
 msgstr "Binubuksan ng mga key na nakarehistro dito ang iyong mga machine sa SSH na may parehong account at mga pahintulot gaya ng site na ito. Alisin ang isang susi upang bawiin ang pag-access nito; Ang email sign-in ay patuloy na gumagana nang walang anumang key."
 
-#: lib/marshall_web/live/account_live.ex:776
+#: lib/marshall_web/live/account_live.ex:883
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "Label (opsyonal)"
 
-#: lib/marshall_web/live/account_live.ex:520
+#: lib/marshall_web/live/account_live.ex:627
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "Wika"
 
-#: lib/marshall_web/live/account_live.ex:526
+#: lib/marshall_web/live/account_live.ex:633
 #, elixir-autogen, elixir-format
 msgid "Language is detected from your browser."
 msgstr "Natukoy ang wika mula sa iyong browser."
 
-#: lib/marshall_web/live/account_live.ex:545
+#: lib/marshall_web/live/account_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Local time"
 msgstr "Lokal na oras"
 
-#: lib/marshall_web/live/account_live.ex:650
+#: lib/marshall_web/live/account_live.ex:757
 #, elixir-autogen, elixir-format
 msgid "Lock now"
 msgstr "Lock ngayon"
 
-#: lib/marshall_web/live/account_live.ex:778
+#: lib/marshall_web/live/account_live.ex:885
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "Yung laptop ko"
 
-#: lib/marshall_web/live/account_live.ex:726
+#: lib/marshall_web/live/account_live.ex:833
 #, elixir-autogen, elixir-format
 msgid "No SSH keys yet. You can always sign in here using email."
 msgstr "Wala pang SSH key. Maaari kang mag-sign in dito anumang oras gamit ang email."
 
-#: lib/marshall_web/live/account_live.ex:662
+#: lib/marshall_web/live/account_live.ex:769
 #, elixir-autogen, elixir-format
 msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
 msgstr "Wala pang passkey. Nangangailangan ang unang pagpapatala ng bagong pag-sign in sa email na nakumpleto sa loob ng huling limang minuto. Pagkatapos ng pag-set up, bumalik sa page na pinanggalingan mo at subukang muli ang pagkilos."
 
-#: lib/marshall_web/live/account_live.ex:459
+#: lib/marshall_web/live/account_live.ex:563
 #, elixir-autogen, elixir-format
 msgid "No zone saved and none detected; times are shown in UTC until you choose one."
 msgstr "Walang na-save na zone at walang nakita; ang mga oras ay ipinapakita sa UTC hanggang sa pumili ka ng isa."
 
-#: lib/marshall_web/live/account_live.ex:488
+#: lib/marshall_web/live/account_live.ex:592
 #, elixir-autogen, elixir-format
 msgid "On this page"
 msgstr "Sa pahinang ito"
 
-#: lib/marshall_web/live/account_live.ex:99
+#: lib/marshall_web/live/account_live.ex:103
 #, elixir-autogen, elixir-format
 msgid "Passkey added. Verify it when you need to approve an administrative change."
 msgstr "Idinagdag ang passkey. I-verify ito kapag kailangan mong aprubahan ang isang administratibong pagbabago."
 
-#: lib/marshall_web/live/account_live.ex:681
+#: lib/marshall_web/live/account_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Passkey name"
 msgstr "Pangalan ng passkey"
 
-#: lib/marshall_web/live/account_live.ex:148
+#: lib/marshall_web/live/account_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled or unavailable. You can try again."
 msgstr "Kinansela o hindi available ang kahilingan sa passkey. Maaari mong subukan muli."
 
-#: lib/marshall_web/live/account_live.ex:103
+#: lib/marshall_web/live/account_live.ex:107
 #, elixir-autogen, elixir-format
 msgid "Passkey verified for 15 minutes."
 msgstr "Na-verify ang passkey sa loob ng 15 minuto."
 
-#: lib/marshall_web/live/account_live.ex:606
+#: lib/marshall_web/live/account_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "Passkey verified · %{count} second remaining."
 msgid_plural "Passkey verified · %{count} seconds remaining."
 msgstr[0] "Na-verify ang passkey · %{count} segundo ang natitira."
 msgstr[1] "Na-verify ang passkey · %{count} segundo ang natitira."
 
-#: lib/marshall_web/live/account_live.ex:789
+#: lib/marshall_web/live/account_live.ex:896
 #, elixir-autogen, elixir-format
 msgid "Paste a public key from your .pub file. Never paste a private key."
 msgstr "Mag-paste ng pampublikong key mula sa iyong .pub file. Huwag kailanman mag-paste ng pribadong key."
 
-#: lib/marshall_web/live/account_live.ex:491
+#: lib/marshall_web/live/account_live.ex:595
+#: lib/marshall_web/live/account_live.ex:998
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Propayl"
 
-#: lib/marshall_web/live/account_live.ex:783
+#: lib/marshall_web/live/account_live.ex:890
 #, elixir-autogen, elixir-format
 msgid "Public key"
 msgstr "Pampublikong susi"
 
-#: lib/marshall_web/live/account_live.ex:698
-#: lib/marshall_web/live/account_live.ex:743
+#: lib/marshall_web/live/account_live.ex:805
+#: lib/marshall_web/live/account_live.ex:850
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Alisin"
 
-#: lib/marshall_web/live/account_live.ex:737
+#: lib/marshall_web/live/account_live.ex:844
 #, elixir-autogen, elixir-format
 msgid "Remove this key's SSH access? Already accepted machine operations will continue."
 msgstr "Alisin ang SSH access ng key na ito? Magpapatuloy ang tinatanggap na mga pagpapatakbo ng makina."
 
-#: lib/marshall_web/live/account_live.ex:692
+#: lib/marshall_web/live/account_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "Alisin ang passkey na ito? Kapag inalis ang iyong huling passkey, masa-sign out ka sa lahat ng dako."
 
-#: lib/marshall_web/live/account_live.ex:684
-#: lib/marshall_web/live/account_live.ex:760
+#: lib/marshall_web/live/account_live.ex:791
+#: lib/marshall_web/live/account_live.ex:867
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr "Palitan ang pangalan"
 
-#: lib/marshall_web/live/account_live.ex:658
+#: lib/marshall_web/live/account_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Return to the requested page and retry the action →"
 msgstr "Bumalik sa hiniling na pahina at subukang muli ang pagkilos →"
 
-#: lib/marshall_web/live/account_live.ex:465
+#: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSH na susi"
 
-#: lib/marshall_web/live/account_live.ex:164
+#: lib/marshall_web/live/account_live.ex:168
 #, elixir-autogen, elixir-format
 msgid "SSH key added."
 msgstr "Idinagdag ang SSH key."
 
-#: lib/marshall_web/live/account_live.ex:201
+#: lib/marshall_web/live/account_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "SSH key removed."
 msgstr "Inalis ang SSH key."
 
-#: lib/marshall_web/live/account_live.ex:184
+#: lib/marshall_web/live/account_live.ex:188
 #, elixir-autogen, elixir-format
 msgid "SSH key renamed."
 msgstr "Napalitan ang pangalan ng SSH key."
 
-#: lib/marshall_web/live/account_live.ex:499
+#: lib/marshall_web/live/account_live.ex:603
 #, elixir-autogen, elixir-format
 msgid "SSH keys"
 msgstr "SSH key"
 
-#: lib/marshall_web/live/account_live.ex:349
+#: lib/marshall_web/live/account_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "SSH keys are temporarily unavailable."
 msgstr "Pansamantalang hindi available ang mga SSH key."
 
-#: lib/marshall_web/live/account_live.ex:830
+#: lib/marshall_web/live/account_live.ex:937
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
 msgstr "I-save ang mga setting ng Git"
 
-#: lib/marshall_web/live/account_live.ex:530
+#: lib/marshall_web/live/account_live.ex:637
 #, elixir-autogen, elixir-format
 msgid "Save language"
 msgstr "I-save ang wika"
 
-#: lib/marshall_web/live/account_live.ex:577
+#: lib/marshall_web/live/account_live.ex:684
 #, elixir-autogen, elixir-format
 msgid "Save time zone"
 msgstr "I-save ang time zone"
 
-#: lib/marshall_web/live/account_live.ex:443
+#: lib/marshall_web/live/account_live.ex:547
 #, elixir-autogen, elixir-format
 msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
 msgstr "Na-save: %{value1}. Nakikita ng iba na may kasamang team, machine o thread sa iyo ang iyong lokal na oras."
 
-#: lib/marshall_web/live/account_live.ex:495
+#: lib/marshall_web/live/account_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Sign-in and passkeys"
 msgstr "Mag-sign in at mga passkey"
 
-#: lib/marshall_web/live/account_live.ex:569
+#: lib/marshall_web/live/account_live.ex:676
 #, elixir-autogen, elixir-format
 msgid "Time zone"
 msgstr "Sona ng oras"
 
-#: lib/marshall_web/live/account_live.ex:235
+#: lib/marshall_web/live/account_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Time zone cleared. Your browser's zone is used."
 msgstr "Naalis ang sona ng oras. Ginagamit ang sona ng iyong browser."
 
-#: lib/marshall_web/live/account_live.ex:220
+#: lib/marshall_web/live/account_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Time zone saved."
 msgstr "Na-save ang sona ng oras."
 
-#: lib/marshall_web/live/account_live.ex:766
+#: lib/marshall_web/live/account_live.ex:873
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Uri"
 
-#: lib/marshall_web/live/account_live.ex:539
+#: lib/marshall_web/live/account_live.ex:646
 #, elixir-autogen, elixir-format
 msgid "Use browser language"
 msgstr "Gamitin ang wika ng browser"
 
-#: lib/marshall_web/live/account_live.ex:113
+#: lib/marshall_web/live/account_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Please try again."
 msgstr "Hindi makumpleto ang beripikasyon. Pakisubukang muli."
 
-#: lib/marshall_web/live/account_live.ex:75
+#: lib/marshall_web/live/account_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
 msgstr "Kailangan ng beripikasyon. Gumamit ng umiiral na passkey, o mag-sign out at humiling ng bagong link sa email bago ang unang pagpaparehistro."
 
-#: lib/marshall_web/live/account_live.ex:614
+#: lib/marshall_web/live/account_live.ex:721
 #, elixir-autogen, elixir-format
 msgid "Verify a passkey before making administrative changes or changing passkeys."
 msgstr "Beripikahin ang passkey bago gumawa ng mga pagbabagong pang-administrasyon o magbago ng mga passkey."
 
-#: lib/marshall_web/live/account_live.ex:641
+#: lib/marshall_web/live/account_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Beripikahin gamit ang passkey"
 
-#: lib/marshall_web/live/account_live.ex:482
+#: lib/marshall_web/live/account_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Who you are, how you prove it, and the keys that reach your machines."
 msgstr "Kung sino ka, paano mo ito pinatutunayan, at ang mga susing nagbibigay ng pag-access sa iyong mga makina."
 
-#: lib/marshall_web/live/account_live.ex:597
+#: lib/marshall_web/live/account_live.ex:704
 #, elixir-autogen, elixir-format
 msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
 msgstr "Nagsa-sign in ka gamit ang link sa email. Pinatutunayan ng passkey ang iyong pagkakakilanlan bago ang mga pagbabagong pang-administrasyon at pagbabago sa passkey; hindi ito hinihingi sa pang-araw-araw na paggamit ng iyong lugar-paggawa."
 
-#: lib/marshall_web/live/account_live.ex:560
+#: lib/marshall_web/live/account_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
 msgstr "Ang iyong email ang pagkakakilanlan mo sa pag-sign in at hindi ito mababago rito. Ipinapakita ang lahat ng oras sa Overalls ayon sa iyong sona; makikita ng mga taong kasama mo sa koponan, makina o usapan, at ng mga tagapangasiwa, ang iyong kasalukuyang lokal na oras sa tabi ng iyong email kapag na-save na ang sona."
 
-#: lib/marshall_web/live/account_live.ex:667
+#: lib/marshall_web/live/account_live.ex:774
 #, elixir-autogen, elixir-format
 msgid "Your passkeys"
 msgstr "Iyong mga passkey"
 
-#: lib/marshall_web/live/account_live.ex:621
+#: lib/marshall_web/live/account_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
 msgstr "Na-reset ang iyong mga passkey. Magrehistro ng kapalit bago mag-apruba ng mga pagbabagong pang-administrasyon."
 
-#: lib/marshall_web/live/account_live.ex:525
+#: lib/marshall_web/live/account_live.ex:632
 #, elixir-autogen, elixir-format
 msgid "Your saved language overrides browser preferences."
 msgstr "Nanaig ang iyong na-save na wika sa mga kagustuhan ng browser."
 
-#: lib/marshall_web/live/account_live.ex:613
+#: lib/marshall_web/live/account_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "[not verified]"
 msgstr "[hindi beripikado]"
 
-#: lib/marshall_web/live/account_live.ex:605
+#: lib/marshall_web/live/account_live.ex:712
 #, elixir-autogen, elixir-format
 msgid "[verified]"
 msgstr "[beripikado]"
 
-#: lib/marshall_web/live/account_live.ex:492
+#: lib/marshall_web/live/account_live.ex:596
 #, elixir-autogen, elixir-format
 msgid "email, time zone and your local clock"
 msgstr "email, sona ng oras at iyong lokal na orasan"
 
-#: lib/marshall_web/live/account_live.ex:509
+#: lib/marshall_web/live/account_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
 msgstr "mga bagong makina at pagkilala sa commit"
@@ -468,51 +470,63 @@ msgstr "mga bagong makina at pagkilala sa commit"
 msgid "same time as you"
 msgstr "kapareho ng oras mo"
 
-#: lib/marshall_web/live/account_live.ex:496
+#: lib/marshall_web/live/account_live.ex:600
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "beripikasyon para sa mga pagbabagong pang-administrasyon"
 
+#: lib/marshall_web/live/account_live.ex:1015
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
 
+#: lib/marshall_web/live/account_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Choose a valid image, profile and machine size."
 msgstr "Pumili ng wastong image, profile at laki ng machine."
 
+#: lib/marshall_web/live/account_live.ex:1030
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB)"
 msgstr "Disk (GiB)"
 
+#: lib/marshall_web/live/account_live.ex:1007
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "Imahe"
 
+#: lib/marshall_web/live/account_live.ex:959
 #, elixir-autogen, elixir-format
 msgid "Images are unavailable. Try again later."
 msgstr "Hindi available ang mga image. Subukang muli mamaya."
 
+#: lib/marshall_web/live/account_live.ex:616
+#: lib/marshall_web/live/account_live.ex:950
 #, elixir-autogen, elixir-format
 msgid "Machine defaults"
 msgstr "Mga default ng machine"
 
+#: lib/marshall_web/live/account_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Machine defaults saved."
 msgstr "Na-save ang mga default ng machine."
 
+#: lib/marshall_web/live/account_live.ex:1023
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Memorya (MiB)"
 
+#: lib/marshall_web/live/account_live.ex:953
 #, elixir-autogen, elixir-format
 msgid "Presets apply to new machines only."
 msgstr "Nalalapat lang ang mga preset sa mga bagong machine."
 
+#: lib/marshall_web/live/account_live.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Save defaults"
 msgstr "I-save ang mga default"
 
+#: lib/marshall_web/live/account_live.ex:1000
 #, elixir-autogen, elixir-format
 msgid "Work"
 msgstr "Trabaho"

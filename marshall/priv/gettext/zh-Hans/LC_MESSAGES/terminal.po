@@ -282,7 +282,7 @@ msgid "Opening terminal; recovering the same request if the connection was inter
 msgstr "正在打开终端；如果连接中断，会恢复同一请求。"
 
 #: lib/marshall_web/components/workspace_components.ex:338
-#: lib/marshall_web/live/admin/workloads_live.ex:212
+#: lib/marshall_web/live/admin/workloads_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "暂停"
@@ -350,7 +350,7 @@ msgid "Request control"
 msgstr "请求控制"
 
 #: lib/marshall_web/components/workspace_components.ex:329
-#: lib/marshall_web/live/admin/workloads_live.ex:203
+#: lib/marshall_web/live/admin/workloads_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "恢复机器"

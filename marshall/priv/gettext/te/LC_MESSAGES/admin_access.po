@@ -109,7 +109,7 @@ msgid "Invalid administrative request."
 msgstr "చెల్లని నిర్వాహక అభ్యర్థన."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
-#: lib/marshall_web/live/admin/scim_live.ex:42
+#: lib/marshall_web/live/admin/scim_live.ex:58
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "చెల్లని అభ్యర్థన."
@@ -318,7 +318,7 @@ msgstr "ఈ పనిభార తరలింపును మళ్లీ ప�
 msgid "reset this account's passkeys"
 msgstr "ఖాతా పాస్‌కీలను రీసెట్ చేయి"
 
-#: lib/marshall_web/admin_elevation.ex:53
+#: lib/marshall_web/admin_elevation.ex:54
 #, elixir-autogen, elixir-format
 msgid "retry this background job"
 msgstr "ఈ నేపథ్య జాబ్ మళ్లీ ప్రయత్నించు"
@@ -353,52 +353,183 @@ msgstr "ఖాతాను అన్ని చోట్ల సైన్ అవ�
 msgid "start this node evacuation"
 msgstr "ఈ నోడ్ ఖాళీ చేయడం ప్రారంభించు"
 
-#: lib/marshall_web/live/admin/scim_live.ex:69
+#: lib/marshall_web/live/admin/scim_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr "డైరెక్టరీ ప్రొవిజనింగ్, గుర్తింపు జీవితచక్రం మరియు నిర్వహిత బృందాలను కాన్ఫిగర్ చేయండి."
 
-#: lib/marshall_web/live/admin/scim_live.ex:98
+#: lib/marshall_web/live/admin/scim_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr "ఈ బేరర్ టోకెన్‌ను ఇప్పుడే కాపీ చేయండి. ఇది మళ్లీ చూపబడదు."
 
-#: lib/marshall_web/live/admin/scim_live.ex:92
+#: lib/marshall_web/live/admin/scim_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr "SCIMని నిలిపివేయి"
 
-#: lib/marshall_web/live/admin/scim_live.ex:93
+#: lib/marshall_web/live/admin/scim_live.ex:253
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr "SCIMని ప్రారంభించి టోకెన్ సృష్టించు"
 
-#: lib/marshall_web/live/admin/scim_live.ex:75
-#, elixir-autogen, elixir-format
-msgid "SCIM configuration"
-msgstr "SCIM కాన్ఫిగరేషన్"
-
-#: lib/marshall_web/live/admin/scim_live.ex:36
+#: lib/marshall_web/live/admin/scim_live.ex:87
 #, elixir-autogen, elixir-format
 msgid "SCIM configuration could not be updated."
 msgstr "SCIM కాన్ఫిగరేషన్‌ను నవీకరించలేకపోయాం."
 
-#: lib/marshall_web/live/admin/scim_live.ex:29
-#, elixir-autogen, elixir-format
-msgid "SCIM configuration updated."
-msgstr "SCIM కాన్ఫిగరేషన్ నవీకరించబడింది."
-
-#: lib/marshall_web/live/admin/scim_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "SCIM is disabled."
-msgstr "SCIM నిలిపివేయబడింది."
-
-#: lib/marshall_web/live/admin/scim_live.ex:78
-#, elixir-autogen, elixir-format
-msgid "SCIM is enabled."
-msgstr "SCIM ప్రారంభించబడింది."
-
-#: lib/marshall_web/live/admin/scim_live.ex:67
+#: lib/marshall_web/live/admin/scim_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "SCIM ప్రొవిజనింగ్"
+
+#: lib/marshall_web/live/admin/scim_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "A client secret is set. Leave blank to keep it."
+msgstr "క్లయింట్ రహస్యం సెట్ చేయబడింది. దానిని ఉంచడానికి ఖాళీగా వదిలేయండి."
+
+#: lib/marshall_web/live/admin/scim_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Accounts pending retirement"
+msgstr "విరమణ పెండింగ్‌లో ఉన్న ఖాతాలు"
+
+#: lib/marshall_web/live/admin/scim_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Clear the stored client secret"
+msgstr "నిల్వ చేసిన క్లయింట్ రహస్యాన్ని తొలగించు"
+
+#: lib/marshall_web/live/admin/scim_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM provisioning? Managed teams stay locked until an administrator hands them off."
+msgstr "SCIM ప్రొవిజనింగ్‌ను నిలిపివేయాలా? నిర్వాహకుడు అప్పగించే వరకు నిర్వహించబడే బృందాలు లాక్ చేయబడి ఉంటాయి."
+
+#: lib/marshall_web/live/admin/scim_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
+msgstr "SCIMను ప్రారంభించడం మ్యాజిక్-లింక్ సైన్ ఇన్‌ను నిలిపివేస్తుంది, ఏడు రోజుల గ్రేస్ వ్యవధి తర్వాత స్థానిక బృందాలను ఆర్కైవ్ చేస్తుంది మరియు bearer టోకెన్‌ను రూపొందిస్తుంది."
+
+#: lib/marshall_web/live/admin/scim_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Enter an absolute https:// issuer URL."
+msgstr "https://తో ప్రారంభమయ్యే సంపూర్ణ జారీదారు URLను నమోదు చేయండి."
+
+#: lib/marshall_web/live/admin/scim_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "No client secret is set."
+msgstr "క్లయింట్ రహస్యం ఏదీ సెట్ చేయబడలేదు."
+
+#: lib/marshall_web/live/admin/scim_live.ex:320
+#, elixir-autogen, elixir-format
+msgid "OIDC client ID"
+msgstr "OIDC క్లయింట్ ID"
+
+#: lib/marshall_web/live/admin/scim_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "OIDC client secret"
+msgstr "OIDC క్లయింట్ రహస్యం"
+
+#: lib/marshall_web/live/admin/scim_live.ex:312
+#, elixir-autogen, elixir-format
+msgid "OIDC issuer"
+msgstr "OIDC జారీదారు"
+
+#: lib/marshall_web/live/admin/scim_live.ex:215
+#: lib/marshall_web/live/admin/scim_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Provisioning"
+msgstr "ప్రొవిజనింగ్"
+
+#: lib/marshall_web/live/admin/scim_live.ex:277
+#, elixir-autogen, elixir-format
+msgid "Rotate bearer token"
+msgstr "bearer టోకెన్‌ను మార్చు"
+
+#: lib/marshall_web/live/admin/scim_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Rotate the SCIM bearer token? The directory must be updated with the new token."
+msgstr "SCIM bearer టోకెన్‌ను మార్చాలా? డైరెక్టరీని కొత్త టోకెన్‌తో నవీకరించాలి."
+
+#: lib/marshall_web/live/admin/scim_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Rotating the bearer token immediately invalidates the previous token."
+msgstr "bearer టోకెన్‌ను మార్చడం మునుపటి టోకెన్‌ను వెంటనే చెల్లనిదిగా చేస్తుంది."
+
+#: lib/marshall_web/live/admin/scim_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "SCIM bearer token rotated."
+msgstr "SCIM bearer టోకెన్ మార్చబడింది."
+
+#: lib/marshall_web/live/admin/scim_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning disabled."
+msgstr "SCIM ప్రొవిజనింగ్ నిలిపివేయబడింది."
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning enabled."
+msgstr "SCIM ప్రొవిజనింగ్ ప్రారంభించబడింది."
+
+#: lib/marshall_web/live/admin/scim_live.ex:348
+#, elixir-autogen, elixir-format
+msgid "Save single sign-on settings"
+msgstr "సింగిల్ సైన్-ఆన్ సెట్టింగ్‌లను సేవ్ చేయి"
+
+#: lib/marshall_web/live/admin/scim_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Single sign-on"
+msgstr "సింగిల్ సైన్-ఆన్"
+
+#: lib/marshall_web/live/admin/scim_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Single sign-on (OIDC)"
+msgstr "సింగిల్ సైన్-ఆన్ (OIDC)"
+
+#: lib/marshall_web/live/admin/scim_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Single sign-on settings saved."
+msgstr "సింగిల్ సైన్-ఆన్ సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి."
+
+#: lib/marshall_web/live/admin/scim_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "స్థితి"
+
+#: lib/marshall_web/live/admin/scim_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Teams retiring"
+msgstr "విరమిస్తున్న బృందాలు"
+
+#: lib/marshall_web/live/admin/scim_live.ex:314
+#, elixir-autogen, elixir-format
+msgid "The exact https:// issuer URL from provider discovery."
+msgstr "ప్రొవైడర్ డిస్కవరీ నుండి ఖచ్చితమైన https:// జారీదారు URL."
+
+#: lib/marshall_web/live/admin/scim_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "[configured]"
+msgstr "[కాన్ఫిగర్ చేయబడింది]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:223
+#, elixir-autogen, elixir-format
+msgid "[disabled]"
+msgstr "[నిలిపివేయబడింది]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "[enabled]"
+msgstr "[ప్రారంభించబడింది]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "[not configured]"
+msgstr "[కాన్ఫిగర్ చేయబడలేదు]"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "change SCIM provisioning"
+msgstr "SCIM ప్రొవిజనింగ్‌ను మార్చు"
+
+#: lib/marshall_web/live/admin/scim_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "అందుబాటులో లేదు"

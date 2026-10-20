@@ -64,6 +64,7 @@ msgstr "링크 보내는 중…"
 
 #: lib/marshall/accounts/deliver_auth_email.ex:150
 #: lib/marshall_web/auth_text.ex:20
+#: lib/marshall_web/scim_sign_in_live.ex:50
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "로그인"
@@ -97,6 +98,7 @@ msgid "Unavailable"
 msgstr "없는"
 
 #: lib/marshall_web/controllers/auth_controller.ex:43
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:45
 #, elixir-autogen, elixir-format
 msgid "You are now signed in"
 msgstr "이제 로그인되었습니다"
@@ -149,10 +151,47 @@ msgstr "로그아웃하시겠습니까?"
 msgid "Sign out"
 msgstr "로그아웃"
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:50
 #, elixir-autogen, elixir-format
 msgid "Single sign-on could not authenticate you."
 msgstr "통합 로그인으로 인증할 수 없습니다."
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:21
 #, elixir-autogen, elixir-format
 msgid "Single sign-on is not configured."
 msgstr "통합 로그인이 구성되지 않았습니다."
+
+#: lib/marshall_web/scim_sign_in_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Email sign-in is disabled because your organization manages accounts through its directory, and single sign-on is not configured yet. Contact your administrator."
+msgstr "조직이 디렉터리를 통해 계정을 관리하고 있으며 싱글 사인온이 아직 구성되지 않아 이메일 로그인이 비활성화되었습니다. 관리자에게 문의하세요."
+
+#: lib/marshall/accounts/scim_magic_link_disabled.ex:17
+#, elixir-autogen, elixir-format
+msgid "Magic-link sign-in is disabled while SCIM is enabled."
+msgstr "SCIM이 활성화된 동안에는 매직 링크 로그인이 비활성화됩니다."
+
+#: lib/marshall_web/scim_sign_in_live.ex:56
+#, elixir-autogen, elixir-format
+msgid "Sign in with single sign-on"
+msgstr "싱글 사인온으로 로그인"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:63
+#, elixir-autogen, elixir-format
+msgid "The SCIM service account cannot be changed"
+msgstr "SCIM 서비스 계정은 변경할 수 없습니다"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:89
+#, elixir-autogen, elixir-format
+msgid "The retirement grace period has ended; this identity cannot be changed"
+msgstr "폐기 유예 기간이 종료되었습니다. 이 ID는 변경할 수 없습니다"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:60
+#, elixir-autogen, elixir-format
+msgid "This identity is permanently retired"
+msgstr "이 ID는 영구적으로 폐기되었습니다"
+
+#: lib/marshall_web/scim_sign_in_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Your organization manages Overalls accounts through its directory."
+msgstr "조직이 디렉터리를 통해 Overalls 계정을 관리합니다."

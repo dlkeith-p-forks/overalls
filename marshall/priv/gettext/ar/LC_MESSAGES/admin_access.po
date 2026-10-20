@@ -109,7 +109,7 @@ msgid "Invalid administrative request."
 msgstr "طلب إداري غير صالح."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
-#: lib/marshall_web/live/admin/scim_live.ex:42
+#: lib/marshall_web/live/admin/scim_live.ex:58
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "طلب غير صالح."
@@ -318,7 +318,7 @@ msgstr "إعادة تخطيط نقل حمل العمل هذا"
 msgid "reset this account's passkeys"
 msgstr "إعادة تعيين مفاتيح مرور هذا الحساب"
 
-#: lib/marshall_web/admin_elevation.ex:53
+#: lib/marshall_web/admin_elevation.ex:54
 #, elixir-autogen, elixir-format
 msgid "retry this background job"
 msgstr "إعادة محاولة هذه المهمة الخلفية"
@@ -353,52 +353,183 @@ msgstr "تسجيل خروج هذا الحساب من كل مكان"
 msgid "start this node evacuation"
 msgstr "بدء إخلاء هذه العقدة"
 
-#: lib/marshall_web/live/admin/scim_live.ex:69
+#: lib/marshall_web/live/admin/scim_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr "اضبط توفير الدليل ودورة حياة الهوية والفرق المُدارة."
 
-#: lib/marshall_web/live/admin/scim_live.ex:98
+#: lib/marshall_web/live/admin/scim_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr "انسخ رمز الحامل هذا الآن. لن يظهر مرة أخرى."
 
-#: lib/marshall_web/live/admin/scim_live.ex:92
+#: lib/marshall_web/live/admin/scim_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr "تعطيل SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:93
+#: lib/marshall_web/live/admin/scim_live.ex:253
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr "تمكين SCIM وإنشاء رمز"
 
-#: lib/marshall_web/live/admin/scim_live.ex:75
-#, elixir-autogen, elixir-format
-msgid "SCIM configuration"
-msgstr "إعداد SCIM"
-
-#: lib/marshall_web/live/admin/scim_live.ex:36
+#: lib/marshall_web/live/admin/scim_live.ex:87
 #, elixir-autogen, elixir-format
 msgid "SCIM configuration could not be updated."
 msgstr "تعذر تحديث إعداد SCIM."
 
-#: lib/marshall_web/live/admin/scim_live.ex:29
-#, elixir-autogen, elixir-format
-msgid "SCIM configuration updated."
-msgstr "تم تحديث إعداد SCIM."
-
-#: lib/marshall_web/live/admin/scim_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "SCIM is disabled."
-msgstr "SCIM معطل."
-
-#: lib/marshall_web/live/admin/scim_live.ex:78
-#, elixir-autogen, elixir-format
-msgid "SCIM is enabled."
-msgstr "SCIM مفعل."
-
-#: lib/marshall_web/live/admin/scim_live.ex:67
+#: lib/marshall_web/live/admin/scim_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "توفير SCIM"
+
+#: lib/marshall_web/live/admin/scim_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "A client secret is set. Leave blank to keep it."
+msgstr "تم تعيين سر العميل. اتركه فارغًا للإبقاء عليه."
+
+#: lib/marshall_web/live/admin/scim_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Accounts pending retirement"
+msgstr "حسابات بانتظار الإيقاف النهائي"
+
+#: lib/marshall_web/live/admin/scim_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Clear the stored client secret"
+msgstr "مسح سر العميل المخزَّن"
+
+#: lib/marshall_web/live/admin/scim_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM provisioning? Managed teams stay locked until an administrator hands them off."
+msgstr "هل تريد تعطيل توفير SCIM؟ تظل الفرق المُدارة مقفلة حتى يسلّمها مسؤول النظام."
+
+#: lib/marshall_web/live/admin/scim_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
+msgstr "يؤدي تمكين SCIM إلى تعطيل تسجيل الدخول بالرابط السحري، وأرشفة الفرق الأصلية بعد فترة سماح مدتها سبعة أيام، وإنشاء رمز حامل."
+
+#: lib/marshall_web/live/admin/scim_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Enter an absolute https:// issuer URL."
+msgstr "أدخل عنوان URL مطلقًا للجهة المُصدِرة يبدأ بـ https://."
+
+#: lib/marshall_web/live/admin/scim_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "No client secret is set."
+msgstr "لم يتم تعيين سر للعميل."
+
+#: lib/marshall_web/live/admin/scim_live.ex:320
+#, elixir-autogen, elixir-format
+msgid "OIDC client ID"
+msgstr "معرّف عميل OIDC"
+
+#: lib/marshall_web/live/admin/scim_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "OIDC client secret"
+msgstr "سر عميل OIDC"
+
+#: lib/marshall_web/live/admin/scim_live.ex:312
+#, elixir-autogen, elixir-format
+msgid "OIDC issuer"
+msgstr "جهة إصدار OIDC"
+
+#: lib/marshall_web/live/admin/scim_live.ex:215
+#: lib/marshall_web/live/admin/scim_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Provisioning"
+msgstr "التوفير"
+
+#: lib/marshall_web/live/admin/scim_live.ex:277
+#, elixir-autogen, elixir-format
+msgid "Rotate bearer token"
+msgstr "تدوير رمز الحامل"
+
+#: lib/marshall_web/live/admin/scim_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Rotate the SCIM bearer token? The directory must be updated with the new token."
+msgstr "هل تريد تدوير رمز حامل SCIM؟ يجب تحديث الدليل بالرمز الجديد."
+
+#: lib/marshall_web/live/admin/scim_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Rotating the bearer token immediately invalidates the previous token."
+msgstr "يؤدي تدوير رمز الحامل إلى إبطال الرمز السابق فورًا."
+
+#: lib/marshall_web/live/admin/scim_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "SCIM bearer token rotated."
+msgstr "تم تدوير رمز حامل SCIM."
+
+#: lib/marshall_web/live/admin/scim_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning disabled."
+msgstr "تم تعطيل توفير SCIM."
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning enabled."
+msgstr "تم تمكين توفير SCIM."
+
+#: lib/marshall_web/live/admin/scim_live.ex:348
+#, elixir-autogen, elixir-format
+msgid "Save single sign-on settings"
+msgstr "حفظ إعدادات تسجيل الدخول الموحد"
+
+#: lib/marshall_web/live/admin/scim_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Single sign-on"
+msgstr "تسجيل الدخول الموحد"
+
+#: lib/marshall_web/live/admin/scim_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Single sign-on (OIDC)"
+msgstr "تسجيل الدخول الموحد (OIDC)"
+
+#: lib/marshall_web/live/admin/scim_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Single sign-on settings saved."
+msgstr "تم حفظ إعدادات تسجيل الدخول الموحد."
+
+#: lib/marshall_web/live/admin/scim_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "الحالة"
+
+#: lib/marshall_web/live/admin/scim_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Teams retiring"
+msgstr "فرق قيد الإيقاف النهائي"
+
+#: lib/marshall_web/live/admin/scim_live.ex:314
+#, elixir-autogen, elixir-format
+msgid "The exact https:// issuer URL from provider discovery."
+msgstr "عنوان URL الدقيق للجهة المُصدِرة بصيغة https:// من اكتشاف المزوّد."
+
+#: lib/marshall_web/live/admin/scim_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "[configured]"
+msgstr "[تم الإعداد]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:223
+#, elixir-autogen, elixir-format
+msgid "[disabled]"
+msgstr "[معطّل]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "[enabled]"
+msgstr "[مُمكَّن]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "[not configured]"
+msgstr "[لم يتم الإعداد]"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "change SCIM provisioning"
+msgstr "تغيير توفير SCIM"
+
+#: lib/marshall_web/live/admin/scim_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "غير متاح"

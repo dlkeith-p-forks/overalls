@@ -109,7 +109,7 @@ msgid "Invalid administrative request."
 msgstr "செல்லாத நிர்வாகக் கோரிக்கை."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
-#: lib/marshall_web/live/admin/scim_live.ex:42
+#: lib/marshall_web/live/admin/scim_live.ex:58
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "செல்லாத கோரிக்கை."
@@ -316,7 +316,7 @@ msgstr "இந்தப் பணிச்சுமை இடமாற்றத�
 msgid "reset this account's passkeys"
 msgstr "இந்தக் கணக்கின் அணுகல் சாவிகளை மீட்டமை"
 
-#: lib/marshall_web/admin_elevation.ex:53
+#: lib/marshall_web/admin_elevation.ex:54
 #, elixir-autogen, elixir-format
 msgid "retry this background job"
 msgstr "இந்தப் பின்னணிப் பணியை மீண்டும் முயல்"
@@ -351,52 +351,183 @@ msgstr "இந்தக் கணக்கை எங்கிருந்து�
 msgid "start this node evacuation"
 msgstr "இந்த முனை வெளியேற்றத்தைத் தொடங்கு"
 
-#: lib/marshall_web/live/admin/scim_live.ex:69
+#: lib/marshall_web/live/admin/scim_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr "அடைவு வழங்கல், அடையாள வாழ்க்கைச் சுழற்சி மற்றும் நிர்வகிக்கப்படும் அணிகளை உள்ளமைக்கவும்."
 
-#: lib/marshall_web/live/admin/scim_live.ex:98
+#: lib/marshall_web/live/admin/scim_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr "இந்த பேரர் டோக்கனை இப்போது நகலெடுக்கவும். இது மீண்டும் காட்டப்படாது."
 
-#: lib/marshall_web/live/admin/scim_live.ex:92
+#: lib/marshall_web/live/admin/scim_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr "SCIM ஐ முடக்கு"
 
-#: lib/marshall_web/live/admin/scim_live.ex:93
+#: lib/marshall_web/live/admin/scim_live.ex:253
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr "SCIM ஐ இயக்கி டோக்கனை உருவாக்கு"
 
-#: lib/marshall_web/live/admin/scim_live.ex:75
-#, elixir-autogen, elixir-format
-msgid "SCIM configuration"
-msgstr "SCIM உள்ளமைவு"
-
-#: lib/marshall_web/live/admin/scim_live.ex:36
+#: lib/marshall_web/live/admin/scim_live.ex:87
 #, elixir-autogen, elixir-format
 msgid "SCIM configuration could not be updated."
 msgstr "SCIM உள்ளமைவைப் புதுப்பிக்க முடியவில்லை."
 
-#: lib/marshall_web/live/admin/scim_live.ex:29
-#, elixir-autogen, elixir-format
-msgid "SCIM configuration updated."
-msgstr "SCIM உள்ளமைவு புதுப்பிக்கப்பட்டது."
-
-#: lib/marshall_web/live/admin/scim_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "SCIM is disabled."
-msgstr "SCIM முடக்கப்பட்டுள்ளது."
-
-#: lib/marshall_web/live/admin/scim_live.ex:78
-#, elixir-autogen, elixir-format
-msgid "SCIM is enabled."
-msgstr "SCIM இயக்கப்பட்டுள்ளது."
-
-#: lib/marshall_web/live/admin/scim_live.ex:67
+#: lib/marshall_web/live/admin/scim_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "SCIM வழங்கல்"
+
+#: lib/marshall_web/live/admin/scim_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "A client secret is set. Leave blank to keep it."
+msgstr "கிளையன்ட் ரகசியம் அமைக்கப்பட்டுள்ளது. அதை வைத்திருக்க காலியாக விடவும்."
+
+#: lib/marshall_web/live/admin/scim_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Accounts pending retirement"
+msgstr "ஓய்வுக்காகக் காத்திருக்கும் கணக்குகள்"
+
+#: lib/marshall_web/live/admin/scim_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Clear the stored client secret"
+msgstr "சேமிக்கப்பட்ட கிளையன்ட் ரகசியத்தை அழி"
+
+#: lib/marshall_web/live/admin/scim_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM provisioning? Managed teams stay locked until an administrator hands them off."
+msgstr "SCIM வழங்கலை முடக்கவா? நிர்வாகி ஒப்படைக்கும் வரை நிர்வகிக்கப்படும் குழுக்கள் பூட்டப்பட்டிருக்கும்."
+
+#: lib/marshall_web/live/admin/scim_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
+msgstr "SCIM-ஐ இயக்குவது மேஜிக்-இணைப்பு உள்நுழைவை முடக்கும், ஏழு நாள் சலுகைக் காலத்திற்குப் பிறகு சொந்தக் குழுக்களைக் காப்பகப்படுத்தும் மற்றும் ஒரு bearer டோக்கனை உருவாக்கும்."
+
+#: lib/marshall_web/live/admin/scim_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Enter an absolute https:// issuer URL."
+msgstr "https:// உடன் தொடங்கும் முழுமையான வழங்குநர் (issuer) URL-ஐ உள்ளிடவும்."
+
+#: lib/marshall_web/live/admin/scim_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "No client secret is set."
+msgstr "கிளையன்ட் ரகசியம் எதுவும் அமைக்கப்படவில்லை."
+
+#: lib/marshall_web/live/admin/scim_live.ex:320
+#, elixir-autogen, elixir-format
+msgid "OIDC client ID"
+msgstr "OIDC கிளையன்ட் ஐடி"
+
+#: lib/marshall_web/live/admin/scim_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "OIDC client secret"
+msgstr "OIDC கிளையன்ட் ரகசியம்"
+
+#: lib/marshall_web/live/admin/scim_live.ex:312
+#, elixir-autogen, elixir-format
+msgid "OIDC issuer"
+msgstr "OIDC வழங்குநர் (issuer)"
+
+#: lib/marshall_web/live/admin/scim_live.ex:215
+#: lib/marshall_web/live/admin/scim_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Provisioning"
+msgstr "வழங்கல்"
+
+#: lib/marshall_web/live/admin/scim_live.ex:277
+#, elixir-autogen, elixir-format
+msgid "Rotate bearer token"
+msgstr "bearer டோக்கனை மாற்று"
+
+#: lib/marshall_web/live/admin/scim_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Rotate the SCIM bearer token? The directory must be updated with the new token."
+msgstr "SCIM bearer டோக்கனை மாற்றவா? அடைவு புதிய டோக்கனுடன் புதுப்பிக்கப்பட வேண்டும்."
+
+#: lib/marshall_web/live/admin/scim_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Rotating the bearer token immediately invalidates the previous token."
+msgstr "bearer டோக்கனை மாற்றுவது முந்தைய டோக்கனை உடனடியாகச் செல்லாததாக்கும்."
+
+#: lib/marshall_web/live/admin/scim_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "SCIM bearer token rotated."
+msgstr "SCIM bearer டோக்கன் மாற்றப்பட்டது."
+
+#: lib/marshall_web/live/admin/scim_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning disabled."
+msgstr "SCIM வழங்கல் முடக்கப்பட்டது."
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning enabled."
+msgstr "SCIM வழங்கல் இயக்கப்பட்டது."
+
+#: lib/marshall_web/live/admin/scim_live.ex:348
+#, elixir-autogen, elixir-format
+msgid "Save single sign-on settings"
+msgstr "ஒற்றை உள்நுழைவு அமைப்புகளைச் சேமி"
+
+#: lib/marshall_web/live/admin/scim_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Single sign-on"
+msgstr "ஒற்றை உள்நுழைவு"
+
+#: lib/marshall_web/live/admin/scim_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Single sign-on (OIDC)"
+msgstr "ஒற்றை உள்நுழைவு (OIDC)"
+
+#: lib/marshall_web/live/admin/scim_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Single sign-on settings saved."
+msgstr "ஒற்றை உள்நுழைவு அமைப்புகள் சேமிக்கப்பட்டன."
+
+#: lib/marshall_web/live/admin/scim_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "நிலைமை"
+
+#: lib/marshall_web/live/admin/scim_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Teams retiring"
+msgstr "ஓய்வுபெறும் குழுக்கள்"
+
+#: lib/marshall_web/live/admin/scim_live.ex:314
+#, elixir-autogen, elixir-format
+msgid "The exact https:// issuer URL from provider discovery."
+msgstr "வழங்குநர் கண்டறிதலிலிருந்து பெறப்பட்ட துல்லியமான https:// வழங்குநர் URL."
+
+#: lib/marshall_web/live/admin/scim_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "[configured]"
+msgstr "[கட்டமைக்கப்பட்டது]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:223
+#, elixir-autogen, elixir-format
+msgid "[disabled]"
+msgstr "[முடக்கப்பட்டது]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "[enabled]"
+msgstr "[இயக்கப்பட்டது]"
+
+#: lib/marshall_web/live/admin/scim_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "[not configured]"
+msgstr "[கட்டமைக்கப்படவில்லை]"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "change SCIM provisioning"
+msgstr "SCIM வழங்கலை மாற்று"
+
+#: lib/marshall_web/live/admin/scim_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "கிடைக்கவில்லை"

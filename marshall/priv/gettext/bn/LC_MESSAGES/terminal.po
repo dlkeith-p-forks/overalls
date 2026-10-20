@@ -281,7 +281,7 @@ msgid "Opening terminal; recovering the same request if the connection was inter
 msgstr "টার্মিনাল খোলা হচ্ছে; সংযোগ কেটে গেলে একই অনুরোধ পুনরুদ্ধার হবে।"
 
 #: lib/marshall_web/components/workspace_components.ex:338
-#: lib/marshall_web/live/admin/workloads_live.ex:212
+#: lib/marshall_web/live/admin/workloads_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "বিরতি দিন"
@@ -349,7 +349,7 @@ msgid "Request control"
 msgstr "নিয়ন্ত্রণের অনুরোধ করুন"
 
 #: lib/marshall_web/components/workspace_components.ex:329
-#: lib/marshall_web/live/admin/workloads_live.ex:203
+#: lib/marshall_web/live/admin/workloads_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "মেশিন পুনরায় চালু করুন"

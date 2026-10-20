@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/marshall_web/live/teams_live.ex:212
+#: lib/marshall_web/live/teams_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
@@ -22,253 +22,309 @@ msgstr[0] "%{count} участник"
 msgstr[1] "%{count} участника"
 msgstr[2] "%{count} участников"
 
-#: lib/marshall_web/live/teams_live.ex:283
+#: lib/marshall_web/live/teams_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
 msgstr ""
 "У команды один владелец. Право собственности переходит только после согласия"
 " получателя; прежний владелец становится администратором."
 
-#: lib/marshall_web/live/teams_live.ex:341
+#: lib/marshall_web/live/teams_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Accept ownership"
 msgstr "Принять право собственности"
 
-#: lib/marshall_web/live/teams_live.ex:255
+#: lib/marshall_web/live/teams_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Add, change or remove a member"
 msgstr "Добавить, изменить или удалить участника"
 
-#: lib/marshall_web/live/teams_live.ex:267
+#: lib/marshall_web/live/teams_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Админ"
 
-#: lib/marshall_web/live/teams_live.ex:392
+#: lib/marshall_web/live/teams_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "Администратор"
 
-#: lib/marshall_web/live/teams_live.ex:228
+#: lib/marshall_web/live/teams_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Can"
 msgstr "Может"
 
-#: lib/marshall_web/live/teams_live.ex:361
+#: lib/marshall_web/live/teams_live.ex:405
 #, elixir-autogen, elixir-format
 msgid "Cancel offer"
 msgstr "Отменить предложение"
 
-#: lib/marshall_web/live/teams_live.ex:36
+#: lib/marshall_web/live/teams_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not create this team."
 msgstr "Не удалось создать эту команду."
 
-#: lib/marshall_web/live/teams_live.ex:92
+#: lib/marshall_web/live/teams_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Could not offer ownership."
 msgstr "Не удалось предложить право собственности."
 
-#: lib/marshall_web/live/teams_live.ex:76
+#: lib/marshall_web/live/teams_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Could not update this membership."
 msgstr "Не удалось обновить участие."
 
-#: lib/marshall_web/live/teams_live.ex:113
+#: lib/marshall_web/live/teams_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Could not update this ownership offer."
 msgstr "Не удалось обновить предложение собственности."
 
-#: lib/marshall_web/live/teams_live.ex:372
+#: lib/marshall_web/live/teams_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Create a team"
 msgstr "Создать команду"
 
-#: lib/marshall_web/live/teams_live.ex:382
+#: lib/marshall_web/live/teams_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Create team"
 msgstr "Создать команду"
 
-#: lib/marshall_web/live/teams_live.ex:351
+#: lib/marshall_web/live/teams_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "Отклонить"
 
-#: lib/marshall_web/live/teams_live.ex:397
+#: lib/marshall_web/live/teams_live.ex:474
 #, elixir-autogen, elixir-format
 msgid "Everything, including appointing admins and offering ownership."
 msgstr "Всё, включая назначение администраторов и предложение собственности."
 
-#: lib/marshall_web/live/teams_live.ex:44
-#: lib/marshall_web/live/teams_live.ex:118
+#: lib/marshall_web/live/teams_live.ex:51
+#: lib/marshall_web/live/teams_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Недопустимый запрос."
 
-#: lib/marshall_web/live/teams_live.ex:399
+#: lib/marshall_web/live/teams_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Manage members and team machines."
 msgstr "Управление участниками и машинами команды."
 
-#: lib/marshall_web/live/teams_live.ex:226
-#: lib/marshall_web/live/teams_live.ex:268
-#: lib/marshall_web/live/teams_live.ex:393
+#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:309
+#: lib/marshall_web/live/teams_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Member"
 msgstr "Участник"
 
-#: lib/marshall_web/live/teams_live.ex:221
+#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "Участники"
 
-#: lib/marshall_web/live/teams_live.ex:72
+#: lib/marshall_web/live/teams_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "Membership updated."
 msgstr "Участие обновлено."
 
-#: lib/marshall_web/live/teams_live.ex:366
+#: lib/marshall_web/live/teams_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "No pending ownership offer."
 msgstr "Нет ожидающего предложения собственности."
 
-#: lib/marshall_web/live/teams_live.ex:300
+#: lib/marshall_web/live/teams_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Offer ownership"
 msgstr "Предложить собственность"
 
-#: lib/marshall_web/live/teams_live.ex:297
+#: lib/marshall_web/live/teams_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Offer ownership to"
 msgstr "Предложить собственность кому"
 
-#: lib/marshall_web/live/teams_live.ex:304
+#: lib/marshall_web/live/teams_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Offered by"
 msgstr "Предложено кем"
 
-#: lib/marshall_web/live/teams_live.ex:313
+#: lib/marshall_web/live/teams_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Offered to"
 msgstr "Предложено кому"
 
-#: lib/marshall_web/live/teams_live.ex:391
+#: lib/marshall_web/live/teams_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Владелец"
 
-#: lib/marshall_web/live/teams_live.ex:281
+#: lib/marshall_web/live/teams_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Ownership"
 msgstr "Собственность"
 
-#: lib/marshall_web/live/teams_live.ex:87
+#: lib/marshall_web/live/teams_live.ex:94
 #, elixir-autogen, elixir-format
 msgid "Ownership offer sent."
 msgstr "Предложение собственности отправлено."
 
-#: lib/marshall_web/live/teams_live.ex:109
+#: lib/marshall_web/live/teams_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "Ownership offer updated."
 msgstr "Предложение собственности обновлено."
 
-#: lib/marshall_web/live/teams_live.ex:327
+#: lib/marshall_web/live/teams_live.ex:371
 #, elixir-autogen, elixir-format
 msgid "Ownership offered by %{value1} to %{value2}."
 msgstr "%{value1} предлагает собственность: %{value2}."
 
-#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Зарегистрированный адрес почты"
 
-#: lib/marshall_web/live/teams_live.ex:269
+#: lib/marshall_web/live/teams_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Удалить"
 
-#: lib/marshall_web/live/teams_live.ex:227
-#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:265
+#: lib/marshall_web/live/teams_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Роль"
 
-#: lib/marshall_web/live/teams_live.ex:274
+#: lib/marshall_web/live/teams_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "Save member"
 msgstr "Сохранить участника"
 
-#: lib/marshall_web/live/teams_live.ex:183
+#: lib/marshall_web/live/teams_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr ""
 "Делитесь машинами и интеграциями с коллегами. Владельцы назначают "
 "администраторов, администраторы управляют участниками."
 
-#: lib/marshall_web/live/teams_live.ex:322
+#: lib/marshall_web/live/teams_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Статус"
 
-#: lib/marshall_web/live/teams_live.ex:31
+#: lib/marshall_web/live/teams_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Team %{value1} created."
 msgstr "Команда %{value1} создана."
 
-#: lib/marshall_web/live/teams_live.ex:378
+#: lib/marshall_web/live/teams_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "Team name"
 msgstr "Имя команды"
 
-#: lib/marshall_web/live/teams_live.ex:181
+#: lib/marshall_web/live/teams_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "Команды"
 
-#: lib/marshall_web/live/teams_live.ex:129
+#: lib/marshall_web/live/teams_live.ex:142
 #, elixir-autogen, elixir-format
 msgid "Teams are temporarily unavailable."
 msgstr "Команды временно недоступны."
 
-#: lib/marshall_web/live/teams_live.ex:400
+#: lib/marshall_web/live/teams_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Use team machines and integrations."
 msgstr "Использовать машины и интеграции команды."
 
-#: lib/marshall_web/live/teams_live.ex:190
+#: lib/marshall_web/live/teams_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
 msgstr ""
 "Вы ещё не в команде. Создайте её ниже или попросите администратора команды "
 "добавить вас."
 
-#: lib/marshall_web/live/teams_live.ex:374
+#: lib/marshall_web/live/teams_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "You become its owner and can add members straight away."
 msgstr "Вы становитесь владельцем и сразу можете добавлять участников."
 
-#: lib/marshall_web/live/teams_live.ex:210
+#: lib/marshall_web/live/teams_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Your role: %{role}"
 msgstr "Ваша роль: %{role}"
 
-#: lib/marshall_web/live/teams_live.ex:196
+#: lib/marshall_web/live/teams_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Your teams"
 msgstr "Ваши команды"
 
-#: lib/marshall_web/live/teams_live.ex:323
+#: lib/marshall_web/live/teams_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "pending"
 msgstr "ожидание"
 
-#: lib/marshall_web/live/teams_live.ex:379
+#: lib/marshall_web/live/teams_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "platform"
 msgstr "платформа"
 
-#: lib/marshall_web/live/teams_live.ex:260
-#: lib/marshall_web/live/teams_live.ex:298
+#: lib/marshall_web/live/teams_live.ex:301
+#: lib/marshall_web/live/teams_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "teammate@example.test"
 msgstr "teammate@example.test"
+
+#: lib/marshall_web/live/teams_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "All teams"
+msgstr "Все команды"
+
+#: lib/marshall_web/live/teams_live.ex:470
+#, elixir-autogen, elixir-format
+msgid "Awaiting handoff"
+msgstr "Ожидает передачи"
+
+#: lib/marshall_web/live/teams_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Creating teams, changing members and offering ownership are not available here. Ask your identity provider administrator for changes."
+msgstr "Создание команд, изменение участников и предложение владения здесь недоступны. Обратитесь за изменениями к администратору поставщика удостоверений."
+
+#: lib/marshall_web/live/teams_live.ex:468
+#, elixir-autogen, elixir-format
+msgid "Identity provider"
+msgstr "Поставщик удостоверений"
+
+#: lib/marshall_web/live/teams_live.ex:423
+#, elixir-autogen, elixir-format
+msgid "Managed by"
+msgstr "Под управлением"
+
+#: lib/marshall_web/live/teams_live.ex:467
+#, elixir-autogen, elixir-format
+msgid "Marshall"
+msgstr "Marshall"
+
+#: lib/marshall_web/live/teams_live.ex:416
+#, elixir-autogen, elixir-format
+msgid "No active teams."
+msgstr "Нет активных команд."
+
+#: lib/marshall_web/live/teams_live.ex:469
+#, elixir-autogen, elixir-format
+msgid "Retiring"
+msgstr "Выводится из эксплуатации"
+
+#: lib/marshall_web/live/teams_live.ex:421
+#, elixir-autogen, elixir-format
+msgid "Team"
+msgstr "Команда"
+
+#: lib/marshall_web/live/teams_live.ex:216
+#, elixir-autogen, elixir-format
+msgid "Teams are managed by your identity provider."
+msgstr "Командами управляет ваш поставщик удостоверений."
+
+#: lib/marshall_web/live/teams_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet."
+msgstr "Вы пока не состоите ни в одной команде."

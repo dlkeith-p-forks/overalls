@@ -62,6 +62,7 @@ msgstr "இணைப்பு அனுப்பப்படுகிறது�
 
 #: lib/marshall/accounts/deliver_auth_email.ex:150
 #: lib/marshall_web/auth_text.ex:20
+#: lib/marshall_web/scim_sign_in_live.ex:50
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "உள்நுழை"
@@ -92,6 +93,7 @@ msgid "Unavailable"
 msgstr "கிடைக்கவில்லை"
 
 #: lib/marshall_web/controllers/auth_controller.ex:43
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:45
 #, elixir-autogen, elixir-format
 msgid "You are now signed in"
 msgstr "நீங்கள் உள்நுழைந்துள்ளீர்கள்"
@@ -142,10 +144,47 @@ msgstr "நிச்சயமாக வெளியேற விரும்ப�
 msgid "Sign out"
 msgstr "வெளியேறு"
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:50
 #, elixir-autogen, elixir-format
 msgid "Single sign-on could not authenticate you."
 msgstr "ஒற்றை உள்நுழைவால் உங்களை அங்கீகரிக்க முடியவில்லை."
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:21
 #, elixir-autogen, elixir-format
 msgid "Single sign-on is not configured."
 msgstr "ஒற்றை உள்நுழைவு உள்ளமைக்கப்படவில்லை."
+
+#: lib/marshall_web/scim_sign_in_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Email sign-in is disabled because your organization manages accounts through its directory, and single sign-on is not configured yet. Contact your administrator."
+msgstr "உங்கள் நிறுவனம் தனது அடைவின் மூலம் கணக்குகளை நிர்வகிப்பதாலும், ஒற்றை உள்நுழைவு இன்னும் கட்டமைக்கப்படாததாலும் மின்னஞ்சல் உள்நுழைவு முடக்கப்பட்டுள்ளது. உங்கள் நிர்வாகியைத் தொடர்பு கொள்ளவும்."
+
+#: lib/marshall/accounts/scim_magic_link_disabled.ex:17
+#, elixir-autogen, elixir-format
+msgid "Magic-link sign-in is disabled while SCIM is enabled."
+msgstr "SCIM இயக்கப்பட்டிருக்கும்போது மேஜிக்-இணைப்பு உள்நுழைவு முடக்கப்பட்டுள்ளது."
+
+#: lib/marshall_web/scim_sign_in_live.ex:56
+#, elixir-autogen, elixir-format
+msgid "Sign in with single sign-on"
+msgstr "ஒற்றை உள்நுழைவு மூலம் உள்நுழை"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:63
+#, elixir-autogen, elixir-format
+msgid "The SCIM service account cannot be changed"
+msgstr "SCIM சேவைக் கணக்கை மாற்ற முடியாது"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:89
+#, elixir-autogen, elixir-format
+msgid "The retirement grace period has ended; this identity cannot be changed"
+msgstr "ஓய்வுச் சலுகைக் காலம் முடிந்துவிட்டது; இந்த அடையாளத்தை மாற்ற முடியாது"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:60
+#, elixir-autogen, elixir-format
+msgid "This identity is permanently retired"
+msgstr "இந்த அடையாளம் நிரந்தரமாக ஓய்வுபெற்றது"
+
+#: lib/marshall_web/scim_sign_in_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Your organization manages Overalls accounts through its directory."
+msgstr "உங்கள் நிறுவனம் தனது அடைவின் மூலம் Overalls கணக்குகளை நிர்வகிக்கிறது."

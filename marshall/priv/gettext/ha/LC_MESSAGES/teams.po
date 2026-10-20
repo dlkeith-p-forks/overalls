@@ -14,254 +14,310 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/teams_live.ex:212
+#: lib/marshall_web/live/teams_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
 msgstr[0] "%{count} memba"
 msgstr[1] "Membobin %{count}"
 
-#: lib/marshall_web/live/teams_live.ex:283
+#: lib/marshall_web/live/teams_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
 msgstr "Tawaga tana da mai gida ɗaya. Mallaka tana motsawa ne kawai lokacin da mutumin da aka ba shi ya karɓa; mai gidan baya ya zama admin."
 
-#: lib/marshall_web/live/teams_live.ex:341
+#: lib/marshall_web/live/teams_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Accept ownership"
 msgstr "Karɓi ikon mallaka"
 
-#: lib/marshall_web/live/teams_live.ex:255
+#: lib/marshall_web/live/teams_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Add, change or remove a member"
 msgstr "Ƙara, canza ko cire memba"
 
-#: lib/marshall_web/live/teams_live.ex:267
+#: lib/marshall_web/live/teams_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Mai gudanarwa"
 
-#: lib/marshall_web/live/teams_live.ex:392
+#: lib/marshall_web/live/teams_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "Mai gudanarwa"
 
-#: lib/marshall_web/live/teams_live.ex:228
+#: lib/marshall_web/live/teams_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Can"
 msgstr "Zai iya"
 
-#: lib/marshall_web/live/teams_live.ex:361
+#: lib/marshall_web/live/teams_live.ex:405
 #, elixir-autogen, elixir-format
 msgid "Cancel offer"
 msgstr "Soke tayin"
 
-#: lib/marshall_web/live/teams_live.ex:36
+#: lib/marshall_web/live/teams_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not create this team."
 msgstr "Ba za a iya ƙirƙirar wannan ƙungiyar ba."
 
-#: lib/marshall_web/live/teams_live.ex:92
+#: lib/marshall_web/live/teams_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Could not offer ownership."
 msgstr "Ba za a iya ba da ikon mallakar ba."
 
-#: lib/marshall_web/live/teams_live.ex:76
+#: lib/marshall_web/live/teams_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Could not update this membership."
 msgstr "An kasa sabunta wannan membobin."
 
-#: lib/marshall_web/live/teams_live.ex:113
+#: lib/marshall_web/live/teams_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Could not update this ownership offer."
 msgstr "An kasa sabunta wannan tayin mallakar."
 
-#: lib/marshall_web/live/teams_live.ex:372
+#: lib/marshall_web/live/teams_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Create a team"
 msgstr "Ƙirƙiri ƙungiya"
 
-#: lib/marshall_web/live/teams_live.ex:382
+#: lib/marshall_web/live/teams_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Create team"
 msgstr "Ƙirƙiri ƙungiya"
 
-#: lib/marshall_web/live/teams_live.ex:351
+#: lib/marshall_web/live/teams_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "Karya"
 
-#: lib/marshall_web/live/teams_live.ex:397
+#: lib/marshall_web/live/teams_live.ex:474
 #, elixir-autogen, elixir-format
 msgid "Everything, including appointing admins and offering ownership."
 msgstr "Komai, gami da nada admins da bayar da mallaka."
 
-#: lib/marshall_web/live/teams_live.ex:44
-#: lib/marshall_web/live/teams_live.ex:118
+#: lib/marshall_web/live/teams_live.ex:51
+#: lib/marshall_web/live/teams_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "nema mara inganci."
 
-#: lib/marshall_web/live/teams_live.ex:399
+#: lib/marshall_web/live/teams_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Manage members and team machines."
 msgstr "Sarrafa membobi da injunan ƙungiya."
 
-#: lib/marshall_web/live/teams_live.ex:226
-#: lib/marshall_web/live/teams_live.ex:268
-#: lib/marshall_web/live/teams_live.ex:393
+#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:309
+#: lib/marshall_web/live/teams_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Member"
 msgstr "Memba"
 
-#: lib/marshall_web/live/teams_live.ex:221
+#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "Membobi"
 
-#: lib/marshall_web/live/teams_live.ex:72
+#: lib/marshall_web/live/teams_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "Membership updated."
 msgstr "An sabunta membobinsu."
 
-#: lib/marshall_web/live/teams_live.ex:366
+#: lib/marshall_web/live/teams_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "No pending ownership offer."
 msgstr "Babu tayin mallakar mai jiran gado."
 
-#: lib/marshall_web/live/teams_live.ex:300
+#: lib/marshall_web/live/teams_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Offer ownership"
 msgstr "Ba da ikon mallaka"
 
-#: lib/marshall_web/live/teams_live.ex:297
+#: lib/marshall_web/live/teams_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Offer ownership to"
 msgstr "Ba da ikon mallakar ga"
 
-#: lib/marshall_web/live/teams_live.ex:304
+#: lib/marshall_web/live/teams_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Offered by"
 msgstr "Wanda aka bayar"
 
-#: lib/marshall_web/live/teams_live.ex:313
+#: lib/marshall_web/live/teams_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Offered to"
 msgstr "An miƙa wa"
 
-#: lib/marshall_web/live/teams_live.ex:391
+#: lib/marshall_web/live/teams_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Mai shi"
 
-#: lib/marshall_web/live/teams_live.ex:281
+#: lib/marshall_web/live/teams_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Ownership"
 msgstr "Mallaka"
 
-#: lib/marshall_web/live/teams_live.ex:87
+#: lib/marshall_web/live/teams_live.ex:94
 #, elixir-autogen, elixir-format
 msgid "Ownership offer sent."
 msgstr "An aika tayin mallaka"
 
-#: lib/marshall_web/live/teams_live.ex:109
+#: lib/marshall_web/live/teams_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "Ownership offer updated."
 msgstr "An sabunta tayin mallaka"
 
-#: lib/marshall_web/live/teams_live.ex:327
+#: lib/marshall_web/live/teams_live.ex:371
 #, elixir-autogen, elixir-format
 msgid "Ownership offered by %{value1} to %{value2}."
 msgstr "Mallakar da %{value1} ke bayarwa zuwa %{value2} ."
 
-#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Imel mai rijista"
 
-#: lib/marshall_web/live/teams_live.ex:269
+#: lib/marshall_web/live/teams_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Cire"
 
-#: lib/marshall_web/live/teams_live.ex:227
-#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:265
+#: lib/marshall_web/live/teams_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Matsayi"
 
-#: lib/marshall_web/live/teams_live.ex:274
+#: lib/marshall_web/live/teams_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "Save member"
 msgstr "Ajiye memba"
 
-#: lib/marshall_web/live/teams_live.ex:183
+#: lib/marshall_web/live/teams_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr "Raba inji da haɗin kai tare da mutanen da kuke aiki tare. Masu mallaka suna nada admins, admins suna sarrafa membobin."
 
-#: lib/marshall_web/live/teams_live.ex:322
+#: lib/marshall_web/live/teams_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Matsayi"
 
-#: lib/marshall_web/live/teams_live.ex:31
+#: lib/marshall_web/live/teams_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Team %{value1} created."
 msgstr "An ƙirƙira ƙungiyar %{value1}."
 
-#: lib/marshall_web/live/teams_live.ex:378
+#: lib/marshall_web/live/teams_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "Team name"
 msgstr "Sunan kungiyar"
 
-#: lib/marshall_web/live/teams_live.ex:181
+#: lib/marshall_web/live/teams_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "Ƙungiyoyi"
 
-#: lib/marshall_web/live/teams_live.ex:129
+#: lib/marshall_web/live/teams_live.ex:142
 #, elixir-autogen, elixir-format
 msgid "Teams are temporarily unavailable."
 msgstr "Babu ƙungiyoyi na ɗan lokaci."
 
-#: lib/marshall_web/live/teams_live.ex:400
+#: lib/marshall_web/live/teams_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Use team machines and integrations."
 msgstr "Yi amfani da injunan ƙungiya da haɗin kai."
 
-#: lib/marshall_web/live/teams_live.ex:190
+#: lib/marshall_web/live/teams_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
 msgstr "Ba ka cikin ƙungiya tukuna. Ƙirƙiri ɗaya a ƙasa, ko ka nemi mai gudanarwar ƙungiya ya ƙara ka."
 
-#: lib/marshall_web/live/teams_live.ex:374
+#: lib/marshall_web/live/teams_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "You become its owner and can add members straight away."
 msgstr "Ka zama mai shi kuma za ka iya ƙara mambobi nan take."
 
-#: lib/marshall_web/live/teams_live.ex:210
+#: lib/marshall_web/live/teams_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Your role: %{role}"
 msgstr "Rawarka: %{role}"
 
-#: lib/marshall_web/live/teams_live.ex:196
+#: lib/marshall_web/live/teams_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Your teams"
 msgstr "Ƙungiyoyinka"
 
-#: lib/marshall_web/live/teams_live.ex:323
+#: lib/marshall_web/live/teams_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "pending"
 msgstr "yana jira"
 
-#: lib/marshall_web/live/teams_live.ex:379
+#: lib/marshall_web/live/teams_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "platform"
 msgstr "dandamali"
 
-#: lib/marshall_web/live/teams_live.ex:260
-#: lib/marshall_web/live/teams_live.ex:298
+#: lib/marshall_web/live/teams_live.ex:301
+#: lib/marshall_web/live/teams_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "teammate@example.test"
 msgstr "teammate@example.test"
+
+#: lib/marshall_web/live/teams_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "All teams"
+msgstr "Duk ƙungiyoyi"
+
+#: lib/marshall_web/live/teams_live.ex:470
+#, elixir-autogen, elixir-format
+msgid "Awaiting handoff"
+msgstr "Ana jiran miƙawa"
+
+#: lib/marshall_web/live/teams_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Creating teams, changing members and offering ownership are not available here. Ask your identity provider administrator for changes."
+msgstr "Ƙirƙirar ƙungiyoyi, canza membobi da bayar da mallaka ba sa samuwa a nan. Nemi canje-canje daga mai gudanarwar mai samar da shaidarku."
+
+#: lib/marshall_web/live/teams_live.ex:468
+#, elixir-autogen, elixir-format
+msgid "Identity provider"
+msgstr "Mai samar da shaida"
+
+#: lib/marshall_web/live/teams_live.ex:423
+#, elixir-autogen, elixir-format
+msgid "Managed by"
+msgstr "Mai sarrafawa"
+
+#: lib/marshall_web/live/teams_live.ex:467
+#, elixir-autogen, elixir-format
+msgid "Marshall"
+msgstr "Marshall"
+
+#: lib/marshall_web/live/teams_live.ex:416
+#, elixir-autogen, elixir-format
+msgid "No active teams."
+msgstr "Babu ƙungiyoyi masu aiki."
+
+#: lib/marshall_web/live/teams_live.ex:469
+#, elixir-autogen, elixir-format
+msgid "Retiring"
+msgstr "Ana ritaya"
+
+#: lib/marshall_web/live/teams_live.ex:421
+#, elixir-autogen, elixir-format
+msgid "Team"
+msgstr "Ƙungiya"
+
+#: lib/marshall_web/live/teams_live.ex:216
+#, elixir-autogen, elixir-format
+msgid "Teams are managed by your identity provider."
+msgstr "Mai samar da shaidarku ne ke sarrafa ƙungiyoyi."
+
+#: lib/marshall_web/live/teams_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet."
+msgstr "Har yanzu ba ka cikin wata ƙungiya ba."

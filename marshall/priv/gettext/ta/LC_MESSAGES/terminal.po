@@ -281,7 +281,7 @@ msgid "Opening terminal; recovering the same request if the connection was inter
 msgstr "முனையம் திறக்கப்படுகிறது; இணைப்பு தடைப்பட்டிருந்தால் அதே கோரிக்கை மீட்கப்படும்."
 
 #: lib/marshall_web/components/workspace_components.ex:338
-#: lib/marshall_web/live/admin/workloads_live.ex:212
+#: lib/marshall_web/live/admin/workloads_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "இடைநிறுத்தவும்"
@@ -349,7 +349,7 @@ msgid "Request control"
 msgstr "கட்டுப்பாட்டைக் கோரவும்"
 
 #: lib/marshall_web/components/workspace_components.ex:329
-#: lib/marshall_web/live/admin/workloads_live.ex:203
+#: lib/marshall_web/live/admin/workloads_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "கணினியை மீண்டும் இயக்கவும்"

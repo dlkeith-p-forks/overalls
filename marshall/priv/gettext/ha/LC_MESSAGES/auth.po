@@ -62,6 +62,7 @@ msgstr "Ana aika hanyar haɗin gwiwa…"
 
 #: lib/marshall/accounts/deliver_auth_email.ex:150
 #: lib/marshall_web/auth_text.ex:20
+#: lib/marshall_web/scim_sign_in_live.ex:50
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Shiga"
@@ -92,6 +93,7 @@ msgid "Unavailable"
 msgstr "Babu"
 
 #: lib/marshall_web/controllers/auth_controller.ex:43
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:45
 #, elixir-autogen, elixir-format
 msgid "You are now signed in"
 msgstr "Yanzu ka shiga"
@@ -142,10 +144,47 @@ msgstr "Ka tabbata kana son fita?"
 msgid "Sign out"
 msgstr "Fita"
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:50
 #, elixir-autogen, elixir-format
 msgid "Single sign-on could not authenticate you."
 msgstr "Shiga sau ɗaya ya kasa tabbatar da kai."
 
+#: lib/marshall_web/controllers/scim_oidc_controller.ex:21
 #, elixir-autogen, elixir-format
 msgid "Single sign-on is not configured."
 msgstr "Ba a saita shiga sau ɗaya ba."
+
+#: lib/marshall_web/scim_sign_in_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Email sign-in is disabled because your organization manages accounts through its directory, and single sign-on is not configured yet. Contact your administrator."
+msgstr "An kashe shiga ta imel saboda ƙungiyarku tana sarrafa asusu ta kundin adireshinta, kuma ba a saita shiga guda ɗaya ba tukuna. Tuntuɓi mai gudanarwarku."
+
+#: lib/marshall/accounts/scim_magic_link_disabled.ex:17
+#, elixir-autogen, elixir-format
+msgid "Magic-link sign-in is disabled while SCIM is enabled."
+msgstr "An kashe shiga ta mahaɗin sihiri yayin da SCIM ke kunne."
+
+#: lib/marshall_web/scim_sign_in_live.ex:56
+#, elixir-autogen, elixir-format
+msgid "Sign in with single sign-on"
+msgstr "Shiga da shiga guda ɗaya"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:63
+#, elixir-autogen, elixir-format
+msgid "The SCIM service account cannot be changed"
+msgstr "Ba za a iya canza asusun sabis na SCIM ba"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:89
+#, elixir-autogen, elixir-format
+msgid "The retirement grace period has ended; this identity cannot be changed"
+msgstr "Lokacin alherin ritaya ya ƙare; ba za a iya canza wannan shaidar ba"
+
+#: lib/marshall/accounts/scim_lifecycle.ex:60
+#, elixir-autogen, elixir-format
+msgid "This identity is permanently retired"
+msgstr "An yi wa wannan shaidar ritaya ta dindindin"
+
+#: lib/marshall_web/scim_sign_in_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Your organization manages Overalls accounts through its directory."
+msgstr "Ƙungiyarku tana sarrafa asusun Overalls ta kundin adireshinta."

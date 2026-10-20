@@ -14,254 +14,310 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/marshall_web/live/teams_live.ex:212
+#: lib/marshall_web/live/teams_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
 msgstr[0] "%{count} জন সদস্য"
 msgstr[1] "%{count} জন সদস্য"
 
-#: lib/marshall_web/live/teams_live.ex:283
+#: lib/marshall_web/live/teams_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
 msgstr "একটি দলের একজন মালিক থাকে। প্রস্তাব পাওয়া ব্যক্তি গ্রহণ করলেই মালিকানা বদলায়; আগের মালিক অ্যাডমিন হন।"
 
-#: lib/marshall_web/live/teams_live.ex:341
+#: lib/marshall_web/live/teams_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Accept ownership"
 msgstr "মালিকানা গ্রহণ করুন"
 
-#: lib/marshall_web/live/teams_live.ex:255
+#: lib/marshall_web/live/teams_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Add, change or remove a member"
 msgstr "সদস্য যোগ, পরিবর্তন বা অপসারণ করুন"
 
-#: lib/marshall_web/live/teams_live.ex:267
+#: lib/marshall_web/live/teams_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "প্রশাসক"
 
-#: lib/marshall_web/live/teams_live.ex:392
+#: lib/marshall_web/live/teams_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "প্রশাসক"
 
-#: lib/marshall_web/live/teams_live.ex:228
+#: lib/marshall_web/live/teams_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Can"
 msgstr "পারে"
 
-#: lib/marshall_web/live/teams_live.ex:361
+#: lib/marshall_web/live/teams_live.ex:405
 #, elixir-autogen, elixir-format
 msgid "Cancel offer"
 msgstr "প্রস্তাব বাতিল করুন"
 
-#: lib/marshall_web/live/teams_live.ex:36
+#: lib/marshall_web/live/teams_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not create this team."
 msgstr "দলটি তৈরি করা যায়নি।"
 
-#: lib/marshall_web/live/teams_live.ex:92
+#: lib/marshall_web/live/teams_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Could not offer ownership."
 msgstr "মালিকানার প্রস্তাব দেওয়া যায়নি।"
 
-#: lib/marshall_web/live/teams_live.ex:76
+#: lib/marshall_web/live/teams_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Could not update this membership."
 msgstr "সদস্যপদ হালনাগাদ করা যায়নি।"
 
-#: lib/marshall_web/live/teams_live.ex:113
+#: lib/marshall_web/live/teams_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Could not update this ownership offer."
 msgstr "মালিকানার প্রস্তাব হালনাগাদ করা যায়নি।"
 
-#: lib/marshall_web/live/teams_live.ex:372
+#: lib/marshall_web/live/teams_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Create a team"
 msgstr "একটি দল তৈরি করুন"
 
-#: lib/marshall_web/live/teams_live.ex:382
+#: lib/marshall_web/live/teams_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Create team"
 msgstr "দল তৈরি করুন"
 
-#: lib/marshall_web/live/teams_live.ex:351
+#: lib/marshall_web/live/teams_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "প্রত্যাখ্যান করুন"
 
-#: lib/marshall_web/live/teams_live.ex:397
+#: lib/marshall_web/live/teams_live.ex:474
 #, elixir-autogen, elixir-format
 msgid "Everything, including appointing admins and offering ownership."
 msgstr "প্রশাসক নিয়োগ ও মালিকানার প্রস্তাবসহ সবকিছু।"
 
-#: lib/marshall_web/live/teams_live.ex:44
-#: lib/marshall_web/live/teams_live.ex:118
+#: lib/marshall_web/live/teams_live.ex:51
+#: lib/marshall_web/live/teams_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "অবৈধ অনুরোধ।"
 
-#: lib/marshall_web/live/teams_live.ex:399
+#: lib/marshall_web/live/teams_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Manage members and team machines."
 msgstr "সদস্য ও দলের মেশিন পরিচালনা করুন।"
 
-#: lib/marshall_web/live/teams_live.ex:226
-#: lib/marshall_web/live/teams_live.ex:268
-#: lib/marshall_web/live/teams_live.ex:393
+#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:309
+#: lib/marshall_web/live/teams_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Member"
 msgstr "সদস্য"
 
-#: lib/marshall_web/live/teams_live.ex:221
+#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "সদস্যগণ"
 
-#: lib/marshall_web/live/teams_live.ex:72
+#: lib/marshall_web/live/teams_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "Membership updated."
 msgstr "সদস্যপদ হালনাগাদ হয়েছে।"
 
-#: lib/marshall_web/live/teams_live.ex:366
+#: lib/marshall_web/live/teams_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "No pending ownership offer."
 msgstr "মালিকানার কোনো অপেক্ষমাণ প্রস্তাব নেই।"
 
-#: lib/marshall_web/live/teams_live.ex:300
+#: lib/marshall_web/live/teams_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Offer ownership"
 msgstr "মালিকানার প্রস্তাব দিন"
 
-#: lib/marshall_web/live/teams_live.ex:297
+#: lib/marshall_web/live/teams_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Offer ownership to"
 msgstr "যাকে মালিকানার প্রস্তাব দেবেন"
 
-#: lib/marshall_web/live/teams_live.ex:304
+#: lib/marshall_web/live/teams_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Offered by"
 msgstr "প্রস্তাবদাতা"
 
-#: lib/marshall_web/live/teams_live.ex:313
+#: lib/marshall_web/live/teams_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Offered to"
 msgstr "প্রস্তাবের প্রাপক"
 
-#: lib/marshall_web/live/teams_live.ex:391
+#: lib/marshall_web/live/teams_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "মালিক"
 
-#: lib/marshall_web/live/teams_live.ex:281
+#: lib/marshall_web/live/teams_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Ownership"
 msgstr "মালিকানা"
 
-#: lib/marshall_web/live/teams_live.ex:87
+#: lib/marshall_web/live/teams_live.ex:94
 #, elixir-autogen, elixir-format
 msgid "Ownership offer sent."
 msgstr "মালিকানার প্রস্তাব পাঠানো হয়েছে।"
 
-#: lib/marshall_web/live/teams_live.ex:109
+#: lib/marshall_web/live/teams_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "Ownership offer updated."
 msgstr "মালিকানার প্রস্তাব হালনাগাদ হয়েছে।"
 
-#: lib/marshall_web/live/teams_live.ex:327
+#: lib/marshall_web/live/teams_live.ex:371
 #, elixir-autogen, elixir-format
 msgid "Ownership offered by %{value1} to %{value2}."
 msgstr "%{value1} থেকে %{value2}-কে মালিকানার প্রস্তাব দেওয়া হয়েছে।"
 
-#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "নিবন্ধিত ইমেইল"
 
-#: lib/marshall_web/live/teams_live.ex:269
+#: lib/marshall_web/live/teams_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "সরান"
 
-#: lib/marshall_web/live/teams_live.ex:227
-#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:265
+#: lib/marshall_web/live/teams_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "ভূমিকা"
 
-#: lib/marshall_web/live/teams_live.ex:274
+#: lib/marshall_web/live/teams_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "Save member"
 msgstr "সদস্য সংরক্ষণ করুন"
 
-#: lib/marshall_web/live/teams_live.ex:183
+#: lib/marshall_web/live/teams_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr "সহকর্মীদের সঙ্গে মেশিন ও ইন্টিগ্রেশন ভাগ করুন। মালিক প্রশাসক নিয়োগ করেন, প্রশাসক সদস্য পরিচালনা করেন।"
 
-#: lib/marshall_web/live/teams_live.ex:322
+#: lib/marshall_web/live/teams_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "অবস্থা"
 
-#: lib/marshall_web/live/teams_live.ex:31
+#: lib/marshall_web/live/teams_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Team %{value1} created."
 msgstr "দল %{value1} তৈরি হয়েছে।"
 
-#: lib/marshall_web/live/teams_live.ex:378
+#: lib/marshall_web/live/teams_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "Team name"
 msgstr "দলের নাম"
 
-#: lib/marshall_web/live/teams_live.ex:181
+#: lib/marshall_web/live/teams_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "দলসমূহ"
 
-#: lib/marshall_web/live/teams_live.ex:129
+#: lib/marshall_web/live/teams_live.ex:142
 #, elixir-autogen, elixir-format
 msgid "Teams are temporarily unavailable."
 msgstr "দল সাময়িকভাবে পাওয়া যাচ্ছে না।"
 
-#: lib/marshall_web/live/teams_live.ex:400
+#: lib/marshall_web/live/teams_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Use team machines and integrations."
 msgstr "দলের মেশিন ও ইন্টিগ্রেশন ব্যবহার করুন।"
 
-#: lib/marshall_web/live/teams_live.ex:190
+#: lib/marshall_web/live/teams_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
 msgstr "আপনি এখনো দলে নেই। নিচে একটি তৈরি করুন বা দলের প্রশাসককে আপনাকে যোগ করতে বলুন।"
 
-#: lib/marshall_web/live/teams_live.ex:374
+#: lib/marshall_web/live/teams_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "You become its owner and can add members straight away."
 msgstr "আপনি মালিক হয়ে সঙ্গে সঙ্গেই সদস্য যোগ করতে পারবেন।"
 
-#: lib/marshall_web/live/teams_live.ex:210
+#: lib/marshall_web/live/teams_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Your role: %{role}"
 msgstr "আপনার ভূমিকা: %{role}"
 
-#: lib/marshall_web/live/teams_live.ex:196
+#: lib/marshall_web/live/teams_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Your teams"
 msgstr "আপনার দল"
 
-#: lib/marshall_web/live/teams_live.ex:323
+#: lib/marshall_web/live/teams_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "pending"
 msgstr "অপেক্ষমাণ"
 
-#: lib/marshall_web/live/teams_live.ex:379
+#: lib/marshall_web/live/teams_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "platform"
 msgstr "প্ল্যাটফর্ম"
 
-#: lib/marshall_web/live/teams_live.ex:260
-#: lib/marshall_web/live/teams_live.ex:298
+#: lib/marshall_web/live/teams_live.ex:301
+#: lib/marshall_web/live/teams_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "teammate@example.test"
 msgstr "teammate@example.test"
+
+#: lib/marshall_web/live/teams_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "All teams"
+msgstr "সব দল"
+
+#: lib/marshall_web/live/teams_live.ex:470
+#, elixir-autogen, elixir-format
+msgid "Awaiting handoff"
+msgstr "হস্তান্তরের অপেক্ষায়"
+
+#: lib/marshall_web/live/teams_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Creating teams, changing members and offering ownership are not available here. Ask your identity provider administrator for changes."
+msgstr "দল তৈরি, সদস্য পরিবর্তন এবং মালিকানা প্রস্তাব করা এখানে উপলব্ধ নয়। পরিবর্তনের জন্য আপনার পরিচয় প্রদানকারীর প্রশাসককে বলুন।"
+
+#: lib/marshall_web/live/teams_live.ex:468
+#, elixir-autogen, elixir-format
+msgid "Identity provider"
+msgstr "পরিচয় প্রদানকারী"
+
+#: lib/marshall_web/live/teams_live.ex:423
+#, elixir-autogen, elixir-format
+msgid "Managed by"
+msgstr "পরিচালনায়"
+
+#: lib/marshall_web/live/teams_live.ex:467
+#, elixir-autogen, elixir-format
+msgid "Marshall"
+msgstr "Marshall"
+
+#: lib/marshall_web/live/teams_live.ex:416
+#, elixir-autogen, elixir-format
+msgid "No active teams."
+msgstr "কোনো সক্রিয় দল নেই।"
+
+#: lib/marshall_web/live/teams_live.ex:469
+#, elixir-autogen, elixir-format
+msgid "Retiring"
+msgstr "অবসরে যাচ্ছে"
+
+#: lib/marshall_web/live/teams_live.ex:421
+#, elixir-autogen, elixir-format
+msgid "Team"
+msgstr "দল"
+
+#: lib/marshall_web/live/teams_live.ex:216
+#, elixir-autogen, elixir-format
+msgid "Teams are managed by your identity provider."
+msgstr "দলগুলো আপনার পরিচয় প্রদানকারী দ্বারা পরিচালিত।"
+
+#: lib/marshall_web/live/teams_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet."
+msgstr "আপনি এখনও কোনো দলে নেই।"

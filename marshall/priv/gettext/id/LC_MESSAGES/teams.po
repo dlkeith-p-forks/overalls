@@ -14,253 +14,309 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/teams_live.ex:212
+#: lib/marshall_web/live/teams_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
 msgstr[0] "%{count} anggota"
 
-#: lib/marshall_web/live/teams_live.ex:283
+#: lib/marshall_web/live/teams_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
 msgstr "Sebuah tim memiliki satu pemilik. Kepemilikan berpindah hanya setelah penerima tawaran menerimanya; pemilik sebelumnya menjadi admin."
 
-#: lib/marshall_web/live/teams_live.ex:341
+#: lib/marshall_web/live/teams_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Accept ownership"
 msgstr "Terima kepemilikan"
 
-#: lib/marshall_web/live/teams_live.ex:255
+#: lib/marshall_web/live/teams_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Add, change or remove a member"
 msgstr "Tambah, ubah, atau hapus anggota"
 
-#: lib/marshall_web/live/teams_live.ex:267
+#: lib/marshall_web/live/teams_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Admin"
 
-#: lib/marshall_web/live/teams_live.ex:392
+#: lib/marshall_web/live/teams_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "Administrator"
 
-#: lib/marshall_web/live/teams_live.ex:228
+#: lib/marshall_web/live/teams_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Can"
 msgstr "Dapat"
 
-#: lib/marshall_web/live/teams_live.ex:361
+#: lib/marshall_web/live/teams_live.ex:405
 #, elixir-autogen, elixir-format
 msgid "Cancel offer"
 msgstr "Batalkan penawaran"
 
-#: lib/marshall_web/live/teams_live.ex:36
+#: lib/marshall_web/live/teams_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not create this team."
 msgstr "Tidak dapat membuat tim ini."
 
-#: lib/marshall_web/live/teams_live.ex:92
+#: lib/marshall_web/live/teams_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Could not offer ownership."
 msgstr "Tidak dapat menawarkan kepemilikan."
 
-#: lib/marshall_web/live/teams_live.ex:76
+#: lib/marshall_web/live/teams_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Could not update this membership."
 msgstr "Tidak dapat memperbarui keanggotaan ini."
 
-#: lib/marshall_web/live/teams_live.ex:113
+#: lib/marshall_web/live/teams_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Could not update this ownership offer."
 msgstr "Tidak dapat memperbarui penawaran kepemilikan ini."
 
-#: lib/marshall_web/live/teams_live.ex:372
+#: lib/marshall_web/live/teams_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Create a team"
 msgstr "Buat tim"
 
-#: lib/marshall_web/live/teams_live.ex:382
+#: lib/marshall_web/live/teams_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Create team"
 msgstr "Buat tim"
 
-#: lib/marshall_web/live/teams_live.ex:351
+#: lib/marshall_web/live/teams_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "Tolak"
 
-#: lib/marshall_web/live/teams_live.ex:397
+#: lib/marshall_web/live/teams_live.ex:474
 #, elixir-autogen, elixir-format
 msgid "Everything, including appointing admins and offering ownership."
 msgstr "Semuanya, termasuk menunjuk administrator dan menawarkan kepemilikan."
 
-#: lib/marshall_web/live/teams_live.ex:44
-#: lib/marshall_web/live/teams_live.ex:118
+#: lib/marshall_web/live/teams_live.ex:51
+#: lib/marshall_web/live/teams_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Permintaan tidak valid."
 
-#: lib/marshall_web/live/teams_live.ex:399
+#: lib/marshall_web/live/teams_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Manage members and team machines."
 msgstr "Kelola anggota dan mesin tim."
 
-#: lib/marshall_web/live/teams_live.ex:226
-#: lib/marshall_web/live/teams_live.ex:268
-#: lib/marshall_web/live/teams_live.ex:393
+#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:309
+#: lib/marshall_web/live/teams_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Member"
 msgstr "Anggota"
 
-#: lib/marshall_web/live/teams_live.ex:221
+#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "Anggota"
 
-#: lib/marshall_web/live/teams_live.ex:72
+#: lib/marshall_web/live/teams_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "Membership updated."
 msgstr "Keanggotaan diperbarui."
 
-#: lib/marshall_web/live/teams_live.ex:366
+#: lib/marshall_web/live/teams_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "No pending ownership offer."
 msgstr "Tidak ada penawaran kepemilikan yang tertunda."
 
-#: lib/marshall_web/live/teams_live.ex:300
+#: lib/marshall_web/live/teams_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Offer ownership"
 msgstr "Tawarkan kepemilikan"
 
-#: lib/marshall_web/live/teams_live.ex:297
+#: lib/marshall_web/live/teams_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Offer ownership to"
 msgstr "Tawarkan kepemilikan kepada"
 
-#: lib/marshall_web/live/teams_live.ex:304
+#: lib/marshall_web/live/teams_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Offered by"
 msgstr "Ditawarkan oleh"
 
-#: lib/marshall_web/live/teams_live.ex:313
+#: lib/marshall_web/live/teams_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Offered to"
 msgstr "Ditawarkan kepada"
 
-#: lib/marshall_web/live/teams_live.ex:391
+#: lib/marshall_web/live/teams_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Pemilik"
 
-#: lib/marshall_web/live/teams_live.ex:281
+#: lib/marshall_web/live/teams_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Ownership"
 msgstr "Kepemilikan"
 
-#: lib/marshall_web/live/teams_live.ex:87
+#: lib/marshall_web/live/teams_live.ex:94
 #, elixir-autogen, elixir-format
 msgid "Ownership offer sent."
 msgstr "Penawaran kepemilikan dikirim."
 
-#: lib/marshall_web/live/teams_live.ex:109
+#: lib/marshall_web/live/teams_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "Ownership offer updated."
 msgstr "Penawaran kepemilikan diperbarui."
 
-#: lib/marshall_web/live/teams_live.ex:327
+#: lib/marshall_web/live/teams_live.ex:371
 #, elixir-autogen, elixir-format
 msgid "Ownership offered by %{value1} to %{value2}."
 msgstr "Kepemilikan ditawarkan oleh %{value1} kepada %{value2}."
 
-#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Email terdaftar"
 
-#: lib/marshall_web/live/teams_live.ex:269
+#: lib/marshall_web/live/teams_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Hapus"
 
-#: lib/marshall_web/live/teams_live.ex:227
-#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:265
+#: lib/marshall_web/live/teams_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Peran"
 
-#: lib/marshall_web/live/teams_live.ex:274
+#: lib/marshall_web/live/teams_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "Save member"
 msgstr "Simpan anggota"
 
-#: lib/marshall_web/live/teams_live.ex:183
+#: lib/marshall_web/live/teams_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr "Bagikan mesin dan integrasi dengan rekan kerja Anda. Pemilik menunjuk administrator, administrator mengelola anggota."
 
-#: lib/marshall_web/live/teams_live.ex:322
+#: lib/marshall_web/live/teams_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status keadaan"
 
-#: lib/marshall_web/live/teams_live.ex:31
+#: lib/marshall_web/live/teams_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Team %{value1} created."
 msgstr "Tim %{value1} dibuat."
 
-#: lib/marshall_web/live/teams_live.ex:378
+#: lib/marshall_web/live/teams_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "Team name"
 msgstr "Nama tim"
 
-#: lib/marshall_web/live/teams_live.ex:181
+#: lib/marshall_web/live/teams_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "Tim"
 
-#: lib/marshall_web/live/teams_live.ex:129
+#: lib/marshall_web/live/teams_live.ex:142
 #, elixir-autogen, elixir-format
 msgid "Teams are temporarily unavailable."
 msgstr "Tim sementara tidak tersedia."
 
-#: lib/marshall_web/live/teams_live.ex:400
+#: lib/marshall_web/live/teams_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Use team machines and integrations."
 msgstr "Gunakan mesin dan integrasi tim."
 
-#: lib/marshall_web/live/teams_live.ex:190
+#: lib/marshall_web/live/teams_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
 msgstr "Anda belum bergabung dengan tim. Buat tim di bawah, atau minta administrator tim menambahkan Anda."
 
-#: lib/marshall_web/live/teams_live.ex:374
+#: lib/marshall_web/live/teams_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "You become its owner and can add members straight away."
 msgstr "Anda menjadi pemiliknya dan dapat langsung menambahkan anggota."
 
-#: lib/marshall_web/live/teams_live.ex:210
+#: lib/marshall_web/live/teams_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Your role: %{role}"
 msgstr "Peran Anda: %{role}"
 
-#: lib/marshall_web/live/teams_live.ex:196
+#: lib/marshall_web/live/teams_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Your teams"
 msgstr "Tim Anda"
 
-#: lib/marshall_web/live/teams_live.ex:323
+#: lib/marshall_web/live/teams_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "pending"
 msgstr "tertunda"
 
-#: lib/marshall_web/live/teams_live.ex:379
+#: lib/marshall_web/live/teams_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "platform"
 msgstr "platform sistem"
 
-#: lib/marshall_web/live/teams_live.ex:260
-#: lib/marshall_web/live/teams_live.ex:298
+#: lib/marshall_web/live/teams_live.ex:301
+#: lib/marshall_web/live/teams_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "teammate@example.test"
 msgstr "teammate@example.test"
+
+#: lib/marshall_web/live/teams_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "All teams"
+msgstr "Semua tim"
+
+#: lib/marshall_web/live/teams_live.ex:470
+#, elixir-autogen, elixir-format
+msgid "Awaiting handoff"
+msgstr "Menunggu serah terima"
+
+#: lib/marshall_web/live/teams_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Creating teams, changing members and offering ownership are not available here. Ask your identity provider administrator for changes."
+msgstr "Membuat tim, mengubah anggota, dan menawarkan kepemilikan tidak tersedia di sini. Mintalah perubahan kepada administrator penyedia identitas Anda."
+
+#: lib/marshall_web/live/teams_live.ex:468
+#, elixir-autogen, elixir-format
+msgid "Identity provider"
+msgstr "Penyedia identitas"
+
+#: lib/marshall_web/live/teams_live.ex:423
+#, elixir-autogen, elixir-format
+msgid "Managed by"
+msgstr "Dikelola oleh"
+
+#: lib/marshall_web/live/teams_live.ex:467
+#, elixir-autogen, elixir-format
+msgid "Marshall"
+msgstr "Marshall"
+
+#: lib/marshall_web/live/teams_live.ex:416
+#, elixir-autogen, elixir-format
+msgid "No active teams."
+msgstr "Tidak ada tim aktif."
+
+#: lib/marshall_web/live/teams_live.ex:469
+#, elixir-autogen, elixir-format
+msgid "Retiring"
+msgstr "Sedang dihentikan"
+
+#: lib/marshall_web/live/teams_live.ex:421
+#, elixir-autogen, elixir-format
+msgid "Team"
+msgstr "Tim"
+
+#: lib/marshall_web/live/teams_live.ex:216
+#, elixir-autogen, elixir-format
+msgid "Teams are managed by your identity provider."
+msgstr "Tim dikelola oleh penyedia identitas Anda."
+
+#: lib/marshall_web/live/teams_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet."
+msgstr "Anda belum tergabung dalam tim."

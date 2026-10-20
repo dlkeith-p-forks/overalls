@@ -121,7 +121,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: lib/marshall_web/machine_workspace.ex:90
+#: lib/marshall_web/machine_workspace.ex:93
 #, elixir-autogen, elixir-format
 msgid "Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it."
 msgstr ""
@@ -1521,7 +1521,7 @@ msgstr ""
 msgid "The machine could not be created. Try again, or create one manually."
 msgstr ""
 
-#: lib/marshall_web/machine_workspace.ex:230
+#: lib/marshall_web/machine_workspace.ex:233
 #, elixir-autogen, elixir-format
 msgid "The machine could not be updated. Refresh and try again."
 msgstr ""
@@ -1546,7 +1546,7 @@ msgstr ""
 msgid "The owner's access cannot be changed."
 msgstr ""
 
-#: lib/marshall_web/machine_workspace.ex:185
+#: lib/marshall_web/machine_workspace.ex:188
 #, elixir-autogen, elixir-format
 msgid "The pin could not be changed. Refresh and try again."
 msgstr ""
@@ -1636,7 +1636,7 @@ msgstr ""
 msgid "This launch link has expired. Open it again."
 msgstr ""
 
-#: lib/marshall_web/machine_workspace.ex:179
+#: lib/marshall_web/machine_workspace.ex:182
 #, elixir-autogen, elixir-format
 msgid "This machine is being deleted and cannot be pinned."
 msgstr ""
@@ -1651,7 +1651,7 @@ msgstr ""
 msgid "This machine is unavailable or you no longer have management access."
 msgstr ""
 
-#: lib/marshall_web/machine_workspace.ex:101
+#: lib/marshall_web/machine_workspace.ex:104
 #, elixir-autogen, elixir-format
 msgid "This machine is unavailable or your access has ended."
 msgstr ""
@@ -1796,7 +1796,7 @@ msgstr ""
 msgid "Who can reach this machine, and what each role allows."
 msgstr ""
 
-#: lib/marshall_web/machine_workspace.ex:172
+#: lib/marshall_web/machine_workspace.ex:175
 #, elixir-autogen, elixir-format
 msgid "You can pin up to %{value1} machines. Unpin one before pinning another."
 msgstr ""
