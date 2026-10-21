@@ -153,7 +153,14 @@ private enum MilaRustFFI {
 /// Adapter for the stable C ABI exported by `mila-ffi`.
 /// The host must link the Rust library; no Rust-owned memory is retained by this value.
 public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
-    public init() {}
+    private let liveSession: MilaLiveSession?
+
+    public init() { liveSession = nil }
+
+    /// Creates an adapter backed by an authenticated Rust session. Trust is pinned deployment data.
+    public init(trust: Data, host: String, port: UInt16, signer: MilaDeviceSigner) throws {
+        liveSession = try MilaLiveSession(trust: trust, host: host, port: port, signer: signer)
+    }
 
     public func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse {
         guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
@@ -244,7 +251,27 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
     }
 
     public func refreshSnapshot() async throws -> MilaValidatedSnapshot {
-        throw MilaFFIError.unavailable
+        guard let liveSession else { throw MilaFFIError.unavailable }
+        let data = try liveSession.refresh()
+        return try projectListing(data)
+    }
+
+    private func projectListing(_ data: Data) throws -> MilaValidatedSnapshot {
+        let decoder = JSONDecoder()
+        let envelope = try decoder.decode(MilaSnapshotEnvelope.self, from: data)
+        let metadata = MilaSnapshotMetadata(machineCount: UInt32(envelope.machines.count), savedAt: 0)
+        let machines = try envelope.machines.enumerated().map { index, machine in
+            let actions = try machineActionsFromListing(data, index: UInt32(index))
+            return MilaMachinePresentation(machine: machine, actions: actions)
+        }
+        return MilaValidatedSnapshot(machines: machines, metadata: metadata)
+    }
+
+    private func machineActionsFromListing(_ data: Data, index: UInt32) throws -> MilaMachineActions {
+        // The live listing is produced by Rust and is already policy-projected; actions are
+        // intentionally empty until a validated offline snapshot is available for projection.
+        _ = data; _ = index
+        return MilaMachineActions(bits: 0)
     }
 
     /// @cc [owner:ghuntley,label:security] mila-apple-no-fabricated-submission
