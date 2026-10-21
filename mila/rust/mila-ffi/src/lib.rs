@@ -357,6 +357,34 @@ mod tests {
     };
     use mila_runtime::MachineSnapshot;
 
+    /// Keep the C ABI route writer aligned with the vectors consumed by every
+    /// native client. This catches drift where a platform wrapper accepts a
+    /// route that the shared boundary cannot canonicalize.
+    #[test]
+    fn formats_shared_route_fixture_vectors() {
+        let fixture = include_str!("../../../../protocol/test/fixtures/app_routes.json");
+        let document: serde_json::Value = serde_json::from_str(fixture).expect("route fixture");
+        for vector in document["accepted"].as_array().expect("accepted vectors") {
+            let input = std::ffi::CString::new(vector["input"].as_str().unwrap()).unwrap();
+            let expected = vector["canonical"].as_str().unwrap().as_bytes();
+            let mut bytes = vec![0_u8; expected.len() + 1];
+            let mut written = 0_usize;
+            let status = unsafe {
+                super::mila_route_format(
+                    input.as_ptr(),
+                    super::MilaRouteOutput {
+                        bytes: bytes.as_mut_ptr(),
+                        capacity: bytes.len(),
+                        written: &mut written,
+                    },
+                )
+            };
+            assert_eq!(status, MilaFfiStatus::Ok);
+            assert_eq!(written, expected.len());
+            assert_eq!(&bytes[..written], expected);
+        }
+    }
+
     #[test]
     fn exposes_stable_abi_version() {
         assert_eq!(mila_ffi_version(), 1);
