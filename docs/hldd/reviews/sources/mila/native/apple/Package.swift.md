@@ -1,5 +1,5 @@
 ---
-digest: 5ff1be666b92b77781dbfb6693a7c4be9061b97a278c3b539c4eaa4428ab81db
+digest: 10f07c61ae91863791c71ab82a1719e146208e93a311ed4b0b82bcadb959e6e7
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple Swift package now links weak FFI development stubs; architecture unchanged
+Reviewed Swift C shim target header layout; package build structure only, no architecture change.

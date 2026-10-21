@@ -15,7 +15,8 @@ let package = Package(
     targets: [
         .target(
             name: "MilaFFIShim",
-            path: "Sources/MilaFFIShim"
+            path: "Sources/MilaFFIShim",
+            publicHeadersPath: "include"
         ),
         .target(
             name: "MilaNativeUI",
