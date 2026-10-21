@@ -2,9 +2,7 @@
 
 This directory is the native Windows host for the desktop Mila client. It is a
 small unpackaged WinUI 3 application targeting .NET 10 and Windows 10
-19041. The existing Flutter client remains the source of the product UI and
-transport behavior; this project is the native host and FFI seam that Windows
-builds can grow around.
+19041. The native client owns presentation while the shared Rust core owns transport, validation, and policy.
 
 ## Build on Windows
 

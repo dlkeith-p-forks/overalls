@@ -1,5 +1,5 @@
 ---
-digest: 43b92f32e41e9322bad91f73a09b029ed9fd7bb0ece90797e95f4299808cb5b8
+digest: 8f00c5ce54f06015a3938d6291a54d6c5ff5ff05d5b392d3ebea96fbc1219f42
 disposition: no-impact
 kind: source
 mapping_digest: f7ae1015b8a6b22d2b48a9d01c1d52b5bf0d4191e2a4cb42263c24f5d17194fc
@@ -19,4 +19,4 @@ state: present
 version: 2
 ---
 
-Reviewed the VM driver change; existing lifecycle and recovery chapters remain accurate.
+Reviewed concurrent VM driver changes; existing lifecycle documentation remains accurate.

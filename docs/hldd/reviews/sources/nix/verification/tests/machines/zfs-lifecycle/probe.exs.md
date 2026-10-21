@@ -1,5 +1,5 @@
 ---
-digest: 6c027ffcfc086efc264098c7540685af258ad60452e35234e73061e4f061b2f4
+digest: 128ea43784dea08049cba1bb0f5e6b1c1e6cfed57aebb8b555cf2e6626d323e4
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed ZFS lifecycle observation change; existing recovery documentation remains accurate.
+Reviewed concurrent ZFS lifecycle probe changes; existing recovery documentation remains accurate.
