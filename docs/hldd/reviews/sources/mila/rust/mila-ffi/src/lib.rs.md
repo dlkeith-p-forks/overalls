@@ -1,11 +1,11 @@
 ---
-digest: 776530c3fd1b2d255dfe3a39122974af31e17563eb32a702490ce0df84b2dfca
-disposition: no-impact
+digest: 13beae3c8f127f1b5964b42663c718045aa993af928b4fb7784fdaf52eb5a166
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-ffi/src/lib.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
+  marshall/priv/hldd/08-interactive.md: 30a379e903cd845af2a2aee9c87922e246097dfdbe57779598a104096d08f4af
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
   marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Move existing Rust contract directives to the start of their documentation blocks so the pinned checker can parse them; contract prose and executable behavior are unchanged.
+Document exact machine-action token refusals, JSON formatting, Hegel buffer and identity properties, and remaining native transport gaps.

@@ -1158,6 +1158,20 @@ and [execution review](repo:docs/architecture/reviews/2026-09-29-antithesis-prop
 
 ## Mila
 
+The [native rewrite decision](repo:docs/architecture/decisions/0249-mila-rust-core-native-clients.md)
+is partially implemented. The Flutter behavior described below remains the parity
+reference. Native SwiftUI, Compose, GTK and WinUI clients do not yet implement
+all authenticated sessions or application screens. Their Rust
+[machine-command FFI](repo:mila/rust/mila-ffi/src/lib.rs) accepts only `show`,
+`start`, `stop`, `pause`, `resume`, `unpause`, `pin`, `unpin` and `rm` as exact
+action tokens. It formats JSON commands into caller-owned bounded buffers;
+mutations require a canonical client request ID. Extra action tokens are refused
+before formatting. Formatting performs no network submission and does not establish
+authorization or at-most-once execution. The
+[Hegel FFI properties](repo:mila/rust/mila-ffi/tests/commands.rs) exercise token
+injection refusal, request identity and buffer canaries; authenticated transport
+and native end-to-end mutation acceptance remain separate gaps.
+
 Mila is the Overalls client for iOS, Android, macOS and Windows; its Linux
 build exists for testing. A platform profile
 ([`PlatformProfile`](repo:mila/app/lib/transport/platform.dart)) fixes per

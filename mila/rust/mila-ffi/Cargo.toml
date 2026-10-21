@@ -15,3 +15,6 @@ mila-runtime = { path = "../mila-runtime" }
 uuid.workspace = true
 serde_json.workspace = true
 jni = "0.21"
+
+[dev-dependencies]
+hegeltest.workspace = true

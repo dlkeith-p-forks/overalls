@@ -543,6 +543,7 @@ dependencies = [
 name = "mila-ffi"
 version = "0.1.0"
 dependencies = [
+ "hegeltest",
  "jni",
  "mila-model",
  "mila-protocol",

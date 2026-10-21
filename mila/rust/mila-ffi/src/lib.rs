@@ -392,11 +392,12 @@ pub unsafe extern "C" fn mila_session_command_format(
     if mila_model::Identifier::parse(&machine).is_err() {
         return MilaFfiStatus::InvalidRequest;
     }
-    let mutation = matches!(
-        action.as_str(),
-        "start" | "stop" | "pause" | "resume" | "unpause" | "pin" | "unpin" | "rm"
-    );
-    let mut line = format!("{action} {machine}");
+    let mutation = match action.as_str() {
+        "show" => false,
+        "start" | "stop" | "pause" | "resume" | "unpause" | "pin" | "unpin" | "rm" => true,
+        _ => return MilaFfiStatus::InvalidRequest,
+    };
+    let mut line = format!("{action} {machine} --json");
     if mutation {
         if request_id.is_null() {
             return MilaFfiStatus::InvalidRequest;
