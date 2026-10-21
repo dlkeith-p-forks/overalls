@@ -4,8 +4,8 @@ import XCTest
 final class MilaRouteTests: XCTestCase {
     func testParsesSupportedRoutes() {
         let machineID = UUID(uuidString: "11111111-1111-1111-1111-111111111111")!
-        XCTAssertEqual(MilaRouteParser.parse("overalls://machines"), .machines)
-        XCTAssertEqual(MilaRouteParser.parse("overalls://machines/\(machineID.uuidString)"), .machine(id: machineID))
+        XCTAssertEqual(MilaRouteParser.parse("overalls://overalls.example/machines"), .machines)
+        XCTAssertEqual(MilaRouteParser.parse("overalls://overalls.example/machines/\(machineID.uuidString)"), .machine(id: machineID))
         XCTAssertEqual(MilaRouteParser.parse("overalls://threads"), .threads)
         XCTAssertEqual(MilaRouteParser.parse("overalls://threads/\(machineID.uuidString)"), .thread(id: machineID))
         XCTAssertEqual(MilaRouteParser.parse("overalls://settings"), .settings)
@@ -15,11 +15,11 @@ final class MilaRouteTests: XCTestCase {
         let machineID = "11111111-1111-1111-1111-111111111111"
         let invalid = [
             "https://machines",
-            "overalls://machines/\(machineID)?token=secret",
-            "overalls://machines/\(machineID)#fragment",
-            "overalls://machines/\(machineID)/terminal",
-            "overalls://machines/not-a-uuid",
-            "overalls://machines/%2F\(machineID)",
+            "overalls://overalls.example/machines/\(machineID)?token=secret",
+            "overalls://overalls.example/machines/\(machineID)#fragment",
+            "overalls://overalls.example/machines/\(machineID)/terminal",
+            "overalls://overalls.example/machines/not-a-uuid",
+            "overalls://overalls.example/machines/%2F\(machineID)",
             "overalls://user@machines",
         ]
         for value in invalid {
@@ -41,6 +41,6 @@ final class MilaFFIRequestTests: XCTestCase {
 final class MilaRustLinkTests: XCTestCase {
     func testLinkedRustCanonicalizesRoute() throws {
         let adapter = LinkedMilaFFIAdapter()
-        XCTAssertEqual(try adapter.canonicalRoute("overalls://machines"), "overalls://machines")
+        XCTAssertEqual(try adapter.canonicalRoute("overalls://overalls.example/machines"), "overalls://overalls.example/machines")
     }
 }

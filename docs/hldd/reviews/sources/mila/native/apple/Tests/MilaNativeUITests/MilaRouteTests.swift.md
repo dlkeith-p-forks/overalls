@@ -1,5 +1,5 @@
 ---
-digest: dc2e0135605693403d203753197578fb593eacab6384c81989f969a15b918c6f
+digest: 29c14174e20c4926a6706f224ec39c086e21f6837bf4248552860cc853a5d7de
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native FFI linkage changes preserve the documented Rust-core and thin-wrapper architecture while making Android JNI and Apple static-library integration executable in native builds.
+Native integration fixtures now use the canonical host-qualified route accepted by the shared Rust grammar.

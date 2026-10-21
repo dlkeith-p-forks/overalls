@@ -1,5 +1,5 @@
 ---
-digest: ce773ed15914af6eea46d4b8430f6ab5e776125b5ffbc62d02d9ba8f2eb493ed
+digest: 0a3acdae7d5c483b50fbc8cc669d382b882f94c1eb28640f915b9c3a32af5590
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android native build and test wiring preserves existing documented behavior; native verification evidence is scoped to CI.
+Native integration fixtures now use the canonical host-qualified route accepted by the shared Rust grammar.
