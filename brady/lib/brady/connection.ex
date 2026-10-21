@@ -7,6 +7,7 @@ defmodule Brady.Connection do
   # socket, never a request header. Only an exact configured hostname/port pair
   # may tunnel. Malformed TLS, signing failure and upstream failure MUST close
   # the connection without falling back to tunnelling or direct guest egress.
+
   # @cc [owner:ghuntley,label:observability] brady-pre-admission-refusal
   # A disallowed kernel destination MUST emit a policy refusal without addresses
   # or guest bytes. Socket identity failures MUST emit a transport outcome.
