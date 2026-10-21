@@ -51,6 +51,9 @@ private class FakeRustBindings(
     override fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle? = null
     override fun threadCommandKind(value: String): Int = 1
     override fun machineCommandKind(value: String): Int = 10
+    override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Int = 0
+    override fun terminalInput(length: Int, readWrite: Boolean): Int = 0
+    override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Int = 0
 }
 
 class MilaLinkedFfiAdapterTest {
