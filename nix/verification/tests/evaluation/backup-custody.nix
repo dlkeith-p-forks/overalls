@@ -18,6 +18,12 @@ pkgs.runCommand "overalls-backup-custody" {
   export XDG_CACHE_HOME=$TMPDIR/cache
   export PYTHONDONTWRITEBYTECODE=1
   chmod 0700 "$TMPDIR"
+  # Some builders own their private sandbox root, initially mode 1777.
+  # Preserve ancestor checks by removing group/world writes on that root;
+  # never chmod a root-owned host root or run this normalization as root.
+  if [ "$(id -u)" != 0 ] && [ "$(stat -c %u /)" = "$(id -u)" ]; then
+    chmod go-w /
+  fi
   cp -r ${../../../domains/system/backups} backups
   cp ${../../../domains/artifacts/secrets/cli.py} secrets_cli.py
   cp ${./backup-custody.py} backup_custody_test.py
