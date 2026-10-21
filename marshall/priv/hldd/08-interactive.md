@@ -1181,6 +1181,22 @@ installed. ABI compatibility and command formatting never count as connection or
 submission success. Apple linked tests cover malformed and foreign snapshots,
 policy projection, and refused action submission; execution requires the Apple CI
 host. Native localization, secure custody and live session acceptance remain gaps.
+The Rust [application session](repo:mila/rust/mila-session/src/lib.rs) now runs
+`ls --json` and canonical UUID `--after` continuations on one certificate-pinned
+SSH connection. It validates the version-1 succeeded read envelope and typed
+identity/permission fields before publishing machine rows. Unknown descriptive
+fields are ignored; unknown observed states disable lifecycle actions. Refused,
+malformed or interrupted reads preserve the previous listing and return an error.
+Callers must present that error rather than treating retained rows as a fresh read.
+Pagination refuses repeated cursors, more than 500 distinct rows or 500 cursors.
+Only a complete listing can produce an offline snapshot, bound to the connection's
+management host and explicit port. The snapshot owner field is a presence marker
+(`self`), not an account identifier. This crate does not fetch trust, approve a key,
+persist snapshots, dispatch mutations or expose a C ABI session handle yet.
+Its [TCP SSH tests](repo:mila/rust/mila-session/tests/session.rs) use a real local
+SSH server with scripted command replies; [Hegel decoder properties](repo:mila/rust/mila-session/tests/properties.rs)
+cover identity and authority refusal. Native application wiring and a real Porsche
+machine journey remain unverified.
 
 Mila is the Overalls client for iOS, Android, macOS and Windows; its Linux
 build exists for testing. A platform profile

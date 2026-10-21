@@ -1199,6 +1199,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "mila-session"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "hegeltest",
+ "mila-model",
+ "mila-runtime",
+ "mila-transport",
+ "p256 0.13.2",
+ "rand",
+ "russh",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+]
+
+[[package]]
 name = "mila-transport"
 version = "0.1.0"
 dependencies = [

@@ -12,6 +12,8 @@ superseding ADR-0086 for them while other hosts stay cache-only.
 [ADR-0249](0249-mila-rust-core-native-clients.md) moves Mila's shared protocol,
 cryptography and state logic into Rust crates with thin Swift, Kotlin, GTK4 and
 WinUI clients; implementation remains partial while native parity is built.
+The separate `mila-session` crate now composes validated machine reads with SSH;
+native session adapters and full feature parity remain pending.
 
 [ADR-0247](0247-sops-operator-source-grant.md) restores Geoffrey Huntley's
 operator source as a reviewed fleet-wide grant whose address lives only in the

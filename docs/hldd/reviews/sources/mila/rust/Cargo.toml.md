@@ -1,22 +1,18 @@
 ---
-digest: 32dab8112597d2df1bea7717237fd0f329837f09c39d89e0c4c5e578dafd485b
-disposition: no-impact
+digest: 3863b93f7e0e4611f18e3a6b1ff60036b28e8794c97c3bf8e8f428dca5ca01ae
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
-migration:
-  mila:
-    chapter_digest: e55458d450e8c1eb96b0135d17becedf97db36241e5503077036be57c28ce3f1
-    source_digest: 67fa642ad4ad7cbc69bcbfdf12a38549302a7842f95213c629565a0f99bfed28
 path: mila/rust/Cargo.toml
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
+  marshall/priv/hldd/08-interactive.md: ec6d9bd48398f16aeb4d65c90cef28f7dd5789af941686f0fc90d70be16858ba
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 5dc84656f2a81c5674ed8311af44a7f2e9c33262d36f624e11f8ba378a32db61
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/19-coverage.md: 70a890201542303c5e959f703f2ed7304fa2c9160682226780d6a6b0760be345
+  marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
+  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-mila: Reviewed the Rust FFI trust-document, push-registration, terminal and watch validation probes; they preserve existing native boundary behavior and do not change handbook deployment, security, or topology contracts.
+Document Rust SSH machine reads, atomic refresh, pagination and snapshot bounds with scoped local SSH and Hegel evidence; native adapters remain open.

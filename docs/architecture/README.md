@@ -1,5 +1,11 @@
 # Architecture
 
+[ADR-0249](decisions/0249-mila-rust-core-native-clients.md) moves Mila toward
+thin native clients over Rust. The separate `mila-session` crate composes pure
+runtime projections with certificate-pinned SSH machine reads and pagination;
+native adapter integration and full Flutter replacement remain partial, as
+recorded in the [session review](reviews/2026-10-21-mila-native-session.md).
+
 [ADR-0250](decisions/0250-independent-hldd-review-records.md) separates HLDD source
 and chapter review currency to let independent work merge without unrelated
 receipt churn. It retains explicit review, scenario evidence and evaluated views.

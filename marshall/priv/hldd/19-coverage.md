@@ -2698,6 +2698,24 @@ Tested scope: Flutter widget tests in the test VM with platform font fallback.
 
 **Preferred test work:** Run the Linux bundle under the mila-desktop machine test in an RTL locale.
 
+## A native client refreshes and pages its machine list over the Rust SSH session
+
+Coverage: **partial**. Layers: transport, authorization, recovery.
+
+Boundary: The Rust session validates machine identities and permissions from a certificate-pinned SSH channel; Marshall remains authorization authority.
+
+Required refusal: Nonzero exit, malformed envelope, invalid authority fields, incomplete channel exit, cursor cycles and listing bounds preserve the previous successful projection and return an error.
+
+Tested scope: Local real TCP SSH with scripted server replies and pure Hegel decoder properties; native application adapters are not exercised.
+
+- **unit, present**: [pages_refresh_and_complete_snapshot_use_one_authenticated_connection](repo:mila/rust/mila-session/tests/session.rs) — Real local certificate-pinned SSH verifies one authentication, page ordering, snapshot completeness and deployment binding; remote command results are scripted..
+- **unit, present**: [invalid_refused_and_interrupted_refresh_never_replace_the_last_good_list](repo:mila/rust/mila-session/tests/session.rs) — Malformed response, nonzero exit and missing exit status return errors and retain prior validated rows..
+- **property, present**: [decoded_permissions_never_gain_authority](repo:mila/rust/mila-session/tests/properties.rs) — Generated permission, owner and pin combinations preserve the wire projection and action policy; identity and authority corruption is refused..
+
+**Gaps:** Native UI and signer wiring, browser approval, real Porsche authorization, watch refresh and persistence custody remain unverified.
+
+**Preferred test work:** Add a NixOS native-client and real Porsche machine journey; scripted SSH replies do not establish server authorization.
+
 ## An agent needs input and the user's phone shows a notification that opens the right machine
 
 Coverage: **partial**. Layers: transport, isolation.

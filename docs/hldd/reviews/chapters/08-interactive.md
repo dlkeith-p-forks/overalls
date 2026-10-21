@@ -1,5 +1,5 @@
 ---
-digest: 0d2013b37530c92f7effbaabadd7b6124666bb3ec8fc042a4783dcb3818513ca
+digest: ee9213d47c19b373be523852c9ba86abe0ba8f204fe3821c3d05f42b3b0813f7
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed combined Apple Rust policy projection and Windows native action binding; both retain explicit live-session and host verification gaps.
+Reviewed combined native Rust session listing, Apple policy projections and Windows action bindings; transport UI wiring and platform custody remain explicit gaps.

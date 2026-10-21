@@ -69,6 +69,18 @@ The initial workspace and adapters are in [`mila/rust/Cargo.toml`](../../../mila
 Hegel fixtures and Nix checks pass on Linux. Transport, secure-storage,
 feature-complete screens, native-host builds and Flutter removal remain open.
 
+[`mila-session`](../../../mila/rust/mila-session/src/lib.rs) composes the pure
+runtime with the certificate-pinned SSH transport for validated machine reads.
+It owns first-page refresh, bounded continuation, atomic failure preservation and
+complete-only offline projections. Its separate crate keeps network dependencies
+out of the pure runtime. Local TCP SSH tests in
+[`session.rs`](../../../mila/rust/mila-session/tests/session.rs) exercise actual
+certificate negotiation and channels with scripted server results; Hegel tests in
+[`properties.rs`](../../../mila/rust/mila-session/tests/properties.rs) check decoder
+identity and permission handling. Browser approval, native signer/FFI orchestration,
+watch, mutations and real Porsche integration remain open for this layer; see the
+[session review](../reviews/2026-10-21-mila-native-session.md).
+
 The terminal attachment reducer is ported from Dart in
 [`terminal.rs`](../../../mila/rust/mila-runtime/src/terminal.rs), with private
 state, current-generation headers, replay reset accounting, closed outcomes,

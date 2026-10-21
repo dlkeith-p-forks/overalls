@@ -1,0 +1,92 @@
+use hegel::{generators as gs, TestCase};
+use mila_session::decode_listing;
+use serde_json::{json, Value};
+
+fn row(index: u8, write: bool, manage: bool, owner: bool, pinned: bool) -> Value {
+    json!({"id": format!("00000000-0000-0000-0000-{index:012x}"), "name": "machine",
+        "desired_state": "running", "observed_state": "running", "pinned": pinned,
+        "owner": owner, "permissions": {"read": true, "write": write, "manage": manage}})
+}
+fn envelope(rows: Vec<Value>, cursor: Option<String>) -> Vec<u8> {
+    serde_json::to_vec(&json!({"version": 1, "status": "succeeded", "result": {"items": rows, "next_cursor": cursor}})).unwrap()
+}
+
+#[hegel::test(test_cases = 128)]
+fn decoded_permissions_never_gain_authority(tc: TestCase) {
+    let write = tc.draw(gs::default::<bool>());
+    let manage = tc.draw(gs::default::<bool>());
+    let owner = tc.draw(gs::default::<bool>());
+    let pinned = tc.draw(gs::default::<bool>());
+    let index = tc.draw(gs::default::<u8>());
+    let listing = decode_listing(&envelope(
+        vec![row(index, write, manage, owner, pinned)],
+        None,
+    ))
+    .unwrap();
+    let m = &listing.machines()[0];
+    assert_eq!(
+        (m.write, m.manage, m.owner.is_some(), m.pinned),
+        (write, manage, owner, pinned)
+    );
+    let actions = m.available_actions();
+    assert_eq!(actions.contains(&mila_runtime::MachineAction::Stop), write);
+    assert_eq!(
+        actions.contains(&mila_runtime::MachineAction::Delete),
+        manage && owner && !pinned
+    );
+}
+
+#[hegel::test(test_cases = 128)]
+fn malformed_machine_identity_and_authority_are_refused(tc: TestCase) {
+    let index = tc.draw(gs::default::<u8>());
+    let which = tc.draw(gs::default::<u8>()) % 4;
+    let mut m = row(index, true, true, true, false);
+    match which {
+        0 => m["id"] = json!("not-a-uuid"),
+        1 => m["permissions"]["write"] = json!("true"),
+        2 => m["owner"] = json!(1),
+        _ => m["desired_state"] = json!("future-state"),
+    }
+    assert!(decode_listing(&envelope(vec![m], None)).is_err());
+}
+
+#[hegel::test(test_cases = 128)]
+fn arbitrary_bytes_and_duplicate_ids_never_form_a_listing(tc: TestCase) {
+    let bytes = tc.draw(gs::vecs(gs::default::<u8>()).max_size(4096));
+    let _ = decode_listing(&bytes);
+    let index = tc.draw(gs::default::<u8>());
+    let m = row(index, true, true, true, false);
+    assert!(decode_listing(&envelope(vec![m.clone(), m], None)).is_err());
+}
+
+#[test]
+fn read_envelope_and_cursor_are_closed_while_descriptions_are_extensible() {
+    let mut m = row(1, true, true, true, false);
+    m["future_description"] = json!({"ignored": true});
+    m["observed_state"] = json!("future-state");
+    let valid = envelope(vec![m.clone()], None);
+    let listing = decode_listing(&valid).unwrap();
+    assert_eq!(listing.machines()[0].observed_state, None);
+    for field in ["version", "status", "request_id"] {
+        let mut invalid: Value = serde_json::from_slice(&valid).unwrap();
+        invalid[field] = json!("unexpected");
+        assert!(decode_listing(&serde_json::to_vec(&invalid).unwrap()).is_err());
+    }
+    assert!(decode_listing(&envelope(vec![m], Some("bad --json".into()))).is_err());
+}
+
+#[test]
+fn oversized_pages_and_names_fail_before_projection() {
+    let rows: Vec<Value> = (0..=500)
+        .map(|index| {
+            let mut m = row(0, false, false, false, false);
+            m["id"] = json!(format!("00000000-0000-0000-0000-{index:012x}"));
+            m
+        })
+        .collect();
+    assert!(decode_listing(&envelope(rows, None)).is_err());
+    let mut m = row(0, false, false, false, false);
+    m["name"] = json!("x".repeat(4097));
+    assert!(decode_listing(&envelope(vec![m], None)).is_err());
+    assert!(decode_listing(&vec![b' '; (1 << 20) + 1]).is_err());
+}
