@@ -121,6 +121,7 @@ internal enum MilaThreadCommandKind : int
     Unknown = 0, List = 1, Show = 2, Turns = 3, Prompt = 4, Answer = 5,
     PlanApprove = 6, PlanRevise = 7, Mode = 8, Read = 9,
 }
+internal enum MilaMachineCommandKind : int { Unknown = 0, List = 1, Show = 2, New = 3, Resize = 4, Start = 5, Stop = 6, Pause = 7, Resume = 8, Delete = 9, ShareAdd = 10, ShareRemove = 11, WebShow = 12, WebSet = 13 }
 
 internal readonly record struct MilaNativeThreadCommandResult(
     MilaNativeStatus Status, MilaThreadCommandKind? Kind);
@@ -322,6 +323,13 @@ internal static partial class RustNative
         catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
         finally { Marshal.FreeCoTaskMem(input); }
     }
+    internal static MilaMachineCommandKind? TryClassifyMachineCommand(string line)
+    {
+        if (line.Contains('\0')) return null;
+        IntPtr input = Marshal.StringToCoTaskMemUTF8(line);
+        try { MilaNativeStatus status = MachineCommandKindNative(input, out MilaMachineCommandKind kind); return status == MilaNativeStatus.Ok ? kind : null; }
+        catch (DllNotFoundException) { return null; } catch (EntryPointNotFoundException) { return null; } finally { Marshal.FreeCoTaskMem(input); }
+    }
 
     /// <summary>Validates terminal attach dimensions and mode before opening a PTY.</summary>
     internal static MilaNativeTerminalResult TryValidateTerminalAttach(
@@ -366,6 +374,8 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_thread_command_kind")]
     private static partial MilaNativeStatus ThreadCommandKindNative(
         IntPtr line, out MilaThreadCommandKind kind);
+    [LibraryImport(LibraryName, EntryPoint = "mila_machine_command_kind")]
+    private static partial MilaNativeStatus MachineCommandKindNative(IntPtr line, out MilaMachineCommandKind kind);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_terminal_attach_validate")]
     private static partial MilaNativeStatus TerminalAttachNative(

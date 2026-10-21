@@ -49,6 +49,8 @@ MilaFfiStatus mila_terminal_validate(uint16_t columns, uint16_t rows,
                                      uint8_t read_write);
 typedef enum MilaThreadCommandKind { MILA_THREAD_UNKNOWN = 0, MILA_THREAD_LIST = 1, MILA_THREAD_SHOW = 2, MILA_THREAD_TURNS = 3, MILA_THREAD_PROMPT = 4, MILA_THREAD_ANSWER = 5, MILA_THREAD_PLAN_APPROVE = 6, MILA_THREAD_PLAN_REVISE = 7, MILA_THREAD_MODE = 8, MILA_THREAD_READ = 9 } MilaThreadCommandKind;
 MilaFfiStatus mila_thread_command_kind(const char *line, MilaThreadCommandKind *out_kind);
+typedef enum MilaMachineCommandKind { MILA_MACHINE_UNKNOWN = 0, MILA_MACHINE_LIST = 1, MILA_MACHINE_SHOW = 2, MILA_MACHINE_NEW = 3, MILA_MACHINE_RESIZE = 4, MILA_MACHINE_START = 5, MILA_MACHINE_STOP = 6, MILA_MACHINE_PAUSE = 7, MILA_MACHINE_RESUME = 8, MILA_MACHINE_DELETE = 9, MILA_MACHINE_SHARE_ADD = 10, MILA_MACHINE_SHARE_REMOVE = 11, MILA_MACHINE_WEB_SHOW = 12, MILA_MACHINE_WEB_SET = 13 } MilaMachineCommandKind;
+MilaFfiStatus mila_machine_command_kind(const char *line, MilaMachineCommandKind *out_kind);
 MilaFfiStatus mila_terminal_attach_validate(uint64_t from, uint16_t columns,
                                            uint16_t rows, uint8_t read_write);
 MilaFfiStatus mila_terminal_input_validate(size_t length, uint8_t read_write);
