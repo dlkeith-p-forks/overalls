@@ -1,5 +1,5 @@
 ---
-digest: 6cbbfc325524ab4ff66cbc9e819620fb817da0fe0ffde7a6a4440433481acf86
+digest: 86ce0ff3934a5a31b3c6958bf140537ef1aefa2db528e5d09ffbedcbea988685
 disposition: no-impact
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
@@ -9,8 +9,8 @@ reviewed_chapters:
   marshall/priv/hldd/03-access.md: 08dc3c53c626ebafffba5f908f09ccd49edd919b7a03a3ef8c12113f5097bd96
   marshall/priv/hldd/04-lifecycle.md: a3c881206a8331e5dbcd995c9762772639a9e28bdc22102c2a2e64bf63aa7449
   marshall/priv/hldd/06-workflows.md: 97fca2ee73a5dc431d8f040eb16468eaf0f28233c146be2b53804063fadb565b
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
-  marshall/priv/hldd/11-agents.md: dea02f8fd8ed2cfdfbe10e6fd584479caaaa706bf64df4668b638b3aae37465c
+  marshall/priv/hldd/08-interactive.md: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
+  marshall/priv/hldd/11-agents.md: 78a9e5616f5d0ca90abae80524701d54bb7c010e5341a882ee27d18141de8c27
   marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
   marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
   marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed diagnostics, logging, audit and privacy changes; no-impact evidence remains aligned with implementation.
+Contract documentation separation only; no documented behavior or architecture impact.

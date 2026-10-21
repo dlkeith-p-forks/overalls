@@ -44,6 +44,7 @@ defmodule Marshall.Access.Sharing do
   # reusing the same actor/VM/key MUST return its original same-recipient/role
   # change without applying it again; a changed payload MUST conflict. A delayed
   # retry MUST NOT undo a later role replacement or revocation.
+
   # @cc [owner:ghuntley,label:observability] sharing-outcome-after-commit
   # A new sharing receipt MUST emit its outcome after the outer commit.
   # Rolled-back receipts and idempotent replays MUST emit no success event.
