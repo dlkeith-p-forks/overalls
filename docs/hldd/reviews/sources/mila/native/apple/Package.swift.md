@@ -1,5 +1,5 @@
 ---
-digest: 10f07c61ae91863791c71ab82a1719e146208e93a311ed4b0b82bcadb959e6e7
+digest: a5d1cc58090e8867ce8c6f3ff2cdc751cd7c255c68ef2e5697f8d771c33a797c
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -10,9 +10,9 @@ reviewed_chapters:
   marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
   marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
   marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-Reviewed Swift C shim target header layout; package build structure only, no architecture change.
+Native FFI linkage changes preserve the documented Rust-core and thin-wrapper architecture while making Android JNI and Apple static-library integration executable in native builds.

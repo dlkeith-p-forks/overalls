@@ -109,10 +109,10 @@ internal object MilaRustFfi : MilaRustBindings {
     }
 
     @JvmStatic
-    private external fun nativeAbiVersion(): Int
+    external fun nativeAbiVersion(): Int
 
     @JvmStatic
-    private external fun nativeCanonicalRoute(value: String): String?
+    external fun nativeCanonicalRoute(value: String): String?
 }
 
 /** Typed Android adapter. Native linkage is lazy so the UI remains testable without a device. */

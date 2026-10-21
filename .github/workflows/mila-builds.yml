@@ -118,8 +118,12 @@ jobs:
           devenv version
       - name: Format, analyze and test Mila
         run: devenv shell -- mila-check
+      - name: Build Rust FFI for Apple native tests
+        run: devenv shell -- cargo build --manifest-path mila/rust/Cargo.toml -p mila-ffi --release
       - name: Swift native package tests
         working-directory: mila/native/apple
+        env:
+          MILA_FFI_LIB_DIR: ${{ github.workspace }}/mila/rust/target/release
         run: swift test
       - name: macOS and iOS dev targets
         run: |
@@ -146,8 +150,12 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Build Rust FFI for Apple native tests
+        run: cargo build --manifest-path mila/rust/Cargo.toml -p mila-ffi --release
       - name: Swift native package tests
         working-directory: mila/native/apple
+        env:
+          MILA_FFI_LIB_DIR: ${{ github.workspace }}/mila/rust/target/release
         run: swift test
 
   windows:
@@ -279,6 +287,10 @@ jobs:
       - name: Install Android SDK platform
         run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
       - uses: gradle/actions/setup-gradle@v4
+      - name: Install Rust Android linker
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install cargo-ndk
+        run: cargo install cargo-ndk --locked
       - name: Assemble native Compose APK
         working-directory: mila/native/android
         run: gradle --no-daemon --stacktrace assembleDebug

@@ -58,7 +58,7 @@ public struct MilaFFIResponse: Codable, Equatable, Sendable {
     }
 }
 
-public struct MilaSnapshotSummary: Equatable, Sendable {
+public struct MilaSnapshotMetadata: Equatable, Sendable {
     public let machineCount: UInt32
     public let savedAt: UInt64
 
@@ -76,28 +76,15 @@ public enum MilaFFIError: Error, Equatable, Sendable {
 }
 
 private enum MilaRustFFI {
-    @_silgen_name("mila_ffi_get_version")
-    static func getVersion(_ version: UnsafeMutablePointer<MilaFFIAbiVersion>) -> Int32
-    @_silgen_name("mila_route_format")
-    static func formatRoute(_ input: UnsafePointer<CChar>, _ output: MilaRouteOutput) -> Int32
-    @_silgen_name("mila_snapshot_validate")
-    static func validateSnapshot(_ bytes: UnsafePointer<UInt8>, _ length: Int, _ host: UnsafePointer<CChar>, _ port: UInt16, _ hasPort: UInt8, _ summary: UnsafeMutablePointer<MilaSnapshotSummaryC>) -> Int32
-}
-
-private struct MilaRouteOutput {
-    var bytes: UnsafeMutablePointer<UInt8>?
-    var capacity: Int
-    var written: UnsafeMutablePointer<Int>?
-}
-
-private struct MilaSnapshotSummaryC {
-    var machineCount: UInt32
-    var savedAt: UInt64
-}
-
-private struct MilaFFIAbiVersion {
-    var major: UInt32
-    var minor: UInt32
+    static func getVersion(_ version: UnsafeMutablePointer<MilaFfiAbiVersion>) -> Int32 {
+        Int32(mila_ffi_get_version(version))
+    }
+    static func formatRoute(_ input: UnsafePointer<CChar>, _ output: MilaRouteOutput) -> Int32 {
+        Int32(mila_route_format(input, output))
+    }
+    static func validateSnapshot(_ bytes: UnsafePointer<UInt8>, _ length: Int, _ host: UnsafePointer<CChar>, _ port: UInt16, _ hasPort: UInt8, _ summary: UnsafeMutablePointer<MilaSnapshotSummary>) -> Int32 {
+        Int32(mila_snapshot_validate(bytes, length, host, port, hasPort, summary))
+    }
 }
 
 /// Adapter for the stable C ABI exported by `mila-ffi`.
@@ -131,9 +118,9 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
 
     /// Validates and summarizes an offline snapshot in Rust. Snapshot bytes are borrowed for the
     /// duration of the call and no machine records cross the native boundary.
-    public func validateSnapshot(_ data: Data, host: String, port: UInt16? = nil) throws -> MilaSnapshotSummary {
+    public func validateSnapshot(_ data: Data, host: String, port: UInt16? = nil) throws -> MilaSnapshotMetadata {
         guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
-        var summary = MilaSnapshotSummaryC(machineCount: 0, savedAt: 0)
+        var summary = MilaSnapshotSummary(machine_count: 0, saved_at: 0)
         let status = data.withUnsafeBytes { rawBuffer -> Int32 in
             guard let base = rawBuffer.bindMemory(to: UInt8.self).baseAddress else { return -1 }
             return host.withCString { hostPointer in
@@ -143,14 +130,14 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
             }
         }
         switch status {
-        case 0: return MilaSnapshotSummary(machineCount: summary.machineCount, savedAt: summary.savedAt)
+        case 0: return MilaSnapshotMetadata(machineCount: summary.machine_count, savedAt: summary.saved_at)
         case -4: throw MilaFFIError.invalidRoute
         default: throw MilaFFIError.unavailable
         }
     }
 
     private func abiCompatible() -> Bool {
-        var version = MilaFFIAbiVersion(major: 0, minor: 0)
+        var version = MilaFfiAbiVersion(major: 0, minor: 0)
         return MilaRustFFI.getVersion(&version) == 0 && version.major == 1
     }
 }

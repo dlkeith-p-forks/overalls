@@ -49,3 +49,29 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 }
+
+// Build and package the real Rust JNI library for every Android ABI.
+val rustTargetByAbi = mapOf(
+    "arm64-v8a" to "aarch64-linux-android",
+    "armeabi-v7a" to "armv7-linux-androideabi",
+    "x86_64" to "x86_64-linux-android",
+)
+
+android.defaultConfig.ndk { abiFilters += rustTargetByAbi.keys }
+
+tasks.register("buildRustJni") {
+    val outputRoot = layout.buildDirectory.dir("rust-jni")
+    outputs.dir(outputRoot)
+    doLast {
+        val root = rootProject.projectDir.toPath().resolve("../../../rust").normalize()
+        val ndkHome = System.getenv("ANDROID_NDK_HOME") ?: error("ANDROID_NDK_HOME is required")
+        rustTargetByAbi.forEach { (abi, target) ->
+            exec { commandLine("cargo", "ndk", "-t", target, "-o", outputRoot.get().asFile.absolutePath, "build", "--release", "-p", "mila-ffi"); environment("ANDROID_NDK_HOME", ndkHome); workingDir(root.toFile()) }
+            val source = outputRoot.get().asFile.resolve("$abi/libmila_ffi.so")
+            val destination = project.file("src/main/jniLibs/$abi/libmila_ffi.so")
+            destination.parentFile.mkdirs()
+            source.copyTo(destination, overwrite = true)
+        }
+    }
+}
+tasks.named("preBuild") { dependsOn("buildRustJni") }

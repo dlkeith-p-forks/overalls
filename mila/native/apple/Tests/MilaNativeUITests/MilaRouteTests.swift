@@ -36,3 +36,11 @@ final class MilaFFIRequestTests: XCTestCase {
         XCTAssertEqual(decoded, request)
     }
 }
+
+
+final class MilaRustLinkTests: XCTestCase {
+    func testLinkedRustCanonicalizesRoute() throws {
+        let adapter = LinkedMilaFFIAdapter()
+        XCTAssertEqual(try adapter.canonicalRoute("overalls://machines"), "overalls://machines")
+    }
+}

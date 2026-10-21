@@ -1,6 +1,10 @@
 // swift-tools-version: 6.1
 
 import PackageDescription
+import Foundation
+
+let rustLibDir = ProcessInfo.processInfo.environment["MILA_FFI_LIB_DIR"] ?? ""
+guard !rustLibDir.isEmpty else { fatalError("MILA_FFI_LIB_DIR must point to a built mila-ffi static library") }
 
 let package = Package(
     name: "MilaNativeUI",
@@ -21,6 +25,7 @@ let package = Package(
         .target(
             name: "MilaNativeUI",
             dependencies: ["MilaFFIShim"],
+            linkerSettings: [.unsafeFlags(["-L", rustLibDir, "-lmila_ffi"])],
             path: "Sources/MilaNativeUI"
         ),
         .testTarget(
