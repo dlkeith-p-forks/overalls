@@ -58,6 +58,18 @@ MilaFfiStatus mila_snapshot_validate(const uint8_t *bytes, size_t length,
                                      const char *host, uint16_t port,
                                      uint8_t has_port, MilaSnapshotSummary *out_summary);
 
+
+typedef int32_t (*MilaSessionSign)(uintptr_t context, const uint8_t *message,
+                                  size_t length, uint8_t *signature64);
+int32_t mila_session_connect(const uint8_t *trust, size_t trust_len,
+    const uint8_t *host, size_t host_len, const uint8_t *public_key,
+    size_t public_key_len, uint16_t port, uint32_t timeout_ms,
+    MilaSessionSign signer, uintptr_t context, uint64_t *out_handle);
+int32_t mila_session_read_machines(uint64_t handle, uint8_t more);
+int32_t mila_session_listing(uint64_t handle, uint8_t *output, size_t capacity,
+    size_t *written);
+int32_t mila_session_close(uint64_t handle);
+
 #ifdef __cplusplus
 }
 #endif
