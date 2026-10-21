@@ -238,6 +238,53 @@ pub extern "C" fn mila_terminal_validate(columns: u16, rows: u16, read_write: u8
         .map_or(MilaFfiStatus::InvalidRequest, |_| MilaFfiStatus::Ok)
 }
 
+/// Maximum terminal input accepted by the native boundary (bytes remain owned by the host).
+pub const MILA_TERMINAL_MAX_INPUT: usize = 1 << 20;
+
+/// Validates a terminal attach request without crossing machine or terminal identifiers.
+#[no_mangle]
+pub extern "C" fn mila_terminal_attach_validate(
+    from: u64,
+    columns: u16,
+    rows: u16,
+    read_write: u8,
+) -> MilaFfiStatus {
+    if read_write > 1 {
+        return MilaFfiStatus::InvalidRequest;
+    }
+    let request = TerminalAttachRequest {
+        machine_id: uuid::Uuid::nil(),
+        session_id: uuid::Uuid::nil(),
+        from,
+        columns,
+        rows,
+        read_write: read_write == 1,
+    };
+    request
+        .validate()
+        .map_or(MilaFfiStatus::InvalidRequest, |_| MilaFfiStatus::Ok)
+}
+
+/// Validates a terminal input length and permission bit. Input bytes never cross this ABI.
+#[no_mangle]
+pub extern "C" fn mila_terminal_input_validate(length: usize, read_write: u8) -> MilaFfiStatus {
+    if read_write > 1 || length > MILA_TERMINAL_MAX_INPUT || (read_write == 0 && length != 0) {
+        MilaFfiStatus::InvalidRequest
+    } else {
+        MilaFfiStatus::Ok
+    }
+}
+
+/// Validates a terminal resize request.
+#[no_mangle]
+pub extern "C" fn mila_terminal_resize_validate(
+    columns: u16,
+    rows: u16,
+    read_write: u8,
+) -> MilaFfiStatus {
+    mila_terminal_attach_validate(0, columns, rows, read_write)
+}
+
 /// Decodes one bounded Porsche watch line and returns only its non-sensitive tag.
 ///
 /// # Safety
@@ -725,9 +772,10 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeMachine
 #[cfg(test)]
 mod tests {
     use super::{
-        mila_ffi_get_version, mila_ffi_version, mila_terminal_validate, mila_watch_event_kind,
-        mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus, MilaSnapshotSummary,
-        MilaWatchEventKind,
+        mila_ffi_get_version, mila_ffi_version, mila_terminal_attach_validate,
+        mila_terminal_input_validate, mila_terminal_resize_validate, mila_terminal_validate,
+        mila_watch_event_kind, mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus,
+        MilaSnapshotSummary, MilaWatchEventKind,
     };
     use mila_runtime::MachineSnapshot;
 
@@ -789,6 +837,50 @@ mod tests {
             mila_terminal_validate(120, 40, 2),
             MilaFfiStatus::InvalidRequest
         );
+    }
+
+    #[test]
+    fn validates_terminal_control_operations() {
+        assert_eq!(
+            mila_terminal_attach_validate(7, 120, 40, 1),
+            MilaFfiStatus::Ok
+        );
+        assert_eq!(mila_terminal_resize_validate(120, 40, 1), MilaFfiStatus::Ok);
+        assert_eq!(
+            mila_terminal_resize_validate(0, 40, 1),
+            MilaFfiStatus::InvalidRequest
+        );
+        assert_eq!(mila_terminal_input_validate(0, 0), MilaFfiStatus::Ok);
+        assert_eq!(
+            mila_terminal_input_validate(1, 0),
+            MilaFfiStatus::InvalidRequest
+        );
+        assert_eq!(mila_terminal_input_validate(1 << 20, 1), MilaFfiStatus::Ok);
+        assert_eq!(
+            mila_terminal_input_validate((1 << 20) + 1, 1),
+            MilaFfiStatus::InvalidRequest
+        );
+    }
+
+    /// Property-style boundary check: every dimension in the accepted rectangle is valid,
+    /// while every zero dimension and permission outside {0,1} is refused.
+    #[test]
+    fn terminal_dimension_property_is_bounded() {
+        for columns in [0_u16, 1, 80, 4096, 4097, u16::MAX] {
+            for rows in [0_u16, 1, 24, 512, 513, u16::MAX] {
+                let valid = (1..=4096).contains(&columns) && (1..=512).contains(&rows);
+                assert_eq!(
+                    mila_terminal_resize_validate(columns, rows, 1) == MilaFfiStatus::Ok,
+                    valid
+                );
+            }
+        }
+        for permission in [2_u8, u8::MAX] {
+            assert_eq!(
+                mila_terminal_resize_validate(80, 24, permission),
+                MilaFfiStatus::InvalidRequest
+            );
+        }
     }
 
     #[test]

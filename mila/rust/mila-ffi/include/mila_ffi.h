@@ -53,6 +53,10 @@ MilaFfiStatus mila_push_registration_validate(uint8_t provider, uint8_t environm
 MilaFfiStatus mila_push_poke_validate(const uint8_t *envelope, size_t length, uint64_t now);
 /* Validates bounded watch filter counts (maximum 64 combined). */
 MilaFfiStatus mila_watch_validate_filters(uint16_t machine_count, uint16_t thread_count);
+MilaFfiStatus mila_terminal_attach_validate(uint64_t from, uint16_t columns, uint16_t rows, uint8_t read_write);
+/* Input bytes remain owned by the native host and never cross this ABI. */
+MilaFfiStatus mila_terminal_input_validate(size_t length, uint8_t read_write);
+MilaFfiStatus mila_terminal_resize_validate(uint16_t columns, uint16_t rows, uint8_t read_write);
 /* Validates an offline snapshot for a deployment and returns safe metadata. */
 MilaFfiStatus mila_snapshot_validate(const uint8_t *bytes, size_t length,
                                      const char *host, uint16_t port,

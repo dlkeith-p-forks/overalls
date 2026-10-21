@@ -47,6 +47,11 @@ MilaFfiStatus mila_route_format(const char *input, MilaRouteOutput output);
 /* Validates PTY dimensions and read/write mode before opening a terminal. */
 MilaFfiStatus mila_terminal_validate(uint16_t columns, uint16_t rows,
                                      uint8_t read_write);
+MilaFfiStatus mila_terminal_attach_validate(uint64_t from, uint16_t columns,
+                                           uint16_t rows, uint8_t read_write);
+MilaFfiStatus mila_terminal_input_validate(size_t length, uint8_t read_write);
+MilaFfiStatus mila_terminal_resize_validate(uint16_t columns, uint16_t rows,
+                                            uint8_t read_write);
 /* Decodes one bounded watch line and returns only its event tag. */
 MilaFfiStatus mila_watch_event_kind(const uint8_t *line, size_t length,
                                     MilaWatchEventKind *out_kind);
