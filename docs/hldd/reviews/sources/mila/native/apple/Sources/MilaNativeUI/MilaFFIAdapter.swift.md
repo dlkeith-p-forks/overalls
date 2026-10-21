@@ -1,5 +1,5 @@
 ---
-digest: 26b45bd533e205c359ffaf59b41c0966bccec0f265c8a6fdb575534e2c73034c
+digest: 3308c5c63472ce8da9115cd11b730fc16b883b9e12c71a6771e54d7c565e2f66
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed native FFI and UI parity slice; bounded Rust policy remains authoritative and platform wrappers expose validated summaries only.
+Corrected Swift C ABI type qualification so the Apple native machine-action bridge compiles against the generated header.

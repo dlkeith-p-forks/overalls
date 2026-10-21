@@ -119,9 +119,9 @@ private enum MilaRustFFI {
         mila_snapshot_validate(bytes, length, host, port, hasPort, summary).rawValue
     }
     static func machineActions(_ bytes: UnsafePointer<UInt8>, _ length: Int, _ host: UnsafePointer<CChar>, _ port: UInt16, _ hasPort: UInt8, _ index: UInt32, _ actions: UnsafeMutablePointer<MilaMachineActions>) -> Int32 {
-        var raw = MilaMachineActions(bits: 0)
+        var raw = MilaFFIShim.MilaMachineActions(bits: 0)
         let status = mila_snapshot_machine_actions(bytes, length, host, port, hasPort, index, &raw).rawValue
-        actions.pointee = raw
+        actions.pointee = MilaMachineActions(bits: raw.bits)
         return status
     }
     static func command(_ action: UnsafePointer<CChar>, _ machine: UnsafePointer<CChar>, _ request: UnsafePointer<CChar>?, _ output: MilaRouteOutput) -> Int32 {
