@@ -1,5 +1,5 @@
 ---
-digest: 45811822b7b97005ae33764c96acc4a3248168e50335baf48a61ab37d8d4cfe0
+digest: 68f746c5a65ffb0e254733df79ed06c21176bfca57f6645f0a4f2ea06a2a697e
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed the Linux push registration test fixture update; it now uses provider-valid APNs and WNS token values while preserving the Rust policy contract.
+Reviewed the Linux WNS fixture update; the test now uses a syntactically valid Windows notification channel while preserving the policy contract.
