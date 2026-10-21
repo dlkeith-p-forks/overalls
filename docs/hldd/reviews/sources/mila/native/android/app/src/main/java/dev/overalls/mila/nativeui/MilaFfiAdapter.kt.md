@@ -1,5 +1,5 @@
 ---
-digest: 9ca5c746cb3a16de8ce84a987ad3d58d9a78d0e5843c720bf402daaf2d7e31aa
+digest: 6eb2d01c59b2d087cb10843fc4422179d75d01d17c7e8660d38fd1dcb988b4d5
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android adapter changes preserve existing native boundary and add typed injectable JNI bindings with unit coverage.
+Expose the injectable Rust binding interface publicly so the public adapter constructor has a valid Kotlin API type.

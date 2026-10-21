@@ -86,7 +86,7 @@ object UnavailableMilaFfiAdapter : MilaFfiAdapter {
 }
 
 /** Narrow JNI surface implemented by the host application's Rust `mila-ffi` library. */
-internal interface MilaRustBindings {
+interface MilaRustBindings {
     fun abiVersion(): Int
     fun canonicalRoute(value: String): String?
 }
