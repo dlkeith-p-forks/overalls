@@ -1,5 +1,5 @@
 ---
-digest: 1c3e76b7d54ef412223573bae2dc2cd20a5cba5eae70b1edf10ac4b56cd9dfd0
+digest: 8c5ce964cdb81ef16a4d3756f5674c026ef3c20ce6fecbed79f8f676e60b36bc
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Swift C shim target header layout; package build structure only, no architecture change.
+Apple adapter adds typed snapshot validation over the existing Rust FFI boundary; domain ownership and documented workflows are unchanged.

@@ -1,5 +1,5 @@
 ---
-digest: 3d8a36a8abff4c4f3b7771cb528a47f14dcff6a7e7b846906cac89d75208545b
+digest: 46861f4e00c345d5be38e5ef0aefcd44fd3827073ee4ab7a98f52d126c047118
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple Swift package now links weak FFI development stubs; architecture unchanged
+Apple adapter adds typed snapshot validation over the existing Rust FFI boundary; domain ownership and documented workflows are unchanged.

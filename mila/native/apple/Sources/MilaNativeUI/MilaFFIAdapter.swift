@@ -58,6 +58,16 @@ public struct MilaFFIResponse: Codable, Equatable, Sendable {
     }
 }
 
+public struct MilaSnapshotSummary: Equatable, Sendable {
+    public let machineCount: UInt32
+    public let savedAt: UInt64
+
+    public init(machineCount: UInt32, savedAt: UInt64) {
+        self.machineCount = machineCount
+        self.savedAt = savedAt
+    }
+}
+
 public enum MilaFFIError: Error, Equatable, Sendable {
     case unavailable
     case invalidRoute
@@ -70,12 +80,19 @@ private enum MilaRustFFI {
     static func getVersion(_ version: UnsafeMutablePointer<MilaFFIAbiVersion>) -> Int32
     @_silgen_name("mila_route_format")
     static func formatRoute(_ input: UnsafePointer<CChar>, _ output: MilaRouteOutput) -> Int32
+    @_silgen_name("mila_snapshot_validate")
+    static func validateSnapshot(_ bytes: UnsafePointer<UInt8>, _ length: Int, _ host: UnsafePointer<CChar>, _ port: UInt16, _ hasPort: UInt8, _ summary: UnsafeMutablePointer<MilaSnapshotSummaryC>) -> Int32
 }
 
 private struct MilaRouteOutput {
     var bytes: UnsafeMutablePointer<UInt8>?
     var capacity: Int
     var written: UnsafeMutablePointer<Int>?
+}
+
+private struct MilaSnapshotSummaryC {
+    var machineCount: UInt32
+    var savedAt: UInt64
 }
 
 private struct MilaFFIAbiVersion {
@@ -108,6 +125,26 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         case 0: return String(decoding: output.prefix(written), as: UTF8.self)
         case -2: throw MilaFFIError.invalidRoute
         case -3: throw MilaFFIError.outputTooSmall
+        default: throw MilaFFIError.unavailable
+        }
+    }
+
+    /// Validates and summarizes an offline snapshot in Rust. Snapshot bytes are borrowed for the
+    /// duration of the call and no machine records cross the native boundary.
+    public func validateSnapshot(_ data: Data, host: String, port: UInt16? = nil) throws -> MilaSnapshotSummary {
+        guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
+        var summary = MilaSnapshotSummaryC(machineCount: 0, savedAt: 0)
+        let status = data.withUnsafeBytes { rawBuffer -> Int32 in
+            guard let base = rawBuffer.bindMemory(to: UInt8.self).baseAddress else { return -1 }
+            return host.withCString { hostPointer in
+                withUnsafeMutablePointer(to: &summary) { summaryPointer in
+                    MilaRustFFI.validateSnapshot(base, data.count, hostPointer, port ?? 0, port == nil ? 0 : 1, summaryPointer)
+                }
+            }
+        }
+        switch status {
+        case 0: return MilaSnapshotSummary(machineCount: summary.machineCount, savedAt: summary.savedAt)
+        case -4: throw MilaFFIError.invalidRoute
         default: throw MilaFFIError.unavailable
         }
     }

@@ -1,5 +1,5 @@
 ---
-digest: 566ac01a028e2b8b852b7964225601b384ac16b3f5a92c019f55a99e70999023
+digest: b7e99bc7ef8e667f1b93163600317af6d536ff1316fcfd92e670d8c196cf5cd6
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed strict Apple route parsing; reject encoded separators before URL normalization to preserve closed route grammar.
+Apple adapter adds typed snapshot validation over the existing Rust FFI boundary; domain ownership and documented workflows are unchanged.
