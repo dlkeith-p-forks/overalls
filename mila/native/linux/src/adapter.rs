@@ -262,7 +262,7 @@ pub enum RuntimeError {
 }
 
 #[cfg(test)]
-mod tests {
+mod web_tests {
     use super::*;
     const MACHINE: &str = "01234567-89ab-cdef-0123-456789abcdef";
     const REQUEST: &str = "porsche-0123456789abcdef0123456789abcdef";
