@@ -59,6 +59,7 @@ private struct MachineDetailView: View {
     let machine: MilaMachinePresentation?
     let adapter: any MilaFFIAdapter
     @State private var status = ""
+    @State private var classified = ""
     @State private var showTerminal = false
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -77,6 +78,15 @@ private struct MachineDetailView: View {
                         }
                     }
                 }
+                HStack {
+                    ForEach(["show", "resize", "share show", "web show"], id: \.self) { command in
+                        Button(command) {
+                            do { classified = String(describing: try adapter.classifyMachineCommand(command)) }
+                            catch { classified = "Rejected by Rust" }
+                        }
+                    }
+                }
+                Text(classified).font(.caption).foregroundStyle(.secondary)
                 Text(status).font(.caption).foregroundStyle(.secondary)
             } else { ContentUnavailableView("Machine unavailable", systemImage: "questionmark") }
         }.padding().sheet(isPresented: $showTerminal) { MilaTerminalView() }
