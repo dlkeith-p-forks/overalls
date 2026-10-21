@@ -14,6 +14,8 @@ pkgs.testers.runNixOSTest {
     virtualisation.qemu.options = [ "-cpu host" ];
     environment.etc."zfs-io.exs".source = ./probe.exs;
     environment.etc."zfs-io-fault".source = pkgs.writeShellScript "zfs-io-fault" ''
+      fault="$(cat /run/zfs-io-fault/mode 2>/dev/null || true)"
+      export ZFS_IO_FAULT="$fault"
       if [ "$1" = iostat ] && [ "$ZFS_IO_FAULT" = timeout ]; then exec sleep 10; fi
       if [ "$1" = iostat ] && [ "$ZFS_IO_FAULT" = malformed ]; then
         echo unexpected-extra-row
@@ -31,6 +33,13 @@ pkgs.testers.runNixOSTest {
       fi
       exit "$result"
     '';
+    # The production hostd daemon resolves utilities from its own systemd PATH,
+    # so install the fixture wrapper there as well as in the probe environment.
+    systemd.services.lilly-hostd.path = pkgs.lib.mkBefore [
+      (pkgs.writeShellScriptBin "zpool" ''
+        exec /etc/zfs-io-fault "$@"
+      '')
+    ];
     systemd.services.io-workload = {
       serviceConfig.Type = "simple";
       serviceConfig.ExecStart = pkgs.writeShellScript "zfs-io-workload" ''

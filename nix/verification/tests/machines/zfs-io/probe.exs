@@ -10,6 +10,14 @@ defmodule Overalls.ZFSIOFixture do
 
   @spec sample() :: [observation()]
   def sample do
+    if System.get_env("ZFS_IO_FAULT") do
+      File.write!("/run/zfs-io-fault/mode", System.fetch_env!("ZFS_IO_FAULT"))
+      System.put_env("PATH", "/run/zfs-io-fault/bin:" <> System.fetch_env!("PATH"))
+      "/run/zfs-io-fault/bin/zpool" = System.find_executable("zpool")
+    else
+      File.rm("/run/zfs-io-fault/mode")
+    end
+
     pools =
       Enum.map(
         [
@@ -28,11 +36,6 @@ defmodule Overalls.ZFSIOFixture do
           pool
         end
       )
-
-    if System.get_env("ZFS_IO_FAULT") do
-      System.put_env("PATH", "/run/zfs-io-fault/bin:" <> System.fetch_env!("PATH"))
-      "/run/zfs-io-fault/bin/zpool" = System.find_executable("zpool")
-    end
 
     {:ok, report, _previous} = Collector.sample(pools, "/sys/fs/cgroup", nil, 1)
     encoded = OverallsProtocol.encode_report(report)
