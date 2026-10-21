@@ -34,7 +34,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         }
         Text(status, style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
-            MilaRoute.Machines -> MachineList()
+            MilaRoute.Machines -> MachineList(status)
             is MilaRoute.Machine -> Detail("Machine", selected.id.toString())
             MilaRoute.Threads -> ThreadList()
             is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
@@ -44,8 +44,8 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     LaunchedEffect(Unit) { refresh() }
 }
 
-@Composable private fun MachineList() {
-    Text("No validated machine snapshot loaded.", style = MaterialTheme.typography.bodyMedium)
+@Composable private fun MachineList(status: String) {
+    Text(status, style = MaterialTheme.typography.bodyMedium)
 }
 @Composable private fun ThreadList() {
     Text("No validated thread snapshot loaded.", style = MaterialTheme.typography.bodyMedium)
