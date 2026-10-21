@@ -27,6 +27,13 @@ pub fn canonical_route(value: &str) -> Result<String, RuntimeError> {
     String::from_utf8(bytes).map_err(|_| RuntimeError::Unavailable)
 }
 
+/// Decode a Rust-owned live listing before it reaches GTK. Linux uses the same
+/// bounded session decoder as the other native clients, so malformed authority
+/// or pagination data cannot become UI state.
+pub fn decode_listing(bytes: &[u8]) -> Result<mila_session::MachineListing, RuntimeError> {
+    mila_session::decode_listing(bytes).map_err(|_| RuntimeError::InvalidInput)
+}
+
 /// Operations the native UI may request from the generated runtime.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RuntimeOperation {
@@ -194,5 +201,15 @@ mod tests {
             canonical_route("overalls://fleet.example/#commands"),
             Err(RuntimeError::InvalidInput)
         );
+    }
+
+    #[test]
+    fn listing_uses_shared_bounded_decoder() {
+        let bytes =
+            br#"{"version":1,"status":"succeeded","result":{"items":[],"next_cursor":null}}"#;
+        let listing = super::decode_listing(bytes).unwrap();
+        assert!(listing.machines().is_empty());
+        assert!(!listing.has_more());
+        assert!(super::decode_listing(br#"{}"#).is_err());
     }
 }

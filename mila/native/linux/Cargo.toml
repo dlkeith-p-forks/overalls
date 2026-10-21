@@ -12,6 +12,7 @@ publish = false
 
 [dependencies]
 mila-ffi = { path = "../../rust/mila-ffi" }
+mila-session = { path = "../../rust/mila-session" }
 # Keep the GTK and libadwaita bindings on the same generation. The host's GTK runtime
 # remains responsible for supplying the system libraries at build and run time.
 gtk = { package = "gtk4", version = "0.9" }
