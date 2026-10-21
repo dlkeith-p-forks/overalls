@@ -1525,6 +1525,7 @@ dependencies = [
  "gtk4",
  "libadwaita",
  "mila-ffi",
+ "mila-session",
 ]
 
 [[package]]
