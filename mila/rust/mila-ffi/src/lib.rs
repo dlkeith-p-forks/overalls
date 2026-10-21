@@ -348,6 +348,36 @@ pub unsafe extern "C" fn mila_route_format(
     MilaFfiStatus::Ok
 }
 
+/// JNI ABI version for the Android native client.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeAbiVersion(
+    _env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+) -> jni::sys::jint {
+    1
+}
+
+/// JNI route canonicalization delegated to the Rust route parser.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeCanonicalRoute(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    value: jni::objects::JString<'_>,
+) -> jni::sys::jstring {
+    let input: String = match env.get_string(&value) {
+        Ok(v) => v.into(),
+        Err(_) => return std::ptr::null_mut(),
+    };
+    let route = match MilaRoute::parse(&input) {
+        Ok(route) => route.format(),
+        Err(_) => return std::ptr::null_mut(),
+    };
+    match env.new_string(route) {
+        Ok(output) => output.into_raw(),
+        Err(_) => std::ptr::null_mut(),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{
@@ -522,35 +552,5 @@ mod tests {
             )
         };
         assert_eq!(status, MilaFfiStatus::InvalidRequest);
-    }
-}
-
-/// JNI ABI version for the Android native client.
-#[no_mangle]
-pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeAbiVersion(
-    _env: jni::JNIEnv<'_>,
-    _class: jni::objects::JClass<'_>,
-) -> jni::sys::jint {
-    1
-}
-
-/// JNI route canonicalization delegated to the Rust route parser.
-#[no_mangle]
-pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeCanonicalRoute(
-    mut env: jni::JNIEnv<'_>,
-    _class: jni::objects::JClass<'_>,
-    value: jni::objects::JString<'_>,
-) -> jni::sys::jstring {
-    let input: String = match env.get_string(&value) {
-        Ok(v) => v.into(),
-        Err(_) => return std::ptr::null_mut(),
-    };
-    let route = match MilaRoute::parse(&input) {
-        Ok(route) => route.format(),
-        Err(_) => return std::ptr::null_mut(),
-    };
-    match env.new_string(route) {
-        Ok(output) => output.into_raw(),
-        Err(_) => std::ptr::null_mut(),
     }
 }
