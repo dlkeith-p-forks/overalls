@@ -252,6 +252,7 @@ defmodule Lilly.Host.ImageTemplate do
          {:ok, record} <- load(pool, next["incarnation"]) do
       build(pool, image, record)
     else
+      {:error, :storage_busy} -> {:error, :storage_busy}
       _ -> quarantine(pool, value)
     end
   end
@@ -265,6 +266,7 @@ defmodule Lilly.Host.ImageTemplate do
          :ok <- write(pool, Map.put(value, "state", "ready")) do
       :ok
     else
+      {:error, :storage_busy} -> {:error, :storage_busy}
       _ -> quarantine(pool, value)
     end
   end

@@ -1,5 +1,5 @@
 ---
-digest: cc577be297dac3c7737990d621eb647cf9f9dd517c0bd5073599f4d985bd72f4
+digest: 909db943f37c5bbef1df2189dd9dd70f4b900414c21698c1e2f1429a7596dc17
 disposition: no-impact
 kind: source
 mapping_digest: f7ae1015b8a6b22d2b48a9d01c1d52b5bf0d4191e2a4cb42263c24f5d17194fc
@@ -12,11 +12,11 @@ reviewed_chapters:
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
   marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 68866597842c524f9f563a37b978a4464974ca2b21a486c94f60ecd1edd6b2da
+  marshall/priv/hldd/20-security.md: a5371e295b0811165799f60ba9d7dc4266c41822eece4689de03576980938066
+  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
   marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
 state: present
 version: 2
 ---
 
-Preserve the already documented storage_busy contention contract; implementation corrects error propagation without changing documented behavior.
+Preserve storage_busy through template build validation and quarantine paths; this maintains the documented contention contract.
