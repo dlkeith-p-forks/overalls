@@ -36,15 +36,46 @@ pub fn decode_listing(bytes: &[u8]) -> Result<mila_session::MachineListing, Runt
 
 /// Terminal controls exposed to GTK without exposing terminal bytes or pointers.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum TerminalOperation { Attach { from: u64, columns: u16, rows: u16, read_write: bool }, Input { length: usize, read_write: bool }, Resize { columns: u16, rows: u16, read_write: bool } }
+pub enum TerminalOperation {
+    Attach {
+        from: u64,
+        columns: u16,
+        rows: u16,
+        read_write: bool,
+    },
+    Input {
+        length: usize,
+        read_write: bool,
+    },
+    Resize {
+        columns: u16,
+        rows: u16,
+        read_write: bool,
+    },
+}
 
 pub fn validate_terminal_operation(operation: TerminalOperation) -> Result<(), RuntimeError> {
     let status = match operation {
-        TerminalOperation::Attach { from, columns, rows, read_write } => mila_ffi::mila_terminal_attach_validate(from, columns, rows, u8::from(read_write)),
-        TerminalOperation::Input { length, read_write } => mila_ffi::mila_terminal_input_validate(length, u8::from(read_write)),
-        TerminalOperation::Resize { columns, rows, read_write } => mila_ffi::mila_terminal_resize_validate(columns, rows, u8::from(read_write)),
+        TerminalOperation::Attach {
+            from,
+            columns,
+            rows,
+            read_write,
+        } => mila_ffi::mila_terminal_attach_validate(from, columns, rows, u8::from(read_write)),
+        TerminalOperation::Input { length, read_write } => {
+            mila_ffi::mila_terminal_input_validate(length, u8::from(read_write))
+        }
+        TerminalOperation::Resize {
+            columns,
+            rows,
+            read_write,
+        } => mila_ffi::mila_terminal_resize_validate(columns, rows, u8::from(read_write)),
     };
-    if status == mila_ffi::MilaFfiStatus::Ok { Ok(()) } else { Err(RuntimeError::InvalidInput) }
+    if status == mila_ffi::MilaFfiStatus::Ok {
+        Ok(())
+    } else {
+        Err(RuntimeError::InvalidInput)
+    }
 }
 
 /// Operations the native UI may request from the generated runtime.
@@ -218,10 +249,37 @@ mod tests {
 
     #[test]
     fn terminal_controls_use_shared_ffi_validation() {
-        assert!(super::validate_terminal_operation(super::TerminalOperation::Attach { from: 0, columns: 80, rows: 24, read_write: true }).is_ok());
-        assert!(super::validate_terminal_operation(super::TerminalOperation::Resize { columns: 0, rows: 24, read_write: true }).is_err());
-        assert!(super::validate_terminal_operation(super::TerminalOperation::Input { length: 1, read_write: false }).is_err());
-        assert!(super::validate_terminal_operation(super::TerminalOperation::Input { length: 4, read_write: true }).is_ok());
+        assert!(
+            super::validate_terminal_operation(super::TerminalOperation::Attach {
+                from: 0,
+                columns: 80,
+                rows: 24,
+                read_write: true
+            })
+            .is_ok()
+        );
+        assert!(
+            super::validate_terminal_operation(super::TerminalOperation::Resize {
+                columns: 0,
+                rows: 24,
+                read_write: true
+            })
+            .is_err()
+        );
+        assert!(
+            super::validate_terminal_operation(super::TerminalOperation::Input {
+                length: 1,
+                read_write: false
+            })
+            .is_err()
+        );
+        assert!(
+            super::validate_terminal_operation(super::TerminalOperation::Input {
+                length: 4,
+                read_write: true
+            })
+            .is_ok()
+        );
     }
 
     #[test]
