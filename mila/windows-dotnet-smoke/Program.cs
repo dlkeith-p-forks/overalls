@@ -34,6 +34,21 @@ internal static class Program
         Array.Fill(oversized, (byte)' ');
         snapshot.CopyTo(oversized, 0);
         RefusesSnapshot(oversized, "mgmt.example.test", 8443);
+        byte[] machineSnapshot = Encoding.UTF8.GetBytes("""
+            {"version":1,"host":"mgmt.example.test","port":8443,"saved_at":1,"machines":[{"id":"0d9cc041-9db2-4e4c-b28b-1e41d7f472c1","name":"test","desired_state":"running","observed_state":"running","pinned":false,"owner":"test","read":true,"write":true,"manage":true}]}
+            """);
+        MilaNativeActionsResult actions = RustNative.TryGetMachineActions(machineSnapshot, "mgmt.example.test", 8443, 0);
+        Require(actions.Status == MilaNativeStatus.Ok && actions.Actions ==
+            (MilaMachineAction.Stop | MilaMachineAction.Pause | MilaMachineAction.Pin | MilaMachineAction.Delete), "Rust action projection");
+        Require(RustNative.TryGetMachineActions(machineSnapshot, "foreign.example.test", 8443, 0).Actions is null, "foreign action refusal");
+        Require(RustNative.TryGetMachineActions(machineSnapshot, "mgmt.example.test", 8443, 1).Actions is null, "missing machine refusal");
+        Guid machineId = Guid.Parse("0d9cc041-9db2-4e4c-b28b-1e41d7f472c1");
+        MilaNativeCommandResult command = RustNative.TryFormatMachineCommand("stop", machineId, "porsche-0123456789abcdef0123456789abcdef");
+        Require(command.Status == MilaNativeStatus.Ok && command.Command == $"stop {machineId:D} --json --request-id=porsche-0123456789abcdef0123456789abcdef", "bounded command format");
+        foreach (string action in new[] { "stop --force", "stop\0ignored", "unknown" })
+            Require(RustNative.TryFormatMachineCommand(action, machineId, "porsche-0123456789abcdef0123456789abcdef").Command is null, "action injection refusal");
+        Require(RustNative.TryFormatMachineCommand("stop", machineId, null).Command is null, "mutation request required");
+        Require(RustNative.TryFormatMachineCommand("stop", machineId, "id\0suffix").Command is null, "request truncation refusal");
         RustNative.CheckOutputBounds(route);
         Console.WriteLine("Windows Rust FFI smoke passed.");
     }

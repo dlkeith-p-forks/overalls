@@ -1,5 +1,5 @@
 ---
-digest: c8886aa39008ebf69e90b0e8d4de363d2e0c02d72035e0a18d73e12c8ea74621
+digest: 0d2013b37530c92f7effbaabadd7b6124666bb3ec8fc042a4783dcb3818513ca
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Apple rows carry Rust action masks, refresh consumes validated snapshots, and absent live session refuses submission; linked tests added but Apple execution remains pending.
+Reviewed combined Apple Rust policy projection and Windows native action binding; both retain explicit live-session and host verification gaps.

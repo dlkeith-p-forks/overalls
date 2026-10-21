@@ -1743,6 +1743,12 @@ This .NET 10 console executable compiles the production `RustNative.cs` without
 WinUI. It requires ABI version 1.0, canonical host-qualified routing, validated
 snapshot counts and 64-bit timestamps, rejection of foreign deployments,
 malformed and oversized snapshots, and bounded route output with guard bytes.
+The production Windows adapter also projects machine action flags directly from
+Rust, rejects foreign snapshots and missing machine indexes, and formats bounded
+machine commands through Rust. Smoke cases cover the action bit layout, missing
+mutation request IDs, injected action tokens and embedded NUL refusal. Formatting
+does not authenticate or submit commands; native transport and UI integration
+remain separate work.
 A missing DLL, missing export or incompatible image fails the smoke test rather
 than accepting the production wrapper's `Unavailable` fallback. This is adapter
 verification; it does not establish Windows UI, lifecycle, key custody, packaged

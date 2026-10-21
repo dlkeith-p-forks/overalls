@@ -32,7 +32,7 @@ internal static class MilaRouteParser
 }
 
 /// <summary>
-/// Status values returned by the future Rust native library.
+/// Status values returned by the Rust native library.
 /// </summary>
 internal enum MilaNativeStatus : int
 {
@@ -40,6 +40,7 @@ internal enum MilaNativeStatus : int
     NullInput = -1,
     InvalidRoute = -2,
     OutputTooSmall = -3,
+    InvalidRequest = -4,
     Unavailable = -127,
 }
 
@@ -97,6 +98,24 @@ internal readonly record struct MilaNativeSnapshotResult(
     MilaNativeStatus Status,
     MilaSnapshotSummary? Summary);
 
+[Flags]
+internal enum MilaMachineAction : ushort
+{
+    None = 0, Start = 1, Stop = 2, Pause = 4, Resume = 8,
+    Pin = 16, Unpin = 32, Delete = 64,
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal readonly struct MilaMachineActions
+{
+    internal readonly MilaMachineAction Bits;
+}
+
+internal readonly record struct MilaNativeActionsResult(
+    MilaNativeStatus Status, MilaMachineAction? Actions);
+internal readonly record struct MilaNativeCommandResult(
+    MilaNativeStatus Status, string? Command);
+
 /// <summary>
 /// Narrow P/Invoke boundary for the Rust implementation.
 ///
@@ -143,6 +162,7 @@ internal static partial class RustNative
     internal static MilaNativeRouteResult TryFormatRoute(string value)
     {
         ArgumentNullException.ThrowIfNull(value);
+        if (value.Contains('\0')) return new(MilaNativeStatus.InvalidRoute, null);
         byte[] inputBytes = Encoding.UTF8.GetBytes(value);
         IntPtr input = Marshal.AllocHGlobal(inputBytes.Length + 1);
         IntPtr bytes = Marshal.AllocHGlobal(RouteOutputCapacity);
@@ -178,6 +198,7 @@ internal static partial class RustNative
         ReadOnlySpan<byte> snapshot, string host, ushort port, bool hasPort)
     {
         ArgumentNullException.ThrowIfNull(host);
+        if (host.Contains('\0')) return new(MilaNativeStatus.InvalidRequest, null);
         unsafe
         {
             fixed (byte* bytes = snapshot)
@@ -199,6 +220,84 @@ internal static partial class RustNative
             }
         }
     }
+
+    /// <summary>
+    /// @cc [owner:ghuntley,label:security] mila-windows-rust-action-policy
+    /// Available actions MUST come from Rust's deployment-validated snapshot;
+    /// refusals MUST expose no actions and MUST NOT change local authority.
+    /// </summary>
+    internal static unsafe MilaNativeActionsResult TryGetMachineActions(
+        ReadOnlySpan<byte> snapshot, string host, ushort? port, uint index)
+    {
+        ArgumentNullException.ThrowIfNull(host);
+        if (host.Contains('\0')) return new(MilaNativeStatus.InvalidRequest, null);
+        fixed (byte* bytes = snapshot)
+        {
+            IntPtr hostPtr = Marshal.StringToCoTaskMemUTF8(host);
+            try
+            {
+                MilaNativeStatus status = MachineActionsNative((IntPtr)bytes,
+                    (nuint)snapshot.Length, hostPtr, port ?? 0, port.HasValue ? (byte)1 : (byte)0,
+                    index, out MilaMachineActions actions);
+                return status == MilaNativeStatus.Ok ? new(status, actions.Bits) : new(status, null);
+            }
+            catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+            catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+            catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+            finally { Marshal.FreeCoTaskMem(hostPtr); }
+        }
+    }
+
+    /// <summary>
+    /// @cc [owner:ghuntley,label:protocol] mila-windows-command-format-only
+    /// Commands MUST be formatted by Rust into bounded storage. Formatting MUST
+    /// NOT submit a command or imply authentication, authorization or queuing.
+    /// </summary>
+    internal static MilaNativeCommandResult TryFormatMachineCommand(
+        string action, Guid machineId, string? requestId)
+    {
+        ArgumentNullException.ThrowIfNull(action);
+        if (action.Contains('\0') || requestId?.Contains('\0') == true)
+            return new(MilaNativeStatus.InvalidRequest, null);
+        IntPtr actionPtr = Marshal.StringToCoTaskMemUTF8(action);
+        IntPtr machinePtr = Marshal.StringToCoTaskMemUTF8(machineId.ToString("D"));
+        IntPtr requestPtr = requestId is null ? IntPtr.Zero : Marshal.StringToCoTaskMemUTF8(requestId);
+        IntPtr bytes = Marshal.AllocHGlobal(RouteOutputCapacity);
+        IntPtr written = Marshal.AllocHGlobal(nuint.Size);
+        try
+        {
+            Marshal.WriteIntPtr(written, IntPtr.Zero);
+            MilaNativeStatus status = MachineCommandNative(actionPtr, machinePtr, requestPtr,
+                new(bytes, RouteOutputCapacity, written));
+            if (status != MilaNativeStatus.Ok) return new(status, null);
+            nuint length = (nuint)Marshal.ReadIntPtr(written);
+            if (length > RouteOutputCapacity) return new(MilaNativeStatus.InvalidRequest, null);
+            byte[] result = new byte[checked((int)length)];
+            Marshal.Copy(bytes, result, 0, result.Length);
+            return new(status, new UTF8Encoding(false, true).GetString(result));
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (DecoderFallbackException) { return new(MilaNativeStatus.InvalidRequest, null); }
+        finally
+        {
+            Marshal.FreeCoTaskMem(actionPtr);
+            Marshal.FreeCoTaskMem(machinePtr);
+            Marshal.FreeCoTaskMem(requestPtr);
+            Marshal.FreeHGlobal(bytes);
+            Marshal.FreeHGlobal(written);
+        }
+    }
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_snapshot_machine_actions")]
+    private static partial MilaNativeStatus MachineActionsNative(
+        IntPtr bytes, nuint length, IntPtr host, ushort port, byte hasPort,
+        uint index, out MilaMachineActions actions);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_command_format")]
+    private static partial MilaNativeStatus MachineCommandNative(
+        IntPtr action, IntPtr machineId, IntPtr requestId, MilaRouteOutput output);
 
     private const int RouteOutputCapacity = 4096;
 
