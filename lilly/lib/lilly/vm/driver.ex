@@ -1882,12 +1882,12 @@ defmodule Lilly.VM.Driver do
     end)
   end
 
-  defp retire_checkpoints(pool, spec), do: retire_checkpoints(pool, spec, 10)
+  defp retire_checkpoints(pool, spec), do: retire_checkpoints(pool, spec, 60)
 
   defp retire_checkpoints(pool, spec, attempts) when attempts > 0 do
     case CheckpointStorage.retire(pool, spec) do
       {:error, :checkpoint_unconfirmed} when attempts > 1 ->
-        Process.sleep(500)
+        Process.sleep(1_000)
         retire_checkpoints(pool, spec, attempts - 1)
 
       result ->
