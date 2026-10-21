@@ -366,7 +366,8 @@ mod tests {
         let adapter = InProcessRuntimeAdapter::new("fleet.example", None).unwrap();
         let valid = RuntimeRequest::new(RuntimeOperation::ValidateTerminal, [120, 0, 40, 0, 1]);
         assert!(adapter.call(valid).is_ok());
-        let invalid_mode = RuntimeRequest::new(RuntimeOperation::ValidateTerminal, [120, 0, 40, 0, 2]);
+        let invalid_mode =
+            RuntimeRequest::new(RuntimeOperation::ValidateTerminal, [120, 0, 40, 0, 2]);
         assert_eq!(adapter.call(invalid_mode), Err(RuntimeError::InvalidInput));
         let malformed = RuntimeRequest::new(RuntimeOperation::ValidateTerminal, [120, 0]);
         assert_eq!(adapter.call(malformed), Err(RuntimeError::InvalidInput));
