@@ -25,6 +25,15 @@ let
         != builtins.stringLength haystack;
       contains = fragment: includes (builtins.readFile (../machines/fleet/scenarios + "/${fragment}.py")) script;
       hosts = map (host: test.nodes.${host}) [ "l1" "l2" ];
+      quota = host:
+        let
+          matches = lib.filter (value: value != null) (map
+            (line: builtins.match "[[:space:]]*zfs set quota=([0-9]+) zroot/lilly[[:space:]]*" line)
+            (lib.splitString "\n" host.systemd.services.fleet-storage.script));
+        in assert builtins.length matches == 1;
+          lib.toInt (builtins.head (builtins.head matches));
+      quotas = map quota hosts;
+      storageBudget = builtins.head quotas;
       roots = map (host: builtins.length host.services.lilly.guestTrustRoots) hosts;
       images = map (host: host.services.lilly.images) hosts;
       signers = map (node: test.nodes.${node}) [ "m1" "m2" "m3" ];
@@ -35,8 +44,13 @@ let
     assert contains "boot-trust-services";
     assert !contains "audi";
     assert roots == [ 3 4 ];
-    # Clone journeys use a 32 GiB fleet pool quota (bce13223); others use 16 GiB.
-    assert includes "storage_budget = ${toString ((if name == "cloning-fleet" then 32 else 16) * 1073741824)}\n" script;
+    # The constructor checks two-to-three image-derived race reservations;
+    # smaller images may need less than the historical fixed 16 GiB pool.
+    # Both pool initializers and the driver must use the same whole-GiB quota.
+    assert quotas == [ storageBudget storageBudget ];
+    assert storageBudget > 0 && lib.mod storageBudget 1073741824 == 0;
+    assert name != "cloning-fleet" || storageBudget >= 32 * 1073741824;
+    assert includes "storage_budget = ${toString storageBudget}\n" script;
     assert lib.all (host: host.services.audi.enable && host.services.audiPrivate.enable && host.services.lilly.privateServices.enable) hosts;
     assert lib.all (host: builtins.elem "lilly.service" host.systemd.services.audi-private.wantedBy) hosts;
     assert test.nodes.m2.services.audiDns.enable && test.nodes.m3.services.audiDns.enable;
@@ -53,7 +67,7 @@ let
       feature_fragments = fragments;
       shared_trust_bootstrap = true;
       audi_feature_fragment = false;
-      inherit roots images;
+      inherit roots images storageBudget;
       private_services = true;
       ssh_host_ca_signers = true;
     };

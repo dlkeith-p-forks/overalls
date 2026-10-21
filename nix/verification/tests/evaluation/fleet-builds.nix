@@ -5,7 +5,17 @@ let
   builders = import ../../../../fleet/remote-builders.nix { inherit lib; };
   sched = hosts.panterloons.config;
   peer = hosts.dungarees.config;
-  other = hosts.overalls.config;
+  # Keep nonparticipant coverage independent of retired production hosts.
+  other = evaluate {
+    overalls.fleetBuilds.enable = lib.mkForce false;
+    overalls.remoteBuilders = {
+      enable = true;
+      localName = "cache-only";
+      machines = builders // {
+        cache-only = builders.dungarees // { address = "192.0.2.10"; };
+      };
+    };
+  };
   evaluate = extra: (nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = [ module fleetModule {
@@ -48,8 +58,8 @@ let
       && lib.all (url: lib.hasInfix "trusted=true" url && lib.hasInfix "connect-timeout=5" url) (grpcSubs sched ++ grpcSubs peer)
       && !(lib.any (lib.hasInfix "overalls-builder-dungarees") (sshSubs sched))
       && !(lib.any (lib.hasInfix "overalls-builder-panterloons") (sshSubs peer));
-    # Overalls is not a participant and keeps its ssh-ng caches to both hosts.
-    others-unchanged = !(other.overalls.fleetBuilds.enable) && grpcSubs other == []
+    # An evaluated nonparticipant keeps its ssh-ng caches to both hosts.
+    others-unchanged = valid other && !(other.overalls.fleetBuilds.enable) && grpcSubs other == []
       && lib.any (lib.hasInfix "overalls-builder-panterloons") (sshSubs other)
       && lib.any (lib.hasInfix "overalls-builder-dungarees") (sshSubs other);
     access-rules = rules sched == [ { cn = "build-dungarees"; role = "trusted"; } ]
