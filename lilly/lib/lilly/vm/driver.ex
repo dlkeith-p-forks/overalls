@@ -2034,7 +2034,7 @@ defmodule Lilly.VM.Driver do
            :ok <- Jail.cleanup(pool, spec, vm_id),
            :ok <- Lilly.Network.detach(config.network, spec.network, vm_id),
            :ok <- remove_log(Unit.boot_log(config, spec)),
-           :ok <- CheckpointStorage.retire(pool, spec),
+           :ok <- retire_checkpoints(pool, spec),
            :ok <- delete_disk(pool, spec),
            :ok <- Provisioning.cancel(config, spec, revision(options)) do
         deleted(vm_id, spec.id)
@@ -2052,6 +2052,19 @@ defmodule Lilly.VM.Driver do
         result
     end
   end
+
+  defp retire_checkpoints(pool, spec, attempts \\ 60)
+  defp retire_checkpoints(pool, spec, attempts) when attempts > 0 do
+    case CheckpointStorage.retire(pool, spec) do
+      :ok -> :ok
+      {:error, :checkpoint_unconfirmed} when attempts > 1 ->
+        Process.sleep(1_000)
+        retire_checkpoints(pool, spec, attempts - 1)
+      result -> result
+    end
+  end
+
+  defp retire_checkpoints(_pool, _spec, 0), do: {:error, :checkpoint_unconfirmed}
 
   defp deleted(nil, _placement), do: :ok
 
