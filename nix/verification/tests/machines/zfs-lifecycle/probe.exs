@@ -34,11 +34,6 @@ if System.get_env("ZFS_FAULT") == "1" do
   "/run/zfs-fault/bin/zfs" = System.find_executable("zfs")
 end
 
-if System.get_env("ZFS_OBSERVATION_FAULT") do
-  System.put_env("PATH", "/run/zfs-changing/bin:" <> System.fetch_env!("PATH"))
-  "/run/zfs-changing/bin/zfs" = System.find_executable("zfs")
-end
-
 if System.get_env("ZFS_CLEANUP_SYNC_FAULT") == "1" do
   System.put_env("PATH", "/run/cleanup-fault/bin:" <> System.fetch_env!("PATH"))
 end
@@ -200,6 +195,9 @@ case action do
 
   "busy-prepare" ->
     {:ok, image} = Image.load(image_path)
+    :ok = ImageTemplate.ensure(pool, image)
+    System.put_env("PATH", "/run/zfs-changing/bin:" <> System.fetch_env!("PATH"))
+    "/run/zfs-changing/bin/zfs" = System.find_executable("zfs")
     {:error, :storage_busy} = Disk.prepare(pool, image, spec)
 
   "warm-template" ->

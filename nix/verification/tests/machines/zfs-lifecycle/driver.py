@@ -78,7 +78,6 @@ with subtest("real image copied sparsely, owned once and reused without overwrit
     expected_size = int(storage.succeed("zfs-lifecycle disk-size").strip())
     assert expected_size >= 2 * 1024**3
     assert not snapshot()["allocations"]
-    storage.succeed("zfs-lifecycle warm-template 1")
     storage.succeed("ZFS_OBSERVATION_FAULT=usage zfs-lifecycle busy-prepare 1")
     storage.succeed("test -f /run/zfs-observation-changed")
     storage.fail(f"test -e /pool/.lilly-zfs/active/{vm_id(1)}/claim.json", f"zfs list {child(1)}")
