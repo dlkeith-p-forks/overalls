@@ -1,5 +1,5 @@
 ---
-digest: 890a112aad45a5f9ca68ee998b91fb889ea9c951334508f3b571608721b9759f
+digest: 1230f29f0481968c3fa57b8870209773d9bb9a51cb3057937822eff70b466492
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Windows machine command palette UI; no HLDD chapter content changes required because this is an implementation-only projection of existing machine command behavior.
+Windows managed adapter now exposes bounded Rust push poke validation; no documented boundary changes.

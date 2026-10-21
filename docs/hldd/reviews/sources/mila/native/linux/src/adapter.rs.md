@@ -1,6 +1,6 @@
 ---
-digest: 6e7e49594a8ac0997b7baec930f0c91655121cd7f155dc8ec693c2e4695134d0
-disposition: updated
+digest: 3ec19db1a13ec5e3ce5e178ca9aa26a6b60561872f6e52dd17693e77b350b321
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/adapter.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Reviewed Windows Rust-backed push poke adapter; existing Mila native changes remain within documented boundaries.

@@ -1,6 +1,6 @@
 ---
-digest: a347f363ffb26561fa038721234fe0d4fb745a3a12dd3df7d5b8e79443bbd86e
-disposition: updated
+digest: 9e278a72be249c8b184d62949fbc55ed99c92b62a8fd58b945632dec72fa0274
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaFfiAdapter.kt
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Reviewed Windows Rust-backed push poke adapter; existing Mila native changes remain within documented boundaries.

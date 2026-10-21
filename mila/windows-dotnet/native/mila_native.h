@@ -59,6 +59,8 @@ MilaFfiStatus mila_terminal_resize_validate(uint16_t columns, uint16_t rows,
 /* Decodes one bounded watch line and returns only its event tag. */
 MilaFfiStatus mila_watch_event_kind(const uint8_t *line, size_t length,
                                     MilaWatchEventKind *out_kind);
+MilaFfiStatus mila_push_poke_validate(const uint8_t *envelope, size_t length,
+                                      uint64_t now);
 
 #ifdef __cplusplus
 }

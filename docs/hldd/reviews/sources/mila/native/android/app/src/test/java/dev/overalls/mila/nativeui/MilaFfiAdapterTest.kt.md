@@ -1,5 +1,5 @@
 ---
-digest: 795b290be4100ae942d4d5e2f6343bd3cb63e212e284cfd26d62224d8e41d4c2
+digest: c12f0c3b17e29bb8ad1fb8ffbbdd979671adfef986581ac505e9e2185cc7d461
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android thread controls now expose the existing closed Rust command catalog through typed classification; no protocol or deployment behavior changed.
+Reviewed Windows Rust-backed push poke adapter; existing Mila native changes remain within documented boundaries.

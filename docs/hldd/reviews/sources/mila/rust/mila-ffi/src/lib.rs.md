@@ -1,6 +1,6 @@
 ---
-digest: 62215c2065707c3994d79a8f02adf864538870b63e6393839e710fa5eed52d1a
-disposition: updated
+digest: e6cdf873f040d1a20afea44b2b2b36a617b53072d7333eeebeded138f4086cb3
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-ffi/src/lib.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Reviewed Windows Rust-backed push poke adapter; existing Mila native changes remain within documented boundaries.

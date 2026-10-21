@@ -131,6 +131,11 @@ internal readonly record struct MilaNativeTerminalResult(MilaNativeStatus Status
     internal bool IsValid => Status == MilaNativeStatus.Ok;
 }
 
+internal readonly record struct MilaNativePokeResult(MilaNativeStatus Status)
+{
+    internal bool IsValid => Status == MilaNativeStatus.Ok;
+}
+
 /// <summary>
 /// Narrow P/Invoke boundary for the Rust implementation.
 ///
@@ -343,6 +348,19 @@ internal static partial class RustNative
         ushort columns, ushort rows, bool readWrite)
         => TryTerminal(() => TerminalResizeNative(columns, rows, readWrite ? (byte)1 : (byte)0));
 
+    /// <summary>Validates an opaque Susan push poke before waking the UI.</summary>
+    internal static unsafe MilaNativePokeResult TryValidatePushPoke(
+        ReadOnlySpan<byte> envelope, ulong now)
+    {
+        fixed (byte* bytes = envelope)
+        {
+            try { return new(PushPokeNative((IntPtr)bytes, (nuint)envelope.Length, now)); }
+            catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+            catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+            catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable); }
+        }
+    }
+
     private static MilaNativeTerminalResult TryTerminal(Func<MilaNativeStatus> call)
     {
         try { return new(call()); }
@@ -387,6 +405,10 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_terminal_resize_validate")]
     private static partial MilaNativeStatus TerminalResizeNative(
         ushort columns, ushort rows, byte readWrite);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_push_poke_validate")]
+    private static partial MilaNativeStatus PushPokeNative(
+        IntPtr envelope, nuint length, ulong now);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_snapshot_validate")]
     private static partial MilaNativeStatus ValidateSnapshotNative(
