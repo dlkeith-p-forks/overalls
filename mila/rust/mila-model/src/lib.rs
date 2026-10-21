@@ -16,9 +16,9 @@ const REQUEST_PREFIX: &str = "porsche-";
 pub struct Identifier(Uuid);
 
 impl Identifier {
+    /// @cc [owner:ghuntley,label:protocol;security] mila-model-canonical-identifier
     /// Parses only the lowercase, hyphenated UUID representation used on the wire.
     ///
-    /// @cc [owner:ghuntley,label:protocol;security] mila-model-canonical-identifier
     /// Identifiers accepted from a route or command MUST be canonical lowercase UUIDs;
     /// accepting another representation would make route formatting ambiguous.
     pub fn parse(value: &str) -> Result<Self, ModelError> {
@@ -267,9 +267,9 @@ pub struct MilaRoute {
 }
 
 impl MilaRoute {
+    /// @cc [owner:ghuntley,label:security;protocol] mila-model-route-closed-table
     /// Parses the bounded, closed `overalls://` grammar without panicking.
     ///
-    /// @cc [owner:ghuntley,label:security;protocol] mila-model-route-closed-table
     /// Route parsing MUST reject fragments, userinfo, encoded path segments, unknown
     /// query keys and non-canonical identifiers; accepted routes MUST format canonically.
     pub fn parse(value: &str) -> Result<Self, ModelError> {
@@ -465,9 +465,9 @@ pub enum ModelError {
 pub struct RequestId(String);
 
 impl RequestId {
+    /// @cc [owner:ghuntley,label:protocol] mila-model-request-id
     /// Constructs an id from its canonical wire representation.
     ///
-    /// @cc [owner:ghuntley,label:protocol] mila-model-request-id
     /// Mutation request ids MUST have exactly `porsche-` plus 32 lowercase hexadecimal
     /// characters, preventing accidental retries under a different identity.
     pub fn parse(value: &str) -> Result<Self, ModelError> {

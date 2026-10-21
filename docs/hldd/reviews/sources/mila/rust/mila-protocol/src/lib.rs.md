@@ -1,5 +1,5 @@
 ---
-digest: cfe1f32223421e9f6a1593569ebe5ccce73573a5a34fbefd427f9f8127fa645c
+digest: 80751c2f12d49eb94fd5c61a41289c9dd849aaea8465aa5869891a188d071e32
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Session command and machine action FFI additions keep the Rust-core typed boundary and add bounded native capability without changing the documented platform architecture.
+Move existing Rust contract directives to the start of their documentation blocks so the pinned checker can parse them; contract prose and executable behavior are unchanged.

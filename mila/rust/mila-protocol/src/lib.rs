@@ -41,9 +41,9 @@ pub struct Command {
 }
 
 impl Command {
+    /// @cc [owner:ghuntley,label:security;protocol] mila-protocol-command-no-shell
     /// Parses a command using Porsche's shell-independent bounded grammar.
     ///
-    /// @cc [owner:ghuntley,label:security;protocol] mila-protocol-command-no-shell
     /// Parsing MUST never invoke a shell or evaluate substitutions, MUST enforce the
     /// command catalog, and MUST reject unknown options and malformed quoting.
     pub fn parse(line: &str) -> Result<Self, ProtocolError> {
@@ -193,9 +193,9 @@ pub enum Reply {
     },
 }
 
+/// @cc [owner:ghuntley,label:protocol] mila-protocol-strict-envelope
 /// Decodes a JSON result while preserving unknown result-body fields.
 ///
-/// @cc [owner:ghuntley,label:protocol] mila-protocol-strict-envelope
 /// Envelope fields MUST be validated before use; result bodies may retain unknown keys
 /// so store-distributed clients can read additive server fields safely.
 pub fn decode_reply(value: &str) -> Result<Reply, ProtocolError> {

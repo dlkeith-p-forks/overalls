@@ -109,9 +109,9 @@ pub struct MutationTracker {
 }
 
 impl MutationTracker {
+    /// @cc [owner:ghuntley,label:protocol;security] mila-runtime-mutation-once
     /// Allocates a tracker before any network submission.
     ///
-    /// @cc [owner:ghuntley,label:protocol;security] mila-runtime-mutation-once
     /// A tracker MUST retain one request id for its lifetime; uncertainty transitions
     /// to polling and MUST never create a second submission id.
     pub fn submitted(request_id: RequestId) -> Self {
@@ -458,8 +458,8 @@ pub enum MachineAction {
 }
 
 impl SnapshotMachine {
-    /// Returns actions in the stable order used by the native clients.
     /// @cc [owner:ghuntley,label:protocol;security] mila-runtime-machine-actions
+    /// Returns actions in the stable order used by the native clients.
     pub fn available_actions(&self) -> Vec<MachineAction> {
         let mut actions = Vec::with_capacity(3);
         if self.write {

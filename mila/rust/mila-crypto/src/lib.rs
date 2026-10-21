@@ -12,9 +12,9 @@ use thiserror::Error;
 pub struct DeviceKey(SigningKey);
 
 impl DeviceKey {
+    /// @cc [owner:ghuntley,label:security] mila-crypto-device-key-custody
     /// Creates a key from exactly 32 bytes supplied by a platform key provider.
     ///
-    /// @cc [owner:ghuntley,label:security] mila-crypto-device-key-custody
     /// This API MUST accept private material only as an explicit provider input and
     /// MUST never expose or log the private scalar; callers retain custody of it.
     pub fn from_seed(seed: [u8; 32]) -> Result<Self, CryptoError> {

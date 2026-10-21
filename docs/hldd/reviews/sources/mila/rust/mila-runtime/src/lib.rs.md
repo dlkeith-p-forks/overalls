@@ -1,5 +1,5 @@
 ---
-digest: d76985e6dfb63f0e771c26e1642aebbd99a75ea705b2dbecef6bbbdb6d89071f
+digest: 8f7fbf5cf848df70a62c8c9528f998ca6745a678ee32d2d2189d7980b7c72f3c
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows DLL staging and Rust terminal lifecycle state add native implementation evidence within ADR-0249 without changing documented architecture or protocol.
+Move existing Rust contract directives to the start of their documentation blocks so the pinned checker can parse them; contract prose and executable behavior are unchanged.

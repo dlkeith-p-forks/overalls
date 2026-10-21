@@ -309,9 +309,9 @@ pub unsafe extern "C" fn mila_ffi_get_version(
     MilaFfiStatus::Ok
 }
 
+/// @cc [owner:ghuntley,label:security;protocol] mila-ffi-bounded-output
 /// Parses an `overalls://` route and writes its canonical spelling to `output`.
 ///
-/// @cc [owner:ghuntley,label:security;protocol] mila-ffi-bounded-output
 /// FFI parsing MUST validate UTF-8 and the closed route grammar before writing;
 /// output writes MUST be bounded by the caller-provided capacity.
 ///
@@ -355,8 +355,8 @@ pub struct MilaMachineActions {
     pub bits: u16,
 }
 
-/// Formats a catalogued machine action with bounded, canonical output.
 /// @cc [owner:ghuntley,label:security;protocol] mila-session-command-bounded
+/// Formats a catalogued machine action with bounded, canonical output.
 /// Native callers MUST receive only catalogued commands; credentials and arbitrary payloads MUST NOT cross this ABI.
 ///
 /// # Safety
