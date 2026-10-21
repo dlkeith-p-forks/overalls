@@ -1,0 +1,104 @@
+import Foundation
+import MilaFFIShim
+
+/// Lifecycle states for a bounded native terminal attachment.
+public enum MilaTerminalState: Equatable, Sendable {
+    case detached
+    case attaching
+    case attached
+    case reconnecting
+    case failed
+}
+
+public enum MilaTerminalError: Error, Equatable, Sendable {
+    case invalidRequest
+    case permissionDenied
+    case unavailable
+    case outputLimitExceeded
+}
+
+/// Host transport supplied by the native application. Terminal bytes stay in this host-owned
+/// transport and are never copied into Rust FFI calls.
+public protocol MilaTerminalTransport: Sendable {
+    func attach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) async throws
+    func sendInput(_ input: Data) async throws
+    func resize(columns: UInt16, rows: UInt16) async throws
+    func close() async
+}
+
+public struct MilaNoopTerminalTransport: MilaTerminalTransport {
+    public init() {}
+    public func attach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) async throws {}
+    public func sendInput(_ input: Data) async throws { _ = input }
+    public func resize(columns: UInt16, rows: UInt16) async throws {}
+    public func close() async {}
+}
+
+/// Main-actor terminal lifecycle model. Rust validates every operation before host transport use.
+@MainActor
+public final class MilaTerminalController: ObservableObject {
+    public static let maximumRenderedOutput = 256 * 1024
+    @Published public private(set) var state: MilaTerminalState = .detached
+    @Published public private(set) var output = Data()
+    @Published public private(set) var columns: UInt16 = 80
+    @Published public private(set) var rows: UInt16 = 24
+    private let transport: any MilaTerminalTransport
+    private var lastAttach: (from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool)?
+
+    public init(transport: any MilaTerminalTransport = MilaNoopTerminalTransport()) {
+        self.transport = transport
+    }
+
+    public func attach(from: UInt64 = 0, columns: UInt16 = 80, rows: UInt16 = 24, readWrite: Bool = true) async {
+        guard validateAttach(from: from, columns: columns, rows: rows, readWrite: readWrite) else {
+            state = .failed; return
+        }
+        state = .attaching
+        do {
+            try await transport.attach(from: from, columns: columns, rows: rows, readWrite: readWrite)
+            self.columns = columns; self.rows = rows
+            lastAttach = (from, columns, rows, readWrite)
+            state = .attached
+        } catch { state = .failed }
+    }
+
+    public func reconnect() async {
+        guard let request = lastAttach else { state = .failed; return }
+        state = .reconnecting
+        await transport.close()
+        do {
+            try await transport.attach(from: request.from, columns: request.columns, rows: request.rows, readWrite: request.readWrite)
+            state = .attached
+        } catch { state = .failed }
+    }
+
+    public func sendInput(_ input: Data) async {
+        guard state == .attached else { state = .failed; return }
+        let permission: UInt8 = 1
+        guard mila_terminal_input_validate(input.count, permission) == MILA_FFI_OK else {
+            state = .failed; return
+        }
+        do { try await transport.sendInput(input) } catch { state = .failed }
+    }
+
+    public func resize(columns: UInt16, rows: UInt16) async {
+        guard state == .attached,
+              mila_terminal_resize_validate(columns, rows, 1) == MILA_FFI_OK else { state = .failed; return }
+        do { try await transport.resize(columns: columns, rows: rows); self.columns = columns; self.rows = rows }
+        catch { state = .failed }
+    }
+
+    public func appendOutput(_ bytes: Data) {
+        guard bytes.count <= Self.maximumRenderedOutput else { state = .failed; return }
+        let available = Self.maximumRenderedOutput - output.count
+        output.append(bytes.prefix(available))
+    }
+
+    public func close() async {
+        await transport.close(); state = .detached; lastAttach = nil; output.removeAll(keepingCapacity: true)
+    }
+
+    private func validateAttach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) -> Bool {
+        mila_terminal_attach_validate(from, columns, rows, readWrite ? 1 : 0) == MILA_FFI_OK
+    }
+}

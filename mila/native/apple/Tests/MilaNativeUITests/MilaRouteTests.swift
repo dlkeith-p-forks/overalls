@@ -92,3 +92,35 @@ final class MilaSnapshotPolicyTests: XCTestCase {
         } catch { XCTAssertEqual(error as? MilaFFIError, .unavailable) }
     }
 }
+
+@MainActor
+final class MilaTerminalControllerTests: XCTestCase {
+    private final class Transport: MilaTerminalTransport, @unchecked Sendable {
+        var attachments: [(UInt64, UInt16, UInt16, Bool)] = []
+        var inputs: [Data] = []
+        var resizes: [(UInt16, UInt16)] = []
+        var closed = 0
+        func attach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) async throws { attachments.append((from, columns, rows, readWrite)) }
+        func sendInput(_ input: Data) async throws { inputs.append(input) }
+        func resize(columns: UInt16, rows: UInt16) async throws { resizes.append((columns, rows)) }
+        func close() async { closed += 1 }
+    }
+
+    func testAttachInputResizeReconnectAndCloseStayBounded() async {
+        let transport = Transport()
+        let controller = MilaTerminalController(transport: transport)
+        await controller.attach(from: 4, columns: 100, rows: 30)
+        XCTAssertEqual(controller.state, .attached)
+        await controller.sendInput(Data("ls\n".utf8))
+        await controller.resize(columns: 120, rows: 40)
+        XCTAssertEqual(transport.inputs, [Data("ls\n".utf8)])
+        XCTAssertEqual(transport.resizes.count, 1)
+        controller.appendOutput(Data(repeating: 65, count: MilaTerminalController.maximumRenderedOutput + 1))
+        XCTAssertEqual(controller.state, .failed)
+        await controller.reconnect()
+        XCTAssertEqual(controller.state, .attached)
+        await controller.close()
+        XCTAssertEqual(controller.state, .detached)
+        XCTAssertGreaterThanOrEqual(transport.closed, 2)
+    }
+}

@@ -59,12 +59,14 @@ private struct MachineDetailView: View {
     let machine: MilaMachinePresentation?
     let adapter: any MilaFFIAdapter
     @State private var status = ""
+    @State private var showTerminal = false
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let machine {
                 Text(machine.machine.name).font(.title)
                 Text(machine.id.uuidString).font(.caption)
                 Text(machine.machine.observedState ?? "unknown").foregroundStyle(.secondary)
+                Button("Open terminal") { showTerminal = true }.disabled(!machine.machine.write)
                 ForEach(machine.actions.values, id: \.self) { action in
                     Button(action.title) {
                         Task {
@@ -77,7 +79,7 @@ private struct MachineDetailView: View {
                 }
                 Text(status).font(.caption).foregroundStyle(.secondary)
             } else { ContentUnavailableView("Machine unavailable", systemImage: "questionmark") }
-        }.padding()
+        }.padding().sheet(isPresented: $showTerminal) { MilaTerminalView() }
     }
 
 }
@@ -108,4 +110,20 @@ private struct SettingsView: View { var body: some View { Form { Text("Runtime a
     public init() { adapter = LinkedMilaFFIAdapter() }
     public init(adapter: any MilaFFIAdapter) { self.adapter = adapter }
     public var body: some Scene { WindowGroup { MilaNativeRootView(adapter: adapter) } }
+}
+
+
+private struct MilaTerminalView: View {
+    @StateObject private var terminal = MilaTerminalController()
+    @State private var command = ""
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Terminal").font(.title2)
+            ScrollView { Text(String(decoding: terminal.output, as: UTF8.self)).font(.system(.body, design: .monospaced)).frame(maxWidth: .infinity, alignment: .leading) }
+                .frame(maxHeight: .infinity).background(.black).foregroundStyle(.green)
+            HStack { TextField("Input", text: $command).onSubmit { send() }; Button("Send") { send() }; Button("Reconnect") { Task { await terminal.reconnect() } } }
+            Text("\(String(describing: terminal.state)) · \(terminal.columns)x\(terminal.rows)").font(.caption).foregroundStyle(.secondary)
+        }.padding().task { await terminal.attach() }.onDisappear { Task { await terminal.close() } }
+    }
+    private func send() { let data = Data(command.utf8); command = ""; Task { await terminal.sendInput(data) } }
 }
