@@ -1,5 +1,5 @@
 ---
-digest: fa0f506f40859b4397a285278d75c19147008274058ccb21cac1956e5672830f
+digest: 45811822b7b97005ae33764c96acc4a3248168e50335baf48a61ab37d8d4cfe0
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux push registration test now uses a valid APNs token while exercising the existing Rust-backed provider metadata contract.
+Reviewed the Linux push registration test fixture update; it now uses provider-valid APNs and WNS token values while preserving the Rust policy contract.

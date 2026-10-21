@@ -323,17 +323,17 @@ mod web_tests {
     #[test]
     fn push_registration_requires_provider_specific_metadata() {
         assert!(validate_push_registration(0, false, &"ab".repeat(32), "app", "mila.example", None).is_ok());
-        assert!(validate_push_registration(2, true, "token", "app", "mila.example", None).is_err());
+        assert!(validate_push_registration(2, true, "https://push.example/channel", "app", "mila.example", None).is_err());
         assert!(validate_push_registration(
             2,
             true,
-            "token",
+            "https://push.example/channel",
             "app",
             "mila.example",
             Some("https://push.example/channel")
         )
         .is_ok());
-        assert!(validate_push_registration(9, true, "token", "app", "mila.example", None).is_err());
+        assert!(validate_push_registration(9, true, "https://push.example/channel", "app", "mila.example", None).is_err());
     }
 }
 
