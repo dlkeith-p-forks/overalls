@@ -4,12 +4,15 @@ defmodule Marshall.Redaction.Scanner do
   @type finding :: %{rule: String.t(), count: non_neg_integer()}
   @type result :: %{value: String.t(), findings: [finding()]}
 
-  @profile_path Application.app_dir(:marshall, "priv/redaction/profile.json")
-  @external_resource @profile_path
+  @profile_relative_path "priv/redaction/profile.json"
+  @external_resource Path.expand("../../../priv/redaction/profile.json", __DIR__)
+
+  @spec profile_path() :: String.t()
+  defp profile_path, do: Application.app_dir(:marshall, @profile_relative_path)
 
   @spec profile_digest() :: String.t()
   def profile_digest do
-    profile = File.read!(@profile_path)
+    profile = File.read!(profile_path())
     :crypto.hash(:sha256, profile) |> Base.encode16(case: :lower)
   end
 
@@ -33,7 +36,7 @@ defmodule Marshall.Redaction.Scanner do
     case :persistent_term.get({__MODULE__, :rules}, :missing) do
       :missing ->
         loaded =
-          @profile_path
+          profile_path()
           |> File.read!()
           |> Jason.decode!()
           |> Map.fetch!("rules")
