@@ -33,9 +33,9 @@ def cursor(path: Path) -> str:
 class Metrics(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         payload = (
-            b'fluentbit_output_errors_total{name="fixture-platform"} 2\n'
-            b'fluentbit_output_retries_total{name="fixture-platform"} 3\n'
-            b'fluentbit_output_dropped_records_total{name="fixture-platform"} 4\n'
+            b'fluentbit_output_errors_total{name="fixture-platform"} 2 1792620371182\n'
+            b'fluentbit_output_retries_total{name="fixture-platform"} 3 1792620371182\n'
+            b'fluentbit_output_dropped_records_total{name="fixture-platform"} 4 1792620371182\n'
             b'fluentbit_output_errors_total{name="foreign-private-sentinel"} 999\n'
         )
         self.send_response(200)

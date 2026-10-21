@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import TypedDict
 
 COUNTERS = ("errors_total", "retries_total", "dropped_records_total")
-METRIC = re.compile(r"^fluentbit_output_([a-z_]+)\{([^\n]*)\}\s+([0-9.eE+-]+)$")
+METRIC = re.compile(r"^fluentbit_output_([a-z_]+)\{([^\n]*)\}\s+([0-9.eE+-]+)(?:\s+[0-9.eE+-]+)?$")
 NAME = re.compile(r'(?:^|,)\s*name="([a-zA-Z0-9_-]+)"(?:,|$)')
 CHUNK = re.compile(r"[0-9]+-([0-9]+)\.[0-9]+\.flb")
 TRACE_FIELDS = frozenset(
