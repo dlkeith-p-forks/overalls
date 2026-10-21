@@ -11,6 +11,18 @@ from generate_catalogs import generate
 
 
 class CatalogGeneratorTest(unittest.TestCase):
+    def test_arb_source_is_supported_for_mila_catalogs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            (source / "app_en.arb").write_text(
+                '{"appTitle":"Mila","@appTitle":{"description":"name"}}',
+                encoding="utf-8",
+            )
+            output = source / "out"
+            generate(source, output)
+            bundle = json.loads((output / "en.json").read_text(encoding="utf-8"))
+            self.assertEqual(bundle["domains"]["mila"]["messages"][0]["id"], "appTitle")
+
     def test_deterministic_bundle_and_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

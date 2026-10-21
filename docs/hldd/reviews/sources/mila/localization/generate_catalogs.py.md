@@ -1,6 +1,6 @@
 ---
-digest: 8809d10ccb7548f332f3b518379c4b0096dcb3d669a5fde238c6119b620978e7
-disposition: updated
+digest: 66a618d49d848600eb48a1ec94c34dd5d5fbee2566b6c053bc64de8b56a16b7f
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/localization/generate_catalogs.py
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Centralized Mila locale policy and deterministic catalog generation; native shells now consume stable localized message identities with shared fallback behavior.
+Catalog import tooling preserves the existing Mila architecture and locale policy; it only adds deterministic build-time input handling.

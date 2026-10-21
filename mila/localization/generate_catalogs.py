@@ -17,6 +17,7 @@ from pathlib import Path
 
 LOCALE_RE = re.compile(r"^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$")
 PLACEHOLDER_RE = re.compile(r"%\{([A-Za-z][A-Za-z0-9_]*)\}")
+ARB_LOCALE_ALIASES = {"pt": "pt-BR", "zh": "zh-Hans"}
 
 
 @dataclass(frozen=True)
@@ -84,6 +85,24 @@ def parse_po(path: Path) -> list[Message]:
     return messages
 
 
+def parse_arb(path: Path) -> list[Message]:
+    """Read a Mila ARB bundle while Flutter is being retired.
+
+    ARB message ids remain the stable source identity; metadata entries are
+    ignored. ICU placeholders are preserved for the native generators.
+    """
+    values = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(values, dict):
+        raise ValueError(f"ARB root is not an object: {path}")
+    messages: list[Message] = []
+    for key in sorted(k for k in values if not k.startswith("@")):
+        value = values[key]
+        if not isinstance(value, str):
+            raise ValueError(f"ARB message is not a string: {path}: {key}")
+        messages.append(Message(None, key, None, (value,)))
+    return messages
+
+
 def validate(messages: Iterable[Message], path: Path) -> None:
     identities: set[tuple[str | None, str, str | None]] = set()
     for message in messages:
@@ -104,6 +123,56 @@ def validate(messages: Iterable[Message], path: Path) -> None:
 
 def generate(source: Path, output: Path) -> None:
     output.mkdir(parents=True, exist_ok=True)
+    arb_files = sorted(source.glob("app_*.arb"))
+    if arb_files:
+        all_bundles: dict[str, dict[str, object]] = {}
+        for arb in arb_files:
+            locale = ARB_LOCALE_ALIASES.get(
+                arb.stem.removeprefix("app_").replace("_", "-"),
+                arb.stem.removeprefix("app_").replace("_", "-"),
+            )
+            parsed = parse_arb(arb)
+            validate(parsed, arb)
+            bundle = {
+                "locale": locale,
+                "domains": {
+                    "mila": {
+                        "messages": [
+                            {
+                                "context": m.context,
+                                "id": m.msgid,
+                                "plural": m.plural,
+                                "forms": list(m.forms),
+                            }
+                            for m in parsed
+                        ]
+                    }
+                },
+            }
+            if locale in all_bundles and all_bundles[locale] != bundle:
+                raise ValueError(f"conflicting ARB aliases for locale {locale}: {arb}")
+            all_bundles[locale] = bundle
+        locales = sorted(all_bundles)
+        for locale in locales:
+            (output / f"{locale}.json").write_text(
+                json.dumps(all_bundles[locale], ensure_ascii=False, sort_keys=True, indent=2)
+                + "\n",
+                encoding="utf-8",
+            )
+        (output / "manifest.json").write_text(
+            json.dumps(
+                {
+                    "schema": 1,
+                    "locales": locales,
+                    "bundles": [f"{locale}.json" for locale in locales],
+                },
+                sort_keys=True,
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        return
     locales = sorted(p.name for p in source.iterdir() if p.is_dir() and LOCALE_RE.match(p.name))
     if not locales:
         raise ValueError(f"no locale directories found under {source}")
