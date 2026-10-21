@@ -322,12 +322,17 @@ defmodule Enrico.ManagerHistoryPropertyTest do
     end)
   end
 
-  property "real refresh workers preserve reuse against retired generation messages",
-    profile: :ci do
+  test "real refresh workers preserve reuse at every fixed retention boundary" do
     for terminal <- [:success, :death], neighbors <- [1_023, 1_024, 1_025] do
       real_refresh_history(terminal, neighbors)
     end
+  end
 
+  # Six fixed native histories measured 164 seconds. Preserve all 100 generated
+  # histories with roughly 2x aggregate headroom; each await remains bounded.
+  @tag timeout: 5_400_000
+  property "real refresh workers preserve reuse against retired generation messages",
+    profile: :ci do
     terminal = draw("terminal", member_of([:success, :death]))
     neighbors = draw("neighbors", member_of([1023, 1024, 1025]))
 
