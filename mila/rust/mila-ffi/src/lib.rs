@@ -882,31 +882,73 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeMachine
     kind as jni::sys::jint
 }
 
-fn terminal_status(status: MilaFfiStatus) -> jni::sys::jint { status as jni::sys::jint }
+fn terminal_status(status: MilaFfiStatus) -> jni::sys::jint {
+    status as jni::sys::jint
+}
 
 #[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTerminalAttach(
-    _env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, from: jni::sys::jlong,
-    columns: jni::sys::jint, rows: jni::sys::jint, read_write: jni::sys::jboolean,
+    _env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    from: jni::sys::jlong,
+    columns: jni::sys::jint,
+    rows: jni::sys::jint,
+    read_write: jni::sys::jboolean,
 ) -> jni::sys::jint {
-    if from < 0 || columns < 0 || rows < 0 || columns > u16::MAX as i32 || rows > u16::MAX as i32 || read_write > 1 { return -4; }
-    terminal_status(mila_terminal_attach_validate(from as u64, columns as u16, rows as u16, read_write as u8))
+    if from < 0
+        || columns < 0
+        || rows < 0
+        || columns > u16::MAX as i32
+        || rows > u16::MAX as i32
+        || read_write > 1
+    {
+        return -4;
+    }
+    terminal_status(mila_terminal_attach_validate(
+        from as u64,
+        columns as u16,
+        rows as u16,
+        read_write as u8,
+    ))
 }
 
 #[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTerminalInput(
-    _env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, length: jni::sys::jint, read_write: jni::sys::jboolean,
+    _env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    length: jni::sys::jint,
+    read_write: jni::sys::jboolean,
 ) -> jni::sys::jint {
-    if length < 0 || read_write > 1 { return -4; }
-    terminal_status(mila_terminal_input_validate(length as usize, read_write as u8))
+    if length < 0 || read_write > 1 {
+        return -4;
+    }
+    terminal_status(mila_terminal_input_validate(
+        length as usize,
+        read_write as u8,
+    ))
 }
 
 #[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTerminalResize(
-    _env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, columns: jni::sys::jint, rows: jni::sys::jint, read_write: jni::sys::jboolean,
+    _env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    columns: jni::sys::jint,
+    rows: jni::sys::jint,
+    read_write: jni::sys::jboolean,
 ) -> jni::sys::jint {
-    if columns < 0 || rows < 0 || columns > u16::MAX as i32 || rows > u16::MAX as i32 || read_write > 1 { return -4; }
-    terminal_status(mila_terminal_resize_validate(columns as u16, rows as u16, read_write as u8))
+    if columns < 0
+        || rows < 0
+        || columns > u16::MAX as i32
+        || rows > u16::MAX as i32
+        || read_write > 1
+    {
+        return -4;
+    }
+    terminal_status(mila_terminal_resize_validate(
+        columns as u16,
+        rows as u16,
+        read_write as u8,
+    ))
 }
 
 /// JNI projection of the bounded machine action policy.  The returned value is
