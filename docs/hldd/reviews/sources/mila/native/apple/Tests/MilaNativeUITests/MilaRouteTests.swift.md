@@ -1,6 +1,6 @@
 ---
-digest: 15d0ba9210ff8cfb36eaa57a0de8f7185c3f1c205b04d3e6415fea1ec1f36bb9
-disposition: updated
+digest: e44f40dce5994d7ffc3356db570c63bd9527e54e2fc6e796376c40a1ec0999d3
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/apple/Tests/MilaNativeUITests/MilaRouteTests.swift
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Reviewed Apple native command classification and push validation tests; behavior exercises existing Rust FFI contracts without changing documented behavior.

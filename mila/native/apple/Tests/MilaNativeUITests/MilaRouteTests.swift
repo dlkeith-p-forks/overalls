@@ -43,6 +43,26 @@ final class MilaRustLinkTests: XCTestCase {
         let adapter = LinkedMilaFFIAdapter()
         XCTAssertEqual(try adapter.canonicalRoute("overalls://overalls.example/machines"), "overalls://overalls.example/machines")
     }
+
+    func testLinkedRustProjectsClosedCommandCatalogs() throws {
+        let adapter = LinkedMilaFFIAdapter()
+        XCTAssertEqual(try adapter.classifyThreadCommand("thread ls"), .list)
+        XCTAssertEqual(try adapter.classifyThreadCommand("thread plan approve abc"), .planApprove)
+        XCTAssertEqual(try adapter.classifyMachineCommand("share add abc user read"), .shareAdd)
+        XCTAssertEqual(try adapter.classifyMachineCommand("web show abc"), .webShow)
+        XCTAssertThrowsError(try adapter.classifyMachineCommand("thread delete abc"))
+    }
+
+    func testLinkedRustRejectsMalformedPushMetadata() throws {
+        let adapter = LinkedMilaFFIAdapter()
+        XCTAssertThrowsError(try adapter.validatePushRegistration(
+            provider: 9,
+            environment: 0,
+            token: String(repeating: "a", count: 32),
+            appID: "com.example.mila",
+            deployment: "mila.example.test",
+            endpoint: ""))
+    }
 }
 
 final class MilaSnapshotPolicyTests: XCTestCase {
