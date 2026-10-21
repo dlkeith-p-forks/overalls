@@ -1,6 +1,6 @@
 ---
-digest: 5d028484cf66429e8d7c22a1e1b6659f977d83e8cdfb55d34fca60e72fc9b146
-disposition: no-impact
+digest: 2f5b978fc90fd23f459fb78e7fc4d2ae6202b4c9389d8161058d5b98c1ed6ed8
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaSessionListing.kt
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android listing decoder now avoids platform JSON dependency while preserving bounded typed projection and existing verification scope.
+Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.

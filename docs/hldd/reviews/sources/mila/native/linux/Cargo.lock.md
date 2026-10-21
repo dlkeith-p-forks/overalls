@@ -1,18 +1,18 @@
 ---
-digest: 57591f0240478f9eeaa57e1f50b0391322dda8f0a3001e1b6907e1d38a482b9c
-disposition: no-impact
+digest: 86c26924900398da258dd5f65f6dc50ed34037848dc858f8d98f1bbd717269d0
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/Cargo.lock
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 708f68ebea9699d639165e9828b0854a594fb031ced43485da040f42c339f470
+  marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: c5a1bad02070018de2d0bf83b14bdb9770b44bbd4034f30a38c9041d59979757
-  marshall/priv/hldd/20-security.md: 995648da5f0c6af5caff1d1fdecb7147b9b8f91d9dd8f973f37447c122298348
-  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
+  marshall/priv/hldd/19-coverage.md: 71e87db236f081db996db1cf017c727f434e86aab079ac414a8d87ca411ac278
+  marshall/priv/hldd/20-security.md: 92ef988a1a8679b0767fad1b355246a4e216ed59e25b0b43ea56ccce0c1e3e8b
+  marshall/priv/hldd/21-domains.md: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
   marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-Reviewed native Android Keystore custody, Windows CNG custody and Linux lockfile; platform boundary remains documented and no unrelated behavior changed.
+Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.

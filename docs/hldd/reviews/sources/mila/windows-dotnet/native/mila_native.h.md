@@ -1,6 +1,6 @@
 ---
-digest: c9f1799b78910e87436f6dde66339b4a4bdc54c591bda587ebea52d17564a192
-disposition: no-impact
+digest: 7140b498bd68ce7751517f4cb8aaac7630b126768494fbf6da164068b1ed11dd
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/windows-dotnet/native/mila_native.h
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Terminal FFI exposes only bounded scalar validation; native adapters retain terminal bytes locally and no documented behavior changes.
+Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.

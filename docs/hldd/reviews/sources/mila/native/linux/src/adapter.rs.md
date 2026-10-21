@@ -1,6 +1,6 @@
 ---
-digest: 72bcad426f772cac0730e8fae8d01aaef357d53625f416c0919eb5e7fcf0b873
-disposition: no-impact
+digest: 6e7e49594a8ac0997b7baec930f0c91655121cd7f155dc8ec693c2e4695134d0
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/adapter.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Terminal FFI exposes only bounded scalar validation; native adapters retain terminal bytes locally and no documented behavior changes.
+Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.

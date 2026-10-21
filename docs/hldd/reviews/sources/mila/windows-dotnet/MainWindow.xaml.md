@@ -1,6 +1,6 @@
 ---
-digest: fd4eb82f2db3d53898a840a1fa4d63dfd0bbac8fcb3bf0d7af88742b83290e9a
-disposition: no-impact
+digest: 61f2b1a3707af8899f695b129d704b86e37e478bc3df805679f7591f02024cae
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/windows-dotnet/MainWindow.xaml
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows bounded Rust session listing decoder and WinUI rows preserve existing native architecture; no new domain or protocol
+Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
