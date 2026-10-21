@@ -1,6 +1,6 @@
 ---
-digest: 7140b498bd68ce7751517f4cb8aaac7630b126768494fbf6da164068b1ed11dd
-disposition: updated
+digest: e2f6842b44d6536e479dab8c8071106ac4b09da540861557bbdd8acc7ef956c3
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/windows-dotnet/native/mila_native.h
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Reviewed Windows machine command palette UI; no HLDD chapter content changes required because this is an implementation-only projection of existing machine command behavior.

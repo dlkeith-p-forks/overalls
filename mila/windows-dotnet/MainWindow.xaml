@@ -11,6 +11,28 @@
         <TextBlock x:Name="PageBody" Text="Select a machine to view its status." TextWrapping="Wrap" />
         <TextBlock x:Name="StatusText" Text="Ready" Opacity="0.7" />
         <ListView x:Name="MachineRows" DisplayMemberPath="Name" MinHeight="120" />
+        <StackPanel x:Name="MachinePanel" Spacing="8">
+          <TextBlock Text="Machine commands" FontSize="18" />
+          <TextBlock Text="Commands are classified by the Rust core before execution." TextWrapping="Wrap" Opacity="0.7" />
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="List" Click="ClassifyMachineList" />
+            <Button Content="Show" Click="ClassifyMachineShow" />
+            <Button Content="New" Click="ClassifyMachineNew" />
+            <Button Content="Resize" Click="ClassifyMachineResize" />
+            <Button Content="Start" Click="ClassifyMachineStart" />
+            <Button Content="Stop" Click="ClassifyMachineStop" />
+            <Button Content="Pause" Click="ClassifyMachinePause" />
+            <Button Content="Resume" Click="ClassifyMachineResume" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="Delete" Click="ClassifyMachineDelete" />
+            <Button Content="Share add" Click="ClassifyMachineShareAdd" />
+            <Button Content="Share remove" Click="ClassifyMachineShareRemove" />
+            <Button Content="Web show" Click="ClassifyMachineWebShow" />
+            <Button Content="Web set" Click="ClassifyMachineWebSet" />
+          </StackPanel>
+          <TextBlock x:Name="MachineCommandStatus" Opacity="0.7" TextWrapping="Wrap" />
+        </StackPanel>
         <StackPanel x:Name="ThreadPanel" Visibility="Collapsed" Spacing="8">
           <TextBlock Text="Thread commands" FontSize="18" />
           <TextBlock Text="Commands are validated by the Rust core before execution." TextWrapping="Wrap" Opacity="0.7" />

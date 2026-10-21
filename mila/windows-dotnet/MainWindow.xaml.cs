@@ -13,6 +13,7 @@ public sealed partial class MainWindow : Window
             PageBody.Text = tag switch { "threads" => "Recent conversations appear here.", "settings" => "Runtime settings are managed by the core library.", _ => "Select a machine to view its status." };
             ThreadPanel.Visibility = tag == "threads" ? Visibility.Visible : Visibility.Collapsed;
             MachineRows.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
+            MachinePanel.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
         }
     }
     private void CheckNativeBridge(object sender, RoutedEventArgs args)
@@ -33,5 +34,28 @@ public sealed partial class MainWindow : Window
         ThreadCommandStatus.Text = result.Status == MilaNativeStatus.Ok && result.Kind is { } kind
             ? $"{command}: {kind} (Rust)"
             : $"{command}: unavailable ({result.Status})";
+    }
+
+    private void ClassifyMachineList(object sender, RoutedEventArgs args) => ClassifyMachine("ls");
+    private const string SampleMachine = "00000000-0000-0000-0000-000000000000";
+    private void ClassifyMachineShow(object sender, RoutedEventArgs args) => ClassifyMachine("show demo");
+    private void ClassifyMachineNew(object sender, RoutedEventArgs args) => ClassifyMachine("new");
+    private void ClassifyMachineResize(object sender, RoutedEventArgs args) => ClassifyMachine($"resize {SampleMachine}");
+    private void ClassifyMachineStart(object sender, RoutedEventArgs args) => ClassifyMachine($"start {SampleMachine}");
+    private void ClassifyMachineStop(object sender, RoutedEventArgs args) => ClassifyMachine($"stop {SampleMachine}");
+    private void ClassifyMachinePause(object sender, RoutedEventArgs args) => ClassifyMachine($"pause {SampleMachine}");
+    private void ClassifyMachineResume(object sender, RoutedEventArgs args) => ClassifyMachine($"resume {SampleMachine}");
+    private void ClassifyMachineDelete(object sender, RoutedEventArgs args) => ClassifyMachine($"rm {SampleMachine}");
+    private void ClassifyMachineShareAdd(object sender, RoutedEventArgs args) => ClassifyMachine($"share add {SampleMachine} user viewer");
+    private void ClassifyMachineShareRemove(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");
+    private void ClassifyMachineWebShow(object sender, RoutedEventArgs args) => ClassifyMachine($"web show {SampleMachine}");
+    private void ClassifyMachineWebSet(object sender, RoutedEventArgs args) => ClassifyMachine($"web set {SampleMachine} --port=8080");
+
+    private void ClassifyMachine(string command)
+    {
+        MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand(command);
+        MachineCommandStatus.Text = kind is { } value
+            ? $"{command}: {value} (Rust)"
+            : $"{command}: unavailable or requires arguments";
     }
 }
