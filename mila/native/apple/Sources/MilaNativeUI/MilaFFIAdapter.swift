@@ -157,7 +157,7 @@ private enum MilaRustFFI {
     static func threadKind(_ line: UnsafePointer<CChar>, _ out: UnsafeMutablePointer<MilaThreadCommandKind>) -> Int32 {
         var raw = MilaFFIShim.MilaThreadCommandKind(rawValue: 0)
         let status = mila_thread_command_kind(line, &raw).rawValue
-        out.pointee = MilaThreadCommandKind(rawValue: raw.rawValue) ?? .unknown
+        out.pointee = MilaThreadCommandKind(rawValue: Int32(raw.rawValue)) ?? .unknown
         return status
     }
 }

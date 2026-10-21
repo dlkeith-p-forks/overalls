@@ -49,7 +49,7 @@ internal static class Program
             Require(RustNative.TryFormatMachineCommand(action, machineId, "porsche-0123456789abcdef0123456789abcdef").Command is null, "action injection refusal");
         Require(RustNative.TryFormatMachineCommand("stop", machineId, null).Command is null, "mutation request required");
         Require(RustNative.TryFormatMachineCommand("stop", machineId, "id\0suffix").Command is null, "request truncation refusal");
-        MilaNativeThreadCommandResult thread = RustNative.TryClassifyThreadCommand("thread plan approve --json");
+        MilaNativeThreadCommandResult thread = RustNative.TryClassifyThreadCommand("thread plan approve");
         Require(thread.Status == MilaNativeStatus.Ok && thread.Kind == MilaThreadCommandKind.PlanApprove, "thread command projection");
         Require(RustNative.TryClassifyThreadCommand("thread delete abc").Kind is null, "unknown thread command refusal");
         Require(RustNative.TryClassifyThreadCommand("thread ls\0ignored").Kind is null, "thread command truncation refusal");

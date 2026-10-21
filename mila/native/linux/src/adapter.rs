@@ -289,7 +289,7 @@ mod tests {
     #[test]
     fn machine_actions_are_formatted_by_rust_policy() {
         let id = "123e4567-e89b-12d3-a456-426614174000";
-        let request = "123e4567-e89b-12d3-a456-426614174001";
+        let request = "porsche-123e4567e89b12d3a456426614174001";
         assert_eq!(
             format_machine_action("start", id, Some(request)).unwrap(),
             format!("start {id} --json --request-id={request}")
