@@ -1770,3 +1770,12 @@ than accepting the production wrapper's `Unavailable` fallback. This is adapter
 verification; it does not establish Windows UI, lifecycle, key custody, packaged
 release or deployment acceptance. Windows execution remains CI evidence until a
 passing run is recorded.
+
+The native Apple `MilaDeviceSigner` retains one permanent Secure Enclave P-256
+key per validated deployment hostname, using the existing application tag and
+macOS data-protection keychain. Only a missing key permits creation; denied or
+invalid keychain lookups fail closed. It exposes a public SSH key and bounded
+SHA-256 ECDSA signing with 64-byte `r || s` results for the Rust signer callback.
+It has no software-key fallback. Swift tests cover hostname rejection and DER
+conversion, but signed-device Secure Enclave execution and live-session wiring
+remain unverified; unsigned CI cannot establish hardware key custody.

@@ -99,3 +99,9 @@ remain implementation work under ADR-0235.
 [ADR-0222](0222-porsche-client-commands.md),
 [ADR-0225](0225-marshall-notifications-domain.md),
 [ADR-0235](0235-mila-desktop-clients.md).
+
+The native Apple [device signer](../../../mila/native/apple/Sources/MilaNativeUI/MilaDeviceSigner.swift)
+ports deployment-scoped Secure Enclave custody without a software fallback.
+[Swift tests](../../../mila/native/apple/Tests/MilaNativeUITests/MilaDeviceSignerTests.swift)
+cover hostname boundaries and signature conversion; signed-device execution,
+callback integration and release entitlement verification remain open.
