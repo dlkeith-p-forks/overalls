@@ -495,6 +495,10 @@ pub enum MilaThreadCommandKind {
 
 /// Parses a bounded Porsche command and projects only its catalogued thread operation.
 /// The caller retains ownership of the command bytes; no argument or payload is returned.
+///
+/// # Safety
+/// `line` and `out_kind` must be valid non-null pointers. `line` must point to a
+/// NUL-terminated UTF-8 C string and `out_kind` must be writable for one value.
 #[no_mangle]
 pub unsafe extern "C" fn mila_thread_command_kind(
     line: *const c_char,
@@ -771,6 +775,28 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeCanonic
     }
 }
 
+/// JNI projection of the closed thread command catalogue. Only the stable
+/// operation tag crosses the boundary; arguments and payloads remain Rust
+/// owned. Returns -1 for malformed or unknown commands.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeThreadCommandKind(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    value: jni::objects::JString<'_>,
+) -> jni::sys::jint {
+    let input = match env.get_string(&value) {
+        Ok(value) => match std::ffi::CString::new(value.to_bytes()) {
+            Ok(value) => value,
+            Err(_) => return -1,
+        },
+        Err(_) => return -1,
+    };
+    let mut kind = MilaThreadCommandKind::Unknown;
+    let status = unsafe { mila_thread_command_kind(input.as_ptr(), &mut kind) };
+    if status != MilaFfiStatus::Ok { return -1; }
+    kind as jni::sys::jint
+}
+
 /// JNI projection of the bounded machine action policy.  The returned value is
 /// a bit mask (one bit per `MachineAction` discriminant), or `-1` when the
 /// snapshot, deployment, or index is invalid.  Machine records never cross
@@ -892,15 +918,13 @@ mod tests {
 
     #[test]
     fn projects_thread_command_catalog_without_payloads() {
-        for (line, expected) in [("thread ls", MilaThreadCommandKind::List)] {
-            let line = std::ffi::CString::new(line).unwrap();
-            let mut kind = MilaThreadCommandKind::Unknown;
-            assert_eq!(
-                unsafe { mila_thread_command_kind(line.as_ptr(), &mut kind) },
-                MilaFfiStatus::Ok
-            );
-            assert_eq!(kind, expected);
-        }
+        let line = std::ffi::CString::new("thread ls").unwrap();
+        let mut kind = MilaThreadCommandKind::Unknown;
+        assert_eq!(
+            unsafe { mila_thread_command_kind(line.as_ptr(), &mut kind) },
+            MilaFfiStatus::Ok
+        );
+        assert_eq!(kind, MilaThreadCommandKind::List);
         let unknown = std::ffi::CString::new("thread delete abc --json").unwrap();
         let mut kind = MilaThreadCommandKind::Unknown;
         assert_eq!(
