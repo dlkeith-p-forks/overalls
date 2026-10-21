@@ -41,6 +41,11 @@
       ${config.boot.zfs.package}/bin/zpool sync tank
     fi
   '';
+  systemd.services.lilly-hostd.path = lib.mkBefore [
+    (pkgs.writeShellScriptBin "zfs" ''
+      exec /etc/zfs-observation-fault "$@"
+    '')
+  ];
   environment.etc."zfs-fault".source = pkgs.writeShellScript "zfs-fault" ''
     if [ "$1" = destroy ] && [ "''${ZFS_PAUSE_OPERATION:-}" = unmount ]; then
       ${config.boot.zfs.package}/bin/zfs unmount "$2" || exit 1
