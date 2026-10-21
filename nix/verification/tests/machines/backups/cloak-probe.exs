@@ -34,8 +34,8 @@ defmodule BackupCloakProbe do
   # @cc [owner:ghuntley,label:verification;security;recovery] operator-boot-binds-no-authority
   # An operator-mode boot against a restored historical database MUST bind no
   # listener socket and consume no background work: exactly the persistence,
-  # encryption and authorization children start, the serving Endpoint module is
-  # never started, and Oban normalizes to no queues, no plugins, no stager and a
+  # encryption, authorization, PubSub and non-serving Endpoint children start;
+  # both endpoint listeners are absent, and Oban normalizes to no queues, no plugins, no stager and a
   # non-leading isolated peer, so no AshOban trigger or queue consumer can run.
   # This pins the ADR-0029/ADR-0070 isolated-restore boundary, including on the
   # boot that reads the restored database.
@@ -49,9 +49,19 @@ defmodule BackupCloakProbe do
 
     true =
       MapSet.new(ids) ==
-        MapSet.new([Marshall.Repo, Marshall.Vault, Marshall.Authorization.Cedar, Oban])
+        MapSet.new([
+          Marshall.Repo,
+          Marshall.Vault,
+          Marshall.Authorization.Cedar,
+          Oban,
+          Phoenix.PubSub.Supervisor,
+          MarshallWeb.Endpoint
+        ])
 
-    nil = Process.whereis(MarshallWeb.Endpoint)
+    true = is_pid(Process.whereis(MarshallWeb.Endpoint))
+    false = MarshallWeb.Endpoint.config(:server)
+    {:error, :no_server_found} = MarshallWeb.Endpoint.server_info(:http)
+    {:error, :no_server_found} = MarshallWeb.Endpoint.server_info(:https)
 
     oban = Oban.config()
     [] = oban.queues
