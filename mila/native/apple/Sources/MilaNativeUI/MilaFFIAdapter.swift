@@ -18,7 +18,8 @@ public enum MilaRoute: Hashable, Sendable {
 public enum MilaRouteParser {
     public static func parse(_ value: String) -> MilaRoute? {
         guard let url = URL(string: value), url.scheme == "overalls",
-              url.user == nil, url.fragment == nil, url.query == nil else { return nil }
+              url.user == nil, url.fragment == nil, url.query == nil,
+              !value.contains("%") else { return nil }
         let parts = url.pathComponents.filter { $0 != "/" }
         switch url.host?.lowercased() {
         case "machines":
