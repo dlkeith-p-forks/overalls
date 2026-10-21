@@ -114,10 +114,12 @@ public struct MilaSnapshotMetadata: Equatable, Sendable {
 
     public let machineCount: UInt32
     public let savedAt: UInt64
+    public let hasMore: Bool
 
-    public init(machineCount: UInt32, savedAt: UInt64) {
+    public init(machineCount: UInt32, savedAt: UInt64, hasMore: Bool = false) {
         self.machineCount = machineCount
         self.savedAt = savedAt
+        self.hasMore = hasMore
     }
 }
 
@@ -259,7 +261,8 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
     private func projectListing(_ data: Data) throws -> MilaValidatedSnapshot {
         let decoder = JSONDecoder()
         let envelope = try decoder.decode(MilaSnapshotEnvelope.self, from: data)
-        let metadata = MilaSnapshotMetadata(machineCount: UInt32(envelope.machines.count), savedAt: 0)
+        guard envelope.machines.count <= 256 else { throw MilaFFIError.outputTooSmall }
+        let metadata = MilaSnapshotMetadata(machineCount: UInt32(envelope.machines.count), savedAt: 0, hasMore: envelope.hasMore)
         let machines = try envelope.machines.enumerated().map { index, machine in
             let actions = try machineActionsFromListing(data, index: UInt32(index))
             return MilaMachinePresentation(machine: machine, actions: actions)
@@ -293,7 +296,16 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
  * The Apple UI MUST exchange typed requests and validated snapshot projections with the Rust
  * adapter; raw pointers, credentials, and terminal bytes MUST NOT appear in this interface.
  */
-private struct MilaSnapshotEnvelope: Codable { let machines: [MilaSnapshotMachine] }
+private struct MilaSnapshotEnvelope: Codable {
+    let machines: [MilaSnapshotMachine]
+    let hasMore: Bool
+    enum CodingKeys: String, CodingKey { case machines, hasMore = "has_more" }
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        machines = try values.decode([MilaSnapshotMachine].self, forKey: .machines)
+        hasMore = try values.decodeIfPresent(Bool.self, forKey: .hasMore) ?? false
+    }
+}
 
 public protocol MilaFFIAdapter: Sendable {
     func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse
