@@ -1,5 +1,5 @@
 ---
-digest: c12f0c3b17e29bb8ad1fb8ffbbdd979671adfef986581ac505e9e2185cc7d461
+digest: 6f09d59139781921312f13a35e9cde5c88649bfce2edcab4c5c3431d6ff60270
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Windows Rust-backed push poke adapter; existing Mila native changes remain within documented boundaries.
+Android-only state projection and unit tests preserve existing documented Mila behavior; no handbook chapter changes required.
