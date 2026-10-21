@@ -92,6 +92,8 @@ interface MilaRustBindings {
     /** Returns the closed machine-action bit mask, or null for invalid input. */
     fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int?
     fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle?
+    /** Returns the closed Rust thread-command tag, or -1 for an unknown command. */
+    fun threadCommandKind(value: String): Int
 }
 
 /** JNI entry points backed by the stable `mila-ffi` C ABI in the host application. */
@@ -122,6 +124,11 @@ internal object MilaRustFfi : MilaRustBindings {
         return nativeSessionConnect(trust, host, publicKey, port, timeoutMs, signer)?.let(::MilaSessionHandle)
     }
 
+    override fun threadCommandKind(value: String): Int {
+        check(loaded) { "mila_ffi is unavailable" }
+        return nativeThreadCommandKind(value)
+    }
+
     @JvmStatic
     external fun nativeAbiVersion(): Int
 
@@ -141,6 +148,8 @@ internal object MilaRustFfi : MilaRustBindings {
     external fun nativeSessionSnapshot(handle: Long): ByteArray?
     @JvmStatic
     external fun nativeSessionClose(handle: Long): Int
+    @JvmStatic
+    external fun nativeThreadCommandKind(value: String): Int
 }
 
 /** Opaque, one-shot authority for a live Rust session. */
@@ -174,4 +183,15 @@ class LinkedMilaFfiAdapter(
     fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Result<Int> = runCatching {
         bindings.machineActions(snapshot, host, port, index) ?: throw IllegalArgumentException("invalid snapshot")
     }
+
+    fun threadCommandKind(value: String): Result<MilaThreadCommand> = runCatching {
+        MilaThreadCommand.fromTag(bindings.threadCommandKind(value))
+            ?: throw IllegalArgumentException("unknown thread command")
+    }
+}
+
+enum class MilaThreadCommand(val tag: Int) {
+    List(1), Show(2), Turns(3), Prompt(4), Answer(5), PlanApprove(6),
+    PlanRevise(7), Mode(8), Read(9);
+    companion object { fun fromTag(tag: Int): MilaThreadCommand? = entries.firstOrNull { it.tag == tag } }
 }

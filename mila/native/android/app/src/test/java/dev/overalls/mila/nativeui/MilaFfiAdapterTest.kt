@@ -49,6 +49,7 @@ private class FakeRustBindings(
     override fun canonicalRoute(value: String): String? = route
     override fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int? = actions
     override fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle? = null
+    override fun threadCommandKind(value: String): Int = 1
 }
 
 class MilaLinkedFfiAdapterTest {
@@ -89,5 +90,11 @@ class MilaLinkedFfiAdapterTest {
     fun machineActionsRejectInvalidSnapshot() {
         val adapter = LinkedMilaFfiAdapter(FakeRustBindings(actions = null))
         assertTrue(adapter.machineActions(byteArrayOf(1), "mgmt.example.test", null, 0).isFailure)
+    }
+
+    @Test
+    fun threadCommandKindUsesClosedRustTags() {
+        val adapter = LinkedMilaFfiAdapter(FakeRustBindings())
+        assertEquals(Result.success(MilaThreadCommand.List), adapter.threadCommandKind("thread ls"))
     }
 }
