@@ -17,5 +17,6 @@ public sealed partial class MainWindow : Window
     {
         MilaNativeVersionResult result = RustNative.TryGetVersion();
         StatusText.Text = result.Status == MilaNativeStatus.Ok ? "Connected" : "Native runtime unavailable";
+        MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
     }
 }

@@ -125,6 +125,8 @@ internal readonly record struct MilaNativeCommandResult(
 /// </summary>
 internal static partial class RustNative
 {
+    /// <summary>Decodes a bounded listing copied from the live Rust session.</summary>
+    internal static MilaSessionListing DecodeSessionListing(ReadOnlySpan<byte> bytes) => MilaSessionListing.Decode(bytes);
     private const string LibraryName = "mila_native";
 
     /// <summary>

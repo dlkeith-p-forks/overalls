@@ -10,6 +10,7 @@
         <TextBlock x:Name="PageTitle" Text="Machines" FontSize="28" />
         <TextBlock x:Name="PageBody" Text="Select a machine to view its status." TextWrapping="Wrap" />
         <TextBlock x:Name="StatusText" Text="Ready" Opacity="0.7" />
+        <ListView x:Name="MachineRows" DisplayMemberPath="Name" MinHeight="120" />
         <Button Content="Refresh" Click="CheckNativeBridge" HorizontalAlignment="Left" />
       </StackPanel>
     </Grid>
