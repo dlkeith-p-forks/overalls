@@ -50,6 +50,7 @@ private class FakeRustBindings(
     override fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int? = actions
     override fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle? = null
     override fun threadCommandKind(value: String): Int = 1
+    override fun machineCommandKind(value: String): Int = 10
 }
 
 class MilaLinkedFfiAdapterTest {
@@ -96,5 +97,11 @@ class MilaLinkedFfiAdapterTest {
     fun threadCommandKindUsesClosedRustTags() {
         val adapter = LinkedMilaFfiAdapter(FakeRustBindings())
         assertEquals(Result.success(MilaThreadCommand.List), adapter.threadCommandKind("thread ls"))
+    }
+
+    @Test
+    fun machineCommandKindUsesClosedRustTags() {
+        val adapter = LinkedMilaFfiAdapter(FakeRustBindings())
+        assertEquals(Result.success(MilaMachineCommand.ShareAdd), adapter.machineCommandKind("machine share add"))
     }
 }

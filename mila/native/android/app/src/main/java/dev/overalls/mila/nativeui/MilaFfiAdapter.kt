@@ -76,6 +76,7 @@ sealed interface MilaFfiResult {
 interface MilaFfiAdapter {
     suspend fun call(request: MilaFfiRequest): MilaFfiResult
     fun threadCommandKind(value: String): Result<MilaThreadCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
+    fun machineCommandKind(value: String): Result<MilaMachineCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
 }
 
 /** Explicit placeholder until generated Rust bindings are linked by the host app. */
@@ -95,6 +96,7 @@ interface MilaRustBindings {
     fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle?
     /** Returns the closed Rust thread-command tag, or -1 for an unknown command. */
     fun threadCommandKind(value: String): Int
+    fun machineCommandKind(value: String): Int
 }
 
 /** JNI entry points backed by the stable `mila-ffi` C ABI in the host application. */
@@ -130,6 +132,11 @@ internal object MilaRustFfi : MilaRustBindings {
         return nativeThreadCommandKind(value)
     }
 
+    override fun machineCommandKind(value: String): Int {
+        check(loaded) { "mila_ffi is unavailable" }
+        return nativeMachineCommandKind(value)
+    }
+
     @JvmStatic
     external fun nativeAbiVersion(): Int
 
@@ -151,6 +158,8 @@ internal object MilaRustFfi : MilaRustBindings {
     external fun nativeSessionClose(handle: Long): Int
     @JvmStatic
     external fun nativeThreadCommandKind(value: String): Int
+    @JvmStatic
+    external fun nativeMachineCommandKind(value: String): Int
 }
 
 /** Opaque, one-shot authority for a live Rust session. */
@@ -189,10 +198,21 @@ class LinkedMilaFfiAdapter(
         MilaThreadCommand.fromTag(bindings.threadCommandKind(value))
             ?: throw IllegalArgumentException("unknown thread command")
     }
+
+    override fun machineCommandKind(value: String): Result<MilaMachineCommand> = runCatching {
+        MilaMachineCommand.fromTag(bindings.machineCommandKind(value))
+            ?: throw IllegalArgumentException("unknown machine command")
+    }
 }
 
 enum class MilaThreadCommand(val tag: Int) {
     List(1), Show(2), Turns(3), Prompt(4), Answer(5), PlanApprove(6),
     PlanRevise(7), Mode(8), Read(9);
     companion object { fun fromTag(tag: Int): MilaThreadCommand? = entries.firstOrNull { it.tag == tag } }
+}
+
+enum class MilaMachineCommand(val tag: Int) {
+    List(1), Show(2), New(3), Resize(4), Start(5), Stop(6), Pause(7), Resume(8),
+    Delete(9), ShareAdd(10), ShareRemove(11), WebShow(12), WebSet(13);
+    companion object { fun fromTag(tag: Int): MilaMachineCommand? = entries.firstOrNull { it.tag == tag } }
 }

@@ -38,7 +38,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         }
         Text(status, style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
-            MilaRoute.Machines -> MachineList(status, listing)
+            MilaRoute.Machines -> MachineList(adapter, status, listing)
             is MilaRoute.Machine -> Detail("Machine", selected.id.toString())
             MilaRoute.Threads -> ThreadList(adapter)
             is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
@@ -48,10 +48,19 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     LaunchedEffect(Unit) { refresh() }
 }
 
-@Composable private fun MachineList(status: String, listing: MilaSessionListing?) {
+@Composable private fun MachineList(adapter: MilaFfiAdapter, status: String, listing: MilaSessionListing?) {
+    var classified by remember { mutableStateOf<MilaMachineCommand?>(null) }
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(status, style = MaterialTheme.typography.bodyMedium)
         listing?.machines?.forEach { machine -> Text("${machine.name} · ${machine.status}", style = MaterialTheme.typography.bodyMedium) }
+        Text("Machine actions", style = MaterialTheme.typography.titleMedium)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button({ classified = adapter.machineCommandKind("ls").getOrNull() }) { Text("List") }
+            Button({ classified = adapter.machineCommandKind("start").getOrNull() }) { Text("Start") }
+            Button({ classified = adapter.machineCommandKind("stop").getOrNull() }) { Text("Stop") }
+            Button({ classified = adapter.machineCommandKind("share add").getOrNull() }) { Text("Share") }
+        }
+        Text(classified?.name ?: "No action selected", style = MaterialTheme.typography.labelSmall)
     }
 }
 @Composable private fun ThreadList(adapter: MilaFfiAdapter) {

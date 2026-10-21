@@ -859,6 +859,27 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeThreadC
     kind as jni::sys::jint
 }
 
+/// JNI projection of the closed machine-command catalog. Returns -1 for
+/// malformed or unknown commands; command arguments remain Rust-owned.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeMachineCommandKind(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    value: jni::objects::JString<'_>,
+) -> jni::sys::jint {
+    let input = match env.get_string(&value) {
+        Ok(value) => match std::ffi::CString::new(value.to_bytes()) {
+            Ok(value) => value,
+            Err(_) => return -1,
+        },
+        Err(_) => return -1,
+    };
+    let mut kind = MilaMachineCommandKind::Unknown;
+    let status = unsafe { mila_machine_command_kind(input.as_ptr(), &mut kind) };
+    if status != MilaFfiStatus::Ok { return -1; }
+    kind as jni::sys::jint
+}
+
 /// JNI projection of the bounded machine action policy.  The returned value is
 /// a bit mask (one bit per `MachineAction` discriminant), or `-1` when the
 /// snapshot, deployment, or index is invalid.  Machine records never cross
