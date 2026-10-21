@@ -18,6 +18,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
+internal data class MachineCommandChoice(val label: String, val command: String)
+
+/**
+ * @cc [owner:ghuntley,label:architecture] android-machine-command-catalog
+ * Every machine command presented by the Android shell MUST be classified through the closed
+ * Rust command catalog before it is shown as selected; the UI must not invent operation tags.
+ */
+internal val machineCommandChoices = listOf(
+    MachineCommandChoice("List", "ls"),
+    MachineCommandChoice("Show", "show"),
+    MachineCommandChoice("New", "new"),
+    MachineCommandChoice("Resize", "resize"),
+    MachineCommandChoice("Start", "start"),
+    MachineCommandChoice("Stop", "stop"),
+    MachineCommandChoice("Pause", "pause"),
+    MachineCommandChoice("Resume", "resume"),
+    MachineCommandChoice("Delete", "rm"),
+    MachineCommandChoice("Share add", "share add"),
+    MachineCommandChoice("Share remove", "share remove"),
+    MachineCommandChoice("Web show", "web show"),
+    MachineCommandChoice("Web set", "web set"),
+)
+
 @Composable
 fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     val scope = rememberCoroutineScope()
@@ -54,11 +77,14 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         Text(status, style = MaterialTheme.typography.bodyMedium)
         listing?.machines?.forEach { machine -> Text("${machine.name} · ${machine.status}", style = MaterialTheme.typography.bodyMedium) }
         Text("Machine actions", style = MaterialTheme.typography.titleMedium)
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button({ classified = adapter.machineCommandKind("ls").getOrNull() }) { Text("List") }
-            Button({ classified = adapter.machineCommandKind("start").getOrNull() }) { Text("Start") }
-            Button({ classified = adapter.machineCommandKind("stop").getOrNull() }) { Text("Stop") }
-            Button({ classified = adapter.machineCommandKind("share add").getOrNull() }) { Text("Share") }
+        machineCommandChoices.chunked(3).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                row.forEach { choice ->
+                    Button({ classified = adapter.machineCommandKind(choice.command).getOrNull() }) {
+                        Text(choice.label)
+                    }
+                }
+            }
         }
         Text(classified?.name ?: "No action selected", style = MaterialTheme.typography.labelSmall)
     }

@@ -104,4 +104,16 @@ class MilaLinkedFfiAdapterTest {
         val adapter = LinkedMilaFfiAdapter(FakeRustBindings())
         assertEquals(Result.success(MilaMachineCommand.ShareAdd), adapter.machineCommandKind("machine share add"))
     }
+
+    @Test
+    fun machineCommandPaletteCoversClosedRustCatalog() {
+        assertEquals(
+            listOf(
+                "ls", "show", "new", "resize", "start", "stop", "pause", "resume", "rm",
+                "share add", "share remove", "web show", "web set",
+            ),
+            machineCommandChoices.map { it.command },
+        )
+        assertEquals(MilaMachineCommand.entries.size, machineCommandChoices.size)
+    }
 }

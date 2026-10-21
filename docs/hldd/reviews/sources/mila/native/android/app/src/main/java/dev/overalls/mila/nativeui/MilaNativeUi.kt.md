@@ -1,6 +1,6 @@
 ---
-digest: 18cd1684bad101594016ac3e85b91d2b56087bf92db9eba9dd48045a66644f35
-disposition: updated
+digest: 59a6cb4992d1728abaae96fa5cdf8ccee40b1f48eec4ac09773278a01b1b241d
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaNativeUi.kt
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+The Android palette only exposes existing Rust machine command catalog entries and adds no new protocol, deployment, or documented scenario; the change is presentation parity.
