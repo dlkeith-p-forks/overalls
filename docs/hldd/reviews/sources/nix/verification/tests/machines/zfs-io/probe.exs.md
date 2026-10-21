@@ -1,5 +1,5 @@
 ---
-digest: 1f87a661ab32f50ff71c82e52ce72e227c72337ee1d051fce861b6ee115d5f80
+digest: d3d23195cd10f52368fdc097cba9d018cfbd90825a44be33319d001d4579ab90
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed ZFS IO probe change; existing recovery documentation remains accurate.
+Reviewed concurrent ZFS IO hostd fault wrapper changes; existing deployment and recovery documentation remains accurate.

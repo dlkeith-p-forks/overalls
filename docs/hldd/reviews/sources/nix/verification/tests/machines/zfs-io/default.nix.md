@@ -1,5 +1,5 @@
 ---
-digest: 4ea91db531a8200f6535b82ba368a6176df879674bef4dea580b29d2b625a398
+digest: 960fc4371957f4346473470bcf7a597acbed02c599f850fb42aeb448bda49e93
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed ZFS IO fault wrapper change; existing recovery documentation remains accurate.
+Reviewed concurrent ZFS IO hostd fault wrapper changes; existing deployment and recovery documentation remains accurate.

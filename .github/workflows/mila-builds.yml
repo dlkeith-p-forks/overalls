@@ -326,6 +326,7 @@ jobs:
         with:
           targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android
       - name: Install cargo-ndk
+        timeout-minutes: 10
         run: cargo install cargo-ndk --locked
       - name: Assemble native Compose APK
         timeout-minutes: 20
