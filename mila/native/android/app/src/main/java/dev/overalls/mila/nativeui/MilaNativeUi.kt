@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 @Composable
-fun MilaNativeRoot(adapter: MilaFfiAdapter = UnavailableMilaFfiAdapter) {
+fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     val scope = rememberCoroutineScope()
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
     var status by remember { mutableStateOf("Ready") }

@@ -1,5 +1,5 @@
 ---
-digest: 9f8f5ae2fd32c297893fa345052d0f00084c1dd9c613f466648103320d2f7e77
+digest: f7c980fddbe75f560adc689a763678f82fdeae4ba2299887d85fdfad631d66f9
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed native FFI and UI parity slice; bounded Rust policy remains authoritative and platform wrappers expose validated summaries only.
+Native applications now default to linked Rust adapters; unavailable adapters remain injectable for tests and fail closed.

@@ -7,7 +7,7 @@ public struct MilaNativeRootView: View {
     @State private var machines: [MilaSnapshotMachine] = []
     @State private var status = "Ready"
 
-    public init(adapter: any MilaFFIAdapter = UnavailableMilaFFIAdapter()) { self.adapter = adapter }
+    public init(adapter: any MilaFFIAdapter = LinkedMilaFFIAdapter()) { self.adapter = adapter }
 
     public var body: some View {
         NavigationSplitView {
@@ -85,7 +85,7 @@ private struct SettingsView: View { var body: some View { Form { Text("Runtime a
 
 @MainActor public struct MilaNativeApp: App {
     private let adapter: any MilaFFIAdapter
-    public init() { adapter = UnavailableMilaFFIAdapter() }
+    public init() { adapter = LinkedMilaFFIAdapter() }
     public init(adapter: any MilaFFIAdapter) { self.adapter = adapter }
     public var body: some Scene { WindowGroup { MilaNativeRootView(adapter: adapter) } }
 }

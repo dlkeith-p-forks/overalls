@@ -1,5 +1,5 @@
 ---
-digest: 9f3106c47aaddcaffb62c0c2746bb678c32c492ae71e6a30972db5d437c1f68d
+digest: 6ec3c864050f0000a18e5eec091bc501c4b53a28d0673dd46cb19b758a4bcbc5
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Removed fabricated Android machine and thread identifiers; UI now renders only validated Rust snapshot data.
+Native applications now default to linked Rust adapters; unavailable adapters remain injectable for tests and fail closed.
