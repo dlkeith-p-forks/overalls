@@ -303,6 +303,7 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
+        timeout-minutes: 10
         with:
           # Preinstall the emulator and image so reactivecircus does not
           # fetch the moving "latest" archive during the test step.
