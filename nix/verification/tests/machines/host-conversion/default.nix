@@ -49,6 +49,7 @@ in pkgs.testers.runNixOSTest {
   requiredFeatures.kvm = true;
   globalTimeout = 3600;
   testScript = ''
+    platform = ${builtins.toJSON host.platform}
     sources = ${builtins.toJSON [ sourceOS ]}
     qemu = "${pkgs.qemu_kvm}/bin/qemu-system-x86_64"
     qemu_img = "${pkgs.qemu_kvm}/bin/qemu-img"

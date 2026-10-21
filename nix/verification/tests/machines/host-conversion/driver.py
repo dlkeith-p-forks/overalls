@@ -247,7 +247,15 @@ for source in sources:
             .replace(
                 "    try:\n        main()",
                 "    try:\n        import io\n        sys.stdin = io.StringIO("
-                + repr(json.dumps({"inventory": facts["inventory"], "firmware": facts["firmware"]}))
+                + repr(
+                    json.dumps(
+                        {
+                            "inventory": facts["inventory"],
+                            "firmware": facts["firmware"],
+                            "platform": platform,
+                        }
+                    )
+                )
                 + ")\n        main()",
             )
         )
@@ -281,6 +289,11 @@ for source in sources:
             )
         )
         baseline = json.loads(ssh(["python3", "-", "install-baseline"], "root", baseline_code))
+        # Match the real installer: retain only this authenticated SSH source
+        # for administrative access through the installed fleet firewall.
+        assert json.loads(ssh(["python3", "-", "install-base-source"], "root", discovery_code)) == {
+            "sources": 1
+        }
         ssh(
             [
                 "sh",
