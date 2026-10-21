@@ -40,6 +40,9 @@ assert lib.assertMsg (lib.all (name: config.environment.variables.${name} == "/e
 assert lib.assertMsg (config.programs.starship.enable && config.programs.starship.interactiveOnly
   && lib.hasInfix "starship init bash" config.programs.bash.promptInit)
   "guest image does not initialize Starship for interactive Bash";
+assert lib.assertMsg (lib.elem "nix-command" config.nix.settings.experimental-features
+  && lib.elem "flakes" config.nix.settings.experimental-features)
+  "NixOS guest does not enable the Nix command and flakes features";
 assert lib.assertMsg (lib.getName config.users.defaultUserShell == lib.getName pkgs.bashInteractive)
   "guest default user shell is not interactive Bash";
 pkgs.runCommand "guest-toolset-config" { } "touch $out"

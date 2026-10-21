@@ -1,24 +1,24 @@
 ---
-digest: 2fa41cf3bd918e5db3af450ed618b90a2dc79d46b266067001ea7ee1976dfd77
-disposition: updated
+digest: 4c1d81ee52258ca62304943c325c72702a5f6431f42f5ab080f1cae90ab2f149
+disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
 path: nix/domains/artifacts/guest/configuration.nix
 reviewed_chapters:
   marshall/priv/hldd/07-guests.md: 0f73d65e0218aa15612a351af492879d87f78f6e864901c932124fc394334f4e
   marshall/priv/hldd/12-configuration.md: ff8e45aaf3daef1140ae8d0ff46e7dff0c95781487abc5511a3202ef1dfd2f15
-  marshall/priv/hldd/13-deployment.md: 2f53f560f187e1064b35d11d4b1c9c96dd4244a4f43579bc051298c147ebfb20
+  marshall/priv/hldd/13-deployment.md: 8889dad9eade0462be5799bd6ca3f4536fc421f17adcc5d226cefc5a1733fe3e
   marshall/priv/hldd/14-operations.md: 4d9a416eb0df32a8281f24db06739142db91b637c4ea9416a9f23de49bf73010
   marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
   marshall/priv/hldd/16-recovery.md: c11d719cde9562dea123b9fff7630f8750bbf758b4919880a15715b86263d3db
   marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
-  marshall/priv/hldd/18-options.md: e857dfadb053b1947da95a6afd7b0d520f208cf5140c332d41f77d4f62ead394
-  marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 68866597842c524f9f563a37b978a4464974ca2b21a486c94f60ecd1edd6b2da
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/18-options.md: e4159e629673fa07c1348e3c7fc1545c28cf8596e2d0d1313bd363c1ca545f52
+  marshall/priv/hldd/19-coverage.md: c5a1bad02070018de2d0bf83b14bdb9770b44bbd4034f30a38c9041d59979757
+  marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
+  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-Reviewed the one-line NixOS guest package addition of gh. Chapter 07 now identifies Git and GitHub CLI as declared default packages, without claiming image rebuild or fleet deployment acceptance.
+Guest Nix feature settings extend existing image configuration without changing service topology

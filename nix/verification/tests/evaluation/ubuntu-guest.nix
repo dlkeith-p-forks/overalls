@@ -64,6 +64,7 @@ assert lib.hasInfix "version:4" (plain privateImage.buildCommand);
 # guest-quiet-serial-console and ubuntu-prebuilt-platform-trust (ADR-0154).
 assert lib.hasInfix "printk.time=1 quiet loglevel=3 systemd.show_status=error" (plain privateImage.buildCommand);
 assert lib.hasInfix "overalls-platform/overalls-0.crt" rootfsScript;
+assert lib.hasInfix "experimental-features = nix-command flakes" rootfsScript;
 assert lib.hasInfix "platform_digest.py" rootfsScript;
 assert lib.hasInfix "lilly-boot-report" rootfsScript;
 assert lib.hasInfix normalizeNixDb rootfsScript;

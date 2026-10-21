@@ -13,6 +13,7 @@ let
   githubTools = import ../github { inherit pkgs; };
   nixCache = import ../../../../platform/nix-cache.nix;
   nixConfig = pkgs.writeText "overalls-ubuntu-nix.conf" ''
+    experimental-features = nix-command flakes
     substituters = https://cache.nixos.org/ ${nixCache.substituter}
     trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ${nixCache.publicKey}
     require-sigs = true

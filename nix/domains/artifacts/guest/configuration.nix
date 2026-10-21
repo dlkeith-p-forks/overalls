@@ -13,6 +13,10 @@ in
   ];
 
   system.stateVersion = "26.05";
+  # @cc [owner:ghuntley,label:build] guest-nix-command-enabled
+  # Guest users MUST be able to use the installed Nix CLI, including `nix
+  # profile`, without supplying per-command experimental-feature overrides.
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   networking.hostName = "lilly-guest";
   networking.useDHCP = false;
   networking.usePredictableInterfaceNames = false;
