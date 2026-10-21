@@ -85,35 +85,52 @@ object UnavailableMilaFfiAdapter : MilaFfiAdapter {
     }
 }
 
+/** Narrow JNI surface implemented by the host application's Rust `mila-ffi` library. */
+internal interface MilaRustBindings {
+    fun abiVersion(): Int
+    fun canonicalRoute(value: String): String?
+}
+
 /** JNI entry points backed by the stable `mila-ffi` C ABI in the host application. */
-internal object MilaRustFfi {
-    init {
-        runCatching { System.loadLibrary("mila_ffi") }
+internal object MilaRustFfi : MilaRustBindings {
+    private val loaded: Boolean = runCatching {
+        System.loadLibrary("mila_ffi")
+        true
+    }.getOrDefault(false)
+
+    override fun abiVersion(): Int {
+        check(loaded) { "mila_ffi is unavailable" }
+        return nativeAbiVersion()
+    }
+
+    override fun canonicalRoute(value: String): String? {
+        check(loaded) { "mila_ffi is unavailable" }
+        return nativeCanonicalRoute(value)
     }
 
     @JvmStatic
-    external fun abiVersion(): Int
+    private external fun nativeAbiVersion(): Int
 
     @JvmStatic
-    external fun canonicalRoute(value: String): String?
+    private external fun nativeCanonicalRoute(value: String): String?
 }
 
 /** Typed Android adapter. Native linkage is lazy so the UI remains testable without a device. */
-class LinkedMilaFfiAdapter : MilaFfiAdapter {
+class LinkedMilaFfiAdapter(
+    private val bindings: MilaRustBindings = MilaRustFfi,
+) : MilaFfiAdapter {
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {
-        request.operation
         return try {
-            if (MilaRustFfi.abiVersion() != 1) MilaFfiResult.Failure(MilaFfiError.IncompatibleAbi)
+            if (bindings.abiVersion() != 1) MilaFfiResult.Failure(MilaFfiError.IncompatibleAbi)
             else MilaFfiResult.Success(MilaFfiResponse(request.payload))
         } catch (_: UnsatisfiedLinkError) {
+            MilaFfiResult.Failure(MilaFfiError.Unavailable)
+        } catch (_: IllegalStateException) {
             MilaFfiResult.Failure(MilaFfiError.Unavailable)
         }
     }
 
     fun canonicalizeRoute(value: String): Result<String> = runCatching {
-        MilaRustFfi.canonicalRoute(value) ?: throw IllegalArgumentException("invalid route")
-    }.recoverCatching { error ->
-        if (error is IllegalArgumentException) throw error
-        throw error
+        bindings.canonicalRoute(value) ?: throw IllegalArgumentException("invalid route")
     }
 }

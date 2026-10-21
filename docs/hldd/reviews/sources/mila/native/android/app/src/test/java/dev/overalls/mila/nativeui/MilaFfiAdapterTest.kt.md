@@ -1,5 +1,5 @@
 ---
-digest: 3defe6dede679991693286e5f79c3c7aeca1c1e51d780417640c24e12c673eed
+digest: b3fe347bd60311f1b8ea43ff897460238dc729cf8bdd68038cb1e1215075211f
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Android route parser and adapter unit coverage; strict URI handling and typed payload ownership preserve native boundary.
+Android adapter changes preserve existing native boundary and add typed injectable JNI bindings with unit coverage.

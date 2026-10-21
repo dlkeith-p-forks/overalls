@@ -1,16 +1,16 @@
 # Mila Android native UI scaffold
 
-This is an isolated Jetpack Compose application for the native Mila presentation seam. It does not
-change the Flutter Android runner or link a Rust library yet. A host app can copy the Compose
-surface and inject a generated adapter implementing `MilaFfiAdapter`.
+This is an isolated Jetpack Compose application for the native Mila presentation seam. It does not change the Flutter Android runner. The adapter exposes a narrow, typed JNI seam for the
+Rust `mila-ffi` library; host packaging supplies the ABI-compatible native library and may inject a
+test binding implementing `MilaRustBindings`.
 
 The project metadata targets Android API 36, uses Java 17, Android Gradle Plugin 9.1.0, and Kotlin
 2.4.0 with the Kotlin Compose compiler plugin. The Compose dependency BOM is pinned in
 `app/build.gradle.kts`; update it together with the rest of the native dependency lock when the
 host build adopts this scaffold.
 
-`MilaFfiPayload` owns a defensive copy of every byte array. Replace
-`UnavailableMilaFfiAdapter` with generated Rust bindings at the host integration boundary. Keep
+`MilaFfiPayload` owns a defensive copy of every byte array. The default linked adapter loads `mila_ffi` lazily and reports unavailable when the host has not
+packaged it. Replace the unavailable UI adapter with `LinkedMilaFfiAdapter` once native packaging is present. Keep
 credentials, key material, authentication tokens, and terminal bytes out of this adapter's logs and
 UI state.
 
