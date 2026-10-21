@@ -122,6 +122,7 @@ pub fn validate_terminal_operation(operation: TerminalOperation) -> Result<(), R
 pub enum RuntimeOperation {
     Bootstrap,
     Refresh,
+    ValidateTerminal,
 }
 
 /// A request crossing the native UI/runtime boundary.
@@ -242,6 +243,23 @@ impl RuntimeAdapter for InProcessRuntimeAdapter {
                     .replace(payload.to_vec());
                 Ok(RuntimeResponse::new(payload.to_vec()))
             }
+            RuntimeOperation::ValidateTerminal => {
+                // Terminal attach requests are validated by the shared Rust
+                // transport contract before any platform UI is allowed to
+                // open a channel. The payload is the compact tuple
+                // `[columns:u16 LE, rows:u16 LE, read_write:u8]`.
+                if request.payload().len() != 5 {
+                    return Err(RuntimeError::InvalidInput);
+                }
+                let bytes = request.payload();
+                let columns = u16::from_le_bytes([bytes[0], bytes[1]]);
+                let rows = u16::from_le_bytes([bytes[2], bytes[3]]);
+                let status = mila_ffi::mila_terminal_validate(columns, rows, bytes[4]);
+                if status != mila_ffi::MilaFfiStatus::Ok {
+                    return Err(RuntimeError::InvalidInput);
+                }
+                Ok(RuntimeResponse::new(Vec::new()))
+            }
         }
     }
 }
@@ -341,5 +359,16 @@ mod tests {
         assert!(listing.machines().is_empty());
         assert!(!listing.has_more());
         assert!(super::decode_listing(br#"{}"#).is_err());
+    }
+
+    #[test]
+    fn terminal_requests_use_shared_bounds_and_mode_validation() {
+        let adapter = InProcessRuntimeAdapter::new("fleet.example", None).unwrap();
+        let valid = RuntimeRequest::new(RuntimeOperation::ValidateTerminal, [120, 0, 40, 0, 1]);
+        assert!(adapter.call(valid).is_ok());
+        let invalid_mode = RuntimeRequest::new(RuntimeOperation::ValidateTerminal, [120, 0, 40, 0, 2]);
+        assert_eq!(adapter.call(invalid_mode), Err(RuntimeError::InvalidInput));
+        let malformed = RuntimeRequest::new(RuntimeOperation::ValidateTerminal, [120, 0]);
+        assert_eq!(adapter.call(malformed), Err(RuntimeError::InvalidInput));
     }
 }
