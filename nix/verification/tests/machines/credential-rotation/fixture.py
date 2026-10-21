@@ -218,7 +218,7 @@ def control_session(node: str, token: str, host_id: str, machine_id: str) -> dic
         send_text(stream, {"k": "hello", "v": 1, "service": "lilly", "bind": {"host_id": host_id}})
         if receive_text(stream)["k"] != "welcome":
             raise ControlStage("no_welcome")
-        body = {"version": 3, "session_id": str(uuid.uuid4()), "machine_id": machine_id}
+        body = {"version": 4, "session_id": str(uuid.uuid4()), "machine_id": machine_id}
         send_text(stream, {"k": "req", "id": 1, "op": "lilly.sessions", "body": body})
         response = receive_text(stream)
         if response.get("ok") is not True:
@@ -239,7 +239,7 @@ def verify_http(node: str, state_name: str, expected: str) -> None:
     assert isinstance(credentials, list)
     for token in credentials:
         session = control_session(node, str(token), str(state["host_id"]), str(state["machine_id"]))
-        if session.get("version") != 3:
+        if session.get("version") != 4:
             raise ControlStage("session_version")
     # The release names its own session cookie (__Host-marshall in production
     # builds); the probe records that name beside the forged value.
