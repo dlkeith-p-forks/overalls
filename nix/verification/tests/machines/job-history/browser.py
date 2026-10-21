@@ -124,7 +124,7 @@ def request_failed_job(page: Page, recipient: str) -> tuple[int, str]:
     )
     message = (ROOT / "last-message").read_bytes()
     message_id = email.message_from_bytes(message)["Message-ID"]
-    assert message_id == f"<{outbox}@example.test>"
+    assert message_id == f"<{outbox}@overalls.invalid>"
     (ROOT / f"rejected-{job_id}").write_bytes(message)
     assert states(job_id) == "available,executing,retryable"
     return job_id, outbox
@@ -246,7 +246,7 @@ def main() -> None:
         )
         assert (
             email.message_from_bytes((ROOT / "last-message").read_bytes())["Message-ID"]
-            == f"<{first_outbox}@example.test>"
+            == f"<{first_outbox}@overalls.invalid>"
         )
         expect(admin.locator("#job-detail")).to_contain_text("Succeeded", timeout=15000)
         expect(admin.locator("#retry-job")).to_have_count(0)
