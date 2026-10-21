@@ -1,4 +1,5 @@
 import Foundation
+import MilaFFIShim
 
 /// Operations exposed by the generated Rust FFI binding.
 public enum MilaFFIOperation: String, Codable, Sendable {
@@ -77,13 +78,13 @@ public enum MilaFFIError: Error, Equatable, Sendable {
 
 private enum MilaRustFFI {
     static func getVersion(_ version: UnsafeMutablePointer<MilaFfiAbiVersion>) -> Int32 {
-        Int32(mila_ffi_get_version(version))
+        mila_ffi_get_version(version).rawValue
     }
     static func formatRoute(_ input: UnsafePointer<CChar>, _ output: MilaRouteOutput) -> Int32 {
-        Int32(mila_route_format(input, output))
+        mila_route_format(input, output).rawValue
     }
     static func validateSnapshot(_ bytes: UnsafePointer<UInt8>, _ length: Int, _ host: UnsafePointer<CChar>, _ port: UInt16, _ hasPort: UInt8, _ summary: UnsafeMutablePointer<MilaSnapshotSummary>) -> Int32 {
-        Int32(mila_snapshot_validate(bytes, length, host, port, hasPort, summary))
+        mila_snapshot_validate(bytes, length, host, port, hasPort, summary).rawValue
     }
 }
 

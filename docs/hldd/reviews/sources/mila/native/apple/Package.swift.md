@@ -1,5 +1,5 @@
 ---
-digest: a5d1cc58090e8867ce8c6f3ff2cdc751cd7c255c68ef2e5697f8d771c33a797c
+digest: 93425476b038100477d3a7ea9ee82364ee9fb3d4aa29c00611a94eea9689fcd9
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native FFI linkage changes preserve the documented Rust-core and thin-wrapper architecture while making Android JNI and Apple static-library integration executable in native builds.
+Correct native linker configuration and refresh standalone Linux lockfile after Rust FFI dependency addition; behavior remains within ADR-0249.
