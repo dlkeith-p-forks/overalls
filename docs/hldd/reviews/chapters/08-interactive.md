@@ -1,5 +1,5 @@
 ---
-digest: 30a379e903cd845af2a2aee9c87922e246097dfdbe57779598a104096d08f4af
+digest: 86d9c009229678ec4b9260286a517dd10f2cf82b7ae11699fb8e6a6a61c0deb5
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document exact machine-action token refusals, JSON formatting, Hegel buffer and identity properties, and remaining native transport gaps.
+Reviewed combined native machine-command boundary and Windows staged-DLL smoke evidence; positive Windows invocation remains pending CI.

@@ -269,6 +269,14 @@ jobs:
           if (-not (Test-Path $ffi)) { throw "Rust FFI DLL was not built: $ffi" }
           dotnet build --configuration Release --no-restore -p:MilaNativeDll=$ffi
 
+      - name: Invoke staged Rust DLL through production .NET interop
+        shell: pwsh
+        run: |
+          $staged = Join-Path $env:GITHUB_WORKSPACE "mila/windows-dotnet/bin/Release/net10.0-windows10.0.19041.0/win-x64/mila_native.dll"
+          if (-not (Test-Path $staged)) { throw "WinUI build did not stage the Rust DLL: $staged" }
+          dotnet run --project mila/windows-dotnet-smoke --configuration Release -p:MilaNativeDll=$staged
+          if ($LASTEXITCODE -ne 0) { throw "Rust/.NET FFI smoke failed" }
+
   linux-native:
     runs-on: ubuntu-24.04
     timeout-minutes: 45

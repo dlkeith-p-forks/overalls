@@ -1706,3 +1706,17 @@ even after preference changes or loss of live image availability.
 The [preset decision](repo:docs/architecture/decisions/0240-account-machine-creation-presets.md)
 and [focused tests](repo:marshall/test/marshall_web/machine_defaults_test.exs)
 distinguish application behavior from native execution and rollout acceptance.
+
+### Windows Rust interop verification
+
+The `windows-native` CI job builds the Rust DLL, stages it beside the WinUI
+executable, then supplies that staged file to `mila/windows-dotnet-smoke`.
+This .NET 10 console executable compiles the production `RustNative.cs` without
+WinUI. It requires ABI version 1.0, canonical host-qualified routing, validated
+snapshot counts and 64-bit timestamps, rejection of foreign deployments,
+malformed and oversized snapshots, and bounded route output with guard bytes.
+A missing DLL, missing export or incompatible image fails the smoke test rather
+than accepting the production wrapper's `Unavailable` fallback. This is adapter
+verification; it does not establish Windows UI, lifecycle, key custody, packaged
+release or deployment acceptance. Windows execution remains CI evidence until a
+passing run is recorded.
