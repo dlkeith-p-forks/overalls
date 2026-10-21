@@ -29,19 +29,6 @@
           <nav aria-label={dgettext("shared", "Documentation")}>
             <ul class="tree">
               <li>
-                <strong><a href={~p"/"}>{dgettext("shared", "Overalls")}</a></strong>
-                <ul>
-                  <li><a href={~p"/sign-in"}>{dgettext("shared", "Sign in")}</a></li>
-                  <li>
-                    <a href="https://github.com/ghuntley/overalls">{dgettext(
-                      "shared",
-                      "Source code"
-                    )}
-                    <span aria-hidden="true">↗</span></a>
-                  </li>
-                </ul>
-              </li>
-              <li>
                 <strong>{dgettext("shared", "Field notes")}</strong>
                 <ul>
                   <li :for={page <- @pages}>

@@ -22,6 +22,46 @@ credentials, tokens, and upstream target URLs are never returned. The list
 contains Reflection, LLM, and named integrations authorized for this exact
 machine execution.
 
+## Examples
+
+Run these commands from inside the guest. The `-sS` flags keep successful
+responses quiet while still showing connection errors, and `-H` requests the
+JSON representation.
+
+```sh
+curl -sS -H 'Accept: application/json' https://reflection.internal/
+```
+
+The response is a versioned object. A healthy guest returns HTTP `200` with
+`guest`, `integrations`, and `paths` fields:
+
+```json
+{
+  "version": 1,
+  "guest": {"name": "demo", "id": "…", "profile": "linux"},
+  "integrations": [{"name": "reflection", "url": "https://reflection.internal"}],
+  "paths": ["/", "/guest", "/integrations"]
+}
+```
+
+Fetch only the guest metadata when an agent does not need integration details:
+
+```sh
+curl -sS -H 'Accept: application/json' https://reflection.internal/guest
+```
+
+This returns HTTP `200` and a JSON object containing the bounded guest fields
+listed above. Fetch the integration list directly for discovery:
+
+```sh
+curl -sS -H 'Accept: application/json' https://reflection.internal/integrations
+```
+
+An available guest receives HTTP `200` and a JSON array. A stopped, relocated,
+retired, stale, or unauthorized guest receives an unavailable response instead
+of metadata; callers should treat any non-`2xx` status as a refusal and avoid
+retrying against a different machine.
+
 ## Metadata controls
 
 Machine managers can edit labels and the machine comment from machine settings.
