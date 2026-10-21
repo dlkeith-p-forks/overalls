@@ -134,6 +134,7 @@ public enum MilaFFIError: Error, Equatable, Sendable {
 public enum MilaThreadCommandKind: Int32, CaseIterable, Sendable {
     case unknown = 0, list, show, turns, prompt, answer, planApprove, planRevise, mode, read
 }
+public enum MilaMachineCommandKind: Int32, Sendable { case unknown = 0, list, show, new, resize, start, stop, pause, resume, delete, shareAdd, shareRemove, webShow, webSet }
 
 private enum MilaRustFFI {
     static func getVersion(_ version: UnsafeMutablePointer<MilaFfiAbiVersion>) -> Int32 {
@@ -158,6 +159,12 @@ private enum MilaRustFFI {
         var raw = MilaFFIShim.MilaThreadCommandKind(rawValue: 0)
         let status = mila_thread_command_kind(line, &raw).rawValue
         out.pointee = MilaThreadCommandKind(rawValue: Int32(raw.rawValue)) ?? .unknown
+        return status
+    }
+    static func machineKind(_ line: UnsafePointer<CChar>, _ out: UnsafeMutablePointer<MilaMachineCommandKind>) -> Int32 {
+        var raw = MilaFFIShim.MilaMachineCommandKind(rawValue: 0)
+        let status = mila_machine_command_kind(line, &raw).rawValue
+        out.pointee = MilaMachineCommandKind(rawValue: Int32(raw.rawValue)) ?? .unknown
         return status
     }
     static func pushRegistration(_ provider: UInt8, _ environment: UInt8, _ token: UnsafePointer<CChar>, _ app: UnsafePointer<CChar>, _ deployment: UnsafePointer<CChar>, _ endpoint: UnsafePointer<CChar>) -> Int32 {
@@ -254,6 +261,13 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         guard status == 0 else { throw MilaFFIError.unavailable }
         return kind
     }
+    public func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind {
+        guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
+        var kind = MilaMachineCommandKind.unknown
+        let status = line.withCString { MilaRustFFI.machineKind($0, &kind) }
+        guard status == 0 else { throw MilaFFIError.unavailable }
+        return kind
+    }
 
     /// Validates push metadata in Rust without exposing or retaining the device token.
     public func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws {
@@ -340,6 +354,7 @@ public protocol MilaFFIAdapter: Sendable {
     func refreshSnapshot() async throws -> MilaValidatedSnapshot
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind
+    func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind
     func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws
 }
 
@@ -347,6 +362,7 @@ public extension MilaFFIAdapter {
     func refreshSnapshot() async throws -> MilaValidatedSnapshot { throw MilaFFIError.unavailable }
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind { _ = line; throw MilaFFIError.unavailable }
+    func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind { _ = line; throw MilaFFIError.unavailable }
     func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws { throw MilaFFIError.unavailable }
 }
 
