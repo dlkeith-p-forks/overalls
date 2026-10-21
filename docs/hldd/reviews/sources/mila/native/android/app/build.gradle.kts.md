@@ -1,5 +1,5 @@
 ---
-digest: 26bfc0db29bc886c4735a61346cdb1a41644ca98714f15d4441365fc2f12686f
+digest: 3d1d865677618b2edb05ebb3a54a0f21aa852504cf625a2d4b5dbcf13e698345
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native FFI linkage changes preserve the documented Rust-core and thin-wrapper architecture while making Android JNI and Apple static-library integration executable in native builds.
+Android native build and test wiring preserves existing documented behavior; native verification evidence is scoped to CI.

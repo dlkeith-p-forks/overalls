@@ -18,7 +18,6 @@ class MilaRouteParserTest {
         assertNull(parseMilaRoute("overalls://machines/$id?debug=true"))
         assertNull(parseMilaRoute("overalls://machines/%2F$id"))
     }
-}
 
     @Test
     fun invokesRustJniRouteCanonicalization() {
@@ -26,3 +25,4 @@ class MilaRouteParserTest {
         assertNull(MilaRustFfi.canonicalRoute("overalls://machines?command=bad"))
         assertEquals(1, MilaRustFfi.abiVersion())
     }
+}

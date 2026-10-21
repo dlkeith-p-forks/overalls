@@ -285,12 +285,25 @@ jobs:
         with:
           packages: platform-tools
       - name: Install Android SDK platform
-        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+        run: |
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;28.2.13676358"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358" >> "$GITHUB_ENV"
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.3.1'
       - name: Install Rust Android linker
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android
       - name: Install cargo-ndk
         run: cargo install cargo-ndk --locked
       - name: Assemble native Compose APK
         working-directory: mila/native/android
-        run: gradle --no-daemon --stacktrace assembleDebug
+        run: gradle --no-daemon --stacktrace assembleDebug assembleDebugAndroidTest testDebugUnitTest
+      - name: Invoke packaged Rust JNI on Android
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          working-directory: mila/native/android
+          script: gradle --no-daemon connectedDebugAndroidTest

@@ -50,28 +50,32 @@ android {
     }
 }
 
-// Build and package the real Rust JNI library for every Android ABI.
-val rustTargetByAbi = mapOf(
-    "arm64-v8a" to "aarch64-linux-android",
-    "armeabi-v7a" to "armv7-linux-androideabi",
-    "x86_64" to "x86_64-linux-android",
-)
-
-android.defaultConfig.ndk { abiFilters += rustTargetByAbi.keys }
-
-tasks.register("buildRustJni") {
-    val outputRoot = layout.buildDirectory.dir("rust-jni")
-    outputs.dir(outputRoot)
-    doLast {
-        val root = rootProject.projectDir.toPath().resolve("../../../rust").normalize()
-        val ndkHome = System.getenv("ANDROID_NDK_HOME") ?: error("ANDROID_NDK_HOME is required")
-        rustTargetByAbi.forEach { (abi, target) ->
-            exec { commandLine("cargo", "ndk", "-t", target, "-o", outputRoot.get().asFile.absolutePath, "build", "--release", "-p", "mila-ffi"); environment("ANDROID_NDK_HOME", ndkHome); workingDir(root.toFile()) }
-            val source = outputRoot.get().asFile.resolve("$abi/libmila_ffi.so")
-            val destination = project.file("src/main/jniLibs/$abi/libmila_ffi.so")
-            destination.parentFile.mkdirs()
-            source.copyTo(destination, overwrite = true)
-        }
+// Generated libraries stay under build/ and enter APKs through the JNI source set.
+val rustRoot = rootProject.file("../../rust")
+val rustJniOutput = layout.buildDirectory.dir("rust-jni")
+val rustAbis = listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+android {
+    ndkVersion = "28.2.13676358"
+    defaultConfig {
+        ndk { abiFilters += rustAbis }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    sourceSets.getByName("main").jniLibs.srcDir(rustJniOutput)
 }
-tasks.named("preBuild") { dependsOn("buildRustJni") }
+
+/**
+ * @cc [owner:ghuntley,label:verification] mila-android-packaged-rust
+ * APK assembly MUST build the Rust JNI library for every packaged ABI from the locked workspace.
+ */
+val buildRustJni = tasks.register<Exec>("buildRustJni") {
+    workingDir(rustRoot)
+    inputs.files(fileTree(rustRoot) { exclude("target/**") })
+    outputs.dir(rustJniOutput)
+    commandLine(
+        listOf("cargo", "ndk", "--platform", "26") +
+            rustAbis.flatMap { listOf("-t", it) } +
+            listOf("-o", rustJniOutput.get().asFile.absolutePath,
+                "build", "--locked", "--release", "-p", "mila-ffi")
+    )
+}
+tasks.named("preBuild") { dependsOn(buildRustJni) }
