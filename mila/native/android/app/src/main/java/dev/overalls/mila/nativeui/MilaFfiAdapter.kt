@@ -89,6 +89,8 @@ object UnavailableMilaFfiAdapter : MilaFfiAdapter {
 interface MilaRustBindings {
     fun abiVersion(): Int
     fun canonicalRoute(value: String): String?
+    /** Returns the closed machine-action bit mask, or null for invalid input. */
+    fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int?
 }
 
 /** JNI entry points backed by the stable `mila-ffi` C ABI in the host application. */
@@ -108,11 +110,20 @@ internal object MilaRustFfi : MilaRustBindings {
         return nativeCanonicalRoute(value)
     }
 
+    override fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int? {
+        check(loaded) { "mila_ffi is unavailable" }
+        val value = nativeMachineActions(snapshot, host, port ?: 0, port != null, index)
+        return value.takeUnless { it < 0 }
+    }
+
     @JvmStatic
     external fun nativeAbiVersion(): Int
 
     @JvmStatic
     external fun nativeCanonicalRoute(value: String): String?
+
+    @JvmStatic
+    external fun nativeMachineActions(snapshot: ByteArray, host: String, port: Int, hasPort: Boolean, index: Int): Int
 }
 
 /** Typed Android adapter. Native linkage is lazy so the UI remains testable without a device. */
@@ -132,5 +143,9 @@ class LinkedMilaFfiAdapter(
 
     fun canonicalizeRoute(value: String): Result<String> = runCatching {
         bindings.canonicalRoute(value) ?: throw IllegalArgumentException("invalid route")
+    }
+
+    fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Result<Int> = runCatching {
+        bindings.machineActions(snapshot, host, port, index) ?: throw IllegalArgumentException("invalid snapshot")
     }
 }

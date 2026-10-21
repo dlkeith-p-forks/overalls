@@ -43,9 +43,11 @@ class MilaFfiAdapterTest {
 private class FakeRustBindings(
     private val version: Int = 1,
     private val route: String? = "overalls://machines",
+    private val actions: Int? = 5,
 ) : MilaRustBindings {
     override fun abiVersion(): Int = version
     override fun canonicalRoute(value: String): String? = route
+    override fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int? = actions
 }
 
 class MilaLinkedFfiAdapterTest {
@@ -74,5 +76,17 @@ class MilaLinkedFfiAdapterTest {
     fun canonicalRouteRejectsNativeNull() {
         val adapter = LinkedMilaFfiAdapter(FakeRustBindings(route = null))
         assertTrue(adapter.canonicalizeRoute("bad").isFailure)
+    }
+
+    @Test
+    fun machineActionsExposeOnlyRustPolicyBits() {
+        val adapter = LinkedMilaFfiAdapter(FakeRustBindings(actions = 9))
+        assertEquals(Result.success(9), adapter.machineActions(byteArrayOf(1), "mgmt.example.test", 443, 0))
+    }
+
+    @Test
+    fun machineActionsRejectInvalidSnapshot() {
+        val adapter = LinkedMilaFfiAdapter(FakeRustBindings(actions = null))
+        assertTrue(adapter.machineActions(byteArrayOf(1), "mgmt.example.test", null, 0).isFailure)
     }
 }

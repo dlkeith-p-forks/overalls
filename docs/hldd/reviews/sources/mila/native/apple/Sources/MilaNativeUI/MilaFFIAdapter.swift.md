@@ -1,11 +1,11 @@
 ---
-digest: da7016e811644b5298b2e992a29f7e0ce18a024ec53467cabe0ba2754093063d
+digest: 26b45bd533e205c359ffaf59b41c0966bccec0f265c8a6fdb575534e2c73034c
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/apple/Sources/MilaNativeUI/MilaFFIAdapter.swift
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
+  marshall/priv/hldd/08-interactive.md: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
   marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native route parsers now follow the shared host-qualified Rust route grammar across Apple and Android.
+Reviewed native FFI and UI parity slice; bounded Rust policy remains authoritative and platform wrappers expose validated summaries only.

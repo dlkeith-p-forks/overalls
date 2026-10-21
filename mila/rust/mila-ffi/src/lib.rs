@@ -498,6 +498,54 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeCanonic
     }
 }
 
+/// JNI projection of the bounded machine action policy.  The returned value is
+/// a bit mask (one bit per `MachineAction` discriminant), or `-1` when the
+/// snapshot, deployment, or index is invalid.  Machine records never cross
+/// this boundary; Android receives only the closed policy result.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeMachineActions(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    bytes: jni::objects::JByteArray<'_>,
+    host: jni::objects::JString<'_>,
+    port: jni::sys::jint,
+    has_port: jni::sys::jboolean,
+    index: jni::sys::jint,
+) -> jni::sys::jint {
+    if port < 0 || port > u16::MAX as jni::sys::jint || index < 0 || has_port > 1 {
+        return -1;
+    }
+    let bytes = match env.convert_byte_array(bytes) {
+        Ok(value) => value,
+        Err(_) => return -1,
+    };
+    let host = match env.get_string(&host) {
+        Ok(value) => value,
+        Err(_) => return -1,
+    };
+    let host = match std::ffi::CString::new(host.to_bytes()) {
+        Ok(value) => value,
+        Err(_) => return -1,
+    };
+    let mut actions = MilaMachineActions { bits: 0 };
+    let status = unsafe {
+        mila_snapshot_machine_actions(
+            bytes.as_ptr(),
+            bytes.len(),
+            host.as_ptr(),
+            port as u16,
+            has_port,
+            index as u32,
+            &mut actions,
+        )
+    };
+    if status == MilaFfiStatus::Ok {
+        actions.bits as jni::sys::jint
+    } else {
+        -1
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{

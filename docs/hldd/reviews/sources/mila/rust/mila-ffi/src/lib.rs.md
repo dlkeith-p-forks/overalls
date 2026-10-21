@@ -1,11 +1,11 @@
 ---
-digest: 13beae3c8f127f1b5964b42663c718045aa993af928b4fb7784fdaf52eb5a166
-disposition: updated
+digest: f866707aafc04b3bf59e750394873627fcc62e77c3a253ab40ff2c15c1ca533f
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-ffi/src/lib.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 30a379e903cd845af2a2aee9c87922e246097dfdbe57779598a104096d08f4af
+  marshall/priv/hldd/08-interactive.md: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
   marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Document exact machine-action token refusals, JSON formatting, Hegel buffer and identity properties, and remaining native transport gaps.
+Reviewed native FFI and UI parity slice; bounded Rust policy remains authoritative and platform wrappers expose validated summaries only.

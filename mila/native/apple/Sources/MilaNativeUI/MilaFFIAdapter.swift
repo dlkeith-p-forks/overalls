@@ -62,7 +62,36 @@ public struct MilaFFIResponse: Codable, Equatable, Sendable {
     }
 }
 
+public struct MilaSnapshotMachine: Codable, Equatable, Identifiable, Sendable {
+    public let id: UUID
+    public let name: String
+    public let desiredState: String
+    public let observedState: String?
+    public let pinned: Bool
+    public let owner: String?
+    public let read: Bool
+    public let write: Bool
+    public let manage: Bool
+
+    enum CodingKeys: String, CodingKey { case id, name, desiredState = "desired_state", observedState = "observed_state", pinned, owner, read, write, manage }
+}
+
+public enum MilaMachineAction: UInt16, CaseIterable, Sendable {
+    case start, stop, pause, resume, pin, unpin, delete
+
+    public var title: String { rawValue == MilaMachineAction.delete.rawValue ? "Delete" : String(describing: self).capitalized }
+    fileprivate var token: String {
+        switch self { case .start: "start"; case .stop: "stop"; case .pause: "pause"; case .resume: "resume"; case .pin: "pin"; case .unpin: "unpin"; case .delete: "rm" }
+    }
+}
+
+public struct MilaMachineActions: Equatable, Sendable {
+    public let values: [MilaMachineAction]
+    fileprivate init(bits: UInt16) { values = MilaMachineAction.allCases.filter { bits & (1 << $0.rawValue) != 0 } }
+}
+
 public struct MilaSnapshotMetadata: Equatable, Sendable {
+
     public let machineCount: UInt32
     public let savedAt: UInt64
 
@@ -88,6 +117,15 @@ private enum MilaRustFFI {
     }
     static func validateSnapshot(_ bytes: UnsafePointer<UInt8>, _ length: Int, _ host: UnsafePointer<CChar>, _ port: UInt16, _ hasPort: UInt8, _ summary: UnsafeMutablePointer<MilaSnapshotSummary>) -> Int32 {
         mila_snapshot_validate(bytes, length, host, port, hasPort, summary).rawValue
+    }
+    static func machineActions(_ bytes: UnsafePointer<UInt8>, _ length: Int, _ host: UnsafePointer<CChar>, _ port: UInt16, _ hasPort: UInt8, _ index: UInt32, _ actions: UnsafeMutablePointer<MilaMachineActions>) -> Int32 {
+        var raw = MilaMachineActions(bits: 0)
+        let status = mila_snapshot_machine_actions(bytes, length, host, port, hasPort, index, &raw).rawValue
+        actions.pointee = raw
+        return status
+    }
+    static func command(_ action: UnsafePointer<CChar>, _ machine: UnsafePointer<CChar>, _ request: UnsafePointer<CChar>?, _ output: MilaRouteOutput) -> Int32 {
+        mila_session_command_format(action, machine, request, output).rawValue
     }
 }
 
@@ -140,6 +178,39 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         }
     }
 
+    public func machineActions(_ data: Data, host: String, port: UInt16? = nil, index: UInt32) throws -> MilaMachineActions {
+        guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
+        var raw = MilaMachineActions(bits: 0)
+        let status = data.withUnsafeBytes { bytes -> Int32 in
+            guard let base = bytes.bindMemory(to: UInt8.self).baseAddress else { return -1 }
+            return host.withCString { hostPointer in
+                withUnsafeMutablePointer(to: &raw) { MilaRustFFI.machineActions(base, data.count, hostPointer, port ?? 0, port == nil ? 0 : 1, index, $0) }
+            }
+        }
+        guard status == 0 else { throw MilaFFIError.unavailable }
+        return raw
+    }
+
+    public func formatMachineAction(_ action: MilaMachineAction, machineID: UUID, requestID: UUID? = nil) throws -> String {
+        guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
+        var output = [UInt8](repeating: 0, count: 512); var written = 0
+        let status = output.withUnsafeMutableBufferPointer { buffer in
+            action.token.withCString { actionPtr in machineID.uuidString.lowercased().withCString { machinePtr in
+                if let requestID { return requestID.uuidString.lowercased().withCString { req in withUnsafeMutablePointer(to: &written) { MilaRustFFI.command(actionPtr, machinePtr, req, MilaRouteOutput(bytes: buffer.baseAddress, capacity: buffer.count, written: $0)) } } }
+                return withUnsafeMutablePointer(to: &written) { MilaRustFFI.command(actionPtr, machinePtr, nil, MilaRouteOutput(bytes: buffer.baseAddress, capacity: buffer.count, written: $0)) }
+            }}
+        }
+        guard status == 0 else { throw status == -3 ? MilaFFIError.outputTooSmall : MilaFFIError.unavailable }
+        return String(decoding: output.prefix(written), as: UTF8.self)
+    }
+
+    public func decodeSnapshot(_ data: Data, host: String, port: UInt16? = nil) throws -> [MilaSnapshotMachine] {
+        _ = try validateSnapshot(data, host: host, port: port)
+        let decoder = JSONDecoder()
+        let object = try decoder.decode(MilaSnapshotEnvelope.self, from: data)
+        return object.machines
+    }
+
     private func abiCompatible() -> Bool {
         var version = MilaFfiAbiVersion(major: 0, minor: 0)
         return MilaRustFFI.getVersion(&version) == 0 && version.major == 1
@@ -151,6 +222,8 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
  * The Apple UI MUST exchange only `MilaFFIRequest` and `MilaFFIResponse` values with the Rust
  * adapter; raw pointers, credentials, and terminal bytes MUST NOT appear in this interface.
  */
+private struct MilaSnapshotEnvelope: Codable { let machines: [MilaSnapshotMachine] }
+
 public protocol MilaFFIAdapter: Sendable {
     func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse
 }
