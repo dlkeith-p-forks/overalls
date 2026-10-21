@@ -218,7 +218,7 @@ fn elixir_host_certificate_fixtures_match() {
         valid: bool,
     }
     let fixtures: Fixtures = serde_json::from_str(include_str!(
-        "../../../../protocol/test/fixtures/ssh_host_certificates.json"
+        "fixtures/ssh_host_certificates.json"
     ))
     .unwrap();
     for f in fixtures.certificates {

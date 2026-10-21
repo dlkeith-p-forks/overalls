@@ -185,7 +185,7 @@ class LinkedMilaFfiAdapter(
         bindings.machineActions(snapshot, host, port, index) ?: throw IllegalArgumentException("invalid snapshot")
     }
 
-    fun threadCommandKind(value: String): Result<MilaThreadCommand> = runCatching {
+    override fun threadCommandKind(value: String): Result<MilaThreadCommand> = runCatching {
         MilaThreadCommand.fromTag(bindings.threadCommandKind(value))
             ?: throw IllegalArgumentException("unknown thread command")
     }
