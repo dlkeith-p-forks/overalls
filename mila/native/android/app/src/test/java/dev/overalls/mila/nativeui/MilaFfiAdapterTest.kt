@@ -48,6 +48,7 @@ private class FakeRustBindings(
     override fun abiVersion(): Int = version
     override fun canonicalRoute(value: String): String? = route
     override fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int? = actions
+    override fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle? = null
 }
 
 class MilaLinkedFfiAdapterTest {
