@@ -14,6 +14,7 @@ let
   audiPrivate = config.services.audiPrivate or { enable = false; };
   ziggy = config.services.ziggy or { enable = false; };
   galileo = config.services.galileo or { enable = false; };
+  peach = config.services.peach or { enable = false; };
   enrico = config.services.enrico or { enable = false; };
   brady = config.services.brady or { enable = false; };
   underclass = config.services.underclass or { enable = false; tailscaleServe.enable = false; };
@@ -22,7 +23,8 @@ let
     ++ lib.optional (underclass.egress.enable or false) "underclass-egress.service");
   privateUnits = lib.optional audiPrivate.enable "audi-private.service"
     ++ lib.optional ziggy.enable "ziggy.service"
-    ++ lib.optional galileo.enable "galileo.service";
+    ++ lib.optional galileo.enable "galileo.service"
+    ++ lib.optional peach.enable "peach.service";
   enricoUnits = lib.optional enrico.enable "enrico.service";
   bradyUnits = lib.optional brady.enable "brady.service";
   activationSocketServices = map (socket:

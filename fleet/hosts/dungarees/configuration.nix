@@ -76,6 +76,10 @@
   services.ziggy.secretsFile = "${../../../secrets/dungarees-ziggy.enc.json}";
   services.ziggy.enabledProviders = [ "openai" ];
   services.galileo.secretsFile = "${../../../secrets/dungarees-galileo.enc.json}";
+  services.peach = {
+    enable = true;
+    secretsFile = "${../../../secrets/dungarees-peach.enc.json}";
+  };
   services.audiPrivate = {
     enable = true;
     secretsFile = "${../../../secrets/dungarees-audi-private.enc.json}";

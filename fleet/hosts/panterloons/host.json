@@ -73,6 +73,10 @@
       "path": "secrets/panterloons-galileo.enc.json"
     },
     {
+      "name": "panterloons-peach",
+      "path": "secrets/panterloons-peach.enc.json"
+    },
+    {
       "name": "panterloons-git",
       "path": "secrets/panterloons-git.enc.json"
     },

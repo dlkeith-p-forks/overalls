@@ -76,8 +76,31 @@ with `reflection.internal` and hostname-verified guest TLS is observed.
   `/` over hostname-verified TLS and saw `/secrets` answer 404. The first run of
   this test failed on the Marshall projection defects listed above.
 
+## Production rollout
+
+Panterloons deployed trunk `ee944c41`, which contains this work. The operator
+commands issued one-year Peach credentials for Panterloons (host `970abf31`) and
+Dungarees (host `9638c245`), and `peach-verify` accepted both. The
+`overalls-marshall-enrollment` bridge accepts only JSON enrollment actions, so
+issuance ran the bridge's release launcher through `systemd-run` as
+`marshall-operator`; the deployment chapter records the procedure. The tokens
+went straight into `secrets/{panterloons,dungarees}-peach.enc.json`, whose age
+recipients match each host's Galileo document, and the plaintext was shredded.
+Both host inventories declare the documents. The control-plane private-services
+role and Dungarees' configuration enable Peach, and auto-update now restarts and
+verifies `peach.service` with the other private services. Both host closures
+build.
+
+The rollout was briefly blocked by an unrelated incident: a local test setup had
+changed the production `marshall` database role password, so new connections
+and every migration failed from 23:01 UTC. Re-running
+`overalls-database-password.service` restored the declared password and the next
+auto-update succeeded.
+
 ## Remaining gaps
 
 The production private leaf lacks `reflection.internal`; reissuing it needs the
-recovery-only intermediate. Generated current/stale execution and credential
+recovery-only intermediate, so guests that verify the hostname still refuse
+`reflection.internal` in production. Peach logs do not yet ship to the log store
+(no `peach` logging source). Generated current/stale execution and credential
 expiry histories, host loss and same-host native isolation remain unrecorded.

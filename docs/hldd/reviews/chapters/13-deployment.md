@@ -1,5 +1,5 @@
 ---
-digest: 3ce306b6531fe05f5a3e933d032309c997035c6ef6ac6b16d0b7b99738469327
+digest: 3ac08c9b1dd2c8399ae5a08cf927c7cf96f676f758dfd8c762cb088ab8c79a43
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Peach NixOS module delivers PEACH_CREDENTIAL into a 0700 runtime directory, exposes a 0660 peach-proxy socket joined only by Audi and drops the Lilly unit requirement; the Galileo fleet test issues real credentials and reads reflection from a guest over a fixture leaf carrying reflection.internal. Chapters 13 and 20 describe custody and evidence; 18 is regenerated.
+Peach enabled on Panterloons and Dungarees: dedicated host credentials, auto-update unit coverage, corrected issuance procedure and regenerated topology.

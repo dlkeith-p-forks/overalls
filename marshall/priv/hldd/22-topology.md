@@ -24,9 +24,9 @@ Peach is a separately packaged local service behind Audi's private Unix-socket
 frontend, using its own unprivileged user and host-bound control credential.
 Marshall's Peach domain retains only credential digests; it builds each bounded
 projection from current Compute and integration authority. Peach/database loss
-withholds reflection rather than serving a retained snapshot. The source module
-and evaluation test exist, but the host inventory does not yet declare Peach
-enabled. Audi's mandatory Lilly, Ziggy and Galileo dependencies remain; disabled
+withholds reflection rather than serving a retained snapshot. Panterloons and
+Dungarees enable Peach with dedicated host-bound credentials declared in their
+host inventories. Audi's mandatory Lilly, Ziggy and Galileo dependencies remain; disabled
 Peach emits a null optional socket and reflection refuses before execution
 admission. A configured backend requires a bounded canonical Unix-socket path.
 The public placement projection includes the Peach role without serializing its
@@ -712,13 +712,14 @@ flowchart LR
   host --> s29["overallsLogging"]
   host --> s30["overallsOtelFleet"]
   host --> s31["overallsOtelGuest"]
-  host --> s32["tribuchet-worker"]
-  host --> s33["underclass"]
-  host --> s34["underclassEgress"]
-  host --> s35["underclassMonitorProbe"]
-  host --> s36["underclassProxySloExporter"]
-  host --> s37["ziggy"]
-  host --> s38["ziggySloExporter"]
+  host --> s32["peach"]
+  host --> s33["tribuchet-worker"]
+  host --> s34["underclass"]
+  host --> s35["underclassEgress"]
+  host --> s36["underclassMonitorProbe"]
+  host --> s37["underclassProxySloExporter"]
+  host --> s38["ziggy"]
+  host --> s39["ziggySloExporter"]
 ```
 
 Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `panterloons`. Administrative SSH ports: 2222.
@@ -775,32 +776,33 @@ flowchart LR
   host --> s44["overallsLogging"]
   host --> s45["overallsOtelFleet"]
   host --> s46["overallsOtelGuest"]
-  host --> s47["porsche"]
-  host --> s48["porscheCancelSloExporter"]
-  host --> s49["porscheCloneSloExporter"]
-  host --> s50["porschePhysicalSloExporter"]
-  host --> s51["porscheRelocateSloExporter"]
-  host --> s52["porscheRequestRecorder"]
-  host --> s53["porscheRetrySloExporter"]
-  host --> s54["porscheSloExporter"]
-  host --> s55["postgresql"]
-  host --> s56["prometheus"]
-  host --> s57["telemetryStorageProbe"]
-  host --> s58["tempo"]
-  host --> s59["tribuchet-hub"]
-  host --> s60["tribuchet-worker"]
-  host --> s61["underclass"]
-  host --> s62["underclassEgress"]
-  host --> s63["underclassMonitorProbe"]
-  host --> s64["underclassProxySloExporter"]
-  host --> s65["vscodeBrowserNixosExporter"]
-  host --> s66["vscodeBrowserNixosProbe"]
-  host --> s67["vscodeBrowserNixosRequestRecorder"]
-  host --> s68["vscodeBrowserUbuntuExporter"]
-  host --> s69["vscodeBrowserUbuntuProbe"]
-  host --> s70["vscodeBrowserUbuntuRequestRecorder"]
-  host --> s71["ziggy"]
-  host --> s72["ziggySloExporter"]
+  host --> s47["peach"]
+  host --> s48["porsche"]
+  host --> s49["porscheCancelSloExporter"]
+  host --> s50["porscheCloneSloExporter"]
+  host --> s51["porschePhysicalSloExporter"]
+  host --> s52["porscheRelocateSloExporter"]
+  host --> s53["porscheRequestRecorder"]
+  host --> s54["porscheRetrySloExporter"]
+  host --> s55["porscheSloExporter"]
+  host --> s56["postgresql"]
+  host --> s57["prometheus"]
+  host --> s58["telemetryStorageProbe"]
+  host --> s59["tempo"]
+  host --> s60["tribuchet-hub"]
+  host --> s61["tribuchet-worker"]
+  host --> s62["underclass"]
+  host --> s63["underclassEgress"]
+  host --> s64["underclassMonitorProbe"]
+  host --> s65["underclassProxySloExporter"]
+  host --> s66["vscodeBrowserNixosExporter"]
+  host --> s67["vscodeBrowserNixosProbe"]
+  host --> s68["vscodeBrowserNixosRequestRecorder"]
+  host --> s69["vscodeBrowserUbuntuExporter"]
+  host --> s70["vscodeBrowserUbuntuProbe"]
+  host --> s71["vscodeBrowserUbuntuRequestRecorder"]
+  host --> s72["ziggy"]
+  host --> s73["ziggySloExporter"]
 ```
 
 Arrows mean configured service placement. Configuration: `panterloons`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`, `salopettes`. Administrative SSH ports: 2222.

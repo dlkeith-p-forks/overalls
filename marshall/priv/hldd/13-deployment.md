@@ -551,11 +551,18 @@ that may connect to the 0660 `/run/peach/reflection.sock`. Peach is optional
 beside `audiPrivate`: disabled Peach produces a null backend socket, and
 `reflection.internal` refuses before guest authority is requested.
 
-Issue a host's credential on the control-plane host with
-`overalls-marshall-enrollment peach-rotate HOST TTL_SECONDS OUTPUT_FILE`, check
-it with `peach-verify OUTPUT_FILE` and retire it with `peach-revoke HOST`. Encrypt
-the token into `secrets/HOST-peach.enc.json` (declared in the host inventory),
-then set `services.peach.enable` and `secretsFile`.
+Issue a host's credential on the control-plane host with the operator CLI
+commands `peach-rotate HOST TTL_SECONDS OUTPUT_FILE`, `peach-verify OUTPUT_FILE`
+and `peach-revoke HOST`. The `overalls-marshall-enrollment` bridge accepts only
+JSON enrollment actions, so run the same release launcher it wraps through
+`systemd-run` as `marshall-operator`, with the bridge's sandbox properties, a
+0700 output directory owned by that user as `ReadWritePaths` and
+`WorkingDirectory`, the Marshall environment file and the `database-ca.crt`
+credential. Encrypt the token into `secrets/HOST-peach.enc.json` (declared in the
+host inventory) and shred the plaintext. Panterloons (through the control-plane
+private-services role) and Dungarees enable Peach with one-year credentials; the
+auto-update unit set restarts and verifies `peach.service` with the other private
+services.
 
 Guest TLS for reflection also needs the private leaf reissued through the existing
 offline issuer custody with the fixed `reflection.internal` SAN. Until then the

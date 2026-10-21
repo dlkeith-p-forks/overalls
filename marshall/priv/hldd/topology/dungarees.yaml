@@ -15,6 +15,7 @@ services:
 - brady
 - ziggy
 - galileo
+- peach
 - underclass
 - overallsFleetExporter
 - overallsAutoUpdate

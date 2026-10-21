@@ -61,6 +61,10 @@
       "path": "secrets/dungarees-galileo.enc.json"
     },
     {
+      "name": "dungarees-peach",
+      "path": "secrets/dungarees-peach.enc.json"
+    },
+    {
       "name": "dungarees-underclass",
       "path": "secrets/dungarees-underclass.enc.json"
     },

@@ -22,6 +22,7 @@ services:
 - ziggy
 - galileo
 - enrico
+- peach
 - underclass
 - overallsFleetExporter
 - overallsAutoUpdate

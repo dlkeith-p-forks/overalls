@@ -64,7 +64,8 @@ See [reflection protocol](../../../protocol/lib/overalls_protocol/reflection.ex)
 [packaged NixOS module](../../../nix/domains/system/peach.nix) and the
 [fleet guest journey](../../../nix/verification/tests/machines/fleet/scenarios/galileo.py).
 See the [enablement review](../reviews/2026-10-20-peach-enablement.md) for recorded
-runs and fleet rollout. Audi permits Peach to remain disabled:
+runs and fleet rollout. Panterloons and Dungarees enable Peach; other hosts
+may leave it disabled, and Audi permits that:
 its optional backend socket is null and reflection refuses before requesting
 guest execution authority. Configured sockets must be bounded canonical local
 paths; Lilly, Ziggy and Galileo remain mandatory private-service dependencies.
