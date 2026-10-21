@@ -144,8 +144,12 @@ def visit(page: Page, path: str) -> None:
 
 
 def rename(page: Page, key_id: str, label: str) -> None:
+    """@cc [owner:ghuntley,label:verification] passkey-rename-submit-only
+    Renaming MUST click the form's submit control, never its removal control,
+    and verify the resulting persisted label.
+    """
     page.locator(f"#label-{key_id} input[name='label']").fill(label)
-    page.locator(f"#label-{key_id} button").click()
+    page.locator(f"#label-{key_id}").locator("button:not([type]), button[type='submit']").click()
     expect(page.locator(f"#label-{key_id} input[name='label']")).to_have_value(label)
     sql_eventually(f"SELECT label FROM account_passkeys WHERE id = '{key_id}';", label)
 
