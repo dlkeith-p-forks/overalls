@@ -27,11 +27,15 @@ typedef struct MilaRouteOutput {
   size_t *written;
 } MilaRouteOutput;
 
+typedef struct MilaMachineActions { uint16_t bits; } MilaMachineActions;
+
 typedef struct MilaSnapshotSummary {
   uint32_t machine_count;
   uint64_t saved_at;
 } MilaSnapshotSummary;
 
+MilaFfiStatus mila_session_command_format(const char *action, const char *machine_id, const char *request_id, MilaRouteOutput output);
+MilaFfiStatus mila_snapshot_machine_actions(const uint8_t *bytes, size_t length, const char *host, uint16_t port, uint8_t has_port, uint32_t index, MilaMachineActions *out_actions);
 /* Returns the ABI major version. */
 uint32_t mila_ffi_version(void);
 /* Writes the complete ABI version, returning MILA_FFI_NULL_INPUT when absent. */

@@ -372,6 +372,7 @@ pub struct SnapshotMachine {
 /// This keeps action visibility identical across Swift, Kotlin, GTK and WinUI;
 /// clients must not reimplement permission or state rules in each UI toolkit.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u16)]
 pub enum MachineAction {
     Start,
     Stop,

@@ -1,5 +1,5 @@
 ---
-digest: ca5038f9b700b3048258a3a3fa3149de1492291f4f309ce6352aec57ba7459d0
+digest: d21c1b1a3ac2eb8e71ea5b29a5021fc74d5e52333132f0f45f9f4c221d09ea59
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-JNI exports moved before test modules to satisfy clippy without changing ABI behavior.
+Session command and machine action FFI additions keep the Rust-core typed boundary and add bounded native capability without changing the documented platform architecture.

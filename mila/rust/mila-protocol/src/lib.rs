@@ -266,6 +266,13 @@ fn command_known(command: &str) -> bool {
             | "ls"
             | "show"
             | "start"
+            | "pause"
+            | "resume"
+            | "unpause"
+            | "stop"
+            | "rm"
+            | "pin"
+            | "unpin"
             | "new"
             | "resize"
             | "share add"
@@ -324,7 +331,7 @@ fn allowed_option(command: &str, key: &str) -> bool {
             "port" | "public" | "private" | "revision" | "request-id"
         ),
         "terminal attach" => matches!(key, "cursor" | "read-only"),
-        _ if mutation(command) => matches!(key, "request-id" | "no-wait" | "timeout"),
+        _ if mutation(command) => matches!(key, "request-id" | "no-wait"),
         _ => false,
     }
 }
@@ -366,6 +373,7 @@ fn validate_command(
         "whoami" | "images" | "ls" | "team list" | "watch" => (0, 0),
         "show" | "start" | "resize" | "request show" | "ssh-key remove" | "thread show"
         | "thread turns" | "terminal ls" | "terminal new" | "web show" => (1, 1),
+        "pause" | "resume" | "unpause" | "stop" | "rm" | "pin" | "unpin" => (1, 1),
         "new" => (0, 0),
         "share add" => (3, 3),
         "share remove" => (2, 2),
@@ -530,6 +538,13 @@ fn mutation(command: &str) -> bool {
         command,
         "new"
             | "start"
+            | "pause"
+            | "resume"
+            | "unpause"
+            | "stop"
+            | "rm"
+            | "pin"
+            | "unpin"
             | "resize"
             | "share add"
             | "share remove"

@@ -348,6 +348,125 @@ pub unsafe extern "C" fn mila_route_format(
     MilaFfiStatus::Ok
 }
 
+/// Bit flags describing actions permitted for one cached machine.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct MilaMachineActions {
+    pub bits: u16,
+}
+
+/// Formats a catalogued machine action with bounded, canonical output.
+/// @cc [owner:ghuntley,label:security;protocol] mila-session-command-bounded
+/// Native callers MUST receive only catalogued commands; credentials and arbitrary payloads MUST NOT cross this ABI.
+///
+/// # Safety
+/// Pointers must be valid NUL-terminated strings and `output` must reference writable storage.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_command_format(
+    action: *const c_char,
+    machine_id: *const c_char,
+    request_id: *const c_char,
+    output: MilaRouteOutput,
+) -> MilaFfiStatus {
+    if action.is_null()
+        || machine_id.is_null()
+        || output.bytes.is_null()
+        || output.written.is_null()
+    {
+        return MilaFfiStatus::NullInput;
+    }
+    let text = |ptr: *const c_char| {
+        CStr::from_ptr(ptr)
+            .to_str()
+            .map(str::to_owned)
+            .map_err(|_| MilaFfiStatus::InvalidRequest)
+    };
+    let action = match text(action) {
+        Ok(v) => v,
+        Err(e) => return e,
+    };
+    let machine = match text(machine_id) {
+        Ok(v) => v,
+        Err(e) => return e,
+    };
+    if mila_model::Identifier::parse(&machine).is_err() {
+        return MilaFfiStatus::InvalidRequest;
+    }
+    let mutation = matches!(
+        action.as_str(),
+        "start" | "stop" | "pause" | "resume" | "unpause" | "pin" | "unpin" | "rm"
+    );
+    let mut line = format!("{action} {machine}");
+    if mutation {
+        if request_id.is_null() {
+            return MilaFfiStatus::InvalidRequest;
+        }
+        let id = match text(request_id) {
+            Ok(v) => v,
+            Err(e) => return e,
+        };
+        if mila_model::RequestId::parse(&id).is_err() {
+            return MilaFfiStatus::InvalidRequest;
+        }
+        line.push_str(" --request-id=");
+        line.push_str(&id);
+    }
+    let command = match mila_protocol::Command::parse(&line).and_then(|c| c.format()) {
+        Ok(v) => v,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let bytes = command.as_bytes();
+    if bytes.len() > output.capacity {
+        return MilaFfiStatus::OutputTooSmall;
+    }
+    std::ptr::copy_nonoverlapping(bytes.as_ptr(), output.bytes, bytes.len());
+    if output.capacity > bytes.len() {
+        *output.bytes.add(bytes.len()) = 0;
+    }
+    *output.written = bytes.len();
+    MilaFfiStatus::Ok
+}
+
+/// Projects the closed action policy for a machine in a validated snapshot.
+///
+/// # Safety
+/// `bytes` and `host` must be valid for the supplied length and NUL-terminated respectively; `out_actions` must be writable.
+#[no_mangle]
+pub unsafe extern "C" fn mila_snapshot_machine_actions(
+    bytes: *const u8,
+    length: usize,
+    host: *const c_char,
+    port: u16,
+    has_port: u8,
+    index: u32,
+    out_actions: *mut MilaMachineActions,
+) -> MilaFfiStatus {
+    if bytes.is_null() || host.is_null() || out_actions.is_null() || has_port > 1 {
+        return MilaFfiStatus::NullInput;
+    }
+    let host = match CStr::from_ptr(host).to_str() {
+        Ok(v) => v,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let snapshot = match MachineSnapshot::decode(
+        std::slice::from_raw_parts(bytes, length),
+        host,
+        (has_port == 1).then_some(port),
+    ) {
+        Ok(v) => v,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let Some(machine) = snapshot.machines.get(index as usize) else {
+        return MilaFfiStatus::InvalidRequest;
+    };
+    let bits = machine
+        .available_actions()
+        .into_iter()
+        .fold(0u16, |bits, action| bits | (1 << action as u16));
+    *out_actions = MilaMachineActions { bits };
+    MilaFfiStatus::Ok
+}
+
 /// JNI ABI version for the Android native client.
 #[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeAbiVersion(
