@@ -62,6 +62,7 @@ private struct ThreadsView: View {
 private struct ThreadDetailView: View { let id: UUID; var body: some View { VStack(alignment: .leading) { Text("Thread").font(.title); Text(id.uuidString).font(.caption); Text("No messages loaded") }.padding() } }
 private struct SettingsView: View { var body: some View { Form { Section("Connection") { Text("Runtime and deployment settings are managed by the core library.").foregroundStyle(.secondary) } }.navigationTitle("Settings") } }
 
+@MainActor
 public struct MilaNativeApp: App {
     private let adapter: any MilaFFIAdapter
     public init(adapter: any MilaFFIAdapter = UnavailableMilaFFIAdapter()) { self.adapter = adapter }

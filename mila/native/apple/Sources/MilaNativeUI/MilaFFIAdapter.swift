@@ -20,15 +20,19 @@ public enum MilaRouteParser {
         guard let url = URL(string: value), url.scheme == "overalls",
               url.user == nil, url.fragment == nil, url.query == nil else { return nil }
         let parts = url.pathComponents.filter { $0 != "/" }
-        switch (url.host?.lowercased(), parts) {
-        case ("machines", []): return .machines
-        case ("machines", [let id]) where UUID(uuidString: id) != nil:
-            return .machine(id: UUID(uuidString: id)!)
-        case ("threads", []): return .threads
-        case ("threads", [let id]) where UUID(uuidString: id) != nil:
-            return .thread(id: UUID(uuidString: id)!)
-        case ("settings", []): return .settings
-        default: return nil
+        switch url.host?.lowercased() {
+        case "machines":
+            guard let id = parts.first else { return .machines }
+            guard parts.count == 1, let uuid = UUID(uuidString: id) else { return nil }
+            return .machine(id: uuid)
+        case "threads":
+            guard let id = parts.first else { return .threads }
+            guard parts.count == 1, let uuid = UUID(uuidString: id) else { return nil }
+            return .thread(id: uuid)
+        case "settings":
+            return parts.isEmpty ? .settings : nil
+        default:
+            return nil
         }
     }
 }
