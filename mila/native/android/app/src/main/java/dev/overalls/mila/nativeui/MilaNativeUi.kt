@@ -67,8 +67,22 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
             is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
             MilaRoute.Settings -> Detail("Settings", "Runtime settings are managed by the core library.")
         }
+        if (route == MilaRoute.Machines) TerminalControls(adapter)
     }
     LaunchedEffect(Unit) { refresh() }
+}
+
+@Composable private fun TerminalControls(adapter: MilaFfiAdapter) {
+    var result by remember { mutableStateOf("Terminal idle") }
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text("Terminal", style = MaterialTheme.typography.titleMedium)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button({ result = if (adapter.terminalAttach(0, 80, 24, true).isSuccess) "Attached" else "Attach rejected" }) { Text("Attach") }
+            Button({ result = if (adapter.terminalInput(0, true).isSuccess) "Input ready" else "Input rejected" }) { Text("Input") }
+            Button({ result = if (adapter.terminalResize(80, 24, true).isSuccess) "Resized" else "Resize rejected" }) { Text("Resize") }
+        }
+        Text(result, style = MaterialTheme.typography.labelSmall)
+    }
 }
 
 @Composable private fun MachineList(adapter: MilaFfiAdapter, status: String, listing: MilaSessionListing?) {

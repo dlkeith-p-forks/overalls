@@ -77,6 +77,9 @@ interface MilaFfiAdapter {
     suspend fun call(request: MilaFfiRequest): MilaFfiResult
     fun threadCommandKind(value: String): Result<MilaThreadCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun machineCommandKind(value: String): Result<MilaMachineCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
+    fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))
+    fun terminalInput(length: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))
+    fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))
 }
 
 /** Explicit placeholder until generated Rust bindings are linked by the host app. */
@@ -97,6 +100,9 @@ interface MilaRustBindings {
     /** Returns the closed Rust thread-command tag, or -1 for an unknown command. */
     fun threadCommandKind(value: String): Int
     fun machineCommandKind(value: String): Int
+    fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Int
+    fun terminalInput(length: Int, readWrite: Boolean): Int
+    fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Int
 }
 
 /** JNI entry points backed by the stable `mila-ffi` C ABI in the host application. */
@@ -137,6 +143,10 @@ internal object MilaRustFfi : MilaRustBindings {
         return nativeMachineCommandKind(value)
     }
 
+    override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Int = nativeTerminalAttach(from, columns, rows, readWrite)
+    override fun terminalInput(length: Int, readWrite: Boolean): Int = nativeTerminalInput(length, readWrite)
+    override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Int = nativeTerminalResize(columns, rows, readWrite)
+
     @JvmStatic
     external fun nativeAbiVersion(): Int
 
@@ -160,6 +170,9 @@ internal object MilaRustFfi : MilaRustBindings {
     external fun nativeThreadCommandKind(value: String): Int
     @JvmStatic
     external fun nativeMachineCommandKind(value: String): Int
+    @JvmStatic external fun nativeTerminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Int
+    @JvmStatic external fun nativeTerminalInput(length: Int, readWrite: Boolean): Int
+    @JvmStatic external fun nativeTerminalResize(columns: Int, rows: Int, readWrite: Boolean): Int
 }
 
 /** Opaque, one-shot authority for a live Rust session. */
@@ -203,6 +216,12 @@ class LinkedMilaFfiAdapter(
         MilaMachineCommand.fromTag(bindings.machineCommandKind(value))
             ?: throw IllegalArgumentException("unknown machine command")
     }
+
+    override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = status(bindings.terminalAttach(from, columns, rows, readWrite))
+    override fun terminalInput(length: Int, readWrite: Boolean): Result<Unit> = status(bindings.terminalInput(length, readWrite))
+    override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = status(bindings.terminalResize(columns, rows, readWrite))
+
+    private fun status(value: Int): Result<Unit> = if (value == 0) Result.success(Unit) else Result.failure(IllegalArgumentException("terminal operation rejected"))
 }
 
 enum class MilaThreadCommand(val tag: Int) {
