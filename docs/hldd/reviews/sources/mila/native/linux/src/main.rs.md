@@ -1,6 +1,6 @@
 ---
-digest: c896e60d3e505adad19aaef0e393db39408c3e3ac947b31499f313cb3b0ab261
-disposition: no-impact
+digest: 4940be6be32e448bb4427859da07a46305c253d08590a408c553961aa5148f7e
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/main.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux native web endpoint controls remain within existing Rust command policy and native UI evidence; bounded web show/set validation adds no new documented domain or deployment behavior.
+Centralized Mila locale policy and deterministic catalog generation; native shells now consume stable localized message identities with shared fallback behavior.

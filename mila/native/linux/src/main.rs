@@ -6,6 +6,7 @@ use mila_native_linux::adapter::{
 };
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
+mod strings;
 const APPLICATION_ID: &str = "dev.overalls.Mila.Linux";
 #[derive(Clone)]
 struct NativeState {
@@ -28,12 +29,12 @@ impl NativeState {
         root.set_margin_bottom(24);
         root.set_margin_start(24);
         root.set_margin_end(24);
-        let title = Label::new(Some("Mila"));
+        let title = Label::new(Some(strings::text(strings::Message::AppName)));
         title.set_halign(Align::Start);
         title.add_css_class("title-1");
         root.append(&title);
         let nav = Box::new(Orientation::Horizontal, 8);
-        let content = Label::new(Some("Ready"));
+        let content = Label::new(Some(strings::text(strings::Message::Ready)));
         content.set_wrap(true);
         content.set_halign(Align::Start);
         *self.status.borrow_mut() = Some(content.clone());

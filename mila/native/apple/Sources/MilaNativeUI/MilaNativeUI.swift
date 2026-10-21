@@ -15,10 +15,10 @@ public struct MilaNativeRootView: View {
     public var body: some View {
         NavigationSplitView {
             List(selection: $selection) {
-                Label("Machines", systemImage: "desktopcomputer").tag(MilaRoute.machines)
-                Label("Threads", systemImage: "bubble.left.and.bubble.right").tag(MilaRoute.threads)
-                Label("Settings", systemImage: "gearshape").tag(MilaRoute.settings)
-            }.navigationTitle("Mila")
+                Label(MilaStrings.text(.machines), systemImage: "desktopcomputer").tag(MilaRoute.machines)
+                Label(MilaStrings.text(.threads), systemImage: "bubble.left.and.bubble.right").tag(MilaRoute.threads)
+                Label(MilaStrings.text(.settings), systemImage: "gearshape").tag(MilaRoute.settings)
+            }.navigationTitle(MilaStrings.text(.appName))
         } detail: {
             Group {
                 switch selection {
@@ -29,7 +29,7 @@ public struct MilaNativeRootView: View {
                 case .settings: SettingsView()
                 }
             }
-            .toolbar { ToolbarItem { Button("Refresh") { Task { await refresh() } } } }
+            .toolbar { ToolbarItem { Button(MilaStrings.text(.refresh)) { Task { await refresh() } } } }
             .safeAreaInset(edge: .bottom) { Text(status).font(.caption).foregroundStyle(.secondary).padding(4) }
         }.task { await refresh() }
     }

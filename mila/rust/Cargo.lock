@@ -1171,6 +1171,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "mila-localization"
+version = "0.1.0"
+dependencies = [
+ "hegeltest",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+]
+
+[[package]]
 name = "mila-model"
 version = "0.1.0"
 dependencies = [

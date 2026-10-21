@@ -1,6 +1,6 @@
 ---
-digest: 48046078db754d2932c3739294b995e3635b63d70753ab997573551394e189b5
-disposition: no-impact
+digest: 84c7fa342f6ae3789b8ef6da0685c5184f2978324e5cbadc67128f39acbf5cda
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaNativeUi.kt
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Typed Android session UI state preserves documented native session behavior; no handbook chapter changes required.
+Centralized Mila locale policy and deterministic catalog generation; native shells now consume stable localized message identities with shared fallback behavior.

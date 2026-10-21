@@ -64,19 +64,19 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         connection = MilaSessionRefresher.refresh(adapter)
     } }
     val status = when (connection) {
-        MilaSessionConnection.Idle -> "Ready"
-        MilaSessionConnection.Refreshing -> "Connecting…"
-        is MilaSessionConnection.Connected -> "Connected"
-        is MilaSessionConnection.Failed -> "Native runtime unavailable"
+        MilaSessionConnection.Idle -> MilaStrings.text(MilaMessage.Ready)
+        MilaSessionConnection.Refreshing -> MilaStrings.text(MilaMessage.Connecting)
+        is MilaSessionConnection.Connected -> MilaStrings.text(MilaMessage.Connected)
+        is MilaSessionConnection.Failed -> MilaStrings.text(MilaMessage.RuntimeUnavailable)
     }
     val listing = (connection as? MilaSessionConnection.Connected)?.listing
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text("Mila", style = MaterialTheme.typography.headlineSmall)
+        Text(MilaStrings.text(MilaMessage.AppName), style = MaterialTheme.typography.headlineSmall)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button({ route = MilaRoute.Machines }) { Text("Machines") }
-            Button({ route = MilaRoute.Threads }) { Text("Threads") }
-            Button({ route = MilaRoute.Settings }) { Text("Settings") }
-            Button(::refresh) { Text("Refresh") }
+            Button({ route = MilaRoute.Machines }) { Text(MilaStrings.text(MilaMessage.Machines)) }
+            Button({ route = MilaRoute.Threads }) { Text(MilaStrings.text(MilaMessage.Threads)) }
+            Button({ route = MilaRoute.Settings }) { Text(MilaStrings.text(MilaMessage.Settings)) }
+            Button(::refresh) { Text(MilaStrings.text(MilaMessage.Refresh)) }
         }
         Text(status, style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
@@ -119,7 +119,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
                 }
             }
         }
-        Text(classified?.name ?: "No action selected", style = MaterialTheme.typography.labelSmall)
+        Text(classified?.name ?: MilaStrings.text(MilaMessage.NoAction), style = MaterialTheme.typography.labelSmall)
     }
 }
 @Composable private fun ThreadList(adapter: MilaFfiAdapter) {

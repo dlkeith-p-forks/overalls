@@ -1,0 +1,15 @@
+[package]
+name = "mila-localization"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+description = "Shared typed locale policy and deterministic catalog primitives for Mila native clients"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+hegeltest.workspace = true

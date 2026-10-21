@@ -1,5 +1,5 @@
 ---
-digest: 7f8ee567b4e2911955739cae06149234cb2b2513805a02303a63b803511dc517
+digest: 60ba0421d7863e7b681a1ba1f46423a45d7e44fea3a7443b60b9da2b86aef1c9
 disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Centralized Mila locale policy and deterministic catalog generation; native shells now consume stable localized message identities with shared fallback behavior.

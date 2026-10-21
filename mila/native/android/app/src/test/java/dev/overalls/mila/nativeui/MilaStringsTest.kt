@@ -1,0 +1,11 @@
+package dev.overalls.mila.nativeui
+
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+class MilaStringsTest {
+    @Test fun stableMessageIdentityHasDeterministicFallback() {
+        assertEquals("Mila", MilaStrings.text(MilaMessage.AppName))
+        assertEquals("Machines", MilaStrings.text(MilaMessage.Machines))
+    }
+}
