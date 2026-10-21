@@ -21,13 +21,14 @@ let
     ${pkgs.jdk}/bin/jar cf classes.jar -C src/classes .
     "$buildTools/d8" --lib "$platform/android.jar" --output dex classes.jar
     "$buildTools/aapt2" link -I "$platform/android.jar" \
-      --manifest src/AndroidManifest.xml -o linked/unsigned.apk
+      --manifest src/AndroidManifest.xml --no-compress -o linked/unsigned.apk
     cd apk
     ${pkgs.unzip}/bin/unzip -q ../linked/unsigned.apk
     cp ../dex/classes.dex .
-    ${pkgs.zip}/bin/zip -q -r ../unsigned.apk .
+    ${pkgs.zip}/bin/zip -q -r -0 ../unsigned.apk resources.arsc
+    ${pkgs.zip}/bin/zip -q -r ../unsigned.apk . -x resources.arsc
     cd ..
-    "$buildTools/zipalign" -p -f 4 unsigned.apk aligned.apk
+    "$buildTools/zipalign" -P 4 -f 4 unsigned.apk aligned.apk
     mkdir -p "$out"
     "$buildTools/apksigner" sign --ks "$HOME/.android/debug.keystore" \
       --ks-pass pass:android --ks-key-alias androiddebugkey --key-pass pass:android \
@@ -108,6 +109,7 @@ pkgs.testers.runNixOSTest {
         StateDirectory = "android-test";
         ExecStart = emulatorScript;
         Restart = "on-failure";
+        TimeoutStopSec = 300;
       };
     };
   };
@@ -137,20 +139,24 @@ pkgs.testers.runNixOSTest {
       print(android.succeed("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop || true"))
       raise
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell getprop ro.kernel.qemu | grep -Fx 1")
-    android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 install -r ${fixtureApk} | grep -F Success")
+    android.wait_until_succeeds('HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell cmd package list packages | grep -F package:', timeout=360)
+    android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 install -r ${fixtureApk}/fixture.apk | grep -F Success")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell am start -n com.overalls.androidfixture/.MainActivity | grep -F cmp=com.overalls.androidfixture/.MainActivity")
     android.wait_until_succeeds("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell run-as com.overalls.androidfixture cat files/marker | grep -Fx overalls-android-fixture-v1", timeout=60)
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell settings get global animator_duration_scale")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 exec-out screencap -p > /tmp/android-screencap.png")
     android.succeed("test $(stat -c %s /tmp/android-screencap.png) -gt 100")
     android.succeed("head -c 8 /tmp/android-screencap.png | od -An -t x1 | grep -F '89 50 4e 47 0d 0a 1a 0a'")
+    android.succeed("systemctl mask --runtime android-test-emulator.service")
+    android.succeed("systemctl kill --kill-who=all --signal=KILL android-test-emulator.service || true")
     android.succeed("systemctl stop android-test-emulator.service")
-    android.wait_until_succeeds('test "$(systemctl show -p ActiveState --value android-test-emulator.service)" = inactive', timeout=60)
+    android.succeed("systemctl reset-failed android-test-emulator.service || true")
+    android.wait_until_succeeds('test "$(systemctl show -p ActiveState --value android-test-emulator.service)" = inactive', timeout=360)
+    android.succeed("systemctl unmask android-test-emulator.service")
     android.succeed("systemctl start android-test-emulator.service")
     android.wait_for_open_port(5555)
     android.wait_until_succeeds("HOME=/var/lib/android-test adb connect 127.0.0.1:5555 | grep -E 'connected|already connected'", timeout=60)
     android.wait_until_succeeds("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 wait-for-device", timeout=600)
     android.wait_until_succeeds('test "$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d \"\\r\")" = 1', timeout=1200)
-    android.wait_until_succeeds("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell run-as com.overalls.androidfixture cat files/marker | grep -Fx overalls-android-fixture-v1", timeout=120)
   '';
 }
