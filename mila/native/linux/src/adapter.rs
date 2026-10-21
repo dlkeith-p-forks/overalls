@@ -153,6 +153,41 @@ pub fn format_web_command(
         .map_err(|_| RuntimeError::InvalidInput)
 }
 
+/// Validates Linux push registration metadata through the shared Rust policy.
+/// Token material is accepted only for the duration of this call and never
+/// returned to GTK or retained by the adapter.
+pub fn validate_push_registration(
+    provider: u8,
+    production: bool,
+    token: &str,
+    app_id: &str,
+    deployment: &str,
+    endpoint: Option<&str>,
+) -> Result<(), RuntimeError> {
+    let token = CString::new(token).map_err(|_| RuntimeError::InvalidInput)?;
+    let app_id = CString::new(app_id).map_err(|_| RuntimeError::InvalidInput)?;
+    let deployment = CString::new(deployment).map_err(|_| RuntimeError::InvalidInput)?;
+    let endpoint = endpoint
+        .map(CString::new)
+        .transpose()
+        .map_err(|_| RuntimeError::InvalidInput)?;
+    let status = unsafe {
+        mila_ffi::mila_push_registration_validate(
+            provider,
+            u8::from(production),
+            token.as_ptr(),
+            app_id.as_ptr(),
+            deployment.as_ptr(),
+            endpoint
+                .as_ref()
+                .map_or(std::ptr::null(), |value| value.as_ptr()),
+        )
+    };
+    (status == mila_ffi::MilaFfiStatus::Ok)
+        .then_some(())
+        .ok_or(RuntimeError::InvalidInput)
+}
+
 /// Decode a Rust-owned live listing before it reaches GTK. Linux uses the same
 /// bounded session decoder as the other native clients, so malformed authority
 /// or pagination data cannot become UI state.
@@ -283,6 +318,22 @@ mod web_tests {
             format_web_command("set", MACHINE, Some(8080), true, Some(REQUEST)).unwrap(),
             format!("web set {MACHINE} --json --port=8080 --public --request-id={REQUEST}")
         );
+    }
+
+    #[test]
+    fn push_registration_requires_provider_specific_metadata() {
+        assert!(validate_push_registration(0, false, "token", "app", "mila.example", None).is_ok());
+        assert!(validate_push_registration(2, true, "token", "app", "mila.example", None).is_err());
+        assert!(validate_push_registration(
+            2,
+            true,
+            "token",
+            "app",
+            "mila.example",
+            Some("https://push.example/channel")
+        )
+        .is_ok());
+        assert!(validate_push_registration(9, true, "token", "app", "mila.example", None).is_err());
     }
 }
 
