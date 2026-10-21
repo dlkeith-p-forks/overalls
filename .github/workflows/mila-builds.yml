@@ -71,6 +71,12 @@ jobs:
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           install-devenv: "false"
+      - name: Validate shared localization catalogs
+        run: |
+          python3 -m unittest mila/localization/test_generate_catalogs.py
+          python3 mila/localization/generate_catalogs.py \
+            --source marshall/priv/gettext \
+            --output "$RUNNER_TEMP/mila-localization"
       - name: Build the source bundle
         run: |
           nix build -L .#tool-mila-source-bundle --out-link bundle
