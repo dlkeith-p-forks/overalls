@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import MilaFFIShim
 
 /// Lifecycle states for a bounded native terminal attachment.
@@ -75,7 +76,7 @@ public final class MilaTerminalController: ObservableObject {
     public func sendInput(_ input: Data) async {
         guard state == .attached else { state = .failed; return }
         let permission: UInt8 = 1
-        guard mila_terminal_input_validate(input.count, permission) == MILA_FFI_OK else {
+        guard mila_terminal_input_validate(input.count, permission).rawValue == 0 else {
             state = .failed; return
         }
         do { try await transport.sendInput(input) } catch { state = .failed }
@@ -83,7 +84,7 @@ public final class MilaTerminalController: ObservableObject {
 
     public func resize(columns: UInt16, rows: UInt16) async {
         guard state == .attached,
-              mila_terminal_resize_validate(columns, rows, 1) == MILA_FFI_OK else { state = .failed; return }
+              mila_terminal_resize_validate(columns, rows, 1).rawValue == 0 else { state = .failed; return }
         do { try await transport.resize(columns: columns, rows: rows); self.columns = columns; self.rows = rows }
         catch { state = .failed }
     }
@@ -99,6 +100,6 @@ public final class MilaTerminalController: ObservableObject {
     }
 
     private func validateAttach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) -> Bool {
-        mila_terminal_attach_validate(from, columns, rows, readWrite ? 1 : 0) == MILA_FFI_OK
+        mila_terminal_attach_validate(from, columns, rows, readWrite ? 1 : 0).rawValue == 0
     }
 }
