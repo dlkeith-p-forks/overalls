@@ -228,13 +228,22 @@ jobs:
         run: |
           dart run bin/mila_build.dart windows dev
           if ($LASTEXITCODE -ne 0) { throw "mila-build windows dev failed" }
+      - name: Build Rust Windows FFI
+        working-directory: ${{ env.MILA_ROOT }}
+        run: |
+          cargo build --manifest-path mila/rust/Cargo.toml -p mila-ffi --release
+          if ($LASTEXITCODE -ne 0) { throw "Rust FFI build failed" }
       - name: Native WinUI build (.NET 10)
         working-directory: ${{ env.MILA_ROOT }}/mila/windows-dotnet
         run: |
           dotnet restore
           dotnet --version
           if (-not (dotnet --version).StartsWith("10.")) { throw "Mila requires the latest .NET 10 SDK" }
-          dotnet build --configuration Release --no-restore
+          $ffi = Join-Path $env:MILA_ROOT "mila/rust/target/release/mila_ffi.dll"
+          if (-not (Test-Path $ffi)) { throw "Rust FFI DLL was not built: $ffi" }
+          dotnet build --configuration Release --no-restore -p:MilaNativeDll=$ffi
+          $staged = Join-Path $env:MILA_ROOT "mila/windows-dotnet/bin/Release/net10.0-windows10.0.19041.0/win-x64/mila_native.dll"
+          if (-not (Test-Path $staged)) { throw "Native DLL was not staged beside WinUI executable" }
       - uses: actions/upload-artifact@v4
         with:
           name: mila-windows-dev
@@ -247,6 +256,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - name: Build Rust Windows FFI
+        run: cargo build --manifest-path mila/rust/Cargo.toml -p mila-ffi --release
       - name: Build native WinUI client (.NET 10)
         working-directory: mila/windows-dotnet
         shell: pwsh
@@ -254,7 +265,9 @@ jobs:
           dotnet restore
           $version = dotnet --version
           if (-not $version.StartsWith("10.")) { throw "Mila requires the latest .NET 10 SDK, found $version" }
-          dotnet build --configuration Release --no-restore
+          $ffi = Join-Path $env:GITHUB_WORKSPACE "mila/rust/target/release/mila_ffi.dll"
+          if (-not (Test-Path $ffi)) { throw "Rust FFI DLL was not built: $ffi" }
+          dotnet build --configuration Release --no-restore -p:MilaNativeDll=$ffi
 
   linux-native:
     runs-on: ubuntu-24.04

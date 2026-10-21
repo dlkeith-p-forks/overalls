@@ -1,5 +1,5 @@
 ---
-digest: aa7d4a73fa22d9552462052e7cc12bbb8451b5a6d44c001e210ae2d4446591c1
+digest: d76985e6dfb63f0e771c26e1642aebbd99a75ea705b2dbecef6bbbdb6d89071f
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Session command and machine action FFI additions keep the Rust-core typed boundary and add bounded native capability without changing the documented platform architecture.
+Windows DLL staging and Rust terminal lifecycle state add native implementation evidence within ADR-0249 without changing documented architecture or protocol.

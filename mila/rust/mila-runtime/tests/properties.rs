@@ -3,8 +3,22 @@ use mila_runtime::{
     AppLock, LockAvailability, LockDelay, LockEvent, LockPhase, MachineSnapshot, SnapshotMachine,
     MAX_SNAPSHOT_BYTES,
 };
+use mila_runtime::{AttachOutcome, AttachPhase, TerminalAttach};
 use mila_runtime::{PokeEnvelope, RuntimeError, SnapshotStore};
 use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
+
+#[hegel::test(test_cases = 64)]
+fn terminal_output_never_advances_before_connection(tc: TestCase) {
+    let generation = tc.draw(gs::default::<u32>());
+    let bytes = tc.draw(gs::default::<u8>());
+    let mut state = TerminalAttach::initial();
+    assert!(!state.output(generation, bytes as usize));
+    assert_eq!(state.phase, AttachPhase::Idle);
+    assert!(state.request());
+    assert!(state.connected(state.generation, 0));
+    assert!(state.output(state.generation, bytes as usize));
+    assert!(state.ended(state.generation, AttachOutcome::Closed));
+}
 
 #[derive(Default)]
 struct MemoryStore {
