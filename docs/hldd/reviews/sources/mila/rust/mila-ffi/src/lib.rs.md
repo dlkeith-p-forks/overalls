@@ -1,18 +1,18 @@
 ---
-digest: 8a613a42df924dfa1a294b4f3e786cbe8c6c72a20aa815672aec6ffa0ddfab84
-disposition: updated
+digest: 1096800f82618b4497d69e234c1266be1a257d05b42a1f5b2ae68c54206164d0
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-ffi/src/lib.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 4dceafb03617f6902484fe6a4fa59cd80eb6c7e1e53e4f3e128e8fc2dd7f872f
+  marshall/priv/hldd/08-interactive.md: 708f68ebea9699d639165e9828b0854a594fb031ced43485da040f42c339f470
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 70a890201542303c5e959f703f2ed7304fa2c9160682226780d6a6b0760be345
-  marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+  marshall/priv/hldd/19-coverage.md: c5a1bad02070018de2d0bf83b14bdb9770b44bbd4034f30a38c9041d59979757
+  marshall/priv/hldd/20-security.md: 995648da5f0c6af5caff1d1fdecb7147b9b8f91d9dd8f973f37447c122298348
   marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
   marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-Added live session FFI contract, callback custody boundary, bounded handle/read behavior and loopback evidence
+Reviewed Android JNI live-session binding; chapter text already documents this native Rust boundary and no chapter change is required.

@@ -1,18 +1,18 @@
 ---
-digest: 5a3318527bffee1c484e78b12cba67f23bdb6d0ba47541271a0a0aba4d578a4e
+digest: 49bd9bc0c02d7b52fb33697b51e7fae0b20ee2351f6264d34dae1595ec646a30
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaFfiAdapter.kt
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
+  marshall/priv/hldd/08-interactive.md: 708f68ebea9699d639165e9828b0854a594fb031ced43485da040f42c339f470
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
-  marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+  marshall/priv/hldd/19-coverage.md: c5a1bad02070018de2d0bf83b14bdb9770b44bbd4034f30a38c9041d59979757
+  marshall/priv/hldd/20-security.md: 995648da5f0c6af5caff1d1fdecb7147b9b8f91d9dd8f973f37447c122298348
   marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
   marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-Reviewed native FFI and UI parity slice; bounded Rust policy remains authoritative and platform wrappers expose validated summaries only.
+Reviewed Android JNI live-session binding; chapter text already documents this native Rust boundary and no chapter change is required.

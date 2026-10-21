@@ -91,6 +91,7 @@ interface MilaRustBindings {
     fun canonicalRoute(value: String): String?
     /** Returns the closed machine-action bit mask, or null for invalid input. */
     fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int?
+    fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle?
 }
 
 /** JNI entry points backed by the stable `mila-ffi` C ABI in the host application. */
@@ -116,6 +117,11 @@ internal object MilaRustFfi : MilaRustBindings {
         return value.takeUnless { it < 0 }
     }
 
+    override fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle? {
+        check(loaded) { "mila_ffi is unavailable" }
+        return nativeSessionConnect(trust, host, publicKey, port, timeoutMs, signer)?.let(::MilaSessionHandle)
+    }
+
     @JvmStatic
     external fun nativeAbiVersion(): Int
 
@@ -124,6 +130,26 @@ internal object MilaRustFfi : MilaRustBindings {
 
     @JvmStatic
     external fun nativeMachineActions(snapshot: ByteArray, host: String, port: Int, hasPort: Boolean, index: Int): Int
+
+    @JvmStatic
+    external fun nativeSessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): Long?
+    @JvmStatic
+    external fun nativeSessionRead(handle: Long, more: Boolean): Int
+    @JvmStatic
+    external fun nativeSessionListing(handle: Long): ByteArray?
+    @JvmStatic
+    external fun nativeSessionSnapshot(handle: Long): ByteArray?
+    @JvmStatic
+    external fun nativeSessionClose(handle: Long): Int
+}
+
+/** Opaque, one-shot authority for a live Rust session. */
+class MilaSessionHandle internal constructor(private val nativeHandle: Long) : AutoCloseable {
+    private var closed = false
+    @Synchronized fun readMachines(more: Boolean = false): Int { check(!closed); return MilaRustFfi.nativeSessionRead(nativeHandle, more) }
+    @Synchronized fun listing(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionListing(nativeHandle) ?: error("listing unavailable") }
+    @Synchronized fun snapshot(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionSnapshot(nativeHandle) ?: error("snapshot unavailable") }
+    @Synchronized override fun close() { if (!closed) { MilaRustFfi.nativeSessionClose(nativeHandle); closed = true } }
 }
 
 /** Typed Android adapter. Native linkage is lazy so the UI remains testable without a device. */

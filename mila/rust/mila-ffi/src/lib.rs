@@ -470,6 +470,180 @@ pub unsafe extern "C" fn mila_snapshot_machine_actions(
     MilaFfiStatus::Ok
 }
 
+/// JNI bridge for the bounded live-session ABI. The signer object is held only for
+/// the synchronous connect call and must expose `sign(byte[]) -> byte[]`.
+struct AndroidSigner {
+    vm: jni::JavaVM,
+    signer: jni::objects::GlobalRef,
+}
+unsafe extern "C" fn android_sign(
+    context: usize,
+    message: *const u8,
+    length: usize,
+    output: *mut u8,
+) -> i32 {
+    let state = &*(context as *const AndroidSigner);
+    let mut env = match state.vm.attach_current_thread() {
+        Ok(v) => v,
+        Err(_) => return -1,
+    };
+    let bytes = if message.is_null() || output.is_null() || length == 0 || length > 65_536 {
+        return -1;
+    } else {
+        std::slice::from_raw_parts(message, length)
+    };
+    let input = match env.byte_array_from_slice(bytes) {
+        Ok(v) => v,
+        Err(_) => return -1,
+    };
+    let value = match env.call_method(
+        &state.signer,
+        "sign",
+        "([B)[B",
+        &[jni::objects::JValue::Object(&input.into())],
+    ) {
+        Ok(v) => v,
+        Err(_) => return -1,
+    };
+    let object = match value.l() {
+        Ok(v) => v,
+        Err(_) => return -1,
+    };
+    let array = jni::objects::JByteArray::from(object);
+    let signature = match env.convert_byte_array(array) {
+        Ok(v) if v.len() == 64 => v,
+        _ => return -1,
+    };
+    std::ptr::copy_nonoverlapping(signature.as_ptr(), output, 64);
+    0
+}
+
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionConnect(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    trust: jni::objects::JByteArray<'_>,
+    host: jni::objects::JString<'_>,
+    public_key: jni::objects::JString<'_>,
+    port: jni::sys::jint,
+    timeout_ms: jni::sys::jint,
+    signer: jni::objects::JObject<'_>,
+) -> jni::sys::jlong {
+    if port <= 0 || port > u16::MAX as i32 || timeout_ms <= 0 {
+        return 0;
+    }
+    let trust = match env.convert_byte_array(trust) {
+        Ok(v) => v,
+        Err(_) => return 0,
+    };
+    let host = match env.get_string(&host) {
+        Ok(v) => v.to_bytes().to_vec(),
+        Err(_) => return 0,
+    };
+    let public_key = match env.get_string(&public_key) {
+        Ok(v) => v.to_bytes().to_vec(),
+        Err(_) => return 0,
+    };
+    let global = match env.new_global_ref(signer) {
+        Ok(v) => v,
+        Err(_) => return 0,
+    };
+    let vm = match env.get_java_vm() {
+        Ok(v) => v,
+        Err(_) => return 0,
+    };
+    let state = Box::new(AndroidSigner { vm, signer: global });
+    let context = Box::into_raw(state) as usize;
+    let mut handle = 0u64;
+    let status = unsafe {
+        session::mila_session_connect(
+            trust.as_ptr(),
+            trust.len(),
+            host.as_ptr(),
+            host.len(),
+            public_key.as_ptr(),
+            public_key.len(),
+            port as u16,
+            timeout_ms as u32,
+            Some(android_sign),
+            context,
+            &mut handle,
+        )
+    };
+    unsafe {
+        drop(Box::from_raw(context as *mut AndroidSigner));
+    }
+    if status == session::SessionStatus::Ok {
+        handle as jni::sys::jlong
+    } else {
+        0
+    }
+}
+
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionRead(
+    _env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+    more: jni::sys::jboolean,
+) -> jni::sys::jint {
+    session::mila_session_read_machines(handle as u64, more) as jni::sys::jint
+}
+
+fn session_copy(env: &mut jni::JNIEnv<'_>, handle: u64, snapshot: bool) -> jni::sys::jbyteArray {
+    let mut size = 0usize;
+    let status = unsafe {
+        if snapshot {
+            session::mila_session_snapshot(handle, 0, std::ptr::null_mut(), 0, &mut size)
+        } else {
+            session::mila_session_listing(handle, std::ptr::null_mut(), 0, &mut size)
+        }
+    };
+    if status != session::SessionStatus::SmallBuffer || size == 0 || size > 8 * 1024 * 1024 {
+        return std::ptr::null_mut();
+    }
+    let mut data = vec![0u8; size];
+    let status = unsafe {
+        if snapshot {
+            session::mila_session_snapshot(handle, 0, data.as_mut_ptr(), size, &mut size)
+        } else {
+            session::mila_session_listing(handle, data.as_mut_ptr(), size, &mut size)
+        }
+    };
+    if status != session::SessionStatus::Ok {
+        return std::ptr::null_mut();
+    }
+    match env.byte_array_from_slice(&data[..size]) {
+        Ok(v) => v.into_raw(),
+        Err(_) => std::ptr::null_mut(),
+    }
+}
+
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionListing(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+) -> jni::sys::jbyteArray {
+    session_copy(&mut env, handle as u64, false)
+}
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionSnapshot(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+) -> jni::sys::jbyteArray {
+    session_copy(&mut env, handle as u64, true)
+}
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionClose(
+    _env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+) -> jni::sys::jint {
+    session::mila_session_close(handle as u64) as jni::sys::jint
+}
+
 /// JNI ABI version for the Android native client.
 #[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeAbiVersion(
