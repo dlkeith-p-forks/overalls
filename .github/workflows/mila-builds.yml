@@ -325,6 +325,7 @@ jobs:
       - name: Install cargo-ndk
         run: cargo install cargo-ndk --locked
       - name: Assemble native Compose APK
+        timeout-minutes: 20
         working-directory: mila/native/android
         run: gradle --no-daemon --stacktrace assembleDebug assembleDebugAndroidTest testDebugUnitTest
       - name: Invoke packaged Rust JNI on Android
