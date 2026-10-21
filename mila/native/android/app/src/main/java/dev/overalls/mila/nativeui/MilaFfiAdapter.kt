@@ -75,6 +75,7 @@ sealed interface MilaFfiResult {
  */
 interface MilaFfiAdapter {
     suspend fun call(request: MilaFfiRequest): MilaFfiResult
+    fun threadCommandKind(value: String): Result<MilaThreadCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
 }
 
 /** Explicit placeholder until generated Rust bindings are linked by the host app. */

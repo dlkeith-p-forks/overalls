@@ -40,7 +40,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         when (val selected = route) {
             MilaRoute.Machines -> MachineList(status, listing)
             is MilaRoute.Machine -> Detail("Machine", selected.id.toString())
-            MilaRoute.Threads -> ThreadList()
+            MilaRoute.Threads -> ThreadList(adapter)
             is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
             MilaRoute.Settings -> Detail("Settings", "Runtime settings are managed by the core library.")
         }
@@ -54,7 +54,16 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         listing?.machines?.forEach { machine -> Text("${machine.name} · ${machine.status}", style = MaterialTheme.typography.bodyMedium) }
     }
 }
-@Composable private fun ThreadList() {
-    Text("No validated thread snapshot loaded.", style = MaterialTheme.typography.bodyMedium)
+@Composable private fun ThreadList(adapter: MilaFfiAdapter) {
+    var classified by remember { mutableStateOf<MilaThreadCommand?>(null) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("Thread commands", style = MaterialTheme.typography.titleLarge)
+        Text("Commands are classified by Rust before execution.", style = MaterialTheme.typography.bodyMedium)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button({ classified = adapter.threadCommandKind("thread ls").getOrNull() }) { Text("List") }
+            Button({ classified = adapter.threadCommandKind("thread read").getOrNull() }) { Text("Read") }
+        }
+        Text(classified?.name ?: "No command selected", style = MaterialTheme.typography.bodyMedium)
+    }
 }
 @Composable private fun Detail(title: String, value: String) { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) { Text(title, style = MaterialTheme.typography.titleLarge); Text(value, style = MaterialTheme.typography.bodyMedium) } }
