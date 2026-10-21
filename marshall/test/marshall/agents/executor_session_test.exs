@@ -288,6 +288,529 @@ defmodule Marshall.Agents.ExecutorSessionTest do
     assert length(Ledger.read!(AuditEvent, target_id: command.id)) == 1
   end
 
+  for tool <- [:thread] do
+    test "guest claims leave #{tool} commands queued", c do
+      {:ok, executor} = ExecutorSession.register(c.binding)
+      command = internal_command(c, unquote(tool), %{"operation" => "download"})
+      assert {:ok, nil} = ExecutorSession.claim(c.binding, executor.id, executor.fence_epoch)
+      assert [%{status: :queued, executor_id: nil}] = Ledger.read!(Command, id: command.id)
+    end
+  end
+
+  test "capable guest claims upload commands while server worker leaves them queued", c do
+    {:ok, executor} = ExecutorSession.register(c.binding, nil, ["attachments-v1"])
+
+    command =
+      internal_command(c, :attachment, %{
+        "operation" => "upload",
+        "thread_id" => Ecto.UUID.generate(),
+        "idempotency_key" => "guest",
+        "path" => "/tmp/input"
+      })
+
+    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
+    _ = :sys.get_state(worker)
+    assert [%{status: :queued}] = Ledger.read!(Command, id: command.id)
+    id = command.id
+
+    assert {:ok, %{id: ^id, status: :claimed}} =
+             ExecutorSession.claim(c.binding, executor.id, executor.fence_epoch)
+  end
+
+  test "capable guest claims downloads while server worker leaves them queued", c do
+    {:ok, executor} = ExecutorSession.register(c.binding, nil, ["attachments-v1"])
+
+    command =
+      internal_command(c, :attachment, %{
+        "operation" => "download",
+        "attachment_id" => Ecto.UUID.generate(),
+        "path" => "/tmp/output"
+      })
+
+    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
+    _ = :sys.get_state(worker)
+    assert [%{status: :queued}] = Ledger.read!(Command, id: command.id)
+    id = command.id
+
+    assert {:ok, %{id: ^id, status: :claimed}} =
+             ExecutorSession.claim(c.binding, executor.id, executor.fence_epoch)
+  end
+
+  test "guest upload requires a current started command and retains metadata only", c do
+    {:ok, target_thread} =
+      Marshall.Threads.create_thread(
+        %{
+          objective: "Attachment integration test",
+          mode: :medium,
+          machine_spec: %{
+            architecture: :x86_64,
+            profile: :standard,
+            image_id: "sha256:" <> String.duplicate("a", 64),
+            vcpu: 2,
+            memory_bytes: 4_294_967_296,
+            disk_bytes: 42_949_672_960,
+            team_id: nil
+          },
+          idempotency_key: Ecto.UUID.generate()
+        },
+        actor: c.actor
+      )
+
+    store = Marshall.Agents.AttachmentStore
+    previous = Application.get_env(:marshall, store)
+    root = Path.join(System.tmp_dir!(), "executor-attachment-#{Ecto.UUID.generate()}")
+
+    Application.put_env(:marshall, store,
+      root: root,
+      encryption_key: :crypto.strong_rand_bytes(32)
+    )
+
+    on_exit(fn ->
+      if previous,
+        do: Application.put_env(:marshall, store, previous),
+        else: Application.delete_env(:marshall, store)
+
+      File.rm_rf!(root)
+    end)
+
+    {:ok, executor} = ExecutorSession.register(c.binding)
+
+    command =
+      internal_command(c, :attachment, %{
+        "operation" => "upload",
+        "thread_id" => target_thread.id,
+        "idempotency_key" => "guest-transfer",
+        "path" => "/tmp/input.bin"
+      })
+
+    assert {:error, :stale_fence} =
+             ExecutorSession.attachment_upload(
+               c.binding,
+               executor.id,
+               executor.fence_epoch,
+               command.id,
+               "private guest bytes"
+             )
+
+    Ledger.update!(command, :transition, %{
+      status: :started,
+      executor_id: executor.id,
+      fence_epoch: executor.fence_epoch
+    })
+
+    assert {:ok, %{id: id}} =
+             ExecutorSession.attachment_upload(
+               c.binding,
+               executor.id,
+               executor.fence_epoch,
+               command.id,
+               "private guest bytes"
+             )
+
+    {:ok, issued} = Credentials.rotate(c.vm.host_id, 3600)
+    token = issued.id <> "." <> issued.secret
+
+    transfer = %{
+      "binding" => c.binding,
+      "executor_id" => executor.id,
+      "fence_epoch" => executor.fence_epoch,
+      "command_id" => command.id,
+      "content_base64" => Base.encode64("private guest bytes")
+    }
+
+    assert {:ok, %{id: ^id}} =
+             Marshall.Inference.ControlRequests.handle(
+               "agent_attachment_upload",
+               token,
+               transfer
+             )
+
+    assert {:error, :invalid_request} =
+             ExecutorRPC.request(
+               token,
+               "attachment_upload",
+               Map.put(transfer, "unexpected", true)
+             )
+
+    assert {:error, :invalid_request} =
+             ExecutorRPC.request(
+               token,
+               "attachment_upload",
+               Map.put(transfer, "content_base64", "invalid!")
+             )
+
+    assert {:error, _} = ExecutorRPC.request("invalid-token", "attachment_upload", transfer)
+    [persisted] = Ledger.read!(Command, id: command.id)
+    refute Map.has_key?(persisted.arguments, "content_base64")
+    assert persisted.result == nil
+    [attachment] = Ledger.read!(Marshall.Agents.Attachment, id: id)
+    assert {:ok, "private guest bytes"} = store.get(attachment.storage_key)
+
+    assert {:ok, %{id: ^id}} =
+             ExecutorSession.attachment_upload(
+               c.binding,
+               executor.id,
+               executor.fence_epoch,
+               command.id,
+               "private guest bytes"
+             )
+
+    chunk_command =
+      Ledger.create!(Command, :queue, %{
+        root_id: c.root.id,
+        thread_id: c.thread.id,
+        turn_id: command.turn_id,
+        call_id: "chunk-transfer",
+        tool: :attachment,
+        arguments: %{
+          "operation" => "upload",
+          "thread_id" => target_thread.id,
+          "idempotency_key" => "chunk-transfer",
+          "path" => "/tmp/chunks"
+        }
+      })
+
+    Ledger.update!(chunk_command, :transition, %{
+      status: :started,
+      executor_id: executor.id,
+      fence_epoch: executor.fence_epoch
+    })
+
+    base = %{
+      "binding" => c.binding,
+      "executor_id" => executor.id,
+      "fence_epoch" => executor.fence_epoch,
+      "command_id" => chunk_command.id
+    }
+
+    digest = Base.encode16(:crypto.hash(:sha256, "data"), case: :lower)
+
+    assert {:ok, %{id: chunk_id}} =
+             ExecutorRPC.request(
+               token,
+               "attachment_transfer",
+               Map.put(base, "transfer", %{
+                 "phase" => "begin",
+                 "size_bytes" => 4,
+                 "sha256" => digest
+               })
+             )
+
+    assert {:error, :invalid_request} =
+             ExecutorRPC.request(
+               token,
+               "attachment_transfer",
+               Map.put(base, "transfer", %{"phase" => "finish", "attachment_id" => id})
+             )
+
+    assert {:ok, _} =
+             ExecutorRPC.request(
+               token,
+               "attachment_transfer",
+               Map.put(base, "transfer", %{
+                 "phase" => "chunk",
+                 "attachment_id" => chunk_id,
+                 "offset" => 0,
+                 "content_base64" => Base.encode64("data")
+               })
+             )
+
+    assert {:ok, %{state: :available}} =
+             ExecutorRPC.request(
+               token,
+               "attachment_transfer",
+               Map.put(base, "transfer", %{"phase" => "finish", "attachment_id" => chunk_id})
+             )
+
+    download_command =
+      Ledger.create!(Command, :queue, %{
+        root_id: c.root.id,
+        thread_id: c.thread.id,
+        turn_id: command.turn_id,
+        call_id: "chunk-download",
+        tool: :attachment,
+        arguments: %{
+          "operation" => "download",
+          "attachment_id" => chunk_id,
+          "path" => "/tmp/output"
+        }
+      })
+
+    Ledger.update!(download_command, :transition, %{
+      status: :started,
+      executor_id: executor.id,
+      fence_epoch: executor.fence_epoch
+    })
+
+    download_base = Map.put(base, "command_id", download_command.id)
+
+    assert {:ok, %{content_base64: "ZGF0YQ==", offset: 0, size_bytes: 4}} =
+             ExecutorRPC.request(
+               token,
+               "attachment_transfer",
+               Map.put(download_base, "transfer", %{"phase" => "read", "offset" => 0})
+             )
+
+    assert {:error, :invalid_chunk} =
+             ExecutorRPC.request(
+               token,
+               "attachment_transfer",
+               Map.put(download_base, "transfer", %{"phase" => "read", "offset" => 1})
+             )
+
+    assert {:error, :invalid_request} =
+             ExecutorRPC.request(
+               token,
+               "attachment_transfer",
+               Map.put(base, "transfer", %{"phase" => "read", "offset" => 0})
+             )
+
+    metadata = %{"id" => chunk_id, "state" => "available", "size_bytes" => 4, "sha256" => digest}
+
+    assert {:error, :invalid_result} =
+             ExecutorSession.transition(
+               c.binding,
+               executor.id,
+               executor.fence_epoch,
+               download_command.id,
+               :completed,
+               Map.put(metadata, "content_base64", "ZGF0YQ==")
+             )
+
+    assert {:error, :invalid_result} =
+             ExecutorSession.transition(
+               c.binding,
+               executor.id,
+               executor.fence_epoch,
+               download_command.id,
+               :completed,
+               Map.put(metadata, "id", id)
+             )
+
+    assert [%{status: :started, result: nil}] = Ledger.read!(Command, id: download_command.id)
+
+    assert {:ok, %{status: :completed}} =
+             ExecutorSession.transition(
+               c.binding,
+               executor.id,
+               executor.fence_epoch,
+               download_command.id,
+               :completed,
+               metadata
+             )
+
+    {:ok, _replacement} = ExecutorSession.register(c.binding)
+
+    assert {:error, :stale_fence} =
+             ExecutorSession.attachment_upload(
+               c.binding,
+               executor.id,
+               executor.fence_epoch,
+               command.id,
+               "private guest bytes"
+             )
+  end
+
+  test "board tools execute on the server with derived thread attribution and audit", c do
+    user_thread =
+      Ledger.create!(Marshall.Threads.Thread, :open, %{
+        creator_id: c.actor.id,
+        objective: "Coordinate",
+        mode: :medium,
+        machine_spec: request(),
+        idempotency_key: Ash.UUID.generate(),
+        machine_key: c.vm.idempotency_key
+      })
+
+    user_thread =
+      Ledger.update!(user_thread, :bind_machine, %{
+        machine_id: c.vm.id,
+        agent_root_id: c.root.id,
+        agent_thread_id: c.thread.id,
+        status: :ready
+      })
+
+    command =
+      internal_command(c, :message_board, %{
+        "operation" => "post",
+        "body" => "coordination content",
+        "idempotency_key" => "post"
+      })
+
+    {:ok, executor} = ExecutorSession.register(c.binding)
+    assert {:ok, nil} = ExecutorSession.claim(c.binding, executor.id, executor.fence_epoch)
+    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
+    _ = :sys.get_state(worker)
+    stop_supervised!(Marshall.Agents.ThreadToolWorker)
+    assert [%{status: :completed}] = Ledger.read!(Command, id: command.id)
+
+    assert [%{kind: :tool_finished, outcome: :completed}] =
+             Ledger.read!(AuditEvent, target_id: command.id)
+
+    [post] = Marshall.MessageBoards.list!(c.actor.id, c.vm.profile)
+    assert post.vm_id == c.vm.id
+    assert post.thread_id == user_thread.id
+    assert post.root_id == c.root.id
+
+    listing =
+      Ledger.create!(Command, :queue, %{
+        root_id: c.root.id,
+        thread_id: c.thread.id,
+        turn_id: command.turn_id,
+        call_id: "board-list",
+        tool: :message_board,
+        arguments: %{"operation" => "list"}
+      })
+
+    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
+    _ = :sys.get_state(worker)
+
+    assert [%{status: :completed, result: %{"items" => [item]}}] =
+             Ledger.read!(Command, id: listing.id)
+
+    assert item["thread_url"] == "/threads/" <> user_thread.id
+    assert item["body"] == "coordination content"
+    assert Marshall.MessageBoards.list!(user().id, c.vm.profile) == []
+  end
+
+  test "subscribe commands register a durable agent receiver", c do
+    target =
+      Ledger.create!(Marshall.Threads.Thread, :open, %{
+        creator_id: c.actor.id,
+        objective: "Subscribe",
+        mode: :medium,
+        machine_spec: request(),
+        idempotency_key: Ash.UUID.generate(),
+        machine_key: c.vm.idempotency_key
+      })
+
+    target =
+      Ledger.update!(target, :bind_machine, %{
+        machine_id: c.vm.id,
+        agent_root_id: c.root.id,
+        agent_thread_id: c.thread.id,
+        status: :ready
+      })
+
+    command =
+      internal_command(c, :thread, %{"operation" => "subscribe", "thread_id" => target.id})
+
+    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
+    _ = :sys.get_state(worker)
+    assert [%{status: :completed}] = Ledger.read!(Command, id: command.id)
+
+    assert [%{destination_kind: :user_thread, destination_id: id, state: :active}] =
+             Ledger.read!(Marshall.Agents.ThreadReceiver)
+
+    assert id == target.id
+    stop_supervised!(Marshall.Agents.ThreadToolWorker)
+
+    child =
+      Ledger.create!(Thread, :open, %{
+        root_id: c.root.id,
+        parent_thread_id: c.thread.id,
+        title: "Subscribed child",
+        created_by_id: c.actor.id
+      })
+
+    child_command = struct(Command, %{root_id: c.root.id, thread_id: child.id})
+
+    assert {:ok, _} =
+             Ledger.transaction(fn ->
+               Marshall.Agents.ThreadDelivery.register(child_command, c.actor.id, target.id, true)
+             end)
+
+    unsubscribe =
+      Ledger.create!(Command, :queue, %{
+        root_id: c.root.id,
+        thread_id: c.thread.id,
+        turn_id: command.turn_id,
+        call_id: "unsubscribe",
+        tool: :thread,
+        arguments: %{"operation" => "subscribe", "thread_id" => target.id, "active" => false}
+      })
+
+    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
+    _ = :sys.get_state(worker)
+    assert [%{status: :completed}] = Ledger.read!(Command, id: unsubscribe.id)
+
+    assert [%{state: :inactive}] =
+             Ledger.read!(Marshall.Agents.ThreadReceiver, destination_id: target.id)
+
+    assert [%{state: :active}] =
+             Ledger.read!(Marshall.Agents.ThreadReceiver, destination_id: child.id)
+
+    assert {:error, :not_subscribed} =
+             Marshall.Agents.ThreadDelivery.replay(command, c.actor.id, %{
+               "thread_id" => target.id
+             })
+
+    assert {:ok, []} =
+             Marshall.Agents.ThreadDelivery.replay(child_command, c.actor.id, %{
+               "thread_id" => target.id
+             })
+  end
+
+  test "malformed thread targets finish with a content-free refusal", c do
+    command =
+      internal_command(c, :thread, %{
+        "operation" => "read",
+        "thread_id" => "private-invalid-thread-marker"
+      })
+
+    log =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :reason]], fn ->
+        worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
+        _ = :sys.get_state(worker)
+        stop_supervised!(Marshall.Agents.ThreadToolWorker)
+      end)
+
+    refute log =~ "agent.server_tool_poll_failed"
+    refute log =~ "private-invalid-thread-marker"
+
+    assert [%{status: :failed, result: %{"reason" => "forbidden"}}] =
+             Ledger.read!(Command, id: command.id)
+
+    assert [%{kind: :tool_finished, outcome: :failed}] =
+             Ledger.read!(AuditEvent, target_id: command.id)
+  end
+
+  test "older executors refuse attachment work with one failure receipt", c do
+    {:ok, executor} = ExecutorSession.register(c.binding)
+
+    command =
+      internal_command(c, :attachment, %{
+        "operation" => "download",
+        "attachment_id" => Ecto.UUID.generate(),
+        "path" => "/tmp/output"
+      })
+
+    assert {:ok, nil} = ExecutorSession.claim(c.binding, executor.id, executor.fence_epoch)
+
+    assert [%{status: :failed, result: %{"reason" => "executor_upgrade_required"}}] =
+             Ledger.read!(Command, id: command.id)
+
+    assert [%{kind: :tool_finished, outcome: :failed}] =
+             Ledger.read!(AuditEvent, target_id: command.id)
+
+    assert {:ok, nil} = ExecutorSession.claim(c.binding, executor.id, executor.fence_epoch)
+    assert length(Ledger.read!(AuditEvent, target_id: command.id)) == 1
+  end
+
+  test "server worker refuses operations from another tool namespace", c do
+    command =
+      internal_command(c, :thread, %{
+        "operation" => "download",
+        "attachment_id" => Ecto.UUID.generate()
+      })
+
+    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
+    _ = :sys.get_state(worker)
+
+    assert [%{status: :failed, result: %{"reason" => "invalid_operation"}}] =
+             Ledger.read!(Command, id: command.id)
+  end
+
   test "capable guest receives version-one context work through the existing fenced lease", c do
     {:ok, executor} = ExecutorSession.register(c.binding, nil, ["context-v1"])
     command = internal_command(c, :context_inventory, %{"version" => 1})

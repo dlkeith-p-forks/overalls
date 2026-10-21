@@ -5,7 +5,8 @@ defmodule Marshall.Agents.ExecutorRPC do
   alias Marshall.Inference.Credentials
 
   @maintenance_routes ~w(maintenance_claim maintenance_transition maintenance_artifact bootstrap_artifact)
-  @routes ~w(register heartbeat claim transition) ++ @maintenance_routes
+  @routes ~w(register heartbeat claim transition attachment_upload attachment_transfer) ++
+            @maintenance_routes
 
   # @cc [owner:ghuntley,label:security;recovery] executor-rpc-host-binding
   # The dedicated Ziggy credential MUST authenticate the binding's physical
@@ -133,7 +134,87 @@ defmodule Marshall.Agents.ExecutorRPC do
     end
   end
 
+  # @cc [owner:ghuntley,label:security] executor-upload-wire-bound
+  # Upload transport MUST accept only the exact lease/command selectors and a
+  # bounded base64 body. Decoded content MUST NOT exceed the attachment limit.
+  defp operation(
+         "attachment_upload",
+         %{
+           "binding" => _,
+           "executor_id" => id,
+           "fence_epoch" => fence,
+           "command_id" => command_id,
+           "content_base64" => content
+         } = input
+       )
+       when map_size(input) == 5 and is_integer(fence) and fence > 0 and
+              is_binary(content) and byte_size(content) <= 13_981_016 do
+    with true <- OverallsProtocol.uuid?(id) and OverallsProtocol.uuid?(command_id),
+         {:ok, bytes} <- Base.decode64(content),
+         true <- byte_size(bytes) <= 10 * 1024 * 1024 do
+      {:ok, {:attachment_upload, id, fence, command_id, bytes}}
+    else
+      _ -> {:error, :invalid_request}
+    end
+  end
+
+  defp operation(
+         "attachment_transfer",
+         %{
+           "binding" => _,
+           "executor_id" => id,
+           "fence_epoch" => fence,
+           "command_id" => command_id,
+           "transfer" => transfer
+         } = input
+       )
+       when map_size(input) == 5 and is_integer(fence) and fence > 0 do
+    with true <- OverallsProtocol.uuid?(id) and OverallsProtocol.uuid?(command_id),
+         {:ok, parsed} <- parse_transfer(transfer) do
+      {:ok, {:attachment_transfer, id, fence, command_id, parsed}}
+    else
+      _ -> {:error, :invalid_request}
+    end
+  end
+
   defp operation(_, _), do: {:error, :invalid_request}
+
+  @spec parse_transfer(term()) ::
+          {:ok, ExecutorSession.attachment_transfer()} | {:error, :invalid_request}
+  defp parse_transfer(%{"phase" => "begin", "size_bytes" => size, "sha256" => sha} = input)
+       when map_size(input) == 3 and is_integer(size) and size in 0..10_485_760 do
+    if valid_digest?(sha), do: {:ok, {:begin, size, sha}}, else: {:error, :invalid_request}
+  end
+
+  defp parse_transfer(
+         %{
+           "phase" => "chunk",
+           "attachment_id" => id,
+           "offset" => offset,
+           "content_base64" => content
+         } = input
+       )
+       when map_size(input) == 4 and is_integer(offset) and offset >= 0 and
+              is_binary(content) and byte_size(content) <= 349_528 do
+    with true <- OverallsProtocol.uuid?(id),
+         {:ok, bytes} <- Base.decode64(content),
+         true <- byte_size(bytes) in 1..262_144 do
+      {:ok, {:chunk, id, offset, bytes}}
+    else
+      _ -> {:error, :invalid_request}
+    end
+  end
+
+  defp parse_transfer(%{"phase" => "finish", "attachment_id" => id} = input)
+       when map_size(input) == 2 do
+    if OverallsProtocol.uuid?(id), do: {:ok, {:finish, id}}, else: {:error, :invalid_request}
+  end
+
+  defp parse_transfer(%{"phase" => "read", "offset" => offset} = input)
+       when map_size(input) == 2 and is_integer(offset) and offset >= 0,
+       do: {:ok, {:read, offset}}
+
+  defp parse_transfer(_), do: {:error, :invalid_request}
 
   defp exact_transition_keys?(input) do
     required = ~w(binding command_id executor_id fence_epoch status)
@@ -177,6 +258,14 @@ defmodule Marshall.Agents.ExecutorRPC do
       fence_epoch: executor.fence_epoch,
       expires_at_ms: DateTime.to_unix(executor.expires_at, :millisecond)
     }
+  end
+
+  defp execute!({:attachment_transfer, id, fence, command_id, transfer}, binding) do
+    unwrap!(ExecutorSession.attachment_transfer(binding, id, fence, command_id, transfer))
+  end
+
+  defp execute!({:attachment_upload, id, fence, command_id, bytes}, binding) do
+    unwrap!(ExecutorSession.attachment_upload(binding, id, fence, command_id, bytes))
   end
 
   defp execute!({:heartbeat, id, fence}, binding) do

@@ -2,11 +2,25 @@
 
 ## Attachment storage and access
 
-Every attachment operation checks identity and current thread authority. Opaque
-IDs and content-addressed keys prevent user-selected paths. Bytes are encrypted
-at rest and excluded from model context and diagnostic events. Revoked readers
-and stale capabilities fail closed; lifecycle and cleanup emit redacted audit
-receipts. Malware scanning and cross-host blob recovery remain gaps.
+Attachment support is incomplete and is not deployment-accepted. Upload and
+token issuance and redemption check thread authority; redemption conditionally
+clears the matching unexpired token only after decrypted bytes match the stored
+SHA-256 digest and size. Storage or integrity failure does not consume the token. The browser POST download endpoint requires
+a persisted current login and a token in the `x-attachment-token` header. It
+returns a no-store binary attachment and runs behind the request privacy filter.
+HTTP tests cover successful download, replay refusal and revoked login refusal;
+separate-connection revocation races remain unverified. The local store encrypts bytes with an explicitly
+configured 32-byte key and refuses missing or malformed keys. It has no hardcoded
+fallback. Multipart HTTP upload verifies the persisted login and thread write
+authority before persistence; responses contain metadata only. HTTP round-trip
+tests pass, but model and guest transfer integration remains unfinished.
+Production key provisioning, durable shared storage,
+deletion reconciliation and denial audit coverage remain gaps. Model uploads select a guest path and reject inline bytes. Lyra sends bounded
+base64 chunks through the fenced transfer RPC; command results contain metadata
+only. Marshall validates completion metadata against the selected attachment
+identity, size and digest and refuses extra fields or arbitrary failure text before
+persisting command results. Guest download-to-file is implemented locally; native
+end-to-end acceptance remains pending. Malware scanning and cross-host recovery are unverified.
 
 ## Memory suspension and wake authority
 

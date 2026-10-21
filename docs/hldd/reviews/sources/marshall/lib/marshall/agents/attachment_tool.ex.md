@@ -1,6 +1,6 @@
 ---
-digest: 758859adc879555791767c9c77996ba099463872a0671206460dcfc9a780376e
-disposition: no-impact
+digest: d474c61ad97443fd0fcabdda766b9fa49514b0c82c2954447e6d17e06fc4e32b
+disposition: updated
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
 path: marshall/lib/marshall/agents/attachment_tool.ex
@@ -10,15 +10,15 @@ reviewed_chapters:
   marshall/priv/hldd/04-lifecycle.md: a3c881206a8331e5dbcd995c9762772639a9e28bdc22102c2a2e64bf63aa7449
   marshall/priv/hldd/06-workflows.md: 97fca2ee73a5dc431d8f040eb16468eaf0f28233c146be2b53804063fadb565b
   marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
-  marshall/priv/hldd/11-agents.md: dea02f8fd8ed2cfdfbe10e6fd584479caaaa706bf64df4668b638b3aae37465c
+  marshall/priv/hldd/11-agents.md: 68956625723c19b5a925bba19c82c8a525457b48130a153b45963f379d5b5302
   marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
   marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
-  marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
-  marshall/priv/hldd/20-security.md: a5371e295b0811165799f60ba9d7dc4266c41822eece4689de03576980938066
-  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
+  marshall/priv/hldd/19-coverage.md: 4eeaf4262a43bb43546a9372a2cf2c499f6c2d480a1cec68c77d585d727dc5d9
+  marshall/priv/hldd/20-security.md: c6acd9d0dc9ad13a47d0b6a3b2ec63fffb1b062d169f766cac577b01935407af
+  marshall/priv/hldd/21-domains.md: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
   marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
 state: present
 version: 2
 ---
 
-Encrypted attachment storage is an implementation hardening within the already documented Marshall thread attachment boundary.
+Reviewed all Marshall sources in the durable boards, attachments, subscriptions, delivery and audit change; evidence and explicit gaps are documented.

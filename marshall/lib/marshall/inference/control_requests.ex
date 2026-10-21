@@ -18,6 +18,8 @@ defmodule Marshall.Inference.ControlRequests do
     "agent_heartbeat",
     "agent_claim",
     "agent_transition",
+    "agent_attachment_upload",
+    "agent_attachment_transfer",
     "agent_maintenance_claim",
     "agent_maintenance_transition",
     "agent_maintenance_artifact",

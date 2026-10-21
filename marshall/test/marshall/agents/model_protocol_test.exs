@@ -2,6 +2,123 @@ defmodule Marshall.Agents.ModelProtocolTest do
   use ExUnit.Case, async: true
   alias Marshall.Agents.{Event, ModelProtocol}
 
+  test "subscription delivery enters model context as a system notification" do
+    body = %{
+      "kind" => "machine_purged",
+      "thread_id" => Ecto.UUID.generate(),
+      "notification_id" => Ecto.UUID.generate(),
+      "sequence" => 1
+    }
+
+    event = struct(Event, %{kind: :subscription_notification, sequence: 1, body: body})
+    assert {:ok, request} = ModelProtocol.request([event], "gpt-6-sol", :standard)
+
+    assert Enum.any?(request["input"], fn item ->
+             item["role"] == "developer" and is_binary(item["content"]) and
+               String.contains?(item["content"], body["notification_id"])
+           end)
+
+    refute Enum.any?(request["input"], &(&1["role"] == "user"))
+  end
+
+  test "thread replay accepts integer cursors and rejects strings and unrelated fields" do
+    response = fn args ->
+      %{
+        "status" => "completed",
+        "output" => [
+          %{
+            "type" => "function_call",
+            "call_id" => "replay",
+            "name" => "thread",
+            "arguments" => Jason.encode!(args)
+          }
+        ]
+      }
+    end
+
+    args = %{"operation" => "replay", "thread_id" => Ecto.UUID.generate(), "cursor" => 1}
+
+    assert {:ok, {:tools, [%{tool: :thread}]}} =
+             ModelProtocol.parse_response(response.(args), :standard)
+
+    for invalid <- [
+          Map.put(args, "cursor", "1"),
+          Map.put(args, "cursor", -1),
+          Map.put(args, "active", true)
+        ] do
+      assert {:error, _} = ModelProtocol.parse_response(response.(invalid), :standard)
+    end
+  end
+
+  test "board calls reject forged scope and malformed post arguments" do
+    response = fn args ->
+      %{
+        "status" => "completed",
+        "output" => [
+          %{
+            "type" => "function_call",
+            "call_id" => "board",
+            "name" => "message_board",
+            "arguments" => Jason.encode!(args)
+          }
+        ]
+      }
+    end
+
+    args = %{"operation" => "post", "body" => "working", "idempotency_key" => "retry"}
+
+    assert {:ok, {:tools, [%{tool: :message_board}]}} =
+             ModelProtocol.parse_response(response.(args), :standard)
+
+    for key <- ~w(user_id profile vm_id thread_id root_id) do
+      assert {:error, _} =
+               ModelProtocol.parse_response(response.(Map.put(args, key, "forged")), :standard)
+    end
+
+    assert {:error, _} =
+             ModelProtocol.parse_response(response.(%{"operation" => "post"}), :standard)
+
+    assert {:error, :capability_denied} = ModelProtocol.parse_response(response.(args), :customer)
+
+    assert {:error, :capability_denied} =
+             ModelProtocol.parse_response(response.(args), :inception)
+  end
+
+  test "attachment uploads use guest paths and reject inline bytes" do
+    args = %{
+      "operation" => "upload",
+      "thread_id" => Ecto.UUID.generate(),
+      "idempotency_key" => "upload",
+      "path" => "/workspace/file.bin"
+    }
+
+    response = fn arguments ->
+      %{
+        "status" => "completed",
+        "output" => [
+          %{
+            "type" => "function_call",
+            "call_id" => "upload",
+            "name" => "attachment",
+            "arguments" => Jason.encode!(arguments)
+          }
+        ]
+      }
+    end
+
+    assert {:ok, {:tools, [%{tool: :attachment}]}} =
+             ModelProtocol.parse_response(response.(args), :standard)
+
+    assert {:error, _} =
+             ModelProtocol.parse_response(
+               response.(Map.put(args, "content_base64", "eA==")),
+               :standard
+             )
+
+    assert {:error, _} =
+             ModelProtocol.parse_response(response.(Map.put(args, "path", "relative")), :standard)
+  end
+
   test "ordered private thread events become a bounded model context" do
     events = [
       struct(Event, %{
@@ -185,7 +302,29 @@ defmodule Marshall.Agents.ModelProtocolTest do
     assert {:error, :invalid_response} = ModelProtocol.parse_response(forged, :standard)
   end
 
-  test "attachment tool accepts typed upload and download calls" do
+  test "attachment download accepts its unordered JSON fields" do
+    response = %{
+      "status" => "completed",
+      "output" => [
+        %{
+          "type" => "function_call",
+          "call_id" => "download",
+          "name" => "attachment",
+          "arguments" =>
+            Jason.encode!(%{
+              "operation" => "download",
+              "attachment_id" => Ecto.UUID.generate(),
+              "path" => "/tmp/output"
+            })
+        }
+      ]
+    }
+
+    assert {:ok, {:tools, [%{tool: :attachment}]}} =
+             ModelProtocol.parse_response(response, :standard)
+  end
+
+  test "attachment tool accepts typed path uploads" do
     response = %{
       "status" => "completed",
       "output" => [
@@ -193,13 +332,13 @@ defmodule Marshall.Agents.ModelProtocolTest do
           "type" => "function_call",
           "call_id" => "attachment-1",
           "name" => "attachment",
-          "arguments" => Jason.encode!(%{
-            "operation" => "upload",
-            "thread_id" => Ecto.UUID.generate(),
-            "idempotency_key" => "upload-1",
-            "content_base64" => Base.encode64("hello"),
-            "media_type" => "text/plain"
-          })
+          "arguments" =>
+            Jason.encode!(%{
+              "operation" => "upload",
+              "thread_id" => Ecto.UUID.generate(),
+              "idempotency_key" => "upload-1",
+              "path" => "/workspace/hello.txt"
+            })
         }
       ]
     }

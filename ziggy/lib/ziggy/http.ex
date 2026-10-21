@@ -305,16 +305,19 @@ defmodule Ziggy.HTTP do
   # Guest executor calls MUST use the binding that Audi attached from the
   # pre-NAT peer. Guest-supplied binding fields are rejected before Marshall
   # receives the RPC. Ziggy does not inspect or log tool arguments or results.
+  # Only attachment transfers MAY exceed 12 KiB, and MUST remain at most 352 KiB.
   defp dispatch(
          %{method: "POST", request_path: "/agent/v1/" <> route, query_string: ""} = conn,
          config,
          wire
        )
-       when route in ~w(register heartbeat claim transition maintenance/claim maintenance/transition) do
+       when route in ~w(register heartbeat claim transition maintenance/claim maintenance/transition attachment/transfer) do
+    maximum = if route == "attachment/transfer", do: 360_448, else: 12_288
+
     with [content_type] <- get_req_header(conn, "content-type"),
          {:ok, "application", "json", _} <- Plug.Conn.Utils.content_type(content_type),
-         {:ok, body, conn} <- read_body(conn, length: 12_288, read_length: 12_288),
-         true <- byte_size(body) <= 12_288,
+         {:ok, body, conn} <- read_body(conn, length: maximum, read_length: maximum),
+         true <- byte_size(body) <= maximum,
          {:ok, input} when is_map(input) <- Jason.decode(body),
          false <- Map.has_key?(input, "binding"),
          {:ok, result} <-

@@ -3,12 +3,112 @@
 ## Thread attachments
 
 Attachments belong to a user thread and use current thread Cedar authorization.
+Malformed actor, thread and attachment IDs refuse before resource queries; a
+guest without attachment capability refuses attachment work with one failure receipt. Unexpected
+server-tool transaction exceptions emit `agent.server_tool_poll_failed` with a
+closed reason and no exception text, stack trace or command data. The transaction
+rolls back; permanent-error retry handling remains unfinished.
 PostgreSQL stores opaque metadata and lifecycle state while encrypted content is
 kept behind a storage adapter. Uploads return metadata and an attachment ID;
-downloads stream through a short-lived capability outside model context. Machine
+the authenticated multipart endpoint `/attachments/threads/:thread_id` accepts
+a `file` and `idempotency_key` without putting bytes in model arguments.
+Downloads return a short-lived token consumed through a browser POST endpoint. Machine
 stop and suspension remove message-board posts without removing attachments.
-Archived threads retain authorized access; deletion drives quarantine and purge
-with identifier-only audit receipts.
+Upload retry keys are shared by all authorized writers within a thread. Identical
+content returns the original attachment and uploader; changed content refuses.
+A failed storage write can retry the same attachment with the same content.
+Archive retention and deletion cleanup still require integration verification.
+An executor upload coordinator now accepts bounded bytes separately from command
+arguments, validates a started command against the current lease/fence and running
+turn, and rechecks VM and target-thread write authority. Marshall exposes the
+closed `agent_attachment_upload` control request with a bounded base64 transport
+body and metadata-only response. Ziggy forwarding and Lyra dispatch are not
+connected yet.
+Model uploads now accept an absolute guest path and require an executor advertising
+`attachments-v1`; upload bytes travel only in chunk-transfer requests. Browser multipart uploads use the same encrypted PostgreSQL chunks, publishing all
+chunks and metadata in one transaction. They do not require local blob storage;
+filenames and supplied media types are discarded and downloads use a fixed binary
+filename and content type. Redemption
+rechecks thread authority and conditionally consumes a matching token only after
+a successful storage read. Storage failures leave the token retryable until expiry.
+The server worker locks the attachment target thread before its VM authority
+check and claims the command only after rechecking the current running turn.
+Token issuance uses the thread lock to serialize with grant changes, checks the
+locked attachment state, and defers outcome diagnostics until the outer commit. The
+transition property uses an independent model. Generated database upload histories
+also compare retry identity, content conflicts and failed-write recovery with an
+independent model; independent-connection and native durability checks remain open.
+See the attachment security
+section for key configuration and remaining access-control gaps.
+
+Chunk-transfer groundwork stores bounded 256 KiB chunks in the Agents domain's
+`AttachmentChunk` resource. `Marshall.Vault` encrypts chunk bytes in PostgreSQL
+with its tagged keyring; default reads do not decrypt them. Trusted coordinators
+must hold the authorized thread and attachment locks. Conflicting offset retries
+refuse; assembly verifies contiguous contents, total size and SHA-256. Authorized
+begin/chunk/finalize operations publish verified PostgreSQL chunks through the
+attachment state machine. Chunk-backed downloads use the existing token and
+current-authority checks. Marshall exposes `agent_attachment_transfer` with closed
+begin/chunk/finish/read payloads. Every call rechecks the started command and executor
+fence; chunk and finish IDs must match its target thread and retry key. Download
+reads select only the started command’s attachment, recheck thread read authority
+and integrity, and return at most 256 KiB per aligned offset. Ziggy
+relays `/agent/v1/attachment/transfer` using the trusted Audi binding, rejecting
+guest-supplied bindings and bodies over 352 KiB. Ordinary agent requests retain
+their 12 KiB bound. Lyra implements bounded regular-file upload, chunk transmission
+and metadata verification with heartbeat checks. Model uploads are admitted to attachment-capable guests. Lyra also implements download-to-file with per-chunk identity checks, final digest
+verification and atomic publication without overwriting existing files. Both model operations require absolute guest paths and attachment-capable
+executors. Successful begin, chunk write, publication and chunk read operations
+write an `AttachmentAudit` receipt in the same transaction; only identifiers,
+closed operation/outcome enums and timestamps are persisted. Browser token issuance
+and redemption also write receipts in their transactions. A receipt write failure
+aborts the operation. Generated upload-phase fault injection verifies rollback
+and fresh retry; token fault injection, denial and deletion receipts remain
+unverified or unfinished, as does abandoned-upload cleanup.
+
+## Agent thread discovery
+
+The thread tool searches user-thread titles through current-authorized thread
+pages, including shared and retained archived threads. Search results contain
+user-thread IDs and `/threads/:id` links; objectives and transcript contents are
+not searched. A call returns at most 100 matches and scans at most ten authorized
+pages; exhausting that budget returns `search_limit_exceeded` rather than a
+silently incomplete result. Reads recheck current thread Cedar authority and
+resolve the retained agent binding to return up to 100 transcript events. The
+JSON-encoded read object is limited to 64 KiB, including metadata and escaping;
+larger results return `result_too_large` without partial content. Pending
+threads without an agent binding have no events. Internal agent-thread IDs are
+not valid user-thread read targets. Subscriptions persist through Ash resources with idempotent active/inactive state
+transitions. Subscribe and replay lock the user thread and recheck read authority.
+The subscription's durable user-thread identity survives machine replacement;
+the originating agent-thread identity is retained as provenance. Creating a first
+subscription requires a bound agent thread. Existing subscriptions remain usable
+during pending replacement. Replay requires an active subscription and
+returns ordered notifications strictly after the supplied cursor; a revoked grant
+refuses access even when the subscription remains active. Notification cursors
+are ordered across all machine generations of a user thread. Agent subscriptions
+also register an active/inactive receiver with a durable acknowledged cursor.
+Root-agent receivers follow the receiving user thread across replacement; child
+agents and machines outside Threads retain their exact agent-thread destination.
+Unsubscribing one receiver does not disable other agents for the same account.
+Agent replay requires that caller's active receiver as well as the account's
+active subscription and current read permission.
+
+The notification worker polls PostgreSQL once per second. It locks target and
+receiving user threads in UUID order, then the receiving agent, machine and
+receiver. Current target read and destination write permissions are checked before
+admission. Permission loss deactivates the receiver. A stopped, unavailable or
+pending destination defers for five seconds without requesting a machine wake.
+Successful delivery admits one typed system-notification turn and advances its
+cursor in the same transaction, using a stable receiver/sequence retry key.
+The turn includes only the target thread, notification ID, sequence and closed
+notification kind; the model can request authorized replay details. No fabricated
+user prompt event is stored. Existing turn-admission audit receipts and content-free
+poll failure diagnostics apply. Live provider/guest delivery and independent-node
+concurrency acceptance remain unverified. Machine cleanup now deletes posts
+and appends content-free per-thread notifications in one PostgreSQL transaction;
+post admission and cleanup serialize on the VM. A delayed callback skips a VM
+whose current desired and observed states no longer match the unavailable state.
 
 ## Thread machine suspension
 
@@ -526,7 +626,24 @@ Marshall supplies a current trusted developer instruction selected by the stable
 # Thread tool and profile boards
 
 Marshall exposes typed `thread` operations for authorized metadata search,
-bounded reads, subscriptions and cursor replay. Profile message boards retain
+bounded reads, subscriptions and nonnegative integer cursor replay. Each operation
+rejects fields belonging to other operations. The `message_board` tool exposes
+`list` and `post` for Standard and OSS machines. Marshall derives the board account
+from the turn actor and the profile and machine attribution from the persisted
+execution binding. A linked user thread is derived from that binding; model
+arguments cannot supply account, profile, machine or thread identities. Ordinary
+machines without a user thread still receive machine-tagged posts.
+
+These commands execute in the server worker, under current running-turn and VM
+authority, and are excluded from guest command claims. The worker locks a linked
+user thread before VM and command locks. Post content is bounded to 64 KiB with a
+128-byte retry key. Lists return the latest 100 posts with user-thread links and
+refuse encoded arrays above 1 MiB with `result_too_large`; paging older posts is
+not implemented. Completion and refusal use content-free tool audit receipts in
+the command transaction. Customer and Inception receive no message-board tool;
+the requested Work profile mapping remains unresolved.
+
+Profile message boards retain
 machine and thread tags; links resolve through the existing thread
 authorization boundary. A machine reaching the paused, stopped or deleted
 state-machine state purges tagged history and records a redacted replay event.

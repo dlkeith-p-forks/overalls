@@ -67,13 +67,35 @@ defmodule Marshall.Agents.AttachmentStore do
   @spec encrypt(binary()) :: binary()
   defp encrypt(bytes) do
     nonce = :crypto.strong_rand_bytes(@nonce_bytes)
-    {ciphertext, tag} = :crypto.crypto_one_time_aead(:aes_256_gcm, encryption_key(), nonce, bytes, @magic, @tag_bytes, true)
+
+    {ciphertext, tag} =
+      :crypto.crypto_one_time_aead(
+        :aes_256_gcm,
+        encryption_key(),
+        nonce,
+        bytes,
+        @magic,
+        @tag_bytes,
+        true
+      )
+
     <<@magic::binary, nonce::binary, tag::binary, ciphertext::binary>>
   end
 
   @spec decrypt(binary()) :: {:ok, binary()} | {:error, :io_error}
-  defp decrypt(<<@magic::binary, nonce::binary-size(@nonce_bytes), tag::binary-size(@tag_bytes), ciphertext::binary>>) do
-    case :crypto.crypto_one_time_aead(:aes_256_gcm, encryption_key(), nonce, ciphertext, @magic, tag, false) do
+  defp decrypt(
+         <<@magic::binary, nonce::binary-size(@nonce_bytes), tag::binary-size(@tag_bytes),
+           ciphertext::binary>>
+       ) do
+    case :crypto.crypto_one_time_aead(
+           :aes_256_gcm,
+           encryption_key(),
+           nonce,
+           ciphertext,
+           @magic,
+           tag,
+           false
+         ) do
       :error -> {:error, :io_error}
       bytes when is_binary(bytes) -> {:ok, bytes}
     end
@@ -89,9 +111,7 @@ defmodule Marshall.Agents.AttachmentStore do
 
     case configured do
       key when is_binary(key) and byte_size(key) == 32 -> key
-      _ ->
-        secret = Application.get_env(:marshall, :secret_key_base, "attachment-development-key")
-        :crypto.hash(:sha256, secret)
+      _ -> raise ArgumentError, "attachment encryption key is missing or invalid"
     end
   end
 end

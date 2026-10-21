@@ -23,11 +23,11 @@ defmodule Marshall.Agents.AttachmentStateTest do
         )
       )
 
-    Enum.each(states, fn from ->
-      Enum.each(states, fn to ->
-        expected = to in Map.get(AttachmentState.transitions(), from, [])
-        assert AttachmentState.transition(from, to) == :ok == expected
-      end)
+    Enum.reduce(states, :pending, fn requested, current ->
+      expected = allowed?(current, requested)
+      result = AttachmentState.transition(current, requested)
+      assert result == if(expected, do: :ok, else: {:error, :invalid_transition})
+      if expected, do: requested, else: current
     end)
   end
 
@@ -36,4 +36,14 @@ defmodule Marshall.Agents.AttachmentStateTest do
     assert AttachmentState.transition(:deleted, :available) == {:error, :invalid_transition}
     refute :available in Map.get(AttachmentState.transitions(), :quarantined, [])
   end
+
+  # The oracle states lifecycle obligations without reading the production table.
+  @spec allowed?(AttachmentState.state(), AttachmentState.state()) :: boolean()
+  defp allowed?(:pending, target), do: target in [:uploading, :failed]
+  defp allowed?(:uploading, target), do: target in [:available, :quarantined, :failed]
+  defp allowed?(:available, target), do: target in [:quarantined, :deleting]
+  defp allowed?(:quarantined, target), do: target == :deleting
+  defp allowed?(:failed, target), do: target in [:uploading, :deleting]
+  defp allowed?(:deleting, target), do: target in [:deleting, :deleted]
+  defp allowed?(:deleted, _target), do: false
 end

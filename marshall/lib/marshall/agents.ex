@@ -32,5 +32,10 @@ defmodule Marshall.Agents do
     resource Marshall.Agents.SkillRevision
     resource Marshall.Agents.SkillOperation
     resource Marshall.Agents.Attachment
+    resource Marshall.Agents.ThreadSubscription
+    resource Marshall.Agents.ThreadReceiver
+    resource Marshall.Agents.ThreadNotification
+    resource Marshall.Agents.AttachmentAudit
+    resource Marshall.Agents.AttachmentChunk
   end
 end

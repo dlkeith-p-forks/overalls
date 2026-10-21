@@ -1,25 +1,21 @@
 ---
-digest: 691ab6f8bee2636e6b9c2bbd82589f62ac62d74f5c26dec748699ecd80d95945
-disposition: no-impact
+digest: acd454cd08a218aae6406f745bd5d6b8daff75b9e536e0dd0c1aae8dae2bf84a
+disposition: updated
 kind: source
 mapping_digest: f5fc9d76317e24062e0e2b16713ab5e149eff5538f68346d30e34292f21dbae4
-migration:
-  services:
-    chapter_digest: 01147e4e7aa57b2b7cd7dc49e393607ec0a4e3a550334d3e00311d6a075eb59b
-    source_digest: 16a7457f7a3e51f0d7cbeddb3a83a05890620aab8900bf099a9fb4ac0ce4ab19
 path: ziggy/lib/ziggy/http.ex
 reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/10-services.md: 335189b7e048e9c1eff6fc26178af2bff4378dc8d20a9f207f65e11dbb6c2b5b
-  marshall/priv/hldd/11-agents.md: 583a34e60b6968f2e8e49141feed2e653b46074be845a1c918a1908e19fa04a4
-  marshall/priv/hldd/17-reference.md: 5513e1fb7deb5378fef4713fb925a9d0c0f2b1bc2539548d98e72c856262e897
-  marshall/priv/hldd/19-coverage.md: 5dc84656f2a81c5674ed8311af44a7f2e9c33262d36f624e11f8ba378a32db61
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
+  marshall/priv/hldd/11-agents.md: 68956625723c19b5a925bba19c82c8a525457b48130a153b45963f379d5b5302
+  marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
+  marshall/priv/hldd/19-coverage.md: 4eeaf4262a43bb43546a9372a2cf2c499f6c2d480a1cec68c77d585d727dc5d9
+  marshall/priv/hldd/20-security.md: c6acd9d0dc9ad13a47d0b6a3b2ec63fffb1b062d169f766cac577b01935407af
+  marshall/priv/hldd/21-domains.md: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
   marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
 state: present
 version: 2
 ---
 
-services: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
+Reviewed Ziggy and Lyra attachment transfer evidence and explicit native acceptance gaps.

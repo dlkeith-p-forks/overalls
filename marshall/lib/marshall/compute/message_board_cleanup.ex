@@ -11,5 +11,5 @@ defmodule Marshall.Compute.MessageBoardCleanup do
   end
 
   @impl true
-  def atomic(changeset, _, _), do: {:ok, changeset}
+  def atomic(changeset, options, context), do: {:ok, change(changeset, options, context)}
 end

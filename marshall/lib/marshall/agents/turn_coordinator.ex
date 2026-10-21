@@ -239,7 +239,7 @@ defmodule Marshall.Agents.TurnCoordinator do
       event_kind =
         cond do
           status != :completed -> :turn_failed
-          turn.maintenance_kind != nil -> :maintenance_finished
+          turn.maintenance_kind not in [nil, :subscription_notification] -> :maintenance_finished
           true -> :assistant
         end
 

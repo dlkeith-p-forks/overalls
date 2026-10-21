@@ -50,7 +50,8 @@ defmodule Marshall.Agents.Event do
           :plan_proposed,
           :context_captured,
           :context_compacted,
-          :maintenance_finished
+          :maintenance_finished,
+          :subscription_notification
         ]
       ]
 

@@ -113,6 +113,24 @@ defmodule Marshall.Events do
     metadata: [attachment_id: :uuid, thread_id: :uuid, operation: :atom, outcome: :atom]
   )
 
+  defevent("agent.server_tool_poll_failed",
+    level: :error,
+    message: "Server tool polling transaction failed",
+    metadata: [reason: {:enum, [:exception]}]
+  )
+
+  defevent("agent.notification_poll_failed",
+    level: :error,
+    message: "Subscription notification polling failed",
+    metadata: [reason: {:enum, [:exception]}]
+  )
+
+  defevent("attachment.cleanup_failed",
+    level: :error,
+    message: "Attachment cleanup failed",
+    metadata: [reason: {:enum, [:exception]}]
+  )
+
   defevent("agent.child_created",
     message: "Agent child thread created",
     metadata: [vm_id: :uuid, thread_id: :uuid, parent_thread_id: :uuid]
@@ -1358,5 +1376,10 @@ defmodule Marshall.Events do
   defevent("agent.message_board_machine_purged",
     message: "Machine message-board history purged",
     metadata: [vm_id: :uuid, state: :atom, purged_count: :int]
+  )
+
+  defevent("attachment.chunks_deleted",
+    message: "Attachment chunks deleted",
+    metadata: [attachment_id: :uuid, thread_id: :uuid, deleted_count: :int]
   )
 end

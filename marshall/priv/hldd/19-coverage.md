@@ -4229,6 +4229,46 @@ Tested scope: Actual Linux PTYs/Unix sockets, observed live queue pressure, echo
 
 **Preferred test work:** NixOS guest scenario should drive independent boot-authenticated viewers and verify neighboring output and accounting under persistent native pressure.
 
+## Upload a thread-owned file, retry a failed write, and download it under current thread authority
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.
+
+Boundary: PostgreSQL owns attachment identity and lifecycle. Current thread Cedar permissions authorize writes and reads; encrypted blob storage grants no authority. Browser transfers require a persisted login and CSRF protection.
+
+Required refusal: Refuse malformed identifiers, unauthorized uploads, changed retry content, missing encryption keys, expired or consumed download tokens, and revoked thread or login authority.
+
+Tested scope: Sequential database histories and controller fixtures exercise metadata lifecycle, content identity, retry recovery and current permissions. These are BEAM test VM results, not production storage or guest transfer acceptance.
+
+- **property, recorded**: [audit insert failures roll back the complete buffered upload](repo:marshall/test/marshall/agents/attachment_history_test.exs) — PostgreSQL trigger faults at begin, chunk and finish receipts leave no attachment, chunk or audit rows and permit a fresh retry. Sequential sandbox only; token-specific faults and replica failures remain open.; [execution record](repo:docs/architecture/reviews/2026-10-20-thread-attachments.md).
+- **property, recorded**: [durable uploads preserve per-key identity across retries and conflicts](repo:marshall/test/marshall/agents/attachment_history_test.exs) — Fresh SQL sandboxes exercise empty files and chunk boundaries, two independent retry keys, changed content refusal and exact byte redemption against an independent content-identity model.; [execution record](repo:docs/architecture/reviews/2026-10-20-thread-attachments.md).
+- **property, recorded**: [upload histories preserve content identity and recover failed writes](repo:marshall/test/marshall/agents/attachment_history_test.exs) — Generated sequences use fresh SQL sandboxes and local blob directories; an independent model checks identity, digest, size, state and stored bytes across conflicting retries and unavailable encryption configuration.; [execution record](repo:docs/architecture/reviews/2026-10-20-thread-attachments.md).
+- **unit, present**: [upload persists available metadata through resource transitions](repo:marshall/test/marshall/agents/attachment_tool_test.exs) — Shared readers, revoked grants, actor-bound token redemption, outer rollback and failed storage retry use one sandbox connection..
+- **unit, present**: [older executors refuse attachment work with one failure receipt](repo:marshall/test/marshall/agents/executor_session_test.exs) — An executor without attachment capability refuses queued work once and records a single terminal tool outcome..
+
+**Gaps:** Guest upload/download execution has focused local and coordinator tests, but no recorded real-machine end-to-end acceptance. Durable shared storage, rotating production keys, comprehensive durable security audits, orphan cleanup, independent-connection races and native transfer acceptance remain unfinished.
+
+**Preferred test work:** Extend generated histories to permission changes and competing independent connections, then run a NixOS machine journey with guest file upload/download, revoked authority, storage interruption and replica failover.
+
+## Post to a private profile board, subscribe to a linked user thread, and replay a machine cleanup notification after stop or suspension.
+
+Coverage: **partial**. Layers: identity, authorization, execution, storage, recovery.
+
+Boundary: PostgreSQL owns boards, posts, subscriptions and notifications. Posting checks current account, thread and machine authority. Machine-tagged post admission serializes with cleanup on the VM lock. Replay rechecks current thread permissions.
+
+Required refusal: Refuse foreign thread links, mismatched profiles or machine bindings, late posts to unavailable machines, inactive subscriptions and revoked readers.
+
+Tested scope: Ash resource and coordinator tests in an isolated BEAM/PostgreSQL environment. No live guest notification delivery or multi-replica recovery claim.
+
+- **property, recorded**: [machine transitions remove only their posts and retain one cleanup notification](repo:marshall/test/marshall/message_board_cleanup_test.exs) — Generated lifecycle transitions and delivery retries produce one notification turn and audit receipt; paused destinations stay paused, revoked readers receive nothing, and audit failure rolls back turn, event and acknowledgement before successful retry.; [execution record](repo:docs/architecture/reviews/2026-10-20-thread-attachments.md).
+- **unit, recorded**: [authorized readers can browse a previous machine generation](repo:marshall/test/marshall/threads_transcript_test.exs) — Subscription identity and cursor ordering survive replacement, replay and state changes work while pending, and old-writer inserts acquire durable attribution and the next cursor.; [execution record](repo:docs/architecture/reviews/2026-10-20-thread-attachments.md).
+- **unit, recorded**: [board tools execute on the server with derived thread attribution and audit](repo:marshall/test/marshall/agents/executor_session_test.exs) — Server command execution excludes guest claims, derives machine and user-thread attribution, records completion audit, and returns linked posts only from the actor's profile board.; [execution record](repo:docs/architecture/reviews/2026-10-20-thread-attachments.md).
+- **unit, present**: [a machine without a user thread still loses its board posts on stop](repo:marshall/test/marshall/message_board_cleanup_test.exs) — A Compute-created machine without a user-thread binding loses machine-tagged posts while retaining unbound account posts..
+- **property, recorded**: [subscription histories preserve identity and active replay authority](repo:marshall/test/marshall/threads_transcript_test.exs) — Generated activation histories compare retained subscription identity and replay permission with an independent active/inactive model in fresh SQL sandboxes.; [execution record](repo:docs/architecture/reviews/2026-10-20-thread-attachments.md).
+
+**Gaps:** Native guest/provider delivery, cleanup-notification insertion failure injection and independent-connection races remain unverified or unfinished. Work profile naming is not resolved against the existing profile catalog. Automatic turn admission and cross-generation evidence are confined to one BEAM and isolated PostgreSQL.
+
+**Preferred test work:** Add competing post/stop/replay histories and notification-store failure injection, then exercise guest subscriptions across physical suspension and machine replacement in a NixOS machine test.
+
 ## Share a thread and use its current work machine
 
 Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.

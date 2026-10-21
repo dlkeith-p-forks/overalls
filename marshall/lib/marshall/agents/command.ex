@@ -49,6 +49,7 @@ defmodule Marshall.Agents.Command do
           :web_fetch,
           :thread,
           :attachment,
+          :message_board,
           :context_inventory,
           :context_read,
           :skill_install,

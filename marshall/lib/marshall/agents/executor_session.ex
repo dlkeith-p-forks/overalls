@@ -6,7 +6,7 @@ defmodule Marshall.Agents.ExecutorSession do
   require Marshall.Events
 
   @lease_seconds 30
-  @capabilities ["context-v1", "skills-v1", "github-tools-v1"]
+  @capabilities ["context-v1", "skills-v1", "github-tools-v1", "attachments-v1"]
   @internal_tools [:context_inventory, :context_read, :skill_install, :skill_status]
 
   @type capability :: String.t()
@@ -28,6 +28,9 @@ defmodule Marshall.Agents.ExecutorSession do
   def supported?(%Executor{capabilities: capabilities}, tool)
       when is_list(capabilities) and tool in [:skill_install, :skill_status],
       do: "skills-v1" in capabilities
+
+  def supported?(%Executor{capabilities: capabilities}, :attachment) when is_list(capabilities),
+    do: "attachments-v1" in capabilities
 
   def supported?(%Executor{}, tool) when tool in [:exec_command, :read_file, :web_fetch], do: true
   def supported?(_, _), do: false
@@ -123,6 +126,148 @@ defmodule Marshall.Agents.ExecutorSession do
     end
   end
 
+  # @cc [owner:ghuntley,label:security;recovery] executor-attachment-upload-authority
+  # Transfer bytes MUST NOT be persisted in command arguments or results. Upload
+  # MUST match a started attachment command on the current executor and fence,
+  # current running turn and current VM/thread write authority.
+  @spec attachment_upload(map(), String.t(), pos_integer(), String.t(), binary()) ::
+          {:ok, map()} | {:error, term()}
+  def attachment_upload(binding, executor_id, fence, command_id, bytes)
+      when is_binary(bytes) and byte_size(bytes) <= 10 * 1024 * 1024 do
+    with_attachment_command(binding, executor_id, fence, command_id, fn actor, args ->
+      Marshall.Agents.AttachmentTool.upload_bytes(
+        actor,
+        args["thread_id"],
+        args["idempotency_key"],
+        bytes,
+        args
+      )
+    end)
+  end
+
+  def attachment_upload(_, _, _, _, _), do: {:error, :invalid_request}
+
+  @type attachment_transfer ::
+          {:begin, non_neg_integer(), String.t()}
+          | {:chunk, String.t(), non_neg_integer(), binary()}
+          | {:finish, String.t()}
+          | {:read, non_neg_integer()}
+
+  @spec attachment_transfer(map(), String.t(), pos_integer(), String.t(), attachment_transfer()) ::
+          {:ok, map()} | {:error, term()}
+  def attachment_transfer(binding, executor_id, fence, command_id, transfer) do
+    with_attachment_command(binding, executor_id, fence, command_id, fn actor, args ->
+      case {args["operation"], transfer} do
+        {"download", {:read, offset}} ->
+          Marshall.Agents.AttachmentTransfers.read(actor, args["attachment_id"], offset)
+
+        {"upload", {:begin, size, sha}} ->
+          Marshall.Agents.AttachmentTransfers.begin_upload(
+            actor,
+            args["thread_id"],
+            args["idempotency_key"],
+            size,
+            sha
+          )
+
+        {"upload", {:chunk, id, offset, bytes}} ->
+          transfer_target!(id, args)
+          Marshall.Agents.AttachmentTransfers.put(actor, id, offset, bytes)
+
+        {"upload", {:finish, id}} ->
+          transfer_target!(id, args)
+          Marshall.Agents.AttachmentTransfers.finish(actor, id)
+
+        _ ->
+          {:error, :invalid_request}
+      end
+    end)
+  end
+
+  # @cc [owner:ghuntley,label:security] executor-transfer-target
+  # Chunk and finalization IDs MUST belong to the exact thread and retry key
+  # selected by the started command, not merely another writable attachment.
+  @spec transfer_target!(String.t(), map()) :: :ok
+  defp transfer_target!(id, args) do
+    unless OverallsProtocol.uuid?(id), do: Ledger.rollback(:invalid_request)
+
+    case Ledger.read!(Marshall.Agents.Attachment,
+           id: id,
+           thread_id: args["thread_id"],
+           idempotency_key: args["idempotency_key"]
+         ) do
+      [_] -> :ok
+      _ -> Ledger.rollback(:invalid_request)
+    end
+  end
+
+  @spec with_attachment_command(map(), String.t(), pos_integer(), String.t(), (String.t(),
+                                                                               map() ->
+                                                                                 term())) ::
+          term()
+  defp with_attachment_command(binding, executor_id, fence, command_id, operation) do
+    with true <- OverallsProtocol.uuid?(executor_id) and OverallsProtocol.uuid?(command_id),
+         true <- is_integer(fence) and fence > 0,
+         {:ok, parsed} <- OverallsProtocol.PrivateServices.binding(binding) do
+      case Ledger.transaction(fn ->
+             candidate =
+               case Ledger.read!(Command, id: command_id) do
+                 [
+                   %{tool: :attachment, arguments: %{"operation" => "upload", "thread_id" => id}} =
+                       command
+                 ] ->
+                   unless OverallsProtocol.uuid?(id), do: Ledger.rollback(:invalid_request)
+                   Ledger.lock!(Marshall.Threads.Thread, id) || Ledger.rollback(:not_found)
+                   command
+
+                 [
+                   %{
+                     tool: :attachment,
+                     arguments: %{"operation" => "download", "attachment_id" => id}
+                   } = command
+                 ] ->
+                   unless OverallsProtocol.uuid?(id), do: Ledger.rollback(:invalid_request)
+
+                   case Ledger.read!(Marshall.Agents.Attachment, id: id) do
+                     [row] ->
+                       Ledger.lock!(Marshall.Threads.Thread, row.thread_id) ||
+                         Ledger.rollback(:not_found)
+
+                     [] ->
+                       Ledger.rollback(:not_found)
+                   end
+
+                   command
+
+                 _ ->
+                   Ledger.rollback(:invalid_request)
+               end
+
+             executor = valid_lease!(parsed, executor_id, fence)
+             command = Ledger.lock!(Command, command_id) || Ledger.rollback(:not_found)
+
+             unless command.status == :started and command.executor_id == executor.id and
+                      command.fence_epoch == fence and command.root_id == executor.root_id and
+                      command.arguments == candidate.arguments,
+                    do: Ledger.rollback(:stale_fence)
+
+             current_authority!(executor, command)
+             [turn] = Ledger.read!(Marshall.Agents.Turn, id: command.turn_id)
+             [thread] = Ledger.read!(Marshall.Agents.Thread, id: command.thread_id)
+
+             unless turn.status == :running and thread.active_turn_id == turn.id,
+               do: Ledger.rollback(:stale_execution)
+
+             %{result: operation.(turn.actor_id, command.arguments)}
+           end) do
+        {:ok, %{result: result}} -> result
+        {:error, reason} -> {:error, reason}
+      end
+    else
+      _ -> {:error, :invalid_request}
+    end
+  end
+
   @spec heartbeat(map(), String.t(), pos_integer()) ::
           {:ok, Executor.t()} | {:error, term()}
   def heartbeat(binding, executor_id, fence) do
@@ -169,7 +314,8 @@ defmodule Marshall.Agents.ExecutorSession do
         SELECT c.id FROM agent_commands AS c
         JOIN agent_turns AS t ON t.id = c.turn_id AND t.thread_id = c.thread_id
         JOIN agent_threads AS th ON th.id = c.thread_id AND th.root_id = c.root_id
-        WHERE c.root_id = $1 AND c.status = 'queued' AND c.tool != 'web_search'
+        WHERE c.root_id = $1 AND c.status = 'queued'
+          AND c.tool NOT IN ('web_search', 'thread', 'message_board')
           AND t.status = 'running'
           AND th.active_turn_id = t.id
         ORDER BY c.inserted_at, c.id
@@ -294,6 +440,8 @@ defmodule Marshall.Agents.ExecutorSession do
                  command.root_id == executor.root_id and legal?(command.status, state),
                do: Ledger.rollback(:stale_fence)
 
+        unless attachment_result?(command, state, result), do: Ledger.rollback(:invalid_result)
+
         if state == :started do
           current_authority!(executor, command)
 
@@ -350,6 +498,51 @@ defmodule Marshall.Agents.ExecutorSession do
         :ok
     end
   end
+
+  # @cc [owner:ghuntley,label:security] executor-attachment-result-metadata
+  # Attachment results MUST contain only verified attachment metadata or a closed
+  # failure reason. Inline bytes, paths, arbitrary text and foreign IDs MUST refuse
+  # before durable command results or transcript events can contain them.
+  @spec attachment_result?(Command.t(), atom(), map()) :: boolean()
+  defp attachment_result?(%{tool: tool}, _, _) when tool != :attachment, do: true
+
+  defp attachment_result?(_, state, result) when state in [:started, :uncertain],
+    do: result == %{}
+
+  defp attachment_result?(_, :failed, %{"reason" => reason} = result),
+    do:
+      map_size(result) == 1 and
+        reason in ["invalid_arguments", "attachment_read_failed", "attachment_write_failed"]
+
+  defp attachment_result?(
+         command,
+         :completed,
+         %{"id" => id, "state" => "available", "size_bytes" => size, "sha256" => sha} = result
+       )
+       when map_size(result) == 4 do
+    if OverallsProtocol.uuid?(id) do
+      case Ledger.read!(Marshall.Agents.Attachment, id: id, state: :available) do
+        [%{size_bytes: ^size, sha256: ^sha} = row] ->
+          case command.arguments do
+            %{"operation" => "upload", "thread_id" => thread, "idempotency_key" => key} ->
+              row.thread_id == thread and row.idempotency_key == key
+
+            %{"operation" => "download", "attachment_id" => expected} ->
+              id == expected
+
+            _ ->
+              false
+          end
+
+        _ ->
+          false
+      end
+    else
+      false
+    end
+  end
+
+  defp attachment_result?(_, _, _), do: false
 
   @spec current_authority!(Executor.t(), Command.t()) :: :ok
   defp current_authority!(executor, command) do

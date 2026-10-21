@@ -39,6 +39,7 @@ defmodule Ziggy.Control do
              "agent_heartbeat",
              "agent_claim",
              "agent_transition",
+             "agent_attachment_transfer",
              "agent_maintenance_claim",
              "agent_maintenance_transition",
              "agent_maintenance_artifact",
@@ -51,7 +52,11 @@ defmodule Ziggy.Control do
              "ssh_authorize",
              "ssh_login"
            ] do
-    maximum = if route == "agent_next", do: 524_288, else: 16_384
+    maximum = case route do
+      "agent_next" -> 524_288
+      "agent_attachment_transfer" -> 360_448
+      _ -> 16_384
+    end
     client = Map.get(config, :client, Ziggy.ControlClient)
 
     response =
@@ -121,6 +126,7 @@ defmodule Ziggy.Control do
   defp route_reason("agent_heartbeat"), do: :agent_heartbeat
   defp route_reason("agent_claim"), do: :agent_claim
   defp route_reason("agent_transition"), do: :agent_transition
+  defp route_reason("agent_attachment_transfer"), do: :agent_attachment_transfer
   defp route_reason("agent_maintenance_claim"), do: :agent_maintenance_claim
   defp route_reason("agent_maintenance_transition"), do: :agent_maintenance_transition
   defp route_reason("agent_bootstrap_artifact"), do: :agent_bootstrap_artifact

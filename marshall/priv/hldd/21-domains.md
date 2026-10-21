@@ -20,6 +20,12 @@ failure boundary and logon-session same-boot recovery are described in
 
 ## Responsibilities
 
+Agents also owns durable notification receivers. Receiver state and cursors are
+separate from the account subscription: one agent can unsubscribe without
+disabling another. Notification admission and cursor acknowledgement share a
+PostgreSQL transaction with current thread and machine authority. Process polling
+is a retry mechanism and cannot independently authorize delivery or machine wake.
+
 | Domain | Responsibility and authority |
 | --- | --- |
 | `Marshall.Accounts` | User identity, login tokens, email verification, passkeys, account deletion, three machine creation presets and permanent GuestAccount UUID/UID reservations. Immutable `u<uid>` guest identity belongs to the User UUID independently of its email. Authentication identifies a caller; resource policy still decides access. |
@@ -27,7 +33,8 @@ failure boundary and logon-session same-boot recovery are described in
 | `Marshall.Access` | Persisted machine grants, grant changes and per-user machine pins. Cedar evaluates current ownership, direct VM sharing, team membership and canonical current-thread grants; a cached permission cannot authorize a later mutation. A pin confers no authority; the owner's pin is read by the lifecycle coordinator as a deletion fence (ADR-0193). |
 | `Marshall.Administration` | Administrative job snapshots, retries and audit projections. Read access and elevated administrative mutations have separate checks. |
 | `Marshall.Redaction` | Immutable text-redaction runs and bounded inactive-thread scrub shards. It owns profile fencing and progress; thread and VM domains remain authoritative for content and machine state. |
-| `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |
+| `Marshall.MessageBoards.Domain` | Account/profile boards and machine-attributed posts. PostgreSQL transactions serialize post admission with machine cleanup and retain content-free thread notifications. User-thread permissions govern linked posts and subscriber reads; the board adds no authority. |
+| `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Attachment metadata, encrypted chunks and content-free audit receipts share PostgreSQL authority; subscriptions and cleanup notifications use current user-thread read authority. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |
 | `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants, immutable sharing results and per-reader monotonic transcript read markers. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
 | `Marshall.Compute` | Host enrollment, pools, reservations, VM intent, placements, operation receipts and lifecycle workflows. The ledger owns admission and durable execution authority, including immutable source2 provider/namespace/revision `WorkspaceSource` references pinned in provision/start commands. Current manifest4 image identity/capability gates source admission and new source-bearing command snapshots, including retained starts; the signed pending browser cookie owns no domain authority. |
 | `Marshall.Editor` | Personal browser Login, Credential and Lease authority. Current stored login/write, permanent account and exact execution/release locks hold through the outer ledger commit; generic web/DNS visibility cannot authorize the editor. |
@@ -178,14 +185,15 @@ flowchart LR
   app --> d8["Marshall.GitHub"]
   app --> d9["Marshall.Inference"]
   app --> d10["Marshall.Ingress"]
-  app --> d11["Marshall.Notifications"]
-  app --> d12["Marshall.Peach"]
-  app --> d13["Marshall.Redaction"]
-  app --> d14["Marshall.SSH"]
-  app --> d15["Marshall.Scim"]
-  app --> d16["Marshall.Teams"]
-  app --> d17["Marshall.Terminal"]
-  app --> d18["Marshall.Threads"]
+  app --> d11["Marshall.MessageBoards.Domain"]
+  app --> d12["Marshall.Notifications"]
+  app --> d13["Marshall.Peach"]
+  app --> d14["Marshall.Redaction"]
+  app --> d15["Marshall.SSH"]
+  app --> d16["Marshall.Scim"]
+  app --> d17["Marshall.Teams"]
+  app --> d18["Marshall.Terminal"]
+  app --> d19["Marshall.Threads"]
 ```
 
 ```mermaid
@@ -201,7 +209,7 @@ flowchart LR
 | [`Marshall.Access`](repo:marshall/lib/marshall/access.ex) | `Marshall.Access.Change`, `Marshall.Access.Grant`, `Marshall.Access.Pin` |
 | [`Marshall.Accounts`](repo:marshall/lib/marshall/accounts.ex) | `Marshall.Accounts.AdminBootstrap`, `Marshall.Accounts.AdminEvent`, `Marshall.Accounts.AuthEmail`, `Marshall.Accounts.GuestAccount`, `Marshall.Accounts.GuestAccount.Version`, `Marshall.Accounts.Passkey`, `Marshall.Accounts.PasskeyChallenge`, `Marshall.Accounts.ScimMachineSuspension`, `Marshall.Accounts.Token`, `Marshall.Accounts.User`, `Marshall.Accounts.UserDeletion`, `Marshall.Accounts.Verification` |
 | [`Marshall.Administration`](repo:marshall/lib/marshall/administration.ex) | `Marshall.Administration.AuditEvent`, `Marshall.Administration.JobEvent`, `Marshall.Administration.JobSnapshot` |
-| [`Marshall.Agents`](repo:marshall/lib/marshall/agents.ex) | `Marshall.Agents.Attachment`, `Marshall.Agents.AuditEvent`, `Marshall.Agents.CLISession`, `Marshall.Agents.Command`, `Marshall.Agents.ContextCheckpoint`, `Marshall.Agents.ContextSnapshot`, `Marshall.Agents.Event`, `Marshall.Agents.Executor`, `Marshall.Agents.ModelCall`, `Marshall.Agents.PlanProposal`, `Marshall.Agents.PlanningQuestion`, `Marshall.Agents.Root`, `Marshall.Agents.SearchCache`, `Marshall.Agents.SearchUsage`, `Marshall.Agents.SkillInstallation`, `Marshall.Agents.SkillOperation`, `Marshall.Agents.SkillRevision`, `Marshall.Agents.Thread`, `Marshall.Agents.ToolBootstrap`, `Marshall.Agents.ToolMaintenance`, `Marshall.Agents.Turn` |
+| [`Marshall.Agents`](repo:marshall/lib/marshall/agents.ex) | `Marshall.Agents.Attachment`, `Marshall.Agents.AttachmentAudit`, `Marshall.Agents.AttachmentChunk`, `Marshall.Agents.AuditEvent`, `Marshall.Agents.CLISession`, `Marshall.Agents.Command`, `Marshall.Agents.ContextCheckpoint`, `Marshall.Agents.ContextSnapshot`, `Marshall.Agents.Event`, `Marshall.Agents.Executor`, `Marshall.Agents.ModelCall`, `Marshall.Agents.PlanProposal`, `Marshall.Agents.PlanningQuestion`, `Marshall.Agents.Root`, `Marshall.Agents.SearchCache`, `Marshall.Agents.SearchUsage`, `Marshall.Agents.SkillInstallation`, `Marshall.Agents.SkillOperation`, `Marshall.Agents.SkillRevision`, `Marshall.Agents.Thread`, `Marshall.Agents.ThreadNotification`, `Marshall.Agents.ThreadReceiver`, `Marshall.Agents.ThreadSubscription`, `Marshall.Agents.ToolBootstrap`, `Marshall.Agents.ToolMaintenance`, `Marshall.Agents.Turn` |
 | [`Marshall.Compute`](repo:marshall/lib/marshall/compute.ex) | `Marshall.Compute.CleanupRequest`, `Marshall.Compute.CloneEffect`, `Marshall.Compute.CloneRequest`, `Marshall.Compute.EnrollmentOperation`, `Marshall.Compute.Evacuation`, `Marshall.Compute.EvacuationItem`, `Marshall.Compute.Host`, `Marshall.Compute.HostCredential`, `Marshall.Compute.HostDrain`, `Marshall.Compute.HostSession`, `Marshall.Compute.Image`, `Marshall.Compute.LifecycleEvent`, `Marshall.Compute.NetworkAddress`, `Marshall.Compute.Operation`, `Marshall.Compute.PhysicalOutcome`, `Marshall.Compute.ProbeRequest`, `Marshall.Compute.ReadinessRequest`, `Marshall.Compute.Relocation`, `Marshall.Compute.RelocationRetry`, `Marshall.Compute.Reservation`, `Marshall.Compute.ResizeRequest`, `Marshall.Compute.ServiceLevelAttempt`, `Marshall.Compute.ServiceLevelTotal`, `Marshall.Compute.SourcePermitRequest`, `Marshall.Compute.StoragePool`, `Marshall.Compute.TransferSlot`, `Marshall.Compute.VirtualMachine`, `Marshall.Compute.WakeRequest`, `Marshall.Compute.WakeRequestKey`, `Marshall.Compute.WorkflowServiceLevelAttempt`, `Marshall.Compute.WorkloadPlacement`, `Marshall.Compute.WorkspaceSource` |
 | [`Marshall.Editor`](repo:marshall/lib/marshall/editor.ex) | `Marshall.Editor.Credential`, `Marshall.Editor.Lease`, `Marshall.Editor.Login` |
 | [`Marshall.Enrico`](repo:marshall/lib/marshall/enrico.ex) | `Marshall.Enrico.AuditEvent`, `Marshall.Enrico.Repository` |
@@ -209,6 +217,7 @@ flowchart LR
 | [`Marshall.GitHub`](repo:marshall/lib/marshall/github.ex) | `Marshall.GitHub.AuditEvent`, `Marshall.GitHub.AuthorizationAttempt`, `Marshall.GitHub.Connection`, `Marshall.GitHub.Exclusion`, `Marshall.GitHub.RefreshAttempt`, `Marshall.GitHub.RequestLease`, `Marshall.GitHub.RestoreEpoch` |
 | [`Marshall.Inference`](repo:marshall/lib/marshall/inference.ex) | `Marshall.Inference.Credential`, `Marshall.Inference.Daily`, `Marshall.Inference.Request` |
 | [`Marshall.Ingress`](repo:marshall/lib/marshall/ingress.ex) | `Marshall.Ingress.EditorAssetsReceipt`, `Marshall.Ingress.Endpoint`, `Marshall.Ingress.Environment`, `Marshall.Ingress.EnvironmentPublication`, `Marshall.Ingress.EnvironmentStream`, `Marshall.Ingress.FleetCertificate`, `Marshall.Ingress.FleetCertificateAccount`, `Marshall.Ingress.FleetCertificateInstallation`, `Marshall.Ingress.Publication`, `Marshall.Ingress.Relay`, `Marshall.Ingress.Route`, `Marshall.Ingress.Service`, `Marshall.Ingress.Session`, `Marshall.Ingress.WebCredential`, `Marshall.Ingress.WebLogin`, `Marshall.Ingress.WebStream` |
+| [`Marshall.MessageBoards.Domain`](repo:marshall/lib/marshall/message_boards/domain.ex) | `Marshall.MessageBoards.Board`, `Marshall.MessageBoards.Post` |
 | [`Marshall.Notifications`](repo:marshall/lib/marshall/notifications.ex) | `Delivery`, `Device`, `Marshall.Notifications.InstallIdentity` |
 | [`Marshall.Peach`](repo:marshall/lib/marshall/peach.ex) | `Marshall.Peach.Credential`, `Marshall.Peach.Credential.Version` |
 | [`Marshall.Redaction`](repo:marshall/lib/marshall/redaction.ex) | `Marshall.Redaction.Run`, `Marshall.Redaction.Shard` |

@@ -164,6 +164,15 @@ viewer revocation and restoration. The
 [sharing review](../reviews/2026-10-16-thread-sharing.md) separates source and
 bounded fixture evidence from native revocation and recovery acceptance.
 
+Agent tool discovery and reads also use current thread authority:
+[`ThreadTool`](../../../marshall/lib/marshall/agents/thread_tool.ex) searches
+authorized user-thread titles and resolves retained transcript bindings.
+[`ThreadsTranscriptTest`](../../../marshall/test/marshall/threads_transcript_test.exs)
+checks shared archived reads, user-thread links, content exclusion from search,
+revocation and refusal of internal agent IDs. Focused transcript/executor tests
+passed with ExUnit seed 296716 (22 tests); this does not establish subscription,
+replay, distributed revocation or native acceptance. Implementation remains partial.
+
 ## Open questions
 
 Native cross-node grant revocation across terminal, editor, SSH and web ingress, and grant

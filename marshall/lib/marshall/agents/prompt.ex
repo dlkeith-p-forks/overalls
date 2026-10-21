@@ -35,8 +35,14 @@ defmodule Marshall.Agents.Prompt do
   # work, with its own request identity and no fabricated user prompt event.
   @spec maintenance(String.t(), atom(), map(), keyword()) :: {:ok, map()} | {:error, term()}
   def maintenance(thread_id, kind, metadata, options)
-      when kind in [:compact_context, :reload_context, :skill_operation] and is_map(metadata) do
-    with %Marshall.Accounts.User{} = actor <- Keyword.get(options, :actor),
+      when kind in [
+             :compact_context,
+             :reload_context,
+             :skill_operation,
+             :subscription_notification
+           ] and is_map(metadata) do
+    with true <- valid_maintenance_metadata?(kind, metadata),
+         %Marshall.Accounts.User{} = actor <- Keyword.get(options, :actor),
          key when is_binary(key) and byte_size(key) in 1..128 <-
            Keyword.get(options, :request_key),
          %Thread{} = thread <- get(Thread, thread_id),
@@ -57,6 +63,17 @@ defmodule Marshall.Agents.Prompt do
   end
 
   def maintenance(_, _, _, _), do: {:error, :invalid_request}
+
+  @spec valid_maintenance_metadata?(atom(), map()) :: boolean()
+  defp valid_maintenance_metadata?(:subscription_notification, metadata) do
+    Enum.sort(Map.keys(metadata)) == ~w(kind notification_id sequence thread_id) and
+      metadata["kind"] == "machine_purged" and
+      OverallsProtocol.uuid?(metadata["notification_id"]) and
+      OverallsProtocol.uuid?(metadata["thread_id"]) and
+      is_integer(metadata["sequence"]) and metadata["sequence"] > 0
+  end
+
+  defp valid_maintenance_metadata?(_, _), do: true
 
   defp admit!(root, thread, actor, prompt, key, options) do
     {prompt, prompt_findings} =
@@ -159,6 +176,18 @@ defmodule Marshall.Agents.Prompt do
             "redaction_findings" => prompt_findings,
             "redaction_profile" => Marshall.Redaction.Scanner.profile_digest()
           }
+        })
+
+        Ledger.update!(locked, :advance, %{next_event_sequence: locked.next_event_sequence + 1})
+      end
+
+      if turn.maintenance_kind == :subscription_notification do
+        Ledger.create!(Event, :append, %{
+          thread_id: locked.id,
+          turn_id: turn.id,
+          sequence: locked.next_event_sequence,
+          kind: :subscription_notification,
+          body: turn.maintenance_metadata
         })
 
         Ledger.update!(locked, :advance, %{next_event_sequence: locked.next_event_sequence + 1})

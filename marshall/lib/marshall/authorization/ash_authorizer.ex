@@ -74,8 +74,32 @@ defmodule Marshall.Authorization.AshAuthorizer do
     Marshall.Agents.PlanProposal => [:read, :record, :implement],
     Marshall.Agents.SkillInstallation => [:read, :register, :publish, :configure, :fail],
     Marshall.Agents.SkillRevision => [:read, :record],
+    Marshall.MessageBoards.Board => [:read, :open],
+    Marshall.MessageBoards.Post => [:read, :post, :destroy],
+    Marshall.Agents.ThreadSubscription => [:read, :subscribe, :activate, :deactivate],
+    Marshall.Agents.ThreadReceiver => [
+      :read,
+      :register,
+      :activate,
+      :deactivate,
+      :acknowledge,
+      :defer
+    ],
+    Marshall.Agents.ThreadNotification => [:read, :append],
+    Marshall.Agents.AttachmentAudit => [:read, :record],
+    Marshall.Agents.AttachmentChunk => [:read, :store, :destroy],
     Marshall.Agents.SkillOperation => [:read, :record, :dispatch, :finish],
-    Marshall.Agents.Attachment => [:read, :create_pending, :begin_upload, :publish, :quarantine, :fail, :begin_delete, :finish_delete],
+    Marshall.Agents.Attachment => [
+      :read,
+      :create_pending,
+      :begin_upload,
+      :touch_upload,
+      :publish,
+      :quarantine,
+      :fail,
+      :begin_delete,
+      :finish_delete
+    ],
     Marshall.Threads.Thread => [
       :read,
       :history,

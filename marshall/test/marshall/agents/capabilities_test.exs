@@ -11,17 +11,39 @@ defmodule Marshall.Agents.CapabilitiesTest do
     :read_file,
     :spawn_child_agent,
     :web_search,
-    :web_fetch
+    :web_fetch,
+    :thread,
+    :attachment,
+    :message_board
   ]
 
   @spec expected(term()) :: [Capabilities.tool()]
   defp expected(:oss),
-    do: [:exec_command, :read_file, :spawn_child_agent, :web_search, :web_fetch]
+    do: [
+      :exec_command,
+      :read_file,
+      :spawn_child_agent,
+      :web_search,
+      :web_fetch,
+      :thread,
+      :attachment,
+      :message_board
+    ]
 
   defp expected(:inception),
-    do: [:exec_command, :read_file, :spawn_child_agent, :web_search, :web_fetch]
+    do: [
+      :exec_command,
+      :read_file,
+      :spawn_child_agent,
+      :web_search,
+      :web_fetch,
+      :thread,
+      :attachment
+    ]
 
-  defp expected(:standard), do: [:exec_command, :read_file, :web_search, :web_fetch]
+  defp expected(:standard),
+    do: [:exec_command, :read_file, :web_search, :web_fetch, :thread, :attachment, :message_board]
+
   defp expected(_), do: []
 
   property "advertised tools and dispatch permission follow the independent profile matrix" do
@@ -59,7 +81,7 @@ defmodule Marshall.Agents.CapabilitiesTest do
     assert tools != []
 
     for profile <- [:oss, :standard, :inception], tool <- tools -- internal do
-      assert Capabilities.allowed?(profile, tool), "#{profile} must allow #{tool}"
+      assert Capabilities.allowed?(profile, tool) == tool in expected(profile)
     end
 
     for profile <- [:oss, :standard, :inception], tool <- internal do

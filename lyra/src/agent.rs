@@ -13,6 +13,7 @@ use std::process::{Command, Stdio};
 use std::thread;
 use std::time::{Duration, Instant};
 
+mod attachment;
 mod context;
 pub mod maintenance;
 mod managed_skills;
@@ -122,7 +123,7 @@ pub fn run(host: &impl Host) -> Result<i32, AgentError> {
         let digest = host.digest().map_err(|_| AgentError)?;
         match rpc::<Registration, _>(
             "register",
-            &json!({"digest": digest, "capabilities": ["context-v1", "skills-v1", "github-tools-v1"]}),
+            &json!({"digest": digest, "capabilities": ["context-v1", "skills-v1", "github-tools-v1", "attachments-v1"]}),
         ) {
             Ok(registration)
                 if registration.fence_epoch > 0 && !registration.executor_id.is_empty() =>
@@ -214,6 +215,7 @@ fn execute(
     let (status, result) = match command.tool.as_str() {
         "exec_command" => run_command(&command.arguments, &mut heartbeat),
         "read_file" => read_file(&command.arguments),
+        "attachment" => attachment::run(lease, &command.id, &command.arguments, &mut heartbeat)?,
         "web_fetch" => web_fetch::run(host, &command.arguments),
         "context_inventory" => {
             context_result(context::run_inventory(&command.arguments, &mut heartbeat))
@@ -493,7 +495,12 @@ fn rpc_observed<Response: DeserializeOwned, Body: Serialize>(
         failed(RpcFailure::Encode);
         AgentError
     })?;
-    if payload.len() > 12_288 {
+    let maximum = if route == "attachment/transfer" {
+        360_448
+    } else {
+        12_288
+    };
+    if payload.len() > maximum {
         failed(RpcFailure::Encode);
         return Err(AgentError);
     }
@@ -502,7 +509,11 @@ fn rpc_observed<Response: DeserializeOwned, Body: Serialize>(
         Method::POST,
         Some(&payload),
         None,
-        16_384,
+        if route == "attachment/transfer" {
+            360_448
+        } else {
+            16_384
+        },
         Duration::from_secs(10),
         &mut |failure| failed(RpcFailure::Request(failure)),
     )

@@ -1,10 +1,10 @@
 defmodule Marshall.MessageBoards do
   @moduledoc "User/profile message boards with machine-scoped cleanup."
-  import Ecto.Query
-  alias Marshall.Repo
+  require Ash.Query
   require Marshall.Events
-
-  require Marshall.Events
+  alias Marshall.Compute.Ledger
+  alias Marshall.MessageBoards.{Board, Post}
+  alias Marshall.Authorization.SystemActor
 
   @profiles [:standard, :oss]
   @max_body 65_536
@@ -25,44 +25,41 @@ defmodule Marshall.MessageBoards do
 
   @spec list!(String.t(), profile()) :: [post()]
   def list!(user_id, profile) when is_binary(user_id) and profile in @profiles do
-    board_id = ensure_board!(user_id, profile)
+    if match?(
+         %Marshall.Accounts.User{active: true, deleted_at: nil},
+         Marshall.Accounts.Security.current(user_id)
+       ) do
+      board_id = ensure_board!(user_id, profile)
 
-    Repo.all(
-      from p in "message_board_posts",
-        where: p.board_id == ^board_id,
-        order_by: [desc: p.inserted_at],
-        limit: 100,
-        select: p
-    )
-    |> Enum.map(&Map.new/1)
+      Post
+      |> Ash.Query.filter(board_id == ^board_id)
+      |> Ash.Query.sort(inserted_at: :desc, id: :desc)
+      |> Ash.Query.limit(100)
+      |> Ash.read!(actor: SystemActor.compute())
+      |> Enum.map(&project/1)
+    else
+      []
+    end
   end
 
   @spec ensure_board!(String.t(), profile()) :: String.t()
   def ensure_board!(user_id, profile) when is_binary(user_id) and profile in @profiles do
-    id = Ecto.UUID.generate()
-    now = DateTime.utc_now() |> DateTime.truncate(:microsecond)
+    {:ok, id} =
+      Ledger.transaction(fn ->
+        Ecto.Adapters.SQL.query!(
+          Marshall.Repo,
+          "SELECT pg_advisory_xact_lock(hashtextextended($1, 0))",
+          ["message-board:#{user_id}:#{profile}"],
+          log: false
+        )
 
-    Repo.insert_all(
-      "message_boards",
-      [
-        %{
-          id: id,
-          user_id: user_id,
-          profile: Atom.to_string(profile),
-          inserted_at: now,
-          updated_at: now
-        }
-      ],
-      on_conflict: :nothing,
-      conflict_target: [:user_id, :profile]
-    )
+        case Ledger.read!(Board, user_id: user_id, profile: profile) do
+          [board] -> board.id
+          [] -> Ledger.create!(Board, :open, %{user_id: user_id, profile: profile}).id
+        end
+      end)
 
-    Repo.one!(
-      from(b in "message_boards",
-        where: b.user_id == ^user_id and b.profile == ^Atom.to_string(profile),
-        select: b.id
-      )
-    )
+    id
   end
 
   @spec post!(String.t(), profile(), String.t(), String.t(), keyword()) ::
@@ -76,124 +73,213 @@ defmodule Marshall.MessageBoards do
   end
 
   @spec purge_machine!(String.t()) :: non_neg_integer()
-  def purge_machine!(vm_id) when is_binary(vm_id) do
-    {count, _} = Repo.delete_all(from(p in "message_board_posts", where: p.vm_id == ^vm_id))
+  def purge_machine!(vm_id), do: purge_for_state!(vm_id, :stopped)
+
+  @spec purge_for_state!(String.t(), atom()) :: non_neg_integer()
+  def purge_for_state!(vm_id, state) when state in [:paused, :stopped, :deleted] do
+    {:ok, count} =
+      Ledger.transaction(fn ->
+        vm = Ledger.lock_history!(Marshall.Compute.VirtualMachine, vm_id)
+
+        if vm && (vm.desired_state == state or vm.observed_state == state) do
+          posts = Ledger.read!(Post, vm_id: vm_id)
+
+          posts
+          |> Enum.group_by(& &1.thread_id)
+          |> Enum.each(fn {thread_id, group} ->
+            if thread_id, do: append_cleanup!(thread_id, vm_id, state, length(group))
+          end)
+
+          Enum.each(posts, &Ledger.archive!(&1, :destroy))
+          count = length(posts)
+
+          Ledger.after_commit(fn ->
+            Marshall.Events.emit("message_board.posts_purged",
+              vm_id: vm_id,
+              state: state,
+              count: count
+            )
+          end)
+
+          count
+        else
+          0
+        end
+      end)
+
     count
   end
 
-  @doc "Purges board entries when the VM state machine reaches an unavailable state."
-  @spec purge_for_state!(String.t(), atom()) :: non_neg_integer()
-  def purge_for_state!(vm_id, state) when state in [:paused, :stopped, :deleted],
-    do: purge_machine_with_events!(vm_id, state)
+  def purge_for_state!(_, _), do: 0
 
-  def purge_for_state!(_vm_id, _state), do: 0
-
-  defp purge_machine_with_events!(vm_id, state) do
-    threads =
-      Repo.all(
-        from p in "message_board_posts",
-          where: p.vm_id == ^vm_id,
-          distinct: true,
-          select: p.thread_id
-      )
-
-    count = purge_machine!(vm_id)
-
-    Marshall.Events.emit("message_board.posts_purged",
-      vm_id: vm_id,
-      state: state,
-      count: count
-    )
-
-    now = DateTime.utc_now() |> DateTime.truncate(:microsecond)
-
-    Enum.each(Enum.reject(threads, &is_nil/1), fn thread_id ->
-      %{max: sequence} =
-        Repo.one(
-          from e in "agent_thread_tool_events",
-            where: e.thread_id == ^thread_id,
-            select: %{max: max(e.sequence)}
+  # @cc [owner:ghuntley,label:durability] board-cleanup-notification-atomicity
+  # Cleanup notifications and removed posts MUST commit together. User-thread IDs
+  # MUST resolve to the retained agent binding, never be inserted as agent IDs.
+  @spec append_cleanup!(String.t(), String.t(), atom(), pos_integer()) :: term()
+  defp append_cleanup!(thread_id, vm_id, state, count) do
+    case notification_target(thread_id, vm_id) do
+      {id, owner} ->
+        Ecto.Adapters.SQL.query!(
+          Marshall.Repo,
+          "SELECT pg_advisory_xact_lock(hashtextextended($1, 0))",
+          ["thread-notification:#{thread_id}"],
+          log: false
         )
 
-      Repo.insert_all(
-        "agent_thread_tool_events",
-        [
-          %{
-            id: Ecto.UUID.generate(),
-            thread_id: thread_id,
-            owner_id: owner_for_thread(thread_id),
-            sequence: (sequence || 0) + 1,
-            kind: "machine_purged",
-            metadata: %{state: Atom.to_string(state), vm_id: vm_id, count: count},
-            inserted_at: now,
-            updated_at: now
-          }
-        ],
-        on_conflict: :nothing
-      )
-    end)
+        events =
+          Marshall.Agents.ThreadNotification
+          |> Ash.Query.filter(user_thread_id == ^thread_id)
+          |> Ash.Query.sort(sequence: :desc)
+          |> Ash.Query.limit(1)
+          |> Ash.read!(actor: SystemActor.compute())
 
-    count
+        sequence =
+          case events do
+            [] -> 1
+            [event] -> event.sequence + 1
+          end
+
+        Ledger.create!(Marshall.Agents.ThreadNotification, :append, %{
+          thread_id: id,
+          user_thread_id: thread_id,
+          owner_id: owner,
+          sequence: sequence,
+          kind: :machine_purged,
+          metadata: %{state: Atom.to_string(state), vm_id: vm_id, count: count}
+        })
+
+      _ ->
+        :ok
+    end
   end
 
-  defp owner_for_thread(thread_id) do
-    Repo.one(
-      from t in "agent_threads",
-        join: r in "agent_roots",
-        on: r.id == t.root_id,
-        where: t.id == ^thread_id,
-        select: r.owner_id
-    )
+  @spec notification_target(String.t(), String.t()) :: {String.t(), String.t()} | nil
+  defp notification_target(thread_id, vm_id) do
+    case Ledger.history!(Marshall.Threads.Thread, id: thread_id) do
+      [thread] ->
+        binding =
+          if thread.machine_id == vm_id do
+            thread.agent_thread_id
+          else
+            case Ledger.read!(Marshall.Threads.Generation,
+                   thread_id: thread_id,
+                   machine_id: vm_id
+                 ) do
+              [generation] -> generation.agent_thread_id
+              _ -> nil
+            end
+          end
+
+        if is_binary(binding), do: {binding, thread.creator_id}
+
+      _ ->
+        nil
+    end
   end
 
   @spec purge_thread!(String.t()) :: non_neg_integer()
-  def purge_thread!(thread_id) when is_binary(thread_id) do
-    {count, _} =
-      Repo.delete_all(from(p in "message_board_posts", where: p.thread_id == ^thread_id))
+  def purge_thread!(thread_id) do
+    {:ok, count} =
+      Ledger.transaction(fn ->
+        posts = Ledger.read!(Post, thread_id: thread_id)
+        Enum.each(posts, &Ledger.archive!(&1, :destroy))
+        length(posts)
+      end)
 
     count
   end
 
+  @spec do_post(String.t(), profile(), String.t(), String.t(), keyword()) ::
+          {:ok, post()} | {:error, atom()}
   defp do_post(author_id, profile, request_key, body, opts) do
-    board_id = ensure_board!(author_id, profile)
+    {:ok, %{result: result}} =
+      Ledger.transaction(fn ->
+        result =
+          with :ok <- authorize_post(author_id, profile, opts) do
+            board_id = ensure_board!(author_id, profile)
 
-    attrs = %{
-      id: Ecto.UUID.generate(),
-      board_id: board_id,
-      author_id: author_id,
-      vm_id: opts[:vm_id],
-      thread_id: opts[:thread_id],
-      root_id: opts[:root_id] || Ecto.UUID.generate(),
-      request_key: request_key,
-      body: body,
-      inserted_at: DateTime.utc_now() |> DateTime.truncate(:microsecond),
-      updated_at: DateTime.utc_now() |> DateTime.truncate(:microsecond)
-    }
+            case Ledger.read!(Post,
+                   board_id: board_id,
+                   author_id: author_id,
+                   request_key: request_key
+                 ) do
+              [row] ->
+                if row.body == body and row.vm_id == opts[:vm_id] and
+                     row.thread_id == opts[:thread_id],
+                   do: {:ok, project(row)},
+                   else: {:error, :request_key_conflict}
 
-    case Repo.insert_all("message_board_posts", [attrs],
-           on_conflict: :nothing,
-           conflict_target: [:board_id, :author_id, :request_key],
-           returning: true
-         ) do
-      {1, [row]} ->
-        {:ok, Map.new(row)}
+              [] ->
+                row =
+                  Ledger.create!(Post, :post, %{
+                    board_id: board_id,
+                    author_id: author_id,
+                    request_key: request_key,
+                    body: body,
+                    vm_id: opts[:vm_id],
+                    thread_id: opts[:thread_id],
+                    root_id: opts[:root_id] || Ecto.UUID.generate()
+                  })
 
-      {0, _} ->
-        existing =
-          Repo.one(
-            from(p in "message_board_posts",
-              where:
-                p.board_id == ^board_id and p.author_id == ^author_id and
-                  p.request_key == ^request_key,
-              select: p
-            )
-          )
+                {:ok, project(row)}
+            end
+          end
 
-        case existing do
-          %{} = post when post.body == body -> {:ok, Map.new(post)}
-          %{} -> {:error, :request_key_conflict}
-          nil -> {:error, :post_failed}
-        end
-    end
+        %{result: result}
+      end)
+
+    result
   end
+
+  # @cc [owner:ghuntley,label:security] board-post-current-authority
+  # Machine-tagged posts MUST require current VM write authority, matching profile
+  # and running intent/observation. Thread links MUST require current write access
+  # and match the tagged machine. Acquire thread authority before the VM lock.
+  @spec authorize_post(String.t(), profile(), keyword()) :: :ok | {:error, :forbidden}
+  defp authorize_post(actor_id, profile, opts) do
+    actor = Marshall.Accounts.Security.current(actor_id)
+
+    thread_ok =
+      case opts[:thread_id] do
+        nil ->
+          true
+
+        id ->
+          case Ledger.lock_history!(Marshall.Threads.Thread, id) do
+            nil ->
+              false
+
+            thread ->
+              Marshall.Threads.Authorization.allowed?(thread, actor, "write") and
+                (is_nil(opts[:vm_id]) or thread.machine_id == opts[:vm_id])
+          end
+      end
+
+    vm_ok =
+      case opts[:vm_id] do
+        nil ->
+          true
+
+        id ->
+          case Ledger.lock_history!(Marshall.Compute.VirtualMachine, id) do
+            %{
+              archived_at: nil,
+              profile: ^profile,
+              desired_state: :running,
+              observed_state: :running
+            } = vm ->
+              Marshall.Access.Authorization.allowed?(vm, actor, "write")
+
+            _ ->
+              false
+          end
+      end
+
+    if match?(%Marshall.Accounts.User{active: true, deleted_at: nil}, actor) and thread_ok and
+         vm_ok, do: :ok, else: {:error, :forbidden}
+  end
+
+  @spec project(Post.t()) :: post()
+  defp project(row),
+    do: Map.take(row, [:id, :board_id, :author_id, :body, :vm_id, :thread_id, :root_id])
 end

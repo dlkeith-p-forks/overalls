@@ -1,6 +1,6 @@
 ---
-digest: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
-disposition: no-impact
+digest: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
+disposition: updated
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/21-domains.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Encrypted attachment storage is an implementation hardening within the already documented Marshall thread attachment boundary.
+Reviewed durable boards, thread receivers, attachment cleanup, and property/audit evidence.

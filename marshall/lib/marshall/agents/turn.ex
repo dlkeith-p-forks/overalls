@@ -76,7 +76,9 @@ defmodule Marshall.Agents.Turn do
       constraints: [max_length: 32]
 
     attribute :maintenance_kind, :atom,
-      constraints: [one_of: [:compact_context, :reload_context, :skill_operation]]
+      constraints: [
+        one_of: [:compact_context, :reload_context, :skill_operation, :subscription_notification]
+      ]
 
     attribute :maintenance_metadata, :map, allow_nil?: false, default: %{}
     attribute :redaction_profile, :string, constraints: [max_length: 128]

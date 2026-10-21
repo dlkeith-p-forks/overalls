@@ -1,9 +1,89 @@
 defmodule Marshall.ThreadsTranscriptTest do
   use Marshall.DataCase, async: false
   import Marshall.ComputeFixtures
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Compute.Ledger
   alias Marshall.Threads.Thread
+
+  test "thread tools discover shared user links and read retained content only with current access" do
+    host_fixture()
+    creator = user()
+    reader = user()
+    {:ok, vm} = Marshall.Compute.provision(request(), actor: creator)
+    [root] = Ledger.read!(Marshall.Agents.Root, vm_id: vm.id)
+    [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
+    thread = user_thread(creator, vm, root, agent_thread)
+
+    Ledger.create!(Marshall.Agents.Event, :append, %{
+      thread_id: agent_thread.id,
+      sequence: agent_thread.next_event_sequence,
+      kind: :assistant,
+      body: %{"text" => "content-only needle"}
+    })
+
+    tool = Marshall.Agents.ThreadTool
+    assert {:ok, []} = tool.search(reader.id)
+    assert {:error, :forbidden} = tool.read(reader.id, thread.id)
+
+    assert {:ok, _} =
+             Marshall.Threads.set_access(
+               %{
+                 thread_id: thread.id,
+                 email: to_string(reader.email),
+                 role: :viewer,
+                 idempotency_key: Ash.UUID.generate()
+               },
+               actor: creator
+             )
+
+    assert {:ok, [found]} = tool.search(reader.id, "VISIBLE")
+    assert found.id == thread.id
+    assert found.url == "/threads/" <> thread.id
+    refute found.id == agent_thread.id
+    assert {:ok, []} = tool.search(reader.id, "content-only needle")
+    assert {:error, :not_subscribed} = tool.replay(reader.id, thread.id, 0)
+    assert {:ok, %{active: true}} = tool.subscribe(reader.id, thread.id)
+    assert {:ok, %{active: true}} = tool.subscribe(reader.id, thread.id)
+
+    Ledger.create!(Marshall.Agents.ThreadNotification, :append, %{
+      thread_id: agent_thread.id,
+      user_thread_id: thread.id,
+      owner_id: creator.id,
+      sequence: 1,
+      kind: :machine_purged,
+      metadata: %{"state" => "stopped"}
+    })
+
+    assert {:ok, [%{sequence: 1, kind: :machine_purged}]} = tool.replay(reader.id, thread.id, 0)
+    assert {:ok, []} = tool.replay(reader.id, thread.id, 1)
+    assert {:ok, %{active: false}} = tool.subscribe(reader.id, thread.id, false)
+    assert {:error, :not_subscribed} = tool.replay(reader.id, thread.id, 0)
+    assert {:ok, %{active: true}} = tool.subscribe(reader.id, thread.id)
+
+    assert {:ok, %{events: [%{body: %{"text" => "content-only needle"}}]}} =
+             tool.read(reader.id, thread.id)
+
+    assert {:error, :forbidden} = tool.read(reader.id, agent_thread.id)
+
+    assert {:ok, _} =
+             Marshall.Threads.set_access(
+               %{
+                 thread_id: thread.id,
+                 email: to_string(reader.email),
+                 role: :revoked,
+                 idempotency_key: Ash.UUID.generate()
+               },
+               actor: creator
+             )
+
+    assert {:ok, []} = tool.search(reader.id)
+    assert {:error, :forbidden} = tool.read(reader.id, thread.id)
+    assert {:error, :forbidden} = tool.read(reader.id, "invalid")
+    assert {:error, :forbidden} = tool.subscribe(reader.id, thread.id)
+    assert {:error, :forbidden} = tool.replay(reader.id, thread.id, 0)
+  end
 
   test "creator can read an archived transcript after thread archival" do
     host_fixture()
@@ -116,6 +196,23 @@ defmodule Marshall.ThreadsTranscriptTest do
 
     Marshall.Threads.Generation.open!(thread, 1)
 
+    assert {:ok, %{active: true}} = Marshall.Agents.ThreadTool.subscribe(creator.id, thread.id)
+
+    [subscription] =
+      Ledger.read!(Marshall.Agents.ThreadSubscription,
+        owner_id: creator.id,
+        user_thread_id: thread.id
+      )
+
+    Ledger.create!(Marshall.Agents.ThreadNotification, :append, %{
+      thread_id: first_agent.id,
+      user_thread_id: thread.id,
+      owner_id: creator.id,
+      sequence: 1,
+      kind: :machine_purged,
+      metadata: %{"state" => "stopped"}
+    })
+
     old_event =
       Ledger.create!(Marshall.Agents.Event, :append, %{
         thread_id: first_agent.id,
@@ -139,6 +236,14 @@ defmodule Marshall.ThreadsTranscriptTest do
 
     Marshall.Threads.Generation.open!(reopened, 2)
 
+    assert {:ok, [%{sequence: 1}]} = Marshall.Agents.ThreadTool.replay(creator.id, thread.id, 0)
+
+    assert {:ok, %{active: false}} =
+             Marshall.Agents.ThreadTool.subscribe(creator.id, thread.id, false)
+
+    assert {:error, :not_subscribed} = Marshall.Agents.ThreadTool.replay(creator.id, thread.id, 0)
+    assert {:ok, %{active: true}} = Marshall.Agents.ThreadTool.subscribe(creator.id, thread.id)
+
     {:ok, second_vm} =
       Marshall.Compute.provision(
         request(%{idempotency_key: reopened.machine_key}),
@@ -157,6 +262,43 @@ defmodule Marshall.ThreadsTranscriptTest do
       })
 
     Marshall.Threads.Generation.sync!(current)
+
+    Ledger.create!(Marshall.Agents.ThreadNotification, :append, %{
+      thread_id: second_agent.id,
+      user_thread_id: thread.id,
+      owner_id: creator.id,
+      sequence: 2,
+      kind: :machine_purged,
+      metadata: %{"state" => "paused"}
+    })
+
+    assert {:ok, [%{sequence: 2}]} = Marshall.Agents.ThreadTool.replay(creator.id, thread.id, 1)
+
+    assert [%{id: retained_id, thread_id: origin_id}] =
+             Ledger.read!(Marshall.Agents.ThreadSubscription,
+               owner_id: creator.id,
+               user_thread_id: thread.id
+             )
+
+    assert retained_id == subscription.id
+    assert origin_id == first_agent.id
+
+    # A previous release supplies only its agent binding and generation-local
+    # cursor. The additive migration must retain global ordering during rollout.
+    Ecto.Adapters.SQL.query!(
+      Marshall.Repo,
+      """
+      INSERT INTO agent_thread_tool_events
+        (id, thread_id, owner_id, sequence, kind, metadata, inserted_at, updated_at)
+      VALUES ($1, $2, $3, 1, 'machine_purged', '{}', now(), now())
+      """,
+      [
+        Ecto.UUID.dump!(Ash.UUID.generate()),
+        Ecto.UUID.dump!(second_agent.id),
+        Ecto.UUID.dump!(creator.id)
+      ], log: false)
+
+    assert {:ok, [%{sequence: 3}]} = Marshall.Agents.ThreadTool.replay(creator.id, thread.id, 2)
 
     assert {:ok, generations} = Marshall.Threads.generations(thread.id, creator)
     assert Enum.map(generations, & &1.ordinal) == [2, 1]
@@ -234,6 +376,72 @@ defmodule Marshall.ThreadsTranscriptTest do
     assert {:error, :forbidden} = Marshall.Threads.events(thread.id, member, 1, 100)
   end
 
+  @tag hegel_case_sandbox: true, timeout: 120_000
+  property "thread read bounds encoded bytes including Unicode and JSON escaping" do
+    size = draw("body length", integer(10_000..70_000))
+    character = draw("encoding", member_of(["x", "\"", "é", "\n"]))
+    isolate_property_case()
+    host_fixture()
+    creator = user()
+    {:ok, vm} = Marshall.Compute.provision(request(), actor: creator)
+    [root] = Ledger.read!(Marshall.Agents.Root, vm_id: vm.id)
+    [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
+    thread = user_thread(creator, vm, root, agent_thread)
+
+    event =
+      Ledger.create!(Marshall.Agents.Event, :append, %{
+        thread_id: agent_thread.id,
+        sequence: agent_thread.next_event_sequence,
+        kind: :assistant,
+        body: %{"text" => String.duplicate(character, size)}
+      })
+
+    expected = %{
+      id: thread.id,
+      title: thread.title,
+      url: "/threads/" <> thread.id,
+      events: [Map.take(event, [:sequence, :kind, :body])]
+    }
+
+    if byte_size(Jason.encode!(expected)) <= 65_536 do
+      assert {:ok, ^expected} = Marshall.Agents.ThreadTool.read(creator.id, thread.id)
+    else
+      assert {:error, :result_too_large} = Marshall.Agents.ThreadTool.read(creator.id, thread.id)
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification] thread-subscription-history
+  # Generated activation histories MUST retain one subscription identity and
+  # permit replay exactly while the independently modeled state is active.
+  @tag hegel_case_sandbox: true, timeout: 120_000
+  property "subscription histories preserve identity and active replay authority" do
+    commands = draw("subscription transitions", list_of(boolean(), min_length: 1, max_length: 12))
+    isolate_property_case()
+    host_fixture()
+    creator = user()
+    {:ok, vm} = Marshall.Compute.provision(request(), actor: creator)
+    [root] = Ledger.read!(Marshall.Agents.Root, vm_id: vm.id)
+    [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
+    thread = user_thread(creator, vm, root, agent_thread)
+
+    Enum.reduce(commands, nil, fn active, previous_id ->
+      assert {:ok, %{active: ^active}} =
+               Marshall.Agents.ThreadTool.subscribe(creator.id, thread.id, active)
+
+      [subscription] =
+        Ledger.read!(Marshall.Agents.ThreadSubscription,
+          owner_id: creator.id,
+          thread_id: agent_thread.id
+        )
+
+      if previous_id, do: assert(subscription.id == previous_id)
+      assert subscription.state == if(active, do: :active, else: :inactive)
+      expected = if(active, do: {:ok, []}, else: {:error, :not_subscribed})
+      assert Marshall.Agents.ThreadTool.replay(creator.id, thread.id, 0) == expected
+      subscription.id
+    end)
+  end
+
   @spec user_thread(
           Marshall.Accounts.User.t(),
           Marshall.Compute.VirtualMachine.t(),
@@ -262,6 +470,8 @@ defmodule Marshall.ThreadsTranscriptTest do
         agent_thread_id: agent_thread.id,
         status: :ready
       })
+
+    thread = Ledger.update!(thread, :set_title, %{title: "Visible title"})
 
     :ok = Ledger.archive!(vm, :archive)
     assert Ledger.read!(Marshall.Compute.VirtualMachine, id: vm.id) == []

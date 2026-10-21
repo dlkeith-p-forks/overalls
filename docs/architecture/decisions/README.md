@@ -1066,3 +1066,6 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0248](0248-fleet-build-scheduling.md) | accepted | partial | Fleet build scheduling through a tribuchet hub and grpc:// stores |
 | [ADR-0250](0250-independent-hldd-review-records.md) | accepted | implemented | Independent HLDD review records |
 | [ADR-0249](0249-mila-rust-core-native-clients.md) | accepted | partial | Mila Rust core with native platform clients |
+
+| [ADR-0251](0251-thread-owned-durable-attachments.md) | accepted | partial | Thread-owned durable attachments |
+| [ADR-0252](0252-profile-boards-and-thread-subscriptions.md) | accepted | partial | Profile boards and authorized thread subscriptions |

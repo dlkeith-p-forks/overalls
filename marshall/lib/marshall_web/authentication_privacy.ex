@@ -14,6 +14,7 @@ defmodule MarshallWeb.AuthenticationPrivacy do
       when prefix in [
              "magic_link",
              "auth",
+             "attachments",
              "sign-in",
              "register",
              "reset",

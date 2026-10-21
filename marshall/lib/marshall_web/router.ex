@@ -89,6 +89,8 @@ defmodule MarshallWeb.Router do
     get("/editor/authorize/:ticket", EditorController, :authorize)
     get("/machines/:id/code", EditorController, :launch)
     get("/usage/export", InferenceExportController, :show)
+    post("/attachments/:id/download", AttachmentController, :download)
+    post("/attachments/threads/:thread_id", AttachmentController, :upload)
     get("/admin/usage/export", InferenceExportController, :show)
     post("/auth/github-com/start", GitHubConnectionController, :start)
     get("/auth/github-com/callback", GitHubConnectionController, :callback)

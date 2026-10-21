@@ -118,7 +118,9 @@ defmodule Marshall.Application do
         Marshall.Agents.Loop,
         {Task.Supervisor, name: Marshall.Agents.SearchTasks},
         Marshall.Agents.WebSearch,
-        Marshall.Agents.ThreadToolWorker
+        Marshall.Agents.ThreadToolWorker,
+        Marshall.Agents.ThreadDelivery,
+        Marshall.Agents.AttachmentCleanup
       ],
       else: []
   end
