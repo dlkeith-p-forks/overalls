@@ -34,9 +34,9 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = UnavailableMilaFfiAdapter) {
         }
         Text(status, style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
-            MilaRoute.Machines -> MachineList { route = MilaRoute.Machine(it) }
+            MilaRoute.Machines -> MachineList()
             is MilaRoute.Machine -> Detail("Machine", selected.id.toString())
-            MilaRoute.Threads -> ThreadList { route = MilaRoute.Thread(it) }
+            MilaRoute.Threads -> ThreadList()
             is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
             MilaRoute.Settings -> Detail("Settings", "Runtime settings are managed by the core library.")
         }
@@ -44,6 +44,10 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = UnavailableMilaFfiAdapter) {
     LaunchedEffect(Unit) { refresh() }
 }
 
-@Composable private fun MachineList(select: (java.util.UUID) -> Unit) { val id = java.util.UUID.fromString("00000000-0000-0000-0000-000000000001"); Button({ select(id) }) { Text("Development machine") } }
-@Composable private fun ThreadList(select: (java.util.UUID) -> Unit) { val id = java.util.UUID.fromString("00000000-0000-0000-0000-000000000003"); Button({ select(id) }) { Text("Recent thread") } }
+@Composable private fun MachineList() {
+    Text("No validated machine snapshot loaded.", style = MaterialTheme.typography.bodyMedium)
+}
+@Composable private fun ThreadList() {
+    Text("No validated thread snapshot loaded.", style = MaterialTheme.typography.bodyMedium)
+}
 @Composable private fun Detail(title: String, value: String) { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) { Text(title, style = MaterialTheme.typography.titleLarge); Text(value, style = MaterialTheme.typography.bodyMedium) } }
