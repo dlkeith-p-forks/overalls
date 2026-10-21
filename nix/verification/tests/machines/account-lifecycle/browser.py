@@ -193,7 +193,7 @@ def run() -> None:
         invited.locator("#machine_profile").select_option("customer")
         invited.locator("#machine_vcpu").fill("1")
         invited.locator("#machine_memory_mib").fill("512")
-        invited.locator("#machine_disk_gib").fill("4")
+        invited.locator("#machine_disk_gib").fill("5")
         invited.locator("#provision-submit").click()
         invited.wait_for_url(
             lambda url: (

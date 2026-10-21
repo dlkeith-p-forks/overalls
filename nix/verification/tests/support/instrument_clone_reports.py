@@ -4,8 +4,8 @@ import hashlib
 import sys
 from pathlib import Path
 
-HOST_REPORTS_SHA256 = "9c67eff0f6d0c898e2dce6043811d5d36c8dfb41da94c2b07e2e359614cd6e29"
-EXCHANGE_SHA256 = "190d43f248504e6ee0a2dc19b38a602be1b98d0a1b410be680adf2ec2aaa1865"
+HOST_REPORTS_SHA256 = "66ef2fa3b9b4755dd3da43aa5061bfd56dd0bd43b8b2106e85ea1c896f30f572"
+EXCHANGE_SHA256 = "580a288a8b91f692b5d4aed87459be2471a70717a3cc301d008e9aac720bf6b3"
 
 # Original operands remain in the original and-chain, evaluated exactly once.
 REPLACEMENTS: tuple[tuple[str, str], ...] = (
@@ -39,7 +39,7 @@ REPLACEMENTS: tuple[tuple[str, str], ...] = (
 def instrument(source: str, exchange: str) -> str:
     """@cc [owner:ghuntley,label:verification] clone-report-exact-guard-seams
     The fixture build MUST refuse either changed source file before mutation.
-    Instrument actual ingest_locked! guards reached by authenticated exchange;
+    Instrument actual ingest_with_events_locked! guards reached by authenticated exchange;
     preserve predicate order, short-circuiting, evaluations and rollback reason.
     """
     for text, expected in ((source, HOST_REPORTS_SHA256), (exchange, EXCHANGE_SHA256)):

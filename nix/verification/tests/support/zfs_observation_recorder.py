@@ -7,6 +7,7 @@ import json
 import os
 import selectors
 import signal
+import stat
 import subprocess
 import sys
 import time
@@ -103,11 +104,26 @@ def object_fields(value: object) -> dict[str, object]:
 def read_context(root: Path) -> ReadinessContext:
     """@cc [owner:ghuntley,label:verification;security] observation-context-exact-owner
     Samples MUST distinguish absent/invalid/changing context from readiness.
-    Context MUST match this command's native parent PID, be private and at most
+    Context MUST match the unique inherited owner.lock device/inode, be private and at most
     4096 bytes, and contain only validated UUID and at most eight GUID bindings.
     """
     try:
-        path = root / f"context-{os.getppid()}.json"
+        owners: set[tuple[int, int]] = set()
+        for descriptor in Path("/proc/self/fd").iterdir():
+            try:
+                if Path(os.readlink(descriptor)).name != "owner.lock":
+                    continue
+                metadata = os.fstat(int(descriptor.name))
+                if stat.S_ISREG(metadata.st_mode):
+                    owners.add((metadata.st_dev, metadata.st_ino))
+            except (OSError, ValueError):
+                continue
+        if not owners:
+            return {"state": "missing"}
+        if len(owners) != 1:
+            return {"state": "invalid"}
+        device, inode = owners.pop()
+        path = root / f"context-{device}-{inode}.json"
         metadata = path.lstat()
         if metadata.st_mode & 0o777 != 0o600 or not path.is_file() or metadata.st_nlink != 1:
             return {"state": "invalid"}

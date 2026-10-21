@@ -9,15 +9,18 @@ defmodule Lilly.CloneObservationFixture do
   # with unchanged arguments/result and exceptions. Context MUST contain only a
   # validated placement UUID and at most eight exact dataset/snapshot GUID bindings,
   # be private and bounded to 4096 bytes, and be removed after the callback. Its
-  # filename MUST bind the currently held native pool-lock owner; unlocked calls
+  # filename MUST bind the currently held native pool-lock device/inode; unlocked calls
   # cannot publish context. Context failure grants no authority and must not retry.
   @spec around(OverallsProtocol.uuid() | nil, ZFS.snapshots(), (-> result)) :: result
         when result: term()
   def around(placement, snapshots, callback) do
     case Lock.current() do
-      port when is_port(port) ->
-        case Port.info(port, :os_pid) do
-          {:os_pid, owner} -> capture(@root, owner, placement, snapshots, callback)
+      %{__struct__: Lilly.Host.Lease, directory: directory} = lease when is_binary(directory) ->
+        with true <- Lock.held?(lease),
+             {:ok, %{type: :regular, major_device: device, inode: inode}} <-
+               File.lstat(Path.join(directory, "owner.lock")) do
+          capture(@root, {device, inode}, placement, snapshots, callback)
+        else
           _ -> callback.()
         end
 
@@ -29,15 +32,15 @@ defmodule Lilly.CloneObservationFixture do
   @doc false
   @spec capture(
           Path.t(),
-          pos_integer(),
+          {non_neg_integer(), pos_integer()},
           OverallsProtocol.uuid() | nil,
           ZFS.snapshots(),
           (-> result)
         ) ::
           result
         when result: term()
-  def capture(root, owner, placement, snapshots, callback) do
-    path = Path.join(root, "context-#{owner}.json")
+  def capture(root, {device, inode}, placement, snapshots, callback) do
+    path = Path.join(root, "context-#{device}-#{inode}.json")
 
     try do
       if File.regular?(Path.join(root, "armed")) and private_root?(root) do
@@ -66,7 +69,7 @@ defmodule Lilly.CloneObservationFixture do
   defp clear_contexts(root) do
     case File.ls(root) do
       {:ok, entries} ->
-        for name <- entries, Regex.match?(~r/\Acontext-[0-9]+\.json(?:\.tmp)?\z/, name) do
+        for name <- entries, Regex.match?(~r/\Acontext-[0-9]+-[0-9]+\.json(?:\.tmp)?\z/, name) do
           File.rm(Path.join(root, name))
         end
 

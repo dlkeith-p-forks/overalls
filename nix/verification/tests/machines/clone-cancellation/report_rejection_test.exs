@@ -1,7 +1,7 @@
 # Run alone in a Marshall test BEAM with the instrumenter's output selected by
 # CLONE_REPORT_INSTRUMENTED; it replaces HostReports only in this disposable VM.
 Code.require_file("report_rejection.ex", __DIR__)
-original = Path.expand("../../../../../../marshall/lib/marshall/compute/host_reports.ex", __DIR__)
+original = Path.expand("../../../../../marshall/lib/marshall/compute/host_reports.ex", __DIR__)
 instrumented = System.fetch_env!("CLONE_REPORT_INSTRUMENTED")
 Application.put_env(:marshall, :clone_report_sources, {original, instrumented})
 previous = Code.get_compiler_option(:ignore_module_conflict)
@@ -80,7 +80,12 @@ defmodule Marshall.CloneReportRejectionFixtureTest do
               | report: %{
                   report
                   | sequence: 2,
-                    sampled_at: DateTime.add(Ledger.now(), -10, :second)
+                    sampled_at:
+                      DateTime.add(
+                        Ledger.now(),
+                        -Marshall.Compute.HostLiveness.authority_ms() - 1000,
+                        :millisecond
+                      )
                 }
             })
           ]
@@ -178,7 +183,14 @@ defmodule Marshall.CloneReportRejectionFixtureTest do
     before_host = Ledger.read!(Host, id: source.host.id)
     before_pool = Ledger.read!(StoragePool, id: source.pool.id)
     before_clock = Ledger.now()
-    sampled_at = DateTime.add(before_clock, -10, :second)
+
+    sampled_at =
+      DateTime.add(
+        before_clock,
+        -Marshall.Compute.HostLiveness.authority_ms() - 1000,
+        :millisecond
+      )
+
     report = %{source.report | sampled_at: sampled_at}
 
     outcome = %{

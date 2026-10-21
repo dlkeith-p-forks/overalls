@@ -28,9 +28,10 @@ let
     ${pkgs.zip}/bin/zip -q -r ../unsigned.apk .
     cd ..
     "$buildTools/zipalign" -p -f 4 unsigned.apk aligned.apk
+    mkdir -p "$out"
     "$buildTools/apksigner" sign --ks "$HOME/.android/debug.keystore" \
       --ks-pass pass:android --ks-key-alias androiddebugkey --key-pass pass:android \
-      --out "$out" aligned.apk
+      --out "$out/fixture.apk" aligned.apk
   '';
   emulatorScript = pkgs.writeShellScript "android-emulator-software" ''
     set -euo pipefail
@@ -43,7 +44,8 @@ let
     if [ ! -f "$HOME/.android/adbkey" ]; then
       ${pkgs.android-tools}/bin/adb keygen "$HOME/.android/adbkey"
     fi
-    cp "$HOME/.android/adbkey.pub" /var/lib/android-test/adb_keys
+    # The emulator imports the persisted HOME/.android key into Android user state.
+    # Do not disable ADB authentication or supply the unsupported -auth option.
     mkdir -p "$ANDROID_AVD_HOME"
     if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
       printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
@@ -63,7 +65,7 @@ CONFIG
     fi
     exec ${sdkRoot}/emulator/emulator -avd overalls-test \
       -no-accel -gpu swiftshader_indirect -noaudio \
-      -no-boot-anim -no-snapshot -auth /var/lib/android-test/adb_keys \
+      -no-boot-anim -no-snapshot \
       -ports 5554,5555
   '';
 in
@@ -122,6 +124,7 @@ pkgs.testers.runNixOSTest {
     cmdline = android.succeed("pid=$(systemctl show -p MainPID --value android-test-emulator.service); tr '\\0' ' ' < /proc/$pid/cmdline")
     assert "-no-accel" in cmdline, cmdline
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
+    assert "-skip-adb-auth" not in cmdline and "-skip_adb_auth" not in cmdline
     android.wait_for_open_port(5555)
     android.succeed("export HOME=/var/lib/android-test; adb kill-server; adb start-server")
     android.succeed("HOME=/var/lib/android-test adb connect 127.0.0.1:5555")

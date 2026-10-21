@@ -21,6 +21,8 @@ class RecorderTest(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
+        self.lease = os.open(self.root / "owner.lock", os.O_RDWR | os.O_CREAT, 0o600)
+        fcntl.flock(self.lease, fcntl.LOCK_EX)
         self.ring = self.root / "ring"
         self.ring.mkdir(mode=0o700)
         (self.ring / "armed").touch(mode=0o600)
@@ -50,6 +52,7 @@ class RecorderTest(unittest.TestCase):
         self.native.chmod(0o700)
 
     def tearDown(self) -> None:
+        os.close(self.lease)
         self.temporary.cleanup()
 
     def invoke(
@@ -59,6 +62,7 @@ class RecorderTest(unittest.TestCase):
         stderr: bytes = b"err\n",
         status: int = 7,
         environment: dict[str, str] | None = None,
+        descriptors: tuple[int, ...] | None = None,
     ) -> subprocess.CompletedProcess[bytes]:
         (self.root / "stdout").write_bytes(stdout)
         (self.root / "stderr").write_bytes(stderr)
@@ -73,6 +77,7 @@ class RecorderTest(unittest.TestCase):
             capture_output=True,
             check=False,
             timeout=5,
+            pass_fds=(self.lease,) if descriptors is None else descriptors,
         )
 
     def launcher(self, arguments: list[str]) -> list[str]:
@@ -281,7 +286,9 @@ class RecorderTest(unittest.TestCase):
             "placement_id": placement,
             "snapshots": {name: {"dataset_guid": "123", "snapshot_guid": "456"}},
         }
-        context = self.ring / f"context-{os.getpid()}.json"
+        context = (
+            self.ring / f"context-{os.fstat(self.lease).st_dev}-{os.fstat(self.lease).st_ino}.json"
+        )
         context.write_text(json.dumps(payload))
         context.chmod(0o600)
         self.invoke(recorder.ARGUMENTS)
@@ -295,18 +302,41 @@ class RecorderTest(unittest.TestCase):
         self.invoke(recorder.ARGUMENTS)
         self.assertEqual(self.sample(2)["readiness"], {"state": "invalid"})
         self.assertNotIn("excluded-private-value", (self.ring / "sample-002.json").read_text())
-        context.rename(self.ring / "context-0.json")
+        context.rename(self.ring / "context-0-0.json")
         self.invoke(recorder.ARGUMENTS)
         self.assertEqual(self.sample(3)["readiness"], {"state": "missing"})
 
     def test_context_change_is_not_attributed_to_readiness(self) -> None:
-        context = self.ring / f"context-{os.getpid()}.json"
+        context = (
+            self.ring / f"context-{os.fstat(self.lease).st_dev}-{os.fstat(self.lease).st_ino}.json"
+        )
         context.write_text(
             json.dumps({"placement_id": "11111111-1111-4111-8111-111111111111", "snapshots": {}})
         )
         context.chmod(0o600)
         self.invoke(recorder.ARGUMENTS, environment={"FAKE_CHANGE_CONTEXT": str(context)})
         self.assertEqual(self.sample()["readiness"], {"state": "changed"})
+
+    def test_context_requires_inherited_descriptor_not_parent_identity(self) -> None:
+        payload = {"placement_id": "11111111-1111-4111-8111-111111111111", "snapshots": {}}
+        metadata = os.fstat(self.lease)
+        for name in (
+            f"context-{os.getpid()}.json",
+            f"context-{metadata.st_dev}-{metadata.st_ino}.json",
+        ):
+            path = self.ring / name
+            path.write_text(json.dumps(payload))
+            path.chmod(0o600)
+        self.invoke(recorder.ARGUMENTS, descriptors=())
+        self.assertEqual(self.sample()["readiness"], {"state": "missing"})
+
+    def test_multiple_distinct_inherited_lock_owners_are_not_attributed(self) -> None:
+        other = self.root / "other"
+        other.mkdir()
+        with (other / "owner.lock").open("w") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            self.invoke(recorder.ARGUMENTS, descriptors=(self.lease, lock.fileno()))
+        self.assertEqual(self.sample()["readiness"], {"state": "invalid"})
 
     def test_source_instrumentation_refuses_changed_or_duplicate_seams(self) -> None:
         source = self.root / "zfs.ex"

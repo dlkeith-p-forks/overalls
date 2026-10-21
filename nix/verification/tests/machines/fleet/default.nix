@@ -513,7 +513,7 @@ let
     nativeBuildInputs = [ pkgs.ty ];
   } ''
     # Bound this fixture against the immutable image before native machines boot.
-    ${pkgs.jq}/bin/jq -e '.minimum_disk_bytes <= 4294967296 and .minimum_memory_bytes <= 536870912' ${guest}/manifest.json >/dev/null
+    ${pkgs.jq}/bin/jq -e '.minimum_disk_bytes <= 5368709120 and .minimum_memory_bytes <= 536870912' ${guest}/manifest.json >/dev/null
     mkdir -p "$out"
     cp ${../account-lifecycle/browser.py} "$out/browser.py"
     ty check --python ${python}/bin/python3 "$out/browser.py"
@@ -985,11 +985,12 @@ let
     # Only cloneCancellation may interpose this dormant public-read recorder.
     # Its real executable MUST be the selected host kernel's ZFS userspace; the
     # existing Lilly lock owner and process group MUST retain native custody.
-    systemd.services.lilly.path = lib.mkBefore (lib.optionals cloneCancellation [
+    systemd.services.lilly-hostd.path = lib.mkBefore (lib.optionals cloneCancellation [
       (pkgs.writeShellScriptBin "zfs" ''
         exec ${pkgs.python3}/bin/python3 ${cloneObservationRecorder}/zfs_observation_recorder.py ${config.boot.zfs.package}/bin/zfs "$@"
       '')
-    ] ++ lib.optionals runtimeReadiness [
+    ]);
+    systemd.services.lilly.path = lib.mkBefore (lib.optionals runtimeReadiness [
       # @cc [owner:ghuntley,label:verification;recovery] native-submission-barrier-scope
       # Only the isolated readiness fixture may pause one explicitly armed unit
       # around real submission. Ordinary calls retain the pinned executable and
@@ -1418,7 +1419,7 @@ assert !(resize || teamResources || maintenanceEvacuation || cloneCancellation) 
   # input, and boot_args store references must not become JSON parser context.
   manifest = builtins.fromJSON (builtins.unsafeDiscardStringContext (builtins.readFile "${guest}/manifest.json"));
   in builtins.isInt manifest.minimum_disk_bytes && builtins.isInt manifest.minimum_memory_bytes
-    && manifest.minimum_disk_bytes <= 4294967296 && manifest.minimum_memory_bytes <= 536870912);
+    && manifest.minimum_disk_bytes <= 5368709120 && manifest.minimum_memory_bytes <= 536870912);
 # @cc [owner:ghuntley,label:verification] integration-renewal-real-stack
 # Renewal acceptance MUST compose the strictly typed ordinary-user team journey
 # with packaged Galileo, Audi and Porsche; selecting the variant cannot skip it.

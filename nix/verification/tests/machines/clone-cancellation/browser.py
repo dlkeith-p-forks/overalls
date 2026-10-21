@@ -90,7 +90,7 @@ def run() -> None:
             )
             owner.locator("#machine_vcpu").fill("1")
             owner.locator("#machine_memory_mib").fill("512")
-            owner.locator("#machine_disk_gib").fill("4")
+            owner.locator("#machine_disk_gib").fill("5")
             owner.locator("#provision-submit").click()
             owner.wait_for_url(
                 lambda url: (

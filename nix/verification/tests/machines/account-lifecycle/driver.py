@@ -1016,7 +1016,7 @@ with subtest("real Customer and shared-only OSS guests precede offline busy clea
             "owner_id": survivor_id,
             "image_id": image_id,
             "profile": "oss",
-            "disk_bytes": 4_294_967_296,
+            "disk_bytes": 5_368_709_120,
             "key": str(uuid.uuid4()),
         }
     )
@@ -1198,7 +1198,7 @@ with subtest("fresh same-email registration inherits nothing while old cleanup r
             "owner_id": replacement_id,
             "image_id": image_id,
             "profile": "oss",
-            "disk_bytes": 4_294_967_296,
+            "disk_bytes": 5_368_709_120,
             "key": str(uuid.uuid4()),
         },
         required_hosts=1,

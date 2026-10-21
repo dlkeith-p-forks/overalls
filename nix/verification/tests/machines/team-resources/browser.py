@@ -44,7 +44,9 @@ def run() -> None:
                 context = browser.new_context()
                 page = context.new_page()
                 page.goto(ORIGIN + "/magic_link/" + users[role + "_token"])
+                stage = role + " login connection"
                 expect(page.locator("[data-phx-main].phx-connected")).to_be_visible()
+                stage = role + " login landing"
                 page.wait_for_url("**/overview")
                 stage = role + " key registration"
                 page.goto(ORIGIN + "/settings")

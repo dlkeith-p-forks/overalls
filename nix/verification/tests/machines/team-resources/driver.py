@@ -624,9 +624,7 @@ def journal_reasons(machine: TeamMachine, unit: str, cursor: str, event: str) ->
         + " -o cat | jq -Rsc --arg event "
         + shlex.quote(event)
         + " "
-        + shlex.quote(
-            '[split("\\n")[] | fromjson? | .metadata | select(.event == $event) | .reason]'
-        )
+        + shlex.quote('[split("\\n")[] | fromjson? | select(.event == $event) | .metadata.reason]')
     )
     parsed: object = json.loads(raw)
     assert isinstance(parsed, list)
@@ -794,18 +792,18 @@ with subtest("ordinary team owner provisions shared, personal and Customer resou
     porsche("team member add native-resources " + member_email + " member")
     shared_vm = result_id(
         porsche(
-            f"new --name shared-team --team native-resources --image {image_id} --profile oss --cpu 1 --memory 512 --disk 4 --timeout 600"
+            f"new --name shared-team --team native-resources --image {image_id} --profile oss --cpu 1 --memory 512 --disk 5 --timeout 600"
         )
     )
     member_vm = result_id(
         porsche(
-            f"new --name member-personal --image {image_id} --profile oss --cpu 1 --memory 512 --disk 4 --timeout 600",
+            f"new --name member-personal --image {image_id} --profile oss --cpu 1 --memory 512 --disk 5 --timeout 600",
             "member",
         )
     )
     customer_vm = result_id(
         porsche(
-            f"new --name team-customer --team native-resources --image {image_id} --profile customer --cpu 1 --memory 512 --disk 4 --timeout 600"
+            f"new --name team-customer --team native-resources --image {image_id} --profile customer --cpu 1 --memory 512 --disk 5 --timeout 600"
         )
     )
     for vm_id in (shared_vm, member_vm, customer_vm):

@@ -855,7 +855,16 @@ defmodule FleetOperator do
     default_disk_bytes = max(3_221_225_472, catalog_image.minimum_disk_bytes)
     default_memory_bytes = max(536_870_912, catalog_image.minimum_memory_bytes)
     disk_bytes = Map.get(request, "disk_bytes", default_disk_bytes)
-    true = disk_bytes in [default_disk_bytes, 4_294_967_296, 6_442_450_944, 18_253_611_008]
+
+    true =
+      disk_bytes in [
+        default_disk_bytes,
+        4_294_967_296,
+        5_368_709_120,
+        6_442_450_944,
+        18_253_611_008
+      ]
+
     true = disk_bytes >= catalog_image.minimum_disk_bytes
     # @cc [owner:ghuntley,label:verification] fleet-manifest-memory-shapes
     # Default provisioning MUST meet the registered image's minimum memory.

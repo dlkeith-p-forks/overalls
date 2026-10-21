@@ -378,8 +378,8 @@ with subtest("ordinary browser owner creates the guest through verified HTTPS"):
     ordinary_accounts()
     host, placement = current_placement(vm_id)
     original_identity = workload_identity(vm_id)
-    host.succeed(f"fleet-resize-guest seed {placement} 1 4294967296", timeout=180)
-    check_guest(host, placement, 1, 512, 4294967296)
+    host.succeed(f"fleet-resize-guest seed {placement} 1 5368709120", timeout=180)
+    check_guest(host, placement, 1, 512, 5368709120)
     resume_browser("created")
 
 with subtest("running browser resize retains exact block length, guest data and workload identity"):

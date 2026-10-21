@@ -16,8 +16,8 @@ defmodule Lilly.CloneObservationFixtureTest do
 
     for snapshots <- [%{}, %{name => %{dataset_guid: "123", snapshot_guid: "456"}}] do
       assert {:error, :storage_busy} ==
-               Fixture.capture(root, 123, @placement, snapshots, fn ->
-                 path = Path.join(root, "context-123.json")
+               Fixture.capture(root, {7, 123}, @placement, snapshots, fn ->
+                 path = Path.join(root, "context-7-123.json")
                  assert band(File.stat!(path).mode, 0o777) == 0o600
                  assert File.stat!(path).size <= 4096
 
@@ -32,18 +32,20 @@ defmodule Lilly.CloneObservationFixtureTest do
 
       assert_received :once
       refute_received :once
-      refute File.exists?(Path.join(root, "context-123.json"))
-      refute File.exists?(Path.join(root, "context-123.json.tmp"))
+      refute File.exists?(Path.join(root, "context-7-123.json"))
+      refute File.exists?(Path.join(root, "context-7-123.json.tmp"))
     end
   end
 
   test "callback exceptions survive context cleanup", %{tmp_dir: root} do
     File.write!(Path.join(root, "armed"), "")
 
-    assert catch_throw(Fixture.capture(root, 123, @placement, %{}, fn -> throw(:original) end)) ==
+    assert catch_throw(
+             Fixture.capture(root, {7, 123}, @placement, %{}, fn -> throw(:original) end)
+           ) ==
              :original
 
-    refute File.exists?(Path.join(root, "context-123.json"))
+    refute File.exists?(Path.join(root, "context-7-123.json"))
   end
 
   test "invalid projection and unavailable storage cannot change callback result", %{
@@ -64,8 +66,8 @@ defmodule Lilly.CloneObservationFixtureTest do
           {Path.join(root, "absent"), @placement, %{}}
         ] do
       assert :unchanged ==
-               Fixture.capture(directory, 123, placement, snapshots, fn ->
-                 refute File.exists?(Path.join(directory, "context-123.json"))
+               Fixture.capture(directory, {7, 123}, placement, snapshots, fn ->
+                 refute File.exists?(Path.join(directory, "context-7-123.json"))
                  :unchanged
                end)
     end

@@ -1151,8 +1151,10 @@ group. A parent-death fence with a parent identity check, bounded signal/pipe-er
 reaping and nonblocking persistence preserve custody. Partial arming also cleans
 both hosts. A clone-only build seam privately captures the exact validated snapshot
 GUID map passed to readiness, bounded to eight bindings and 4096 bytes. Its native
-owner PID selects the context file; each sample distinguishes present, missing,
-invalid and changed context. The unchanged observer runs once with the original
+owner.lock device and inode select the context file. The wrapper runs in hostd's
+utility path and requires exactly one distinct inherited lock identity; absent or
+ambiguous descriptors cannot supply readiness context. Each sample distinguishes
+present, missing, invalid and changed context. The unchanged observer runs once with the original
 arguments and result, and `after` removes context. Replaying accounting requires
 that exact map and frozen pool identity. The recorded instrumented run collected
 six complete native reads before a queued activation refusal; every sample lacked
@@ -1162,6 +1164,10 @@ offline analysis used private copies of the retained disposable database and lef
 the original image unchanged. Only finite failure and predicate projections leave
 that boundary. The fixture's new activation wait observes real fresh receipts and
 settled operations; it grants no authority and does not relax production guards.
+
+The hostd fixture adaptation passed 15 recorder tests, three context tests and
+seven report-rejection tests on 2026-10-21. These local checks do not establish
+native descriptor/context pairing; the adapted machine run remains pending.
 
 The ninth native capture failed initial host admission before recording or clone
 activation. Its private offline database copy retained three accepted reports,

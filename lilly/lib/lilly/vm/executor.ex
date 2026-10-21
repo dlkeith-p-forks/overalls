@@ -213,7 +213,7 @@ defmodule Lilly.VM.Executor do
 
   # @cc [owner:ghuntley,label:recovery] unconfirmed-cleanup-retains-uncertainty
   # reconcile/3 MUST report unknown when physical stop/delete cleanup cannot be confirmed.
-  # Temporary execution/network lock unavailability must return retry without replacing the
+  # Temporary execution/storage/network lock unavailability must return retry without replacing the
   # previous durable observation.
   @spec reconcile(Config.t(), Execution.command(), history()) :: result()
   def reconcile(config, command, history) do
@@ -325,7 +325,8 @@ defmodule Lilly.VM.Executor do
             :ok ->
               stopped(pool, spec)
 
-            {:error, reason} when reason in [:execution_unavailable, :network_unavailable] ->
+            {:error, reason}
+            when reason in [:execution_unavailable, :storage_busy, :network_unavailable] ->
               {:retry, reason}
 
             _ ->

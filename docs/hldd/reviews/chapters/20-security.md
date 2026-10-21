@@ -1,5 +1,5 @@
 ---
-digest: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+digest: 995648da5f0c6af5caff1d1fdecb7147b9b8f91d9dd8f973f37447c122298348
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Peach logging hook and flake outputs added to devenv.nix and flake.nix; chapter 13 documents the Peach custody and chapter 20 its evidence.
+The security chapter describes hostd inherited lock device/inode attribution, private Lilly-owned context publication, unchanged observer semantics, and 25 passing local fixture checks; native cancellation acceptance remains pending. Fleet fixture disk minima preserve the current image requirements.

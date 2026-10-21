@@ -418,7 +418,7 @@ with subtest("two ordinary owned guests retain source data before the admin camp
                 image_id=users["image_id"],
                 profile="oss",
                 key=str(uuid.uuid4()),
-                disk_bytes=4294967296,
+                disk_bytes=5368709120,
             )
         )
         assert admitted["accepted"] is True

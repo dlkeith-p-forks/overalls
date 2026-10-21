@@ -3,14 +3,28 @@
 import sys
 from pathlib import Path
 
-SOURCE = """  def observe_for_readiness(identity, snapshots, placement_id, staged \\\\ MapSet.new()) do
+SOURCE = """  def observe_for_readiness(
+        identity,
+        snapshots,
+        placement_id,
+        staged \\\\ MapSet.new(),
+        usage \\\\ :exact
+      )
+      when usage in [:exact, :identity] do
     diagnostic = if OverallsProtocol.uuid?(placement_id), do: placement_id, else: nil
-    observe_with_diagnostics(identity, snapshots, diagnostic, :exact, staged)
+    observe_with_diagnostics(identity, snapshots, diagnostic, usage, staged)
   end"""
-REPLACEMENT = """  def observe_for_readiness(identity, snapshots, placement_id, staged \\\\ MapSet.new()) do
+REPLACEMENT = """  def observe_for_readiness(
+        identity,
+        snapshots,
+        placement_id,
+        staged \\\\ MapSet.new(),
+        usage \\\\ :exact
+      )
+      when usage in [:exact, :identity] do
     diagnostic = if OverallsProtocol.uuid?(placement_id), do: placement_id, else: nil
     Lilly.CloneObservationFixture.around(diagnostic, snapshots, fn ->
-      observe_with_diagnostics(identity, snapshots, diagnostic, :exact, staged)
+      observe_with_diagnostics(identity, snapshots, diagnostic, usage, staged)
     end)
   end"""
 

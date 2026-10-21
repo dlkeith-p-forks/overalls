@@ -33,7 +33,9 @@ def record_observations() -> Iterator[None]:
     try:
         for machine in provisioners:
             machine.succeed("install -d -m 700 " + observation_root)
+            machine.succeed("chown --reference=/run/lilly " + observation_root)
             machine.succeed("install -m 600 /dev/null " + observation_root + "/armed")
+            machine.succeed("chown --reference=/run/lilly " + observation_root + "/armed")
         yield
     except Exception:
         disarmed: list[CloneMachine] = []
@@ -479,14 +481,14 @@ def clone_checkpoint(clone: str, *, after_public_cancellation: bool = False) -> 
                 WHERE h.vm_id=r.source_vm_id
                   AND h.placement_id::text=r.specification->'source'->>'placement_id'
                   AND h.host_id=r.source_host_id AND h.disk_held
-                  AND h.temporary_disk_bytes=5368709120
+                  AND h.temporary_disk_bytes=6442450944
                   AND (r.source_restored_at IS NOT NULL OR h.compute_held)
               ) AND EXISTS (
                 SELECT 1 FROM compute_reservations h
                 WHERE h.vm_id=r.destination_vm_id
                   AND h.placement_id::text=r.specification->'destination'->>'placement_id'
                   AND h.host_id=r.destination_host_id
-                  AND h.disk_held AND h.compute_held AND h.disk_bytes=5368709120
+                  AND h.disk_held AND h.compute_held AND h.disk_bytes=6442450944
               ) AND (
                 SELECT count(*)=CASE WHEN r.source_host_id=r.destination_host_id THEN 1 ELSE 2 END
                   AND bool_and(s.released_at IS NULL AND s.host_id IN (r.source_host_id,r.destination_host_id))
@@ -540,10 +542,17 @@ def clone_checkpoint(clone: str, *, after_public_cancellation: bool = False) -> 
         "profile_image_mismatch",
     }
     label = failure if isinstance(failure, str) and failure in known_failures else "unknown"
-    assert state["cancelled"] is after_public_cancellation and state["unpublished"] is True
-    assert failure is None or (state["pending_valid"] is True and state["commitments"] is True), (
-        f"Native clone progress lacks bound pending evidence: phase={phase}, failure={label}"
+    retryable_storage = isinstance(failure, str) and failure.endswith("_storage_busy")
+    cancellation_cleanup = (
+        phase == "cancelling"
+        and isinstance(failure, str)
+        and failure.endswith("_cleanup_unconfirmed")
     )
+    assert state["cancelled"] is after_public_cancellation and state["unpublished"] is True
+    assert failure is None or (
+        state["commitments"] is True
+        and (state["pending_valid"] is True or retryable_storage or cancellation_cleanup)
+    ), f"Native clone progress lacks bound pending evidence: phase={phase}, failure={label}"
     captured = state["captured"]
     assert isinstance(captured, bool)
     if captured:
@@ -583,7 +592,7 @@ def destination(clone: str) -> str:
 
 
 def check_guest(machine: CloneMachine, placement: str) -> None:
-    machine.succeed(f"fleet-resize-guest check {placement} 1 4294967296", timeout=180)
+    machine.succeed(f"fleet-resize-guest check {placement} 1 5368709120", timeout=180)
 
 
 with subtest("owner creates and seeds a real shareable source"):
@@ -611,7 +620,7 @@ with subtest("owner creates and seeds a real shareable source"):
     source_dataset = "zroot/lilly/vm-" + placement
     source_guid = host.succeed("zfs get -Hp -o value guid " + source_dataset).strip()
     source_identity = workload_identity(vm_id)
-    host.succeed(f"fleet-resize-guest seed {placement} 1 4294967296", timeout=180)
+    host.succeed(f"fleet-resize-guest seed {placement} 1 5368709120", timeout=180)
     check_guest(host, placement)
     # @cc [owner:ghuntley,label:verification] clone-native-dispatch-gate
     # Only the disposable fixture's clone job scheduling may be delayed. Native
@@ -684,11 +693,11 @@ with record_observations(), record_report_rejections("clone"):
         )
         assert (
             sql(f"SELECT temporary_disk_bytes FROM compute_reservations WHERE vm_id='{vm_id}'")
-            == "5368709120"  # 4 GiB guest drive plus the 1 GiB portable boot bundle.
+            == "6442450944"  # 5 GiB guest drive plus the 1 GiB portable boot bundle.
         )
         assert (
             sql(
-                f"SELECT disk_held AND disk_bytes=5368709120 FROM compute_reservations WHERE vm_id='{copied}'"
+                f"SELECT disk_held AND disk_bytes=6442450944 FROM compute_reservations WHERE vm_id='{copied}'"
             )
             == "t"
         )

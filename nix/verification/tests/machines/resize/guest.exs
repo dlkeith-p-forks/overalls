@@ -73,7 +73,7 @@ try do
   [mode, placement, cpu, disk] = System.argv()
   cpu = String.to_integer(cpu)
   disk = String.to_integer(disk)
-  true = cpu in 1..2 and disk in [4_294_967_296, 5_368_713_216, 6_442_450_944]
+  true = cpu in 1..2 and disk in [5_368_709_120, 5_368_713_216, 6_442_450_944]
   :ok = ResizeGuest.run(mode, placement, cpu, disk)
   IO.puts("Resize guest assertions passed")
 rescue

@@ -76,7 +76,7 @@ def run() -> None:
             connected(page)
             page.locator("#machine_vcpu").fill("1")
             page.locator("#machine_memory_mib").fill("512")
-            page.locator("#machine_disk_gib").fill("4")
+            page.locator("#machine_disk_gib").fill("5")
             page.locator("#provision-submit").click()
             page.wait_for_url(
                 lambda url: (
