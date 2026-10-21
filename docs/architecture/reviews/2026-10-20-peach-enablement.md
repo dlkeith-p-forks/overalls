@@ -99,8 +99,9 @@ auto-update succeeded.
 
 ## Remaining gaps
 
-The production private leaf lacks `reflection.internal`; reissuing it needs the
-recovery-only intermediate, so guests that verify the hostname still refuse
-`reflection.internal` in production. Peach logs do not yet ship to the log store
+The production private leaf was regenerated from the recovery-only intermediate
+with `reflection.internal` and the existing fixed names, and both Audi-private
+host ciphertexts were replaced. Host activation and a renewed production guest
+journey remain live deployment evidence. Peach logs do not yet ship to the log store
 (no `peach` logging source). Generated current/stale execution and credential
 expiry histories, host loss and same-host native isolation remain unrecorded.

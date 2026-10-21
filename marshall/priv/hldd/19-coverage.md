@@ -1745,7 +1745,7 @@ Tested scope: Reflection protocol, Marshall projection, dedicated Peach credenti
 - **unit, recorded**: [assert !ready.services.peach.enable;](repo:nix/verification/tests/evaluation/ziggy.nix) — Nix private-service fixture evaluation passed with Peach disabled in 11 seconds; no runtime activation or reflection request; [execution record](repo:docs/architecture/reviews/2026-10-18-guest-reflection.md).
 - **unit, recorded**: [disabled reflection refuses before requesting connector authority](repo:audi/test/config_test.exs) — Exact HTTPS Host/SNI request refuses before invalid connector options can obtain authority; BEAM Plug fixture only; [execution record](repo:docs/architecture/reviews/2026-10-18-guest-reflection.md).
 
-**Gaps:** Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution. The production private leaf lacks reflection.internal, so production guest TLS is unverified
+**Gaps:** Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution. The production encrypted production leaf now includes reflection.internal; host activation and renewed production guest TLS remain live deployment evidence
 
 **Preferred test work:** Add generated current/stale execution and dedicated credential histories, and record a production guest reflection request after the private leaf is reissued
 

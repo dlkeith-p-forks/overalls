@@ -1,21 +1,17 @@
 ---
-digest: e1c2c28fdfdcf78f5d0a31b46041a48722c9458d451887081c43b21cc7f869d5
+digest: f83cc7e12720fbc4bd4df8ba49b4839d1a885b031581c3ff78eed9979d89a5b6
 disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
-migration:
-  governance:
-    chapter_digest: 751ceb5fdfcc269772d47964ba027021dfc5bbf898375b131030c5c474f3edc0
-    source_digest: 9d32ce22ccb4f120978a3e89a9ead131666dc31eab3a6227ca7efab86556993c
 path: docs/architecture/decisions/0111-private-service-tls-names.md
 reviewed_chapters:
-  marshall/priv/hldd/17-reference.md: 5513e1fb7deb5378fef4713fb925a9d0c0f2b1bc2539548d98e72c856262e897
-  marshall/priv/hldd/19-coverage.md: 5dc84656f2a81c5674ed8311af44a7f2e9c33262d36f624e11f8ba378a32db61
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
+  marshall/priv/hldd/19-coverage.md: c5a1bad02070018de2d0bf83b14bdb9770b44bbd4034f30a38c9041d59979757
+  marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
+  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-governance: Reviewed the Apple native compile fixes for route hashing and list identity; they preserve the documented native scaffold behavior.
+Encrypted secret rotation preserves documented TLS architecture; evidence text updated separately

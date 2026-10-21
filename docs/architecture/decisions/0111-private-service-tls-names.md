@@ -21,9 +21,10 @@ recovery-only custody and was unavailable to the 2026-09-24 deployment session.
 
 ## Decision
 
-Future offline fleet leaves have exactly `llm.internal` and
-`*.integration.internal` as SANs. The first is Ziggy's fixed name; the second
-covers named integrations and the reserved SSH private endpoint. The root,
+Future offline fleet leaves have exactly `llm.internal`, `reflection.internal`
+and `*.integration.internal` as SANs. The first is Ziggy's fixed name; the
+second is Peach's fixed reflection endpoint; the third covers named
+integrations and the reserved SSH private endpoint. The root,
 name-constrained intermediate, shared leaf custody and host distribution from
 ADR-0078 remain. Rotation of the deployed leaf requires the existing recovery
 issuer key and replacement of both host ciphertexts; the public root need not
@@ -98,22 +99,21 @@ fresh production SSH/move and retained-disk obligations remain separate.
 Retaining the root requires no guest trust-root replacement or re-imaging for
 this leaf rotation; migration of older SSH helpers remains a separate obligation.
 
-The subsequent encrypted replacement checkpoint replaced both repository host
-ciphertexts through sequential per-file atomic operations, with original,
-intermediate and final digest pins verified. Each new document independently
-decrypted to its own complete prepared payload; only the chain/key changed,
-every nonleaf value was preserved and runtime signing material remained absent.
-The current recipient registry checked all 38 documents. The public root and
-recovery ciphertext are unchanged. This is encrypted preparation awaiting
-commit/push and live activation, not evidence of either host serving the new
-leaf or a successful renewed production client/SSH journey.
+The encrypted replacement checkpoint replaced both repository host ciphertexts
+through sequential per-file atomic operations, with original, intermediate and
+final digest pins verified. Each document independently decrypts to its complete
+prepared payload; only the chain/key changed, every nonleaf value is preserved
+and runtime signing material remains absent. The replacement leaf carries the
+three names above. The public root and recovery ciphertext are unchanged.
+Repository publication and host activation are separate from this encrypted
+evidence.
 
 ## Open questions
 
-The recovery identity was available and used for the 2026-10-14 same-root leaf
-preparation and encrypted replacement. Commit/push, both-host live verification
-and renewed production acceptance remain separate. An off-host recoverable backup destination
-is still required before migrating retained user disks.
+The recovery identity was available and used for the same-root leaf preparation
+and encrypted replacement. Both-host live verification and renewed production
+acceptance remain deployment evidence; an off-host recoverable backup
+destination is still required before migrating retained user disks.
 
 ## Related decisions
 

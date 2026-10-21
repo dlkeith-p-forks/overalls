@@ -123,7 +123,8 @@ evidence:
     Plug fixture only
 gaps: Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss
   and same-host native network isolation need recorded property and machine execution. The production
-  private leaf lacks reflection.internal, so production guest TLS is unverified
+  encrypted production leaf now includes reflection.internal; host activation and
+  renewed production guest TLS remain live deployment evidence
 id: guest-reflection-current-execution
 journey: Discover the current guest and eligible private integrations without credential disclosure
 layers:

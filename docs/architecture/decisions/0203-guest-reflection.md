@@ -29,8 +29,9 @@ Protocol property tests cover bounded metadata and rejection of secret-shaped
 headers. Dedicated credential tests cover rotation, revocation, internal-only
 reads and secret-free audit. Peach's suite drives its HTTP Plug against a
 verified-TLS control stub, and the Galileo fleet machine test reads the
-projection from a real guest. Hostname-verified production TLS awaits the
-private leaf reissue, so the decision stays partial.
+projection from a real guest. The encrypted production leaf now includes the
+reflection SAN; live activation, native isolation and recovery gaps keep the
+decision partial.
 
 ## Alternatives
 
