@@ -1,5 +1,5 @@
 ---
-digest: 128ea43784dea08049cba1bb0f5e6b1c1e6cfed57aebb8b555cf2e6626d323e4
+digest: 6d2574fe4c61a7780a95dce9403e87533c19beefb82c90e0cdfbcc7dd36bf3ef
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent ZFS lifecycle probe changes; existing recovery documentation remains accurate.
+Reviewed concurrent lifecycle test changes; they preserve documented deployment behavior and evidence.

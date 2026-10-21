@@ -333,11 +333,18 @@ jobs:
         working-directory: mila/native/android
         run: gradle --no-daemon --stacktrace assembleDebug assembleDebugAndroidTest testDebugUnitTest
       - name: Invoke packaged Rust JNI on Android
-        timeout-minutes: 10
+        timeout-minutes: 20
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
+          target: google_apis
           arch: x86_64
+          cores: 2
+          ram-size: 2048M
+          force-avd-creation: true
+          emulator-boot-timeout: 900
+          disable-linux-hw-accel: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -accel off
           working-directory: mila/native/android
           disable-animations: true
           script: gradle --no-daemon connectedDebugAndroidTest
