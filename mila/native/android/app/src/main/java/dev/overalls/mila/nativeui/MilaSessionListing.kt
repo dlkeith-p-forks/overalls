@@ -18,7 +18,7 @@ data class MilaSessionListing(val machines: List<MilaMachineRow>, val hasMore: B
             val machines = rows.map { raw ->
                 val row = raw.trim('{', '}')
                 fun field(name: String): String? = Regex("\\\"$name\\\":\\\"([^\\\"]*)\\\"").find(row)?.groupValues?.get(1)
-                val id = runCatching { UUID.fromString(field("id") ?: error("invalid machine id")) }.getOrElse { error("invalid machine id") }
+                val id = runCatching { UUID.fromString(field("id") ?: throw IllegalArgumentException("invalid machine id")) }.getOrElse { throw IllegalArgumentException("invalid machine id", it) }
                 MilaMachineRow(id, field("name") ?: id.toString(), field("status") ?: "unknown")
             }
             return MilaSessionListing(machines, source.contains("\"has_more\":true"))

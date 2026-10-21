@@ -21,7 +21,7 @@ internal sealed record MilaSessionListing(IReadOnlyList<MilaMachineRow> Machines
     internal static MilaSessionListing Decode(ReadOnlySpan<byte> bytes)
     {
         if (bytes.Length > MaxBytes) throw new InvalidDataException("listing exceeds bound");
-        using JsonDocument document = JsonDocument.Parse(bytes);
+        using JsonDocument document = JsonDocument.Parse(bytes.ToArray());
         JsonElement root = document.RootElement;
         if (root.ValueKind != JsonValueKind.Object || !root.TryGetProperty("machines", out JsonElement rows) ||
             rows.ValueKind != JsonValueKind.Array || rows.GetArrayLength() > MaxMachines)
