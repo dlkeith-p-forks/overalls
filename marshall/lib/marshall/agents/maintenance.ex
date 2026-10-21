@@ -3,6 +3,7 @@ defmodule Marshall.Agents.Maintenance do
   alias Marshall.Agents.{Executor, ExecutorSession, ToolMaintenance}
   alias Marshall.Compute.{Image, Ledger, VirtualMachine}
   alias OverallsProtocol.GitHubTools
+  require Marshall.Events
 
   @type binding :: OverallsProtocol.PrivateServices.binding()
   @type descriptor :: %{name: String.t(), sha256: String.t(), bytes: pos_integer()}
@@ -55,7 +56,9 @@ defmodule Marshall.Agents.Maintenance do
       true ->
         row =
           if row.phase in [:claimed, :started] do
-            Ledger.update!(row, :uncertain, %{outcome: :interrupted})
+            uncertain = Ledger.update!(row, :uncertain, %{outcome: :interrupted})
+            log_transition(uncertain)
+            uncertain
           else
             row
           end
@@ -69,6 +72,7 @@ defmodule Marshall.Agents.Maintenance do
             execution_epoch: vm.execution_epoch
           })
 
+        log_transition(row)
         view(row, files)
     end
   end
@@ -85,6 +89,7 @@ defmodule Marshall.Agents.Maintenance do
   def transition_locked!(binding, executor_id, fence, attempt_id, status, result, release) do
     {executor, vm} = lease!(binding, executor_id, fence)
     row = find_locked!(vm.id)
+    previous_phase = row && row.phase
 
     unless row && row.generation == release.generation && row.attempt_id == attempt_id &&
              row.executor_id == executor.id &&
@@ -132,6 +137,7 @@ defmodule Marshall.Agents.Maintenance do
           Ledger.rollback(:invalid_transition)
       end
 
+    if row.phase != previous_phase, do: log_transition(row)
     %{maintenance_id: row.attempt_id, status: row.phase}
   end
 
@@ -158,6 +164,22 @@ defmodule Marshall.Agents.Maintenance do
         Ledger.rollback(:unauthorized)
 
     %{sha256: file.sha256, bytes: file.bytes, generation: row.generation}
+  end
+
+  # @cc [owner:ghuntley,label:observability] maintenance-committed-transition
+  # Installation diagnostics MUST contain only safe identifiers and closed
+  # phases, emit after the outer commit, and omit unchanged repeated receipts.
+  @spec log_transition(ToolMaintenance.t()) :: :ok
+  defp log_transition(row) do
+    Ledger.after_commit(fn ->
+      Marshall.Events.emit("agent.installation_transition",
+        vm_id: row.vm_id,
+        attempt_id: row.attempt_id,
+        executor_id: row.executor_id,
+        kind: :maintenance,
+        phase: row.phase
+      )
+    end)
   end
 
   @spec lease!(binding(), String.t(), pos_integer()) :: {Executor.t(), VirtualMachine.t()}

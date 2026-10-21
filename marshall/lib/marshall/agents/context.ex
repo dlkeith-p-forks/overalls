@@ -4,6 +4,7 @@ defmodule Marshall.Agents.Context do
   alias Marshall.Accounts.GuestAccount
 
   alias Marshall.Agents.{
+    AuditEvent,
     Command,
     ContextCheckpoint,
     ContextManifest,
@@ -19,6 +20,7 @@ defmodule Marshall.Agents.Context do
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.{Ledger, VirtualMachine}
   require Ash.Query
+  require Marshall.Events
 
   @internal_tools [:context_inventory, :context_read]
   @event_limit 4096
@@ -226,17 +228,21 @@ defmodule Marshall.Agents.Context do
         log: false
       )
 
-    Ledger.create!(ContextCheckpoint, :install, %{
-      thread_id: turn.thread_id,
-      turn_id: turn.id,
-      snapshot_id: applied.id,
-      generation: generation,
-      covered_turn_ordinal: turn.ordinal,
-      active_sequence: attributes.frontier.sequence,
-      state: attributes.state,
-      retained_input: Map.get(attributes, :retained_input, []),
-      source_digest: attributes.source_digest
-    })
+    checkpoint =
+      Ledger.create!(ContextCheckpoint, :install, %{
+        thread_id: turn.thread_id,
+        turn_id: turn.id,
+        snapshot_id: applied.id,
+        generation: generation,
+        covered_turn_ordinal: turn.ordinal,
+        active_sequence: attributes.frontier.sequence,
+        state: attributes.state,
+        retained_input: Map.get(attributes, :retained_input, []),
+        source_digest: attributes.source_digest
+      })
+
+    record_publication!(current, :context_compacted, checkpoint.id)
+    checkpoint
   end
 
   @doc "Authorized source metadata; callers must authorize thread read access first."
@@ -581,7 +587,36 @@ defmodule Marshall.Agents.Context do
       })
 
     Ledger.update!(current.thread, :set_context, %{working_directory: manifest.working_directory})
+    record_publication!(current, :context_captured, snapshot.id)
     snapshot
+  end
+
+  # @cc [owner:ghuntley,label:security;observability] context-publication-audit
+  # Applied snapshots and checkpoints MUST commit their content-free audit
+  # receipt atomically. Diagnostics MUST follow the outer commit and contain
+  # identifiers and the closed publication kind only, never context content.
+  @spec record_publication!(preparation(), :context_captured | :context_compacted, String.t()) ::
+          :ok
+  defp record_publication!(current, kind, target_id) do
+    Ledger.create!(AuditEvent, :record, %{
+      vm_id: current.vm.id,
+      thread_id: current.thread.id,
+      turn_id: current.turn.id,
+      actor_id: current.turn.actor_id,
+      kind: kind,
+      target_id: target_id,
+      outcome: :completed
+    })
+
+    Ledger.after_commit(fn ->
+      Marshall.Events.emit("agent.context_published",
+        vm_id: current.vm.id,
+        thread_id: current.thread.id,
+        turn_id: current.turn.id,
+        target_id: target_id,
+        kind: kind
+      )
+    end)
   end
 
   defp catalog_instructions([]), do: {[], []}

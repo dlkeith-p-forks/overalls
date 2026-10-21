@@ -191,13 +191,41 @@ defmodule Marshall.Agents.WebSearch do
     end)
   end
 
+  # @cc [owner:ghuntley,label:observability;security] search-execution-failure-diagnostic
+  # Failed completion attempts MUST retain command/claim correlation and a closed
+  # failure class. Query, credentials, result payloads, exceptions and exit terms
+  # MUST NOT enter diagnostics. Recovery remains owned by the durable claim reaper.
   @spec run(work()) :: :ok
   def run(work) do
     {outcome, result, credits} = search(work.query)
-    complete(work.id, work.claim_id, outcome, result, credits)
+
+    case complete(work.id, work.claim_id, outcome, result, credits) do
+      {:ok, _} ->
+        :ok
+
+      {:error, _} ->
+        Marshall.Events.emit("agent.search_execution_failed",
+          command_id: work.id,
+          claim_id: work.claim_id,
+          reason: :rejected
+        )
+    end
+
     :ok
   rescue
-    _ -> :ok
+    _ ->
+      Marshall.Events.emit("agent.search_execution_failed",
+        command_id: work.id,
+        claim_id: work.claim_id,
+        reason: :exception
+      )
+  catch
+    :exit, _ ->
+      Marshall.Events.emit("agent.search_execution_failed",
+        command_id: work.id,
+        claim_id: work.claim_id,
+        reason: :exit
+      )
   end
 
   @spec cache_key(String.t()) :: String.t()

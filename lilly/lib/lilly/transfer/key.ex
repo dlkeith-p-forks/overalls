@@ -13,28 +13,34 @@ defmodule Lilly.Transfer.Key do
   @spec ensure(Path.t(), String.t(), String.t(), String.t()) ::
           {:ok, String.t()} | {:error, atom()}
   def ensure(root, host, relocation, placement) do
-    locked(root, host, relocation, placement, fn directory, binding ->
-      with {:ok, state} <- load(directory, binding, "pending") do
-        case state["state"] do
-          "retired" ->
-            {:error, :transfer_key_retired}
+    result =
+      locked(root, host, relocation, placement, fn directory, binding ->
+        with {:ok, state} <- load(directory, binding, "pending") do
+          case state["state"] do
+            "retired" ->
+              {:error, :transfer_key_retired}
 
-          "ready" ->
-            with {:ok, public} <- public_key(directory),
-                 true <- public == state["public_key"],
-                 do: {:ok, public},
-                 else: (_ -> {:error, :invalid_transfer_key_state})
+            "ready" ->
+              with {:ok, public} <- public_key(directory),
+                   true <- public == state["public_key"],
+                   do: {:ok, public},
+                   else: (_ -> {:error, :invalid_transfer_key_state})
 
-          "pending" ->
-            with {:ok, public} <- prepare(directory),
-                 {:ok, _} <- Command.run(:sync, ["--", Path.join(directory, @key)]),
-                 :ok <- remove_public_file(directory),
-                 :ok <- save(directory, %{state | "state" => "ready", "public_key" => public}) do
-              published(relocation, placement, public)
-            end
+            "pending" ->
+              with {:ok, public} <- prepare(directory),
+                   {:ok, _} <- Command.run(:sync, ["--", Path.join(directory, @key)]),
+                   :ok <- remove_public_file(directory),
+                   :ok <- save(directory, %{state | "state" => "ready", "public_key" => public}) do
+                {:ok, {:published, public}}
+              end
+          end
         end
-      end
-    end)
+      end)
+
+    case result do
+      {:ok, {:published, public}} -> published(relocation, placement, public)
+      other -> other
+    end
   end
 
   # @cc [owner:ghuntley,label:security;recovery] transfer-key-retirement-is-permanent
@@ -44,16 +50,22 @@ defmodule Lilly.Transfer.Key do
   # terminated: deleting a key file does not revoke an established SSH connection.
   @spec retire(Path.t(), String.t(), String.t(), String.t()) :: :ok | {:error, atom()}
   def retire(root, host, relocation, placement) do
-    locked(root, host, relocation, placement, fn directory, binding ->
-      fresh = absent?(Path.join(directory, "key.json"))
+    result =
+      locked(root, host, relocation, placement, fn directory, binding ->
+        fresh = absent?(Path.join(directory, "key.json"))
 
-      with {:ok, state} <- load(directory, binding, "retired"),
-           :ok <- save(directory, %{state | "state" => "retired"}),
-           :ok <- remove_private_file(directory),
-           :ok <- remove_public_file(directory),
-           {:ok, _} <- Command.run(:sync, ["--", directory]),
-           do: retired(relocation, placement, fresh or state["state"] != "retired")
-    end)
+        with {:ok, state} <- load(directory, binding, "retired"),
+             :ok <- save(directory, %{state | "state" => "retired"}),
+             :ok <- remove_private_file(directory),
+             :ok <- remove_public_file(directory),
+             {:ok, _} <- Command.run(:sync, ["--", directory]),
+             do: {:ok, fresh or state["state"] != "retired"}
+      end)
+
+    case result do
+      {:ok, changed?} -> retired(relocation, placement, changed?)
+      other -> other
+    end
   end
 
   # @cc [owner:ghuntley,label:security;recovery] local-transfer-rechecks-key-tombstone
@@ -121,7 +133,8 @@ defmodule Lilly.Transfer.Key do
   # Publication and permanent-erasure events MUST carry only the relocation and
   # placement identifiers; public keys, private key material, paths and journal
   # contents MUST NOT be logged. Events fire only on the durable state
-  # transition, so idempotent retries of an already ready or retired key MUST
+  # transition, after the outer parent/root directory sync succeeds and the
+  # mutation scope returns, so idempotent retries of an already ready or retired key MUST
   # NOT re-emit.
   defp published(relocation, placement, public) do
     Lilly.Events.emit("lilly.key_created", relocation_id: relocation, placement_id: placement)

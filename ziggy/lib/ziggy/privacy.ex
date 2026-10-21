@@ -2,12 +2,25 @@ defmodule Ziggy.Privacy do
   @moduledoc "Conservative source-level diagnostic redaction for content-bearing processes."
   @catalog Ziggy.Events.__catalog__()
 
-  @spec install() :: :ok
+  @spec install() :: :ok | {:error, :privacy_filter_conflict | :privacy_filter_unavailable}
   def install do
-    case :logger.add_primary_filter(:ziggy_privacy, {&__MODULE__.filter/2, nil}) do
-      :ok -> :ok
-      {:error, {:already_exist, :ziggy_privacy}} -> :ok
+    callback = &__MODULE__.filter/2
+
+    case :logger.add_primary_filter(:ziggy_privacy, {callback, nil}) do
+      :ok ->
+        :ok
+
+      {:error, {:already_exist, :ziggy_privacy}} ->
+        case List.keyfind(:logger.get_primary_config().filters, :ziggy_privacy, 0) do
+          {:ziggy_privacy, {^callback, nil}} -> :ok
+          _ -> {:error, :privacy_filter_conflict}
+        end
+
+      _ ->
+        {:error, :privacy_filter_unavailable}
     end
+  catch
+    _, _ -> {:error, :privacy_filter_unavailable}
   end
 
   # @cc [owner:ghuntley,label:security] ziggy-logger-content-exclusion
@@ -47,10 +60,15 @@ defmodule Ziggy.Privacy do
       |> Enum.filter(fn {_, id} -> OverallsProtocol.uuid?(id) end)
       |> Map.new()
 
+    category = Overalls.Diagnostics.Privacy.otp_category(Map.get(event, :msg))
+
     %{
       event
-      | msg: {:string, "Ziggy runtime diagnostic (payload redacted)"},
-        meta: Map.merge(safe, identifiers) |> Map.put(:event, "ziggy.runtime")
+      | msg: {:string, "Ziggy " <> Atom.to_string(category) <> " (payload redacted)"},
+        meta:
+          Map.merge(safe, identifiers)
+          |> Map.put(:event, Overalls.Diagnostics.Privacy.category_event(:ziggy, category))
+          |> Map.put(:report_category, category)
     }
   end
 end

@@ -3,6 +3,7 @@ defmodule Lilly.Transfer.KeyRuntime do
   use GenServer
   require Lilly.Events
   alias Lilly.Control.Client
+  alias Lilly.Transfer.WorkerDiagnostics
   alias Lilly.Transfer.Key
 
   @spec start_link(keyword()) :: GenServer.on_start()
@@ -64,7 +65,12 @@ defmodule Lilly.Transfer.KeyRuntime do
     case result do
       {:ok, pending, failures} ->
         Process.send_after(self(), :tick, 1000)
-        {:noreply, report_effect_failures(%{state | pending: pending, task: nil}, failures)}
+
+        {:noreply,
+         report_effect_failures(
+           WorkerDiagnostics.recovered(%{state | pending: pending, task: nil}, :key),
+           failures
+         )}
 
       {:error, reason} when reason in [:unauthorized, :stale_connection, :unsupported_version] ->
         event =
@@ -77,15 +83,17 @@ defmodule Lilly.Transfer.KeyRuntime do
         send(state.owner, {event, self(), reason})
         {:noreply, %{state | task: nil}}
 
-      _ ->
+      failure ->
         Process.send_after(self(), :tick, 5000)
-        {:noreply, %{state | task: nil}}
+        {:noreply, WorkerDiagnostics.failed(%{state | task: nil}, :key, failure)}
     end
   end
 
   def handle_info({:DOWN, ref, :process, _, _}, %{task: %Task{ref: ref}} = state) do
     Process.send_after(self(), :tick, 5000)
-    {:noreply, %{state | task: nil}}
+
+    {:noreply,
+     WorkerDiagnostics.failed(%{state | task: nil}, :key, {:error, :effect_task_exited})}
   end
 
   def handle_info({:EXIT, _, _}, state), do: {:noreply, state}
@@ -96,7 +104,7 @@ defmodule Lilly.Transfer.KeyRuntime do
 
   @impl true
   def format_status(status),
-    do: Map.put(status, :state, %{pending_keys: map_size(status.state.pending)})
+    do: Lilly.DiagnosticStatus.redact(status, %{pending_keys: map_size(status.state.pending)})
 
   defp exchange(state) do
     with {:ok, response} <-
@@ -126,8 +134,8 @@ defmodule Lilly.Transfer.KeyRuntime do
   end
 
   # @cc [owner:ghuntley,label:security;observability] key-effect-failure-diagnostics-deduped
-  # Key effect failures MUST report only the closed per-mode reason atom and,
-  # for retirement, the relocation identifier; commands, endpoints, journals and
+  # Key effect failures MUST report only the closed per-mode reason, operation and request ID
+  # (the relocation identifier for retirement); commands, endpoints, journals and
   # key material MUST NOT be logged. Identical per-command failures MUST be
   # suppressed until that command succeeds, disappears or the reason changes;
   # ticking retries MUST NOT spam events.
@@ -140,7 +148,11 @@ defmodule Lilly.Transfer.KeyRuntime do
               Lilly.Events.emit("lilly.key_retirement_failed", relocation_id: id, reason: reason)
 
             _ ->
-              Lilly.Events.emit("lilly.transfer_effect_failed", reason: reason)
+              Lilly.Events.emit("lilly.transfer_effect_failed",
+                reason: reason,
+                request_id: id,
+                operation: state.mode
+              )
           end
         end
       end)

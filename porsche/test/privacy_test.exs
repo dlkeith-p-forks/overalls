@@ -66,9 +66,13 @@ defmodule Porsche.PrivacyTest do
     assert formatted.meta.report_category == "runtime_report"
   end
 
-  test "ordinary fixed application messages remain available" do
-    event = %{level: :info, msg: {:string, "Porsche started"}, meta: %{event: "porsche.started"}}
-    assert :ignore = Porsche.Privacy.filter(event, nil)
+  test "uncatalogued application and dependency strings are redacted before handlers" do
+    event = %{level: :info, msg: {:string, "private-canary"}, meta: %{event: "porsche.started"}}
+
+    assert %{meta: %{event: "porsche.runtime_report"}} =
+             clean = Porsche.Privacy.filter(event, nil)
+
+    refute inspect(clean) =~ "private-canary"
   end
 
   test "producer health remains private and visible while trace ingress is absent without queue recursion" do
@@ -203,9 +207,7 @@ defmodule Porsche.PrivacyTest do
     for event <- events do
       filtered = Porsche.Privacy.filter(event, nil)
 
-      if filtered != :ignore do
-        refute inspect(filtered) =~ secret
-      end
+      refute inspect(filtered) =~ secret
     end
   end
 

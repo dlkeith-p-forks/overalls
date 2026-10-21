@@ -32,6 +32,8 @@ defmodule Brady.Application do
 
   @impl true
   def start(_type, _args) do
+    :ok = Overalls.Diagnostics.Privacy.install(Brady.Events, :brady)
+
     with {:ok, children} <- runtime_children(Application.get_env(:brady, :config_file)) do
       harness_started(
         Supervisor.start_link(

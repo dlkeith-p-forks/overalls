@@ -73,6 +73,8 @@ defmodule Brady.Proxy do
   # An exchange MUST mark SLO admission only after kernel destination, parsed
   # request authority and method pass validation. Invalid requests and failures
   # before this boundary MUST NOT carry the admitted marker.
+  # Malformed HTTP framing after admission MUST retain the fixed invalid_http
+  # outcome and count as failure; initial malformed request heads remain excluded.
   @spec exchange(
           Transport.t(),
           {Destination.ipv4(), pos_integer()},
@@ -146,6 +148,7 @@ defmodule Brady.Proxy do
           {:admitted, {:error, reason}}
           when reason in [
                  :upstream,
+                 :invalid_http,
                  :tls,
                  :timeout,
                  :capacity,

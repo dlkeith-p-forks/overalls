@@ -17,10 +17,7 @@ defmodule Marshall.Accounts.AdminEvents do
         |> Ash.Query.sort(inserted_at: :desc, id: :desc)
         |> Ash.Query.limit(input.arguments.limit + 1)
 
-      query =
-        if input.arguments.before,
-          do: Ash.Query.filter(query, id < ^input.arguments.before),
-          else: query
+      query = before_cursor(query, input.arguments.before)
 
       rows = Ash.read!(query, actor: SystemActor.compute())
 
@@ -38,6 +35,31 @@ defmodule Marshall.Accounts.AdminEvents do
        }}
     else
       {:error, Ash.Error.Forbidden.exception([])}
+    end
+  end
+
+  # @cc [owner:ghuntley,label:observability] admin-audit-cursor-order
+  # A cursor MUST select rows older in the full timestamp/id ordering, regardless
+  # of UUID generation order. An unknown cursor MUST return no rows rather than
+  # restart the history or silently select an unrelated portion of the audit.
+  @spec before_cursor(Ash.Query.t(), String.t() | nil) :: Ash.Query.t()
+  defp before_cursor(query, nil), do: query
+
+  defp before_cursor(query, id) do
+    cursor =
+      AdminEvent
+      |> Ash.Query.filter(id == ^id)
+      |> Ash.read_one!(actor: SystemActor.compute())
+
+    case cursor do
+      nil ->
+        Ash.Query.filter(query, false)
+
+      %{inserted_at: timestamp} ->
+        Ash.Query.filter(
+          query,
+          inserted_at < ^timestamp or (inserted_at == ^timestamp and id < ^id)
+        )
     end
   end
 end

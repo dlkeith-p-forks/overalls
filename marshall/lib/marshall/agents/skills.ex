@@ -245,6 +245,8 @@ defmodule Marshall.Agents.Skills do
   # resurrected by late completion.
   @spec complete(String.t(), map()) :: result()
   def complete(operation_id, result) do
+    previous = List.first(Ledger.read!(SkillOperation, id: operation_id))
+
     outcome =
       operation_transaction(operation_id, fn thread, operation, installation ->
         cond do
@@ -264,11 +266,15 @@ defmodule Marshall.Agents.Skills do
 
     case outcome do
       {:ok, %SkillOperation{} = operation} ->
-        Marshall.Events.emit("agent.skill_operation_finished",
-          operation_id: operation.id,
-          installation_id: operation.installation_id,
-          outcome: operation.status
-        )
+        if (previous && previous.status not in @terminal) and operation.status in @terminal do
+          Marshall.Events.emit("agent.skill_operation_finished",
+            operation_id: operation.id,
+            installation_id: operation.installation_id,
+            outcome: operation.status
+          )
+        end
+
+        :ok
 
       _ ->
         :ok
@@ -279,11 +285,32 @@ defmodule Marshall.Agents.Skills do
 
   @spec fail(String.t(), term()) :: result()
   def fail(operation_id, reason) do
-    operation_transaction(operation_id, fn _thread, operation, installation ->
-      if operation.status in @terminal,
-        do: operation,
-        else: fail!(operation, installation, Failures.normalize(reason))
-    end)
+    previous = List.first(Ledger.read!(SkillOperation, id: operation_id))
+
+    result =
+      operation_transaction(operation_id, fn _thread, operation, installation ->
+        if operation.status in @terminal,
+          do: operation,
+          else: fail!(operation, installation, Failures.normalize(reason))
+      end)
+
+    case result do
+      {:ok, %SkillOperation{} = operation} ->
+        if (previous && previous.status not in @terminal) and operation.status in @terminal do
+          Marshall.Events.emit("agent.skill_operation_finished",
+            operation_id: operation.id,
+            installation_id: operation.installation_id,
+            outcome: operation.status
+          )
+        end
+
+        :ok
+
+      _ ->
+        :ok
+    end
+
+    result
   end
 
   @doc "Only enabled revisions verified for the currently bound machine enter context."

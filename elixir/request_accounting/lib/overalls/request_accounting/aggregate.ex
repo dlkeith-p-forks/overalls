@@ -13,7 +13,7 @@ defmodule Overalls.RequestAccounting.Aggregate do
   @bucket_count length(@bounds_us) + 1
   @snapshot_keys ~w(version service sampled_at_unix_nano started_at_unix_nano incarnation invocation_id requests successes failures duration)
   @duration_keys ~w(count sum_us explicit_bounds_us bucket_counts)
-  @options ~w(started_at_unix_nano incarnation invocation_id)
+  @options ~w(started_at_unix_nano incarnation invocation_id)a
 
   @typedoc "The fixed cumulative latency histogram slots."
   @type bucket_counts ::
@@ -92,6 +92,9 @@ defmodule Overalls.RequestAccounting.Aggregate do
   end
 
   @doc "Creates an empty aggregate for a service and invocation."
+  # @cc [owner:ghuntley,label:observability] aggregate-explicit-source-identity
+  # Valid keyword source identity options MUST be retained in snapshots; unknown
+  # or duplicate keys and invalid identities MUST fail before creating state.
   @spec new(binary(), keyword()) :: t()
   def new(service, opts \\ [])
 

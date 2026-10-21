@@ -58,6 +58,48 @@ defmodule Porsche.ObservabilityTest do
              ~w(beam_atoms beam_memory_bytes beam_processes beam_run_queue ssh_candidate_total ssh_proved_total)
   end
 
+  test "snapshot publication diagnoses failure once and recovery without disclosing paths" do
+    root =
+      Path.join(
+        System.tmp_dir!(),
+        "porsche-private-canary-#{Base.url_encode64(:crypto.strong_rand_bytes(12), padding: false)}"
+      )
+
+    path = Path.join(root, "snapshot.json")
+    File.mkdir!(root)
+    on_exit(fn -> File.rm_rf!(root) end)
+    pid = Process.whereis(Porsche.Observability)
+    state = :sys.get_state(pid) |> Map.put(:slo_path, path) |> Map.put(:publication, :ok)
+    {:noreply, state} = Porsche.Observability.handle_info(:slo_publish, state)
+    File.mkdir!(path <> ".new")
+
+    failed =
+      ExUnit.CaptureLog.capture_log(fn ->
+        assert {:noreply, failed} = Porsche.Observability.handle_info(:slo_publish, state)
+        assert failed.publication == :error
+        assert {:noreply, ^failed} = Porsche.Observability.handle_info(:slo_publish, failed)
+      end)
+
+    assert length(String.split(failed, "SLO snapshot publication unavailable")) == 2
+    refute failed =~ "private-canary"
+    File.rmdir!(path <> ".new")
+
+    recovered =
+      ExUnit.CaptureLog.capture_log(fn ->
+        assert {:noreply, recovered} =
+                 Porsche.Observability.handle_info(
+                   :slo_publish,
+                   Map.put(state, :publication, :error)
+                 )
+
+        assert recovered.publication == :ok
+        assert {:noreply, ^recovered} = Porsche.Observability.handle_info(:slo_publish, recovered)
+      end)
+
+    assert length(String.split(recovered, "SLO snapshot publication recovered")) == 2
+    refute recovered =~ "private-canary"
+  end
+
   test "ssh candidate and proved telemetry surface as clamped cumulative counters" do
     before = Observability.snapshot()
 

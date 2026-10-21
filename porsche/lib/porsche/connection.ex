@@ -121,10 +121,22 @@ defmodule Porsche.Connection do
 
   def handle_info(_, state), do: {:noreply, state}
 
+  # @cc [owner:ghuntley,label:observability] session-close-confirmed-outcome
+  # A successful session-close diagnostic MUST require Marshall's affirmative
+  # response for this session. Transport failure or malformed replies MUST
+  # emit only the fixed failure event, never a committed-close claim.
   @impl true
   def terminate(_, %{session: session} = state) when is_map(session) do
-    state.request.(state.client, "close", credentials(state))
-    Porsche.Events.emit("porsche.session_closed", [])
+    id = session["session_id"]
+
+    case state.request.(state.client, "close", credentials(state)) do
+      {:ok, %{"session_id" => ^id, "closed" => true}} ->
+        Porsche.Events.emit("porsche.session_closed", [])
+
+      _ ->
+        Porsche.Events.emit("porsche.session_close_failed", [])
+    end
+
     :ok
   end
 

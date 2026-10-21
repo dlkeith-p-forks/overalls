@@ -54,7 +54,19 @@ defmodule Susan.PrivacyTest do
   test "the privacy filter replaces uncatalogued log text with a fixed message" do
     event = %{level: :error, msg: {:string, "token=secret"}, meta: %{}}
 
-    assert %{msg: {:string, "Susan runtime diagnostic (payload redacted)"}} =
+    assert %{msg: {:string, "Susan runtime_report (payload redacted)"}} =
              Susan.Privacy.filter(event, nil)
+  end
+
+  test "OTP crash categories survive while private report content is removed" do
+    event = %{
+      level: :error,
+      msg: {:report, %{label: {:gen_server, :terminate}, reason: "secret-canary"}},
+      meta: %{token: "secret-canary"}
+    }
+
+    result = Susan.Privacy.filter(event, nil)
+    assert %{meta: %{event: "susan.process_crash", report_category: :process_crash}} = result
+    refute inspect(result) =~ "secret-canary"
   end
 end

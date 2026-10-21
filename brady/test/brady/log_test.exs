@@ -165,6 +165,8 @@ defmodule Brady.LogTest do
   end
 
   test "mid-stream transport failure reasons survive sanitization" do
+    assert Brady.Log.sanitize(%{reason: :invalid_http}) == %{reason: :invalid_http}
+
     assert Brady.Log.sanitize(%{reason: :transport, cache: :failed}) == %{
              reason: :transport,
              cache: :failed

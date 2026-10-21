@@ -2,6 +2,7 @@ defmodule Marshall.Agents.Bootstrap do
   @moduledoc "Durable fixed-program bootstrap for retained executors, separate from user conversations."
   alias Marshall.Agents.{ExecutorSession, ToolBootstrap, ToolMaintenance}
   alias Marshall.Compute.{Image, Ledger}
+  require Marshall.Events
   @type binding :: OverallsProtocol.PrivateServices.binding()
   @type envelope :: %{id: String.t(), call_id: String.t(), tool: :exec_command, arguments: map()}
 
@@ -65,9 +66,13 @@ defmodule Marshall.Agents.Bootstrap do
 
         true ->
           row =
-            if row.phase in [:started, :claimed],
-              do: Ledger.update!(row, :uncertain, %{}),
-              else: row
+            if row.phase in [:started, :claimed] do
+              uncertain = Ledger.update!(row, :uncertain, %{})
+              log_transition(uncertain)
+              uncertain
+            else
+              row
+            end
 
           row = if row.phase in [:failed, :uncertain], do: reset!(row, attrs), else: row
           retry_installation!(vm.id, tools.generation)
@@ -81,6 +86,7 @@ defmodule Marshall.Agents.Bootstrap do
               execution_epoch: vm.execution_epoch
             })
 
+          log_transition(row)
           envelope(row)
       end
     else
@@ -108,6 +114,7 @@ defmodule Marshall.Agents.Bootstrap do
       row ->
         {_executor, vm} = ExecutorSession.maintenance_lease!(binding, id, fence)
         validate!(row, vm, id, fence)
+        previous_phase = row.phase
 
         row =
           case {state, row.phase} do
@@ -134,6 +141,7 @@ defmodule Marshall.Agents.Bootstrap do
               Ledger.rollback(:invalid_transition)
           end
 
+        if row.phase != previous_phase, do: log_transition(row)
         {:ok, %{command_id: row.attempt_id, status: row.phase}}
     end
   end
@@ -170,6 +178,22 @@ defmodule Marshall.Agents.Bootstrap do
       [executor] -> "github-tools-v1" not in executor.capabilities
       _ -> false
     end
+  end
+
+  # @cc [owner:ghuntley,label:observability] bootstrap-committed-transition
+  # Installation diagnostics MUST contain only safe identifiers and closed
+  # phases, emit after the outer commit, and omit unchanged repeated receipts.
+  @spec log_transition(ToolBootstrap.t()) :: :ok
+  defp log_transition(row) do
+    Ledger.after_commit(fn ->
+      Marshall.Events.emit("agent.installation_transition",
+        vm_id: row.vm_id,
+        attempt_id: row.attempt_id,
+        executor_id: row.executor_id,
+        kind: :bootstrap,
+        phase: row.phase
+      )
+    end)
   end
 
   defp retry_installation!(vm_id, generation) do

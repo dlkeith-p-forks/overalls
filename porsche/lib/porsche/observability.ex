@@ -267,16 +267,35 @@ defmodule Porsche.Observability do
     {:noreply, state}
   end
 
+  # @cc [owner:ghuntley,label:observability;reliability] porsche-slo-publication-transitions
+  # Snapshot write failures MUST preserve request handling and emit only one
+  # payload-free failure per unavailable interval, followed by one recovery
+  # after a successful replacement. Paths and raw IO errors MUST NOT be logged.
   def handle_info(:slo_publish, state) do
-    publish_slo(state)
+    outcome = publish_slo(state)
+    previous = Map.get(state, :publication, :ok)
+
+    if outcome != previous do
+      case outcome do
+        :error ->
+          Porsche.Events.emit("porsche.slo_publication_failed", [])
+
+        :ok when previous == :error ->
+          Porsche.Events.emit("porsche.slo_publication_recovered", [])
+
+        _ ->
+          :ok
+      end
+    end
+
     Process.send_after(self(), :slo_publish, 5_000)
-    {:noreply, state}
+    {:noreply, Map.put(state, :publication, outcome)}
   end
 
   # @cc [owner:ghuntley,label:security;reliability] porsche-private-slo-file
   # Publication MUST replace a fixed numeric snapshot atomically in Porsche's
   # private runtime directory. Write failure MUST NOT interrupt SSH commands.
-  defp publish_slo(%{slo_path: nil}), do: :ok
+  defp publish_slo(%{slo_path: nil}), do: :disabled
 
   defp publish_slo(%{slo_path: path, slo: slo}) do
     staged = path <> ".new"
@@ -286,7 +305,7 @@ defmodule Porsche.Observability do
          :ok <- File.rename(staged, path) do
       :ok
     else
-      _ -> :ok
+      _ -> :error
     end
   end
 

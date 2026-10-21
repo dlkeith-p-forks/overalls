@@ -677,8 +677,17 @@ defmodule Lilly.Host.Hostd do
   def handle_info({:EXIT, _pid, _reason}, state), do: {:noreply, state}
 
   @impl true
-  def terminate(_reason, %{socket: socket}) when socket != nil, do: :socket.close(socket)
-  def terminate(_reason, _state), do: :ok
+  def terminate(reason, state) do
+    Lilly.SupervisedStop.emit(:hostd, reason)
+    if state.socket != nil, do: :socket.close(state.socket)
+    :ok
+  end
+
+  # @cc [owner:ghuntley,label:security;observability] hostd-status-private-payloads
+  # Status and crash reports MUST exclude pending utility arguments and collected
+  # native output; only closed lifecycle categories may enter diagnostics.
+  @impl true
+  def format_status(status), do: Lilly.DiagnosticStatus.redact(status)
 
   defp unavailable({:release, _}), do: :ok
   defp unavailable(_), do: {:error, :host_lock_unavailable}

@@ -15,7 +15,8 @@ defmodule Overalls.Diagnostics.Processor do
     Ziggy.Events => "ziggy.observability_health",
     Enrico.Events => "enrico.observability_health",
     Galileo.Events => "galileo.observability_health",
-    Susan.Events => "susan.observability_health"
+    Susan.Events => "susan.observability_health",
+    Peach.Events => "peach.observability_health"
   }
   @type state :: %{counters: :atomics.atomics_ref(), catalog: module() | nil}
 

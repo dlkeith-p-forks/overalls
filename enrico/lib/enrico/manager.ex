@@ -86,7 +86,7 @@ defmodule Enrico.Manager do
         manager = self()
         generation = make_ref()
 
-        case Task.Supervisor.start_child(Enrico.Tasks, fn ->
+        work = Overalls.Diagnostics.Context.wrap(fn ->
                receive do
                  {:slo_ticket, ticket} ->
                    started = System.monotonic_time(:microsecond)
@@ -103,7 +103,9 @@ defmodule Enrico.Manager do
                after
                  8_000 -> exit(:measurement_admission_timeout)
                end
-             end) do
+             end)
+
+        case Task.Supervisor.start_child(Enrico.Tasks, work) do
           {:ok, pid} ->
             ticket = Overalls.RequestAccounting.Producer.admit(Enrico.RequestRecorder, pid)
             send(pid, {:slo_ticket, ticket})

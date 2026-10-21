@@ -2,8 +2,8 @@
   "apps": {
     "susan": {
       "active": 16,
-      "coverage": 0.875,
-      "covered": 14
+      "coverage": 1.0,
+      "covered": 16
     },
     "system": {
       "active": 0,
@@ -143,8 +143,8 @@
     "susan.push_keys": {
       "active": 5,
       "app": "susan",
-      "coverage": 0.6,
-      "covered": 3,
+      "coverage": 1.0,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "susan.push_keys.I1": {
@@ -178,9 +178,9 @@
           ]
         },
         "susan.push_keys.I4": {
-          "failing": 1,
+          "failing": 0,
           "kind": "security",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
           "tests": [
@@ -188,9 +188,9 @@
           ]
         },
         "susan.push_keys.I5": {
-          "failing": 1,
+          "failing": 0,
           "kind": "security",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
           "tests": [
@@ -211,7 +211,7 @@
   "covenant": "0.2.0",
   "totals": {
     "active": 16,
-    "coverage": 0.875,
-    "covered": 14
+    "coverage": 1.0,
+    "covered": 16
   }
 }

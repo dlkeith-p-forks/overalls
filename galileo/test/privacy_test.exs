@@ -69,7 +69,23 @@ defmodule Galileo.PrivacyTest do
         nil
       )
 
-    refute Map.has_key?(rejected.meta, :event)
+    assert rejected.meta.event == "galileo.runtime_report"
     refute Map.has_key?(rejected.meta, :reason)
+  end
+
+  test "OTP crash categories survive without process state" do
+    clean =
+      Galileo.Privacy.filter(
+        %{
+          level: :error,
+          msg: {:report, %{label: {:gen_server, :terminate}, state: "synthetic-secret"}},
+          meta: %{}
+        },
+        nil
+      )
+
+    assert clean.meta.event == "galileo.process_crash"
+    assert clean.meta.report_category == :process_crash
+    refute inspect(clean) =~ "synthetic-secret"
   end
 end

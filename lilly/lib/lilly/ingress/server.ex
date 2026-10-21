@@ -317,13 +317,7 @@ defmodule Lilly.Ingress.Server do
   end
 
   @impl true
-  def format_status(status),
-    do:
-      Map.new(status, fn
-        {key, _} when key in [:state, :message, :reason] -> {key, :redacted}
-        {:log, _} -> {:log, []}
-        other -> other
-      end)
+  def format_status(status), do: Lilly.DiagnosticStatus.redact(status)
 
   defp accept(listener, parent) do
     case :gen_tcp.accept(listener) do

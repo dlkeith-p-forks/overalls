@@ -145,6 +145,26 @@ defmodule Overalls.Diagnostics.SharedObservabilityTest do
     refute inspect(filtered) =~ "secret"
   end
 
+  test "privacy installation only accepts the exact installed filter" do
+    id = :diagnostics_installation_test
+    on_exit(fn -> :logger.remove_primary_filter(id) end)
+
+    assert :ok = Privacy.install(ProjectionCatalog, :lilly, filter_id: id)
+    assert :ok = Privacy.install(ProjectionCatalog, :lilly, filter_id: id)
+
+    assert {:error, :privacy_filter_conflict} =
+             Privacy.install(ProjectionCatalog, :marshall, filter_id: id)
+
+    assert :ok = :logger.remove_primary_filter(id)
+    assert :ok = :logger.add_primary_filter(id, {fn _event, _state -> :ignore end, nil})
+
+    assert {:error, :privacy_filter_conflict} =
+             Privacy.install(ProjectionCatalog, :lilly, filter_id: id)
+
+    assert {:error, :privacy_filter_unavailable} =
+             Privacy.install(ProjectionCatalog, :lilly, filter_id: "invalid")
+  end
+
   @spec consume_intervals(non_neg_integer()) :: non_neg_integer()
   defp consume_intervals(total) do
     receive do

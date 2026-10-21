@@ -17,6 +17,62 @@ defmodule Ziggy.SpoolTest do
     %{dir: dir}
   end
 
+  test "snapshot publication diagnoses failure once and recovery without disclosing paths", %{
+    dir: dir
+  } do
+    root =
+      Path.join(
+        System.tmp_dir!(),
+        "ziggy-private-canary-#{Base.url_encode64(:crypto.strong_rand_bytes(12), padding: false)}"
+      )
+
+    path = Path.join(root, "snapshot.json")
+    File.mkdir!(root)
+    on_exit(fn -> File.rm_rf!(root) end)
+    pid = start_supervised!({Ziggy.Spool, directory: dir, max_requests: 2})
+    state = :sys.get_state(pid) |> Map.put(:slo_path, path) |> Map.put(:publication, :ok)
+    {:noreply, state} = Ziggy.Spool.handle_info(:slo_publish, state)
+    File.mkdir!(path <> ".new")
+
+    failed =
+      ExUnit.CaptureLog.capture_log(fn ->
+        assert {:noreply, failed} = Ziggy.Spool.handle_info(:slo_publish, state)
+        assert failed.publication == :error
+        assert {:noreply, ^failed} = Ziggy.Spool.handle_info(:slo_publish, failed)
+      end)
+
+    assert length(String.split(failed, "SLO snapshot publication unavailable")) == 2
+    refute failed =~ "private-canary"
+    File.rmdir!(path <> ".new")
+
+    recovered =
+      ExUnit.CaptureLog.capture_log(fn ->
+        assert {:noreply, recovered} =
+                 Ziggy.Spool.handle_info(:slo_publish, Map.put(state, :publication, :error))
+
+        assert recovered.publication == :ok
+        assert {:noreply, ^recovered} = Ziggy.Spool.handle_info(:slo_publish, recovered)
+      end)
+
+    assert length(String.split(recovered, "SLO snapshot publication recovered")) == 2
+    refute recovered =~ "private-canary"
+  end
+
+  test "recovery reports correlated interruption only after durable checkpoint", %{dir: dir} do
+    spool = start_supervised!({Ziggy.Spool, directory: dir, max_requests: 1})
+    :ok = Ziggy.Spool.admit(spool, admission())
+    stop_supervised!(Ziggy.Spool)
+
+    output =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :request_id]], fn ->
+        recovered = start_supervised!({Ziggy.Spool, directory: dir, max_requests: 1})
+        assert [%{"completion" => %{"outcome" => "interrupted"}}] = Ziggy.Spool.pending(recovered)
+      end)
+
+    assert output =~ "ziggy.inference_interrupted"
+    assert output =~ @id
+  end
+
   test "startup creates the checkpoint and restart preserves acknowledged totals",
        %{dir: dir} do
     spool = start_supervised!({Ziggy.Spool, directory: dir, max_requests: 2})

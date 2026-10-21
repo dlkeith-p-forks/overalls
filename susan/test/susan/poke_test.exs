@@ -44,6 +44,33 @@ defmodule Susan.PokeTest do
              InstallIdentity.by_fingerprint!(Susan.Poke.Request.fingerprint(elem(ctx.install, 0)))
   end
 
+  test "mandatory admission audit failure prevents provider delivery", ctx do
+    Susan.Repo.query!(
+      "ALTER TABLE audit_entries ADD CONSTRAINT reject_acceptance_audit CHECK (action <> 'poke_accepted')"
+    )
+
+    assert {:respond, 503, :unavailable, 60} =
+             Poke.handle(Fixtures.poke(ctx.push_key, ctx.install), ctx.config)
+
+    assert FakeProvider.requests() == []
+  end
+
+  test "post-send audit failure retains the completed receipt without resending", ctx do
+    Susan.Repo.query!(
+      "ALTER TABLE audit_entries ADD CONSTRAINT reject_sent_audit CHECK (action <> 'provider_sent')"
+    )
+
+    delivery = Susan.PushKey.uuid()
+    input = fn -> Fixtures.poke(ctx.push_key, ctx.install, delivery_id: delivery) end
+    assert {:respond, 503, :unavailable, 60} = Poke.handle(input.(), ctx.config)
+    assert {:respond, 503, :unavailable, 60} = Poke.handle(input.(), ctx.config)
+    Susan.Repo.query!("ALTER TABLE audit_entries DROP CONSTRAINT reject_sent_audit")
+    assert {:respond, 204, :empty, nil} = Poke.handle(input.(), ctx.config)
+    assert {:respond, 204, :empty, nil} = Poke.handle(input.(), ctx.config)
+    assert Enum.count(actions(), &(&1 == {:provider_sent, nil})) == 1
+    assert length(FakeProvider.requests()) == 1
+  end
+
   test "an FCM key sends a data-only message after one OAuth exchange", ctx do
     {push_key, key} = Fixtures.push_key(ctx.config, provider: :fcm)
 

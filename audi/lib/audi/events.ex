@@ -335,6 +335,17 @@ defmodule Audi.Events do
     end)
   end
 
+  defevent("audi.slo_publication_failed",
+    level: :warning,
+    message: "SLO snapshot publication unavailable",
+    metadata: []
+  )
+
+  defevent("audi.slo_publication_recovered",
+    message: "SLO snapshot publication recovered",
+    metadata: []
+  )
+
   defevent("audi.observability_health",
     trace: false,
     message: "Observability producer health observed",

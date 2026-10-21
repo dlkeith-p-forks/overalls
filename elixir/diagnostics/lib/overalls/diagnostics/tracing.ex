@@ -5,12 +5,14 @@ defmodule Overalls.Diagnostics.Tracing do
     lilly.host.utility
     lilly.transfer.stream
     enrico.git.utility
+    enrico.http
     marshall.http
     audi.http
     brady.http
     galileo.http
     ziggy.http
     porsche.ssh.dispatch
+    peach.http
   )
 
   @type metadata :: Overalls.Diagnostics.metadata()
@@ -96,7 +98,7 @@ defmodule Overalls.Diagnostics.Tracing do
 
   @spec span_kind(binary()) :: :internal | :server
   defp span_kind(name) do
-    if name in ~w(marshall.http audi.http brady.http galileo.http ziggy.http porsche.ssh.dispatch),
+    if name in ~w(marshall.http audi.http brady.http galileo.http ziggy.http porsche.ssh.dispatch peach.http enrico.http),
       do: :server,
       else: :internal
   end

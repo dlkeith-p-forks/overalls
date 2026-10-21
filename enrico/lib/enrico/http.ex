@@ -12,7 +12,13 @@ defmodule Enrico.HTTP do
   # Every API request MUST present the dedicated service token before reading
   # Git objects or starting work. Inputs and outputs MUST remain bounded.
   @impl true
+  @spec call(Plug.Conn.t(), Enrico.Config.t()) :: Plug.Conn.t()
   def call(conn, config) do
+    Overalls.Diagnostics.Tracing.with_span("enrico.http", [], fn -> call_traced(conn, config) end)
+  end
+
+  @spec call_traced(Plug.Conn.t(), Enrico.Config.t()) :: Plug.Conn.t()
+  defp call_traced(conn, config) do
     if authenticated?(conn, config.token) do
       dispatch(conn, config)
     else
@@ -20,7 +26,13 @@ defmodule Enrico.HTTP do
       reply(conn, 401, %{error: "unauthorized"})
     end
   rescue
-    _ -> reply(conn, 503, %{error: "unavailable"})
+    _ ->
+      Enrico.Events.emit("enrico.request_failed", reason: :exception)
+      reply(conn, 503, %{error: "unavailable"})
+  catch
+    :exit, _ ->
+      Enrico.Events.emit("enrico.request_failed", reason: :exit)
+      reply(conn, 503, %{error: "unavailable"})
   end
 
   defp dispatch(%{method: "POST", path_info: ["v1", "repos", id, "refresh"]} = conn, _) do

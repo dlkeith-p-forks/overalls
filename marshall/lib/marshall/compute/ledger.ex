@@ -73,8 +73,12 @@ defmodule Marshall.Compute.Ledger do
   # Ledger commit scope succeeds outside a database transaction. Nested success
   # followed by outer rollback, and nested rollback followed by outer recovery,
   # MUST discard callbacks belonging to the rolled-back work.
+  # Deferred callbacks MUST retain their registering local span without copying
+  # baggage, and restore the committing process's previous context afterward.
   @spec after_commit((-> term())) :: :ok
   def after_commit(callback) when is_function(callback, 0) do
+    callback = Overalls.Diagnostics.Context.wrap(callback)
+
     case Process.get({__MODULE__, :transaction_depth}, 0) do
       depth when depth > 0 ->
         Process.put(

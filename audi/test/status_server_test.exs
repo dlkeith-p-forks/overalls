@@ -106,6 +106,31 @@ defmodule Audi.StatusServerTest do
     assert snapshot(c.path) == %{"version" => 1, "role" => "dns", "ready" => true}
   end
 
+  test "OTP accepts status redaction without exposing private state", c do
+    pid = start_supervised!({Audi.StatusServer, path: c.path, client: nil, role: :gateway})
+    canary = "status-secret-canary"
+    :sys.replace_state(pid, &Map.put(&1, :private_canary, canary))
+    status = inspect(:sys.get_status(pid), limit: :infinity)
+    refute status =~ canary
+    refute status =~ "unknown keys"
+    assert status =~ "redacted"
+
+    for module <- [
+          Audi.StatusServer,
+          Audi.DNS.Replica,
+          Audi.TLS.Readiness,
+          Audi.TLS.FleetWorker,
+          Audi.HTTP.EditorAssetsPublisher,
+          Audi.SSH.KeyPublisher
+        ] do
+      input = %{state: canary, message: canary, reason: canary, log: [canary]}
+      output = module.format_status(input)
+      assert Map.keys(output) == Map.keys(input)
+      assert output.log == []
+      refute inspect(output) =~ canary
+    end
+  end
+
   defp snapshot(path) do
     {:ok, socket} =
       :gen_tcp.connect({:local, path}, 0, [:binary, active: false, packet: :line], 1000)

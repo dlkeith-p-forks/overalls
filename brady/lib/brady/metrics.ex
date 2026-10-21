@@ -69,6 +69,7 @@ defmodule Brady.Metrics do
          reason in [
            :ok,
            :upstream,
+           :invalid_http,
            :tls,
            :timeout,
            :capacity,
@@ -194,7 +195,8 @@ defmodule Brady.Metrics do
   defp publish_loss(_), do: :io
 
   @impl true
-  def format_status(_), do: %{state: :redacted}
+  def format_status(status),
+    do: Map.new(status, fn {key, _} -> {key, if(key == :log, do: [], else: :redacted)} end)
 
   defp counters(ref) do
     @names

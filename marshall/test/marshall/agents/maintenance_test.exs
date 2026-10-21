@@ -52,6 +52,49 @@ defmodule Marshall.Agents.MaintenanceTest do
     assert Ledger.read!(ToolMaintenance, vm_id: c.vm_id) == []
   end
 
+  test "installation diagnostics follow commit and repeated receipts stay quiet" do
+    c = fixture()
+    {:ok, executor} = ExecutorSession.register(c.binding, nil, ["github-tools-v1"])
+    previous = Logger.level()
+    Logger.configure(level: :info)
+    on_exit(fn -> Logger.configure(level: previous) end)
+
+    rolled_back =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :kind, :phase]], fn ->
+        assert {:error, :test_rollback} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = claim(c, executor)
+                   Ledger.rollback(:test_rollback)
+                 end)
+      end)
+
+    refute rolled_back =~ "agent.installation_transition"
+
+    committed =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :kind, :phase]], fn ->
+        assert {:ok, :ok} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, %{maintenance: operation}} = claim(c, executor)
+                   assert {:ok, _} = claim(c, executor)
+                   assert {:ok, _} = transition(c, executor, operation.id, "started", %{})
+                   assert {:ok, _} = transition(c, executor, operation.id, "started", %{})
+
+                   assert {:ok, _} =
+                            transition(c, executor, operation.id, "completed", receipt(c))
+
+                   assert {:ok, _} =
+                            transition(c, executor, operation.id, "completed", receipt(c))
+
+                   :ok
+                 end)
+      end)
+
+    assert length(Regex.scan(~r/event=agent\.installation_transition/, committed)) == 3
+    assert committed =~ "kind=maintenance"
+    assert committed =~ "phase=completed"
+    refute committed =~ c.token
+  end
+
   test "release replacement fences a staged old generation before activation" do
     c = fixture()
     {:ok, executor} = ExecutorSession.register(c.binding, nil, ["github-tools-v1"])

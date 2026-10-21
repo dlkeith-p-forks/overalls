@@ -24,13 +24,6 @@ defmodule Marshall.Access.Sharing do
       )
 
     case result do
-      {:ok, %Change{} = change} ->
-        unless Marshall.Repo.in_transaction?() do
-          Marshall.Events.emit("vm.access_changed", vm_id: change.vm_id)
-        end
-
-        {:ok, change}
-
       {:error, reason} when is_atom(reason) ->
         {:error, Marshall.Compute.Error.exception(reason: reason)}
 
@@ -51,6 +44,9 @@ defmodule Marshall.Access.Sharing do
   # reusing the same actor/VM/key MUST return its original same-recipient/role
   # change without applying it again; a changed payload MUST conflict. A delayed
   # retry MUST NOT undo a later role replacement or revocation.
+  # @cc [owner:ghuntley,label:observability] sharing-outcome-after-commit
+  # A new sharing receipt MUST emit its outcome after the outer commit.
+  # Rolled-back receipts and idempotent replays MUST emit no success event.
   defp change(vm, actor, request) do
     if request.role != :revoked and
          not OverallsProtocol.ProfilePolicy.allows?(vm.profile, :sharing),
@@ -77,7 +73,6 @@ defmodule Marshall.Access.Sharing do
 
       [] ->
         grant = replace(vm.id, user.id, actor.id, request.role)
-        :ok
 
         change =
           Ledger.create!(Change, :record, %{
@@ -88,6 +83,10 @@ defmodule Marshall.Access.Sharing do
             request_key: request.idempotency_key,
             grant_id: if(grant, do: grant.id)
           })
+
+        Ledger.after_commit(fn ->
+          Marshall.Events.emit("vm.access_changed", vm_id: change.vm_id)
+        end)
 
         change
     end

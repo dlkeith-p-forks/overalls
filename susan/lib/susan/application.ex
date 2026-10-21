@@ -29,9 +29,10 @@ defmodule Susan.Application do
            [
              {Oban, Application.fetch_env!(:susan, Oban)},
              Susan.Provider.Finch,
-             Supervisor.child_spec({Task, fn -> Susan.KeyringAudit.record(config.keyring) end},
-               restart: :temporary
-             ),
+             %{
+               id: Susan.KeyringAudit,
+               start: {Susan.KeyringAudit, :start_link, [config.keyring]}
+             },
              {Bandit,
               plug: {Susan.HTTP, config},
               ip: config.bind,

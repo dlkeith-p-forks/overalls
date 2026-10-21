@@ -35,6 +35,10 @@ defmodule Marshall.Inference.Requests do
                 })
               )
 
+            Ledger.after_commit(fn ->
+              Marshall.Events.emit("inference.request_admitted", request_id: row.id, vm_id: vm.id)
+            end)
+
             view(row)
           end,
           {:provisioner, input.host_id}
@@ -148,6 +152,11 @@ defmodule Marshall.Inference.Requests do
                 })
 
                 :ok = Marshall.Inference.Totals.add!(row, completion)
+
+                Ledger.after_commit(fn ->
+                  Marshall.Events.emit("inference.request_completed", request_id: id)
+                end)
+
                 %{acknowledged: id}
             end
           end,
@@ -161,19 +170,9 @@ defmodule Marshall.Inference.Requests do
   end
 
   # @cc [owner:ghuntley,label:observability;security] inference-outcomes-after-commit
-  # Admission and completion outcomes MUST be emitted only after the outer
-  # transaction returns, with safe identifiers and closed refusal reasons.
-  # Lease renewal remains deliberately quiet.
-  defp log_outcome(:admit, {:ok, %{request_id: request_id, vm_id: vm_id}} = result, _) do
-    Marshall.Events.emit("inference.request_admitted", request_id: request_id, vm_id: vm_id)
-    result
-  end
-
-  defp log_outcome(:complete, {:ok, %{acknowledged: request_id}} = result, _) do
-    Marshall.Events.emit("inference.request_completed", request_id: request_id)
-    result
-  end
-
+  # Admission and completion success MUST be emitted only by callbacks after the
+  # outer commit. Rollback and identical completion replays MUST emit no success.
+  # Refusals carry safe identifiers and closed reasons; renewal remains quiet.
   defp log_outcome(_, {:error, reason} = result, request_id) when is_atom(reason) do
     Marshall.Events.emit("inference.request_refused",
       request_id: if(OverallsProtocol.uuid?(request_id || ""), do: request_id),

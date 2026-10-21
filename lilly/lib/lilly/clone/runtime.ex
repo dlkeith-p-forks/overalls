@@ -3,6 +3,7 @@ defmodule Lilly.Clone.Runtime do
   use GenServer
   require Lilly.Events
   alias Lilly.Clone.{Effects, Reason}
+  alias Lilly.Transfer.WorkerDiagnostics
 
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(options), do: GenServer.start_link(__MODULE__, options)
@@ -80,6 +81,7 @@ defmodule Lilly.Clone.Runtime do
 
         {:noreply,
          %{state | pending: pending, offered: offered, task: nil}
+         |> WorkerDiagnostics.recovered(:clone)
          |> report_attempts(attempts)}
 
       {:error, reason}
@@ -87,15 +89,17 @@ defmodule Lilly.Clone.Runtime do
         send(state.owner, {:clone_fenced, self(), reason})
         {:noreply, %{state | task: nil}}
 
-      _ ->
+      failure ->
         Process.send_after(self(), :tick, 5000)
-        {:noreply, %{state | task: nil}}
+        {:noreply, WorkerDiagnostics.failed(%{state | task: nil}, :clone, failure)}
     end
   end
 
   def handle_info({:DOWN, ref, :process, _, _}, %{task: %Task{ref: ref}} = state) do
     Process.send_after(self(), :tick, 5000)
-    {:noreply, %{state | task: nil}}
+
+    {:noreply,
+     WorkerDiagnostics.failed(%{state | task: nil}, :clone, {:error, :effect_task_exited})}
   end
 
   def handle_info({:EXIT, _, _}, state), do: {:noreply, state}
@@ -164,5 +168,5 @@ defmodule Lilly.Clone.Runtime do
   def terminate(_, _), do: :ok
   @impl true
   def format_status(status),
-    do: Map.put(status, :state, %{pending_results: map_size(status.state.pending)})
+    do: Lilly.DiagnosticStatus.redact(status, %{pending_results: map_size(status.state.pending)})
 end

@@ -80,7 +80,13 @@ defmodule Marshall.Agents.Thread do
     uuid_v7_primary_key :id
     attribute :root_id, :uuid, allow_nil?: false
     attribute :parent_thread_id, :uuid
-    attribute :title, :string, allow_nil?: false, constraints: [min_length: 1, max_length: 256]
+    # @cc [owner:ghuntley,label:security] agent-thread-private-audit-exclusion
+    # Titles, working paths and selected skill names MUST remain in authorized
+    # thread state and MUST NOT be copied into PaperTrail audit versions.
+    attribute :title, :string,
+      allow_nil?: false,
+      sensitive?: true,
+      constraints: [min_length: 1, max_length: 256]
 
     attribute :mode, :atom,
       allow_nil?: false,
@@ -94,10 +100,11 @@ defmodule Marshall.Agents.Thread do
       default: :work,
       constraints: [one_of: [:work, :plan]]
 
-    attribute :working_directory, :string, constraints: [max_length: 4096]
+    attribute :working_directory, :string, sensitive?: true, constraints: [max_length: 4096]
 
     attribute :selected_skills, {:array, :string},
       allow_nil?: false,
+      sensitive?: true,
       default: [],
       constraints: [max_length: 32]
 

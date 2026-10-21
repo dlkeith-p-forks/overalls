@@ -319,7 +319,7 @@ defmodule Lilly.VM.Actor do
   end
 
   @impl true
-  def format_status(status), do: Map.put(status, :state, public(status.state))
+  def format_status(status), do: Lilly.DiagnosticStatus.redact(status, public(status.state))
 
   # @cc [owner:ghuntley,label:recovery;concurrency] newer-command-preempts-uncommitted
   # A newer stored command MUST stop an in-flight task that has not been

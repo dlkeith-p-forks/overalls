@@ -895,7 +895,8 @@ defmodule Lilly.Control.Runtime do
   end
 
   @impl true
-  def format_status(status), do: Map.put(status, :state, public_status(status.state))
+  def format_status(status),
+    do: Lilly.DiagnosticStatus.redact(status, public_status(status.state))
 
   # @cc [owner:ghuntley,label:recovery] one-control-request-in-flight
   # maybe_exchange/1 MUST keep at most one outbound control request in flight and must not resend

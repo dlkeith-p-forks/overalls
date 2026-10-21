@@ -88,11 +88,5 @@ defmodule Lilly.Host.ImageCatalog do
     do: Enum.sum(Enum.map(files, fn {_, {_, stat}} -> stat.size end))
 
   @impl true
-  def format_status(status),
-    do:
-      Map.new(status, fn
-        {key, _} when key in [:state, :message, :reason] -> {key, :redacted}
-        {:log, _} -> {:log, []}
-        other -> other
-      end)
+  def format_status(status), do: Lilly.DiagnosticStatus.redact(status)
 end

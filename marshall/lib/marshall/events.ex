@@ -153,6 +153,16 @@ defmodule Marshall.Events do
     metadata: [vm_id: :uuid, command_id: :uuid, outcome: :atom, credits: {:int, :optional}]
   )
 
+  defevent("agent.search_execution_failed",
+    level: :warning,
+    message: "Agent search execution failed before a durable completion",
+    metadata: [
+      command_id: :uuid,
+      claim_id: :uuid,
+      reason: {:enum, [:exception, :exit, :rejected]}
+    ]
+  )
+
   defevent("agent.model_claimed",
     message: "Agent model call claimed",
     metadata: [vm_id: :uuid, call_id: :uuid]
@@ -180,14 +190,47 @@ defmodule Marshall.Events do
     metadata: [reason: :atom]
   )
 
+  defevent("agent.installation_transition",
+    message: "Managed agent installation transitioned",
+    metadata: [
+      vm_id: :uuid,
+      attempt_id: :uuid,
+      executor_id: :uuid,
+      kind: {:enum, [:bootstrap, :maintenance]},
+      phase: {:enum, [:claimed, :started, :completed, :failed, :uncertain]}
+    ]
+  )
+
+  defevent("agent.context_published",
+    message: "Agent context publication committed",
+    metadata: [
+      vm_id: :uuid,
+      thread_id: :uuid,
+      turn_id: :uuid,
+      target_id: :uuid,
+      kind: {:enum, [:context_captured, :context_compacted]}
+    ]
+  )
+
   defevent("redaction.run_started",
     message: "Historical thread redaction started",
     metadata: [run_id: :uuid]
   )
 
+  defevent("redaction.admission_unavailable",
+    level: :warning,
+    message: "Historical thread redaction admission unavailable",
+    metadata: [run_id: :uuid]
+  )
+
   defevent("redaction.run_finished",
     message: "Historical thread redaction finished",
-    metadata: [run_id: :uuid, outcome: :atom, processed: {:int, :optional}, changed: {:int, :optional}]
+    metadata: [
+      run_id: :uuid,
+      outcome: :atom,
+      processed: {:int, :optional},
+      changed: {:int, :optional}
+    ]
   )
 
   defevent("redaction.run_requested",

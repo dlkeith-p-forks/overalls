@@ -215,21 +215,13 @@ defmodule Lilly.Terminal.Guest do
   end
 
   @impl true
-  def format_status(_opt, state) do
-    %{
-      data: [
-        {"State",
-         %{
-           identity: %{
-             uds_path: state.identity.uds_path,
-             placement_id: state.identity.placement_id,
-             execution_epoch: state.identity.execution_epoch
-           },
-           socket: state.socket != nil,
-           sessions: map_size(state.sessions)
-         }}
-      ]
-    }
+  def format_status(%{state: state} = status) do
+    Lilly.DiagnosticStatus.redact(status, %{
+      placement_id: state.identity.placement_id,
+      execution_epoch: state.identity.execution_epoch,
+      socket: state.socket != nil,
+      sessions: map_size(state.sessions)
+    })
   end
 
   defp token_for(state, id) do

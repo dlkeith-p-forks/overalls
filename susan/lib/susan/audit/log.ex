@@ -44,18 +44,36 @@ defmodule Susan.Audit.Log do
 
   @spec append(action(), :ok | :refused | :failed, fields()) :: {:ok, AuditEntry.t()} | :error
   def append(action, outcome, fields \\ %{}) when is_atom(action) and is_map(fields) do
+    case transaction(action, fn -> do_append(action, outcome, fields) end) do
+      {:ok, entry} -> {:ok, entry}
+      :error -> :error
+    end
+  end
+
+  # @cc [owner:ghuntley,label:security] susan-audited-mutation-atomic
+  # Mandatory audit appends and their database mutations MUST commit together.
+  # Nested transactions MUST NOT emit a committed audit success before the
+  # caller's outer transaction completes.
+  @spec transaction(action(), (-> {:ok, result} | :error | {:error, term()})) ::
+          {:ok, result} | :error
+        when result: term()
+  def transaction(action, fun) when is_function(fun, 0) do
+    nested? = Repo.in_transaction?()
+
     result =
       Repo.transaction(fn ->
-        case do_append(action, outcome, fields) do
-          {:ok, entry} -> entry
-          :error -> Repo.rollback(:append_failed)
+        case fun.() do
+          {:ok, value} -> value
+          _ -> Repo.rollback(:audit_operation_failed)
         end
       end)
 
     case result do
-      {:ok, entry} ->
-        Susan.Events.emit("susan.audit_appended", action: action)
-        {:ok, entry}
+      {:ok, value} ->
+        unless nested? or value == :existing,
+          do: Susan.Events.emit("susan.audit_appended", action: action)
+
+        {:ok, value}
 
       _ ->
         Susan.Events.emit("susan.audit_append_failed", action: action)
@@ -65,6 +83,13 @@ defmodule Susan.Audit.Log do
     _ ->
       Susan.Events.emit("susan.audit_append_failed", action: action)
       :error
+  end
+
+  @doc "Append inside an existing transaction without emitting a premature success."
+  @spec append_in_transaction(action(), :ok | :refused | :failed, fields()) ::
+          {:ok, AuditEntry.t()} | :error
+  def append_in_transaction(action, outcome, fields) do
+    if Repo.in_transaction?(), do: do_append(action, outcome, fields), else: :error
   end
 
   defp do_append(action, outcome, fields) do
@@ -93,6 +118,72 @@ defmodule Susan.Audit.Log do
     end
   end
 
+  # @cc [owner:ghuntley,label:recovery] susan-receipt-audit-repair
+  # A persisted terminal delivery receipt MUST permit idempotent audit repair
+  # without another provider send. Repairs MUST serialize with ordinary appends.
+  @spec reconcile_receipt(Susan.Relay.DeliveryReceipt.t(), fields()) :: :ok | :error
+  def reconcile_receipt(receipt, fields \\ %{}) do
+    {action, outcome} =
+      case receipt.status do
+        :sent -> {:provider_sent, :ok}
+        :unregistered -> {:provider_unregistered, :refused}
+        :failed -> {:provider_failed, :failed}
+      end
+
+    case transaction(action, fn ->
+           Repo.query!("SELECT pg_advisory_xact_lock($1)", [@lock])
+
+           existing =
+             AuditEntry
+             |> Ash.Query.filter(
+               action == ^action and delivery_id == ^receipt.delivery_id and
+                 install_fingerprint == ^receipt.install_fingerprint
+             )
+             |> Ash.Query.limit(1)
+             |> Ash.read!()
+
+           case existing do
+             [_] ->
+               {:ok, :existing}
+
+             [] ->
+               do_append(
+                 action,
+                 outcome,
+                 Map.merge(fields, %{
+                   delivery_id: receipt.delivery_id,
+                   install_fingerprint: receipt.install_fingerprint
+                 })
+               )
+           end
+         end) do
+      {:ok, _} -> :ok
+      :error -> :error
+    end
+  end
+
+  @doc "Repair terminal receipt audit records in bounded batches before retention removes evidence."
+  @spec reconcile_receipts() :: :ok | :error
+  def reconcile_receipts, do: reconcile_after("00000000-0000-0000-0000-000000000000")
+
+  @spec reconcile_after(String.t()) :: :ok | :error
+  defp reconcile_after(after_id) do
+    rows =
+      Susan.Relay.DeliveryReceipt
+      |> Ash.Query.filter(id > ^after_id and status in [:sent, :unregistered, :failed])
+      |> Ash.Query.sort(id: :asc)
+      |> Ash.Query.limit(100)
+      |> Ash.read!()
+
+    cond do
+      rows == [] -> :ok
+      Enum.all?(rows, &(reconcile_receipt(&1) == :ok)) -> reconcile_after(List.last(rows).id)
+      true -> :error
+    end
+  rescue
+    _ -> :error
+  end
+
   @doc "Reads entries in chain order, optionally only those with seq greater than `after`."
   @spec read(non_neg_integer(), pos_integer()) :: [AuditEntry.t()]
   def read(after_seq \\ 0, limit \\ 1000) when is_integer(after_seq) and is_integer(limit) do
@@ -101,6 +192,43 @@ defmodule Susan.Audit.Log do
     |> Ash.Query.filter(seq > ^after_seq)
     |> Ash.Query.limit(min(limit, 10_000))
     |> Ash.read!()
+  end
+
+  @doc "Read the newest entries, returned in chronological order."
+  @spec tail(pos_integer()) :: [AuditEntry.t()]
+  def tail(limit) when limit in 1..10_000 do
+    AuditEntry
+    |> Ash.Query.sort(seq: :desc)
+    |> Ash.Query.limit(limit)
+    |> Ash.read!()
+    |> Enum.reverse()
+  end
+
+  @doc "Stream entries through the current highest sequence; concurrent retention may remove rows."
+  @spec stream() :: Enumerable.t()
+  def stream do
+    upper =
+      case tail(1) do
+        [] -> 0
+        [entry] -> entry.seq
+      end
+
+    Stream.resource(
+      fn -> 0 end,
+      fn
+        after_seq when after_seq >= upper ->
+          {:halt, after_seq}
+
+        after_seq ->
+          rows = read(after_seq, 1000) |> Enum.take_while(&(&1.seq <= upper))
+
+          case rows do
+            [] -> {:halt, upper}
+            _ -> {rows, List.last(rows).seq}
+          end
+      end,
+      fn _ -> :ok end
+    )
   end
 
   @doc "Verifies the whole remaining chain."
@@ -128,8 +256,11 @@ defmodule Susan.Audit.Log do
   def prune(now \\ DateTime.utc_now()) do
     cutoff = DateTime.add(now, -@retention_days * 86_400, :second)
 
+    nested? = Repo.in_transaction?()
+
     result =
       Repo.transaction(fn ->
+        Repo.query!("SELECT pg_advisory_xact_lock($1)", [@lock])
         Repo.query!("SELECT set_config('susan.audit_prune', 'on', true)", [])
 
         %{num_rows: count} =
@@ -145,7 +276,7 @@ defmodule Susan.Audit.Log do
 
     case result do
       {:ok, count} ->
-        Susan.Events.emit("susan.audit_pruned", count: count)
+        unless nested?, do: Susan.Events.emit("susan.audit_pruned", count: count)
         {:ok, count}
 
       _ ->

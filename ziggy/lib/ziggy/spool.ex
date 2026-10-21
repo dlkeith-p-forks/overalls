@@ -13,6 +13,7 @@ defmodule Ziggy.Spool do
           monitors: %{reference() => String.t()},
           slo: SLO.t(),
           counted: SLOCheckpoint.seen(),
+          publication: :ok | :error | :disabled,
           slo_path: String.t() | nil
         }
 
@@ -72,6 +73,7 @@ defmodule Ziggy.Spool do
          entries: entries,
          failed: false,
          monitors: %{},
+         publication: :ok,
          slo: slo,
          counted: MapSet.intersection(counted, MapSet.new(Map.keys(entries))),
          slo_path: System.get_env("ZIGGY_SLO_SNAPSHOT")
@@ -226,10 +228,24 @@ defmodule Ziggy.Spool do
     {:noreply, if(id, do: interrupt(next, id), else: next)}
   end
 
+  # @cc [owner:ghuntley,label:observability;reliability] ziggy-slo-publication-transitions
+  # Snapshot write failures MUST preserve request handling and emit only one
+  # payload-free failure per unavailable interval, followed by one recovery
+  # after a successful replacement. Paths and raw IO errors MUST NOT be logged.
   def handle_info(:slo_publish, state) do
-    publish_slo(state)
+    outcome = publish_slo(state)
+    previous = Map.get(state, :publication, :ok)
+
+    if outcome != previous do
+      case outcome do
+        :error -> Ziggy.Events.emit("ziggy.slo_publication_failed", [])
+        :ok when previous == :error -> Ziggy.Events.emit("ziggy.slo_publication_recovered", [])
+        _ -> :ok
+      end
+    end
+
     Process.send_after(self(), :slo_publish, 5_000)
-    {:noreply, state}
+    {:noreply, Map.put(state, :publication, outcome)}
   end
 
   defp interrupt(state, id) do
@@ -244,7 +260,17 @@ defmodule Ziggy.Spool do
           "response_bytes" => nil
         }
 
-        {:reply, _, next} = persist(state, id, %{entry | "completion" => result}, :replace)
+        {:reply, outcome, next} = persist(state, id, %{entry | "completion" => result}, :replace)
+
+        if outcome == :ok do
+          Ziggy.Events.emit("ziggy.inference_interrupted",
+            request_id: id,
+            host_id: entry["admission"]["host_id"],
+            vm_id: entry["admission"]["vm_id"],
+            reason: :interrupted
+          )
+        end
+
         next
 
       _ ->
@@ -403,8 +429,8 @@ defmodule Ziggy.Spool do
   # @cc [owner:ghuntley,label:security;reliability] ziggy-private-slo-file
   # Publication MUST atomically replace only fixed numeric outcomes in the
   # private runtime directory; failure MUST NOT change inference admission.
-  defp publish_slo(%{slo_path: nil}), do: :ok
-  defp publish_slo(%{failed: true}), do: :ok
+  defp publish_slo(%{slo_path: nil}), do: :disabled
+  defp publish_slo(%{failed: true}), do: :disabled
 
   defp publish_slo(%{slo_path: path, slo: slo}) do
     staged = path <> ".new"
@@ -414,7 +440,7 @@ defmodule Ziggy.Spool do
          :ok <- File.rename(staged, path) do
       :ok
     else
-      _ -> :ok
+      _ -> :error
     end
   end
 

@@ -3,6 +3,7 @@ defmodule Lilly.Transfer.SourceRuntime do
   use GenServer
   require Lilly.Events
   alias Lilly.Control.Client
+  alias Lilly.Transfer.WorkerDiagnostics
   alias Lilly.Transfer.Source
 
   @prepare_reasons [
@@ -79,7 +80,12 @@ defmodule Lilly.Transfer.SourceRuntime do
     case result do
       {:ok, pending, failures} ->
         Process.send_after(self(), :tick, 1000)
-        {:noreply, report_effect_failures(%{state | pending: pending, task: nil}, failures)}
+
+        {:noreply,
+         report_effect_failures(
+           WorkerDiagnostics.recovered(%{state | pending: pending, task: nil}, :source),
+           failures
+         )}
 
       {:error, reason}
       when reason in [
@@ -101,15 +107,17 @@ defmodule Lilly.Transfer.SourceRuntime do
         send(state.owner, {event, self(), reason})
         {:noreply, %{state | task: nil}}
 
-      _ ->
+      failure ->
         Process.send_after(self(), :tick, 5000)
-        {:noreply, %{state | task: nil}}
+        {:noreply, WorkerDiagnostics.failed(%{state | task: nil}, :source, failure)}
     end
   end
 
   def handle_info({:DOWN, ref, :process, _, _}, %{task: %Task{ref: ref}} = state) do
     Process.send_after(self(), :tick, 5000)
-    {:noreply, %{state | task: nil}}
+
+    {:noreply,
+     WorkerDiagnostics.failed(%{state | task: nil}, :source, {:error, :effect_task_exited})}
   end
 
   def handle_info({:EXIT, _, _}, state), do: {:noreply, state}
@@ -118,7 +126,7 @@ defmodule Lilly.Transfer.SourceRuntime do
   def terminate(_, _), do: :ok
   @impl true
   def format_status(status),
-    do: Map.put(status, :state, %{pending_results: map_size(status.state.pending)})
+    do: Lilly.DiagnosticStatus.redact(status, %{pending_results: map_size(status.state.pending)})
 
   defp exchange(state) do
     with {:ok, response} <-
@@ -149,7 +157,7 @@ defmodule Lilly.Transfer.SourceRuntime do
   end
 
   # @cc [owner:ghuntley,label:security;observability] source-effect-failure-diagnostics-deduped
-  # Worker effect failures MUST report only a closed per-mode reason atom;
+  # Worker effect failures MUST report only a closed per-mode reason atom, operation and request ID;
   # commands, descriptors, endpoints and native output MUST NOT be logged.
   # Expected pool contention stays a quiet retry. Identical per-command
   # failures MUST be suppressed until that command succeeds, disappears or the
@@ -169,8 +177,19 @@ defmodule Lilly.Transfer.SourceRuntime do
       Enum.each(failures, fn {id, reason} ->
         if state.effect_failures[id] != reason and reason != nil do
           case state.mode do
-            :revoke -> Lilly.Events.emit("lilly.transfer_export_failed", reason: reason)
-            _ -> Lilly.Events.emit("lilly.transfer_effect_failed", reason: reason)
+            :revoke ->
+              Lilly.Events.emit("lilly.transfer_export_failed",
+                reason: reason,
+                request_id: id,
+                operation: state.mode
+              )
+
+            _ ->
+              Lilly.Events.emit("lilly.transfer_effect_failed",
+                reason: reason,
+                request_id: id,
+                operation: state.mode
+              )
           end
         end
       end)

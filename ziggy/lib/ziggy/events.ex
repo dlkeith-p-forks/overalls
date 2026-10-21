@@ -92,13 +92,13 @@ defmodule Ziggy.Events do
 
   defevent("ziggy.accounting_reported",
     message: "Accounting completion reported",
-    metadata: []
+    metadata: [request_id: :uuid]
   )
 
   defevent("ziggy.accounting_retry",
     level: :warning,
     message: "Accounting report retry",
-    metadata: [reason: :atom]
+    metadata: [request_id: :uuid, reason: :atom]
   )
 
   defevent("ziggy.catalog_refreshed",
@@ -122,6 +122,17 @@ defmodule Ziggy.Events do
     level: :error,
     message: "Startup configuration rejected",
     metadata: [reason: :atom]
+  )
+
+  defevent("ziggy.slo_publication_failed",
+    level: :warning,
+    message: "SLO snapshot publication unavailable",
+    metadata: []
+  )
+
+  defevent("ziggy.slo_publication_recovered",
+    message: "SLO snapshot publication recovered",
+    metadata: []
   )
 
   defevent("ziggy.observability_health",

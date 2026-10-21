@@ -45,9 +45,9 @@ defmodule Ziggy.Reporter do
                }) do
             {:ok, %{"acknowledged" => ^id}} ->
               if Ziggy.Spool.acknowledge(state.spool, id) == :ok do
-                Ziggy.Events.emit("ziggy.accounting_reported", [])
+                Ziggy.Events.emit("ziggy.accounting_reported", request_id: id)
               else
-                Ziggy.Events.emit("ziggy.accounting_retry", reason: :ack_failed)
+                Ziggy.Events.emit("ziggy.accounting_retry", request_id: id, reason: :ack_failed)
               end
 
               {:cont, false}
@@ -56,11 +56,19 @@ defmodule Ziggy.Reporter do
               {:halt, true}
 
             {:error, :completion_conflict} ->
-              Ziggy.Events.emit("ziggy.accounting_retry", reason: :completion_conflict)
+              Ziggy.Events.emit("ziggy.accounting_retry",
+                request_id: id,
+                reason: :completion_conflict
+              )
+
               {:cont, false}
 
             _ ->
-              Ziggy.Events.emit("ziggy.accounting_retry", reason: :authority_unavailable)
+              Ziggy.Events.emit("ziggy.accounting_retry",
+                request_id: id,
+                reason: :authority_unavailable
+              )
+
               {:cont, false}
           end
 

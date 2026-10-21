@@ -78,7 +78,8 @@ defmodule Brady.Cache.Recovery do
   def handle_info(_, state), do: {:noreply, state}
 
   @impl true
-  def format_status(_), do: %{state: :redacted}
+  def format_status(status),
+    do: Map.new(status, fn {key, _} -> {key, if(key == :log, do: [], else: :redacted)} end)
 
   defp store_loss(:normal), do: :normal
   defp store_loss(:shutdown), do: :shutdown

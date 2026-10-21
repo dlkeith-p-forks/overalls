@@ -36,6 +36,12 @@ defmodule Porsche.Events do
     metadata: []
   )
 
+  defevent("porsche.session_close_failed",
+    level: :warning,
+    message: "Marshall session close unconfirmed",
+    metadata: []
+  )
+
   defevent("porsche.exchange_failed",
     level: :warning,
     message: "Marshall HTTPS exchange failed",
@@ -96,6 +102,17 @@ defmodule Porsche.Events do
       beam_atoms: {:int64, :optional},
       beam_run_queue: {:int64, :optional}
     ]
+  )
+
+  defevent("porsche.slo_publication_failed",
+    level: :warning,
+    message: "SLO snapshot publication unavailable",
+    metadata: []
+  )
+
+  defevent("porsche.slo_publication_recovered",
+    message: "SLO snapshot publication recovered",
+    metadata: []
   )
 
   defevent("porsche.observability_health",

@@ -177,9 +177,7 @@ defmodule Lilly.Transfer.Endpoint do
 
   @spec halt_export(term()) :: no_return()
   defp halt_export(result) do
-    status = export_status(result)
-    Logger.flush()
-    System.halt(status)
+    halt_status(export_status(result))
   end
 
   @doc "Fixed root AuthorizedKeysCommand entry point; stdout contains only an authorized-key line."
@@ -194,22 +192,29 @@ defmodule Lilly.Transfer.Endpoint do
          ) do
       {:ok, line} ->
         IO.binwrite(:stdio, line)
-        System.halt(0)
+        halt_status(0)
 
       _ ->
-        System.halt(1)
+        halt_status(1)
     end
   rescue
-    _ -> System.halt(1)
+    _ -> halt_status(1)
   catch
-    _, _ -> System.halt(1)
+    _, _ -> halt_status(1)
+  end
+
+  @spec halt_status(0 | 1) :: no_return()
+  defp halt_status(status) do
+    Logger.flush()
+    System.halt(status)
   end
 
   # @cc [owner:ghuntley,label:security;observability] authorize-rejection-event-is-minimal
   # AuthorizedKeysCommand rejections MUST emit only a reason through the
   # catalogued effect-failure event: deliberately no key material, account,
   # path or request payloads, because this channel is reachable from any SSH
-  # client. Rejection diagnostics MUST NOT change authorization outcomes.
+  # client. Rejection diagnostics MUST NOT change authorization outcomes. The
+  # release entry point MUST flush queued events before halting.
   defp rejected do
     Lilly.Events.emit("lilly.transfer_effect_failed", reason: :export_endpoint_unconfirmed)
     failure()

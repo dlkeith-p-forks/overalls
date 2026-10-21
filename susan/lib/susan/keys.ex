@@ -40,14 +40,14 @@ defmodule Susan.Keys do
         with {:ok, fields} <- parse(body, config),
              :ok <- registered(fields, config),
              {:ok, push_key, key} <-
-               PushKey.seal(config.keyring, Map.put(fields, :issued_at, now)) do
-          _ =
-            Log.append(:key_issued, :ok, %{
-              key_id: key.key_id,
-              provider: key.provider,
-              keyring_id: key.keyring_id
-            })
-
+               PushKey.seal(config.keyring, Map.put(fields, :issued_at, now)),
+             {:audit, {:ok, _}} <-
+               {:audit,
+                Log.append(:key_issued, :ok, %{
+                  key_id: key.key_id,
+                  provider: key.provider,
+                  keyring_id: key.keyring_id
+                })} do
           Susan.Events.emit("susan.key_issued",
             provider: key.provider,
             keyring_id: key.keyring_id
@@ -61,6 +61,10 @@ defmodule Susan.Keys do
                key |> PushKey.expires_at() |> DateTime.from_unix!() |> DateTime.to_iso8601()
            }}
         else
+          {:audit, :error} ->
+            Susan.Events.emit("susan.key_refused", reason: :unavailable)
+            {503, :unavailable, 60}
+
           :unregistered ->
             Susan.Events.emit("susan.key_refused", reason: :unregistered)
             {410, :unregistered, nil}

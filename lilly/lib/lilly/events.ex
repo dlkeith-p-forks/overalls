@@ -299,13 +299,13 @@ defmodule Lilly.Events do
   defevent("vm.launch_preparation_failed",
     level: :warning,
     message: "VM launch preparation failed",
-    metadata: [vm_id: :uuid, reason: :atom]
+    metadata: [vm_id: :uuid, stage: :atom, reason: :atom]
   )
 
   defevent("vm.disk_preparation_failed",
     level: :warning,
     message: "VM disk preparation failed",
-    metadata: [vm_id: :uuid]
+    metadata: [vm_id: :uuid, stage: :atom]
   )
 
   defevent("vm.disk_readiness_failed",
@@ -317,7 +317,7 @@ defmodule Lilly.Events do
   defevent("vm.disk_materialization_failed",
     level: :warning,
     message: "VM disk materialization failed",
-    metadata: [vm_id: :uuid]
+    metadata: [vm_id: :uuid, utility: :atom, duration_ms: :int]
   )
 
   defevent("vm.execution_preempted",
@@ -478,7 +478,23 @@ defmodule Lilly.Events do
 
   defevent("lilly.backup_completed",
     message: "Host backup completed",
-    metadata: [placement_id: {:uuid, :optional}]
+    metadata: [
+      placement_id: {:uuid, :optional},
+      pool_id: {:uuid, :optional},
+      run_id: {:uuid, :optional},
+      operation:
+        {:enum, [:inventory, :pressure, :capture, :release, :cleanup, :metadata, :unknown]}
+    ]
+  )
+
+  defevent("lilly.backup_failed",
+    level: :warning,
+    message: "Host backup operation unconfirmed",
+    metadata: [
+      operation:
+        {:enum, [:inventory, :pressure, :capture, :release, :cleanup, :metadata, :unknown]},
+      reason: :atom
+    ]
   )
 
   # Intent and receipts
@@ -540,13 +556,99 @@ defmodule Lilly.Events do
   defevent("lilly.transfer_export_failed",
     level: :warning,
     message: "Relocation export failed",
-    metadata: [reason: :atom]
+    metadata: [
+      reason: :atom,
+      request_id: {:uuid, :optional},
+      operation:
+        {{:enum,
+          [
+            :prepare,
+            :probe,
+            :revoke,
+            :prune,
+            :destination_cleanup,
+            :retire,
+            :cancel,
+            :receive,
+            :import,
+            :readiness,
+            :cleanup
+          ]}, :optional}
+    ]
   )
 
   defevent("lilly.transfer_effect_failed",
     level: :warning,
     message: "Relocation effect failed",
-    metadata: [reason: :atom]
+    metadata: [
+      reason: :atom,
+      request_id: {:uuid, :optional},
+      operation:
+        {{:enum,
+          [
+            :prepare,
+            :probe,
+            :revoke,
+            :prune,
+            :destination_cleanup,
+            :retire,
+            :cancel,
+            :receive,
+            :import,
+            :readiness,
+            :cleanup
+          ]}, :optional}
+    ]
+  )
+
+  defevent("lilly.transfer_worker_unavailable",
+    level: :warning,
+    message: "Transfer worker unavailable",
+    metadata: [
+      component: {:enum, [:source, :key, :receive, :clone]},
+      operation:
+        {:enum,
+         [
+           :control,
+           :copy,
+           :prepare,
+           :probe,
+           :revoke,
+           :prune,
+           :destination_cleanup,
+           :retire,
+           :cancel,
+           :receive,
+           :import,
+           :readiness,
+           :cleanup
+         ]},
+      reason: {:enum, [:exception, :effect_task_exited, :unconfirmed]}
+    ]
+  )
+
+  defevent("lilly.transfer_worker_recovered",
+    message: "Transfer worker recovered",
+    metadata: [
+      component: {:enum, [:source, :key, :receive, :clone]},
+      operation:
+        {:enum,
+         [
+           :control,
+           :copy,
+           :prepare,
+           :probe,
+           :revoke,
+           :prune,
+           :destination_cleanup,
+           :retire,
+           :cancel,
+           :receive,
+           :import,
+           :readiness,
+           :cleanup
+         ]}
+    ]
   )
 
   # Durable lifecycle state machines (ADR-0074)

@@ -307,7 +307,13 @@ defmodule Marshall.Threads.Thread do
     uuid_v7_primary_key :id
     attribute :creator_id, :uuid, allow_nil?: false
     attribute :team_id, :uuid
-    attribute :title, :string, allow_nil?: true, constraints: [max_length: 256]
+    # @cc [owner:ghuntley,label:security] thread-title-audit-exclusion
+    # Generated titles MAY contain private conversation content and MUST NOT
+    # be copied into PaperTrail audit versions.
+    attribute :title, :string,
+      allow_nil?: true,
+      sensitive?: true,
+      constraints: [max_length: 256]
 
     attribute :objective, :string,
       allow_nil?: false,

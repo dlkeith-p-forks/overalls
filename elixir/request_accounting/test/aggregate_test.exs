@@ -7,6 +7,26 @@ defmodule Overalls.RequestAccounting.AggregateTest do
 
   @bounds Aggregate.bounds()
 
+  test "explicit source identity survives snapshot construction without opening arbitrary labels" do
+    options = [
+      started_at_unix_nano: 123,
+      incarnation: String.duplicate("a", 32),
+      invocation_id: String.duplicate("b", 32)
+    ]
+
+    snapshot = "enrico" |> Aggregate.new(options) |> Aggregate.snapshot()
+    assert Map.take(snapshot, Keyword.keys(options)) == Map.new(options)
+    assert Aggregate.validate_snapshot(snapshot) == :ok
+
+    for invalid <- [
+          options ++ [private_label: "private-canary"],
+          options ++ [invocation_id: String.duplicate("c", 32)],
+          Keyword.put(options, :incarnation, "private-canary")
+        ] do
+      assert_raise ArgumentError, fn -> Aggregate.new("enrico", invalid) end
+    end
+  end
+
   # @cc [owner:ghuntley,label:verification] aggregate-conservation-property
   # Every generated terminal history MUST conserve requests as successes plus
   # failures, and every measured duration MUST occupy exactly one fixed slot.

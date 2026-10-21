@@ -3,12 +3,13 @@ defmodule Lilly.SupervisedStop do
   require Lilly.Events
 
   @type component ::
-          :runtime | :ingress | :private | :attribution | :status | :vm_actor
+          :runtime | :ingress | :private | :attribution | :status | :vm_actor | :hostd
   @type reason_category ::
           :normal
           | :shutdown
           | :connector_unavailable
           | :host_lock_lost
+          | :hostd_session_lost
           | :vm_supervision_lost
           | :invalid_status_socket
           | :journal_lock_lost
@@ -37,6 +38,7 @@ defmodule Lilly.SupervisedStop do
   def category({:shutdown, _}), do: :shutdown
   def category(:connector_unavailable), do: :connector_unavailable
   def category(:host_lock_lost), do: :host_lock_lost
+  def category(:hostd_session_lost), do: :hostd_session_lost
   def category(:vm_supervision_lost), do: :vm_supervision_lost
   def category(:invalid_status_socket), do: :invalid_status_socket
   def category(:journal_lock_lost), do: :journal_lock_lost

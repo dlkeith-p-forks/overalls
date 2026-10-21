@@ -47,11 +47,15 @@ defmodule Brady.ProxyTest do
         Agent.update(counter, &(&1 + 1))
         date = :httpd_util.rfc1123_date() |> List.to_string()
 
-        :gen_tcp.send(socket, [
-          "HTTP/1.1 103 Early Hints\r\n\r\nHTTP/1.1 200 OK\r\nDate: ",
-          date,
-          "\r\nCache-Control: public, max-age=600\r\nContent-Length: 4\r\nAlt-Svc: h3=\":443\"\r\n\r\ndata"
-        ])
+        if request.target == "/malformed" do
+          :gen_tcp.send(socket, "HTTP/1.1 invalid\r\n\r\n")
+        else
+          :gen_tcp.send(socket, [
+            "HTTP/1.1 103 Early Hints\r\n\r\nHTTP/1.1 200 OK\r\nDate: ",
+            date,
+            "\r\nCache-Control: public, max-age=600\r\nContent-Length: 4\r\nAlt-Svc: h3=\":443\"\r\n\r\ndata"
+          ])
+        end
 
         :gen_tcp.close(socket)
         origin_loop(listener, counter)
@@ -131,5 +135,21 @@ defmodule Brady.ProxyTest do
     assert after_sample.requests - before.requests == 1
     assert after_sample.successes - before.successes == 1
     assert after_sample.failures == before.failures
+  end
+
+  test "malformed upstream framing remains a diagnosed admitted failure", context do
+    before = Brady.Metrics.slo_snapshot()
+
+    output =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :reason, :slo_admitted]], fn ->
+        assert request(context, "", "/malformed") == ""
+      end)
+
+    assert output =~ "brady.request_completed"
+    assert output =~ "invalid_http"
+    after_sample = Brady.Metrics.slo_snapshot()
+    assert after_sample.requests == before.requests + 1
+    assert after_sample.failures == before.failures + 1
+    assert after_sample.successes == before.successes
   end
 end

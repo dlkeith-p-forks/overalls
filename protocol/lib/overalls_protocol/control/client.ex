@@ -101,6 +101,19 @@ defmodule OverallsProtocol.Control.Client do
   @impl true
   def handle_continue(:connect, state), do: {:noreply, connect(state)}
 
+  # @cc [owner:ghuntley,label:security] control-client-status-payload-free
+  # OTP status and crash formatting MUST exclude connection buffers, configured
+  # endpoints, credential callbacks, request bodies and arbitrary failure terms.
+  # Operational connection state remains available through status/1 and ready?/1.
+  @impl true
+  @spec format_status(map()) :: map()
+  def format_status(status) do
+    Map.new(status, fn
+      {:log, _} -> {:log, []}
+      {key, _} -> {key, :redacted}
+    end)
+  end
+
   @impl true
   def handle_call(:ready?, _from, state), do: {:reply, state.phase == :ready, state}
 

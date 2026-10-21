@@ -73,7 +73,7 @@ defmodule Galileo.Upstream do
       event -> consumer.(event)
     end
 
-    renew = Keyword.fetch!(options, :renew)
+    renew = options |> Keyword.fetch!(:renew) |> Overalls.Diagnostics.Context.wrap()
     transport_opts = Keyword.get(options, :transport_opts, [])
     uri = authorization |> origin() |> URI.parse()
 

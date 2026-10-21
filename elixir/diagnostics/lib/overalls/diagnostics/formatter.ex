@@ -9,7 +9,8 @@ defmodule Overalls.Diagnostics.Formatter do
     Porsche.Events => :porsche,
     Enrico.Events => :enrico,
     Galileo.Events => :galileo,
-    Susan.Events => :susan
+    Susan.Events => :susan,
+    Peach.Events => :peach
   }
   @runtime_categories ~w(
     application_exit
@@ -118,6 +119,13 @@ defmodule Overalls.Diagnostics.Formatter do
       |> Map.merge(Overalls.Diagnostics.Context.log_context(source))
 
     case Map.get(source, :report_category) do
+      category when is_atom(category) ->
+        name = Atom.to_string(category)
+
+        if name in @runtime_categories,
+          do: Map.put(metadata, :report_category, name),
+          else: metadata
+
       category when is_binary(category) and category in @runtime_categories ->
         Map.put(metadata, :report_category, category)
 
@@ -134,6 +142,13 @@ defmodule Overalls.Diagnostics.Formatter do
       end)
 
   @spec timestamp(term()) :: binary() | nil
+  defp timestamp(microseconds) when is_integer(microseconds) do
+    case DateTime.from_unix(microseconds, :microsecond) do
+      {:ok, value} -> DateTime.to_iso8601(value)
+      _ -> nil
+    end
+  end
+
   defp timestamp({mega, seconds, micros})
        when is_integer(mega) and is_integer(seconds) and is_integer(micros) and micros >= 0 and
               micros < 1_000_000 do

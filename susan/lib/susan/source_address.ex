@@ -53,5 +53,14 @@ defmodule Susan.SourceAddress do
   end
 
   @impl true
-  def format_status(status), do: Map.put(status, :state, :redacted)
+  # @cc [owner:ghuntley,label:privacy] source-address-status-redaction
+  # Preserve OTP status keys so the runtime accepts redaction; remove payloads
+  # from state, messages, reasons and debug logs before status/crash formatting.
+  @spec format_status(map()) :: map()
+  def format_status(status) do
+    Map.new(status, fn
+      {:log, _} -> {:log, []}
+      {key, _} -> {key, :redacted}
+    end)
+  end
 end

@@ -15,6 +15,36 @@ defmodule Marshall.Access.PinsTest do
     %{owner: owner, member: member, vm: vm, fixture: fixture}
   end
 
+  test "pin logs follow the outer commit and rolled-back pins remain absent", c do
+    previous = Logger.level()
+    Logger.configure(level: :info)
+    on_exit(fn -> Logger.configure(level: previous) end)
+
+    rollback_logs =
+      ExUnit.CaptureLog.capture_log([level: :info, metadata: [:event]], fn ->
+        assert {:error, :test_rollback} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = Access.pin_machine(%{vm_id: c.vm.id}, actor: c.owner)
+                   Ledger.rollback(:test_rollback)
+                 end)
+      end)
+
+    refute rollback_logs =~ "event=vm.pinned"
+    refute Pins.pinned?(c.vm, c.owner)
+
+    commit_logs =
+      ExUnit.CaptureLog.capture_log([level: :info, metadata: [:event]], fn ->
+        assert {:ok, :ok} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = Access.pin_machine(%{vm_id: c.vm.id}, actor: c.owner)
+                   assert {:ok, _} = Access.pin_machine(%{vm_id: c.vm.id}, actor: c.owner)
+                   :ok
+                 end)
+      end)
+
+    assert length(Regex.scan(~r/event=vm\.pinned/, commit_logs)) == 1
+  end
+
   test "pinning is idempotent, reuses one live row and projects into the user's view", c do
     assert {:ok, %Pin{state: :pinned} = pin} =
              Access.pin_machine(%{vm_id: c.vm.id}, actor: c.owner)

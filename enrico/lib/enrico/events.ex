@@ -2,6 +2,12 @@ defmodule Enrico.Events do
   @moduledoc "Reviewed, payload-free diagnostic events for Git mirror operations."
   use Overalls.Diagnostics.Events.Catalog, service: :enrico
 
+  defevent("enrico.request_failed",
+    level: :error,
+    message: "Git mirror request failed",
+    metadata: [reason: {:enum, [:exception, :exit]}]
+  )
+
   defevent("enrico.refresh_started",
     message: "Git mirror refresh started",
     metadata: [repository_id: :uuid, attempt_id: :uuid]

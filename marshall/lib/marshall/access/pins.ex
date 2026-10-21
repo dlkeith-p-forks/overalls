@@ -30,19 +30,19 @@ defmodule Marshall.Access.Pins do
     result =
       Ledger.transaction(
         fn ->
-          case options[:operation] do
-            :pin -> pin!(vm_id, context.actor)
-            :unpin -> unpin!(vm_id, context.actor)
-          end
+          {change, pin} =
+            case options[:operation] do
+              :pin -> pin!(vm_id, context.actor)
+              :unpin -> unpin!(vm_id, context.actor)
+            end
+
+          Ledger.after_commit(fn -> emit_change(change, pin.vm_id) end)
+          pin
         end,
         context.actor
       )
 
     case result do
-      {:ok, {change, %Pin{} = pin}} ->
-        unless Marshall.Repo.in_transaction?(), do: emit_change(change, pin.vm_id)
-        {:ok, pin}
-
       {:error, reason} when is_atom(reason) ->
         unless Marshall.Repo.in_transaction?() do
           Marshall.Events.emit("vm.pin_refused", vm_id: vm_id, reason: reason)
@@ -55,7 +55,9 @@ defmodule Marshall.Access.Pins do
     end
   end
 
-  # Outcome events follow the outer commit; idempotent repeats emit nothing.
+  # @cc [owner:ghuntley,label:observability] pin-outcome-after-commit
+  # Outcome events MUST follow the outer commit; rolled-back changes and
+  # idempotent repeats MUST emit no success event.
   @spec emit_change(:pinned | :unpinned | :unchanged, String.t()) :: :ok
   defp emit_change(:pinned, vm_id), do: Marshall.Events.emit("vm.pinned", vm_id: vm_id)
   defp emit_change(:unpinned, vm_id), do: Marshall.Events.emit("vm.unpinned", vm_id: vm_id)

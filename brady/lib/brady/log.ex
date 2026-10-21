@@ -26,6 +26,7 @@ defmodule Brady.Log do
       :capacity,
       :storage,
       :invalid_request,
+      :invalid_http,
       :internal,
       :transport,
       :closed

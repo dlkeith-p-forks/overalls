@@ -13,9 +13,26 @@ defmodule Peach.Events do
   # through Peach.Events.emit/2 with catalogued names and metadata keys.
   use Overalls.Diagnostics.Events.Catalog, service: :peach
 
+  defevent("peach.observability_health",
+    trace: false,
+    message: "Observability producer health observed",
+    metadata: [
+      trace_available: :int64,
+      trace_pending: :int64,
+      trace_queue_dropped: :int64,
+      trace_export_failed: :int64
+    ]
+  )
+
   defevent("peach.request_served",
     message: "Reflection request served",
     metadata: [host_id: {:uuid, :optional}, vm_id: {:uuid, :optional}]
+  )
+
+  defevent("peach.projection_requested",
+    log: false,
+    message: "Reflection binding admitted for control projection",
+    metadata: [host_id: :uuid, vm_id: :uuid, placement_id: :uuid, execution_epoch: :int64]
   )
 
   defevent("peach.request_refused",

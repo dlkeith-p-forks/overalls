@@ -119,8 +119,11 @@ defmodule Lilly.Terminal.Channel do
   end
 
   @impl true
-  def format_status(_opt, state) do
-    %{data: [{"State", %{channel: state.channel, sequence: state.sequence}}]}
+  def format_status(%{state: state} = status) do
+    Lilly.DiagnosticStatus.redact(status, %{
+      channel: state.channel,
+      sequence: state.sequence
+    })
   end
 
   defp deliver(state, bytes) do

@@ -11,6 +11,7 @@ defmodule Marshall.Notifications.Reconciler do
   alias Marshall.Compute.Ledger
   alias Marshall.Notifications.{Delivery, DeliveryWorker}
   require Ash.Query
+  require Marshall.Events
 
   @stuck_seconds 120
   @batch 200
@@ -64,6 +65,18 @@ defmodule Marshall.Notifications.Reconciler do
 
       Enum.each(expired, fn delivery ->
         Ledger.update!(delivery, :drop, %{drop_reason: :expired, finished_at: now})
+
+        # @cc [owner:ghuntley,label:observability] reconciled-notification-outcome
+        # Reconciler-owned expiry MUST emit the same payload-free transition as
+        # worker-owned expiry, only after its enclosing transaction commits.
+        Ledger.after_commit(fn ->
+          Marshall.Events.emit("notifications.delivery_transition",
+            delivery_id: delivery.id,
+            device_id: delivery.device_id,
+            state: :dropped,
+            reason: :expired
+          )
+        end)
       end)
 
       length(rows) + length(expired)

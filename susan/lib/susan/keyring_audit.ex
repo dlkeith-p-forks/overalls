@@ -6,6 +6,17 @@ defmodule Susan.KeyringAudit do
   """
   require Susan.Events
 
+  @doc "Refuse listener startup until the active keyring has a durable audit record."
+  @spec start_link(Susan.Keyring.t()) :: :ignore | {:error, :audit_unavailable}
+  def start_link(keyring) do
+    case record(keyring) do
+      result when result in [:ok, :unchanged] -> :ignore
+      :error -> {:error, :audit_unavailable}
+    end
+  rescue
+    _ -> {:error, :audit_unavailable}
+  end
+
   @spec record(Susan.Keyring.t()) :: :ok | :unchanged | :error
   def record(%Susan.Keyring{active: active}) do
     last =

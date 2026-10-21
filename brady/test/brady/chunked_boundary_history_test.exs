@@ -96,26 +96,32 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
       {:ok, recovered} = Store.start_link(root: root, limits: limits)
       Process.unlink(recovered)
 
-      assert %{writers: 0, readers: 0, pending: 0, writable: false} = Store.stats(recovered)
-      assert File.ls!(Path.join(root, "tmp")) == []
-      assert :bypass = Store.append(recovered, lease, <<1>>)
-      assert :bypass = Store.commit(recovered, lease)
-      assert :ok = Store.abort(recovered, lease)
-      assert_object(recovered, neighbor, retained)
+      try do
+        assert %{writers: 0, readers: 0, pending: 0, writable: false} = Store.stats(recovered)
+        assert File.ls!(Path.join(root, "tmp")) == []
+        assert :bypass = Store.append(recovered, lease, <<1>>)
+        assert :bypass = Store.commit(recovered, lease)
+        assert :ok = Store.abort(recovered, lease)
+        assert_object(recovered, neighbor, retained)
 
-      if committed do
-        assert_object(recovered, key, payload)
-        assert Store.stats(recovered).objects == 2
-      else
-        assert :miss = Store.open(recovered, key, 150)
-        assert Store.stats(recovered).objects == 1
+        if committed do
+          assert_object(recovered, key, payload)
+          assert Store.stats(recovered).objects == 2
+        else
+          assert :miss = Store.open(recovered, key, 150)
+          assert Store.stats(recovered).objects == 1
+        end
+
+        expected_used =
+          @overhead + byte_size(retained) + if(committed, do: @overhead + size, else: 0)
+
+        assert %{used: ^expected_used, pending: 0, readers: 0, writers: 0} =
+                 Store.stats(recovered)
+
+        :ok
+      after
+        if Process.alive?(recovered), do: GenServer.stop(recovered)
       end
-
-      expected_used =
-        @overhead + byte_size(retained) + if(committed, do: @overhead + size, else: 0)
-
-      assert %{used: ^expected_used, pending: 0, readers: 0, writers: 0} = Store.stats(recovered)
-      :ok
     after
       if Process.alive?(store), do: GenServer.stop(store)
       File.rm_rf!(root)

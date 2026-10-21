@@ -11,6 +11,8 @@ defmodule Lilly.Backup do
   # Start Ash dependencies for local journals, never the Lilly control runtime.
   @spec main() :: no_return()
   def main do
+    operation = System.get_env("OVERALLS_BACKUP_OPERATION")
+
     result =
       try do
         with {:ok, %File.Stat{uid: 0}} <- Lilly.Host.Privilege.stat("/proc/self"),
@@ -21,7 +23,7 @@ defmodule Lilly.Backup do
                PrivateFiles.read_secret(System.fetch_env!("OVERALLS_BACKUP_REQUEST")),
              {:ok, value} when is_map(value) <- JSON.decode(request),
              {:ok, pools} <- pools(config),
-             do: execute(System.fetch_env!("OVERALLS_BACKUP_OPERATION"), config, pools, value),
+             do: execute(operation, config, pools, value),
              else: (_ -> {:error, :backup_unconfirmed})
       rescue
         _ -> {:error, :backup_unconfirmed}
@@ -29,29 +31,76 @@ defmodule Lilly.Backup do
         _, _ -> {:error, :backup_unconfirmed}
       end
 
+    status = outcome(operation, result)
+    Logger.flush()
+
     case result do
       {:ok, value} ->
-        backup_completed(value)
         IO.puts(JSON.encode!(value))
-        System.halt(0)
+        System.halt(status)
 
       _ ->
-        System.halt(1)
+        System.halt(status)
     end
   end
 
   # @cc [owner:ghuntley,label:recovery;observability] backup-completion-correlated
-  # The completion event MUST carry at most the captured placement identifier;
-  # backup paths, snapshots, specs and request payloads MUST NOT be logged.
-  defp backup_completed(%{id: id}) do
-    if OverallsProtocol.uuid?(id) do
-      Lilly.Events.emit("lilly.backup_completed", placement_id: id)
-    else
-      Lilly.Events.emit("lilly.backup_completed", [])
-    end
+  # Operation outcomes MUST follow the completed effect and carry only a closed
+  # operation/reason and validated placement, pool and run identities. Paths,
+  # snapshots, specs and request payloads MUST NOT be logged. A successful
+  # cleanup reports command completion, not proof that its pending count is zero.
+  @doc false
+  @spec outcome(term(), term()) :: 0 | 1
+  def outcome(operation, {:ok, value}) when is_map(value) do
+    Lilly.Events.emit("lilly.backup_completed",
+      operation: operation(operation),
+      placement_id: identity(value[:id]),
+      pool_id: identity(value[:pool_id]),
+      run_id: identity(value[:run_id])
+    )
+
+    0
   end
 
-  defp backup_completed(_), do: Lilly.Events.emit("lilly.backup_completed", [])
+  def outcome(operation, failure) do
+    reason =
+      case failure do
+        {:error, reason}
+        when reason in [
+               :backup_unconfirmed,
+               :backup_pool_unconfirmed,
+               :backup_inventory_unconfirmed,
+               :backup_headroom_unavailable,
+               :backup_capture_unconfirmed,
+               :backup_cleanup_unconfirmed,
+               :backup_metadata_unconfirmed,
+               :backup_mount_unconfirmed,
+               :backup_mount_busy,
+               :backup_foreign_mount,
+               :invalid_backup_operation
+             ] ->
+          reason
+
+        _ ->
+          :backup_unconfirmed
+      end
+
+    Lilly.Events.emit("lilly.backup_failed", operation: operation(operation), reason: reason)
+    1
+  end
+
+  @spec operation(term()) ::
+          :inventory | :pressure | :capture | :release | :cleanup | :metadata | :unknown
+  defp operation("inventory"), do: :inventory
+  defp operation("pressure"), do: :pressure
+  defp operation("capture"), do: :capture
+  defp operation("release"), do: :release
+  defp operation("cleanup"), do: :cleanup
+  defp operation("metadata"), do: :metadata
+  defp operation(_), do: :unknown
+
+  @spec identity(term()) :: String.t() | nil
+  defp identity(value), do: if(OverallsProtocol.uuid?(value), do: value)
 
   defp pools(config) do
     Enum.reduce_while(config["pools"], {:ok, []}, fn value, {:ok, acc} ->

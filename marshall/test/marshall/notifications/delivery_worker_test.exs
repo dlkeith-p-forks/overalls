@@ -181,6 +181,40 @@ defmodule Marshall.Notifications.DeliveryWorkerTest do
     assert [%{state: :delivered, attempts: 2}] = rows(delivery)
   end
 
+  test "reconciler expiry logs only committed payload-free transitions" do
+    {device, _} = device_fixture()
+    delivery = delivery_fixture(device, "needs_input:expired-private", -600)
+    previous = Logger.level()
+    Logger.configure(level: :info)
+    on_exit(fn -> Logger.configure(level: previous) end)
+    metadata = [:event, :delivery_id, :device_id, :state, :reason]
+
+    rolled_back =
+      ExUnit.CaptureLog.capture_log([metadata: metadata], fn ->
+        assert {:error, :test_rollback} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = Reconciler.run(nil, [], %{actor: SystemActor.compute()})
+                   Ledger.rollback(:test_rollback)
+                 end)
+      end)
+
+    refute rolled_back =~ "notifications.delivery_transition"
+    assert [%{state: :queued}] = rows(delivery)
+
+    committed =
+      ExUnit.CaptureLog.capture_log([metadata: metadata], fn ->
+        assert {:ok, _} = Reconciler.run(nil, [], %{actor: SystemActor.compute()})
+        assert {:ok, _} = Reconciler.run(nil, [], %{actor: SystemActor.compute()})
+      end)
+
+    assert [%{state: :dropped, drop_reason: :expired}] = rows(delivery)
+    assert length(Regex.scan(~r/event=notifications.delivery_transition/, committed)) == 1
+    assert committed =~ "delivery_id=#{delivery.id}"
+    assert committed =~ "reason=expired"
+    refute committed =~ @route
+    refute committed =~ "needs_input:expired-private"
+  end
+
   test "a stale outcome from a superseded attempt does not overwrite the row" do
     {device, _} = device_fixture()
     delivery = delivery_fixture(device)

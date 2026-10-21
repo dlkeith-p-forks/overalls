@@ -113,7 +113,8 @@ defmodule Susan.Poke do
           %{status: :unregistered} ->
             refuse(:unregistered, {:refused, :unregistered}, context)
 
-          %{status: :failed} ->
+          %{status: :failed} = completed ->
+            :ok = Log.reconcile_receipt(completed, correlation(context))
             {:fresh, context}
 
           %{status: :sending} = r ->
@@ -132,17 +133,41 @@ defmodule Susan.Poke do
 
     case RateLimiter.check(buckets, context.config.limits) do
       :ok ->
-        context = admit_identity(context)
-        _ = Log.append(:poke_accepted, :ok, correlation(context))
-        Susan.Events.emit("susan.poke_accepted", provider: key.provider, duplicate: :no)
+        before = context
+
+        {:ok, context} =
+          Log.transaction(:poke_accepted, fn ->
+            context = admit_identity(context)
+
+            with {:ok, _} <- Log.append_in_transaction(:poke_accepted, :ok, correlation(context)),
+                 do: {:ok, context}
+          end)
+
+        publish_transition(before, context)
+
+        unless Susan.Repo.in_transaction?(),
+          do: Susan.Events.emit("susan.poke_accepted", provider: key.provider, duplicate: :no)
+
         {:admitted, context}
 
       {:limited, scope, retry, first} ->
         Susan.Events.emit("susan.rate_limited", scope: scope, retry_after: retry)
 
         if first do
-          _ = Log.append(:rate_limited, :refused, Map.put(correlation(context), :reason, scope))
-          if scope == :install, do: limit_identity(context)
+          {:ok, updated} =
+            Log.transaction(:rate_limited, fn ->
+              updated = if scope == :install, do: limit_identity(context), else: context
+
+              with {:ok, _} <-
+                     Log.append_in_transaction(
+                       :rate_limited,
+                       :refused,
+                       Map.put(correlation(context), :reason, scope)
+                     ),
+                   do: {:ok, updated}
+            end)
+
+          publish_transition(context, updated)
         end
 
         {{:limited, scope, retry}, context}
@@ -201,7 +226,7 @@ defmodule Susan.Poke do
         {:sent, context}
 
       {:unregistered, _} ->
-        _ = UnregisteredToken.record(token_digest(config, key), key.provider)
+        {:ok, _} = UnregisteredToken.record(token_digest(config, key), key.provider)
         finish(context, :unregistered, :provider_unregistered, :refused, nil)
         {:unregistered, context}
 
@@ -246,13 +271,22 @@ defmodule Susan.Poke do
   defp identity(fingerprint) do
     case InstallIdentity.by_fingerprint!(fingerprint) do
       nil ->
-        case InstallIdentity.first_seen(fingerprint) do
+        case Log.transaction(:install_first_seen, fn ->
+               with {:ok, identity} <- InstallIdentity.first_seen(fingerprint),
+                    {:ok, _} <-
+                      Log.append_in_transaction(:install_first_seen, :ok, %{
+                        install_fingerprint: fingerprint
+                      }) do
+                 {:ok, identity}
+               end
+             end) do
           {:ok, identity} ->
-            _ = Log.append(:install_first_seen, :ok, %{install_fingerprint: fingerprint})
-            Susan.Events.emit("susan.install_transition", to: :unknown)
+            unless Susan.Repo.in_transaction?(),
+              do: Susan.Events.emit("susan.install_transition", to: :unknown)
+
             identity
 
-          {:error, _} ->
+          :error ->
             InstallIdentity.by_fingerprint!(fingerprint) || raise "install identity unavailable"
         end
 
@@ -275,29 +309,45 @@ defmodule Susan.Poke do
 
   defp limit_identity(context), do: context
 
-  defp transition(context, fun, identity, to) do
+  defp transition(context, fun, identity, _to) do
     case fun.(identity) do
       {:ok, updated} ->
-        Susan.Events.emit("susan.install_transition", to: to)
         %{context | identity: updated}
 
       {:error, _} ->
-        context
+        raise "install transition unavailable"
     end
   end
 
-  defp finish(%{receipt: receipt} = context, status, action, outcome, reason) do
-    _ = DeliveryReceipt.finish(receipt, status)
-    fields = correlation(context)
-
-    _ =
-      Log.append(action, outcome, if(reason, do: Map.put(fields, :reason, reason), else: fields))
+  @spec publish_transition(context(), context()) :: :ok
+  defp publish_transition(before, updated) do
+    if before.identity.state != updated.identity.state do
+      unless Susan.Repo.in_transaction?(),
+        do: Susan.Events.emit("susan.install_transition", to: updated.identity.state)
+    end
 
     :ok
   end
 
-  defp duplicate(%{key: key} = context) do
-    Susan.Events.emit("susan.poke_accepted", provider: key.provider, duplicate: :yes)
+  defp finish(%{receipt: receipt} = context, status, _action, _outcome, reason) do
+    {:ok, completed} = DeliveryReceipt.finish(receipt, status)
+    fields = correlation(context)
+
+    :ok =
+      Log.reconcile_receipt(
+        completed,
+        if(reason, do: Map.put(fields, :reason, reason), else: fields)
+      )
+
+    :ok
+  end
+
+  defp duplicate(%{key: key, receipt: receipt} = context) do
+    :ok = Log.reconcile_receipt(receipt, correlation(context))
+
+    unless Susan.Repo.in_transaction?(),
+      do: Susan.Events.emit("susan.poke_accepted", provider: key.provider, duplicate: :yes)
+
     {:duplicate, context}
   end
 
@@ -312,7 +362,9 @@ defmodule Susan.Poke do
   end
 
   defp audited_refusal(reason, event, context) do
-    _ = Log.append(:poke_rejected, :refused, Map.put(correlation(context), :reason, reason))
+    {:ok, _} =
+      Log.append(:poke_rejected, :refused, Map.put(correlation(context), :reason, reason))
+
     refuse(reason, event, context)
   end
 

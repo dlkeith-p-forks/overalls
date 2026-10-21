@@ -6,6 +6,7 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
   import Hegel
   import Hegel.Gen
   alias Lilly.Transfer.ReceiveRuntime
+  @request "00000000-0000-4000-8000-000000000001"
 
   test "effect failures expose a closed reason once without publishing receipts" do
     output =
@@ -22,6 +23,23 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
 
     assert output =~ "storage_busy"
     assert length(Regex.scan(~r/Relocation effect failed/, output)) == 1
+  end
+
+  test "different failed requests retain independent correlation" do
+    other = "00000000-0000-4000-8000-000000000002"
+
+    output =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :reason, :request_id, :operation]], fn ->
+        assert {:noreply, failed} = fail_effect(failure_state(), {:error, :storage_busy})
+        assert {:noreply, later} = fail_effect(failed, {:error, :storage_busy}, other)
+        assert later.last_failure_id == other
+        assert later.pending == failed.pending
+      end)
+
+    assert output =~ "request_id=#{@request}"
+    assert output =~ "request_id=#{other}"
+    assert output =~ "operation=receive"
+    assert length(Regex.scan(~r/Relocation effect failed/, output)) == 2
   end
 
   test "arbitrary failure payloads and command data never become diagnostics" do
@@ -178,12 +196,13 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
       | active: %{
           task: task,
           timer: timer,
+          command: command(System.system_time(:second) + 60),
           deadline: System.monotonic_time(:millisecond) + 60_000
         }
     }
   end
 
-  defp fail_effect(state, failure) do
+  defp fail_effect(state, failure, request_id \\ @request) do
     ref = make_ref()
     task = %Task{pid: self(), owner: self(), ref: ref, mfa: {__MODULE__, :test, 0}}
     timer = Process.send_after(self(), :unexpected_lease_timeout, 60_000)
@@ -191,7 +210,10 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
     active = %{
       task: task,
       timer: timer,
-      command: Map.put(command(System.system_time(:second) + 60), :private, "private-command")
+      command:
+        command(System.system_time(:second) + 60)
+        |> Map.put(:id, request_id)
+        |> Map.put(:private, "private-command")
     }
 
     ReceiveRuntime.handle_info({ref, failure}, %{state | active: active})
@@ -199,7 +221,7 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
 
   defp command(expires),
     do: %{
-      id: Lilly.UUID.generate(),
+      id: @request,
       descriptor: %{identity: :fixture},
       source_endpoint: %{"address" => "source"},
       expires_at: expires

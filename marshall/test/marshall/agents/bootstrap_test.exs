@@ -88,6 +88,48 @@ defmodule Marshall.Agents.BootstrapTest do
     assert Ledger.read!(Marshall.Agents.Turn, []) == []
   end
 
+  test "bootstrap diagnostics omit scripts and repeat receipts and follow the outer commit" do
+    c = fixture()
+    {:ok, executor} = ExecutorSession.register(c.binding)
+    previous = Logger.level()
+    Logger.configure(level: :info)
+    on_exit(fn -> Logger.configure(level: previous) end)
+
+    rolled_back =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :kind, :phase]], fn ->
+        assert {:error, :test_rollback} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = rpc(c, executor, "claim")
+                   Ledger.rollback(:test_rollback)
+                 end)
+      end)
+
+    refute rolled_back =~ "agent.installation_transition"
+
+    committed =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :kind, :phase]], fn ->
+        assert {:ok, :ok} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, %{command: command}} = rpc(c, executor, "claim")
+                   assert {:ok, _} = rpc(c, executor, "claim")
+                   input = %{"command_id" => command.id, "status" => "started", "result" => %{}}
+                   assert {:ok, _} = rpc(c, executor, "transition", input)
+                   assert {:ok, _} = rpc(c, executor, "transition", input)
+
+                   assert {:ok, %{status: :failed}} =
+                            rpc(c, executor, "transition", %{input | "status" => "completed"})
+
+                   :ok
+                 end)
+      end)
+
+    assert length(Regex.scan(~r/event=agent\.installation_transition/, committed)) == 3
+    assert committed =~ "kind=bootstrap"
+    assert committed =~ "phase=failed"
+    refute committed =~ "__github-tools-bootstrap"
+    refute committed =~ c.token
+  end
+
   @spec step(operation(), model(), context()) :: model()
   defp step(:claim, model, c) do
     assert {:ok, %{command: command}} = rpc(c, model.executor, "claim")

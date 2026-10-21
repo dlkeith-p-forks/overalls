@@ -1,5 +1,5 @@
 ---
-digest: 9c4478af69f78f19c7eb5487f04e8e3294a95a6f5b9c27d7060ed63009f69674
+digest: c890b8c9e4155e2536364932b2b307cd775bfd08eb8aba82fb977e268d67faab
 disposition: no-impact
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
@@ -13,12 +13,12 @@ reviewed_chapters:
   marshall/priv/hldd/11-agents.md: dea02f8fd8ed2cfdfbe10e6fd584479caaaa706bf64df4668b638b3aae37465c
   marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
   marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
-  marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
-  marshall/priv/hldd/20-security.md: a5371e295b0811165799f60ba9d7dc4266c41822eece4689de03576980938066
+  marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
+  marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
   marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-Encrypted attachment storage is an implementation hardening within the already documented Marshall thread attachment boundary.
+Reviewed diagnostics, logging, audit and privacy changes; no-impact evidence remains aligned with implementation.

@@ -2,17 +2,30 @@ defmodule Porsche.Privacy do
   @moduledoc "Redact OTP and SSH diagnostics at the source, before any logger handler."
   @catalog Porsche.Events.__catalog__()
 
-  @spec install() :: :ok
+  @spec install() :: :ok | {:error, :privacy_filter_conflict | :privacy_filter_unavailable}
   def install do
-    case :logger.add_primary_filter(:porsche_privacy, {&__MODULE__.filter/2, nil}) do
-      :ok -> :ok
-      {:error, {:already_exist, :porsche_privacy}} -> :ok
+    callback = &__MODULE__.filter/2
+
+    case :logger.add_primary_filter(:porsche_privacy, {callback, nil}) do
+      :ok ->
+        :ok
+
+      {:error, {:already_exist, :porsche_privacy}} ->
+        case List.keyfind(:logger.get_primary_config().filters, :porsche_privacy, 0) do
+          {:porsche_privacy, {^callback, nil}} -> :ok
+          _ -> {:error, :privacy_filter_conflict}
+        end
+
+      _ ->
+        {:error, :privacy_filter_unavailable}
     end
+  catch
+    _, _ -> {:error, :privacy_filter_unavailable}
   end
 
   # @cc [owner:ghuntley,label:security] porsche-source-report-redaction
   # Every structured OTP report and format/argument diagnostic MUST be reduced
-  # to a fixed category before handlers can inspect it. SSH-domain or explicitly
+  # to a fixed category before handlers can inspect it. All uncatalogued
   # private string diagnostics MUST also lose all original text and metadata.
   # Process state, mailbox contents and formatter callbacks MUST NOT survive.
   # Reviewed catalog events are the only informative exception: they MUST be
@@ -44,7 +57,7 @@ defmodule Porsche.Privacy do
     do: redact(event, "private_diagnostic")
 
   def filter(%{meta: %{domain: [:otp, :ssh | _]}} = event, _), do: redact(event, "ssh_runtime")
-  def filter(_, _), do: :ignore
+  def filter(event, _), do: redact(event, "runtime_report")
 
   defp redact(event, category) do
     metadata =

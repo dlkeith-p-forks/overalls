@@ -3,7 +3,7 @@ defmodule Lilly.Transfer.ReceiveRuntime do
   use GenServer
   require Lilly.Events
   alias Lilly.Control.Client
-  alias Lilly.Transfer.Receiver
+  alias Lilly.Transfer.{Receiver, WorkerDiagnostics}
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(options), do: GenServer.start_link(__MODULE__, options)
 
@@ -94,7 +94,12 @@ defmodule Lilly.Transfer.ReceiveRuntime do
 
     case result do
       {:ok, response} ->
-        state = %{state | pending: Map.drop(state.pending, response.acknowledgements)}
+        state =
+          WorkerDiagnostics.recovered(
+            %{state | pending: Map.drop(state.pending, response.acknowledgements)},
+            :receive
+          )
+
         {:noreply, commands(state, response.commands)}
 
       {:error, reason}
@@ -116,8 +121,8 @@ defmodule Lilly.Transfer.ReceiveRuntime do
         send(state.owner, {kind, self(), reason})
         {:noreply, %{stop_active(state) | fenced: true}}
 
-      _ ->
-        {:noreply, state}
+      failure ->
+        {:noreply, WorkerDiagnostics.failed(state, :receive, failure)}
     end
   end
 
@@ -134,7 +139,7 @@ defmodule Lilly.Transfer.ReceiveRuntime do
          %{state | pending: Map.put(state.pending, receipt.id, receipt), last_failure: nil}}
 
       failure ->
-        {:noreply, report_failure(state, failure)}
+        {:noreply, report_failure(state, failure, active.command.id)}
     end
   end
 
@@ -159,10 +164,16 @@ defmodule Lilly.Transfer.ReceiveRuntime do
   def handle_info({:lease_expired, _}, state), do: {:noreply, state}
 
   def handle_info({:DOWN, ref, :process, _, _}, %{exchange: %Task{ref: ref}} = state),
-    do: {:noreply, %{state | exchange: nil}}
+    do:
+      {:noreply,
+       WorkerDiagnostics.failed(%{state | exchange: nil}, :receive, {:error, :effect_task_exited})}
 
   def handle_info({:DOWN, ref, :process, _, _}, %{active: %{task: %Task{ref: ref}}} = state),
-    do: {:noreply, state |> stop_active() |> report_failure({:error, :effect_task_exited})}
+    do:
+      {:noreply,
+       state
+       |> stop_active()
+       |> report_failure({:error, :effect_task_exited}, state.active.command.id)}
 
   def handle_info({:EXIT, _, _}, state), do: {:noreply, state}
   def handle_info(_, state), do: {:noreply, state}
@@ -177,7 +188,7 @@ defmodule Lilly.Transfer.ReceiveRuntime do
   @impl true
   def format_status(status),
     do:
-      Map.put(status, :state, %{
+      Lilly.DiagnosticStatus.redact(status, %{
         receiving: status.state.active != nil,
         pending_receipts: map_size(status.state.pending)
       })
@@ -303,7 +314,10 @@ defmodule Lilly.Transfer.ReceiveRuntime do
   end
 
   defp expire_active(state),
-    do: state |> stop_active() |> report_failure({:error, :effect_lease_expired})
+    do:
+      state
+      |> stop_active()
+      |> report_failure({:error, :effect_lease_expired}, state.active.command.id)
 
   defp stop_active(%{active: nil} = state), do: state
 
@@ -359,11 +373,12 @@ defmodule Lilly.Transfer.ReceiveRuntime do
   # Failed effects MUST expose only an allowlisted local reason through the
   # catalogued event. Never inspect result payloads, commands, descriptors,
   # paths or credentials. Identical consecutive failures MUST be suppressed
-  # until success or a changed reason. Reporting MUST NOT create a receipt or
+  # for the same request until success or a changed reason. Request changes
+  # MUST produce independently correlated failures. Reporting MUST NOT create a receipt or
   # change lease/cleanup authority. Expired leases and effect task exits MUST
   # use fixed reasons without exposing exit payloads; stale timers MUST NOT
   # report a failure or stop renewed work.
-  defp report_failure(state, failure) do
+  defp report_failure(state, failure, request_id) do
     reason =
       case failure do
         {:error, reason}
@@ -431,11 +446,15 @@ defmodule Lilly.Transfer.ReceiveRuntime do
           :effect_unconfirmed
       end
 
-    if state.last_failure != reason do
-      Lilly.Events.emit("lilly.transfer_effect_failed", reason: reason)
+    if state.last_failure != reason or Map.get(state, :last_failure_id) != request_id do
+      Lilly.Events.emit("lilly.transfer_effect_failed",
+        reason: reason,
+        request_id: request_id,
+        operation: state.mode
+      )
     end
 
-    %{state | last_failure: reason}
+    state |> Map.put(:last_failure, reason) |> Map.put(:last_failure_id, request_id)
   end
 
   defp mono, do: System.monotonic_time(:millisecond)

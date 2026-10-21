@@ -202,14 +202,14 @@ defmodule Lilly.VM.Disk do
 
   # @cc [owner:ghuntley,label:security;observability] disk-preparation-stage-diagnostics
   # Stage diagnostics MUST preserve results and quiet storage_busy retries. Failures
-  # MUST expose only a fixed stage, local error atom and VM ID, never native output,
+  # MUST expose only a fixed stage and VM ID, never native output,
   # paths, ownership records or disk contents.
   defp prepare_step(:ok, _spec, _stage), do: :ok
   defp prepare_step({:ok, _} = result, _spec, _stage), do: result
   defp prepare_step({:error, :storage_busy} = result, _spec, _stage), do: result
 
-  defp prepare_step(result, spec, _stage) do
-    Lilly.Events.emit("vm.disk_preparation_failed", vm_id: spec.id)
+  defp prepare_step(result, spec, stage) do
+    Lilly.Events.emit("vm.disk_preparation_failed", vm_id: spec.id, stage: stage)
 
     result
   end
@@ -465,7 +465,7 @@ defmodule Lilly.VM.Disk do
 
   # @cc [owner:ghuntley,label:security] disk-materialization-diagnostics
   # Failed materialization commands MUST report only the fixed utility name,
-  # local error atom and VM ID. Paths, command output and disk contents MUST NOT
+  # elapsed milliseconds and VM ID. Paths, command output and disk contents MUST NOT
   # enter diagnostics; the original result and deadline MUST be preserved.
   # Successful steps report only the fixed utility atom and elapsed milliseconds
   # so creation latency can be attributed per step (ADR-0143).
@@ -475,7 +475,11 @@ defmodule Lilly.VM.Disk do
 
     case result do
       {:error, _reason} ->
-        Lilly.Events.emit("vm.disk_materialization_failed", vm_id: spec.id)
+        Lilly.Events.emit("vm.disk_materialization_failed",
+          vm_id: spec.id,
+          utility: name,
+          duration_ms: System.monotonic_time(:millisecond) - started
+        )
 
       {:ok, _} ->
         Lilly.Events.emit("vm.disk_materialization_step",

@@ -15,7 +15,13 @@ defmodule Peach.HTTP do
   # projection. Unknown paths answer 404 before any control request; a
   # projection is served only after the shared protocol validates it.
   @impl true
+  @spec call(Plug.Conn.t(), Peach.Config.t()) :: Plug.Conn.t()
   def call(conn, config) do
+    Overalls.Diagnostics.Tracing.with_span("peach.http", [], fn -> call_traced(conn, config) end)
+  end
+
+  @spec call_traced(Plug.Conn.t(), Peach.Config.t()) :: Plug.Conn.t()
+  defp call_traced(conn, config) do
     case admit(conn, config) do
       {:ok, binding} -> project(conn, config, binding)
       {:error, status, reason} -> refuse(conn, status, reason, config.host_id, nil)
@@ -46,6 +52,13 @@ defmodule Peach.HTTP do
   @spec project(Plug.Conn.t(), map(), map()) :: Plug.Conn.t()
   defp project(conn, config, binding) do
     wire = Map.new(binding, fn {key, value} -> {Atom.to_string(key), value} end)
+
+    Peach.Events.emit("peach.projection_requested",
+      host_id: binding.host_id,
+      vm_id: binding.vm_id,
+      placement_id: binding.placement_id,
+      execution_epoch: binding.execution_epoch
+    )
 
     with {:control, {:ok, object}} <- {:control, Peach.Control.snapshot(config.control, wire)},
          {:ok, snapshot} <- OverallsProtocol.Reflection.snapshot(object),

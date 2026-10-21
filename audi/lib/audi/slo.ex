@@ -1,6 +1,7 @@
 defmodule Audi.SLO do
   @moduledoc "Fixed cumulative outcomes for Audi private transport, DNS and SSH."
   use GenServer
+  require Audi.Events
   alias Overalls.RequestAccounting.Aggregate
 
   @bounds_us Aggregate.bounds()
@@ -147,10 +148,24 @@ defmodule Audi.SLO do
   end
 
   @impl true
+  # @cc [owner:ghuntley,label:observability;reliability] audi-slo-publication-transitions
+  # Snapshot write failures MUST preserve request handling and emit only one
+  # payload-free failure per unavailable interval, followed by one recovery
+  # after a successful replacement. Paths and raw IO errors MUST NOT be logged.
   def handle_info(:publish, state) do
-    publish(state)
+    outcome = publish(state)
+    previous = Map.get(state, :publication, :ok)
+
+    if outcome != previous do
+      case outcome do
+        :error -> Audi.Events.emit("audi.slo_publication_failed", [])
+        :ok when previous == :error -> Audi.Events.emit("audi.slo_publication_recovered", [])
+        _ -> :ok
+      end
+    end
+
     Process.send_after(self(), :publish, 5_000)
-    {:noreply, state}
+    {:noreply, Map.put(state, :publication, outcome)}
   end
 
   # @cc [owner:ghuntley,label:capacity;reliability] audi-slo-periodic-snapshot
@@ -170,7 +185,7 @@ defmodule Audi.SLO do
          :ok <- File.rename(staged, path) do
       :ok
     else
-      _ -> :ok
+      _ -> :error
     end
   end
 

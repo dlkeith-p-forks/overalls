@@ -408,18 +408,13 @@ defmodule Lilly.Terminal.Stream do
   end
 
   @impl true
-  def format_status(_opt, state) do
-    %{
-      data: [
-        {"State",
-         %{
-           phase: state.phase,
-           channels: map_size(state.channels),
-           guests: map_size(state.guests),
-           next_channel: state.next_channel
-         }}
-      ]
-    }
+  def format_status(%{state: state} = status) do
+    Lilly.DiagnosticStatus.redact(status, %{
+      phase: state.phase,
+      channels: map_size(state.channels),
+      guests: map_size(state.guests),
+      next_channel: state.next_channel
+    })
   end
 
   defp buffer(state, bytes) do

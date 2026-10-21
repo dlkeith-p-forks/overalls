@@ -258,6 +258,38 @@ defmodule Overalls.Diagnostics.SDKTest do
     for span <- spans, do: assert(span.status.code == :STATUS_CODE_ERROR)
   end
 
+  test "deferred events retain their parent span without copying baggage", %{socket: socket} do
+    _ = Overalls.Diagnostics.Processor.force_flush(%{})
+    {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {:local, socket}])
+    on_exit(fn -> :gen_tcp.close(listener) end)
+    exporter = Task.async(fn -> serve(listener, 200, "") end)
+
+    assert :ok =
+             Overalls.Diagnostics.Tracing.with_span("enrico.http", [], fn ->
+               callback =
+                 Overalls.Diagnostics.Context.wrap(fn ->
+                   Catalog.emit("lilly.lifecycle_effect_attempted", action: :zfs_create)
+                 end)
+
+               callback |> Task.async() |> Task.await()
+             end)
+
+    assert :ok = Overalls.Diagnostics.Processor.force_flush(%{})
+
+    request =
+      :opentelemetry_exporter_trace_service_pb.decode_msg(
+        Task.await(exporter, 5000),
+        :export_trace_service_request
+      )
+
+    assert %{resource_spans: [%{scope_spans: [%{spans: spans}]}]} = request
+    assert length(spans) == 2
+    parent = Enum.find(spans, &(&1.name == "enrico.http"))
+    child = Enum.find(spans, &(&1.name == "lilly.lifecycle_effect_attempted"))
+    assert child.trace_id == parent.trace_id
+    assert child.parent_span_id == parent.span_id
+  end
+
   @spec serve(port(), non_neg_integer(), binary()) :: binary()
   defp serve(listener, status, response) do
     {:ok, socket} = :gen_tcp.accept(listener, 5000)

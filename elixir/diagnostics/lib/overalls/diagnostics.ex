@@ -7,7 +7,16 @@ defmodule Overalls.Diagnostics do
   """
 
   @type service ::
-          :marshall | :lilly | :audi | :porsche | :brady | :ziggy | :enrico | :galileo | :susan
+          :marshall
+          | :lilly
+          | :audi
+          | :porsche
+          | :brady
+          | :ziggy
+          | :enrico
+          | :galileo
+          | :susan
+          | :peach
   @type metadata :: %{optional(atom()) => atom() | binary() | integer() | nil} | keyword()
   @type custody :: :ok | {:error, :invalid | :unavailable | :refused}
 end

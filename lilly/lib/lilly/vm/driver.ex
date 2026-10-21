@@ -1828,8 +1828,12 @@ defmodule Lilly.VM.Driver do
   defp launch_step({:ok, _} = result, _spec, _stage), do: result
   defp launch_step({:error, :storage_busy} = result, _spec, _stage), do: result
 
-  defp launch_step({:error, reason} = result, spec, _stage) do
-    Lilly.Events.emit("vm.launch_preparation_failed", vm_id: spec.id, reason: reason)
+  defp launch_step({:error, reason} = result, spec, stage) do
+    Lilly.Events.emit("vm.launch_preparation_failed",
+      vm_id: spec.id,
+      stage: stage,
+      reason: reason
+    )
 
     result
   end

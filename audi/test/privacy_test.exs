@@ -7,6 +7,24 @@ defmodule Audi.PrivacyTest do
   @uuid "11111111-1111-4111-8111-111111111111"
   @maximum 9_223_372_036_854_775_807
 
+  test "untagged dependency strings are redacted while valid trace context survives" do
+    event = %{
+      level: :warning,
+      msg: {:string, "dependency-secret-canary"},
+      meta: %{
+        trace_id: String.duplicate("a", 32),
+        span_id: String.duplicate("b", 16),
+        credential: "dependency-secret-canary"
+      }
+    }
+
+    clean = Audi.Privacy.filter(event, nil)
+    assert clean.meta.event == "audi.runtime_report"
+    assert clean.meta.trace_id == event.meta.trace_id
+    assert clean.meta.span_id == event.meta.span_id
+    refute inspect(clean) =~ "dependency-secret-canary"
+  end
+
   test "editor events retain reviewed account and execution fields through the actual log handler" do
     require Audi.Events
 

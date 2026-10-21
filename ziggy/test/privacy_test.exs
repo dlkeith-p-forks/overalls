@@ -8,6 +8,29 @@ defmodule Ziggy.PrivacyTest do
   @host "22222222-2222-4222-8222-222222222222"
   @credential "sk-ziggy-marker-secret-0123456789abcdef"
 
+  test "OTP failures retain finite categories and validated request correlation" do
+    for {label, category} <- [
+          {{:gen_server, :terminate}, :process_crash},
+          {{:supervisor, :child_terminated}, :supervisor_report},
+          {{:unknown, :private_canary}, :runtime_report}
+        ] do
+      clean =
+        Ziggy.Privacy.filter(
+          %{
+            level: :error,
+            msg: {:report, %{label: label, state: "private-canary"}},
+            meta: %{request_id: @request, host_id: @host, vm_id: "private-canary"}
+          },
+          nil
+        )
+
+      assert clean.meta.report_category == category
+      assert clean.meta.request_id == @request
+      assert clean.meta.host_id == @host
+      refute inspect(clean) =~ "private-canary"
+    end
+  end
+
   test "catalog events survive with fixed text and validated identifiers" do
     for {name, spec} <- @catalog do
       event = %{
@@ -83,8 +106,8 @@ defmodule Ziggy.PrivacyTest do
       }
 
       clean = Ziggy.Privacy.filter(event, nil)
-      assert clean.msg == {:string, "Ziggy runtime diagnostic (payload redacted)"}
-      assert clean.meta.event == "ziggy.runtime"
+      assert clean.msg == {:string, "Ziggy runtime_report (payload redacted)"}
+      assert clean.meta.event == "ziggy.runtime_report"
       refute inspect(clean) =~ "synthetic-secret"
       refute Map.has_key?(clean.meta, :report_cb)
       refute Map.has_key?(clean.meta, :request_id)

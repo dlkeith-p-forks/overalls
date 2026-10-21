@@ -5,6 +5,52 @@ defmodule Overalls.Diagnostics.Context do
   @enum_keys Overalls.Diagnostics.Schema.attributes(:enum)
   @number_keys Overalls.Diagnostics.Schema.attributes(:number)
 
+  # @cc [owner:ghuntley,label:observability;security] trace-task-context-only
+  # Deferred work MUST inherit only the current SDK span, never baggage or
+  # arbitrary process/logger metadata. Invocation MUST restore the worker's
+  # prior context and preserve its callback's single execution and exact outcome.
+  @doc "Bind a deferred callback to the current local span without copying baggage."
+  @spec wrap((-> result)) :: (-> result) when result: term()
+  def wrap(callback) when is_function(callback, 0) do
+    context = span_context()
+
+    fn ->
+      case attach(context) do
+        {:ok, token} ->
+          try do
+            callback.()
+          after
+            detach(token)
+          end
+
+        :unavailable ->
+          callback.()
+      end
+    end
+  end
+
+  @spec span_context() :: :otel_ctx.t()
+  defp span_context do
+    :otel_tracer.set_current_span(:otel_ctx.new(), :otel_tracer.current_span_ctx())
+  catch
+    _, _ -> %{}
+  end
+
+  @spec attach(:otel_ctx.t()) :: {:ok, :otel_ctx.token()} | :unavailable
+  defp attach(context) do
+    {:ok, :otel_ctx.attach(context)}
+  catch
+    _, _ -> :unavailable
+  end
+
+  @spec detach(:otel_ctx.token()) :: :ok
+  defp detach(token) do
+    _ = :otel_ctx.detach(token)
+    :ok
+  catch
+    _, _ -> :ok
+  end
+
   @doc false
   @spec event_log_context(Overalls.Diagnostics.Events.Catalog.projection(), keyword()) ::
           %{optional(:trace_id | :span_id) => binary()}

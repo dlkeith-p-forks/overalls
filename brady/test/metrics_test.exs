@@ -86,8 +86,15 @@ defmodule Brady.MetricsTest do
       draw(
         "observations",
         list_of(
-          {member_of([:ok, :upstream, :timeout, :internal, :policy, :invalid_request]),
-           integer(0..12_000_000), boolean()},
+          {member_of([
+             :ok,
+             :upstream,
+             :invalid_http,
+             :timeout,
+             :internal,
+             :policy,
+             :invalid_request
+           ]), integer(0..12_000_000), boolean()},
           min_length: 1,
           max_length: 24
         )

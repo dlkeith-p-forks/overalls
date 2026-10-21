@@ -104,6 +104,43 @@ defmodule Marshall.Inference.RequestsTest do
     assert {:ok, %{acknowledged: ^id}} = Requests.complete(c.ziggy_token, id, completion())
   end
 
+  test "outcome diagnostics follow the outer commit and completion replay is quiet", c do
+    previous = Logger.level()
+    Logger.configure(level: :info)
+    on_exit(fn -> Logger.configure(level: previous) end)
+    id = c.input["request_id"]
+
+    rolled_back =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :request_id]], fn ->
+        assert {:error, :test_rollback} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = Requests.admit(c.ziggy_token, c.input)
+                   assert {:ok, _} = Requests.complete(c.ziggy_token, id, completion())
+                   Ledger.rollback(:test_rollback)
+                 end)
+      end)
+
+    refute rolled_back =~ "event=inference.request_admitted"
+    refute rolled_back =~ "event=inference.request_completed"
+    assert [] = Ledger.read!(Request, id: id)
+
+    committed =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :request_id]], fn ->
+        assert {:ok, :ok} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = Requests.admit(c.ziggy_token, c.input)
+                   assert {:ok, _} = Requests.complete(c.ziggy_token, id, completion())
+                   assert {:ok, _} = Requests.complete(c.ziggy_token, id, completion())
+                   :ok
+                 end)
+      end)
+
+    assert length(Regex.scan(~r/event=inference.request_admitted/, committed)) == 1
+    assert length(Regex.scan(~r/event=inference.request_completed/, committed)) == 1
+    assert committed =~ "request_id=#{id}"
+    refute committed =~ c.ziggy_token
+  end
+
   test "completion replay and conflict histories count each request once", c do
     Hegel.check(
       fn ->

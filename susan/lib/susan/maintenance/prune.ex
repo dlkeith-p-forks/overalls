@@ -13,7 +13,8 @@ defmodule Susan.Maintenance.Prune do
   def perform(%Oban.Job{}) do
     now = DateTime.utc_now()
 
-    with {:ok, _count} <- Susan.Audit.Log.prune(now),
+    with :ok <- Susan.Audit.Log.reconcile_receipts(),
+         {:ok, _count} <- Susan.Audit.Log.prune(now),
          :ok <- expire(DeliveryReceipt, :inserted_at, DateTime.add(now, -86_400, :second)),
          :ok <- expire(UnregisteredToken, :recorded_at, DateTime.add(now, -30 * 86_400, :second)),
          :ok <- expire(KeyDenial, :inserted_at, DateTime.add(now, -91 * 86_400, :second)) do

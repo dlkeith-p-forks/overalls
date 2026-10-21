@@ -7,6 +7,10 @@ defmodule Brady.Connection do
   # socket, never a request header. Only an exact configured hostname/port pair
   # may tunnel. Malformed TLS, signing failure and upstream failure MUST close
   # the connection without falling back to tunnelling or direct guest egress.
+  # @cc [owner:ghuntley,label:observability] brady-pre-admission-refusal
+  # A disallowed kernel destination MUST emit a policy refusal without addresses
+  # or guest bytes. Socket identity failures MUST emit a transport outcome.
+  # Neither outcome may be counted as an admitted request in the SLO.
   @spec run(:gen_tcp.socket(), :http | :https, map()) :: :ok
   def run(socket, scheme, config) do
     try do
@@ -17,7 +21,11 @@ defmodule Brady.Connection do
 
         dispatch(socket, scheme, destination, config, identity)
       else
-        _ -> :ok
+        false ->
+          Log.request(%{protocol: scheme, reason: :policy, attribution: :unresolved})
+
+        _ ->
+          Log.request(%{protocol: scheme, reason: :transport, attribution: :unresolved})
       end
     rescue
       _ ->

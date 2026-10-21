@@ -69,6 +69,77 @@ defmodule Susan.AuditTest do
              )
   end
 
+  test "maintenance repairs terminal receipts exactly once without provider effects" do
+    {:ok, receipt} =
+      Susan.Relay.DeliveryReceipt.claim(String.duplicate("a", 64), Susan.PushKey.uuid())
+
+    {:ok, _} = Susan.Relay.DeliveryReceipt.finish(receipt, :unregistered)
+    assert :ok = Log.reconcile_receipts()
+    assert :ok = Log.reconcile_receipts()
+    assert [%{action: :provider_unregistered, delivery_id: id}] = Log.read()
+    assert id == receipt.delivery_id
+    assert Susan.FakeProvider.requests() == []
+  end
+
+  test "nested audit append does not announce success before an outer rollback" do
+    log =
+      ExUnit.CaptureLog.capture_log([level: :info], fn ->
+        assert {:error, :cancelled} =
+                 Repo.transaction(fn ->
+                   assert {:ok, _} = Log.append(:admin, :ok, %{reason: :audit_read})
+                   Repo.rollback(:cancelled)
+                 end)
+      end)
+
+    refute log =~ "susan.audit_appended"
+    assert Log.read() == []
+  end
+
+  test "listener startup gate fails closed when keyring audit fails" do
+    assert :ignore = Susan.KeyringAudit.start_link(Fixtures.keyring())
+    assert :ignore = Susan.KeyringAudit.start_link(Fixtures.keyring())
+    assert [%{action: :key_rotated}] = Log.read()
+
+    Repo.query!(
+      "ALTER TABLE audit_entries ADD CONSTRAINT reject_rotation_audit CHECK (keyring_id <> 2)"
+    )
+
+    assert {:error, :audit_unavailable} = Susan.KeyringAudit.start_link(Fixtures.keyring(2))
+  end
+
+  test "an audited mutation rolls back when its append is rejected" do
+    key_id = Susan.PushKey.uuid()
+
+    assert :error =
+             Log.transaction(:key_denylisted, fn ->
+               with {:ok, _} <- Susan.Relay.KeyDenial.deny(key_id, :operator),
+                    {:ok, entry} <-
+                      Log.append_in_transaction(:key_denylisted, :ok, %{reason: :invalid_reason}) do
+                 {:ok, entry}
+               end
+             end)
+
+    assert Susan.Relay.KeyDenial.denied!(key_id) == nil
+    assert Log.read() == []
+  end
+
+  test "tail returns newest rows and paginated streaming crosses the read cap" do
+    # SQL fixture avoids 10,001 individual hash-chain append transactions;
+    # this test exercises query completeness, not chain verification.
+    Susan.Repo.query!("""
+    INSERT INTO audit_entries (action, outcome, occurred_at, prev_digest, digest)
+    SELECT 'admin', 'ok', now(), repeat('0', 64), repeat('0', 64)
+    FROM generate_series(1, 10001)
+    """)
+
+    rows = Enum.to_list(Log.stream())
+    assert length(rows) == 10001
+    assert Log.tail(2) == Enum.take(rows, -2)
+    stream = Log.stream()
+    {:ok, later} = Log.append(:admin, :ok, %{reason: :audit_read})
+    refute Enum.any?(stream, &(&1.seq == later.seq))
+  end
+
   # Backdating needs to bypass the append-only trigger, as a fixture only.
   defp backdate(seq, days) do
     Repo.query!("ALTER TABLE audit_entries DISABLE TRIGGER audit_entries_append_only", [])

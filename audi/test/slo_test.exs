@@ -47,6 +47,45 @@ defmodule Audi.SLOTest do
     refute inspect(snapshot) =~ "request_id"
   end
 
+  test "snapshot publication diagnoses failure once and recovery without disclosing paths" do
+    root =
+      Path.join(
+        System.tmp_dir!(),
+        "audi-private-canary-#{Base.url_encode64(:crypto.strong_rand_bytes(12), padding: false)}"
+      )
+
+    path = Path.join(root, "snapshot.json")
+    File.mkdir!(root)
+    on_exit(fn -> File.rm_rf!(root) end)
+    pid = start_supervised!({Audi.SLO, path: Path.join(root, "initial.json")})
+    state = :sys.get_state(pid) |> Map.put(:path, path) |> Map.put(:publication, :ok)
+    {:noreply, state} = Audi.SLO.handle_info(:publish, state)
+    File.mkdir!(path <> ".new")
+
+    failed =
+      ExUnit.CaptureLog.capture_log(fn ->
+        assert {:noreply, next} = Audi.SLO.handle_info(:publish, state)
+        assert next.publication == :error
+        assert {:noreply, ^next} = Audi.SLO.handle_info(:publish, next)
+      end)
+
+    assert length(String.split(failed, "SLO snapshot publication unavailable")) == 2
+    refute failed =~ "private-canary"
+    File.rmdir!(path <> ".new")
+
+    recovered =
+      ExUnit.CaptureLog.capture_log(fn ->
+        assert {:noreply, next} =
+                 Audi.SLO.handle_info(:publish, Map.put(state, :publication, :error))
+
+        assert next.publication == :ok
+        assert {:noreply, ^next} = Audi.SLO.handle_info(:publish, next)
+      end)
+
+    assert length(String.split(recovered, "SLO snapshot publication recovered")) == 2
+    refute recovered =~ "private-canary"
+  end
+
   test "private publisher atomically replaces an owner-only numeric snapshot" do
     path = Path.join(System.tmp_dir!(), "audi-slo-#{System.unique_integer([:positive])}.json")
     on_exit(fn -> File.rm(path) end)

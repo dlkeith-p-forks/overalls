@@ -1,6 +1,31 @@
 defmodule Brady.ConnectionTest do
   use ExUnit.Case, async: true
 
+  test "blocked destinations record policy refusal before attribution or guest reads" do
+    {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
+    on_exit(fn -> :gen_tcp.close(listener) end)
+    {:ok, {ip, port}} = :inet.sockname(listener)
+    {:ok, client} = :gen_tcp.connect(ip, port, [:binary, active: false])
+    on_exit(fn -> :gen_tcp.close(client) end)
+    {:ok, accepted} = :gen_tcp.accept(listener)
+    {:ok, policy} = Brady.Destination.policy([])
+
+    output =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :reason, :slo_admitted]], fn ->
+        assert :ok =
+                 Brady.Connection.run(accepted, :http, %{
+                   destination_policy: policy,
+                   attribution: fn _ -> flunk("refused destination reached attribution") end
+                 })
+      end)
+
+    assert output =~ "brady.request_completed"
+    assert output =~ "policy"
+    refute output =~ "slo_admitted"
+    refute output =~ "127.0.0.1"
+    assert {:error, :closed} = :gen_tcp.recv(client, 0, 1_000)
+  end
+
   for scheme <- [:http, :https] do
     test "#{scheme} captures the full socket tuple once before reading guest bytes" do
       scheme = unquote(scheme)

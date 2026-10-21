@@ -1,34 +1,15 @@
 defmodule Enrico.Privacy do
   @moduledoc "Discard all uncatalogued runtime diagnostic content."
-  @spec install() :: :ok
+  @spec install() :: :ok | {:error, :privacy_filter_conflict | :privacy_filter_unavailable}
   def install do
-    case :logger.add_primary_filter(:enrico_privacy, {&__MODULE__.filter/2, nil}) do
-      :ok -> :ok
-      {:error, {:already_exist, :enrico_privacy}} -> :ok
-    end
+    Overalls.Diagnostics.Privacy.install(Enrico.Events, :enrico, filter_id: :enrico_privacy)
   end
 
-  @spec filter(map(), term()) :: map()
+  @spec filter(map(), term()) :: map() | :ignore | :stop
   def filter(event, _) do
-    metadata = Map.get(event, :meta, %{})
-
-    safe =
-      Map.take(metadata, [:time, :pid, :gl])
-      |> Map.merge(Overalls.Diagnostics.Context.log_context(metadata))
-
-    name = Map.get(metadata, :event)
-
-    {message, selected} =
-      case Map.get(Enrico.Events.__catalog__(), name) do
-        nil ->
-          {"Enrico runtime diagnostic (payload redacted)", %{}}
-
-        spec ->
-          {spec.message,
-           Overalls.Diagnostics.Events.Catalog.safe_metadata(spec.metadata, metadata)
-           |> Map.put(:event, name)}
-      end
-
-    %{event | msg: {:string, message}, meta: Map.merge(safe, selected)}
+    Overalls.Diagnostics.Privacy.filter(
+      event,
+      Overalls.Diagnostics.Privacy.install_state(Enrico.Events, :enrico)
+    )
   end
 end

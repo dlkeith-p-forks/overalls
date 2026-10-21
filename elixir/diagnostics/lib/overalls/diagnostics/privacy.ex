@@ -14,21 +14,40 @@ defmodule Overalls.Diagnostics.Privacy do
     porsche: :porsche_observability_privacy,
     enrico: :enrico_observability_privacy,
     galileo: :galileo_observability_privacy,
-    susan: :susan_observability_privacy
+    susan: :susan_observability_privacy,
+    peach: :peach_observability_privacy
   }
 
   @doc "Install a source privacy filter for an application's reviewed catalog."
-  @spec install(module(), atom(), keyword()) :: :ok
+  # @cc [owner:ghuntley,label:security] privacy-installation-confirmed
+  # Installation MUST NOT report success unless the exact reviewed filter is
+  # present. A conflicting filter ID or Logger failure MUST return a fixed
+  # error before application listeners start, without disclosing Logger state.
+  @spec install(module(), atom(), keyword()) ::
+          :ok | {:error, :privacy_filter_conflict | :privacy_filter_unavailable}
   def install(catalog, service, opts \\ []) when is_atom(catalog) and is_atom(service) do
     filter_id =
       Keyword.get(opts, :filter_id, Map.get(@filter_ids, service, :overalls_diagnostics_privacy))
 
     state = %{catalog: catalog, service: service, filter_id: filter_id}
 
-    case :logger.add_primary_filter(filter_id, {&__MODULE__.filter/2, state}) do
+    filter = {&__MODULE__.filter/2, state}
+
+    case :logger.add_primary_filter(filter_id, filter) do
       :ok -> :ok
-      {:error, {:already_exist, ^filter_id}} -> :ok
-      _ -> :ok
+      {:error, {:already_exist, ^filter_id}} -> installed(filter_id, filter)
+      _ -> {:error, :privacy_filter_unavailable}
+    end
+  catch
+    _, _ -> {:error, :privacy_filter_unavailable}
+  end
+
+  @spec installed(atom(), {(map(), state() -> map() | :ignore | :stop), state()}) ::
+          :ok | {:error, :privacy_filter_conflict}
+  defp installed(filter_id, filter) do
+    case List.keyfind(:logger.get_primary_config().filters, filter_id, 0) do
+      {^filter_id, ^filter} -> :ok
+      _ -> {:error, :privacy_filter_conflict}
     end
   end
 

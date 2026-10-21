@@ -314,6 +314,21 @@ defmodule Marshall.Terminal.Remote do
     end
   end
 
+  # @cc [owner:ghuntley,label:security] terminal-status-shape-preserving
+  # OTP status formatting MUST preserve every incoming status key so OTP and
+  # supervision tooling retain their expected shape. Values are scrubbed by
+  # type: `log` is an empty list and all other values are `:redacted`; terminal
+  # bytes, proof tokens, socket state and owner details MUST never be returned.
   @impl true
+  @spec format_status(term(), term()) :: map()
+  def format_status(_options, state) when is_map(state) do
+    %{data: Enum.map(state, fn {key, value} -> {key, redact_status(key, value)} end)}
+  end
+
   def format_status(_options, _state), do: %{data: [{"State", :redacted}]}
+
+  @spec redact_status(term(), term()) :: [] | :redacted
+  defp redact_status(:log, _value), do: []
+  defp redact_status("log", _value), do: []
+  defp redact_status(_key, _value), do: :redacted
 end

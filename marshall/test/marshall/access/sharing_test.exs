@@ -15,6 +15,37 @@ defmodule Marshall.Access.SharingTest do
     %{owner: owner, member: member, vm: vm, fixture: fixture}
   end
 
+  test "sharing logs follow the outer commit and do not duplicate an idempotent receipt", c do
+    previous = Logger.level()
+    Logger.configure(level: :info)
+    on_exit(fn -> Logger.configure(level: previous) end)
+    key = Ash.UUID.generate()
+
+    rollback_logs =
+      ExUnit.CaptureLog.capture_log([level: :info, metadata: [:event]], fn ->
+        assert {:error, :test_rollback} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = share(c, :viewer, key)
+                   Ledger.rollback(:test_rollback)
+                 end)
+      end)
+
+    refute rollback_logs =~ "event=vm.access_changed"
+    assert Ledger.read!(Change, vm_id: c.vm.id) == []
+
+    commit_logs =
+      ExUnit.CaptureLog.capture_log([level: :info, metadata: [:event]], fn ->
+        assert {:ok, :ok} =
+                 Ledger.transaction(fn ->
+                   assert {:ok, _} = share(c, :viewer, key)
+                   assert {:ok, _} = share(c, :viewer, key)
+                   :ok
+                 end)
+      end)
+
+    assert length(Regex.scan(~r/event=vm\.access_changed/, commit_logs)) == 1
+  end
+
   test "persisted role replacement drives the real Cedar permission matrix", context do
     Hegel.check(
       fn ->

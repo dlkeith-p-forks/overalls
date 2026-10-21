@@ -30,6 +30,15 @@ defmodule Susan.KeysTest do
     assert DateTime.to_unix(expires) == now + 90 * 86_400
   end
 
+  test "audit failure refuses key issuance", ctx do
+    Susan.Repo.query!(
+      "ALTER TABLE audit_entries ADD CONSTRAINT reject_key_audit CHECK (action <> 'key_issued')"
+    )
+
+    assert {503, :unavailable, 60} =
+             Keys.issue(JSON.encode!(body()), ctx.source, ctx.config, System.os_time(:second))
+  end
+
   test "refuses unknown fields, foreign apps, malformed tokens and FCM sandbox", ctx do
     now = System.os_time(:second)
 
