@@ -1,6 +1,7 @@
 use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
-use gtk::{gio, glib, Align, Box, Button, Label, Orientation};
+use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
+use mila_native_linux::adapter::format_machine_action;
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
 const APPLICATION_ID: &str = "dev.overalls.Mila.Linux";
@@ -49,6 +50,33 @@ impl NativeState {
             nav.append(&button);
         }
         root.append(&nav);
+        let machine_id = Entry::builder()
+            .placeholder_text("Machine UUID")
+            .hexpand(true)
+            .build();
+        let request_id = Entry::builder()
+            .placeholder_text("Request UUID (for mutations)")
+            .hexpand(true)
+            .build();
+        let actions = Box::new(Orientation::Horizontal, 8);
+        for action in ["show", "start", "stop", "pause", "resume"] {
+            let button = Button::with_label(action);
+            let machine = machine_id.clone();
+            let request = request_id.clone();
+            let label = content.clone();
+            let action = action.to_owned();
+            button.connect_clicked(move |_| {
+                let request = (!request.text().is_empty()).then(|| request.text().to_string());
+                match format_machine_action(&action, machine.text().as_str(), request.as_deref()) {
+                    Ok(command) => label.set_label(&format!("Machine command\n{command}")),
+                    Err(_) => label.set_label("Machine command rejected by Rust policy."),
+                }
+            });
+            actions.append(&button);
+        }
+        root.append(&machine_id);
+        root.append(&request_id);
+        root.append(&actions);
         root.append(&content);
         ApplicationWindow::builder()
             .application(app)

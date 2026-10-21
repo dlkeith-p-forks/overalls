@@ -27,6 +27,45 @@ pub fn canonical_route(value: &str) -> Result<String, RuntimeError> {
     String::from_utf8(bytes).map_err(|_| RuntimeError::Unavailable)
 }
 
+/// Formats a catalogued machine action through the Rust command policy. The GTK
+/// host receives a canonical command string only after Rust validates the
+/// machine and request identifiers.
+pub fn format_machine_action(
+    action: &str,
+    machine_id: &str,
+    request_id: Option<&str>,
+) -> Result<String, RuntimeError> {
+    let action = CString::new(action).map_err(|_| RuntimeError::InvalidInput)?;
+    let machine = CString::new(machine_id).map_err(|_| RuntimeError::InvalidInput)?;
+    let request = request_id
+        .map(CString::new)
+        .transpose()
+        .map_err(|_| RuntimeError::InvalidInput)?;
+    let mut bytes = vec![0_u8; 1024];
+    let mut written = 0_usize;
+    let output = mila_ffi::MilaRouteOutput {
+        bytes: bytes.as_mut_ptr(),
+        capacity: bytes.len(),
+        written: &mut written,
+    };
+    // SAFETY: all strings are NUL terminated and output is writable for the call.
+    let status = unsafe {
+        mila_ffi::mila_session_command_format(
+            action.as_ptr(),
+            machine.as_ptr(),
+            request
+                .as_ref()
+                .map_or(std::ptr::null(), |value| value.as_ptr()),
+            output,
+        )
+    };
+    if status != mila_ffi::MilaFfiStatus::Ok {
+        return Err(RuntimeError::InvalidInput);
+    }
+    bytes.truncate(written);
+    String::from_utf8(bytes).map_err(|_| RuntimeError::Unavailable)
+}
+
 /// Decode a Rust-owned live listing before it reaches GTK. Linux uses the same
 /// bounded session decoder as the other native clients, so malformed authority
 /// or pagination data cannot become UI state.
@@ -210,8 +249,8 @@ impl RuntimeAdapter for InProcessRuntimeAdapter {
 #[cfg(test)]
 mod tests {
     use super::{
-        canonical_route, InProcessRuntimeAdapter, RuntimeAdapter, RuntimeError, RuntimeOperation,
-        RuntimeRequest,
+        canonical_route, format_machine_action, InProcessRuntimeAdapter, RuntimeAdapter,
+        RuntimeError, RuntimeOperation, RuntimeRequest,
     };
 
     #[test]
@@ -245,6 +284,18 @@ mod tests {
             canonical_route("overalls://fleet.example/#commands"),
             Err(RuntimeError::InvalidInput)
         );
+    }
+
+    #[test]
+    fn machine_actions_are_formatted_by_rust_policy() {
+        let id = "123e4567-e89b-12d3-a456-426614174000";
+        let request = "123e4567-e89b-12d3-a456-426614174001";
+        assert_eq!(
+            format_machine_action("start", id, Some(request)).unwrap(),
+            format!("start {id} --json --request-id={request}")
+        );
+        assert!(format_machine_action("start", "bad", Some(request)).is_err());
+        assert!(format_machine_action("start", id, None).is_err());
     }
 
     #[test]
