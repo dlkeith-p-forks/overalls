@@ -4,6 +4,7 @@ defmodule Marshall.Agents.AttachmentChunks do
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.Ledger
   require Ash.Query
+  require Marshall.Events
 
   @chunk_bytes 262_144
 
