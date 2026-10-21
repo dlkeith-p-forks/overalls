@@ -84,8 +84,10 @@ final class MilaRustLinkTests: XCTestCase {
         let adapter = LinkedMilaFFIAdapter()
         let id = UUID(uuidString: "11111111-1111-1111-1111-111111111111")!
         do {
-            XCTAssertEqual(try adapter.classifyWebCommand(.show(machineID: id)), .webShow)
-            XCTAssertEqual(try adapter.classifyWebCommand(.set(machineID: id, url: "https://public.example/path")), .webSet)
+            let show = try adapter.classifyWebCommand(.show(machineID: id))
+            XCTAssertEqual(show, .webShow)
+            let set = try adapter.classifyWebCommand(.set(machineID: id, url: "https://public.example/path"))
+            XCTAssertEqual(set, .webSet)
             XCTAssertThrowsError(try adapter.classifyWebCommand(.set(machineID: id, url: "http://public.example"))) { error in XCTAssertEqual(error as? MilaWebCommandError, .invalidURL) }
         } catch MilaFFIError.unavailable, MilaFFIError.incompatibleABI {
             throw XCTSkip("Rust ABI is not linked in this package test environment")
