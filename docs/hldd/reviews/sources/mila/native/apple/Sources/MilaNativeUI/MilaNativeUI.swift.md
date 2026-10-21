@@ -1,5 +1,5 @@
 ---
-digest: 88151086fcbcb0d081c1c343f0240fc8889570a7687162a2ce671e48ded8214a
+digest: eba3d7d9b6359bd2a835ebee430e315007519c0390d5b0ef82bf1317227dfe85
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple SwiftUI compile fix preserves documented native-client boundaries and security behavior.
+Reviewed explicit SwiftUI App initializer required by Swift 6.1 protocol conformance; architecture unchanged.

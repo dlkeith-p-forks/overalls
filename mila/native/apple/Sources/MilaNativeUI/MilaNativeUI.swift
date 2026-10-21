@@ -65,6 +65,7 @@ private struct SettingsView: View { var body: some View { Form { Section("Connec
 @MainActor
 public struct MilaNativeApp: App {
     private let adapter: any MilaFFIAdapter
-    public init(adapter: any MilaFFIAdapter = UnavailableMilaFFIAdapter()) { self.adapter = adapter }
+    public init() { self.adapter = UnavailableMilaFFIAdapter() }
+    public init(adapter: any MilaFFIAdapter) { self.adapter = adapter }
     public var body: some Scene { WindowGroup { MilaNativeRootView(adapter: adapter) } }
 }
