@@ -1,6 +1,6 @@
 ---
-digest: 167331b303ce463917f8683edf630664bc7b23bf74d9463ba5794cafd8df6645
-disposition: updated
+digest: 90efe94a13d84d8b001995255075b8a9b7c45bb0e7035cd991c0c917f9c75f8a
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/apple/Sources/MilaNativeUI/MilaFFIAdapter.swift
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Reviewed Apple native adapter change: it only wires existing authenticated Rust listing operation; documented behavior and chapter content remain unchanged.

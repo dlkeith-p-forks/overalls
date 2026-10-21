@@ -186,7 +186,16 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
 
     public func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse {
         guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
-        throw MilaFFIError.unavailable
+        // Keep the generic request surface useful without allowing arbitrary command
+        // bytes to cross into the native client. Both supported operations are
+        // fulfilled by the authenticated Rust session; these operations have no
+        // caller supplied data, so a non-empty payload is rejected.
+        guard let liveSession else { throw MilaFFIError.unavailable }
+        switch request.operation {
+        case .bootstrap, .refresh:
+            guard request.payload.isEmpty else { throw MilaFFIError.invalidRoute }
+            return MilaFFIResponse(payload: try liveSession.refresh())
+        }
     }
 
     public func canonicalRoute(_ value: String) throws -> String {
