@@ -120,7 +120,14 @@ pub fn parse_host_certificate_blob(blob: &[u8]) -> Option<HostCertificate> {
         }
     }
     let ca_blob = r.field()?;
-    let ca = key_line(ca_blob)?;
+    let mut ca_reader = Reader { b: ca_blob, o: 0 };
+    if ca_reader.field()? != b"ssh-ed25519" {
+        return None;
+    }
+    let ca = key_line(ca_reader.field()?)?;
+    if !ca_reader.done() {
+        return None;
+    }
     let signed_len = r.o;
     let sf = r.field()?;
     if !r.done() {
@@ -470,3 +477,5 @@ pub fn decode_watch_line(line: &[u8]) -> Result<WatchEvent, WatchFormat> {
         _ => WatchEvent::Unknown,
     })
 }
+
+pub mod ssh;

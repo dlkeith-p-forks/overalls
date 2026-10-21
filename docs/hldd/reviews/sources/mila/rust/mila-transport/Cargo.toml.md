@@ -1,22 +1,18 @@
 ---
-digest: c7650bc22aaf27428606eed946212bc310844e622bbbfe1c5e490cdf827696d6
-disposition: no-impact
+digest: 98723455ef59ddbf5d6d35c47471e7289c0f017fa49fca0500d6b799ff85e7a7
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
-migration:
-  mila:
-    chapter_digest: e55458d450e8c1eb96b0135d17becedf97db36241e5503077036be57c28ce3f1
-    source_digest: 67fa642ad4ad7cbc69bcbfdf12a38549302a7842f95213c629565a0f99bfed28
 path: mila/rust/mila-transport/Cargo.toml
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
+  marshall/priv/hldd/08-interactive.md: 09f355e198d8957f477938be495baf0a01f1d3ae38ca0d014f864ce248fdf921
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 5dc84656f2a81c5674ed8311af44a7f2e9c33262d36f624e11f8ba378a32db61
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
+  marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
+  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-mila: Reviewed the Rust FFI trust-document, push-registration, terminal and watch validation probes; they preserve existing native boundary behavior and do not change handbook deployment, security, or topology contracts.
+Rust SSH transport implementation documented in interactive chapter; native platform adapters and production acceptance remain open
