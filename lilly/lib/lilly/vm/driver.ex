@@ -2053,19 +2053,6 @@ defmodule Lilly.VM.Driver do
     end
   end
 
-  defp retire_checkpoints(pool, spec, attempts \\ 60)
-  defp retire_checkpoints(pool, spec, attempts) when attempts > 0 do
-    case CheckpointStorage.retire(pool, spec) do
-      :ok -> :ok
-      {:error, :checkpoint_unconfirmed} when attempts > 1 ->
-        Process.sleep(1_000)
-        retire_checkpoints(pool, spec, attempts - 1)
-      result -> result
-    end
-  end
-
-  defp retire_checkpoints(_pool, _spec, 0), do: {:error, :checkpoint_unconfirmed}
-
   defp deleted(nil, _placement), do: :ok
 
   defp deleted(vm_id, placement) do

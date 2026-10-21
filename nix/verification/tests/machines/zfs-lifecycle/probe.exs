@@ -195,9 +195,6 @@ case action do
 
   "busy-prepare" ->
     {:ok, image} = Image.load(image_path)
-    :ok = ImageTemplate.ensure(pool, image)
-    System.put_env("PATH", "/run/zfs-changing/bin:" <> System.fetch_env!("PATH"))
-    "/run/zfs-changing/bin/zfs" = System.find_executable("zfs")
     {:error, :storage_busy} = Disk.prepare(pool, image, spec)
 
   "warm-template" ->
