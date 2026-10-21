@@ -217,10 +217,8 @@ fn elixir_host_certificate_fixtures_match() {
         now: u64,
         valid: bool,
     }
-    let fixtures: Fixtures = serde_json::from_str(include_str!(
-        "fixtures/ssh_host_certificates.json"
-    ))
-    .unwrap();
+    let fixtures: Fixtures =
+        serde_json::from_str(include_str!("fixtures/ssh_host_certificates.json")).unwrap();
     for f in fixtures.certificates {
         let certificate = mila_transport::parse_host_certificate_line(&f.line).unwrap();
         assert_eq!(
