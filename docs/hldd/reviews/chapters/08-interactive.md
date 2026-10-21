@@ -1,5 +1,5 @@
 ---
-digest: ee9213d47c19b373be523852c9ba86abe0ba8f204fe3821c3d05f42b3b0813f7
+digest: d396623b91d0aa1a5ca4a683a5795e03f704f9ad36f4f2028c3d0fc2e1827dbf
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed combined native Rust session listing, Apple policy projections and Windows action bindings; transport UI wiring and platform custody remain explicit gaps.
+Added Android native per-deployment Keystore P-256 custody adapter and tests; documented nonexportability and remaining device/session gaps.

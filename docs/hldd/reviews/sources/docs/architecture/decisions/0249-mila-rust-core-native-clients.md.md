@@ -1,6 +1,6 @@
 ---
-digest: 24614a1a93a5850a7a5b28a64027c42b02e120c76237a48f8b0232f338df46f0
-disposition: updated
+digest: ed46d2d871b00052bbd762cef1886cb613999f357e218eb5cd25490441b6eaaa
+disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
 path: docs/architecture/decisions/0249-mila-rust-core-native-clients.md
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-ADR-0249 remains partial; link session implementation and scoped tests plus the new partial coverage scenario without claiming native parity.
+Reviewed architecture custody records and review index; implementation evidence remains accurately partial and no handbook behavior changed.

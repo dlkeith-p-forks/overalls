@@ -1,6 +1,6 @@
 ---
-digest: 49def9e01b9d720525d5656d6b3a2bebc3b0e2be8e549837fa7c6e427cdc0336
-disposition: updated
+digest: 78aa7663076a21ee1d6fecbd9ee0c46e065ea3eb8bfcd8da389e1b2cb8c62f30
+disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
 path: docs/architecture/reviews/README.md
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-ADR-0249 remains partial; link session implementation and scoped tests plus the new partial coverage scenario without claiming native parity.
+Reviewed architecture custody records and review index; implementation evidence remains accurately partial and no handbook behavior changed.
