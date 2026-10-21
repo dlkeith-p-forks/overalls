@@ -15,11 +15,14 @@ pkgs.testers.runNixOSTest {
     environment.etc."zfs-io.exs".source = ./probe.exs;
     environment.etc."zfs-io-fault".source = pkgs.writeShellScript "zfs-io-fault" ''
       if [ "$1" = iostat ] && [ "$ZFS_IO_FAULT" = timeout ]; then exec sleep 10; fi
+      if [ "$1" = iostat ] && [ "$ZFS_IO_FAULT" = malformed ]; then
+        echo unexpected-extra-row
+        exit 0
+      fi
       ${config.boot.zfs.package}/bin/zpool "$@"
       result=$?
       if [ "$result" = 0 ] && [ "$1" = iostat ]; then
         case "$ZFS_IO_FAULT" in
-          malformed) echo unexpected-extra-row ;;
           reload)
             ${config.boot.zfs.package}/bin/zpool export tank || exit 1
             ${config.boot.zfs.package}/bin/zpool import tank || exit 1
