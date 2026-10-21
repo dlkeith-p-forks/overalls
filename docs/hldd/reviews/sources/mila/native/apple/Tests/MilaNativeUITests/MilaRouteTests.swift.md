@@ -1,5 +1,5 @@
 ---
-digest: 3bfb3073e5cf47e92661457d92a136cd2a354f00a9b499098f94f7fb0c9a01aa
+digest: 9be2bf144a67a91a6e3acb2ba828500d1bcd6d49cb5ee6f14b4c6bd90c3921ec
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple push registration now uses typed provider/environment enums while preserving the Rust validation boundary; no documented behavior or chapter content changed.
+Apple XCTest now binds Rust command results before assertions so ABI-unavailable errors reach the existing skip handler; documented behavior is unchanged.

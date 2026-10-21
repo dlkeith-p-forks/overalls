@@ -1525,6 +1525,7 @@ dependencies = [
  "gtk4",
  "libadwaita",
  "mila-ffi",
+ "mila-protocol",
  "mila-session",
  "serde",
  "serde_json",

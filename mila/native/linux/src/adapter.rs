@@ -121,6 +121,38 @@ pub fn format_machine_action(
     String::from_utf8(bytes).map_err(|_| RuntimeError::Unavailable)
 }
 
+/// Formats web endpoint operations through Porsche's bounded command grammar.
+/// The GTK host receives only a canonical command after Rust validates the
+/// machine identifier, port, visibility and mutation request id.
+pub fn format_web_command(
+    operation: &str,
+    machine_id: &str,
+    port: Option<u16>,
+    public: bool,
+    request_id: Option<&str>,
+) -> Result<String, RuntimeError> {
+    if !matches!(operation, "show" | "set") || (public && operation == "show") {
+        return Err(RuntimeError::InvalidInput);
+    }
+    let mut line = format!("web {operation} {machine_id} --json");
+    if operation == "set" {
+        let port = port.ok_or(RuntimeError::InvalidInput)?;
+        if port == 0 {
+            return Err(RuntimeError::InvalidInput);
+        }
+        line.push_str(&format!(" --port={port}"));
+        line.push_str(if public { " --public" } else { " --private" });
+        let request = request_id.ok_or(RuntimeError::InvalidInput)?;
+        if request.len() != 40 || !request.starts_with("porsche-") {
+            return Err(RuntimeError::InvalidInput);
+        }
+        line.push_str(&format!(" --request-id={request}"));
+    }
+    mila_protocol::Command::parse(&line)
+        .and_then(|command| command.format())
+        .map_err(|_| RuntimeError::InvalidInput)
+}
+
 /// Decode a Rust-owned live listing before it reaches GTK. Linux uses the same
 /// bounded session decoder as the other native clients, so malformed authority
 /// or pagination data cannot become UI state.
@@ -227,6 +259,31 @@ impl RuntimeResponse {
 pub enum RuntimeError {
     Unavailable,
     InvalidInput,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    const MACHINE: &str = "01234567-89ab-cdef-0123-456789abcdef";
+    const REQUEST: &str = "porsche-0123456789abcdef0123456789abcdef";
+
+    #[test]
+    fn web_show_is_canonical_and_bounded() {
+        assert_eq!(
+            format_web_command("show", MACHINE, None, false, None).unwrap(),
+            format!("web show {MACHINE} --json")
+        );
+    }
+
+    #[test]
+    fn web_set_requires_port_and_request() {
+        assert!(format_web_command("set", MACHINE, None, true, Some(REQUEST)).is_err());
+        assert!(format_web_command("set", MACHINE, Some(8080), true, None).is_err());
+        assert_eq!(
+            format_web_command("set", MACHINE, Some(8080), true, Some(REQUEST)).unwrap(),
+            format!("web set {MACHINE} --json --port=8080 --public --request-id={REQUEST}")
+        );
+    }
 }
 
 pub trait RuntimeAdapter {

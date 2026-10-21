@@ -1,5 +1,5 @@
 ---
-digest: 2ed9f3e28cdd58423f0f6797765785d52f6907cdb98c29e40c2a0b48403e1d61
+digest: 1b2cbab0dd5cfba5c0ef135807939ba6e3e882a25a751bb2237d4b4b90630c57
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Linux UI implementation adds local typed controls while documented Mila behavior and chapter contracts remain unchanged.
+Linux native web endpoint controls remain within existing Rust command policy and native UI evidence; bounded web show/set validation adds no new documented domain or deployment behavior.

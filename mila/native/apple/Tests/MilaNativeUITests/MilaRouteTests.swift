@@ -47,10 +47,14 @@ final class MilaRustLinkTests: XCTestCase {
     func testLinkedRustProjectsClosedCommandCatalogs() throws {
         let adapter = LinkedMilaFFIAdapter()
         do {
-            XCTAssertEqual(try adapter.classifyThreadCommand("thread ls"), .list)
-            XCTAssertEqual(try adapter.classifyThreadCommand("thread plan approve abc"), .planApprove)
-            XCTAssertEqual(try adapter.classifyMachineCommand("share add abc user read"), .shareAdd)
-            XCTAssertEqual(try adapter.classifyMachineCommand("web show abc"), .webShow)
+            let threadList = try adapter.classifyThreadCommand("thread ls")
+            XCTAssertEqual(threadList, .list)
+            let planApprove = try adapter.classifyThreadCommand("thread plan approve abc")
+            XCTAssertEqual(planApprove, .planApprove)
+            let shareAdd = try adapter.classifyMachineCommand("share add abc user read")
+            XCTAssertEqual(shareAdd, .shareAdd)
+            let webShow = try adapter.classifyMachineCommand("web show abc")
+            XCTAssertEqual(webShow, .webShow)
             do {
                 _ = try adapter.classifyMachineCommand("thread delete abc")
                 XCTFail("unknown command must be rejected")

@@ -1,7 +1,9 @@
 use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
-use mila_native_linux::adapter::{format_machine_action, format_ssh_key_revoke};
+use mila_native_linux::adapter::{
+    format_machine_action, format_ssh_key_revoke, format_web_command,
+};
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
 const APPLICATION_ID: &str = "dev.overalls.Mila.Linux";
@@ -77,6 +79,46 @@ impl NativeState {
         root.append(&machine_id);
         root.append(&request_id);
         root.append(&actions);
+        let web_port = Entry::builder()
+            .placeholder_text("Web port (1-65535)")
+            .hexpand(true)
+            .build();
+        let web_request = Entry::builder()
+            .placeholder_text("Request UUID (for web changes)")
+            .hexpand(true)
+            .build();
+        let web_actions = Box::new(Orientation::Horizontal, 8);
+        for (label_text, operation, public) in [
+            ("Web show", "show", false),
+            ("Web set public", "set", true),
+            ("Web set private", "set", false),
+        ] {
+            let button = Button::with_label(label_text);
+            let machine = machine_id.clone();
+            let port = web_port.clone();
+            let request = web_request.clone();
+            let status = content.clone();
+            button.connect_clicked(move |_| {
+                let parsed_port = (!port.text().is_empty())
+                    .then(|| port.text().parse::<u16>().ok())
+                    .flatten();
+                let request_id = (!request.text().is_empty()).then(|| request.text().to_string());
+                match format_web_command(
+                    operation,
+                    machine.text().as_str(),
+                    parsed_port,
+                    public,
+                    request_id.as_deref(),
+                ) {
+                    Ok(command) => status.set_label(&format!("Web command\n{command}")),
+                    Err(_) => status.set_label("Web request rejected by Rust policy."),
+                }
+            });
+            web_actions.append(&button);
+        }
+        root.append(&web_port);
+        root.append(&web_request);
+        root.append(&web_actions);
         let key_id = Entry::builder()
             .placeholder_text("SSH key ID")
             .hexpand(true)
