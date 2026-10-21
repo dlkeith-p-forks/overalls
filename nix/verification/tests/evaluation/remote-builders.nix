@@ -37,7 +37,8 @@ let
   cases = {
     fleet-inputs = lib.all (name: builtins.pathExists fleet.${name}.encryptedFile
       && fleet.${name}.hostPublicKey == builtins.head inventory.${name}.identity.sshKeys
-      && fleet.${name}.logicalCpus == measuredCpus.${name}) (builtins.attrNames fleet) && fleet ? overalls;
+      && fleet.${name}.logicalCpus == measuredCpus.${name}) (builtins.attrNames fleet)
+      && fleet ? dungarees && fleet ? panterloons;
     # A base declaration awaiting its installed key is not a builder peer.
     unkeyed-omitted = lib.all (name: inventory.${name}.identity.sshKeys != []) (builtins.attrNames fleet);
     disabled = !(evaluate { overalls.remoteBuilders.enable = lib.mkForce false; }).nix.sshServe.enable;
