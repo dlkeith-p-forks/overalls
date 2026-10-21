@@ -1,11 +1,11 @@
 ---
-digest: 3308c5c63472ce8da9115cd11b730fc16b883b9e12c71a6771e54d7c565e2f66
-disposition: no-impact
+digest: 6d07255de326ec4bc2f6c739b5797ec0d4b60c5021077e7bffff6fbe0083f23f
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/apple/Sources/MilaNativeUI/MilaFFIAdapter.swift
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
+  marshall/priv/hldd/08-interactive.md: c8886aa39008ebf69e90b0e8d4de363d2e0c02d72035e0a18d73e12c8ea74621
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
   marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Corrected Swift C ABI type qualification so the Apple native machine-action bridge compiles against the generated header.
+Apple rows carry Rust action masks, refresh consumes validated snapshots, and absent live session refuses submission; linked tests added but Apple execution remains pending.

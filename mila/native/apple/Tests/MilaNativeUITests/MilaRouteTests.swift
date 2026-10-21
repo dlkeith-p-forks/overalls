@@ -44,3 +44,51 @@ final class MilaRustLinkTests: XCTestCase {
         XCTAssertEqual(try adapter.canonicalRoute("overalls://overalls.example/machines"), "overalls://overalls.example/machines")
     }
 }
+
+final class MilaSnapshotPolicyTests: XCTestCase {
+    private func snapshot(write: Bool = true) -> Data {
+        Data("""
+        {"version":1,"host":"mgmt.example.test","port":null,"saved_at":42,"machines":[{"id":"11111111-1111-1111-1111-111111111111","name":"Test","desired_state":"running","observed_state":"running","pinned":false,"owner":"owner","read":true,"write":\(write),"manage":false}]}
+        """.utf8)
+    }
+
+    func testProjectsRustActionsAndMachineTogether() throws {
+        let projection = try LinkedMilaFFIAdapter().projectSnapshot(snapshot(), host: "mgmt.example.test")
+        XCTAssertEqual(projection.metadata.machineCount, 1)
+        XCTAssertEqual(projection.metadata.savedAt, 42)
+        XCTAssertEqual(Set(projection.machines[0].actions.values), Set([.stop, .pause, .pin]))
+        XCTAssertEqual(projection.machines[0].machine.name, "Test")
+    }
+
+    func testFormatsCanonicalMutationIdentityAndRejectsMissingIdentity() throws {
+        let adapter = LinkedMilaFFIAdapter()
+        let id = UUID(uuidString: "11111111-1111-1111-1111-111111111111")!
+        XCTAssertEqual(try adapter.formatMachineAction(.stop, machineID: id, requestID: id),
+                       "stop 11111111-1111-1111-1111-111111111111 --json --request-id=porsche-11111111111111111111111111111111")
+        XCTAssertThrowsError(try adapter.formatMachineAction(.stop, machineID: id))
+    }
+
+    func testRejectsMalformedAndForeignSnapshot() {
+        let adapter = LinkedMilaFFIAdapter()
+        XCTAssertThrowsError(try adapter.projectSnapshot(Data("{}".utf8), host: "mgmt.example.test"))
+        XCTAssertThrowsError(try adapter.projectSnapshot(snapshot(), host: "foreign.example.test"))
+        XCTAssertThrowsError(try adapter.projectSnapshot(snapshot(), host: "mgmt.example.test", port: 443))
+    }
+
+    func testRequestsCannotClaimSubmissionWithoutSession() async throws {
+        let adapter = LinkedMilaFFIAdapter()
+        let projection = try adapter.projectSnapshot(snapshot(), host: "mgmt.example.test")
+        do {
+            try await adapter.submit(.stop, machine: projection.machines[0], requestID: UUID())
+            XCTFail("Formatting is not submission")
+        } catch { XCTAssertEqual(error as? MilaFFIError, .unavailable) }
+        do {
+            try await adapter.submit(.delete, machine: projection.machines[0], requestID: UUID())
+            XCTFail("Absent action must be refused")
+        } catch { XCTAssertEqual(error as? MilaFFIError, .actionNotAllowed) }
+        do {
+            _ = try await adapter.call(MilaFFIRequest(operation: .refresh))
+            XCTFail("An ABI version check is not a connection")
+        } catch { XCTAssertEqual(error as? MilaFFIError, .unavailable) }
+    }
+}

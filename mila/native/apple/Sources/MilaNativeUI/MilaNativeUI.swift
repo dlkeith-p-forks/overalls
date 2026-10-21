@@ -4,10 +4,13 @@ import SwiftUI
 public struct MilaNativeRootView: View {
     private let adapter: any MilaFFIAdapter
     @State private var selection: MilaRoute = .machines
-    @State private var machines: [MilaSnapshotMachine] = []
+    @State private var machines: [MilaMachinePresentation] = []
     @State private var status = "Ready"
 
-    public init(adapter: any MilaFFIAdapter = LinkedMilaFFIAdapter()) { self.adapter = adapter }
+    public init(adapter: any MilaFFIAdapter = LinkedMilaFFIAdapter(), snapshot: MilaValidatedSnapshot? = nil) {
+        self.adapter = adapter
+        _machines = State(initialValue: snapshot?.machines ?? [])
+    }
 
     public var body: some View {
         NavigationSplitView {
@@ -32,20 +35,20 @@ public struct MilaNativeRootView: View {
     }
 
     private func refresh() async {
-        do { _ = try await adapter.call(MilaFFIRequest(operation: .refresh)); status = "Connected" }
+        do { let snapshot = try await adapter.refreshSnapshot(); machines = snapshot.machines; status = "Snapshot loaded" }
         catch { status = "No snapshot loaded"; machines = [] }
     }
 }
 
 private struct MachinesView: View {
-    let machines: [MilaSnapshotMachine]
+    let machines: [MilaMachinePresentation]
     let select: (UUID) -> Void
     var body: some View {
         List {
             if machines.isEmpty { ContentUnavailableView("No machines", systemImage: "desktopcomputer", description: Text("Connect to a deployment to load a validated snapshot.")) }
             ForEach(machines) { machine in
                 Button { select(machine.id) } label: {
-                    VStack(alignment: .leading) { Text(machine.name); Text(machine.observedState ?? "unknown").font(.caption).foregroundStyle(.secondary) }
+                    VStack(alignment: .leading) { Text(machine.machine.name); Text(machine.machine.observedState ?? "unknown").font(.caption).foregroundStyle(.secondary) }
                 }
             }
         }.navigationTitle("Machines")
@@ -53,31 +56,30 @@ private struct MachinesView: View {
 }
 
 private struct MachineDetailView: View {
-    let machine: MilaSnapshotMachine?
+    let machine: MilaMachinePresentation?
     let adapter: any MilaFFIAdapter
     @State private var status = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let machine {
-                Text(machine.name).font(.title)
+                Text(machine.machine.name).font(.title)
                 Text(machine.id.uuidString).font(.caption)
-                Text(machine.observedState ?? "unknown").foregroundStyle(.secondary)
-                if machine.write || machine.manage {
-                    ForEach(actions(for: machine), id: \.self) { action in
-                        Button(action.title) { status = "Action queued: \(action.title)" }
+                Text(machine.machine.observedState ?? "unknown").foregroundStyle(.secondary)
+                ForEach(machine.actions.values, id: \.self) { action in
+                    Button(action.title) {
+                        Task {
+                            do {
+                                try await adapter.submit(action, machine: machine, requestID: UUID())
+                                status = "Action submitted"
+                            } catch { status = "Action not submitted" }
+                        }
                     }
                 }
                 Text(status).font(.caption).foregroundStyle(.secondary)
             } else { ContentUnavailableView("Machine unavailable", systemImage: "questionmark") }
         }.padding()
     }
-    private func actions(for machine: MilaSnapshotMachine) -> [MilaMachineAction] {
-        var result: [MilaMachineAction] = []
-        if machine.write { if machine.observedState == "stopped" { result.append(.start) }; if machine.observedState == "paused" { result.append(.resume) }; if machine.observedState == "running" { result += [.pause, .stop] } }
-        result.append(machine.pinned ? .unpin : .pin)
-        if machine.manage, machine.owner != nil, !machine.pinned { result.append(.delete) }
-        return result
-    }
+
 }
 private struct ThreadsView: View { let select: (UUID) -> Void; var body: some View { ContentUnavailableView("No threads", systemImage: "bubble.left", description: Text("Threads are loaded from the connected runtime.")) } }
 private struct ThreadDetailView: View { let id: UUID; var body: some View { Text("Thread \(id.uuidString)").padding() } }

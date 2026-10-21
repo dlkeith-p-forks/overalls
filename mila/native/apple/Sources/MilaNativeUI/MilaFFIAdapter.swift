@@ -90,6 +90,26 @@ public struct MilaMachineActions: Equatable, Sendable {
     fileprivate init(bits: UInt16) { values = MilaMachineAction.allCases.filter { bits & (1 << $0.rawValue) != 0 } }
 }
 
+/// Presentation records can only be constructed after Rust validation and policy projection.
+public struct MilaMachinePresentation: Identifiable, Equatable, Sendable {
+    public var id: UUID { machine.id }
+    public let machine: MilaSnapshotMachine
+    public let actions: MilaMachineActions
+    fileprivate init(machine: MilaSnapshotMachine, actions: MilaMachineActions) {
+        self.machine = machine
+        self.actions = actions
+    }
+}
+
+public struct MilaValidatedSnapshot: Equatable, Sendable {
+    public let machines: [MilaMachinePresentation]
+    public let metadata: MilaSnapshotMetadata
+    fileprivate init(machines: [MilaMachinePresentation], metadata: MilaSnapshotMetadata) {
+        self.machines = machines
+        self.metadata = metadata
+    }
+}
+
 public struct MilaSnapshotMetadata: Equatable, Sendable {
 
     public let machineCount: UInt32
@@ -106,6 +126,7 @@ public enum MilaFFIError: Error, Equatable, Sendable {
     case invalidRoute
     case outputTooSmall
     case incompatibleABI
+    case actionNotAllowed
 }
 
 private enum MilaRustFFI {
@@ -136,7 +157,7 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
 
     public func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse {
         guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
-        return MilaFFIResponse(payload: request.payload)
+        throw MilaFFIError.unavailable
     }
 
     public func canonicalRoute(_ value: String) throws -> String {
@@ -196,7 +217,7 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         var output = [UInt8](repeating: 0, count: 512); var written = 0
         let status = output.withUnsafeMutableBufferPointer { buffer in
             action.token.withCString { actionPtr in machineID.uuidString.lowercased().withCString { machinePtr in
-                if let requestID { return requestID.uuidString.lowercased().withCString { req in withUnsafeMutablePointer(to: &written) { MilaRustFFI.command(actionPtr, machinePtr, req, MilaRouteOutput(bytes: buffer.baseAddress, capacity: buffer.count, written: $0)) } } }
+                if let requestID { return ("porsche-" + requestID.uuidString.lowercased().replacingOccurrences(of: "-", with: "")).withCString { req in withUnsafeMutablePointer(to: &written) { MilaRustFFI.command(actionPtr, machinePtr, req, MilaRouteOutput(bytes: buffer.baseAddress, capacity: buffer.count, written: $0)) } } }
                 return withUnsafeMutablePointer(to: &written) { MilaRustFFI.command(actionPtr, machinePtr, nil, MilaRouteOutput(bytes: buffer.baseAddress, capacity: buffer.count, written: $0)) }
             }}
         }
@@ -211,6 +232,29 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         return object.machines
     }
 
+    /// @cc [owner:ghuntley,label:security] mila-apple-rust-policy
+    /// Every displayed machine action MUST come from Rust for the same validated snapshot index.
+    public func projectSnapshot(_ data: Data, host: String, port: UInt16? = nil) throws -> MilaValidatedSnapshot {
+        let metadata = try validateSnapshot(data, host: host, port: port)
+        let machines = try decodeSnapshot(data, host: host, port: port)
+        let projected = try machines.enumerated().map { index, machine in
+            MilaMachinePresentation(machine: machine, actions: try machineActions(data, host: host, port: port, index: UInt32(index)))
+        }
+        return MilaValidatedSnapshot(machines: projected, metadata: metadata)
+    }
+
+    public func refreshSnapshot() async throws -> MilaValidatedSnapshot {
+        throw MilaFFIError.unavailable
+    }
+
+    /// @cc [owner:ghuntley,label:security] mila-apple-no-fabricated-submission
+    /// Formatting MUST NOT be reported as submission; absent an authenticated session, actions fail unavailable.
+    public func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws {
+        guard machine.actions.values.contains(action) else { throw MilaFFIError.actionNotAllowed }
+        _ = try formatMachineAction(action, machineID: machine.id, requestID: requestID)
+        throw MilaFFIError.unavailable
+    }
+
     private func abiCompatible() -> Bool {
         var version = MilaFfiAbiVersion(major: 0, minor: 0)
         return MilaRustFFI.getVersion(&version) == 0 && version.major == 1
@@ -219,13 +263,20 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
 
 /**
  * @cc [owner:ghuntley,label:security] mila-apple-ffi-typed-boundary
- * The Apple UI MUST exchange only `MilaFFIRequest` and `MilaFFIResponse` values with the Rust
+ * The Apple UI MUST exchange typed requests and validated snapshot projections with the Rust
  * adapter; raw pointers, credentials, and terminal bytes MUST NOT appear in this interface.
  */
 private struct MilaSnapshotEnvelope: Codable { let machines: [MilaSnapshotMachine] }
 
 public protocol MilaFFIAdapter: Sendable {
     func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse
+    func refreshSnapshot() async throws -> MilaValidatedSnapshot
+    func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
+}
+
+public extension MilaFFIAdapter {
+    func refreshSnapshot() async throws -> MilaValidatedSnapshot { throw MilaFFIError.unavailable }
+    func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
 }
 
 /// Explicit placeholder until generated UniFFI bindings are linked by the host application.

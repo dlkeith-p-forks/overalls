@@ -1172,6 +1172,16 @@ authorization or at-most-once execution. The
 injection refusal, request identity and buffer canaries; authenticated transport
 and native end-to-end mutation acceptance remain separate gaps.
 
+The Apple adapter projects each snapshot row together with its Rust-computed action
+mask after validating the deployment host and port. SwiftUI renders that projection
+without implementing a second machine policy. Refresh replaces the visible list
+only with a validated projection; a failed refresh clears it. The linked adapter
+currently refuses refresh and submission until an authenticated session bridge is
+installed. ABI compatibility and command formatting never count as connection or
+submission success. Apple linked tests cover malformed and foreign snapshots,
+policy projection, and refused action submission; execution requires the Apple CI
+host. Native localization, secure custody and live session acceptance remain gaps.
+
 Mila is the Overalls client for iOS, Android, macOS and Windows; its Linux
 build exists for testing. A platform profile
 ([`PlatformProfile`](repo:mila/app/lib/transport/platform.dart)) fixes per

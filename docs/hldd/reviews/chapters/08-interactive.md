@@ -1,5 +1,5 @@
 ---
-digest: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
+digest: c8886aa39008ebf69e90b0e8d4de363d2e0c02d72035e0a18d73e12c8ea74621
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Terminal reducer ports Dart attach authority, generation fencing, cursor replay/reset, retry exhaustion and read-only refusal with Hegel properties.
+Apple rows carry Rust action masks, refresh consumes validated snapshots, and absent live session refuses submission; linked tests added but Apple execution remains pending.
