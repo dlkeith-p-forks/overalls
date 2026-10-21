@@ -74,6 +74,7 @@ fn resolve_account(origin: &str, ssh: &OsStr) -> io::Result<AccountIdentity> {
         .and_then(|value| value.split_once(':').map(|(host, _)| host).or(Some(value)))
         .ok_or_else(|| io::Error::other("invalid origin"))?;
     let local = lyra::platform::local_user_name()?;
+    let known_hosts = config::home()?.join(".ssh").join("known_hosts");
     let username = local.as_str();
     if username.len() > 255 || username.chars().any(|character| character.is_control()) {
         return Err(io::Error::other("invalid local username"));
@@ -83,6 +84,15 @@ fn resolve_account(origin: &str, ssh: &OsStr) -> io::Result<AccountIdentity> {
             "-T",
             "-p",
             "22",
+            "-o",
+            &format!("UserKnownHostsFile={}", known_hosts.display()),
+        ])
+        .args([
+            "-o",
+            &format!(
+                "GlobalKnownHostsFile={}",
+                lyra::platform::null_device()
+            ),
             "-o",
             "StrictHostKeyChecking=yes",
             "-o",
