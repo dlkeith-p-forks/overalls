@@ -11,6 +11,17 @@
         <TextBlock x:Name="PageBody" Text="Select a machine to view its status." TextWrapping="Wrap" />
         <TextBlock x:Name="StatusText" Text="Ready" Opacity="0.7" />
         <ListView x:Name="MachineRows" DisplayMemberPath="Name" MinHeight="120" />
+        <StackPanel x:Name="ThreadPanel" Visibility="Collapsed" Spacing="8">
+          <TextBlock Text="Thread commands" FontSize="18" />
+          <TextBlock Text="Commands are validated by the Rust core before execution." TextWrapping="Wrap" Opacity="0.7" />
+          <WrapPanel>
+            <Button Content="List" Click="ClassifyThreadList" Margin="0,0,8,0" />
+            <Button Content="Show" Click="ClassifyThreadShow" Margin="0,0,8,0" />
+            <Button Content="Turns" Click="ClassifyThreadTurns" Margin="0,0,8,0" />
+            <Button Content="Read" Click="ClassifyThreadRead" />
+          </WrapPanel>
+          <TextBlock x:Name="ThreadCommandStatus" Opacity="0.7" />
+        </StackPanel>
         <Button Content="Refresh" Click="CheckNativeBridge" HorizontalAlignment="Left" />
       </StackPanel>
     </Grid>
