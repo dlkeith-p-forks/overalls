@@ -33,8 +33,6 @@ pub enum LocaleError {
     Invalid,
     #[error("catalog entry has no translation")]
     EmptyTranslation,
-    #[error("catalog translations are not deterministic")]
-    Unsorted,
 }
 
 impl Locale {
@@ -135,9 +133,6 @@ impl CatalogEntry {
         if self.translations.is_empty() || self.translations.iter().any(|x| x.trim().is_empty()) {
             return Err(LocaleError::EmptyTranslation);
         };
-        if self.translations.windows(2).any(|w| w[0] > w[1]) {
-            return Err(LocaleError::Unsorted);
-        };
         Ok(())
     }
 }
@@ -163,5 +158,23 @@ mod tests {
             translations: vec!["A".into()],
         };
         assert!(c.validate().is_ok());
+    }
+
+    #[test]
+    fn plural_forms_keep_catalog_order() {
+        let c = CatalogEntry {
+            domain: "mila".into(),
+            context: None,
+            msgid: "item".into(),
+            plural: Some("items".into()),
+            translations: vec!["élément".into(), "éléments".into()],
+        };
+        assert!(c.validate().is_ok());
+    }
+
+    #[test]
+    fn zero_quality_and_oversized_headers_fall_back() {
+        assert_eq!(negotiate("ar;q=0, en;q=0"), None);
+        assert_eq!(negotiate(&"ar".repeat(5000)), None);
     }
 }

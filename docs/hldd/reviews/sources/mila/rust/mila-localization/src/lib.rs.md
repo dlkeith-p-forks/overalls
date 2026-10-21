@@ -1,6 +1,6 @@
 ---
-digest: 564948743dbe9cb186b8d266024e843c5688e48b89dd241a43cff5c5ae3e77c8
-disposition: updated
+digest: 02391004b8fd5b9dadc9c814267ef19601be51f1293e2b03367e5243d48d907c
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-localization/src/lib.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Centralized Mila locale policy and deterministic catalog generation; native shells now consume stable localized message identities with shared fallback behavior.
+Corrected plural validation to preserve catalog form order and added locale boundary tests; no documented architecture or user-facing policy changed.
