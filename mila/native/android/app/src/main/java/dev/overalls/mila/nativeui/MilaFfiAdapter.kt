@@ -19,15 +19,15 @@ fun parseMilaRoute(value: String): MilaRoute? {
     if (path.isNotEmpty() && path != "/" && path.contains("//")) return null
     val parts = path.trim('/').takeIf { it.isNotEmpty() }?.split('/') ?: emptyList()
     if (parts.any { it.contains('%') }) return null
-    val host = uri.host?.lowercase() ?: return null
+    uri.host ?: return null
+    val page = parts.firstOrNull() ?: return null
+    val tail = parts.drop(1)
     return when {
-        host == "machines" && parts.isEmpty() -> MilaRoute.Machines
-        host == "threads" && parts.isEmpty() -> MilaRoute.Threads
-        host == "settings" && parts.isEmpty() -> MilaRoute.Settings
-        host == "machines" && parts.size == 1 ->
-            parts[0].toUuid()?.let(MilaRoute::Machine)
-        host == "threads" && parts.size == 1 ->
-            parts[0].toUuid()?.let(MilaRoute::Thread)
+        page == "machines" && tail.isEmpty() -> MilaRoute.Machines
+        page == "threads" && tail.isEmpty() -> MilaRoute.Threads
+        page == "settings" && tail.isEmpty() -> MilaRoute.Settings
+        page == "machines" && tail.size == 1 -> tail[0].toUuid()?.let(MilaRoute::Machine)
+        page == "threads" && tail.size == 1 -> tail[0].toUuid()?.let(MilaRoute::Thread)
         else -> null
     }
 }

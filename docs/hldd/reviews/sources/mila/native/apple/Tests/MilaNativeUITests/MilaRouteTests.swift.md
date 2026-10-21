@@ -1,5 +1,5 @@
 ---
-digest: 29c14174e20c4926a6706f224ec39c086e21f6837bf4248552860cc853a5d7de
+digest: 78211e6a31e612e49d445591e3a047dff33cbcd8c8d03d706c83b8fff61dff15
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native integration fixtures now use the canonical host-qualified route accepted by the shared Rust grammar.
+Native route parser fixtures follow the canonical host-qualified Rust grammar.

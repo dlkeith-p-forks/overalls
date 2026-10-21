@@ -6,9 +6,9 @@ final class MilaRouteTests: XCTestCase {
         let machineID = UUID(uuidString: "11111111-1111-1111-1111-111111111111")!
         XCTAssertEqual(MilaRouteParser.parse("overalls://overalls.example/machines"), .machines)
         XCTAssertEqual(MilaRouteParser.parse("overalls://overalls.example/machines/\(machineID.uuidString)"), .machine(id: machineID))
-        XCTAssertEqual(MilaRouteParser.parse("overalls://threads"), .threads)
-        XCTAssertEqual(MilaRouteParser.parse("overalls://threads/\(machineID.uuidString)"), .thread(id: machineID))
-        XCTAssertEqual(MilaRouteParser.parse("overalls://settings"), .settings)
+        XCTAssertEqual(MilaRouteParser.parse("overalls://overalls.example/threads"), .threads)
+        XCTAssertEqual(MilaRouteParser.parse("overalls://overalls.example/threads/\(machineID.uuidString)"), .thread(id: machineID))
+        XCTAssertEqual(MilaRouteParser.parse("overalls://overalls.example/settings"), .settings)
     }
 
     func testRejectsRoutesContainingSensitiveOrAmbiguousComponents() {

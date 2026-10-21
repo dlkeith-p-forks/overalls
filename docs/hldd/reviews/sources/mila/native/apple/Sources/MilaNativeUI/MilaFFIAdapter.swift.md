@@ -1,5 +1,5 @@
 ---
-digest: 436a08287129a53ec87a83fea223d751742327d181a1f59d724d6fed00b52475
+digest: da7016e811644b5298b2e992a29f7e0ce18a024ec53467cabe0ba2754093063d
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Correct native linker configuration and refresh standalone Linux lockfile after Rust FFI dependency addition; behavior remains within ADR-0249.
+Native route parsers now follow the shared host-qualified Rust route grammar across Apple and Android.

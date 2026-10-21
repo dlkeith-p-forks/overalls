@@ -21,18 +21,21 @@ public enum MilaRouteParser {
         guard let url = URL(string: value), url.scheme == "overalls",
               url.user == nil, url.fragment == nil, url.query == nil,
               !value.contains("%") else { return nil }
+        guard url.host != nil else { return nil }
         let parts = url.pathComponents.filter { $0 != "/" }
-        switch url.host?.lowercased() {
+        guard let page = parts.first else { return nil }
+        let tail = Array(parts.dropFirst())
+        switch page.lowercased() {
         case "machines":
-            guard let id = parts.first else { return .machines }
-            guard parts.count == 1, let uuid = UUID(uuidString: id) else { return nil }
+            guard let id = tail.first else { return tail.isEmpty ? .machines : nil }
+            guard tail.count == 1, let uuid = UUID(uuidString: id) else { return nil }
             return .machine(id: uuid)
         case "threads":
-            guard let id = parts.first else { return .threads }
-            guard parts.count == 1, let uuid = UUID(uuidString: id) else { return nil }
+            guard let id = tail.first else { return tail.isEmpty ? .threads : nil }
+            guard tail.count == 1, let uuid = UUID(uuidString: id) else { return nil }
             return .thread(id: uuid)
         case "settings":
-            return parts.isEmpty ? .settings : nil
+            return tail.isEmpty ? .settings : nil
         default:
             return nil
         }
