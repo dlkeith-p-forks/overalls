@@ -14,7 +14,12 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "MilaFFIShim",
+            path: "Sources/MilaFFIShim"
+        ),
+        .target(
             name: "MilaNativeUI",
+            dependencies: ["MilaFFIShim"],
             path: "Sources/MilaNativeUI"
         ),
         .testTarget(
