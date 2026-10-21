@@ -9,15 +9,15 @@ use mila_runtime::{PushEnvironment, PushProvider, PushRegistrationRequest};
 
 #[hegel::test(test_cases = 64)]
 fn terminal_output_never_advances_before_connection(tc: TestCase) {
-    let generation = tc.draw(gs::default::<u32>());
+    let generation = tc.draw(gs::default::<u64>());
     let bytes = tc.draw(gs::default::<u8>());
     let mut state = TerminalAttach::initial();
     assert!(!state.output(generation, bytes as usize));
-    assert_eq!(state.phase, AttachPhase::Idle);
+    assert_eq!(state.phase(), AttachPhase::Idle);
     assert!(state.request());
-    assert!(state.connected(state.generation, 0));
-    assert!(state.output(state.generation, bytes as usize));
-    assert!(state.ended(state.generation, AttachOutcome::Closed));
+    assert!(state.connected(state.generation(), 0));
+    assert_eq!(state.output(state.generation(), bytes as usize), bytes > 0);
+    assert!(state.ended(state.generation(), AttachOutcome::Closed));
 }
 
 #[derive(Default)]

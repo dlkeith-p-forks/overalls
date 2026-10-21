@@ -1,5 +1,5 @@
 ---
-digest: 86d9c009229678ec4b9260286a517dd10f2cf82b7ae11699fb8e6a6a61c0deb5
+digest: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed combined native machine-command boundary and Windows staged-DLL smoke evidence; positive Windows invocation remains pending CI.
+Terminal reducer ports Dart attach authority, generation fencing, cursor replay/reset, retry exhaustion and read-only refusal with Hegel properties.

@@ -1327,6 +1327,24 @@ compiler variables and use the system Xcode.
 
 ### Mila terminals, threads and web
 
+The Rust migration includes a payload-free attachment reducer in
+[`terminal.rs`](repo:mila/rust/mila-runtime/src/terminal.rs), ported from the
+Dart reducer. Only the current opening generation accepts a header. Headers
+establish the replay cursor and granted mode; a changed known cursor requests a
+screen reset. Transport failures exhaust eight consecutive attempts, while
+closed, invalid, refused and authority outcomes stop automatic retries. User
+retry starts a new budget. User read-only restriction takes effect immediately;
+input and resize also require an attached read-write server grant. Output before
+the header or from a stale generation is ignored.
+
+Generated action-sequence properties in
+[`terminal.rs`](repo:mila/rust/mila-runtime/tests/terminal.rs) exercise stale
+channels, permissions, replay jumps and retry exhaustion. This is bounded Rust
+logic evidence; native terminal adapters, SSH stderr/header delivery, actual
+resize/input refusal, server revocation and screen rendering remain separate
+integration gaps. The reducer stores lengths and positions rather than bytes.
+
+
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command
 (ADR-0222). Each mutation carries a request id and is submitted once, then

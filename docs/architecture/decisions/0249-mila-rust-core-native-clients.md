@@ -69,6 +69,13 @@ The initial workspace and adapters are in [`mila/rust/Cargo.toml`](../../../mila
 Hegel fixtures and Nix checks pass on Linux. Transport, secure-storage,
 feature-complete screens, native-host builds and Flutter removal remain open.
 
+The terminal attachment reducer is ported from Dart in
+[`terminal.rs`](../../../mila/rust/mila-runtime/src/terminal.rs), with private
+state, current-generation headers, replay reset accounting, closed outcomes,
+retry exhaustion and server/user permission gates. Hegel action sequences in
+[`terminal.rs`](../../../mila/rust/mila-runtime/tests/terminal.rs) exercise the
+pure reducer; native PTY transport and renderer integration remain unverified.
+
 ## Open questions
 
 None blocking the direction; platform key-storage and release-signing details

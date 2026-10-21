@@ -1,11 +1,11 @@
 ---
-digest: 8f7fbf5cf848df70a62c8c9528f998ca6745a678ee32d2d2189d7980b7c72f3c
-disposition: no-impact
+digest: da005bec3cc72f42d5faee135fc31a644a8aa88a25a29b101100af1ffaff5db6
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-runtime/src/lib.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
+  marshall/priv/hldd/08-interactive.md: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
   marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Move existing Rust contract directives to the start of their documentation blocks so the pinned checker can parse them; contract prose and executable behavior are unchanged.
+Terminal reducer ports Dart attach authority, generation fencing, cursor replay/reset, retry exhaustion and read-only refusal with Hegel properties.

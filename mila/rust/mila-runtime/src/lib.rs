@@ -6,79 +6,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use thiserror::Error;
 
-/// Lifecycle of a terminal attachment. Output is accepted only while attached.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum AttachPhase {
-    Idle,
-    Attaching,
-    Attached,
-    Waiting,
-    Ended,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum AttachOutcome {
-    Transport,
-    Remote,
-    Closed,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct TerminalAttach {
-    pub phase: AttachPhase,
-    pub generation: u32,
-    pub attempts: u32,
-    pub cursor: u64,
-    pub read_only: bool,
-}
-
-impl TerminalAttach {
-    pub const fn initial() -> Self {
-        Self {
-            phase: AttachPhase::Idle,
-            generation: 0,
-            attempts: 0,
-            cursor: 0,
-            read_only: false,
-        }
-    }
-    pub fn request(&mut self) -> bool {
-        if matches!(self.phase, AttachPhase::Attaching | AttachPhase::Attached) {
-            return false;
-        }
-        self.generation = self.generation.wrapping_add(1);
-        self.attempts = self.attempts.saturating_add(1);
-        self.phase = AttachPhase::Attaching;
-        true
-    }
-    pub fn connected(&mut self, generation: u32, cursor: u64) -> bool {
-        if self.phase != AttachPhase::Attaching || self.generation != generation {
-            return false;
-        }
-        self.cursor = cursor;
-        self.phase = AttachPhase::Attached;
-        true
-    }
-    pub fn output(&mut self, generation: u32, bytes: usize) -> bool {
-        if self.phase != AttachPhase::Attached || self.generation != generation {
-            return false;
-        }
-        self.cursor = self.cursor.saturating_add(bytes as u64);
-        true
-    }
-    pub fn ended(&mut self, generation: u32, _outcome: AttachOutcome) -> bool {
-        if self.generation != generation
-            || matches!(self.phase, AttachPhase::Idle | AttachPhase::Ended)
-        {
-            return false;
-        }
-        self.phase = AttachPhase::Waiting;
-        true
-    }
-    pub fn set_read_only(&mut self, value: bool) {
-        self.read_only = value;
-    }
-}
+mod terminal;
+pub use terminal::*;
 
 /// The externally observable phase of one mutation request.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
