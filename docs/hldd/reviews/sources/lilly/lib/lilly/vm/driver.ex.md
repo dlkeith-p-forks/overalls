@@ -1,5 +1,5 @@
 ---
-digest: 38e93c1d73f5b795aaa7224b304739ba2645277f9234058e445faa4a5dd2875b
+digest: 43b92f32e41e9322bad91f73a09b029ed9fd7bb0ece90797e95f4299808cb5b8
 disposition: no-impact
 kind: source
 mapping_digest: f7ae1015b8a6b22d2b48a9d01c1d52b5bf0d4191e2a4cb42263c24f5d17194fc
@@ -19,4 +19,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent unrelated change; no impact on Windows Mila adapter.
+Reviewed the VM driver change; existing lifecycle and recovery chapters remain accurate.

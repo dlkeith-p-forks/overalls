@@ -1,5 +1,5 @@
 ---
-digest: fc5927a4aa0c7f59646b9afe1c38ebe7251c594688b2acdacbea1c65bcda454b
+digest: 2d49eb548680c9029fa1464946ca09d5fafbe0a669f6281beb8b2b59e2c9f9e0
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -13,12 +13,12 @@ reviewed_chapters:
   marshall/priv/hldd/16-recovery.md: c11d719cde9562dea123b9fff7630f8750bbf758b4919880a15715b86263d3db
   marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
   marshall/priv/hldd/18-options.md: e4159e629673fa07c1348e3c7fc1545c28cf8596e2d0d1313bd363c1ca545f52
-  marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
-  marshall/priv/hldd/20-security.md: 995648da5f0c6af5caff1d1fdecb7147b9b8f91d9dd8f973f37447c122298348
-  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
+  marshall/priv/hldd/19-coverage.md: 71e87db236f081db996db1cf017c727f434e86aab079ac414a8d87ca411ac278
+  marshall/priv/hldd/20-security.md: 92ef988a1a8679b0767fad1b355246a4e216ed59e25b0b43ea56ccce0c1e3e8b
+  marshall/priv/hldd/21-domains.md: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
   marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
 state: present
 version: 2
 ---
 
-Reviewed fixture authentication and clone cancellation evidence changes; no architecture impact.
+Reviewed Android emulator teardown change; existing machine-test documentation remains accurate.

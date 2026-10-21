@@ -1,5 +1,5 @@
 ---
-digest: 7a143cbda013ea11c3a4ec80aab9c6c71a80e2460aefa8b7887b714521d554f2
+digest: 48046078db754d2932c3739294b995e3635b63d70753ab997573551394e189b5
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android thread controls now expose the existing closed Rust command catalog through typed classification; no protocol or deployment behavior changed.
+Typed Android session UI state preserves documented native session behavior; no handbook chapter changes required.

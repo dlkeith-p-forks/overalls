@@ -1,5 +1,5 @@
 ---
-digest: 110f565c2e7b3616accc0d23306345210f5182bd67559dd5961c0473f784171b
+digest: fa0f506f40859b4397a285278d75c19147008274058ccb21cac1956e5672830f
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux native web endpoint controls remain within existing Rust command policy and native UI evidence; bounded web show/set validation adds no new documented domain or deployment behavior.
+Linux push registration test now uses a valid APNs token while exercising the existing Rust-backed provider metadata contract.

@@ -58,12 +58,18 @@ internal val threadCommandChoices = listOf(
 fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     val scope = rememberCoroutineScope()
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
-    var status by remember { mutableStateOf("Ready") }
-    var listing by remember { mutableStateOf<MilaSessionListing?>(null) }
-    fun refresh() { scope.launch { when (val result = adapter.call(MilaFfiRequest(MilaFfiOperation.Refresh))) {
-        is MilaFfiResult.Success -> { listing = runCatching { MilaSessionListing.decode(result.response.payload.copyBytes()) }.getOrNull(); status = if (listing == null) "Connected; no listing" else "Connected" }
-        is MilaFfiResult.Failure -> { listing = null; status = "Native runtime unavailable" }
-    } } }
+    var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
+    fun refresh() { scope.launch {
+        connection = MilaSessionConnection.Refreshing
+        connection = MilaSessionRefresher.refresh(adapter)
+    } }
+    val status = when (connection) {
+        MilaSessionConnection.Idle -> "Ready"
+        MilaSessionConnection.Refreshing -> "Connecting…"
+        is MilaSessionConnection.Connected -> "Connected"
+        is MilaSessionConnection.Failed -> "Native runtime unavailable"
+    }
+    val listing = (connection as? MilaSessionConnection.Connected)?.listing
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("Mila", style = MaterialTheme.typography.headlineSmall)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

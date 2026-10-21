@@ -1,5 +1,5 @@
 ---
-digest: 7cd0c585370ae58cb98912f16daeed006d03b2de7e1a81e5b17771b65bfac599
+digest: 5188bdd36556453bf64ca417033da6a233f6e1d50398d0da9ca5733007703c5f
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple now exposes typed HTTPS web show/set command classification through the existing Rust command catalog; unsafe URLs are rejected before classification.
+Reviewed Apple route test ABI skip handling; documented route behavior remains unchanged.

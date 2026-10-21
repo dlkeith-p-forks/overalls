@@ -40,6 +40,30 @@ class MilaFfiAdapterTest {
     }
 }
 
+class MilaSessionRefresherTest {
+    @Test
+    fun refreshPublishesTypedListing() = runBlocking {
+        val listing = "{\"machines\":[{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"demo\",\"status\":\"running\"}],\"has_more\":false}"
+        val adapter = object : MilaFfiAdapter {
+            override suspend fun call(request: MilaFfiRequest): MilaFfiResult = MilaFfiResult.Success(
+                MilaFfiResponse(MilaFfiPayload(listing.toByteArray()))
+            )
+        }
+        val state = MilaSessionRefresher.refresh(adapter)
+        assertEquals("demo", (state as MilaSessionConnection.Connected).listing.machines.single().name)
+    }
+
+    @Test
+    fun malformedListingFailsClosed() = runBlocking {
+        val adapter = object : MilaFfiAdapter {
+            override suspend fun call(request: MilaFfiRequest): MilaFfiResult = MilaFfiResult.Success(
+                MilaFfiResponse(MilaFfiPayload("not-json".toByteArray()))
+            )
+        }
+        assertTrue(MilaSessionRefresher.refresh(adapter) is MilaSessionConnection.Failed)
+    }
+}
+
 private class FakeRustBindings(
     private val version: Int = 1,
     private val route: String? = "overalls://machines",

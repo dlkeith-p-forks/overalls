@@ -1,5 +1,5 @@
 ---
-digest: 6f09d59139781921312f13a35e9cde5c88649bfce2edcab4c5c3431d6ff60270
+digest: e6666849d893f35abdcb6d31d0f961311e91afa681276a86e01cd2a86da22bcd
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android-only state projection and unit tests preserve existing documented Mila behavior; no handbook chapter changes required.
+Typed Android session UI state preserves documented native session behavior; no handbook chapter changes required.
