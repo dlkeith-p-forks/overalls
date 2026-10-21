@@ -1,6 +1,6 @@
 defmodule MarshallWeb.MachinesLive do
   use MarshallWeb, :live_view
-  alias Marshall.{Access, Compute, Teams}
+  alias Marshall.{Access, Compute, Teams, Threads}
   on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
   on_mount(MarshallWeb.MachineWorkspace)
   alias MarshallWeb.{MachineDefaults, MachineWorkspace}
@@ -117,10 +117,12 @@ defmodule MarshallWeb.MachinesLive do
     {:noreply, refresh(socket)}
   end
 
-  # @cc [owner:ghuntley,label:security] provision-through-admission
-  # provision MUST parse complete integer resource inputs and pass the request
-  # key plus current actor to Compute.provision. Displayed capacity and HTML
-  # input limits MUST NOT replace transactional domain admission.
+  # @cc [owner:ghuntley,label:security;durability] provision-through-thread
+  # Machine creation MUST parse complete integer resource inputs and pass the
+  # request key, authenticated actor, setup objective and canonical machine
+  # specification to Threads.create_thread. Thread provisioning owns machine
+  # admission and initial agent execution; displayed capacity and HTML limits
+  # MUST NOT replace transactional domain admission.
   @impl true
   def handle_event("provision", %{"machine" => %{} = params}, socket) do
     params = MachineDefaults.creation_defaults(params, socket.assigns.catalog.images)
@@ -129,24 +131,29 @@ defmodule MarshallWeb.MachinesLive do
     with {memory, ""} <- integer(params["memory_mib"]),
          {disk, ""} <- integer(params["disk_gib"]),
          {vcpu, ""} <- integer(params["vcpu"]),
-         {:ok, vm} <-
-           Compute.provision(
+         {:ok, thread} <-
+           Threads.create_thread(
              %{
+               objective: setup_objective(params["objective"]),
+               mode: :medium,
+               collaboration_mode: :work,
                idempotency_key: params["request_key"],
-               architecture: :x86_64,
-               image_id: params["image_id"],
-               profile: params["profile"],
-               team_id: blank_to_nil(params["team_id"]),
-               vcpu: vcpu,
-               memory_bytes: memory * 1_048_576,
-               disk_bytes: disk * 1_073_741_824
+               machine_spec: %{
+                 architecture: :x86_64,
+                 image_id: params["image_id"],
+                 profile: params["profile"],
+                 team_id: blank_to_nil(params["team_id"]),
+                 vcpu: vcpu,
+                 memory_bytes: memory * 1_048_576,
+                 disk_bytes: disk * 1_073_741_824
+               }
              },
              actor: socket.assigns.current_user
            ) do
       {:noreply,
        socket
-       |> put_flash(:info, dgettext("machines", "Machine requested."))
-       |> push_navigate(to: ~p"/machines/#{vm.id}")}
+       |> put_flash(:info, dgettext("machines", "Machine and setup thread requested."))
+       |> push_navigate(to: ~p"/threads/#{thread.id}")}
     else
       {:error, error} ->
         {:noreply, put_flash(socket, :error, error_message(error))}
@@ -408,9 +415,9 @@ defmodule MarshallWeb.MachinesLive do
 
   defp creation_params(params) when is_map(params) do
     params
-    |> Map.take(~w(image_id profile vcpu memory_mib disk_gib request_key team_id))
+    |> Map.take(~w(objective image_id profile vcpu memory_mib disk_gib request_key team_id))
     |> Enum.filter(fn {key, value} ->
-      is_binary(value) and byte_size(value) <= 128 and
+      is_binary(value) and byte_size(value) <= if(key == "objective", do: 65_536, else: 128) and
         (key != "request_key" or OverallsProtocol.uuid?(value)) and
         (key != "team_id" or value == "" or OverallsProtocol.uuid?(value))
     end)
@@ -533,12 +540,25 @@ defmodule MarshallWeb.MachinesLive do
         form:
           to_form(
             %{
+              "objective" => "",
               "team_id" => "",
               "request_key" => Ash.UUID.generate()
             },
             as: :machine
           )
       )
+
+  @spec setup_objective(term()) :: String.t()
+  defp setup_objective(objective) when is_binary(objective) do
+    case String.trim(objective) do
+      "" ->
+        "No initial setup requested. Do not make changes to this machine; report that no setup was requested."
+
+      value -> value
+    end
+  end
+
+  defp setup_objective(_), do: setup_objective("")
 
   @spec seed_machine_defaults(map(), map(), map()) :: map()
   defp seed_machine_defaults(values, %{machine_defaults_seeded: true}, _submitted), do: values
@@ -926,6 +946,26 @@ defmodule MarshallWeb.MachinesLive do
             class="stack"
           >
             <.input field={@form[:request_key]} type="hidden" />
+            <.input
+              field={@form[:objective]}
+              type="textarea"
+              label={dgettext("machines", "What should this machine do when it is ready?")}
+              hint={
+                dgettext(
+                  "machines",
+                  "The machine agent will execute this instruction automatically in Work mode."
+                )
+              }
+              rows="5"
+              maxlength="65536"
+              aria-describedby="machine-setup-guide"
+            />
+            <p id="machine-setup-guide" class="muted">
+              {dgettext(
+                "machines",
+                "Leave this blank to create the machine without making setup changes."
+              )}
+            </p>
             <h2 class="form-chapter">
               <span>1.</span> {dgettext("machines", "Choose your environment")}
             </h2>
