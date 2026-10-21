@@ -41,6 +41,19 @@ internal val machineCommandChoices = listOf(
     MachineCommandChoice("Web set", "web set"),
 )
 
+/** Commands exposed by the Rust thread catalog; arguments are intentionally not accepted here. */
+internal val threadCommandChoices = listOf(
+    "List" to "thread ls",
+    "Show" to "thread show",
+    "Turns" to "thread turns",
+    "Prompt" to "thread prompt",
+    "Answer" to "thread answer",
+    "Plan approve" to "thread plan approve",
+    "Plan revise" to "thread plan revise",
+    "Mode" to "thread mode",
+    "Read" to "thread read",
+)
+
 @Composable
 fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     val scope = rememberCoroutineScope()
@@ -108,9 +121,14 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Thread commands", style = MaterialTheme.typography.titleLarge)
         Text("Commands are classified by Rust before execution.", style = MaterialTheme.typography.bodyMedium)
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button({ classified = adapter.threadCommandKind("thread ls").getOrNull() }) { Text("List") }
-            Button({ classified = adapter.threadCommandKind("thread read").getOrNull() }) { Text("Read") }
+        threadCommandChoices.chunked(3).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                row.forEach { (label, command) ->
+                    Button({ classified = adapter.threadCommandKind(command).getOrNull() }) {
+                        Text(label)
+                    }
+                }
+            }
         }
         Text(classified?.name ?: "No command selected", style = MaterialTheme.typography.bodyMedium)
     }

@@ -1,5 +1,5 @@
 ---
-digest: 59a6cb4992d1728abaae96fa5cdf8ccee40b1f48eec4ac09773278a01b1b241d
+digest: 7a143cbda013ea11c3a4ec80aab9c6c71a80e2460aefa8b7887b714521d554f2
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-The Android palette only exposes existing Rust machine command catalog entries and adds no new protocol, deployment, or documented scenario; the change is presentation parity.
+Android thread controls now expose the existing closed Rust command catalog through typed classification; no protocol or deployment behavior changed.

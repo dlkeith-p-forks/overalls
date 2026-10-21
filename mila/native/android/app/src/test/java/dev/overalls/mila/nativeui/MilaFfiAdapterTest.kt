@@ -116,4 +116,16 @@ class MilaLinkedFfiAdapterTest {
         )
         assertEquals(MilaMachineCommand.entries.size, machineCommandChoices.size)
     }
+
+    @Test
+    fun threadCommandPaletteCoversClosedRustCatalog() {
+        assertEquals(
+            listOf(
+                "thread ls", "thread show", "thread turns", "thread prompt", "thread answer",
+                "thread plan approve", "thread plan revise", "thread mode", "thread read",
+            ),
+            threadCommandChoices.map { it.second },
+        )
+        assertEquals(MilaThreadCommand.entries.size, threadCommandChoices.size)
+    }
 }
