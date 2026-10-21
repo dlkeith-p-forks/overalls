@@ -195,6 +195,7 @@ case action do
 
   "busy-prepare" ->
     {:ok, image} = Image.load(image_path)
+    File.write!("/run/zfs-observation-fault-mode", System.fetch_env!("ZFS_OBSERVATION_FAULT"))
     {:error, :storage_busy} = Disk.prepare(pool, image, spec)
 
   "warm-template" ->

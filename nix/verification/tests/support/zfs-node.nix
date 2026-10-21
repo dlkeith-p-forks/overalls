@@ -17,6 +17,7 @@
   environment.etc."zfs-lifecycle.exs".source = ../machines/zfs-lifecycle/probe.exs;
   environment.etc."zfs-observation-fault".source = pkgs.writeShellScript "zfs-observation-fault" ''
     set -eu
+    export ZFS_OBSERVATION_FAULT="$(cat /run/zfs-observation-fault-mode 2>/dev/null || true)"
     ${config.boot.zfs.package}/bin/zfs "$@"
     recursive=false
     for argument in "$@"; do
