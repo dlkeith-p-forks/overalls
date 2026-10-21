@@ -336,7 +336,12 @@ A new revision whose system closure and manifest equal the active ones still
 stages every candidate secret bundle privately. Byte-identical bundles keep the
 verify-only path; any difference (a secret-only change) takes preflight,
 migration and activation, and an unresolvable bundle fails at `stage` without
-touching live bundles. During activation, once every consumer has stopped, the
+touching live bundles. The local custody histories assert this private validation
+after manual recovery, with no migration, switch, unit stop or live bundle
+publication and with private staging removed afterward. Their synthetic generations
+replace every modeled unit; they do not establish unchanged-unit retention or
+native systemd behavior. Historical execution records retain their original scope.
+During activation, once every consumer has stopped, the
 independent secret-preparation units stop in one transaction under their own
 300-second deadline, while consumers keep one-at-a-time dependent stops. This
 corrects overalls activations that ran past a single sequential deadline and

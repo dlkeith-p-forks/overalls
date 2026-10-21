@@ -1,5 +1,5 @@
 ---
-digest: 3ac08c9b1dd2c8399ae5a08cf927c7cf96f676f758dfd8c762cb088ab8c79a43
+digest: c705cfb775b72bcc94c855ba75fc7c6fb67cbff21d554e04648757732250b54a
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Peach enabled on Panterloons and Dungarees: dedicated host credentials, auto-update unit coverage, corrected issuance procedure and regenerated topology.
+Reviewed current updater run/activate logic and custody history assertions. Document private candidate-secret validation during manual recovery, no live publication or unit stops, staging cleanup, and synthetic per-generation unit replacement. Preserve historical execution scopes and native systemd gaps; no production behavior or architecture change.

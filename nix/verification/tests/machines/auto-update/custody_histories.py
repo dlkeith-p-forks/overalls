@@ -311,6 +311,15 @@ def make_bundle(
         "lilly": None,
     }
     (system / "overalls-deployment.json").write_text(json.dumps(manifest, sort_keys=True))
+    # Each synthetic generation replaces its units, matching World.switch's
+    # complete process replacement rather than claiming unchanged-unit reuse.
+    unit_directory = system / "etc/systemd/system"
+    unit_directory.mkdir(parents=True)
+    unit_names = ["overalls-secrets-" + name + ".service" for name in secrets_map]
+    if marshall:
+        unit_names.append("marshall-main.service")
+    for unit in unit_names:
+        (unit_directory / unit).write_text("[Unit]\nDescription=Fixture " + label + "\n")
     os.symlink(system, folder / "system")
     (folder / "manifest.json").write_text(json.dumps(manifest, sort_keys=True))
     return Bundle(label, folder, system, manifest)
@@ -339,6 +348,7 @@ class ClockStep:
 @dataclass
 class UnitEntry:
     active: bool = False
+    failed: bool = False
 
 
 @dataclass(frozen=True)
@@ -395,6 +405,9 @@ class World:
 
     def unit_state(self, unit: str) -> str:
         entry = self.units.get(unit)
+        if entry is not None and entry.failed:
+            require(not entry.active, "failed unit cannot be active")
+            return "failed"
         return "active" if entry is not None and entry.active else "inactive"
 
     def switch(self, system: str, channel: str) -> None:
@@ -440,11 +453,13 @@ class World:
             environment = parse_environment(Path("/run/overalls-secrets/marshall/environment"))
             self.serving[unit] = environment
         entry.active = True
+        entry.failed = False
 
     def stop(self, unit: str) -> None:
         entry = self.units.get(unit)
         if entry is not None:
             entry.active = False
+            entry.failed = False
         self.serving.pop(unit, None)
 
     def prepare_secret_unit(self, unit: str, channel: str) -> None:
@@ -466,6 +481,7 @@ class World:
         self.prepared.append((unit, result.returncode, str(descriptor_path)))
         if result.returncode != 0:
             self.stop(unit)
+            self.units[unit].failed = True
             raise updater.UpdateError("activate_failed")
 
     def command(
@@ -527,6 +543,11 @@ class World:
         return ""
 
     def systemctl(self, arguments: list[str], capture_flag: bool) -> str:
+        """@cc [owner:ghuntley,label:verification] custody-failed-unit-query
+        The unfiltered failed-unit query MUST return exactly modeled failed units,
+        excluding inactive and active units. Unsupported query flags MUST fail
+        closed rather than being interpreted as an empty failed-unit result.
+        """
         verb = arguments[1]
         if verb == "show":
             require(arguments[2].startswith("--property="), "property required")
@@ -555,8 +576,14 @@ class World:
             return ""
         if verb == "list-units":
             require(capture_flag, "list-units must capture")
+            if arguments[2:] == ["--failed", "--plain", "--no-legend"]:
+                return "".join(
+                    unit + " loaded failed failed synthetic\n"
+                    for unit in self.units
+                    if self.unit_state(unit) == "failed"
+                )
             pattern = arguments[-1]
-            if pattern.endswith("-*.service"):
+            if arguments[2:-1] == ["--plain", "--no-legend"] and pattern.endswith("-*.service"):
                 prefix = pattern.removesuffix("*.service")
                 return "".join(
                     unit + " loaded active running synthetic\n"
@@ -710,6 +737,7 @@ class Model:
             and json.loads(manifest_path.read_bytes()) == bundle.manifest
         )
         if active_matches:
+            events.append({"event": "update.phase", "phase": "stage"})
             events.append({"event": "update.phase", "phase": "verify"})
             events.append({"event": "update.healthy", "revision": revision})
             state.update(
@@ -731,8 +759,11 @@ class Model:
         if outcome == "healthy":
             events.extend(
                 {"event": "update.phase", "phase": name}
-                for name in ["stage", "preflight", "migrate", "activate", "verify"]
+                for name in ["stage", "preflight", "migrate", "activate"]
             )
+            # Every synthetic generation replaces its unit definitions.
+            events.append({"event": "update.units_retained", "count": 0})
+            events.append({"event": "update.phase", "phase": "verify"})
             events.append({"event": "update.healthy", "revision": revision})
             state.update(
                 activatedCandidate=identity,
@@ -1060,6 +1091,8 @@ def run_rotation_scenario(refusals: int, early_tick: bool, rotated: str) -> None
         migrations_clean = len(world.migrations)
         switches_clean = len(world.switches)
         resolutions_clean = len(world.resolutions)
+        stops_clean = upstream_command_count(world, "stop")
+        preparations_clean = len(world.prepared)
         rc, events = tick(world, model)
         require(rc == 0, "verify-only recovery must succeed")
         require(
@@ -1067,6 +1100,7 @@ def run_rotation_scenario(refusals: int, early_tick: bool, rotated: str) -> None
             == [
                 {"event": "update.phase", "phase": "fetch"},
                 {"event": "update.phase", "phase": "build"},
+                {"event": "update.phase", "phase": "stage"},
                 {"event": "update.phase", "phase": "verify"},
                 {"event": "update.healthy", "revision": revision1},
             ],
@@ -1074,7 +1108,13 @@ def run_rotation_scenario(refusals: int, early_tick: bool, rotated: str) -> None
         )
         require(len(world.migrations) == migrations_clean, "no migration rerun")
         require(len(world.switches) == switches_clean, "recovery must not switch")
-        require(len(world.resolutions) == resolutions_clean, "recovery must not re-resolve")
+        require(upstream_command_count(world, "stop") == stops_clean, "recovery stops no units")
+        require(len(world.prepared) == preparations_clean, "recovery publishes no live bundles")
+        require(not (RUNTIME / "staging").exists(), "recovery retires private staging")
+        require(
+            len(world.resolutions) == resolutions_clean + 1,
+            "recovery must validate candidate secrets once before verifying live roles",
+        )
         require(world.serving == {"marshall-main.service": values1}, "serving unchanged")
         state = read_state()
         require(state["phase"] == "healthy" and state["failures"] == 0, "converged healthy")
@@ -1182,6 +1222,7 @@ def run_rekey_scenario(extra_recipient: str, stale_handoff: bool, second_bundle:
                 {"event": "update.phase", "phase": "preflight"},
                 {"event": "update.phase", "phase": "migrate"},
                 {"event": "update.phase", "phase": "activate"},
+                {"event": "update.units_retained", "count": 0},
                 {"event": "update.phase", "phase": "verify"},
                 {"event": "update.healthy", "revision": revision1},
             ],
@@ -1441,6 +1482,23 @@ class CustodyWedgeHistories(unittest.TestCase):
 
 
 class FixedCustodyBoundaries(unittest.TestCase):
+    def test_failed_unit_query_preserves_failure_and_refuses_unknown_flags(self) -> None:
+        world = World(root=WORK)
+        world.units = {
+            "healthy.service": UnitEntry(active=True),
+            "stopped.service": UnitEntry(),
+            "broken.service": UnitEntry(failed=True),
+        }
+        arguments = ["systemctl", "list-units", "--failed", "--plain", "--no-legend"]
+        self.assertEqual(
+            world.systemctl(arguments, True),
+            "broken.service loaded failed failed synthetic\n",
+        )
+        with self.assertRaises(HarnessError):
+            world.systemctl([*arguments, "--unsupported"], True)
+        world.stop("broken.service")
+        self.assertEqual(world.systemctl(arguments, True), "")
+
     def test_refusal_backoff_caps_at_sixteen_failures(self) -> None:
         run_rotation_scenario(18, False, "SECRET_KEY_BASE")
         state = read_state()
