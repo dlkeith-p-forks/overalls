@@ -477,6 +477,56 @@ pub unsafe extern "C" fn mila_session_command_format(
     MilaFfiStatus::Ok
 }
 
+/// Closed thread command tags. Arguments and payloads are never returned across the ABI.
+#[repr(u32)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum MilaThreadCommandKind {
+    Unknown = 0,
+    List = 1,
+    Show = 2,
+    Turns = 3,
+    Prompt = 4,
+    Answer = 5,
+    PlanApprove = 6,
+    PlanRevise = 7,
+    Mode = 8,
+    Read = 9,
+}
+
+/// Parses a bounded Porsche command and projects only its catalogued thread operation.
+/// The caller retains ownership of the command bytes; no argument or payload is returned.
+#[no_mangle]
+pub unsafe extern "C" fn mila_thread_command_kind(
+    line: *const c_char,
+    out_kind: *mut MilaThreadCommandKind,
+) -> MilaFfiStatus {
+    if line.is_null() || out_kind.is_null() {
+        return MilaFfiStatus::NullInput;
+    }
+    let line = match CStr::from_ptr(line).to_str() {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let command = match mila_protocol::Command::parse(line) {
+        Ok(command) => command,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let kind = match command.command.as_str() {
+        "thread ls" => MilaThreadCommandKind::List,
+        "thread show" => MilaThreadCommandKind::Show,
+        "thread turns" => MilaThreadCommandKind::Turns,
+        "thread prompt" => MilaThreadCommandKind::Prompt,
+        "thread answer" => MilaThreadCommandKind::Answer,
+        "thread plan approve" => MilaThreadCommandKind::PlanApprove,
+        "thread plan revise" => MilaThreadCommandKind::PlanRevise,
+        "thread mode" => MilaThreadCommandKind::Mode,
+        "thread read" => MilaThreadCommandKind::Read,
+        _ => return MilaFfiStatus::InvalidRequest,
+    };
+    *out_kind = kind;
+    MilaFfiStatus::Ok
+}
+
 /// Projects the closed action policy for a machine in a validated snapshot.
 ///
 /// # Safety
@@ -774,8 +824,9 @@ mod tests {
     use super::{
         mila_ffi_get_version, mila_ffi_version, mila_terminal_attach_validate,
         mila_terminal_input_validate, mila_terminal_resize_validate, mila_terminal_validate,
-        mila_watch_event_kind, mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus,
-        MilaSnapshotSummary, MilaWatchEventKind,
+        mila_thread_command_kind, mila_watch_event_kind, mila_watch_validate_filters,
+        MilaFfiAbiVersion, MilaFfiStatus, MilaSnapshotSummary, MilaThreadCommandKind,
+        MilaWatchEventKind,
     };
     use mila_runtime::MachineSnapshot;
 
@@ -835,6 +886,25 @@ mod tests {
         );
         assert_eq!(
             mila_terminal_validate(120, 40, 2),
+            MilaFfiStatus::InvalidRequest
+        );
+    }
+
+    #[test]
+    fn projects_thread_command_catalog_without_payloads() {
+        for (line, expected) in [("thread ls", MilaThreadCommandKind::List)] {
+            let line = std::ffi::CString::new(line).unwrap();
+            let mut kind = MilaThreadCommandKind::Unknown;
+            assert_eq!(
+                unsafe { mila_thread_command_kind(line.as_ptr(), &mut kind) },
+                MilaFfiStatus::Ok
+            );
+            assert_eq!(kind, expected);
+        }
+        let unknown = std::ffi::CString::new("thread delete abc --json").unwrap();
+        let mut kind = MilaThreadCommandKind::Unknown;
+        assert_eq!(
+            unsafe { mila_thread_command_kind(unknown.as_ptr(), &mut kind) },
             MilaFfiStatus::InvalidRequest
         );
     }

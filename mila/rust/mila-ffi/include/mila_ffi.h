@@ -91,3 +91,6 @@ int32_t mila_session_close(uint64_t handle);
 }
 #endif
 #endif
+typedef enum MilaThreadCommandKind { MILA_THREAD_UNKNOWN = 0, MILA_THREAD_LIST = 1, MILA_THREAD_SHOW = 2, MILA_THREAD_TURNS = 3, MILA_THREAD_PROMPT = 4, MILA_THREAD_ANSWER = 5, MILA_THREAD_PLAN_APPROVE = 6, MILA_THREAD_PLAN_REVISE = 7, MILA_THREAD_MODE = 8, MILA_THREAD_READ = 9 } MilaThreadCommandKind;
+MilaFfiStatus mila_thread_command_kind(const char *line, MilaThreadCommandKind *out_kind);
+
