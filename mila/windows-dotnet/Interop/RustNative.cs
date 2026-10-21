@@ -116,6 +116,20 @@ internal readonly record struct MilaNativeActionsResult(
 internal readonly record struct MilaNativeCommandResult(
     MilaNativeStatus Status, string? Command);
 
+internal enum MilaThreadCommandKind : int
+{
+    Unknown = 0, List = 1, Show = 2, Turns = 3, Prompt = 4, Answer = 5,
+    PlanApprove = 6, PlanRevise = 7, Mode = 8, Read = 9,
+}
+
+internal readonly record struct MilaNativeThreadCommandResult(
+    MilaNativeStatus Status, MilaThreadCommandKind? Kind);
+
+internal readonly record struct MilaNativeTerminalResult(MilaNativeStatus Status)
+{
+    internal bool IsValid => Status == MilaNativeStatus.Ok;
+}
+
 /// <summary>
 /// Narrow P/Invoke boundary for the Rust implementation.
 ///
@@ -292,6 +306,43 @@ internal static partial class RustNative
         }
     }
 
+    /// <summary>Projects only the closed Rust thread-command catalogue.</summary>
+    internal static MilaNativeThreadCommandResult TryClassifyThreadCommand(string line)
+    {
+        ArgumentNullException.ThrowIfNull(line);
+        if (line.Contains('\0')) return new(MilaNativeStatus.InvalidRequest, null);
+        IntPtr input = Marshal.StringToCoTaskMemUTF8(line);
+        try
+        {
+            MilaNativeStatus status = ThreadCommandKindNative(input, out MilaThreadCommandKind kind);
+            return status == MilaNativeStatus.Ok ? new(status, kind) : new(status, null);
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+        finally { Marshal.FreeCoTaskMem(input); }
+    }
+
+    /// <summary>Validates terminal attach dimensions and mode before opening a PTY.</summary>
+    internal static MilaNativeTerminalResult TryValidateTerminalAttach(
+        ulong from, ushort columns, ushort rows, bool readWrite)
+        => TryTerminal(() => TerminalAttachNative(from, columns, rows, readWrite ? (byte)1 : (byte)0));
+
+    internal static MilaNativeTerminalResult TryValidateTerminalInput(nuint length, bool readWrite)
+        => TryTerminal(() => TerminalInputNative(length, readWrite ? (byte)1 : (byte)0));
+
+    internal static MilaNativeTerminalResult TryValidateTerminalResize(
+        ushort columns, ushort rows, bool readWrite)
+        => TryTerminal(() => TerminalResizeNative(columns, rows, readWrite ? (byte)1 : (byte)0));
+
+    private static MilaNativeTerminalResult TryTerminal(Func<MilaNativeStatus> call)
+    {
+        try { return new(call()); }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable); }
+    }
+
     [LibraryImport(LibraryName, EntryPoint = "mila_snapshot_machine_actions")]
     private static partial MilaNativeStatus MachineActionsNative(
         IntPtr bytes, nuint length, IntPtr host, ushort port, byte hasPort,
@@ -311,6 +362,21 @@ internal static partial class RustNative
     private static partial MilaNativeStatus FormatRouteNative(
         IntPtr input,
         MilaRouteOutput output);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_thread_command_kind")]
+    private static partial MilaNativeStatus ThreadCommandKindNative(
+        IntPtr line, out MilaThreadCommandKind kind);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_terminal_attach_validate")]
+    private static partial MilaNativeStatus TerminalAttachNative(
+        ulong from, ushort columns, ushort rows, byte readWrite);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_terminal_input_validate")]
+    private static partial MilaNativeStatus TerminalInputNative(nuint length, byte readWrite);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_terminal_resize_validate")]
+    private static partial MilaNativeStatus TerminalResizeNative(
+        ushort columns, ushort rows, byte readWrite);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_snapshot_validate")]
     private static partial MilaNativeStatus ValidateSnapshotNative(
