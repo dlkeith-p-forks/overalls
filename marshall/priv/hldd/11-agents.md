@@ -333,11 +333,11 @@ sequenceDiagram
   P->>N: after_commit(thread)
   N->>N: Delivery queued per active, enabled device (collapse per thread)
   N->>W: job(delivery_id)
-  W->>W: seal PushPoke v1 to device X25519 key; sign with install Ed25519
+  W->>W: seal PushPoke v1 to device X25519 key, sign with install Ed25519
   W->>S: POST /api/push/v1/poke (ciphertext only)
   S-->>W: 2xx delivered · 404/410 invalidate · 429/5xx retry · other 4xx permanent
   S->>M: APNs/FCM/WNS poke
-  M->>M: decrypt route; fetch details over Porsche SSH
+  M->>M: decrypt route, fetch details over Porsche SSH
 ```
 
 Each device has at most one open delivery per collapse key; a newer fact while

@@ -194,11 +194,13 @@ def main() -> None:
         check_section(page, "security")
         page.locator("#security").scroll_into_view_if_needed()
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
-        security_diagram = page.locator("#security pre.hldd-diagram")
-        assert security_diagram.evaluate("el => el.scrollWidth > el.clientWidth")
-        assert security_diagram.locator("svg").evaluate(
-            "el => el.getBoundingClientRect().width >= 576"
-        )
+        security_diagrams = page.locator("#security pre.hldd-diagram")
+        assert security_diagrams.count() > 0
+        for security_diagram in security_diagrams.all():
+            assert security_diagram.evaluate("el => el.scrollWidth > el.clientWidth")
+            assert security_diagram.locator("svg").evaluate(
+                "el => el.getBoundingClientRect().width >= 576"
+            )
         page.screenshot(path="/tmp/hldd-mobile.png")
         page.emulate_media(media="print")
         expect(page.locator(".hldd-contents")).to_be_hidden()
