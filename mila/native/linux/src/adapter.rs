@@ -44,7 +44,7 @@ pub fn decode_ssh_keys(bytes: &[u8]) -> Result<Vec<SshKey>, RuntimeError> {
 pub fn format_ssh_key_revoke(key_id: &str, request_id: &str) -> Result<String, RuntimeError> {
     if key_id.is_empty()
         || key_id.len() > 128
-        || request_id.len() != 39
+        || request_id.len() != 40
         || !request_id.starts_with("porsche-")
         || !request_id[8..].bytes().all(|byte| byte.is_ascii_hexdigit())
         || key_id

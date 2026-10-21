@@ -1,6 +1,6 @@
 ---
-digest: 86c26924900398da258dd5f65f6dc50ed34037848dc858f8d98f1bbd717269d0
-disposition: updated
+digest: d414232db3ac84e503fd1097ccf3f329b720ff18831811444a6c608e28cefa2d
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/Cargo.lock
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Native Linux UI implementation adds local typed controls while documented Mila behavior and chapter contracts remain unchanged.

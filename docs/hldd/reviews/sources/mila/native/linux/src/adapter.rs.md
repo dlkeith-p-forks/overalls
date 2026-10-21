@@ -1,5 +1,5 @@
 ---
-digest: 3ec19db1a13ec5e3ce5e178ca9aa26a6b60561872f6e52dd17693e77b350b321
+digest: d71dfe9f86f025c1357fa7a2e676628e854a14054057ecf1ca994753d660b454
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Windows Rust-backed push poke adapter; existing Mila native changes remain within documented boundaries.
+Native Linux UI implementation adds local typed controls while documented Mila behavior and chapter contracts remain unchanged.

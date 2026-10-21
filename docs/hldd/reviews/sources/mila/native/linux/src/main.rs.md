@@ -1,6 +1,6 @@
 ---
-digest: 597b6c52f45dee6f8c674b84058fa153dd84e3e7796de036b0080fdb2e826bf2
-disposition: updated
+digest: f23ceb33ebd46ab5a7b324c708c02e7aa3d91199c3cc496bc5bb9a9469960108
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/main.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Mila clients now use Rust-backed session, terminal, push, thread, and machine command validation; native CI and Rust property tests provide bounded evidence, with remaining full UI parity gaps documented.
+Native Linux UI implementation adds local typed controls while documented Mila behavior and chapter contracts remain unchanged.
