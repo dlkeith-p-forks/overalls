@@ -86,6 +86,17 @@ internal readonly record struct MilaNativeRouteResult(
     MilaNativeStatus Status,
     string? Canonical);
 
+[StructLayout(LayoutKind.Sequential)]
+internal readonly struct MilaSnapshotSummary
+{
+    internal readonly uint MachineCount;
+    internal readonly ulong SavedAt;
+}
+
+internal readonly record struct MilaNativeSnapshotResult(
+    MilaNativeStatus Status,
+    MilaSnapshotSummary? Summary);
+
 /// <summary>
 /// Narrow P/Invoke boundary for the Rust implementation.
 ///
@@ -162,6 +173,33 @@ internal static partial class RustNative
         }
     }
 
+    /// <summary>Validates an offline snapshot against the active deployment.</summary>
+    internal static MilaNativeSnapshotResult TryValidateSnapshot(
+        ReadOnlySpan<byte> snapshot, string host, ushort port, bool hasPort)
+    {
+        ArgumentNullException.ThrowIfNull(host);
+        unsafe
+        {
+            fixed (byte* bytes = snapshot)
+            {
+                IntPtr hostPtr = Marshal.StringToCoTaskMemUTF8(host);
+                try
+                {
+                    MilaNativeStatus status = ValidateSnapshotNative(
+                        (IntPtr)bytes, (nuint)snapshot.Length, hostPtr, port,
+                        hasPort ? (byte)1 : (byte)0, out MilaSnapshotSummary summary);
+                    return status == MilaNativeStatus.Ok
+                        ? new(status, summary)
+                        : new(status, null);
+                }
+                catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+                catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+                catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+                finally { Marshal.FreeCoTaskMem(hostPtr); }
+            }
+        }
+    }
+
     private const int RouteOutputCapacity = 4096;
 
     [LibraryImport(LibraryName, EntryPoint = "mila_ffi_get_version")]
@@ -172,4 +210,9 @@ internal static partial class RustNative
     private static partial MilaNativeStatus FormatRouteNative(
         IntPtr input,
         MilaRouteOutput output);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_snapshot_validate")]
+    private static partial MilaNativeStatus ValidateSnapshotNative(
+        IntPtr bytes, nuint length, IntPtr host, ushort port, byte hasPort,
+        out MilaSnapshotSummary summary);
 }
