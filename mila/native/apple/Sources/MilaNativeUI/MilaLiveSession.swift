@@ -30,7 +30,7 @@ public final class MilaLiveSession: @unchecked Sendable {
                     mila_session_connect(trustRaw.bindMemory(to: UInt8.self).baseAddress, trust.count,
                                           hostBuffer.baseAddress, host.utf8.count,
                                           keyBuffer.baseAddress, key.count, port, timeoutMilliseconds,
-                                          milaAppleSessionSigner, Unmanaged.passUnretained(signer).toOpaque(), &connected)
+                                          milaAppleSessionSigner, UInt(bitPattern: Unmanaged.passUnretained(signer).toOpaque()), &connected)
                 }
             }
         }
@@ -83,10 +83,10 @@ public final class MilaLiveSession: @unchecked Sendable {
     }
 }
 
-private func milaAppleSessionSigner(_ context: UnsafeMutableRawPointer?, _ message: UnsafePointer<UInt8>?, _ length: Int, _ signature: UnsafeMutablePointer<UInt8>?) -> Int32 {
-    guard let context, let message, let signature, length > 0, length <= 65_536 else { return -1 }
+private func milaAppleSessionSigner(_ context: UInt, _ message: UnsafePointer<UInt8>?, _ length: Int, _ signature: UnsafeMutablePointer<UInt8>?) -> Int32 {
+    guard context != 0, let message, let signature, length > 0, length <= 65_536 else { return -1 }
     do {
-        let signer = Unmanaged<MilaDeviceSigner>.fromOpaque(context).takeUnretainedValue()
+        let signer = Unmanaged<MilaDeviceSigner>.fromOpaque(UnsafeRawPointer(bitPattern: context)!).takeUnretainedValue()
         let raw = try signer.sign(message: Data(bytes: message, count: length))
         guard raw.count == 64 else { return -1 }
         raw.copyBytes(to: signature, count: 64)

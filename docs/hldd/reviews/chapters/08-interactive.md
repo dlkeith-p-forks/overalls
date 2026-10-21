@@ -1,6 +1,6 @@
 ---
-digest: 708f68ebea9699d639165e9828b0854a594fb031ced43485da040f42c339f470
-disposition: updated
+digest: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
+disposition: no-impact
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/08-interactive.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed combined live session FFI and native custody behavior; loopback evidence is recorded while production platform wiring remains partial.
+Concurrent native-session integration changed shared handbook receipts only; documented behavior and architecture remain covered by existing interactive-session evidence.
