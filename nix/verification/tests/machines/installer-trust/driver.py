@@ -233,6 +233,7 @@ def fetched_manifest() -> dict[str, object]:
         "darwin-arm64",
         "linux-amd64",
         "linux-arm64",
+        "windows-amd64",
     ]
     return manifest
 
@@ -276,8 +277,8 @@ with subtest("fresh account install agrees on digests, trust origin and account 
     release_digest = fetched_digest("linux-amd64")
     assert installed_digest == endpoint_digest == manifest_digest(manifest, "linux-amd64")
     assert installed_digest == release_digest
-    # Four-target checksum and manifest agreement against the actual artifacts.
-    for target in ["linux-amd64", "linux-arm64", "darwin-amd64", "darwin-arm64"]:
+    # Five-target checksum and manifest agreement against the actual artifacts.
+    for target in ["linux-amd64", "linux-arm64", "darwin-amd64", "darwin-arm64", "windows-amd64"]:
         endpoint = client.succeed(curl + origin + "/bin/sha256/" + target).strip()
         assert endpoint == manifest_digest(manifest, target)
         assert endpoint == fetched_digest(target)
@@ -430,7 +431,7 @@ with subtest("upgraded artifact replaces the binary only after config success"):
         client.succeed("sha256sum /home/tester/.local/bin/overalls").split()[0] == upgraded_digest
     )
     assert manifest_digest(upgraded_manifest, "linux-amd64") == upgraded_digest
-    for target in ["linux-arm64", "darwin-amd64", "darwin-arm64"]:
+    for target in ["linux-arm64", "darwin-amd64", "darwin-arm64", "windows-amd64"]:
         unchanged = manifest_digest(upgraded_manifest, target)
         assert unchanged == manifest_digest(manifest, target)
         assert client.succeed(curl + origin + "/bin/sha256/" + target).strip() == unchanged

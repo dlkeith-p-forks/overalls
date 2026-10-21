@@ -16,7 +16,7 @@ let
     import sys
 
     root = pathlib.Path(sys.argv[1])
-    names = ("linux-amd64", "linux-arm64", "darwin-amd64", "darwin-arm64")
+    names = ("linux-amd64", "linux-arm64", "darwin-amd64", "darwin-arm64", "windows-amd64")
     artifacts = {
         name: {
             "path": "/bin/" + name,
