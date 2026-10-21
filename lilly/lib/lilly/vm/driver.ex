@@ -1875,11 +1875,25 @@ defmodule Lilly.VM.Driver do
            :ok <- shutdown(config, pool, spec, intent, vm_id),
            :ok <- Jail.cleanup(pool, spec, vm_id),
            :ok <- Lilly.Network.detach(config.network, spec.network, vm_id),
-           :ok <- CheckpointStorage.retire(pool, spec),
+           :ok <- retire_checkpoints(pool, spec),
            :ok <- Provisioning.cancel(config, spec, revision(options)) do
         stopped(vm_id, intent)
       end
     end)
+  end
+
+  defp retire_checkpoints(pool, spec) do
+    case CheckpointStorage.retire(pool, spec) do
+      {:error, :checkpoint_unconfirmed} = error ->
+        Process.sleep(100)
+        case CheckpointStorage.retire(pool, spec) do
+          :ok -> :ok
+          _ -> error
+        end
+
+      result ->
+        result
+    end
   end
 
   defp stopped(nil, _intent), do: :ok
