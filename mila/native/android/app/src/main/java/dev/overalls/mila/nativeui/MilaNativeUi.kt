@@ -23,7 +23,11 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     val scope = rememberCoroutineScope()
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
     var status by remember { mutableStateOf("Ready") }
-    fun refresh() { scope.launch { status = when (adapter.call(MilaFfiRequest(MilaFfiOperation.Refresh))) { is MilaFfiResult.Success -> "Connected"; is MilaFfiResult.Failure -> "Native runtime unavailable" } } }
+    var listing by remember { mutableStateOf<MilaSessionListing?>(null) }
+    fun refresh() { scope.launch { when (val result = adapter.call(MilaFfiRequest(MilaFfiOperation.Refresh))) {
+        is MilaFfiResult.Success -> { listing = runCatching { MilaSessionListing.decode(result.response.payload.copyBytes()) }.getOrNull(); status = if (listing == null) "Connected; no listing" else "Connected" }
+        is MilaFfiResult.Failure -> { listing = null; status = "Native runtime unavailable" }
+    } } }
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("Mila", style = MaterialTheme.typography.headlineSmall)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -34,7 +38,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         }
         Text(status, style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
-            MilaRoute.Machines -> MachineList(status)
+            MilaRoute.Machines -> MachineList(status, listing)
             is MilaRoute.Machine -> Detail("Machine", selected.id.toString())
             MilaRoute.Threads -> ThreadList()
             is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
@@ -44,8 +48,11 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     LaunchedEffect(Unit) { refresh() }
 }
 
-@Composable private fun MachineList(status: String) {
-    Text(status, style = MaterialTheme.typography.bodyMedium)
+@Composable private fun MachineList(status: String, listing: MilaSessionListing?) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(status, style = MaterialTheme.typography.bodyMedium)
+        listing?.machines?.forEach { machine -> Text("${machine.name} · ${machine.status}", style = MaterialTheme.typography.bodyMedium) }
+    }
 }
 @Composable private fun ThreadList() {
     Text("No validated thread snapshot loaded.", style = MaterialTheme.typography.bodyMedium)
