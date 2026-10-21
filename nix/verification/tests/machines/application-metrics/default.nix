@@ -1,8 +1,9 @@
 { pkgs, module, packages }:
 pkgs.testers.runNixOSTest {
   name = "overalls-application-metrics";
+  requiredFeatures.nested-kvm = true;
   defaults = { ... }: {
-    imports = [ (import ../../support/role-node.nix { inherit module packages; }) ];
+    imports = [ (import ../../support/native-role-node.nix { inherit module packages; }) ];
     services.overallsLogging = {
       enable = true;
       environment = "fixture";

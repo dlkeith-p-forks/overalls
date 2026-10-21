@@ -94,7 +94,9 @@ assert len(set(combined_before_lilly_restart.values())) == 3
 # @cc [owner:ghuntley,label:verification;recovery] service-roles-lilly-ownership-proof
 # The role check MUST require Lilly's real persistent owner and control identity.
 # A terminally failed service MUST stop the wait early without satisfying either proof.
-with subtest("Lilly runs as root outside the guest slice"):
+# The live BEAM MUST have the nonroot service UID and no effective capabilities;
+# hostd MUST retain root identity and credentials MUST use systemd delivery.
+with subtest("Lilly runs unprivileged with a root host-effects service outside the guest slice"):
     for machine in [lilly, combined]:
         machine.wait_for_unit("lilly.service")
         for path in ["/var/lib/lilly/owner.json", "/var/lib/lilly/control/identity.json"]:
@@ -107,16 +109,38 @@ with subtest("Lilly runs as root outside the guest slice"):
         assert [(address["local"], address["prefixlen"]) for address in links[0]["addr_info"]] == [
             ("169.254.255.1", 30)
         ]
-        machine.succeed("test $(systemctl show -p User --value lilly.service) = root")
+        machine.succeed("test $(systemctl show -p User --value lilly.service) = lilly")
+        machine.wait_for_unit("lilly-hostd.service")
         machine.succeed("test $(systemctl show -p Slice --value lilly.service) = system.slice")
         machine.succeed("test $(cat /sys/fs/cgroup/lilly.slice/memory.max) -eq 268435456")
         machine.succeed("test $(stat -c %a /run/lilly-release/config.json) = 600")
         config = json.loads(machine.succeed("cat /run/lilly-release/config.json"))
         assert config["version"] == 4
-        assert config["credential_file"] == "/run/overalls-test/lilly.json"
+        assert config["credential_file"] == "/run/credentials/lilly.service/credential"
+        machine.succeed(
+            "cmp /run/overalls-test/lilly.json /run/credentials/lilly.service/credential"
+        )
         assert "credential" not in config
         pid = machine.succeed("systemctl show -p MainPID --value lilly.service").strip()
         require_release_cookie(machine, pid)
+        service_uid = int(machine.succeed("id -u lilly").strip())
+        assert service_uid > 0
+        for service_pid, expected_uid in [
+            (pid, service_uid),
+            (machine.succeed("systemctl show -p MainPID --value lilly-hostd.service").strip(), 0),
+        ]:
+            assert service_pid.isdecimal() and int(service_pid) > 0
+            actual_uids = machine.succeed(
+                f"awk '$1 == \"Uid:\" {{print $2, $3, $4, $5}}' /proc/{service_pid}/status"
+            ).split()
+            assert [int(value) for value in actual_uids] == [expected_uid] * 4
+        assert (
+            int(
+                machine.succeed(f"awk '$1 == \"CapEff:\" {{print $2}}' /proc/{pid}/status").strip(),
+                16,
+            )
+            == 0
+        )
         machine.succeed(f"test $(readlink /proc/{pid}/ns/mnt) = $(readlink /proc/1/ns/mnt)")
         machine.succeed("systemctl restart lilly.service")
         machine.wait_for_unit("lilly.service")
