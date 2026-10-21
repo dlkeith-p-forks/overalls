@@ -43,7 +43,11 @@ in {
     stateQuotaGiB = mkOption { type = types.ints.positive; default = 20; };
     storeMemoryMiB = mkOption { type = types.ints.positive; default = 1024; };
     storeCpuPercent = mkOption { type = types.ints.positive; default = 200; };
-    entryMemoryMiB = mkOption { type = types.ints.positive; default = 64; };
+    entryMemoryMiB = mkOption {
+      type = types.ints.positive;
+      default = 256;
+      description = "Memory budget for the authenticated HAProxy fleet entry under backlog recovery.";
+    };
     secretUnits = mkOption { type = types.listOf types.str; default = []; };
   };
   config = mkIf cfg.enable {

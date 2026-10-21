@@ -55,8 +55,10 @@ class MetricsTest(unittest.TestCase):
         row = r.brady_metrics(self.reader, workloads, 105)
         self.assertEqual(row["counters"], {"requests": 10})
         self.assertEqual(row["gauges"], {"cache_writable": 0})
+        row = r.brady_metrics(self.reader, workloads, 140)
+        self.assertEqual(row["counters"], {"requests": 10})
         with self.assertRaises(ValueError):
-            r.brady_metrics(self.reader, workloads, 116)
+            r.brady_metrics(self.reader, workloads, 146)
         with self.assertRaises(ValueError):
             r.brady_metrics(self.reader, [], 105)
         with self.assertRaises(ValueError):

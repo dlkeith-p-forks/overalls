@@ -515,7 +515,7 @@ def brady_metrics(
 ) -> metrics.SampledRecord:
     """@cc [owner:ghuntley,label:security;product] monitor-brady-fresh-aggregate
     Brady snapshots MUST match a currently active service invocation, be no more
-    than fifteen seconds old and contain only fixed bounded numeric aggregates.
+    than forty-five seconds old and contain only fixed bounded numeric aggregates.
     Missing or invalid snapshots MUST remain unknown, never synthetic zeros.
     """
     unit = next((row for row in workloads if row["unit"] == "brady.service"), None)
@@ -529,7 +529,7 @@ def brady_metrics(
         or type(data["version"]) is not int
         or data["version"] != 1
         or type(data["sampled_at"]) is not int
-        or not now - 15 <= data["sampled_at"] <= now + 1
+        or not now - 45 <= data["sampled_at"] <= now + 1
         or data["invocation_id"] != unit["invocation_id"]
         or not isinstance(data["incarnation"], str)
         or not re.fullmatch(r"[0-9a-f]{32}", data["incarnation"])
