@@ -258,7 +258,11 @@ in {
   # The ARC budget sizes the metadata and dnode caches for hundreds of mounted
   # guest datasets; the dnode limit follows it at a quarter, as the updater
   # applies live (ADR-0164).
-  boot.extraModprobeConfig = "options kvm-intel nested=Y options kvm-amd nested=1 options zfs zfs_arc_max=${toString (h.budgets.arcMaxMiB * 1048576)} zfs_arc_dnode_limit=${toString (h.budgets.arcMaxMiB * 1048576 / 4)}";
+  boot.extraModprobeConfig = ''
+    options kvm-intel nested=Y
+    options kvm-amd nested=1
+    options zfs zfs_arc_max=${toString (h.budgets.arcMaxMiB * 1048576)} zfs_arc_dnode_limit=${toString (h.budgets.arcMaxMiB * 1048576 / 4)}
+  '';
   boot.loader.grub = {
     enable = true; efiSupport = efi; efiInstallAsRemovable = efi;
     devices = lib.mkForce [];

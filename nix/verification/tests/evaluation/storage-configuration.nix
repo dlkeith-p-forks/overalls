@@ -3,6 +3,7 @@ let
   lib = pkgs.lib;
   checks = lib.mapAttrs (name: machine:
     let c = machine.config; mirror = lib.hasPrefix "hetzner" name; cloud = lib.hasPrefix "hcloud" name;
+      moduleLines = lib.splitString "\n" c.boot.extraModprobeConfig;
       pool = c.disko.devices.zpool.${if mirror || cloud then "zroot" else "guests"};
     in lib.all (a: a.assertion) c.assertions
       && c.boot.loader.grub.devices == []
@@ -23,8 +24,9 @@ let
       && builtins.elem "nested-kvm" c.nix.settings.extra-system-features
       && builtins.elem "kvm-intel" c.boot.kernelModules
       && builtins.elem "kvm-amd" c.boot.kernelModules
-      && lib.hasInfix "options kvm-intel nested=Y" c.boot.extraModprobeConfig
-      && lib.hasInfix "options kvm-amd nested=1" c.boot.extraModprobeConfig
+      && builtins.elem "options kvm-intel nested=Y" moduleLines
+      && builtins.elem "options kvm-amd nested=1" moduleLines
+      && builtins.elem "options zfs zfs_arc_max=536870912 zfs_arc_dnode_limit=134217728" moduleLines
       && c.programs.nix-ld.enable
       && lib.any (package: lib.getName package == "git") c.environment.systemPackages
       && lib.any (package: lib.getName package == "jq") c.environment.systemPackages

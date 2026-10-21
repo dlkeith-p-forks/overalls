@@ -122,6 +122,7 @@ installed.succeed(
     f"test $(zfs get -Hp -o value quota {pool}/lilly) = {536870912 if platform == 'hetzner' else 0}"
 )
 installed.succeed("test $(cat /sys/module/zfs/parameters/zfs_arc_max) = 536870912")
+installed.succeed("test $(cat /sys/module/zfs/parameters/zfs_arc_dnode_limit) = 134217728")
 installed.succeed("systemctl is-active var-lib-lilly-pool.mount")
 installed.succeed("nix-store --verify --check-contents", timeout=180)
 host_key = installed.succeed("cat /etc/ssh/ssh_host_ed25519_key.pub").strip()

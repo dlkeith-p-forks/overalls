@@ -1,5 +1,5 @@
 ---
-digest: c705cfb775b72bcc94c855ba75fc7c6fb67cbff21d554e04648757732250b54a
+digest: 8889dad9eade0462be5799bd6ca3f4536fc421f17adcc5d226cefc5a1733fe3e
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed current updater run/activate logic and custody history assertions. Document private candidate-secret validation during manual recovery, no live publication or unit stops, staging cleanup, and synthetic per-generation unit replacement. Preserve historical execution scopes and native systemd gaps; no production behavior or architecture change.
+Host boot emits one modprobe directive per module; evaluation rejects concatenated directives and installation tests verify live ARC and quarter-sized dnode budgets. Fleet activation remains unverified.

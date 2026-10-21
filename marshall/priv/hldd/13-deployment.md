@@ -305,7 +305,12 @@ ceiling, read just before the change; otherwise the update is refused
 decreases, and introducing or removing a policy, like any other
 installation-binding change, require maintenance. The policy also writes and
 verifies the ZFS ARC dnode limit at a quarter of the ARC maximum beside the
-maximum itself. No reader tolerates manifests from before these fields existed
+maximum itself. At boot, the host profile emits separate modprobe directives
+for Intel KVM nesting, AMD KVM nesting and the ZFS ARC/dnode budgets; each
+module must receive its own options line. Host-profile evaluation checks those
+lines, and firmware installation tests check the live ARC and dnode parameters.
+These fixture checks do not establish production fleet activation.
+No reader tolerates manifests from before these fields existed
 (ADR-0159).
 
 Activation stops only what the candidate changes (ADR-0165): a consumer,
