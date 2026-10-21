@@ -1,7 +1,7 @@
 # @cc [owner:ghuntley,label:verification] owned-zfs-lifecycle-real-artifacts
 # This fixture MUST invoke actual Lilly disk/ownership APIs and the verified source-built guest
 # image. It MUST NOT fake ZFS or count low-level disk calls as VMM/crash-durability acceptance.
-alias Lilly.Host.{Image, Pool, ZFS}
+alias Lilly.Host.{Image, ImageTemplate, Pool, ZFS}
 alias Lilly.Transfer.SourceSnapshots
 alias Lilly.VM.{Disk, Spec}
 
@@ -201,6 +201,10 @@ case action do
   "busy-prepare" ->
     {:ok, image} = Image.load(image_path)
     {:error, :storage_busy} = Disk.prepare(pool, image, spec)
+
+  "warm-template" ->
+    {:ok, image} = Image.load(image_path)
+    :ok = ImageTemplate.ensure(pool, image)
 
   "reject-prepare" ->
     {:ok, image} = Image.load(image_path)
