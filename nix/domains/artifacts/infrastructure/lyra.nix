@@ -96,6 +96,11 @@ let
       export OVERALLS_TEST_PATH="${pkgs.coreutils}/bin:${pkgs.git}/bin"
       mkdir -p "$HOME" "$CARGO_HOME"
       substitute ${vendor}/.cargo/config.toml "$CARGO_HOME/config.toml" --subst-var-by vendor "${vendor}"
+      # Native private-directory checks include every ancestor. Normalize only
+      # the nonroot builder-owned sandbox root, never a root-owned host root.
+      if [ "$(id -u)" != 0 ] && [ "$(stat -c %u /)" = "$(id -u)" ]; then
+        chmod go-w /
+      fi
       cargo test --locked --offline
       cargo clippy --all-targets --offline -- -D warnings
       # Windows guest agents: type-check the shared library and every Windows
