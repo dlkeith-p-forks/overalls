@@ -713,7 +713,12 @@ defmodule Lilly.Terminal.Stream do
                self(),
                config,
                guest,
-               %{ticket: message.ticket, mode: message.mode},
+               %{
+                 android_display: true,
+                 generation: message.generation,
+                 ticket: message.ticket,
+                 mode: message.mode
+               },
                message.generation,
                message.channel
              ) do

@@ -20,6 +20,7 @@ export function createAndroidDisplay(RFBClient) {
     const base = this.el.dataset.displayWebsocketUrl;
     if (!base) return this.setStatus("relay-unavailable");
     const url = new URL(base, window.location.origin);
+    url.protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     url.searchParams.set("ticket", ticket);
     url.searchParams.set("mode", mode);
     url.searchParams.set("generation", String(generation));
