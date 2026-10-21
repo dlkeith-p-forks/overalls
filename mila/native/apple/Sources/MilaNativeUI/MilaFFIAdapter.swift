@@ -160,6 +160,9 @@ private enum MilaRustFFI {
         out.pointee = MilaThreadCommandKind(rawValue: Int32(raw.rawValue)) ?? .unknown
         return status
     }
+    static func pushRegistration(_ provider: UInt8, _ environment: UInt8, _ token: UnsafePointer<CChar>, _ app: UnsafePointer<CChar>, _ deployment: UnsafePointer<CChar>, _ endpoint: UnsafePointer<CChar>) -> Int32 {
+        mila_push_registration_validate(provider, environment, token, app, deployment, endpoint).rawValue
+    }
 }
 
 /// Adapter for the stable C ABI exported by `mila-ffi`.
@@ -252,6 +255,13 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         return kind
     }
 
+    /// Validates push metadata in Rust without exposing or retaining the device token.
+    public func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws {
+        guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
+        let status = token.withCString { tokenPtr in appID.withCString { appPtr in deployment.withCString { deploymentPtr in endpoint.withCString { endpointPtr in MilaRustFFI.pushRegistration(provider, environment, tokenPtr, appPtr, deploymentPtr, endpointPtr) } } } }
+        guard status == 0 else { throw MilaFFIError.unavailable }
+    }
+
     public func decodeSnapshot(_ data: Data, host: String, port: UInt16? = nil) throws -> [MilaSnapshotMachine] {
         _ = try validateSnapshot(data, host: host, port: port)
         let decoder = JSONDecoder()
@@ -330,12 +340,14 @@ public protocol MilaFFIAdapter: Sendable {
     func refreshSnapshot() async throws -> MilaValidatedSnapshot
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind
+    func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws
 }
 
 public extension MilaFFIAdapter {
     func refreshSnapshot() async throws -> MilaValidatedSnapshot { throw MilaFFIError.unavailable }
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind { _ = line; throw MilaFFIError.unavailable }
+    func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws { throw MilaFFIError.unavailable }
 }
 
 /// Explicit placeholder until generated UniFFI bindings are linked by the host application.
