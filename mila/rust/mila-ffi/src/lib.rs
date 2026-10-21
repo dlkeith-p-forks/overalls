@@ -793,7 +793,9 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeThreadC
     };
     let mut kind = MilaThreadCommandKind::Unknown;
     let status = unsafe { mila_thread_command_kind(input.as_ptr(), &mut kind) };
-    if status != MilaFfiStatus::Ok { return -1; }
+    if status != MilaFfiStatus::Ok {
+        return -1;
+    }
     kind as jni::sys::jint
 }
 
