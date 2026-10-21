@@ -60,7 +60,7 @@ android {
         ndk { abiFilters += rustAbis }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    sourceSets.getByName("main").jniLibs.srcDir(rustJniOutput)
+    sourceSets.getByName("main").jniLibs.srcDir(rustJniOutput.get().asFile)
 }
 
 /**

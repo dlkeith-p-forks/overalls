@@ -1,5 +1,5 @@
 ---
-digest: 3d1d865677618b2edb05ebb3a54a0f21aa852504cf625a2d4b5dbcf13e698345
+digest: fa50521f5b5328c1b5f4ea1810bea1057e205034a3cbef8e4ba660ab76fb8c85
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android native build and test wiring preserves existing documented behavior; native verification evidence is scoped to CI.
+Use a concrete generated JNI directory with the Android SourceSet API; this preserves the Rust packaging contract under Gradle 9.
