@@ -7428,14 +7428,14 @@ true
 
 ## `services.overallsLogStore.entryMemoryMiB`
 
-No additional description is declared by the module.
+Memory budget for the authenticated HAProxy fleet entry under backlog recovery.
 
 Type: `positive integer, meaning >0`.
 
 Default:
 
 ```nix
-64
+256
 ```
 
 
