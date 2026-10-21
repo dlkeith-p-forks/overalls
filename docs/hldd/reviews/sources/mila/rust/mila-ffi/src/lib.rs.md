@@ -1,13 +1,13 @@
 ---
-digest: f866707aafc04b3bf59e750394873627fcc62e77c3a253ab40ff2c15c1ca533f
-disposition: no-impact
+digest: 8a613a42df924dfa1a294b4f3e786cbe8c6c72a20aa815672aec6ffa0ddfab84
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-ffi/src/lib.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 9d53735606120890645c1514b7f93d810ff3030f715dcd9b2f10eed0a277ca1c
+  marshall/priv/hldd/08-interactive.md: 4dceafb03617f6902484fe6a4fa59cd80eb6c7e1e53e4f3e128e8fc2dd7f872f
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
+  marshall/priv/hldd/19-coverage.md: 70a890201542303c5e959f703f2ed7304fa2c9160682226780d6a6b0760be345
   marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
   marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
   marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed native FFI and UI parity slice; bounded Rust policy remains authoritative and platform wrappers expose validated summaries only.
+Added live session FFI contract, callback custody boundary, bounded handle/read behavior and loopback evidence

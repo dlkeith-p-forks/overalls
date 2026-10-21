@@ -1779,3 +1779,17 @@ SHA-256 ECDSA signing with 64-byte `r || s` results for the Rust signer callback
 It has no software-key fallback. Swift tests cover hostname rejection and DER
 conversion, but signed-device Secure Enclave execution and live-session wiring
 remain unverified; unsigned CI cannot establish hardware key custody.
+
+### Live native session FFI
+
+The shared `mila-ffi` library now exposes a bounded live session ABI backed by
+`mila-session` and certificate-pinned Porsche SSH. Native callers supply an
+OpenSSH P-256 public key and a synchronous callback that signs only during
+certificate-authenticated connect; the callback returns fixed-width `r||s` and
+never exports a private key. Opaque handles are bounded and non-reusable;
+refresh/pagination are explicit I/O operations, while listing and complete
+snapshot copies are bounded sizing-aware reads. Close removes the handle before
+transport teardown. Real loopback SSH tests cover connect, listing, snapshot,
+refused refresh and stale-handle refusal. This establishes Rust FFI/session
+behavior only; platform callback/key-custody integration and production
+multi-device acceptance remain open.

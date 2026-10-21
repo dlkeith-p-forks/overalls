@@ -1154,13 +1154,19 @@ dependencies = [
 name = "mila-ffi"
 version = "0.1.0"
 dependencies = [
+ "base64",
  "hegeltest",
  "jni",
  "mila-model",
  "mila-protocol",
  "mila-runtime",
+ "mila-session",
  "mila-transport",
+ "p256 0.13.2",
+ "rand",
+ "russh",
  "serde_json",
+ "tokio",
  "uuid",
 ]
 

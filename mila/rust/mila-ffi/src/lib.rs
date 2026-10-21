@@ -3,6 +3,8 @@
 //! The first migration slice exposes validation only. Ownership of all strings remains
 //! with the caller; no secret or private key crosses this boundary.
 
+pub mod session;
+
 use mila_model::MilaRoute;
 use mila_runtime::MachineSnapshot;
 use mila_runtime::{PokeEnvelope, PushEnvironment, PushProvider, PushRegistrationRequest};

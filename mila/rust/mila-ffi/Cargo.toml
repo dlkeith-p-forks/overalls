@@ -8,6 +8,8 @@ license.workspace = true
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 [dependencies]
+mila-session = { path = "../mila-session" }
+tokio = { version = "1", features = ["rt-multi-thread", "net", "time"] }
 mila-model = { path = "../mila-model" }
 mila-protocol = { path = "../mila-protocol" }
 mila-transport = { path = "../mila-transport" }
@@ -17,4 +19,8 @@ serde_json.workspace = true
 jni = "0.21"
 
 [dev-dependencies]
+base64 = "0.22"
+rand = "0.10"
+p256.workspace = true
+russh = { version = "=0.64.1", default-features = false, features = ["ring"] }
 hegeltest.workspace = true

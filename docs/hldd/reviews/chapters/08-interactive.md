@@ -1,5 +1,5 @@
 ---
-digest: d396623b91d0aa1a5ca4a683a5795e03f704f9ad36f4f2028c3d0fc2e1827dbf
+digest: 0000000000000000000000000000000000000000000000000000000000000000
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Added Android native per-deployment Keystore P-256 custody adapter and tests; documented nonexportability and remaining device/session gaps.
+Added Android native per-deployment Keystore P-256 custody adapter and tests; documented nonexportability and remaining device/session gaps. Live session FFI contract, callback custody boundary, bounded handle/read behavior and loopback evidence are recorded in the current chapter.

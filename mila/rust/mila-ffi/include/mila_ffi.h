@@ -58,6 +58,31 @@ MilaFfiStatus mila_snapshot_validate(const uint8_t *bytes, size_t length,
                                      const char *host, uint16_t port,
                                      uint8_t has_port, MilaSnapshotSummary *out_summary);
 
+/* Blocking live sessions: invoke on a worker thread, never from a Tokio runtime.
+ * A callback signs SHA256(message) with its non-exportable P256 deployment key,
+ * writes 64 bytes r||s, and returns 0. It/context are borrowed only during connect.
+ * public_key is an OpenSSH ecdsa-sha2-nistp256 string. Inputs are length-bounded,
+ * not NUL terminated. Trust must already be pinned by the native deployment store.
+ * Return codes: 0 success, -3 small buffer, -4 invalid, -10 stale handle,
+ * -11 transport/refusal, -12 unloaded/incomplete, -13 busy, -14 internal failure.
+ */
+typedef int32_t (*MilaSessionSign)(uintptr_t context, const uint8_t *message,
+                                  size_t length, uint8_t *signature64);
+int32_t mila_session_connect(const uint8_t *trust, size_t trust_len,
+    const uint8_t *host, size_t host_len, const uint8_t *public_key,
+    size_t public_key_len, uint16_t port, uint32_t timeout_ms,
+    MilaSessionSign signer, uintptr_t context, uint64_t *out_handle);
+int32_t mila_session_read_machines(uint64_t handle, uint8_t more);
+/* Copy operations never issue a command. Null output/zero capacity queries size.
+ * JSON is UTF-8 without NUL termination; written receives the required length.
+ * Listing is {machines:[validated snapshot rows],has_more:boolean}.
+ */
+int32_t mila_session_listing(uint64_t handle, uint8_t *output, size_t capacity,
+    size_t *written);
+int32_t mila_session_snapshot(uint64_t handle, uint64_t saved_at,
+    uint8_t *output, size_t capacity, size_t *written);
+int32_t mila_session_close(uint64_t handle);
+
 #ifdef __cplusplus
 }
 #endif

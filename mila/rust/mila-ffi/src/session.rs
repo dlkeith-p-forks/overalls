@@ -1,0 +1,282 @@
+//! Blocking native session entry points. Call from a native worker thread.
+use mila_session::ApplicationSession;
+use mila_transport::{
+    decode_trust_document,
+    ssh::{DeviceSigner, SshError},
+};
+use std::{
+    collections::HashMap,
+    sync::{Arc, Mutex, OnceLock},
+    time::{Duration, SystemTime, UNIX_EPOCH},
+};
+
+/// Status codes never include command bodies, signatures or credentials.
+#[repr(i32)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SessionStatus {
+    Ok = 0,
+    Invalid = -4,
+    SmallBuffer = -3,
+    InvalidHandle = -10,
+    Transport = -11,
+    NotLoaded = -12,
+    Busy = -13,
+    Internal = -14,
+}
+/// Callback runs synchronously during connect; sign SHA256(message) with P256.
+/// Write exactly 64 bytes of big-endian r||s and return zero for success.
+pub type SignCallback = unsafe extern "C" fn(usize, *const u8, usize, *mut u8) -> i32;
+struct CallbackSigner {
+    callback: SignCallback,
+    context: usize,
+}
+impl DeviceSigner for CallbackSigner {
+    async fn sign(&mut self, message: &[u8]) -> Result<[u8; 64], SshError> {
+        let mut signature = [0; 64];
+        // SAFETY: connect caller guarantees the callback/context for its duration.
+        if unsafe {
+            (self.callback)(
+                self.context,
+                message.as_ptr(),
+                message.len(),
+                signature.as_mut_ptr(),
+            )
+        } != 0
+        {
+            return Err(SshError::Signature);
+        }
+        Ok(signature)
+    }
+}
+struct Entry {
+    session: ApplicationSession,
+}
+#[derive(Default)]
+struct Registry {
+    next: u64,
+    entries: HashMap<u64, Arc<Mutex<Option<Entry>>>>,
+}
+static REGISTRY: OnceLock<Mutex<Registry>> = OnceLock::new();
+static RUNTIME: OnceLock<Result<tokio::runtime::Runtime, std::io::Error>> = OnceLock::new();
+fn registry() -> &'static Mutex<Registry> {
+    REGISTRY.get_or_init(Mutex::default)
+}
+fn runtime() -> Result<&'static tokio::runtime::Runtime, SessionStatus> {
+    if tokio::runtime::Handle::try_current().is_ok() {
+        return Err(SessionStatus::Busy);
+    }
+    RUNTIME
+        .get_or_init(|| {
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+        })
+        .as_ref()
+        .map_err(|_| SessionStatus::Internal)
+}
+fn guarded(f: impl FnOnce() -> Result<(), SessionStatus>) -> SessionStatus {
+    std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)).map_or(SessionStatus::Internal, |r| {
+        r.err().unwrap_or(SessionStatus::Ok)
+    })
+}
+unsafe fn bytes<'a>(ptr: *const u8, len: usize, max: usize) -> Result<&'a [u8], SessionStatus> {
+    if ptr.is_null() || len == 0 || len > max {
+        return Err(SessionStatus::Invalid);
+    }
+    Ok(std::slice::from_raw_parts(ptr, len))
+}
+fn entry(handle: u64) -> Result<Arc<Mutex<Option<Entry>>>, SessionStatus> {
+    registry()
+        .lock()
+        .map_err(|_| SessionStatus::Internal)?
+        .entries
+        .get(&handle)
+        .cloned()
+        .ok_or(SessionStatus::InvalidHandle)
+}
+unsafe fn output(
+    data: &[u8],
+    out: *mut u8,
+    capacity: usize,
+    written: *mut usize,
+) -> Result<(), SessionStatus> {
+    if written.is_null() {
+        return Err(SessionStatus::Invalid);
+    }
+    *written = data.len();
+    if capacity < data.len() {
+        return Err(SessionStatus::SmallBuffer);
+    }
+    if out.is_null() {
+        return Err(SessionStatus::Invalid);
+    }
+    std::ptr::copy_nonoverlapping(data.as_ptr(), out, data.len());
+    Ok(())
+}
+/// @cc [owner:ghuntley,label:security] mila-session-ffi-authentication
+/// Connect MUST validate a bounded trust document and host certificate before invoking
+/// the external signer. It MUST NOT retain callback context after returning or expose private keys.
+/// # Safety
+/// Input pointers reference their declared readable lengths; out_handle is writable.
+/// Callback and context remain valid until return and must not unwind or retain message pointers.
+/// The caller supplies its previously pinned trust document, not unreviewed replacement trust.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_connect(
+    trust: *const u8,
+    trust_len: usize,
+    host: *const u8,
+    host_len: usize,
+    public_key: *const u8,
+    public_key_len: usize,
+    port: u16,
+    timeout_ms: u32,
+    callback: Option<SignCallback>,
+    context: usize,
+    out_handle: *mut u64,
+) -> SessionStatus {
+    guarded(|| {
+        if out_handle.is_null() {
+            return Err(SessionStatus::Invalid);
+        }
+        *out_handle = 0;
+        if port == 0 || !(1..=120_000).contains(&timeout_ms) {
+            return Err(SessionStatus::Invalid);
+        }
+        let host =
+            std::str::from_utf8(bytes(host, host_len, 180)?).map_err(|_| SessionStatus::Invalid)?;
+        let public = std::str::from_utf8(bytes(public_key, public_key_len, 1024)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map_err(|_| SessionStatus::Internal)?
+            .as_secs();
+        let trust = decode_trust_document(bytes(trust, trust_len, 8192)?, host, now)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let signer = CallbackSigner {
+            callback: callback.ok_or(SessionStatus::Invalid)?,
+            context,
+        };
+        let runtime = runtime()?;
+        let session = runtime
+            .block_on(ApplicationSession::connect(
+                trust,
+                port,
+                public,
+                signer,
+                Duration::from_millis(timeout_ms.into()),
+            ))
+            .map_err(|_| SessionStatus::Transport)?;
+        let mut registry = registry().lock().map_err(|_| SessionStatus::Internal)?;
+        if registry.entries.len() >= 64 {
+            return Err(SessionStatus::Busy);
+        }
+        let id = registry
+            .next
+            .checked_add(1)
+            .ok_or(SessionStatus::Internal)?;
+        registry.next = id;
+        registry
+            .entries
+            .insert(id, Arc::new(Mutex::new(Some(Entry { session }))));
+        *out_handle = id;
+        Ok(())
+    })
+}
+/// Refresh (more=0) or continue (more=1) a validated machine listing.
+/// Use listing separately to copy results without repeating network operations.
+#[no_mangle]
+pub extern "C" fn mila_session_read_machines(handle: u64, more: u8) -> SessionStatus {
+    guarded(|| {
+        if more > 1 {
+            return Err(SessionStatus::Invalid);
+        }
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        runtime
+            .block_on(async {
+                if more == 1 {
+                    session.more_machines().await
+                } else {
+                    session.refresh_machines().await
+                }
+            })
+            .map_err(|_| SessionStatus::Transport)?;
+        Ok(())
+    })
+}
+/// Copy validated display JSON: {"machines":[snapshot rows],"has_more":bool}.
+/// # Safety
+/// out references capacity writable bytes; written is writable. Null out with zero
+/// capacity queries required size and returns SmallBuffer. No NUL terminator is added.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_listing(
+    handle: u64,
+    out: *mut u8,
+    capacity: usize,
+    written: *mut usize,
+) -> SessionStatus {
+    guarded(|| {
+        let entry = entry(handle)?;
+        let locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let listing = locked
+            .as_ref()
+            .ok_or(SessionStatus::InvalidHandle)?
+            .session
+            .listing()
+            .ok_or(SessionStatus::NotLoaded)?;
+        let data = serde_json::to_vec(
+            &serde_json::json!({"machines": listing.machines(), "has_more": listing.has_more()}),
+        )
+        .map_err(|_| SessionStatus::Internal)?;
+        output(&data, out, capacity, written)
+    })
+}
+/// Copy the existing offline snapshot schema; incomplete/unloaded listing refuses.
+/// # Safety
+/// out references capacity writable bytes and written is writable, as for listing.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_snapshot(
+    handle: u64,
+    saved_at: u64,
+    out: *mut u8,
+    capacity: usize,
+    written: *mut usize,
+) -> SessionStatus {
+    guarded(|| {
+        let entry = entry(handle)?;
+        let locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let snapshot = locked
+            .as_ref()
+            .ok_or(SessionStatus::InvalidHandle)?
+            .session
+            .snapshot(saved_at)
+            .map_err(|_| SessionStatus::Invalid)?
+            .ok_or(SessionStatus::NotLoaded)?;
+        let data = snapshot.encode().map_err(|_| SessionStatus::Invalid)?;
+        output(&data, out, capacity, written)
+    })
+}
+/// @cc [owner:ghuntley,label:security] mila-session-ffi-handle-lifetime
+/// Closed handles MUST never be reused. Close MUST remove authority before network
+/// disconnect; concurrent operations either finish before close or refuse stale handles.
+#[no_mangle]
+pub extern "C" fn mila_session_close(handle: u64) -> SessionStatus {
+    guarded(|| {
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let entry = locked.take().ok_or(SessionStatus::InvalidHandle)?;
+        registry()
+            .lock()
+            .map_err(|_| SessionStatus::Internal)?
+            .entries
+            .remove(&handle);
+        runtime
+            .block_on(entry.session.close())
+            .map_err(|_| SessionStatus::Transport)?;
+        Ok(())
+    })
+}
