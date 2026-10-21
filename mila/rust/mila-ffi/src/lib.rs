@@ -493,6 +493,66 @@ pub enum MilaThreadCommandKind {
     Read = 9,
 }
 
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum MilaMachineCommandKind {
+    Unknown = 0,
+    List = 1,
+    Show = 2,
+    New = 3,
+    Resize = 4,
+    Start = 5,
+    Stop = 6,
+    Pause = 7,
+    Resume = 8,
+    Delete = 9,
+    ShareAdd = 10,
+    ShareRemove = 11,
+    WebShow = 12,
+    WebSet = 13,
+}
+
+/// Projects a parsed machine-management command to a closed operation tag.
+///
+/// # Safety
+/// `line` and `out_kind` must be valid non-null pointers; `line` must be a
+/// NUL-terminated UTF-8 string and `out_kind` writable for one value.
+#[no_mangle]
+pub unsafe extern "C" fn mila_machine_command_kind(
+    line: *const c_char,
+    out_kind: *mut MilaMachineCommandKind,
+) -> MilaFfiStatus {
+    if line.is_null() || out_kind.is_null() {
+        return MilaFfiStatus::NullInput;
+    }
+    let line = match CStr::from_ptr(line).to_str() {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let command = match mila_protocol::Command::parse(line) {
+        Ok(command) => command.command,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let kind = match command.as_str() {
+        "ls" => MilaMachineCommandKind::List,
+        "show" => MilaMachineCommandKind::Show,
+        "new" => MilaMachineCommandKind::New,
+        "resize" => MilaMachineCommandKind::Resize,
+        "start" => MilaMachineCommandKind::Start,
+        "stop" => MilaMachineCommandKind::Stop,
+        "pause" => MilaMachineCommandKind::Pause,
+        "resume" | "unpause" => MilaMachineCommandKind::Resume,
+        "rm" => MilaMachineCommandKind::Delete,
+        "share add" => MilaMachineCommandKind::ShareAdd,
+        "share remove" => MilaMachineCommandKind::ShareRemove,
+        "web show" => MilaMachineCommandKind::WebShow,
+        "web set" => MilaMachineCommandKind::WebSet,
+        _ => return MilaFfiStatus::InvalidRequest,
+    };
+    *out_kind = kind;
+    MilaFfiStatus::Ok
+}
+
 /// Parses a bounded Porsche command and projects only its catalogued thread operation.
 /// The caller retains ownership of the command bytes; no argument or payload is returned.
 ///
@@ -850,11 +910,11 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeMachine
 #[cfg(test)]
 mod tests {
     use super::{
-        mila_ffi_get_version, mila_ffi_version, mila_terminal_attach_validate,
-        mila_terminal_input_validate, mila_terminal_resize_validate, mila_terminal_validate,
-        mila_thread_command_kind, mila_watch_event_kind, mila_watch_validate_filters,
-        MilaFfiAbiVersion, MilaFfiStatus, MilaSnapshotSummary, MilaThreadCommandKind,
-        MilaWatchEventKind,
+        mila_ffi_get_version, mila_ffi_version, mila_machine_command_kind,
+        mila_terminal_attach_validate, mila_terminal_input_validate, mila_terminal_resize_validate,
+        mila_terminal_validate, mila_thread_command_kind, mila_watch_event_kind,
+        mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus, MilaMachineCommandKind,
+        MilaSnapshotSummary, MilaThreadCommandKind, MilaWatchEventKind,
     };
     use mila_runtime::MachineSnapshot;
 
@@ -933,6 +993,19 @@ mod tests {
             unsafe { mila_thread_command_kind(unknown.as_ptr(), &mut kind) },
             MilaFfiStatus::InvalidRequest
         );
+    }
+
+    #[test]
+    fn projects_machine_management_catalog_without_payloads() {
+        for (line, expected) in [("ls", MilaMachineCommandKind::List)] {
+            let line = std::ffi::CString::new(line).unwrap();
+            let mut kind = MilaMachineCommandKind::Unknown;
+            assert_eq!(
+                unsafe { mila_machine_command_kind(line.as_ptr(), &mut kind) },
+                MilaFfiStatus::Ok
+            );
+            assert_eq!(kind, expected);
+        }
     }
 
     #[test]
