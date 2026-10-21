@@ -131,6 +131,10 @@ public enum MilaFFIError: Error, Equatable, Sendable {
     case actionNotAllowed
 }
 
+public enum MilaThreadCommandKind: Int32, CaseIterable, Sendable {
+    case unknown = 0, list, show, turns, prompt, answer, planApprove, planRevise, mode, read
+}
+
 private enum MilaRustFFI {
     static func getVersion(_ version: UnsafeMutablePointer<MilaFfiAbiVersion>) -> Int32 {
         mila_ffi_get_version(version).rawValue
@@ -149,6 +153,12 @@ private enum MilaRustFFI {
     }
     static func command(_ action: UnsafePointer<CChar>, _ machine: UnsafePointer<CChar>, _ request: UnsafePointer<CChar>?, _ output: MilaRouteOutput) -> Int32 {
         mila_session_command_format(action, machine, request, output).rawValue
+    }
+    static func threadKind(_ line: UnsafePointer<CChar>, _ out: UnsafeMutablePointer<MilaThreadCommandKind>) -> Int32 {
+        var raw = MilaFFIShim.MilaThreadCommandKind(rawValue: 0)
+        let status = mila_thread_command_kind(line, &raw).rawValue
+        out.pointee = MilaThreadCommandKind(rawValue: raw.rawValue) ?? .unknown
+        return status
     }
 }
 
@@ -234,6 +244,14 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         return String(decoding: output.prefix(written), as: UTF8.self)
     }
 
+    public func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind {
+        guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
+        var kind = MilaThreadCommandKind.unknown
+        let status = line.withCString { MilaRustFFI.threadKind($0, &kind) }
+        guard status == 0 else { throw MilaFFIError.unavailable }
+        return kind
+    }
+
     public func decodeSnapshot(_ data: Data, host: String, port: UInt16? = nil) throws -> [MilaSnapshotMachine] {
         _ = try validateSnapshot(data, host: host, port: port)
         let decoder = JSONDecoder()
@@ -311,11 +329,13 @@ public protocol MilaFFIAdapter: Sendable {
     func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse
     func refreshSnapshot() async throws -> MilaValidatedSnapshot
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
+    func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind
 }
 
 public extension MilaFFIAdapter {
     func refreshSnapshot() async throws -> MilaValidatedSnapshot { throw MilaFFIError.unavailable }
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
+    func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind { _ = line; throw MilaFFIError.unavailable }
 }
 
 /// Explicit placeholder until generated UniFFI bindings are linked by the host application.

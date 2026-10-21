@@ -24,7 +24,7 @@ public struct MilaNativeRootView: View {
                 switch selection {
                 case .machines: MachinesView(machines: machines) { selection = .machine(id: $0) }
                 case .machine(let id): MachineDetailView(machine: machines.first { $0.id == id }, adapter: adapter)
-                case .threads: ThreadsView(select: { selection = .thread(id: $0) })
+                case .threads: ThreadsView(adapter: adapter, select: { selection = .thread(id: $0) })
                 case .thread(let id): ThreadDetailView(id: id)
                 case .settings: SettingsView()
                 }
@@ -81,7 +81,25 @@ private struct MachineDetailView: View {
     }
 
 }
-private struct ThreadsView: View { let select: (UUID) -> Void; var body: some View { ContentUnavailableView("No threads", systemImage: "bubble.left", description: Text("Threads are loaded from the connected runtime.")) } }
+private struct ThreadsView: View {
+    let adapter: any MilaFFIAdapter
+    let select: (UUID) -> Void
+    @State private var status = ""
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Threads").font(.title)
+            Text("Commands are classified by Rust before execution.").font(.caption).foregroundStyle(.secondary)
+            ForEach(["threads list", "threads read"], id: \.self) { command in
+                Button(command) {
+                    do { status = String(describing: try adapter.classifyThreadCommand(command)) }
+                    catch { status = "Unavailable" }
+                }
+            }
+            Text(status).font(.caption)
+            ContentUnavailableView("No threads", systemImage: "bubble.left", description: Text("Connect to a deployment to load threads."))
+        }.padding()
+    }
+}
 private struct ThreadDetailView: View { let id: UUID; var body: some View { Text("Thread \(id.uuidString)").padding() } }
 private struct SettingsView: View { var body: some View { Form { Text("Runtime and deployment settings are managed by the core library.").foregroundStyle(.secondary) }.navigationTitle("Settings") } }
 
