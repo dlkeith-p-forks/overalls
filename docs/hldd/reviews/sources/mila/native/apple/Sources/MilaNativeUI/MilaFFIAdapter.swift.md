@@ -1,5 +1,5 @@
 ---
-digest: c6aba2fe29f9c6ce8377d3a6df293fe7470be51c71a5d7010f381e8b8b5f1905
+digest: 738445dcb1a75bb5120e4851d38153f6130b796d20f59bb7b1f964325503f2f1
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple push registration now uses typed provider/environment enums while preserving the Rust validation boundary; no documented behavior or chapter content changed.
+Apple now exposes typed HTTPS web show/set command classification through the existing Rust command catalog; unsafe URLs are rejected before classification.

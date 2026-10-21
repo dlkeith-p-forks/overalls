@@ -146,6 +146,15 @@ public enum MilaThreadCommandKind: Int32, CaseIterable, Sendable {
 }
 public enum MilaMachineCommandKind: Int32, Sendable { case unknown = 0, list, show, new, resize, start, stop, pause, resume, delete, shareAdd, shareRemove, webShow, webSet }
 
+public enum MilaWebCommand: Sendable, Equatable {
+    case show(machineID: UUID)
+    case set(machineID: UUID, url: String)
+}
+
+public enum MilaWebCommandError: Error, Equatable, Sendable { case invalidURL; case rejected }
+
+private extension MilaWebCommand { var isSet: Bool { if case .set = self { return true }; return false } }
+
 private enum MilaRustFFI {
     static func getVersion(_ version: UnsafeMutablePointer<MilaFfiAbiVersion>) -> Int32 {
         mila_ffi_get_version(version).rawValue
@@ -280,6 +289,19 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         guard status == 0 else { throw MilaFFIError.unavailable }
         return kind
     }
+    public func classifyWebCommand(_ command: MilaWebCommand) throws -> MilaMachineCommandKind {
+        let line: String
+        switch command {
+        case .show(let machineID): line = "web show \(machineID.uuidString.lowercased())"
+        case .set(let machineID, let url):
+            guard let parsed = URL(string: url), parsed.scheme == "https", parsed.user == nil, parsed.password == nil, parsed.fragment == nil else { throw MilaWebCommandError.invalidURL }
+            line = "web set \(machineID.uuidString.lowercased()) \(url)"
+        }
+        let kind = try classifyMachineCommand(line)
+        guard kind == (command.isSet ? .webSet : .webShow) else { throw MilaWebCommandError.rejected }
+        return kind
+    }
+
     public func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind {
         guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
         var kind = MilaMachineCommandKind.unknown
@@ -380,6 +402,7 @@ public protocol MilaFFIAdapter: Sendable {
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind
     func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind
+    func classifyWebCommand(_ command: MilaWebCommand) throws -> MilaMachineCommandKind
     func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws
 }
 
@@ -388,6 +411,7 @@ public extension MilaFFIAdapter {
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind { _ = line; throw MilaFFIError.unavailable }
     func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind { _ = line; throw MilaFFIError.unavailable }
+    func classifyWebCommand(_ command: MilaWebCommand) throws -> MilaMachineCommandKind { _ = command; throw MilaFFIError.unavailable }
     func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws { throw MilaFFIError.unavailable }
 }
 

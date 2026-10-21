@@ -1,5 +1,5 @@
 ---
-digest: 9be2bf144a67a91a6e3acb2ba828500d1bcd6d49cb5ee6f14b4c6bd90c3921ec
+digest: 7cd0c585370ae58cb98912f16daeed006d03b2de7e1a81e5b17771b65bfac599
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple XCTest now binds Rust command results before assertions so ABI-unavailable errors reach the existing skip handler; documented behavior is unchanged.
+Apple now exposes typed HTTPS web show/set command classification through the existing Rust command catalog; unsafe URLs are rejected before classification.
