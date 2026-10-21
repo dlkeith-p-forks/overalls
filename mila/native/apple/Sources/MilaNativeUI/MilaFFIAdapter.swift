@@ -131,6 +131,16 @@ public enum MilaFFIError: Error, Equatable, Sendable {
     case actionNotAllowed
 }
 
+public enum MilaPushProvider: UInt8, Sendable {
+    case apple = 0
+    case firebase = 1
+}
+
+public enum MilaPushEnvironment: UInt8, Sendable {
+    case sandbox = 0
+    case production = 1
+}
+
 public enum MilaThreadCommandKind: Int32, CaseIterable, Sendable {
     case unknown = 0, list, show, turns, prompt, answer, planApprove, planRevise, mode, read
 }
@@ -279,6 +289,12 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
     }
 
     /// Validates push metadata in Rust without exposing or retaining the device token.
+    /// The token is borrowed for the call and is never retained by the native layer.
+    public func validatePushRegistration(provider: MilaPushProvider, environment: MilaPushEnvironment, token: String, appID: String, deployment: String, endpoint: String) throws {
+        try validatePushRegistration(provider: provider.rawValue, environment: environment.rawValue, token: token, appID: appID, deployment: deployment, endpoint: endpoint)
+    }
+
+    /// Compatibility entry point for callers decoding persisted provider values.
     public func validatePushRegistration(provider: UInt8, environment: UInt8, token: String, appID: String, deployment: String, endpoint: String) throws {
         guard abiCompatible() else { throw MilaFFIError.incompatibleABI }
         let status = token.withCString { tokenPtr in appID.withCString { appPtr in deployment.withCString { deploymentPtr in endpoint.withCString { endpointPtr in MilaRustFFI.pushRegistration(provider, environment, tokenPtr, appPtr, deploymentPtr, endpointPtr) } } } }

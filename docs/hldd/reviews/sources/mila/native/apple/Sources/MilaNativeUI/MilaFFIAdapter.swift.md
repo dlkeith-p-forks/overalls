@@ -1,5 +1,5 @@
 ---
-digest: 90efe94a13d84d8b001995255075b8a9b7c45bb0e7035cd991c0c917f9c75f8a
+digest: c6aba2fe29f9c6ce8377d3a6df293fe7470be51c71a5d7010f381e8b8b5f1905
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Apple native adapter change: it only wires existing authenticated Rust listing operation; documented behavior and chapter content remain unchanged.
+Apple push registration now uses typed provider/environment enums while preserving the Rust validation boundary; no documented behavior or chapter content changed.

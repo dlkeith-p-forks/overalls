@@ -59,8 +59,20 @@ final class MilaRustLinkTests: XCTestCase {
             } catch {
                 // Expected invalid-command refusal.
             }
-        } catch MilaFFIError.unavailable {
+        } catch MilaFFIError.unavailable, MilaFFIError.incompatibleABI {
             throw XCTSkip("Rust ABI is not linked in this package test environment")
+        }
+    }
+
+    func testTypedPushRegistrationEnumsRejectInvalidMetadata() throws {
+        let adapter = LinkedMilaFFIAdapter()
+        do {
+            try adapter.validatePushRegistration(provider: .apple, environment: .sandbox, token: "short", appID: "com.example.mila", deployment: "mila.example.test", endpoint: "https://mila.example.test/push")
+            XCTFail("short token must be rejected by Rust")
+        } catch MilaFFIError.unavailable, MilaFFIError.incompatibleABI {
+            throw XCTSkip("Rust ABI is not linked in this package test environment")
+        } catch {
+            // Rust validation rejected malformed registration.
         }
     }
 

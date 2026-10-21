@@ -1,5 +1,5 @@
 ---
-digest: e44f40dce5994d7ffc3356db570c63bd9527e54e2fc6e796376c40a1ec0999d3
+digest: 3bfb3073e5cf47e92661457d92a136cd2a354f00a9b499098f94f7fb0c9a01aa
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Apple native command classification and push validation tests; behavior exercises existing Rust FFI contracts without changing documented behavior.
+Apple push registration now uses typed provider/environment enums while preserving the Rust validation boundary; no documented behavior or chapter content changed.
