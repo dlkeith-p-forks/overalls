@@ -9,9 +9,10 @@ surface has a stable shape. It does not modify the Flutter runner.
 entry registers `overalls://` as a URI scheme; incoming URIs arrive through `connect_open`, pass
 through the bounded typed route parser, and select navigation text in the existing window.
 
-`src/adapter.rs` defines the typed `RuntimeAdapter` seam. `UnavailableRuntimeAdapter` fails closed
-until generated UniFFI or C ABI bindings are supplied by a host. Requests and responses contain
-owned byte buffers behind typed operation values; no raw pointers or credentials cross this seam.
+`src/adapter.rs` defines the typed `RuntimeAdapter` seam. `InProcessRuntimeAdapter` routes
+bootstrap and snapshot refresh through the shared Rust FFI validation contracts. Requests and
+responses contain owned byte buffers behind typed operation values; no raw pointers or credentials
+cross this seam. Unsupported input fails closed.
 
 ## Build and test
 
@@ -23,5 +24,5 @@ cargo check --manifest-path mila/native/linux/Cargo.toml
 ```
 
 Install `data/dev.overalls.Mila.desktop` with the executable on the desktop search path to enable
-system URI activation. The scaffold's UI is deliberately small until the host wires the generated
-runtime adapter.
+system URI activation. The scaffold's UI is deliberately small while network/session transport is
+integrated behind the runtime adapter.

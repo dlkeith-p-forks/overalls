@@ -1,5 +1,5 @@
 ---
-digest: 0f7873b1b93c2ea382c08a253cd89b2e279e70030cdfc1643f264f9afcd95cc9
+digest: 785ae22d2280917caefc3f951a5d63b8af7dd4f57f035530679c557e6b6713f7
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -7,12 +7,12 @@ path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaFfiAd
 reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 68866597842c524f9f563a37b978a4464974ca2b21a486c94f60ecd1edd6b2da
+  marshall/priv/hldd/19-coverage.md: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
+  marshall/priv/hldd/20-security.md: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
   marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
 state: present
 version: 2
 ---
 
-Reviewed native adapter compilation fixes; route parsing and formatting preserve existing documented native UI boundaries.
+Reviewed Android route parser and adapter unit coverage; strict URI handling and typed payload ownership preserve native boundary.

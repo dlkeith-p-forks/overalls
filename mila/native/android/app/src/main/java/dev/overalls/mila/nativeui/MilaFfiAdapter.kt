@@ -1,6 +1,7 @@
 package dev.overalls.mila.nativeui
 
 import java.util.UUID
+import java.net.URI
 
 sealed interface MilaRoute {
     data object Machines : MilaRoute
@@ -12,9 +13,12 @@ sealed interface MilaRoute {
 
 /** Parses only navigation routes; query strings and command-like paths are rejected. */
 fun parseMilaRoute(value: String): MilaRoute? {
-    val uri = runCatching { android.net.Uri.parse(value) }.getOrNull() ?: return null
-    if (uri.scheme != "overalls" || uri.encodedQuery != null || uri.fragment != null || uri.authority?.contains('@') == true) return null
-    val parts = uri.pathSegments
+    val uri = runCatching { URI(value) }.getOrNull() ?: return null
+    if (uri.scheme != "overalls" || uri.rawQuery != null || uri.rawFragment != null || uri.rawAuthority?.contains('@') == true) return null
+    val path = uri.rawPath ?: return null
+    if (path.isNotEmpty() && path != "/" && path.contains("//")) return null
+    val parts = path.trim('/').takeIf { it.isNotEmpty() }?.split('/') ?: emptyList()
+    if (parts.any { it.contains('%') }) return null
     val host = uri.host?.lowercase() ?: return null
     return when {
         host == "machines" && parts.isEmpty() -> MilaRoute.Machines

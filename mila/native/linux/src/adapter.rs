@@ -1,6 +1,7 @@
-//! Typed placeholder for generated Rust runtime bindings.
+//! Typed in-process runtime boundary for the Linux presentation host.
 
 use std::ffi::{c_char, CString};
+use std::sync::{Arc, Mutex};
 
 /// Canonicalizes an activation route through the same Rust FFI entry point used by
 /// the other native clients. This keeps Linux from maintaining a second route grammar.
@@ -82,34 +83,105 @@ pub enum RuntimeError {
     InvalidInput,
 }
 
-/// Host applications replace this with generated UniFFI or C-ABI bindings.
 pub trait RuntimeAdapter {
     fn call(&self, request: RuntimeRequest) -> Result<RuntimeResponse, RuntimeError>;
 }
 
-/// Explicit placeholder until a host wires the generated runtime binding.
-#[derive(Clone, Copy, Debug, Default)]
-pub struct UnavailableRuntimeAdapter;
+/// In-process adapter used by the Linux presentation host.
+///
+/// Bootstrap accepts a bounded `overalls://` route and returns its canonical
+/// representation. Refresh accepts a Rust-owned machine snapshot, validates it
+/// through the shared FFI contract, retains it in memory, and returns the
+/// validated bytes. No network or credential operation is exposed by this
+/// adapter; unsupported operations remain fail-closed at the enum boundary.
+#[derive(Clone, Debug)]
+pub struct InProcessRuntimeAdapter {
+    host: CString,
+    port: Option<u16>,
+    snapshot: Arc<Mutex<Option<Vec<u8>>>>,
+}
 
-impl RuntimeAdapter for UnavailableRuntimeAdapter {
+impl InProcessRuntimeAdapter {
+    pub fn new(host: &str, port: Option<u16>) -> Result<Self, RuntimeError> {
+        let host = CString::new(host).map_err(|_| RuntimeError::InvalidInput)?;
+        Ok(Self {
+            host,
+            port,
+            snapshot: Arc::new(Mutex::new(None)),
+        })
+    }
+
+    pub fn snapshot(&self) -> Result<Option<Vec<u8>>, RuntimeError> {
+        self.snapshot
+            .lock()
+            .map(|value| value.clone())
+            .map_err(|_| RuntimeError::Unavailable)
+    }
+}
+
+impl RuntimeAdapter for InProcessRuntimeAdapter {
     fn call(&self, request: RuntimeRequest) -> Result<RuntimeResponse, RuntimeError> {
-        let _ = request.operation();
-        Err(RuntimeError::Unavailable)
+        match request.operation() {
+            RuntimeOperation::Bootstrap => {
+                let route = std::str::from_utf8(request.payload())
+                    .map_err(|_| RuntimeError::InvalidInput)?;
+                Ok(RuntimeResponse::new(canonical_route(route)?.into_bytes()))
+            }
+            RuntimeOperation::Refresh => {
+                let payload = request.payload();
+                let mut summary = mila_ffi::MilaSnapshotSummary {
+                    machine_count: 0,
+                    saved_at: 0,
+                };
+                let status = unsafe {
+                    mila_ffi::mila_snapshot_validate(
+                        payload.as_ptr(),
+                        payload.len(),
+                        self.host.as_ptr(),
+                        self.port.unwrap_or_default(),
+                        u8::from(self.port.is_some()),
+                        &mut summary,
+                    )
+                };
+                if status != mila_ffi::MilaFfiStatus::Ok {
+                    return Err(RuntimeError::InvalidInput);
+                }
+                self.snapshot
+                    .lock()
+                    .map_err(|_| RuntimeError::Unavailable)?
+                    .replace(payload.to_vec());
+                Ok(RuntimeResponse::new(payload.to_vec()))
+            }
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::{
-        canonical_route, RuntimeAdapter, RuntimeError, RuntimeOperation, RuntimeRequest,
-        UnavailableRuntimeAdapter,
+        canonical_route, InProcessRuntimeAdapter, RuntimeAdapter, RuntimeError, RuntimeOperation,
+        RuntimeRequest,
     };
 
     #[test]
-    fn placeholder_fails_closed_without_exposing_payload() {
-        let adapter = UnavailableRuntimeAdapter;
-        let request = RuntimeRequest::new(RuntimeOperation::Bootstrap, [1_u8, 2, 3]);
-        assert_eq!(adapter.call(request), Err(RuntimeError::Unavailable));
+    fn bootstrap_canonicalizes_routes() {
+        let adapter = InProcessRuntimeAdapter::new("fleet.example", None).unwrap();
+        let request = RuntimeRequest::new(
+            RuntimeOperation::Bootstrap,
+            b"overalls://fleet.example/machines".to_vec(),
+        );
+        assert_eq!(
+            adapter.call(request).unwrap().payload(),
+            b"overalls://fleet.example/machines"
+        );
+    }
+
+    #[test]
+    fn refresh_rejects_invalid_snapshot_and_does_not_retain_it() {
+        let adapter = InProcessRuntimeAdapter::new("fleet.example", None).unwrap();
+        let request = RuntimeRequest::new(RuntimeOperation::Refresh, [1_u8, 2, 3]);
+        assert_eq!(adapter.call(request), Err(RuntimeError::InvalidInput));
+        assert_eq!(adapter.snapshot().unwrap(), None);
     }
 
     #[test]
