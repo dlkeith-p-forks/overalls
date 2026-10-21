@@ -48,7 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [protocol, marshall, lilly, audi, brady, ziggy, porsche, galileo, enrico, susan]
+        project: [protocol, marshall, lilly, audi, brady, ziggy, porsche, galileo, enrico, peach, susan]
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v9
         with:

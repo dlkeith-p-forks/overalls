@@ -1,5 +1,5 @@
 ---
-digest: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
+digest: 4df19acabce66188a13a367acae5fd2d8dabd1c5c952d8d3e1cd1c08b448f15d
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed ADR-0250, gate, migration, YAML parser, maintenance skill and contributor workflow. Chapter 17 describes independent source/chapter currency, tombstones and selected-path reviews. Historical scenario links now point to the split ledger without changing their execution claims.
+Peach rewritten: strict config and private credential loading, Events catalog and redaction, HTTP admission refusing unknown paths, methods, queries and foreign or duplicated bindings before control, guest ID match and no-store responses; chapter 10 describes admission and refusal statuses, chapter 20 the recorded Plug and fleet evidence.

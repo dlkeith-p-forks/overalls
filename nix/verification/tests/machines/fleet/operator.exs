@@ -381,6 +381,13 @@ defmodule FleetOperator do
     Map.take(result, [:host_id, :credential_id]) |> Map.put(:issued, true)
   end
 
+  def run(%{"action" => "peach-enroll", "host_id" => host, "output" => output}) do
+    true = OverallsProtocol.uuid?(host)
+    true = String.starts_with?(output, "/var/lib/overalls-fleet/peach-")
+    {:ok, result} = Marshall.Operations.Peach.rotate(host, 14_400, output)
+    Map.take(result, [:host_id, :credential_id]) |> Map.put(:issued, true)
+  end
+
   def run(
         %{
           "action" => "galileo-configure-direct",

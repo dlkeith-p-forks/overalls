@@ -542,19 +542,26 @@ and the [multi-OS review](repo:docs/architecture/reviews/2026-10-16-multi-os-gue
 
 The private frontend routes `reflection.internal` to Peach's Unix socket.
 The declared module runs as the unprivileged `peach` user with a private runtime
-directory, dedicated host-bound Marshall credential and CA delivered as systemd
-credentials. It depends on Lilly for the local host identity. Peach is optional
+directory. Its dedicated host-bound Marshall credential arrives in the `peach`
+SecretSpec bundle (`PEACH_CREDENTIAL`), and startup copies it and the control CA
+into a 0700 `/run/peach/credentials` directory. Peach reads the local host
+identity from the Lilly module but does not require `lilly.service` to run, and
+its outage never gates guest execution. Only Audi joins `peach-proxy`, the group
+that may connect to the 0660 `/run/peach/reflection.sock`. Peach is optional
 beside `audiPrivate`: disabled Peach produces a null backend socket, and
-`reflection.internal` refuses before guest authority is requested. Enabling it
-requires a bounded canonical Unix-socket path. Mandatory Lilly, Ziggy and Galileo
-dependencies remain. Fleet enablement, socket access and credential lifetime,
-and complete native guest journeys remain separate acceptance work.
+`reflection.internal` refuses before guest authority is requested.
 
-Before enabling reflection, reissue the private leaf through the existing offline
-issuer custody with the fixed `reflection.internal` SAN. Read-only inspection
-found only `llm.internal` and `*.integration.internal` on deployed leaves. Current
+Issue a host's credential on the control-plane host with
+`overalls-marshall-enrollment peach-rotate HOST TTL_SECONDS OUTPUT_FILE`, check
+it with `peach-verify OUTPUT_FILE` and retire it with `peach-revoke HOST`. Encrypt
+the token into `secrets/HOST-peach.enc.json` (declared in the host inventory),
+then set `services.peach.enable` and `secretsFile`.
+
+Guest TLS for reflection also needs the private leaf reissued through the existing
+offline issuer custody with the fixed `reflection.internal` SAN. Until then the
+service runs, but guests that verify the hostname refuse the connection. Current
 private health checks validate `llm.internal`; their success does not establish
-reflection hostname verification. Disabled Peach requires no certificate change.
+reflection hostname verification.
 
 Marshall's serving, migration, operator and pre-start release commands use the
 same module-selected mail environment. The GitHub restore-credential invalidation

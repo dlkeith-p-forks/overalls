@@ -56,7 +56,7 @@ database or retained snapshot authority.
 | --- | --- |
 | Identity | Audi supplies the trusted private-service binding; guest-supplied host or VM fields cannot establish identity. Peach requires its configured host. |
 | Authorization | Dedicated Peach credentials admit only the Peach control service. Compute/Audi credentials and ordinary user access to credential rows or versions refuse. |
-| Transport | Private TLS routing and the local Peach socket preserve the binding; the packaged service loads its control credential and CA through systemd credentials. Tokens remain outside the Nix store and diagnostics. Enabled reflection requires offline leaf reissue with `reflection.internal`; current deployed leaf SANs and `llm.internal` health do not establish reflection TLS. |
+| Transport | Private TLS routing and the local Peach socket preserve the binding. Only Audi, through `peach-proxy`, can connect to the 0660 socket. The packaged service copies its control credential and CA from systemd credentials into a 0700 runtime directory, and refuses group- or world-readable credential files. Tokens remain outside the Nix store and diagnostics. Hostname-verified reflection TLS requires the private leaf reissued with `reflection.internal`; `llm.internal` health does not establish it. |
 | Execution | Marshall checks the current host, placement, epoch and completed start operation. Stale, stopped, relocated or retired executions receive unavailable rather than a retained projection. |
 | Isolation | Responses contain header names and kinds, without values or secrets. Same-host native network isolation still requires executed machine evidence. |
 | Storage | Marshall stores only the random secret digest; rotation serializes on the host, revokes the previous credential and retains secret-free PaperTrail versions. Peach cannot read PostgreSQL directly. |
@@ -66,9 +66,13 @@ The focused 40-test Marshall run records credential rotation/revocation and
 foreign-user refusal in local database fixtures; the native refusal fixture
 remains unexecuted. The recorded focused protocol run covers 100 bounded comment
 cases; Audi's 15-test decoder/refusal run and disabled-Peach Nix evaluation cover
-optional rollout only. The current Peach HTTP-named test exercises only the projection
-codec. Successful Peach HTTP/guest projection and generated stale/expired histories
-remain gaps, and the declared fleet does not yet enable Peach.
+optional rollout only. Peach's own suite exercises the HTTP Plug against a verified-TLS
+control stub: projection on each path, 404/405/403 refusals before any control
+request, foreign and duplicated bindings, Marshall refusal, outage, a snapshot for
+a different guest, and serving over a Unix socket. The Galileo fleet machine test
+reads the projection from inside a real Firecracker guest through Audi private,
+packaged Peach and real Marshall. Generated stale/expired histories and same-host
+native isolation remain gaps.
 
 ## Agent context and guidance boundaries
 

@@ -1,0 +1,10 @@
+- id: covenant-runtime
+  date: "2026-10-20"
+  decision: "Covenant remains a development and test dependency and never enters a production release."
+  driver: "Contract verification must not acquire runtime authority or alter production dependencies."
+  approved_by: "ghuntley (2026-10-20)"
+  conditions:
+    - text: "Covenant is locked at the 0.2 release line"
+      check: {kind: dep, name: covenant, version: "~> 0.2.0"}
+    - text: "The project runs a supported Elixir release"
+      check: {kind: elixir, version: ">= 1.18.0"}

@@ -87,6 +87,11 @@ apps = %{
     infra: [Enrico.Privacy, Enrico.Events],
     exempt_from_mutation_rule: []
   },
+  "peach" => %{
+    catalog: Peach.Events,
+    infra: [Peach.Privacy, Peach.Events],
+    exempt_from_mutation_rule: []
+  },
   "susan" => %{
     catalog: Susan.Events,
     infra: [Susan.Privacy, Susan.Events],

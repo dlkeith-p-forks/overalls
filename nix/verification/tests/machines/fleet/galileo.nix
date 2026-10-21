@@ -15,11 +15,13 @@ let
       -days 3650 -extfile issuer.ext -out issuer.pem 2>/dev/null
     openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes \
       -subj /CN=integration.internal -keyout $out/private.key -out private.csr 2>/dev/null
-    printf 'subjectAltName=DNS:llm.internal,DNS:*.integration.internal\nextendedKeyUsage=serverAuth\n' > private.ext
+    printf 'subjectAltName=DNS:llm.internal,DNS:reflection.internal,DNS:*.integration.internal\nextendedKeyUsage=serverAuth\n' > private.ext
     openssl x509 -req -in private.csr -CA issuer.pem -CAkey issuer.key -CAcreateserial \
       -days 3650 -extfile private.ext -out leaf.pem 2>/dev/null
     openssl verify -CAfile $out/root.pem -untrusted issuer.pem \
       -verify_hostname ssh.integration.internal leaf.pem >/dev/null
+    openssl verify -CAfile $out/root.pem -untrusted issuer.pem \
+      -verify_hostname reflection.internal leaf.pem >/dev/null
     cat leaf.pem issuer.pem > $out/private.pem
     openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes \
       -subj /CN=origin.galileo.test -keyout $out/origin.key -out origin.csr 2>/dev/null
@@ -54,6 +56,15 @@ in {
         chmod 0400 /run/galileo/credentials/upstream-roots.pem
       '';
     };
+    # @cc [owner:ghuntley,label:verification;security] peach-fleet-explicit-start
+    # Peach is packaged on every fleet Lilly host but starts only after the
+    # Galileo scenario seals a credential issued by the real Marshall domain;
+    # other fleet scenarios see reflection.internal as unavailable.
+    services.peach = {
+      enable = true;
+      secretsFile = "${root}/peach.enc.json";
+    };
+    systemd.services.peach.wantedBy = lib.mkForce [];
     services.audiPrivate = {
       enable = true;
       secretsFile = "${root}/audi-private.enc.json";

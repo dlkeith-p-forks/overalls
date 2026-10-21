@@ -87,6 +87,7 @@
         service-galileo = built.galileo;
         service-enrico = built.enrico;
         service-brady = built.brady;
+        service-peach = built.peach;
         service-susan = built.susan;
         image-susan = built.mkSusanImage (self.rev or self.dirtyRev or "unknown");
         guest-nixos = built.guest;
@@ -158,6 +159,7 @@
         security-ziggy-encrypted-dumps = built.encrypted.ziggy;
         security-galileo-encrypted-dumps = built.encrypted.galileo;
         security-enrico-encrypted-dumps = built.encrypted.enrico;
+        security-peach-encrypted-dumps = built.encrypted.peach;
         security-susan-encrypted-dumps = built.encrypted.susan;
       } // (pkgs.lib.mapAttrs' (name: context:
         pkgs.lib.nameValuePair "antithesis-${name}-context" context
@@ -179,6 +181,7 @@
           ziggy = import ./nix/domains/system/ziggy.nix { packages = built; };
           galileo = import ./nix/domains/system/galileo.nix { packages = built; };
           enrico = import ./nix/domains/system/enrico.nix { packages = built; };
+          peach = import ./nix/domains/system/peach.nix { packages = built; };
           susan = import ./nix/domains/system/susan.nix { packages = built; };
           audi = import ./nix/domains/system/audi.nix { packages = built; };
         };

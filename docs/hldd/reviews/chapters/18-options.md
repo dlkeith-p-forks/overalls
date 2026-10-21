@@ -1,5 +1,5 @@
 ---
-digest: 6fd711c1ab36fdc4283cfa81d25e1a3bb61aec87f25b79d825e1c471939bf64f
+digest: e4159e629673fa07c1348e3c7fc1545c28cf8596e2d0d1313bd363c1ca545f52
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed the Underclass source revision and fixed-output hash update to 39f5766. Chapter 18 identifies the new package default; the Nix service integration and declared authority boundaries are unchanged.
+Peach NixOS module delivers PEACH_CREDENTIAL into a 0700 runtime directory, exposes a 0660 peach-proxy socket joined only by Audi and drops the Lilly unit requirement; the Galileo fleet test issues real credentials and reads reflection from a guest over a fixture leaf carrying reflection.internal. Chapters 13 and 20 describe custody and evidence; 18 is regenerated.

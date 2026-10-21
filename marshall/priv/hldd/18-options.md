@@ -9102,7 +9102,7 @@ Default:
 
 ## `services.peach.controlPlane`
 
-No additional description is declared by the module.
+Verified HTTPS Marshall origin.
 
 Type: `string`.
 
@@ -9115,7 +9115,7 @@ Default:
 
 ## `services.peach.credentialFile`
 
-No additional description is declared by the module.
+Dedicated Peach control credential runtime file.
 
 Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
 
@@ -9128,7 +9128,7 @@ Default:
 
 ## `services.peach.enable`
 
-Whether to enable guest reflection service.
+Whether to enable guest reflection service behind Audi's private frontend.
 
 Type: `boolean`.
 
@@ -9147,7 +9147,7 @@ true
 
 ## `services.peach.hostId`
 
-No additional description is declared by the module.
+Enrolled local Lilly host identity.
 
 Type: `string matching the pattern [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`.
 
@@ -9175,7 +9175,7 @@ Default:
 
 No additional description is declared by the module.
 
-Type: `list of string`.
+Type: `list of string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
 
 Default:
 
@@ -9186,7 +9186,7 @@ Default:
 
 ## `services.peach.secretsFile`
 
-No additional description is declared by the module.
+SOPS document containing PEACH_CREDENTIAL.
 
 Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
 
@@ -9195,7 +9195,7 @@ Default: Required when its service or enclosing record is selected.
 
 ## `services.peach.socket`
 
-No additional description is declared by the module.
+Unix socket Audi's private frontend forwards reflection.internal to.
 
 Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
 

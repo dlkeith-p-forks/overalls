@@ -1,16 +1,12 @@
 ---
-digest: 2f53f560f187e1064b35d11d4b1c9c96dd4244a4f43579bc051298c147ebfb20
-disposition: no-impact
+digest: 3ce306b6531fe05f5a3e933d032309c997035c6ef6ac6b16d0b7b99738469327
+disposition: updated
 kind: chapter
 mapping_digest: null
-migration:
-  deployment:
-    chapter_digest: 9a9e9255eb86fa91f3418b1c398853a745a51fd15f2f5eca5737439f6caf08c2
-    source_digest: 32939571a328dfb45510183c422eecb46bdb38fa777346f23c0fd9cc2bb9c079
 path: marshall/priv/hldd/13-deployment.md
 reviewed_chapters: {}
 state: present
 version: 2
 ---
 
-deployment: Reviewed the Android SDK setup correction; it only makes the native CI job install declared API 36 build inputs and does not alter deployment roles or runtime behavior.
+Peach NixOS module delivers PEACH_CREDENTIAL into a 0700 runtime directory, exposes a 0660 peach-proxy socket joined only by Audi and drops the Lilly unit requirement; the Galileo fleet test issues real credentials and reads reflection from a guest over a fixture leaf carrying reflection.internal. Chapters 13 and 20 describe custody and evidence; 18 is regenerated.

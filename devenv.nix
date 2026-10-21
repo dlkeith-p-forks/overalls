@@ -354,6 +354,15 @@ in
         files = "^(galileo/(lib|config)/.*\\.exs?$|galileo/mix\\.exs$|scripts/check_logging\\.exs$)";
         pass_filenames = false;
       };
+      elixir-logging-peach = {
+        enable = true;
+        name = "logging-check-peach";
+        description = "Enforce the Peach structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs peach";
+        language = "system";
+        files = "^(peach/(lib|config)/.*\\.exs?$|peach/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
       elixir-logging-susan = {
         enable = true;
         name = "logging-check-susan";

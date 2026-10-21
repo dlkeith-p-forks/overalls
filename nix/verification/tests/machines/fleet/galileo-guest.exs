@@ -173,6 +173,26 @@ defmodule FleetGalileoGuest do
     )
   end
 
+  # @cc [owner:ghuntley,label:verification;security] peach-fleet-guest-reflection
+  # The guest MUST read its own projection from https://reflection.internal
+  # through normal private DNS and embedded trust: the guest ID matches, the
+  # built-in integrations are listed, and unknown paths answer 404.
+  defp dispatch(socket, "reflection-ok", vm_id) do
+    true = OverallsProtocol.uuid?(vm_id)
+
+    command(
+      socket,
+      "test \"$(curl --silent --show-error --fail --max-time 15 " <>
+        "https://reflection.internal/guest | jq -r .id)\" = #{vm_id} && " <>
+        "test \"$(curl --silent --show-error --fail --max-time 15 " <>
+        "https://reflection.internal/integrations | jq -r '[.[].name] | index(\"reflection\") != null and index(\"llm\") != null')\" = true && " <>
+        "test \"$(curl --silent --show-error --fail --max-time 15 " <>
+        "https://reflection.internal/ | jq -r '[.paths[].path] | join(\",\")')\" = /guest,/integrations && " <>
+        "test \"$(curl --silent --output /dev/null --write-out '%{http_code}' --max-time 15 " <>
+        "https://reflection.internal/secrets)\" = 404"
+    )
+  end
+
   defp dispatch(socket, "llm-dns", nil) do
     command(socket, "getent hosts llm.internal >/dev/null")
   end

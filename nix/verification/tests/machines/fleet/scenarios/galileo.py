@@ -191,6 +191,30 @@ with subtest("source and peer target are real guests on different enrolled hosts
     assert target_policy["label"]
     target_hostname = str(target_policy["label"]) + ".apps.example.test"
 
+with subtest("Peach projects the running guest through Audi private and real Marshall"):
+    for machine in provisioners:
+        binding = host_bindings[machine.name]
+        token = f"{root}/peach-{machine.name}.token"
+        issued = operator(
+            m1,
+            dict(action="peach-enroll", host_id=binding["host"], output=token),
+        )
+        assert issued["issued"] is True and issued["host_id"] == binding["host"]
+        transfer(m1, token, machine, root + "/peach.token")
+        machine.succeed("fleet-seal-peach")
+        machine.succeed("systemctl start peach.service")
+        machine.wait_for_unit("peach.service")
+        machine.succeed("test -S /run/peach/reflection.sock")
+        machine.succeed('test "$(stat -c %G:%a /run/peach/reflection.sock)" = peach-proxy:660')
+        machine.succeed('test "$(stat -c %a /run/peach/credentials)" = 700')
+    host_for(galileo_source).succeed(
+        "fleet-galileo-guest reflection-ok "
+        + shlex.quote(galileo_source["placement_id"])
+        + " "
+        + shlex.quote(galileo_source["vm_id"]),
+        timeout=120,
+    )
+
 with subtest("attachment denial, grant and detach traverse the complete private path"):
     operator(m1, dict(action="galileo-configure-direct", owner_id=users["stranger_id"]))
     operator(

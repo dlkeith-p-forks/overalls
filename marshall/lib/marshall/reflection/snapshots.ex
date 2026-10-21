@@ -28,8 +28,8 @@ defmodule Marshall.Reflection.Snapshots do
            "image_id" => vm.image_id,
            "generation" => vm.generation,
            "state" => "running",
-           "owner_email" => owner.email,
-           "team_name" => team && team.name,
+           "owner_email" => to_string(owner.email),
+           "team_name" => team && to_string(team.name),
            "node" => %{"id" => host.id, "name" => host.name},
            "labels" => vm.labels,
            "comment" => vm.comment
@@ -77,7 +77,20 @@ defmodule Marshall.Reflection.Snapshots do
   end
 
   defp image(id), do: one(Image, id: id)
-  defp owner(id), do: one(Marshall.Accounts.User, id: id)
+  # @cc [owner:ghuntley,label:security] reflection-owner-internal-lookup
+  # The owner is resolved only through the trusted internal lookup read; the
+  # projection exposes the owner's email and no other account field.
+  defp owner(id) do
+    Marshall.Accounts.User
+    |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
+    |> Ash.Query.filter(id == ^id)
+    |> Ash.read!()
+    |> case do
+      [user] -> {:ok, user}
+      _ -> {:error, :unavailable}
+    end
+  end
+
   defp team(nil), do: {:ok, nil}
   defp team(id), do: one(Marshall.Teams.Team, id: id)
 
@@ -91,7 +104,7 @@ defmodule Marshall.Reflection.Snapshots do
   defp integrations(vm) do
     named =
       Integration
-      |> Ash.Query.filter(archived_at == nil)
+      |> Ash.Query.filter(is_nil(archived_at))
       |> Ash.read!(actor: SystemActor.compute())
       |> Enum.filter(&Ownership.live?/1)
       |> Enum.filter(&eligible?(&1, vm))
@@ -107,7 +120,7 @@ defmodule Marshall.Reflection.Snapshots do
     attached =
       Attachment
       |> Ash.Query.filter(
-        integration_id == ^integration.id and vm_id == ^vm.id and archived_at == nil
+        integration_id == ^integration.id and vm_id == ^vm.id and is_nil(archived_at)
       )
       |> Ash.exists?(actor: SystemActor.compute())
 
@@ -138,14 +151,28 @@ defmodule Marshall.Reflection.Snapshots do
 
     headers =
       IntegrationHeader
-      |> Ash.Query.filter(integration_id == ^integration.id and archived_at == nil)
+      |> Ash.Query.filter(integration_id == ^integration.id)
       |> Ash.read!(actor: SystemActor.compute())
-      |> Enum.map(&%{"name" => &1.name, "kind" => Atom.to_string(&1.kind)})
+      |> Enum.map(&%{"name" => &1.name, "kind" => header_kind(&1)})
       |> Enum.sort_by(&{&1["name"], &1["kind"]})
 
     integration(integration.name, type, url, "curl --fail --silent " <> url <> "/")
     |> Map.put("comment", integration.comment)
     |> Map.put("headers", headers)
+  end
+
+  # @cc [owner:ghuntley,label:security;protocol] reflection-header-kind-projection
+  # Stored header kinds describe how Galileo computes a value. The projection
+  # MUST map them onto the protocol's closed descriptive kinds and never include
+  # the stored value.
+  defp header_kind(%{kind: kind}) when kind in [:bearer, :basic], do: "authorization"
+
+  defp header_kind(%{name: name}) do
+    case String.downcase(name) do
+      "authorization" -> "authorization"
+      "content-type" -> "content_type"
+      _ -> "custom"
+    end
   end
 
   defp integration(name, type, url, help) do

@@ -758,7 +758,7 @@ let
       if [ "$#" = 1 ] && [ "$1" = migrate ]; then
         exec ${packages.marshall}/bin/marshall eval 'Marshall.Operations.Migrate.main()'
       fi
-      if [[ "''${1:-}" = gateway-* || "''${1:-}" = ziggy-* || "''${1:-}" = galileo-* ]]; then
+      if [[ "''${1:-}" = gateway-* || "''${1:-}" = ziggy-* || "''${1:-}" = galileo-* || "''${1:-}" = peach-* ]]; then
         exec ${packages.marshall}/bin/marshall eval 'Marshall.Operations.CLI.main()' "$@"
       fi
       exec ${packages.marshall}/bin/marshall eval 'Code.eval_file("/etc/fleet-operator.exs")' "$@"
@@ -1196,6 +1196,9 @@ let
       '')
       (pkgs.writeShellScriptBin "fleet-seal-galileo" ''
         exec ${pkgs.python3}/bin/python ${./seal-lilly.py} galileo
+      '')
+      (pkgs.writeShellScriptBin "fleet-seal-peach" ''
+        exec ${pkgs.python3}/bin/python ${./seal-lilly.py} peach
       '')
       (pkgs.writeShellScriptBin "fleet-seal-audi-private" ''
         export FLEET_AUDI_PRIVATE_CERTIFICATE=${galileoFixture.pki}/private.pem

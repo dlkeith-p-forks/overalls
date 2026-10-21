@@ -27,8 +27,10 @@ unauthorized executions receive an unavailable response.
 
 Protocol property tests cover bounded metadata and rejection of secret-shaped
 headers. Dedicated credential tests cover rotation, revocation, internal-only
-reads and secret-free audit. These tests are present; recorded native HTTP and
-guest execution remain required before marking this decision implemented.
+reads and secret-free audit. Peach's suite drives its HTTP Plug against a
+verified-TLS control stub, and the Galileo fleet machine test reads the
+projection from a real guest. Hostname-verified production TLS awaits the
+private leaf reissue, so the decision stays partial.
 
 ## Alternatives
 
@@ -43,9 +45,10 @@ private service and must be deployed with the private frontend.
 ## Invariants and verification
 
 Snapshots contain no secret values, are bounded, and are fenced to the current
-execution. Protocol properties exercise bounded metadata. The Peach projection
-fixture does not invoke its HTTP Plug; successful native guest projection and
-current/stale execution histories remain acceptance gaps.
+execution. Protocol properties exercise bounded metadata. Peach refuses unknown
+paths, methods, queries and foreign or duplicated bindings before any control
+request, and never serves a projection after control admission fails or for a
+guest other than the bound VM. Current/stale execution histories remain gaps.
 
 ## Implementation evidence
 
@@ -55,10 +58,13 @@ See [reflection protocol](../../../protocol/lib/overalls_protocol/reflection.ex)
 [credential lifecycle](../../../marshall/lib/marshall/peach/credentials.ex),
 [secret-free audit migration](../../../marshall/priv/repo/migrations/20261018211500_add_peach_credential_versions.exs),
 [credential tests](../../../marshall/test/marshall/peach/credentials_test.exs),
-[Peach HTTP service](../../../peach/lib/peach/http.ex) and
-[packaged NixOS module](../../../nix/domains/system/peach.nix).
-The package/module and test presence do not establish deployed fleet enablement
-or a successful native HTTP projection. Audi permits Peach to remain disabled:
+[Peach HTTP service](../../../peach/lib/peach/http.ex),
+[Peach HTTP tests](../../../peach/test/http_test.exs),
+[operator credential commands](../../../marshall/lib/marshall/operations/peach.ex),
+[packaged NixOS module](../../../nix/domains/system/peach.nix) and the
+[fleet guest journey](../../../nix/verification/tests/machines/fleet/scenarios/galileo.py).
+See the [enablement review](../reviews/2026-10-20-peach-enablement.md) for recorded
+runs and fleet rollout. Audi permits Peach to remain disabled:
 its optional backend socket is null and reflection refuses before requesting
 guest execution authority. Configured sockets must be bounded canonical local
 paths; Lilly, Ziggy and Galileo remain mandatory private-service dependencies.
@@ -66,13 +72,10 @@ paths; Lilly, Ziggy and Galileo remain mandatory private-service dependencies.
 ## Open questions
 
 Recorded property histories for current/stale execution and credential expiry,
-successful packaged guest projection, host loss, and native same-host network
-isolation remain. The declared fleet currently does not enable Peach; enabled
-socket access and packaged credential lifetime still require review.
-The currently deployed private leaf lacks the fixed `reflection.internal` SAN;
-offline leaf reissue and actual hostname-verified guest TLS acceptance are
-required before enabling the service. Disabled Peach requires no certificate
-mutation.
+host loss, and native same-host network isolation remain. The deployed private
+leaf lacks the fixed `reflection.internal` SAN; offline leaf reissue and
+hostname-verified production guest TLS remain before this decision is
+implemented.
 
 ## Related decisions
 

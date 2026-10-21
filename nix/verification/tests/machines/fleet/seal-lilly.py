@@ -19,14 +19,14 @@ def run(arguments: Sequence[str], payload: bytes | None = None) -> bytes:
 
 def main() -> None:
     """@cc [owner:ghuntley,label:verification;security] fleet-issued-credential-sealing
-    Lilly, Ziggy and Galileo documents MUST use independently issued control tokens
+    Lilly, Ziggy, Galileo and Peach documents MUST use independently issued control tokens
     and separate secret namespaces. Audi private may contain only the isolated
     fixture wildcard material. Sealing MUST publish atomically with private
     permissions, retain the recovery recipient, and never print secret payloads.
     """
     os.umask(0o077)
     service = sys.argv[1] if len(sys.argv) == 2 else "lilly"
-    if service not in ("lilly", "ziggy", "galileo", "audi-private") or len(sys.argv) > 2:
+    if service not in ("lilly", "ziggy", "galileo", "peach", "audi-private") or len(sys.argv) > 2:
         raise ValueError("invalid fixture service")
     root = Path("/var/lib/overalls-fleet")
     recovery = root / "update-recovery.ssh"
@@ -49,6 +49,8 @@ def main() -> None:
         }
     elif service == "galileo":
         values = {"GALILEO_CREDENTIAL": (root / "galileo.token").read_text()}
+    elif service == "peach":
+        values = {"PEACH_CREDENTIAL": (root / "peach.token").read_text()}
     else:
         certificate = Path(os.environ["FLEET_AUDI_PRIVATE_CERTIFICATE"])
         key = Path(os.environ["FLEET_AUDI_PRIVATE_KEY"])

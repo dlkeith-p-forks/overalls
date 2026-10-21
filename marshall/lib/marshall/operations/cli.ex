@@ -48,6 +48,16 @@ defmodule Marshall.Operations.CLI do
   def run(["galileo-verify", path]), do: Marshall.Operations.Galileo.verify(path)
   def run(["galileo-revoke", host]), do: Marshall.Operations.Galileo.revoke(host)
 
+  def run(["peach-rotate", host, ttl, output]) do
+    case Integer.parse(ttl) do
+      {seconds, ""} -> Marshall.Operations.Peach.rotate(host, seconds, output)
+      _ -> {:error, :invalid_arguments}
+    end
+  end
+
+  def run(["peach-verify", path]), do: Marshall.Operations.Peach.verify(path)
+  def run(["peach-revoke", host]), do: Marshall.Operations.Peach.revoke(host)
+
   def run(["audi-dns-rotate", name, output]),
     do: Marshall.Operations.Audi.rotate_dns(name, output)
 

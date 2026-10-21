@@ -1,0 +1,79 @@
+{
+  "apps": {
+    "peach": {
+      "active": 4,
+      "coverage": 1.0,
+      "covered": 4
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "peach.reflection": {
+      "active": 4,
+      "app": "peach",
+      "coverage": 1.0,
+      "covered": 4,
+      "form": "light",
+      "obligations": {
+        "peach.reflection.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "peach.reflection.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test unknown paths, methods and queries never reach Marshall"
+          ]
+        },
+        "peach.reflection.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test foreign and malformed bindings are refused"
+          ]
+        },
+        "peach.reflection.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test control refusal and invalid snapshots return no projection"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "totals": {
+    "active": 4,
+    "coverage": 1.0,
+    "covered": 4
+  }
+}

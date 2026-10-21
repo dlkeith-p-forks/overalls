@@ -1,6 +1,6 @@
 ---
-digest: a5371e295b0811165799f60ba9d7dc4266c41822eece4689de03576980938066
-disposition: no-impact
+digest: 0854fe3e151c56e794a8069bd384bf68bb6d76cd7827abfeed6c3fa28e91c83b
+disposition: updated
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/20-security.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Encrypted attachment storage is an implementation hardening within the already documented Marshall thread attachment boundary.
+Peach logging hook and flake outputs added to devenv.nix and flake.nix; chapter 13 documents the Peach custody and chapter 20 its evidence.

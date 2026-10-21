@@ -794,6 +794,16 @@ Peach serves the bounded, secret-free `reflection.internal` projection for a
 currently running guest. Marshall remains the authorization authority and
 returns only integrations eligible for the fenced execution.
 
+Peach accepts only bodiless `GET` requests for `/`, `/guest` and `/integrations`
+without a query. Unknown paths answer 404 and other methods 405 before any
+control request. The single Audi binding header must decode to a protocol-valid
+binding for Peach's configured host. Peach then asks Marshall over its dedicated
+control link for the projection, validates it with the shared protocol, checks
+that the guest ID matches the binding, and answers with `cache-control: no-store`.
+A Marshall refusal answers 403; an outage or invalid snapshot answers 503. Peach
+never retains or replays an earlier projection. Its diagnostics go through the
+`Peach.Events` catalog and carry only host and VM UUIDs and fixed reasons.
+
 ## Android display service
 
 Lilly derives the Android display target from the current placement, profile,
