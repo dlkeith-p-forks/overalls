@@ -153,7 +153,7 @@ defmodule MarshallWeb.MachinesLive do
       {:noreply,
        socket
        |> put_flash(:info, dgettext("machines", "Machine and setup thread requested."))
-       |> push_navigate(to: ~p"/threads/#{thread.id}")}
+       |> push_navigate(to: ~p"/machines/provisioning/#{thread.id}")}
     else
       {:error, error} ->
         {:noreply, put_flash(socket, :error, error_message(error))}

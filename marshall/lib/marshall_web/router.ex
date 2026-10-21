@@ -130,6 +130,7 @@ defmodule MarshallWeb.Router do
       live "/settings", AccountLive, :index
       live "/machines", MachinesLive, :index
       live "/machines/new", MachinesLive, :new
+      live "/machines/provisioning/:id", MachineProvisioningLive, :show
       live "/machines/:id", TerminalLive, :show
       live "/machines/:id/resources", MachinesLive, :resources
       live "/machines/:id/access", MachinesLive, :access
