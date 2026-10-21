@@ -1,6 +1,6 @@
 ---
-digest: 995648da5f0c6af5caff1d1fdecb7147b9b8f91d9dd8f973f37447c122298348
-disposition: updated
+digest: 92ef988a1a8679b0767fad1b355246a4e216ed59e25b0b43ea56ccce0c1e3e8b
+disposition: no-impact
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/20-security.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-The security chapter describes hostd inherited lock device/inode attribution, private Lilly-owned context publication, unchanged observer semantics, and 25 passing local fixture checks; native cancellation acceptance remains pending. Fleet fixture disk minima preserve the current image requirements.
+Concurrent session changes reviewed; no new impact to this native listing slice.
