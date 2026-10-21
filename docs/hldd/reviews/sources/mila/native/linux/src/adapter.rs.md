@@ -1,5 +1,5 @@
 ---
-digest: 68f746c5a65ffb0e254733df79ed06c21176bfca57f6645f0a4f2ea06a2a697e
+digest: 3c799b776a78f49c16b46868a1a6634d7b03f85b5b7cd8dc12dbed6bbec1d8a4
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed the Linux WNS fixture update; the test now uses a syntactically valid Windows notification channel while preserving the policy contract.
+Reviewed formatting-only changes to the Linux push validation fixture; behavior and documented policy remain unchanged.
