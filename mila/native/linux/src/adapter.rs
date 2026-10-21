@@ -1,7 +1,62 @@
 //! Typed in-process runtime boundary for the Linux presentation host.
 
+use serde::Deserialize;
 use std::ffi::{c_char, CString};
 use std::sync::{Arc, Mutex};
+
+/// A server-managed SSH key shown by the Linux settings UI. Private key
+/// material never appears in this representation or crosses the boundary.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct SshKey {
+    pub id: String,
+    pub label: String,
+    pub fingerprint: String,
+    pub added_at: u64,
+}
+
+/// Decode a bounded `ssh-key ls --json` response. Unknown fields are ignored,
+/// while missing fields and oversized lists fail closed before reaching GTK.
+pub fn decode_ssh_keys(bytes: &[u8]) -> Result<Vec<SshKey>, RuntimeError> {
+    if bytes.len() > 256 * 1024 {
+        return Err(RuntimeError::InvalidInput);
+    }
+    #[derive(Deserialize)]
+    struct Envelope {
+        keys: Vec<SshKey>,
+    }
+    let envelope: Envelope =
+        serde_json::from_slice(bytes).map_err(|_| RuntimeError::InvalidInput)?;
+    if envelope.keys.len() > 256
+        || envelope.keys.iter().any(|key| {
+            key.id.is_empty()
+                || key.id.len() > 128
+                || key.label.len() > 256
+                || key.fingerprint.len() > 256
+        })
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok(envelope.keys)
+}
+
+/// Format the only destructive SSH-key operation after validating its opaque
+/// server key identifier. Request IDs are required for at-most-once mutation.
+pub fn format_ssh_key_revoke(key_id: &str, request_id: &str) -> Result<String, RuntimeError> {
+    if key_id.is_empty()
+        || key_id.len() > 128
+        || request_id.len() != 39
+        || !request_id.starts_with("porsche-")
+        || !request_id[8..].bytes().all(|byte| byte.is_ascii_hexdigit())
+        || key_id
+            .bytes()
+            .any(|byte| byte.is_ascii_whitespace() || byte == b'\0')
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok(format!(
+        "ssh-key remove --json --request-id={request_id} {key_id}"
+    ))
+}
 
 /// Canonicalizes an activation route through the same Rust FFI entry point used by
 /// the other native clients. This keeps Linux from maintaining a second route grammar.
@@ -371,5 +426,30 @@ mod tests {
         assert_eq!(adapter.call(invalid_mode), Err(RuntimeError::InvalidInput));
         let malformed = RuntimeRequest::new(RuntimeOperation::ValidateTerminal, [120, 0]);
         assert_eq!(adapter.call(malformed), Err(RuntimeError::InvalidInput));
+    }
+
+    #[test]
+    fn ssh_key_listing_is_bounded_and_typed() {
+        let listing = super::decode_ssh_keys(
+            br#"{"keys":[{"id":"k1","label":"laptop","fingerprint":"SHA256:x","added_at":1770000000,"private":"never"}]}"#,
+        )
+        .unwrap();
+        assert_eq!(listing[0].id, "k1");
+        assert!(super::decode_ssh_keys(br#"{}"#).is_err());
+        assert!(super::decode_ssh_keys(
+            br#"{"keys":[{"id":"","label":"x","fingerprint":"y","added_at":1}]}"#
+        )
+        .is_err());
+    }
+
+    #[test]
+    fn ssh_key_revoke_requires_canonical_request_id() {
+        let request = "porsche-123e4567e89b12d3a456426614174001";
+        assert_eq!(
+            super::format_ssh_key_revoke("key-1", request).unwrap(),
+            format!("ssh-key remove --json --request-id={request} key-1")
+        );
+        assert!(super::format_ssh_key_revoke("key 1", request).is_err());
+        assert!(super::format_ssh_key_revoke("key-1", "bad").is_err());
     }
 }

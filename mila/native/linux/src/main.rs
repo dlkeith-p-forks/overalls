@@ -1,7 +1,7 @@
 use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
-use mila_native_linux::adapter::format_machine_action;
+use mila_native_linux::adapter::{format_machine_action, format_ssh_key_revoke};
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
 const APPLICATION_ID: &str = "dev.overalls.Mila.Linux";
@@ -77,6 +77,30 @@ impl NativeState {
         root.append(&machine_id);
         root.append(&request_id);
         root.append(&actions);
+        let key_id = Entry::builder()
+            .placeholder_text("SSH key ID")
+            .hexpand(true)
+            .build();
+        let key_request = Entry::builder()
+            .placeholder_text("Request UUID (porsche-…)")
+            .hexpand(true)
+            .build();
+        let revoke = Button::with_label("Revoke SSH key");
+        let key_id_for_action = key_id.clone();
+        let key_request_for_action = key_request.clone();
+        let label_for_action = content.clone();
+        revoke.connect_clicked(move |_| {
+            match format_ssh_key_revoke(
+                key_id_for_action.text().as_str(),
+                key_request_for_action.text().as_str(),
+            ) {
+                Ok(command) => label_for_action.set_label(&format!("SSH key command\n{command}")),
+                Err(_) => label_for_action.set_label("SSH key request rejected by Rust policy."),
+            }
+        });
+        root.append(&key_id);
+        root.append(&key_request);
+        root.append(&revoke);
         root.append(&content);
         ApplicationWindow::builder()
             .application(app)
