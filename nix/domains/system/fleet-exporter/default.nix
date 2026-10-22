@@ -2,6 +2,7 @@
 let
   inherit (lib) mkOption mkEnableOption mkIf types;
   cfg = config.services.overallsFleetExporter;
+  observabilityRuntimes = import ../observability-runtimes.nix { inherit pkgs; };
   runtime = pkgs.runCommand "overalls-fleet-exporter" {} ''
     mkdir -p $out
     cp ${./runtime.py} $out/runtime.py
@@ -65,7 +66,7 @@ in {
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.python3}/bin/python ${runtime}/runtime.py ${descriptor}";
+        ExecStart = "${observabilityRuntimes}/bin/overalls-fleet-exporter ${descriptor}";
         Restart = "always"; RestartSec = 5;
         SupplementaryGroups = lib.optional config.services.ziggy.enable "ziggy-proxy"
           ++ lib.optional config.services.galileo.enable "galileo-proxy";

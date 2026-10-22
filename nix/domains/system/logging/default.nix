@@ -2,6 +2,7 @@
 let
   inherit (lib) mkOption mkEnableOption mkIf types;
   cfg = config.services.overallsLogging;
+  observabilityRuntimes = import ../observability-runtimes.nix { inherit pkgs; };
   fleetEnabled = lib.attrByPath [ "services" "overallsOtelFleet" "enable" ] false config;
   paths = import ../types.nix { inherit lib; };
   sources = [ "marshall" "lilly" "porsche" "audi" "ziggy" "enrico" "brady" "galileo" "underclass" "haproxy" "audit" "firecracker" "auth" "kernel" "storage" "mail" "operations" "system" "metrics" ];
@@ -285,7 +286,7 @@ in {
       wantedBy = [ "multi-user.target" ];
       after = [ "systemd-tmpfiles-setup.service" ];
       serviceConfig = {
-        ExecStart = "${pkgs.python3}/bin/python ${./health.py} ${descriptor} ${cfg.healthAddress} ${toString cfg.healthPort} ${toString cfg.metricsPort}";
+        ExecStart = "${observabilityRuntimes}/bin/overalls-logging-health ${descriptor} ${cfg.healthAddress} ${toString cfg.healthPort} ${toString cfg.metricsPort}";
         Restart = "always"; RestartSec = 5;
         User = "root"; UMask = "0077";
         SupplementaryGroups = lib.optional traceEnabled "overalls-telemetry-health";

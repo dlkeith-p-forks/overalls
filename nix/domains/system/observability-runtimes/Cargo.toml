@@ -1,0 +1,12 @@
+[package]
+name = "overalls-observability-runtimes"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "overalls-logging-health"
+path = "src/logging_health.rs"
+
+[[bin]]
+name = "overalls-fleet-exporter"
+path = "src/fleet_exporter.rs"
