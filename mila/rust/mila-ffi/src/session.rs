@@ -358,6 +358,7 @@ pub unsafe extern "C" fn mila_session_thread_action(
     })
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn mila_session_ssh_keys(
     handle: u64,
     out: *mut u8,
@@ -379,6 +380,7 @@ pub unsafe extern "C" fn mila_session_ssh_keys(
 
 /// Return the bounded `whoami --json` envelope, including approval-required
 /// replies whose command exit status is non-zero.
+#[no_mangle]
 pub unsafe extern "C" fn mila_session_whoami(
     handle: u64,
     out: *mut u8,
@@ -398,6 +400,7 @@ pub unsafe extern "C" fn mila_session_whoami(
     })
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn mila_session_ssh_key_revoke(
     handle: u64,
     key: *const u8,

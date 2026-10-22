@@ -1,13 +1,13 @@
 ---
-digest: 05497f7ff486511d658919cd13154670c9b687d4c969e8d649a66903b2235479
+digest: df701b4125b502de49ccbf68c4e0133b4e5facb1283be01274e23970083ee60e
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaNativeUi.kt
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 84c255e9addb5a9ef9fbc81ef61b98af77540835332915750a825e39b3c94919
+  marshall/priv/hldd/08-interactive.md: 89941cf1d313291a803dd9fc1155e152fc105fc6682f7e60b44f266289b9b342
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 422a9e67513564c0f01d2fb334a49f8d2a86f8ae11b3292ebc32cef8f7fb2ed6
+  marshall/priv/hldd/19-coverage.md: 3050f853271fa34efaae6d1cab714ed0169b1e1107ad27ccf4c0445857e3c127
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Android approval UI and state validation changes.
+Reviewed Android approval expiry and shared session ABI updates.

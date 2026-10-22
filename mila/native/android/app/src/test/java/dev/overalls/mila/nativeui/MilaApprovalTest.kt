@@ -10,10 +10,9 @@ class MilaApprovalTest {
     @Test fun decodesPendingApprovalWithoutPersistingSecrets() {
         val reply = """{"version":1,"status":"approval_required","fingerprint":"$FINGERPRINT","approval_url":"https://overalls.example/ssh/approve/abc"}"""
         val decoded = MilaApprovalInfo.decode(reply.toByteArray())
-        assertEquals(
-            MilaWhoami.Pending(MilaApprovalInfo("https://overalls.example/ssh/approve/abc", FINGERPRINT)),
-            decoded,
-        )
+        val pending = decoded as MilaWhoami.Pending
+        assertEquals("https://overalls.example/ssh/approve/abc", pending.approval.url)
+        assertEquals(FINGERPRINT, pending.approval.fingerprint)
     }
 
     @Test fun refusesForeignOrUnsafeApprovalLinks() {
@@ -27,6 +26,11 @@ class MilaApprovalTest {
                 """{"version":1,"status":"approval_required","fingerprint":"$FINGERPRINT","approval_url":"$url"}""".toByteArray(),
             ) is MilaWhoami.Invalid)
         }
+        val foreign = MilaApprovalInfo.decode(
+            """{"version":1,"status":"approval_required","fingerprint":"$FINGERPRINT","approval_url":"https://other.example/ssh/approve/abc"}""".toByteArray(),
+            expectedHost = "overalls.example",
+        )
+        assertTrue(foreign is MilaWhoami.Invalid)
     }
 
     @Test fun approvedAndMalformedRepliesAreTyped() {

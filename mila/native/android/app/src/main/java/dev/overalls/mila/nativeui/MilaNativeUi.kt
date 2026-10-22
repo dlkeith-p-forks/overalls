@@ -172,6 +172,9 @@ fun MilaNativeRoot(
                 Text(MilaStrings.text(MilaMessage.OpenApproval))
             }
         }
+        if (signInState is MilaSignInState.Expired) {
+            Text(MilaStrings.text(MilaMessage.ApprovalExpired), style = MaterialTheme.typography.bodyMedium)
+        }
         if (signInState is MilaSignInState.SignedIn) Text(MilaStrings.text(MilaMessage.Connected), style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
             MilaRoute.Machines -> MachineList(sessionAdapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }

@@ -34,4 +34,4 @@ class MilaSharedPreferencesDeploymentStore(private val preferences: SharedPrefer
 }
 
 /** Session approval is explicit and survives reconnect attempts without persisting secrets. */
-enum class MilaApprovalState { NotRequired, Pending, Approved, Rejected }
+enum class MilaApprovalState { NotRequired, Pending, Approved, Rejected, Expired }

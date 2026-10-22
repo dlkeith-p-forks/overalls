@@ -5,11 +5,12 @@ sealed interface MilaSignInState {
  data object SignedOut : MilaSignInState
  data class Connecting(val deployment: MilaDeployment) : MilaSignInState
  data class AwaitingApproval(val deployment: MilaDeployment, val approval: MilaApprovalInfo) : MilaSignInState
+ data class Expired(val deployment: MilaDeployment) : MilaSignInState
  data class SignedIn(val deployment: MilaDeployment, val listing: MilaSessionListing, val approval: MilaApprovalState = MilaApprovalState.NotRequired) : MilaSignInState
  data class Failed(val deployment: MilaDeployment, val error: MilaFfiError) : MilaSignInState
 }
 
-class MilaSignInController(private val adapter: MilaFfiAdapter, private val store: MilaDeploymentStore? = null) : AutoCloseable {
+class MilaSignInController(private val adapter: MilaFfiAdapter, private val store: MilaDeploymentStore? = null, private val clock: () -> Long = { System.currentTimeMillis() / 1000 }) : AutoCloseable {
  var state: MilaSignInState = MilaSignInState.SignedOut; private set
  private var pendingSession: MilaSessionHandle? = null
 
@@ -32,7 +33,7 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
    state = MilaSignInState.Failed(deployment, MilaFfiError.Unavailable)
    return
   }
-  when (val whoami = runCatching { MilaApprovalInfo.decode(session.whoami()) }.getOrDefault(MilaWhoami.Invalid)) {
+  when (val whoami = runCatching { MilaApprovalInfo.decode(session.whoami(), deployment.host) }.getOrDefault(MilaWhoami.Invalid)) {
    is MilaWhoami.Pending -> {
     pendingSession = session
     connector?.bindSession(session)
@@ -64,7 +65,14 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
  suspend fun pollApproval(): Boolean {
   val awaiting = state as? MilaSignInState.AwaitingApproval ?: return state is MilaSignInState.SignedIn
   val session = pendingSession ?: return false.also { state = MilaSignInState.Failed(awaiting.deployment, MilaFfiError.Unavailable) }
-  return when (MilaApprovalInfo.decode(runCatching { session.whoami() }.getOrElse { return false })) {
+  if (clock() - awaiting.approval.issuedAt >= APPROVAL_LIFETIME_SECONDS) {
+   session.close()
+   pendingSession = null
+   store?.writeApproval(MilaApprovalState.Expired)
+   state = MilaSignInState.Expired(awaiting.deployment)
+   return false
+  }
+  return when (MilaApprovalInfo.decode(runCatching { session.whoami() }.getOrElse { return false }, awaiting.deployment.host)) {
    MilaWhoami.Approved -> {
     val listing = runCatching {
      session.readMachines()
@@ -125,4 +133,6 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
  }
 
  override fun close() = signOut()
+
+ private companion object { const val APPROVAL_LIFETIME_SECONDS = 600L }
 }

@@ -6,8 +6,13 @@ import android.net.Uri
 import org.json.JSONObject
 import java.net.URI
 
-/** A browser approval link and its device-key fingerprint, retained only in memory. */
-data class MilaApprovalInfo(val url: String, val fingerprint: String) {
+/**
+ * @cc [owner:ghuntley,label:security] mila-android-approval-browser-boundary
+ * Approval URLs MUST be HTTPS, bounded, host-qualified and free of user-info or
+ * fragments; the URL and fingerprint remain in memory and are passed only to
+ * the platform browser after Rust's bounded response has been decoded.
+ */
+data class MilaApprovalInfo(val url: String, val fingerprint: String, val issuedAt: Long = System.currentTimeMillis() / 1000) {
     init {
         require(url.length in 1..2048) { "invalid approval URL" }
         val parsed = URI(url)
@@ -20,14 +25,16 @@ data class MilaApprovalInfo(val url: String, val fingerprint: String) {
     companion object {
         private val FINGERPRINT = Regex("^SHA256:[A-Za-z0-9+/]{43}$")
 
-        fun decode(bytes: ByteArray): MilaWhoami = runCatching {
+        fun decode(bytes: ByteArray, expectedHost: String? = null): MilaWhoami = runCatching {
             require(bytes.size <= 64 * 1024) { "whoami response too large" }
             val value = JSONObject(bytes.toString(Charsets.UTF_8))
             require(value.optInt("version", -1) == 1) { "invalid whoami version" }
             when (value.optString("status")) {
-                "approval_required" -> MilaWhoami.Pending(
-                    MilaApprovalInfo(value.getString("approval_url"), value.getString("fingerprint")),
-                )
+                "approval_required" -> {
+                    val approval = MilaApprovalInfo(value.getString("approval_url"), value.getString("fingerprint"))
+                    require(expectedHost == null || URI(approval.url).host.equals(expectedHost, ignoreCase = true)) { "approval host mismatch" }
+                    MilaWhoami.Pending(approval)
+                }
                 "succeeded" -> MilaWhoami.Approved
                 else -> MilaWhoami.Refused
             }
