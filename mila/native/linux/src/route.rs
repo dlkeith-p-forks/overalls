@@ -58,6 +58,17 @@ impl ActivationRoute {
     }
 }
 
+/// Parses all URI values delivered by a desktop open activation.
+///
+/// Invalid values are deliberately represented as errors without retaining their input. This
+/// keeps the activation boundary useful for navigation while preventing malformed links from
+/// being echoed into the UI or logs.
+pub fn parse_activation_uris<'a>(
+    uris: impl IntoIterator<Item = &'a str>,
+) -> Vec<Result<ActivationRoute, RouteError>> {
+    uris.into_iter().map(ActivationRoute::parse).collect()
+}
+
 impl FromStr for ActivationRoute {
     type Err = RouteError;
 
@@ -343,7 +354,7 @@ impl std::error::Error for RouteError {}
 
 #[cfg(test)]
 mod tests {
-    use super::{ActivationRoute, MachinePage, Target};
+    use super::{parse_activation_uris, ActivationRoute, MachinePage, Target};
 
     const HOST: &str = "overalls://fleet.example";
     const ID: &str = "01234567-89ab-cdef-0123-456789abcdef";
@@ -387,5 +398,19 @@ mod tests {
             "overalls://fleet.example/launch?source=https%3A%2F%2Fgithub.com%2Fowner%2Frepo"
         );
         assert!(matches!(route.target(), Target::Launch { .. }));
+    }
+
+    #[test]
+    fn parses_every_uri_in_a_multi_open_activation() {
+        let values = [
+            "overalls://fleet.example/machines",
+            "overalls://fleet.example/settings",
+            "https://fleet.example/machines",
+        ];
+        let results = parse_activation_uris(values);
+        assert_eq!(results.len(), values.len());
+        assert!(results[0].is_ok());
+        assert!(results[1].is_ok());
+        assert!(results[2].is_err());
     }
 }

@@ -48,6 +48,17 @@ public final class MilaLiveSession: @unchecked Sendable {
         return try copyListing(current)
     }
 
+    public func machineAction(machine: UUID, action: String, requestID: UUID) throws {
+        let current = try validHandle()
+        let machineBytes = Array(machine.uuidString.lowercased().utf8)
+        let actionBytes = Array(action.utf8)
+        let requestBytes = Array(("porsche-" + requestID.uuidString.lowercased().replacingOccurrences(of: "-", with: "")).utf8)
+        let status = machineBytes.withUnsafeBufferPointer { m in actionBytes.withUnsafeBufferPointer { a in requestBytes.withUnsafeBufferPointer { r in
+            mila_session_machine_action(current, m.baseAddress, m.count, a.baseAddress, a.count, r.baseAddress, r.count)
+        } } }
+        guard status == 0 else { throw Self.error(status) }
+    }
+
     public func readMore() throws -> Data {
         let current = try validHandle()
         let status = mila_session_read_machines(current, 1)

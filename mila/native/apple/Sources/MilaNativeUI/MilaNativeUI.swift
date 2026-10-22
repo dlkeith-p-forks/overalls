@@ -61,10 +61,16 @@ private struct MachineDetailView: View {
     @StateObject private var workflow: MilaMachineWorkflow
     @State private var classified = ""
     @State private var showTerminal = false
+    @State private var webURL = ""
+    @StateObject private var webControls = MilaWebControlsController()
+    @State private var showWeb = false
+    @State private var sharePrincipal = ""
+    @StateObject private var sharing: MilaMachineSharingController
     init(machine: MilaMachinePresentation?, adapter: any MilaFFIAdapter) {
         self.machine = machine
         self.adapter = adapter
         _workflow = StateObject(wrappedValue: MilaMachineWorkflow(adapter: adapter))
+        _sharing = StateObject(wrappedValue: MilaMachineSharingController(adapter: adapter))
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -73,6 +79,20 @@ private struct MachineDetailView: View {
                 Text(machine.id.uuidString).font(.caption)
                 Text(machine.machine.observedState ?? "unknown").foregroundStyle(.secondary)
                 Button(MilaStrings.text(.openTerminal)) { showTerminal = true }.disabled(!machine.machine.write)
+                HStack {
+                    TextField(MilaStrings.text(.sharePrincipal), text: $sharePrincipal)
+                        .textInputAutocapitalization(.never).autocorrectionDisabled()
+                    Button(MilaStrings.text(.shareAdd)) { sharing.submit(principal: sharePrincipal) }
+                        .disabled(!machine.machine.write || sharePrincipal.isEmpty)
+                    Button(MilaStrings.text(.shareRemove)) { sharing.submit(principal: sharePrincipal, remove: true) }
+                        .disabled(!machine.machine.write || sharePrincipal.isEmpty)
+                }
+                Text(shareStatus).font(.caption).foregroundStyle(.secondary)
+                HStack {
+                    TextField(MilaStrings.text(.webPlaceholder), text: $webURL).textContentType(.URL).autocorrectionDisabled().textInputAutocapitalization(.never)
+                    Button(MilaStrings.text(.webOpen)) { showWeb = webControls.set(webURL) }.disabled(webURL.isEmpty)
+                }
+                if webControls.error != nil { Text(MilaStrings.text(.webInvalid)).font(.caption).foregroundStyle(.secondary) }
                 ForEach(machine.actions.values, id: \.self) { action in
                     Button(action.title) {
                         workflow.submit(action, machine: machine)
@@ -89,13 +109,27 @@ private struct MachineDetailView: View {
                 }
                 Text(classified).font(.caption).foregroundStyle(.secondary)
                 Text(mutationStatus).font(.caption).foregroundStyle(.secondary)
+                .onAppear { sharing.setSession(signedIn: true, machine: machine) }
             } else { ContentUnavailableView(MilaStrings.text(.machineUnavailable), systemImage: "questionmark") }
         }.padding().sheet(isPresented: $showTerminal) { MilaTerminalView() }
+        #if canImport(WebKit)
+        .sheet(isPresented: $showWeb) { if let endpoint = webControls.endpoint { MilaWebView(endpoint: endpoint) } }
+        #endif
     }
 
     private var isIdle: Bool {
         if case .idle = workflow.state { return true }
         return false
+    }
+
+    private var shareStatus: String {
+        switch sharing.state {
+        case .signedOut: return MilaStrings.text(.runtimeUnavailable)
+        case .idle: return MilaStrings.text(.ready)
+        case .submitting: return MilaStrings.text(.connecting)
+        case .applied(_, _, let remove): return remove ? MilaStrings.text(.shareRemoved) : MilaStrings.text(.shareAdded)
+        case .failed: return MilaStrings.text(.actionNotSubmitted)
+        }
     }
 
     private var mutationStatus: String {

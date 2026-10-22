@@ -302,3 +302,22 @@ fn arbitrary_stale_handles_refuse_without_writing(tc: hegel::TestCase) {
     assert_eq!(written, 123);
     assert_eq!(mila_session_close(handle), SessionStatus::InvalidHandle);
 }
+
+#[test]
+fn machine_actions_reject_invalid_inputs_before_lookup() {
+    let machine = b"not-an-id";
+    let action = b"start";
+    let request = b"porsche-00000000000000000000000000000000";
+    let status = unsafe {
+        mila_session_machine_action(
+            u64::MAX,
+            machine.as_ptr(),
+            machine.len(),
+            action.as_ptr(),
+            action.len(),
+            request.as_ptr(),
+            request.len(),
+        )
+    };
+    assert_eq!(status, SessionStatus::InvalidHandle);
+}

@@ -115,6 +115,7 @@ interface MilaRustBindings {
     /** Returns the closed machine-action bit mask, or null for invalid input. */
     fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int?
     fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle?
+    fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = -12
     /** Returns the closed Rust thread-command tag, or -1 for an unknown command. */
     fun threadCommandKind(value: String): Int
     fun machineCommandKind(value: String): Int
@@ -150,6 +151,7 @@ internal object MilaRustFfi : MilaRustBindings {
         check(loaded) { "mila_ffi is unavailable" }
         return nativeSessionConnect(trust, host, publicKey, port, timeoutMs, signer)?.let(::MilaSessionHandle)
     }
+    override fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = nativeSessionMachineAction(handle, machine, action, requestId)
 
     override fun threadCommandKind(value: String): Int {
         check(loaded) { "mila_ffi is unavailable" }
@@ -178,6 +180,7 @@ internal object MilaRustFfi : MilaRustBindings {
     external fun nativeSessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): Long?
     @JvmStatic
     external fun nativeSessionRead(handle: Long, more: Boolean): Int
+    @JvmStatic external fun nativeSessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int
     @JvmStatic
     external fun nativeSessionListing(handle: Long): ByteArray?
     @JvmStatic
@@ -199,6 +202,12 @@ class MilaSessionHandle internal constructor(private val nativeHandle: Long) : A
     @Synchronized fun readMachines(more: Boolean = false): Int { check(!closed); return MilaRustFfi.nativeSessionRead(nativeHandle, more) }
     @Synchronized fun listing(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionListing(nativeHandle) ?: error("listing unavailable") }
     @Synchronized fun snapshot(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionSnapshot(nativeHandle) ?: error("snapshot unavailable") }
+    @Synchronized fun machineAction(machine: UUID, command: MilaMachineCommand, requestId: String): Result<Unit> = runCatching {
+        check(!closed)
+        val action = when (command) { MilaMachineCommand.Start -> "start"; MilaMachineCommand.Stop -> "stop"; MilaMachineCommand.Pause -> "pause"; MilaMachineCommand.Resume -> "resume"; MilaMachineCommand.Delete -> "rm"; else -> throw IllegalArgumentException("command is not a mutation") }
+        val status = MilaRustFfi.nativeSessionMachineAction(nativeHandle, machine.toString(), action, requestId)
+        if (status != 0) error("machine action rejected")
+    }
     @Synchronized override fun close() { if (!closed) { MilaRustFfi.nativeSessionClose(nativeHandle); closed = true } }
 }
 
@@ -206,6 +215,17 @@ class MilaSessionHandle internal constructor(private val nativeHandle: Long) : A
 class LinkedMilaFfiAdapter(
     private val bindings: MilaRustBindings = MilaRustFfi,
 ) : MilaFfiAdapter {
+    @Volatile private var authenticatedSession: MilaSessionHandle? = null
+
+    /** Binds the adapter to the already certificate-authenticated session. */
+    fun bindSession(session: MilaSessionHandle?) { authenticatedSession = session }
+
+    override suspend fun machineAction(machineId: UUID, command: MilaMachineCommand): Result<Unit> {
+        val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
+        val requestId = "porsche-" + java.util.UUID.randomUUID().toString().replace("-", "")
+        return session.machineAction(machineId, command, requestId)
+    }
+
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {
         return try {
             if (bindings.abiVersion() != 1) MilaFfiResult.Failure(MilaFfiError.IncompatibleAbi)

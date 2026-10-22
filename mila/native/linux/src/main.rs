@@ -5,7 +5,7 @@ use mila_native_linux::adapter::{
     format_machine_action, format_share_command, format_ssh_key_revoke, format_thread_command,
     format_thread_turns, format_web_command, validate_terminal_operation, TerminalOperation,
 };
-use mila_native_linux::route::ActivationRoute;
+use mila_native_linux::route::{parse_activation_uris, ActivationRoute};
 use std::{cell::RefCell, rc::Rc};
 mod persistence;
 mod strings;
@@ -321,12 +321,23 @@ impl NativeState {
     }
     fn open(&self, app: &adw::Application, files: &[gio::File]) {
         let window = self.ensure_window(app);
-        if let Some(file) = files.first() {
-            let uri = file.uri();
-            match ActivationRoute::parse(uri.as_str()) {
-                Ok(route) => self.set_status(&format!("Mila\nRoute: {}", route.canonical())),
-                Err(_) => self.set_status("Mila\nThe link could not be opened."),
-            }
+        let uris = files.iter().map(|file| file.uri()).collect::<Vec<_>>();
+        let results = parse_activation_uris(uris.iter().map(|uri| uri.as_str()));
+        let accepted = results
+            .iter()
+            .filter_map(|result| result.as_ref().ok())
+            .map(|route| route.canonical())
+            .collect::<Vec<_>>();
+        let rejected = results.len().saturating_sub(accepted.len());
+        if accepted.is_empty() {
+            self.set_status("Mila\nNo supported link could be opened.");
+        } else if rejected == 0 {
+            self.set_status(&format!("Mila\nRoutes:\n{}", accepted.join("\n")));
+        } else {
+            self.set_status(&format!(
+                "Mila\nRoutes:\n{}\nRejected links: {rejected}",
+                accepted.join("\n")
+            ));
         }
         window.present();
     }

@@ -207,6 +207,41 @@ pub extern "C" fn mila_session_read_machines(handle: u64, more: u8) -> SessionSt
         Ok(())
     })
 }
+
+/// Execute a bounded authenticated machine mutation on an existing session.
+/// Inputs are UTF-8 and never interpreted by a shell; the session constructs a
+/// catalogued Porsche command and requires a caller supplied request id.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_machine_action(
+    handle: u64,
+    machine: *const u8,
+    machine_len: usize,
+    action: *const u8,
+    action_len: usize,
+    request_id: *const u8,
+    request_id_len: usize,
+) -> SessionStatus {
+    guarded(|| {
+        let machine = std::str::from_utf8(bytes(machine, machine_len, 128)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let action = std::str::from_utf8(bytes(action, action_len, 32)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let request_id = std::str::from_utf8(bytes(request_id, request_id_len, 64)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        runtime
+            .block_on(session.machine_action(machine, action, request_id))
+            .map_err(|error| match error {
+                mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+                mila_session::SessionError::MutationRefused => SessionStatus::Invalid,
+                _ => SessionStatus::Invalid,
+            })?;
+        Ok(())
+    })
+}
 /// Copy validated display JSON: {"machines":[snapshot rows],"has_more":bool}.
 /// # Safety
 /// out references capacity writable bytes; written is writable. Null out with zero

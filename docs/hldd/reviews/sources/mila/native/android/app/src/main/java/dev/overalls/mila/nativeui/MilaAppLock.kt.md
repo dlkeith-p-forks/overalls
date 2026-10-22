@@ -1,5 +1,5 @@
 ---
-digest: 85d40741ad99f385842f67b976ca202a7dab6d50fb9eb7545dadf1f16aaa4969
+digest: 47d468428f15ec0e2d9d7d323aea24fa9a743400011c2be36ab8d6eba5e40df7
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -7,12 +7,12 @@ path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaAppLo
 reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 71e87db236f081db996db1cf017c727f434e86aab079ac414a8d87ca411ac278
-  marshall/priv/hldd/20-security.md: 92ef988a1a8679b0767fad1b355246a4e216ed59e25b0b43ea56ccce0c1e3e8b
-  marshall/priv/hldd/21-domains.md: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
-  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
+  marshall/priv/hldd/19-coverage.md: 8728371d7d3d458cf040ff3567c7406ec290bf4bb8f68fd672513f0aa0bc9cbe
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Android-only state projection and unit tests preserve existing documented Mila behavior; no handbook chapter changes required.
+Android biometric app lock and Linux desktop activation parsing preserve existing lock and route boundaries.

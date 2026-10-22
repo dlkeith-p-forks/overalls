@@ -1,5 +1,5 @@
 ---
-digest: 0999fc255c29b31e5de5fc24aaf7cbd820075063103a78fbd7fe131e3037a621
+digest: 53c90c020c264a5d16747574e867f3b762fdf2b4d3280e9f62b5cb01d29cb3f2
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -7,12 +7,12 @@ path: mila/native/android/app/build.gradle.kts
 reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
-  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/19-coverage.md: 8728371d7d3d458cf040ff3567c7406ec290bf4bb8f68fd672513f0aa0bc9cbe
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Android Gradle now generates and packages the shared locale catalog at build time; this preserves the native boundary and changes only verification/resource packaging.
+Android biometric app lock and Linux desktop activation parsing preserve existing lock and route boundaries.

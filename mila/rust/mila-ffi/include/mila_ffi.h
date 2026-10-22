@@ -77,6 +77,9 @@ int32_t mila_session_connect(const uint8_t *trust, size_t trust_len,
     size_t public_key_len, uint16_t port, uint32_t timeout_ms,
     MilaSessionSign signer, uintptr_t context, uint64_t *out_handle);
 int32_t mila_session_read_machines(uint64_t handle, uint8_t more);
+int32_t mila_session_machine_action(uint64_t handle, const uint8_t *machine,
+    size_t machine_len, const uint8_t *action, size_t action_len,
+    const uint8_t *request_id, size_t request_id_len);
 /* Copy operations never issue a command. Null output/zero capacity queries size.
  * JSON is UTF-8 without NUL termination; written receives the required length.
  * Listing is {machines:[validated snapshot rows],has_more:boolean}.

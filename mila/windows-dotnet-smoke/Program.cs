@@ -63,6 +63,15 @@ internal static class Program
         bool refused = false;
         try { RustNative.DecodeSessionListing(Encoding.UTF8.GetBytes("{\"machines\":[{\"id\":\"bad\"}]}")); } catch (InvalidDataException) { refused = true; }
         Require(refused, "invalid listing refusal");
+        Guid keyId = Guid.NewGuid();
+        MilaSshKey key = MilaSshKeysController.DecodeListing(Encoding.UTF8.GetBytes($"{{\"keys\":[{{\"id\":\"{keyId:D}\",\"fingerprint\":\"SHA256:test\",\"algorithm\":\"ed25519\",\"current_device\":false}}]}}"))[0];
+        Require(key.Id == keyId && key.Algorithm == "ed25519", "SSH key listing projection");
+        bool revoked = false;
+        var keys = new MilaSshKeysController(_ => Task.FromResult<IReadOnlyList<MilaSshKey>>(new[] { key }), (id, _) => { revoked = id == keyId; return Task.CompletedTask; });
+        keys.LoadAsync(true).GetAwaiter().GetResult(); keys.RevokeAsync(key).GetAwaiter().GetResult();
+        Require(revoked && keys.Status == MilaSshKeysStatus.Loaded, "SSH key revoke workflow");
+        bool malformed = false; try { _ = MilaSshKeysController.DecodeListing(Encoding.UTF8.GetBytes("{\"keys\":[{\"id\":\"bad\"}]}")); } catch (InvalidDataException) { malformed = true; }
+        Require(malformed, "invalid SSH key listing refusal");
         RustNative.CheckOutputBounds(route);
         Console.WriteLine("Windows Rust FFI smoke passed.");
     }

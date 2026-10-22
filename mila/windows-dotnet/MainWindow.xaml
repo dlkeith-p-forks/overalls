@@ -69,6 +69,7 @@
         <StackPanel Spacing="6">
           <TextBlock x:Name="SshKeysTitle" />
           <TextBlock x:Name="SshKeysStatus" TextWrapping="Wrap" Opacity="0.7" />
+          <ListView x:Name="SshKeyRows" DisplayMemberPath="Fingerprint" MinHeight="60" />
           <Button x:Name="RefreshSshKeys" Click="RefreshSshKeys" HorizontalAlignment="Left" />
         </StackPanel>
         <TextBlock x:Name="LockStatus" Opacity="0.7" TextWrapping="Wrap" />
