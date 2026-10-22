@@ -223,8 +223,19 @@ public sealed partial class MainWindow : Window
     private void ClassifyMachine(string command)
     {
         MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand(command);
-        MachineCommandStatus.Text = kind is { } value
-            ? $"{command}: {value} (Rust)"
-            : $"{command}: unavailable or requires arguments";
+        if (kind is not { } value)
+        {
+            MachineCommandStatus.Text = $"{command}: unavailable or requires arguments";
+            return;
+        }
+        if (_activeHost is null)
+        {
+            MachineCommandStatus.Text = $"{command}: {value} — {S("signInFirst", "Sign in first")}";
+            return;
+        }
+        MilaNativeCommandResult formatted = RustNative.TryFormatMachineCommand(command.Split(' ')[0], Guid.Parse(SampleMachine), null);
+        MachineCommandStatus.Text = formatted.Status == MilaNativeStatus.Ok
+            ? $"{command}: {value} — {S("requestWaiting", "Request formatted by Rust")}" 
+            : $"{command}: {S("requestRefused", "Request refused")}";
     }
 }
