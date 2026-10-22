@@ -1,5 +1,5 @@
 ---
-digest: 470ccfe72ecfbd4b7e5afccfc6558923199271f1d3648a3314ffb6bc11f727b4
+digest: 0a05ca49c341bb73a3e2fbf38f9589806ef577224608cb8b44178b8bebb548cd
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now applies the same bounded cgroup usage projection to discovered Lilly VM units under the dedicated lilly.slice boundary.
+Fleet exporter now projects bounded cgroup memory event counters and CPU quota gauges for service and Lilly VM records.

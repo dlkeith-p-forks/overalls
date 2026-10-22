@@ -98,6 +98,7 @@ fn main() -> std::io::Result<()> {
                 output.push_str(&format!("overalls_fleet_gauge{{kind=\"service\",entity=\"{unit}\",measure=\"memory_bytes\"}} {memory}\n"));
                 output.push_str(&format!("overalls_fleet_counter{{kind=\"service\",entity=\"{unit}\",measure=\"cpu_usage_usec\"}} {cpu}\n"));
             }
+            append_cgroup_events(&mut output, "service", &unit, "/sys/fs/cgroup/system.slice");
         }
         if let Some(vms) = vm_units() {
             output.push_str(&format!(
@@ -112,6 +113,7 @@ fn main() -> std::io::Result<()> {
                     output.push_str(&format!("overalls_fleet_gauge{{kind=\"vm\",entity=\"{vm}\",measure=\"memory_bytes\"}} {memory}\n"));
                     output.push_str(&format!("overalls_fleet_counter{{kind=\"vm\",entity=\"{vm}\",measure=\"cpu_usage_usec\"}} {cpu}\n"));
                 }
+                append_cgroup_events(&mut output, "vm", &vm, "/sys/fs/cgroup/lilly.slice");
             }
         }
         output
@@ -342,6 +344,35 @@ fn cgroup_usage_at(parent: &str, unit: &str) -> Option<(u64, u64)> {
             .flatten()
     })?;
     Some((memory, usage))
+}
+
+fn append_cgroup_events(output: &mut String, kind: &str, entity: &str, parent: &str) {
+    let base = format!("{parent}/{entity}");
+    if let Ok(text) = fs::read_to_string(format!("{base}/memory.events")) {
+        for line in text.lines().take(16) {
+            let mut fields = line.split_whitespace();
+            let Some(name) = fields.next() else { continue };
+            let Some(value) = fields.next().and_then(|v| v.parse::<u64>().ok()) else {
+                continue;
+            };
+            if matches!(
+                name,
+                "low" | "high" | "max" | "oom" | "oom_kill" | "oom_group_kill"
+            ) {
+                output.push_str(&format!("overalls_fleet_counter{{kind=\"{kind}\",entity=\"{entity}\",measure=\"memory_{name}\"}} {value}\n"));
+            }
+        }
+    }
+    if let Ok(text) = fs::read_to_string(format!("{base}/cpu.max")) {
+        let fields: Vec<&str> = text.split_whitespace().collect();
+        if fields.len() == 2 && fields[0] != "max" {
+            if let (Ok(quota), Ok(period)) = (fields[0].parse::<f64>(), fields[1].parse::<f64>()) {
+                if quota.is_finite() && period > 0.0 {
+                    output.push_str(&format!("overalls_fleet_gauge{{kind=\"{kind}\",entity=\"{entity}\",measure=\"cpu_limit_cores\"}} {}\n", quota / period));
+                }
+            }
+        }
+    }
 }
 
 fn vm_units() -> Option<Vec<String>> {
