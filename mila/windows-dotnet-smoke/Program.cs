@@ -83,6 +83,12 @@ internal static class Program
         Require(RustNative.TryValidateTerminalInput(1024, true).IsValid, "terminal input validation");
         Require(!RustNative.TryValidateTerminalResize(0, 40, true).IsValid, "terminal resize bounds");
         Require(!RustNative.TryValidateTerminalInput((nuint)(1 << 20) + 1, true).IsValid, "terminal input bounds");
+        var terminal = new MilaTerminalSession();
+        terminal.BeginAttach(7, true);
+        Require(terminal.Append(7, "ready\n"), "terminal output append");
+        Require(terminal.Resize(7, 120, 40) && terminal.SendInput(7, new byte[] { 13 }), "terminal live controls");
+        Require(!terminal.Append(6, "stale"), "stale terminal generation refusal");
+        terminal.Kill(7); Require(!terminal.Reconnect(7), "killed terminal reconnect refusal");
         MilaSessionListing listing = RustNative.DecodeSessionListing(Encoding.UTF8.GetBytes("{\"machines\":[{\"id\":\"0d9cc041-9db2-4e4c-b28b-1e41d7f472c1\",\"name\":\"test\",\"desired_state\":\"running\",\"observed_state\":\"running\",\"pinned\":false,\"read\":true,\"write\":true,\"manage\":true}],\"has_more\":true}"));
         Require(listing.HasMore && listing.Machines.Count == 1 && listing.Machines[0].Name == "test", "bounded live listing projection");
         bool refused = false;

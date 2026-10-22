@@ -16,6 +16,8 @@ public sealed partial class MainWindow : Window
     private MilaMachineRow? _selectedMachine;
     private readonly MilaAppLockController _appLock = new(new MilaWindowsHelloBroker());
     private readonly MilaSessionConnection _session = new();
+    private readonly MilaTerminalSession _terminal = new();
+    private long _terminalGeneration;
     private readonly MilaSignInFlow _signIn = new();
     private bool _closed;
     public MainWindow(string? activation = null)
@@ -233,12 +235,15 @@ public sealed partial class MainWindow : Window
     private void ValidateTerminalAttach(object sender, RoutedEventArgs args)
     {
         MilaNativeTerminalResult result = RustNative.TryValidateTerminalAttach(0, 80, 24, true);
-        TerminalStatus.Text = result.IsValid ? S("terminalAttaching", "Attaching…") : S("terminalRefused", "Terminal refused");
+        _terminalGeneration = DateTime.UtcNow.Ticks;
+        TerminalStatus.Text = result.IsValid && _terminal.BeginAttach(_terminalGeneration, true) > 0
+            ? S("terminalAttaching", "Attaching…") : S("terminalRefused", "Terminal refused");
     }
     private void ValidateTerminalResize(object sender, RoutedEventArgs args)
     {
         MilaNativeTerminalResult result = RustNative.TryValidateTerminalResize(80, 24, true);
-        TerminalStatus.Text = result.IsValid ? S("terminalLive", "Terminal live") : S("terminalInvalid", "Invalid terminal dimensions");
+        TerminalStatus.Text = result.IsValid && _terminal.Resize(_terminalGeneration, 80, 24)
+            ? S("terminalLive", "Terminal live") : S("terminalInvalid", "Invalid terminal dimensions");
     }
     private void ValidateTerminalInput(object sender, RoutedEventArgs args)
     {
