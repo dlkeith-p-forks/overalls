@@ -1,5 +1,5 @@
 ---
-digest: 88ec4620c9ae3bc40c2fdbb38429bf686b37e1b17cfb36dbc428b17f6bc9e0ed
+digest: 5b4125196badf03acebf9668bcdd005d94f42485753b15c8f91ca3aa9d861eb1
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux web controls retain Rust validation while using centralized localized labels.
+Native design-system resources preserve existing presentation boundaries and apply monochrome tokens.
