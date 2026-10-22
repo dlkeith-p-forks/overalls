@@ -121,6 +121,29 @@ pub fn format_machine_action(
     String::from_utf8(bytes).map_err(|_| RuntimeError::Unavailable)
 }
 
+/// Formats bounded thread commands for the GTK session view.
+pub fn format_thread_command(
+    operation: &str,
+    thread_id: Option<&str>,
+) -> Result<String, RuntimeError> {
+    if !matches!(operation, "ls" | "show") {
+        return Err(RuntimeError::InvalidInput);
+    }
+    let mut line = format!("thread {operation} --json");
+    if operation == "show" {
+        let id = thread_id.ok_or(RuntimeError::InvalidInput)?;
+        if id.is_empty() || id.len() > 128 || id.bytes().any(|b| b.is_ascii_whitespace() || b == 0)
+        {
+            return Err(RuntimeError::InvalidInput);
+        }
+        line.push(' ');
+        line.push_str(id);
+    }
+    mila_protocol::Command::parse(&line)
+        .and_then(|c| c.format())
+        .map_err(|_| RuntimeError::InvalidInput)
+}
+
 /// Formats web endpoint operations through Porsche's bounded command grammar.
 /// The GTK host receives only a canonical command after Rust validates the
 /// machine identifier, port, visibility and mutation request id.

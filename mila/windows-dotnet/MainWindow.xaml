@@ -54,6 +54,15 @@
           <Button x:Name="LockButton" Click="LockApp" />
         </StackPanel>
         <TextBlock x:Name="LockStatus" Opacity="0.7" TextWrapping="Wrap" />
+        <StackPanel Spacing="6">
+          <TextBlock x:Name="TerminalTitle" />
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button x:Name="TerminalAttach" Click="ValidateTerminalAttach" />
+            <Button x:Name="TerminalResize" Click="ValidateTerminalResize" />
+            <Button x:Name="TerminalInput" Click="ValidateTerminalInput" />
+          </StackPanel>
+          <TextBlock x:Name="TerminalStatus" Opacity="0.7" />
+        </StackPanel>
       </StackPanel>
     </Grid>
   </NavigationView>

@@ -2,7 +2,8 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    format_machine_action, format_ssh_key_revoke, format_web_command, validate_terminal_operation, TerminalOperation,
+    format_machine_action, format_ssh_key_revoke, format_thread_command, format_web_command,
+    validate_terminal_operation, TerminalOperation,
 };
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
@@ -114,23 +115,55 @@ impl NativeState {
         root.append(&machine_id);
         root.append(&request_id);
         root.append(&actions);
-        let terminal = Entry::builder().placeholder_text("Terminal session ID").hexpand(true).build();
+        let terminal = Entry::builder()
+            .placeholder_text("Terminal session ID")
+            .hexpand(true)
+            .build();
         let attach = Button::with_label("Attach terminal");
         let terminal_status = content.clone();
         let terminal_input = terminal.clone();
         attach.connect_clicked(move |_| {
-            let session = terminal_input.text().trim();
+            let session_value = terminal_input.text();
+            let session = session_value.trim();
             if session.is_empty() || session.len() > 128 {
                 terminal_status.set_label("Terminal session rejected by Rust policy.");
                 return;
             }
-            match validate_terminal_operation(TerminalOperation::Attach { from: 0, columns: 80, rows: 24, read_write: true }) {
-                Ok(()) => terminal_status.set_label(&format!("Terminal attached\nSession {session}")),
+            match validate_terminal_operation(TerminalOperation::Attach {
+                from: 0,
+                columns: 80,
+                rows: 24,
+                read_write: true,
+            }) {
+                Ok(()) => {
+                    terminal_status.set_label(&format!("Terminal attached\nSession {session}"))
+                }
                 Err(_) => terminal_status.set_label("Terminal attach rejected by Rust policy."),
             }
         });
         root.append(&terminal);
         root.append(&attach);
+        let thread_id = Entry::builder()
+            .placeholder_text("Thread ID (optional for list)")
+            .hexpand(true)
+            .build();
+        let thread_actions = Box::new(Orientation::Horizontal, 8);
+        for operation in ["ls", "show"] {
+            let button = Button::with_label(&format!("Thread {operation}"));
+            let input = thread_id.clone();
+            let status = content.clone();
+            let operation = operation.to_owned();
+            button.connect_clicked(move |_| {
+                let id = (!input.text().is_empty()).then(|| input.text().to_string());
+                match format_thread_command(&operation, id.as_deref()) {
+                    Ok(command) => status.set_label(&format!("Thread command\n{command}")),
+                    Err(_) => status.set_label("Thread command rejected by Rust policy."),
+                }
+            });
+            thread_actions.append(&button);
+        }
+        root.append(&thread_id);
+        root.append(&thread_actions);
         let web_port = Entry::builder()
             .placeholder_text("Web port (1-65535)")
             .hexpand(true)

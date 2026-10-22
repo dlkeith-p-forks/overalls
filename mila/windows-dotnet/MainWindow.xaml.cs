@@ -39,6 +39,25 @@ public sealed partial class MainWindow : Window
         Refresh.Content = S("refresh", "Refresh");
         LockButton.Content = S("lockTitle", "Lock app");
         LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+        TerminalTitle.Text = S("tabTerminals", "Terminal");
+        TerminalAttach.Content = S("terminalAttach", "Attach");
+        TerminalResize.Content = S("terminalModeControl", "Resize");
+        TerminalInput.Content = S("terminalPaste", "Send input");
+    }
+    private void ValidateTerminalAttach(object sender, RoutedEventArgs args)
+    {
+        MilaNativeTerminalResult result = RustNative.TryValidateTerminalAttach(0, 80, 24, true);
+        TerminalStatus.Text = result.IsValid ? S("terminalAttaching", "Attaching…") : S("terminalRefused", "Terminal refused");
+    }
+    private void ValidateTerminalResize(object sender, RoutedEventArgs args)
+    {
+        MilaNativeTerminalResult result = RustNative.TryValidateTerminalResize(80, 24, true);
+        TerminalStatus.Text = result.IsValid ? S("terminalLive", "Terminal live") : S("terminalInvalid", "Invalid terminal dimensions");
+    }
+    private void ValidateTerminalInput(object sender, RoutedEventArgs args)
+    {
+        MilaNativeTerminalResult result = RustNative.TryValidateTerminalInput(0, true);
+        TerminalStatus.Text = result.IsValid ? S("terminalLive", "Terminal live") : S("terminalReadOnly", "Terminal is read only");
     }
     private void ConnectToDeployment(object sender, RoutedEventArgs args)
     {
