@@ -1,5 +1,5 @@
 ---
-digest: b8c1171050fabd2d1873b81a0728f130016013b848c7d91f537e2217c5e1d3f8
+digest: 3f2cce0aa39039d3de53a20a8d2fdaa33bf3b54381a5613708c245dd54083370
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now projects finite host CPU, memory and IO pressure metrics from procfs PSI files with bounded parsing.
+Fleet exporter now performs a bounded passive terminal metrics socket read with a closed numeric metric allowlist and no guest control operations.

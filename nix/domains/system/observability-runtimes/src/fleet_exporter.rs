@@ -1,6 +1,8 @@
 mod common;
 use std::env;
 use std::fs;
+use std::io::{Read, Write};
+use std::os::unix::net::UnixStream;
 use std::process::Command;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -89,6 +91,9 @@ fn main() -> std::io::Result<()> {
         }
         for (name, value) in vmstat_counters() {
             output.push_str(&format!("overalls_fleet_counter{{kind=\"host\",entity=\"all\",measure=\"{name}\"}} {value}\n"));
+        }
+        for (name, value) in terminal_metrics() {
+            output.push_str(&format!("overalls_fleet_gauge{{kind=\"terminal\",entity=\"host\",measure=\"{name}\"}} {value}\n"));
         }
         append_host_pressure(&mut output);
         for interface in descriptor_interfaces(&descriptor) {
@@ -258,6 +263,46 @@ fn append_host_pressure(output: &mut String) {
             }
         }
     }
+}
+
+fn terminal_metrics() -> Vec<(String, u64)> {
+    let mut stream = match UnixStream::connect("/run/lilly-release/terminal-metrics.sock") {
+        Ok(value) => value,
+        Err(_) => return Vec::new(),
+    };
+    stream
+        .set_read_timeout(Some(std::time::Duration::from_millis(800)))
+        .ok();
+    let _ = stream.write_all(b"metrics\n");
+    let mut body = Vec::new();
+    if stream.take(131_073).read_to_end(&mut body).is_err() || body.len() > 131_072 {
+        return Vec::new();
+    }
+    let text = match String::from_utf8(body) {
+        Ok(value) => value,
+        Err(_) => return Vec::new(),
+    };
+    let names = [
+        "terminal_stream_ready",
+        "terminal_live_channels",
+        "terminal_dial_failures",
+        "terminal_proxy_errors",
+    ];
+    names
+        .iter()
+        .filter_map(|name| {
+            let value = text
+                .split(&format!("\"{name}\""))
+                .nth(1)?
+                .split(':')
+                .nth(1)?
+                .split(|c: char| !c.is_ascii_digit())
+                .next()?
+                .parse()
+                .ok()?;
+            Some(((*name).to_owned(), value))
+        })
+        .collect()
 }
 
 struct UpdaterStatus {
