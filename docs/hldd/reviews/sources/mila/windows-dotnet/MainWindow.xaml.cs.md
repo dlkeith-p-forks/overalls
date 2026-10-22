@@ -1,5 +1,5 @@
 ---
-digest: 058f0e8244bdc13d69646b10e091ff17d165040c4cf31d3d45efdf49457dc468
+digest: 1d1619c1faac929475983e4e2598f9140172811c6ab8060e1b0cb60caf5ebdd8
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows web controls validate operations through existing Rust command classification boundary.
+Windows create-machine entrypoint only classifies the request through existing Rust policy.

@@ -33,6 +33,7 @@ public sealed partial class MainWindow : Window
         MachineDelete.Content = S("actionDelete", "Delete"); MachineShareAdd.Content = S("sharingAdd", "Share add");
         MachineShareRemove.Content = S("sharingRemove", "Share remove"); MachineWebShow.Content = S("webOpen", "Web show");
         MachineWebSet.Content = S("webSave", "Web set");
+        CreateMachine.Content = S("actionCreate", "Create machine");
         ThreadCommandsTitle.Text = S("tabThreads", "Thread commands");
         ThreadCommandsHelp.Text = S("threadWorking", "Commands are validated by the Rust core before execution.");
         ThreadList.Content = S("tabInfo", "List"); ThreadShow.Content = S("machineLoading", "Show");
@@ -49,6 +50,13 @@ public sealed partial class MainWindow : Window
         WebOpen.Content = S("webOpen", "Open web");
         WebCopy.Content = S("webCopy", "Copy address");
         WebStatus.Text = S("webNoAddress", "No web address");
+    }
+    private void CreateMachine(object sender, RoutedEventArgs args)
+    {
+        MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand("new");
+        MachineCommandStatus.Text = kind == MilaMachineCommandKind.New
+            ? S("requestWaiting", "Create request validated by Rust")
+            : S("requestRefused", "Create request refused");
     }
     private void OpenWebControl(object sender, RoutedEventArgs args)
     {

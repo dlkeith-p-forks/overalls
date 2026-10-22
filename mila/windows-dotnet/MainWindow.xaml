@@ -37,6 +37,7 @@
             <Button x:Name="MachineWebSet" Click="ClassifyMachineWebSet" />
           </StackPanel>
           <TextBlock x:Name="MachineCommandStatus" Opacity="0.7" TextWrapping="Wrap" />
+          <Button x:Name="CreateMachine" Click="CreateMachine" HorizontalAlignment="Left" />
         </StackPanel>
         <StackPanel x:Name="ThreadPanel" Visibility="Collapsed" Spacing="8">
           <TextBlock x:Name="ThreadCommandsTitle" FontSize="18" />
