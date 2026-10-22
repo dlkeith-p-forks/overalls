@@ -133,7 +133,9 @@ jobs:
         working-directory: mila/native/apple
         env:
           MILA_FFI_LIB_DIR: ${{ github.workspace }}/mila/rust/target/release
-        run: swift test
+        run: |
+          swift build
+          swift test
       - name: macOS and iOS dev targets
         run: |
           devenv shell -- mila-build macos dev
@@ -303,7 +305,10 @@ jobs:
           sudo apt-get install --yes libgtk-4-dev libadwaita-1-dev pkg-config
       - name: Build and test native GTK client
         working-directory: mila/native/linux
-        run: cargo test --locked
+        run: |
+          cargo build --locked --release
+          test -x target/release/mila-linux
+          cargo test --locked
       - name: Check formatting
         working-directory: mila/native/linux
         run: cargo fmt --all -- --check
@@ -354,7 +359,9 @@ jobs:
       - name: Assemble native Compose APK
         timeout-minutes: 20
         working-directory: mila/native/android
-        run: gradle --no-daemon --stacktrace assembleDebug assembleDebugAndroidTest testDebugUnitTest
+        run: |
+          gradle --no-daemon --stacktrace assembleDebug assembleDebugAndroidTest testDebugUnitTest
+          test -f app/build/outputs/apk/debug/app-debug.apk
       - name: Invoke packaged Rust JNI on Android
         timeout-minutes: 20
         uses: reactivecircus/android-emulator-runner@v2
