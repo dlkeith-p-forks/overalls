@@ -1441,6 +1441,20 @@ supervised daemon recovery; physical isolation remains open. The separate OmniOS
 abrupt-crash receipt covers process SIGKILL and same-disk recovery; physical stable-media and host recovery
 remain unverified.
 
+The illumos candidate also carries a network receive budget
+(`0005-vioif-receive-budget.patch`, contract `illumos-net-receive-budget`).
+Firecracker offers no indirect descriptors, so each `vioif` receive buffer
+costs its header plus every data cookie in the 256-entry ring, and a buffer
+lent to the network stack keeps those descriptors. The stock driver used 64 KiB
+buffers, about 18 descriptors each, while allowing 128 loans. A socket that
+stopped reading could hold every ring descriptor and stop all inbound traffic
+for the guest until it closed. Without guest receive offload, buffers are now one
+page-aligned cookie sized to the MTU plus headers. Loans are capped at half the
+buffers the ring can hold. The extracted helper's ASan/UBSan test covers the
+regression vectors. The patched Nix KVM candidate passed `native-omnios-transport`
+and `native-omnios-reset` on 2026-10-22. The promoted `45983bb7` image is unchanged
+and still has the stall until a separate promotion.
+
 ## Windows guests (experimental)
 
 [ADR-0169](repo:docs/architecture/decisions/0169-firmware-booted-windows-guests.md)

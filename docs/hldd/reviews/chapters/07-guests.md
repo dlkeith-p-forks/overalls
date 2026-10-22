@@ -1,5 +1,5 @@
 ---
-digest: 0f73d65e0218aa15612a351af492879d87f78f6e864901c932124fc394334f4e
+digest: bdcfccb00c6f036b3fb9f529813849924bb8f96b34448d724073a0aea3c175fb
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed the one-line NixOS guest package addition of gh. Chapter 07 now identifies Git and GitHub CLI as declared default packages, without claiming image rebuild or fleet deployment acceptance.
+Adds the illumos vioif receive descriptor budget (patch 0005): MTU-sized single-cookie receive buffers without guest receive offload and loans capped at half the buffers the ring holds, with an extracted-helper ASan/UBSan test and contract illumos-net-receive-budget. 07-guests documents the stall, the fix, the candidate transport/reset passes and that the promoted 45983bb7 image is unchanged.

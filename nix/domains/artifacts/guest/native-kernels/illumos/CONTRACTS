@@ -31,6 +31,15 @@ Completed blkdev transfers MUST return submission success after notifying the
 framework exactly once, including polled errors. Internal transfers without a
 blkdev callback MUST return their original completion error directly.
 
+@cc [owner:ghuntley,label:capacity;recovery] illumos-net-receive-budget
+Without negotiated indirect descriptors, each network receive buffer costs its
+header descriptor plus every data cookie, and a buffer on loan to the network
+stack keeps those descriptors until the stack frees it. Loans MUST be bounded by
+half the buffers the ring can hold, so a socket that stops reading can never
+leave the device without receive buffers. Without a negotiated guest receive
+offload, receive buffers MUST be sized to the MTU plus a VLAN Ethernet header and
+the virtio header rather than a 64 KiB segmentation-offload frame.
+
 @cc [owner:ghuntley,label:verification] illumos-module-evidence-boundary
 Cross-compiled ELF objects MUST NOT be described as native linked kernel modules,
 a bootable kernel or image admission. Module integration requires the matching

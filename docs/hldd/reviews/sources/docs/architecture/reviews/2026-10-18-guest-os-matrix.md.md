@@ -1,5 +1,5 @@
 ---
-digest: a7cf0b6524009cee0e2d511be008940b6b6ecb4b119e87e9710a1f7f01009b0c
+digest: 845219239e14f104b46b1025c23d753afb94ff1cdf5d71ef3c62bb96ef4ac57e
 disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-Adds 2026-10-22 OmniOS sweep evidence to the guest OS matrix review: a pre-existing illumos vioif receive stall under Firecracker that fails github-tools-illumos-retained, and an intermittent first-boot stall in native-omnios-power-loss. No behavior, configuration or protocol changes; the HLDD makes no claim that retained GitHub tools on illumos are qualified, so no chapter text changes.
+Review evidence for the vioif receive descriptor budget follow-up; the documented behavior change is recorded in 07-guests under the deployment review.

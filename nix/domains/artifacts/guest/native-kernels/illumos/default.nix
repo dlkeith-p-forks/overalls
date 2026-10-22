@@ -14,6 +14,7 @@ let
     modern_virtio = builtins.hashFile "sha256" ./0002-modern-virtio.patch;
     listener_reset = builtins.hashFile "sha256" ./0003-listener-reset.patch;
     block_direct_budget = builtins.hashFile "sha256" ./0004-block-direct-budget.patch;
+    net_receive_budget = builtins.hashFile "sha256" ./0005-vioif-receive-budget.patch;
     driver = builtins.hashFile "sha256" ./viosock.c;
     socket_module = builtins.hashFile "sha256" ./sockvsock.c;
     driver_header = builtins.hashFile "sha256" ./viosock.h;
@@ -70,6 +71,7 @@ pkgs.runCommand "overalls-illumos-kernel-candidate-objects-${sourceRevision}" {
   patch -p1 --forward --batch < ${./0002-modern-virtio.patch}
   patch -p1 --forward --batch < ${./0003-listener-reset.patch}
   patch -p1 --forward --batch < ${./0004-block-direct-budget.patch}
+  patch -p1 --forward --batch < ${./0005-vioif-receive-budget.patch}
   python3.13 ${./extract_listener_reset.py} "$TMPDIR/illumos-src" "$TMPDIR/listener-test"
   $CC -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
     -fno-omit-frame-pointer -pthread -I"$TMPDIR/listener-test" \
@@ -79,6 +81,10 @@ pkgs.runCommand "overalls-illumos-kernel-candidate-objects-${sourceRevision}" {
     -fno-omit-frame-pointer -I"$TMPDIR/listener-test" \
     ${./block_budget_test.c} -o "$TMPDIR/block-budget-test"
   "$TMPDIR/block-budget-test"
+  $CC -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
+    -fno-omit-frame-pointer -I"$TMPDIR/listener-test" \
+    ${./net_receive_budget_test.c} -o "$TMPDIR/net-receive-budget-test"
+  "$TMPDIR/net-receive-budget-test"
   $CC -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
     -fno-omit-frame-pointer -I"$TMPDIR/listener-test" \
     ${./block_completion_test.c} -o "$TMPDIR/block-completion-test"
