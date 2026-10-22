@@ -1,5 +1,5 @@
 ---
-digest: 63f2c014d454e961979d47da1a0b961774a7b97c76d34968e8d21c109d518d0a
+digest: 88ec4620c9ae3bc40c2fdbb38429bf686b37e1b17cfb36dbc428b17f6bc9e0ed
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native session and terminal UI changes preserve Rust-owned validation and existing boundaries.
+Linux web controls retain Rust validation while using centralized localized labels.

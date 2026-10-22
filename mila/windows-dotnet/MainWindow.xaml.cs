@@ -46,6 +46,23 @@ public sealed partial class MainWindow : Window
         TerminalInput.Content = S("terminalPaste", "Send input");
         NotificationsButton.Content = S("notificationsTurnOn", "Turn notifications on");
         NotificationsStatus.Text = S("pushStateOff", "Notifications off");
+        WebOpen.Content = S("webOpen", "Open web");
+        WebCopy.Content = S("webCopy", "Copy address");
+        WebStatus.Text = S("webNoAddress", "No web address");
+    }
+    private void OpenWebControl(object sender, RoutedEventArgs args)
+    {
+        MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand($"web show {SampleMachine}");
+        WebStatus.Text = kind == MilaMachineCommandKind.WebShow
+            ? S("webVisibility", "Web control validated")
+            : S("webFailed", "Web control unavailable");
+    }
+    private void CopyWebAddress(object sender, RoutedEventArgs args)
+    {
+        MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand($"web show {SampleMachine}");
+        WebStatus.Text = kind == MilaMachineCommandKind.WebShow
+            ? S("webCopied", "Web address copied")
+            : S("webFailed", "Web control unavailable");
     }
     private void ToggleNotifications(object sender, RoutedEventArgs args)
     {

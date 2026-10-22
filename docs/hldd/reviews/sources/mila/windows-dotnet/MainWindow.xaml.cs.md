@@ -1,5 +1,5 @@
 ---
-digest: 42f7ff57693d31c0d2a8bc079722f72c52d239b69342109025212d5620b86b7f
+digest: 058f0e8244bdc13d69646b10e091ff17d165040c4cf31d3d45efdf49457dc468
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native session and terminal UI changes preserve Rust-owned validation and existing boundaries.
+Windows web controls validate operations through existing Rust command classification boundary.
