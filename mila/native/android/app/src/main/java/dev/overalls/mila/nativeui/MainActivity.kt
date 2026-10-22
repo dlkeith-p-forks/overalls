@@ -9,7 +9,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         MilaStrings.configure(this)
         setContent {
-            MilaNativeRoot()
+            MilaNativeRoot(adapter = LinkedMilaFfiAdapter())
         }
     }
 }
