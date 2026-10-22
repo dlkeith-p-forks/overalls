@@ -90,6 +90,7 @@ fn main() -> std::io::Result<()> {
         for (name, value) in vmstat_counters() {
             output.push_str(&format!("overalls_fleet_counter{{kind=\"host\",entity=\"all\",measure=\"{name}\"}} {value}\n"));
         }
+        append_host_pressure(&mut output);
         for interface in descriptor_interfaces(&descriptor) {
             if let Some(values) = interface_stats(&interface) {
                 for (measure, value) in values {
@@ -230,6 +231,33 @@ fn vmstat_counters() -> Vec<(String, u64)> {
             allowed.contains(&name).then_some((name.to_owned(), value))
         })
         .collect()
+}
+
+fn append_host_pressure(output: &mut String) {
+    for pressure in ["cpu", "memory", "io"] {
+        let Ok(text) = fs::read_to_string(format!("/proc/pressure/{pressure}")) else {
+            continue;
+        };
+        for line in text.lines().take(4) {
+            let mut fields = line.split_whitespace();
+            let Some(class) = fields.next() else { continue };
+            if !matches!(class, "some" | "full") {
+                continue;
+            }
+            for field in fields {
+                let Some((name, value)) = field.split_once('=') else {
+                    continue;
+                };
+                if matches!(name, "avg10" | "avg60" | "avg300" | "total") {
+                    if let Ok(value) = value.parse::<f64>() {
+                        if value.is_finite() {
+                            output.push_str(&format!("overalls_fleet_gauge{{kind=\"host\",entity=\"all\",measure=\"pressure_{pressure}_{class}_{name}\"}} {value}\n"));
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 struct UpdaterStatus {
