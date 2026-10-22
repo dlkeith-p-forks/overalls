@@ -1,5 +1,5 @@
 ---
-digest: 8a08e161944f38b67a7711d0c077549e5c1d15d599fabcdafc676f6635f26a36
+digest: ab74259dc4658778816ebeed652835cac691f78d2cd6a098e56c1c04f18ee1b7
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Parity matrix records persisted deployment/settings and Apple notification evidence.
+Parity matrix records Android authenticated WebView backend evidence.
