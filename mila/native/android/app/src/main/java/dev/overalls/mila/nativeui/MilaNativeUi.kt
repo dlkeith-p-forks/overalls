@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -94,11 +95,28 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
             is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, adapter)
             MilaRoute.Threads -> ThreadList(adapter)
             is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
-            MilaRoute.Settings -> Detail("Settings", "Runtime settings are managed by the core library.")
+            MilaRoute.Settings -> MilaSettingsScreen()
         }
         if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(adapter)
     }
     LaunchedEffect(Unit) { refresh() }
+}
+
+@Composable
+private fun MilaSettingsScreen() {
+    val context = LocalContext.current
+    val controller = remember { MilaSettingsController(MilaSharedPreferencesStore(context.getSharedPreferences("mila.settings", 0))) }
+    var settings by remember { mutableStateOf(controller.load()) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(MilaStrings.text(MilaMessage.Settings), style = MaterialTheme.typography.titleLarge)
+        Text("${MilaStrings.text(MilaMessage.Appearance)}: ${settings.appearance}")
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            MilaAppearance.entries.forEach { appearance ->
+                Button({ settings = settings.copy(appearance = appearance); controller.save(settings) }) { Text(appearance.name) }
+            }
+        }
+        Text("${MilaStrings.text(MilaMessage.Locale)}: ${settings.locale}")
+    }
 }
 
 @Composable private fun TerminalControls(adapter: MilaFfiAdapter) {
@@ -183,10 +201,10 @@ private fun MachineSharingControls(adapter: MilaFfiAdapter, machine: MilaMachine
     val controller = remember { MilaMachineSharingController(adapter) }
     if (machine != null) { controller.setSession(true, MilaSessionListing(listOf(machine), false)); controller.setMachine(machine) }
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        OutlinedTextField(value = principal, onValueChange = { principal = it }, label = { Text("Share principal") })
+        OutlinedTextField(value = principal, onValueChange = { principal = it }, label = { Text(MilaStrings.text(MilaMessage.SharePrincipal)) })
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button({ scope.launch { result = if (controller.submit(principal)) "Share added" else "Share rejected" } }) { Text("Share add") }
-            Button({ scope.launch { result = if (controller.submit(principal, remove = true)) "Share removed" else "Share rejected" } }) { Text("Share remove") }
+            Button({ scope.launch { result = if (controller.submit(principal)) MilaStrings.text(MilaMessage.ShareAdded) else MilaStrings.text(MilaMessage.ShareRejected) } }) { Text(MilaStrings.text(MilaMessage.ShareAdd)) }
+            Button({ scope.launch { result = if (controller.submit(principal, remove = true)) MilaStrings.text(MilaMessage.ShareRemoved) else MilaStrings.text(MilaMessage.ShareRejected) } }) { Text(MilaStrings.text(MilaMessage.ShareRemove)) }
         }
         if (result.isNotEmpty()) Text(result, style = MaterialTheme.typography.labelSmall)
     }

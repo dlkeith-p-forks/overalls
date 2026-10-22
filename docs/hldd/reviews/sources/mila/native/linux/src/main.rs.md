@@ -1,5 +1,5 @@
 ---
-digest: feebfd7598a2994ec466a4968be545170a7ed2b8bdb8059cb786e6383f0bbaf6
+digest: 5ea0e9abc6989f44dab701b8fc11115f27ad3dfd80e655b7cf1d81b7d33d8cdf
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Concurrent Linux native adapter and shell changes preserve documented Mila boundaries; no handbook behavior change.
+Native sharing and Android settings remain within existing documented native UI boundaries.

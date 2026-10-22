@@ -124,16 +124,19 @@ impl NativeState {
         root.append(&request_id);
         root.append(&actions);
         let share_email = Entry::builder()
-            .placeholder_text("Share email")
+            .placeholder_text(&strings::text(strings::Message::ShareEmail))
             .hexpand(true)
             .build();
         let share_role = Entry::builder()
-            .placeholder_text("Role: viewer, operator, or manager")
+            .placeholder_text(&strings::text(strings::Message::ShareRole))
             .hexpand(true)
             .build();
         let share_actions = Box::new(Orientation::Horizontal, 8);
-        for (label_text, operation) in [("Share machine", "add"), ("Remove share", "remove")] {
-            let button = Button::with_label(label_text);
+        for (label_text, operation) in [
+            (strings::text(strings::Message::ShareAdd), "add"),
+            (strings::text(strings::Message::ShareRemove), "remove"),
+        ] {
+            let button = Button::with_label(&label_text);
             let machine = machine_id.clone();
             let email = share_email.clone();
             let role = share_role.clone();
@@ -162,7 +165,7 @@ impl NativeState {
             .placeholder_text("share show JSON (paste response)")
             .hexpand(true)
             .build();
-        let share_load = Button::with_label("Load sharing");
+        let share_load = Button::with_label(&strings::text(strings::Message::ShareLoad));
         let share_status = content.clone();
         let response_input = share_response.clone();
         share_load.connect_clicked(

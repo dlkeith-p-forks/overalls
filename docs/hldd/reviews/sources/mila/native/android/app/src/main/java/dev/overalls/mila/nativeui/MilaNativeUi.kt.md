@@ -1,5 +1,5 @@
 ---
-digest: e8370657e250857569ec3d1376be433828dbbdeb241019c96832a31cefb5e408
+digest: 74834aca5eed77f223b23f1dfceff9f4c151e893ff715abbf3ce1a09843f40f3
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Android sharing UI and tests preserve documented Mila domain boundaries; no handbook behavior change.
+Native sharing and Android settings remain within existing documented native UI boundaries.
