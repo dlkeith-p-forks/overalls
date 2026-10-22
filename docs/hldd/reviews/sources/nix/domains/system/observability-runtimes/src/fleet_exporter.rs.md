@@ -1,5 +1,5 @@
 ---
-digest: aa32f8c3c2cc692e9d34ec516ac0e0a30eedfc69e002d4bbaff575ff710090f2
+digest: 016b15772c4c900ea2989539cb72007d97bc87a5afe8309c9e28b7d7b8be2ac5
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now reads its configured descriptor port while retaining the bounded native host metric projection.
+Fleet exporter now emits validated updater phase and revision projections from a bounded status file, preserving the allowlisted host-only telemetry boundary.

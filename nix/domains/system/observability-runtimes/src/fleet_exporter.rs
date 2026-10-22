@@ -57,6 +57,58 @@ fn main() -> std::io::Result<()> {
         if let Some(value) = memory {
             output.push_str(&format!("overalls_fleet_gauge{{kind=\"host\",entity=\"all\",measure=\"memory_available_bytes\"}} {}\n", value.saturating_mul(1024)));
         }
+        if let Some(status) = updater_status() {
+            if let Some(phase) = status.phase {
+                output.push_str(&format!(
+                    "overalls_fleet_updater_phase{{phase=\"{phase}\"}} 1\n"
+                ));
+            }
+            if let Some(revision) = status.revision {
+                output.push_str(&format!(
+                    "overalls_fleet_updater_revision_info{{revision=\"{revision}\"}} 1\n"
+                ));
+            }
+        }
         output
     })
+}
+
+struct UpdaterStatus {
+    phase: Option<String>,
+    revision: Option<String>,
+}
+
+fn updater_status() -> Option<UpdaterStatus> {
+    let text = fs::read_to_string("/var/lib/overalls-auto-update/status.json").ok()?;
+    if text.len() > 65_536 {
+        return None;
+    }
+    let phase = text
+        .split("\"phase\"")
+        .nth(1)
+        .and_then(|v| v.split(':').nth(1))
+        .and_then(|v| v.split('"').nth(1))
+        .filter(|v| {
+            matches!(
+                *v,
+                "fetch"
+                    | "build"
+                    | "stage"
+                    | "preflight"
+                    | "migrate"
+                    | "activate"
+                    | "verify"
+                    | "healthy"
+                    | "never-run"
+            )
+        })
+        .map(str::to_owned);
+    let revision = text
+        .split("\"revision\"")
+        .nth(1)
+        .and_then(|v| v.split(':').nth(1))
+        .and_then(|v| v.split('"').nth(1))
+        .filter(|v| v.len() == 40 && v.bytes().all(|b| b.is_ascii_hexdigit()))
+        .map(str::to_owned);
+    (phase.is_some() || revision.is_some()).then_some(UpdaterStatus { phase, revision })
 }
