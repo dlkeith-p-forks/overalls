@@ -1,5 +1,7 @@
 defmodule Marshall.ObservabilityTest do
   use ExUnit.Case, async: false
+  import Hegel
+  import Hegel.Gen
 
   test "aggregation retains only bounded numeric observations" do
     if Process.whereis(Marshall.Observability) == nil,
@@ -128,5 +130,17 @@ defmodule Marshall.ObservabilityTest do
                     %{meta: %{event: "marshall.runtime_metrics", beam_processes: processes}}}
 
     assert is_integer(processes) and processes > 0
+  end
+
+  property "metric sanitization keeps only bounded numeric allowlisted values" do
+    entries = draw("entries", list(tuple({binary(0, 32), one_of([integer(-1_000, 10_000), binary(0, 32)])}), min: 0, max: 16))
+    metrics = Map.new(entries)
+    sanitized = Marshall.Observability.sanitize_metrics(metrics)
+
+    assert Enum.all?(sanitized, fn {key, value} ->
+             is_binary(key) and is_number(value) and value >= 0 and value <= 9_007_199_254_740_991
+           end)
+
+    refute Enum.any?(Map.keys(sanitized), &String.contains?(&1, "secret"))
   end
 end
