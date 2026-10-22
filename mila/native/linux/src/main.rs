@@ -156,6 +156,17 @@ impl NativeState {
         });
         root.append(&deployment);
         root.append(&select);
+        let forget = Button::with_label(&strings::text(strings::Message::ForgetDeployment));
+        let forget_status = content.clone();
+        forget.connect_clicked(move |_| match persistence::forget() {
+            Ok(()) => {
+                forget_status.set_label(&strings::text(strings::Message::DeploymentForgotten))
+            }
+            Err(_) => {
+                forget_status.set_label(&strings::text(strings::Message::DeploymentForgetFailed))
+            }
+        });
+        root.append(&forget);
 
         let machine_detail_id = Entry::builder()
             .placeholder_text("Machine UUID for detail")

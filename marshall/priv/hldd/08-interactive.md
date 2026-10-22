@@ -1402,6 +1402,12 @@ group/world permission bits before loading raw P-256 material, and its test
 verifies signatures without exposing private bytes. Hardware-backed signer
 integration and the live HTTPS approval transport remain open.
 
+The Linux deployment surface validates and stores one canonical host selection
+under XDG configuration, restores it on launch, and exposes an idempotent
+Forget deployment action. Forget removes only that selection; trust, key and
+remote device records remain under their separate authorities. A multi-deployment
+list and complete sign-in UI are still open.
+
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command

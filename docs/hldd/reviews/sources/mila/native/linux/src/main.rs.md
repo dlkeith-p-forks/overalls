@@ -1,11 +1,11 @@
 ---
-digest: 69ec8bf24d12d6578b5bc92a0a51b8d5815c68fb7cf2aaa118f2f70f6ab6f50e
+digest: 89b4d234fb8d1e2649cbbdac883bc22b7391b859128227e6f83de360ee99b9f6
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/main.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 5cd1ebbcc7a0aec75a8a6e1611fd4296e9c81b4fc19787930e559f74f384ebc8
+  marshall/priv/hldd/08-interactive.md: 1178920c68a6912b0a5886ba1611d85e849c8dd189027e4b5620fca70e652cf2
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent native platform change; domain and topology boundaries remain unchanged.
+Reviewed Linux settings and locale persistence changes; no new domain or topology impact.

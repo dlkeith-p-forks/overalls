@@ -146,6 +146,18 @@ pub(crate) fn save(selection: &DeploymentSelection) -> Result<(), PersistenceErr
     Ok(())
 }
 
+/// Forget the selected deployment without touching trust or device material.
+pub(crate) fn forget() -> Result<(), PersistenceError> {
+    let Some(path) = path() else {
+        return Ok(());
+    };
+    match fs::remove_file(path) {
+        Ok(()) => Ok(()),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(()),
+        Err(error) => Err(error.into()),
+    }
+}
+
 pub(crate) fn load_settings() -> Result<Settings, PersistenceError> {
     let Some(path) = settings_path() else {
         return Ok(Settings::default());
@@ -202,6 +214,20 @@ mod tests {
     fn route_is_navigation_only() {
         let selection = DeploymentSelection::validate("example.com:443").unwrap();
         assert_eq!(selection.route(), "overalls://example.com:443/machines");
+    }
+
+    #[test]
+    fn forget_is_idempotent() {
+        let path =
+            std::env::temp_dir().join(format!("mila-deployment-{}.json", std::process::id()));
+        std::env::set_var("MILA_DEPLOYMENT_PATH", &path);
+        let selection = DeploymentSelection::validate("example.com:443").unwrap();
+        save(&selection).unwrap();
+        assert!(path.exists());
+        forget().unwrap();
+        forget().unwrap();
+        assert!(!path.exists());
+        std::env::remove_var("MILA_DEPLOYMENT_PATH");
     }
 
     #[test]

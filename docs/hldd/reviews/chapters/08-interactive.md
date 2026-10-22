@@ -1,6 +1,6 @@
 ---
-digest: 255f7a92266fa04c63b8daf4db87bab572c0bce08d9f7945b9b5e2f4ea3aefbd
-disposition: updated
+digest: 1178920c68a6912b0a5886ba1611d85e849c8dd189027e4b5620fca70e652cf2
+disposition: no-impact
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/08-interactive.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document Linux FileDeviceSigner owner-only key custody, signature verification evidence, and remaining hardware-backed and HTTPS approval gaps.
+Reviewed Linux settings and locale persistence changes; no new domain or topology impact.
