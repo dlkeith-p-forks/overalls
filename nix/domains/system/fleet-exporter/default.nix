@@ -3,14 +3,6 @@ let
   inherit (lib) mkOption mkEnableOption mkIf types;
   cfg = config.services.overallsFleetExporter;
   observabilityRuntimes = import ../observability-runtimes.nix { inherit pkgs; };
-  runtime = pkgs.runCommand "overalls-fleet-exporter" {} ''
-    mkdir -p $out
-    cp ${./runtime.py} $out/runtime.py
-    cp ${./exporter.py} $out/exporter.py
-    cp ${./metrics.py} $out/metrics.py
-    cp ${./backup_status.py} $out/backup_status.py
-    cp ${./terminal_metrics.py} $out/terminal_metrics.py
-  '';
   descriptor = pkgs.writeText "overalls-fleet-exporter.json" (builtins.toJSON {
     port = cfg.port;
     external_interfaces = cfg.externalInterfaces;
