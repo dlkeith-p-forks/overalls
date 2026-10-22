@@ -159,6 +159,8 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Install the pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
       - name: Build Rust FFI for Apple native tests
         run: cargo build --manifest-path mila/rust/Cargo.toml -p mila-ffi --release
       - name: Swift native package tests
@@ -265,6 +267,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - name: Install the pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
       - name: Build Rust Windows FFI
         run: cargo build --manifest-path mila/rust/Cargo.toml -p mila-ffi --release
       - name: Build native WinUI client (.NET 10)
@@ -291,6 +295,8 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Install the pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
       - name: Install GTK4 and libadwaita development libraries
         run: |
           sudo apt-get update
@@ -365,3 +371,24 @@ jobs:
           working-directory: mila/native/android
           disable-animations: true
           script: gradle --no-daemon connectedDebugAndroidTest
+
+  native-gate:
+    name: Native platform gate
+    if: ${{ always() }}
+    needs: [apple-native, android-native, linux-native, windows-native]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every native platform job to pass
+        env:
+          APPLE: ${{ needs.apple-native.result }}
+          ANDROID: ${{ needs.android-native.result }}
+          LINUX: ${{ needs.linux-native.result }}
+          WINDOWS: ${{ needs.windows-native.result }}
+        run: |
+          set -eu
+          for result in "$APPLE" "$ANDROID" "$LINUX" "$WINDOWS"; do
+            test "$result" = success || {
+              echo "Native platform gate failed: $result" >&2
+              exit 1
+            }
+          done
