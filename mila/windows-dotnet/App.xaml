@@ -3,6 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Application.Resources>
+    <ResourceDictionary>
+    <ResourceDictionary.MergedDictionaries>
+      <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+    </ResourceDictionary.MergedDictionaries>
     <SolidColorBrush x:Key="MilaTextBrush" Color="#000000" />
     <SolidColorBrush x:Key="MilaTextAltBrush" Color="#666666" />
     <SolidColorBrush x:Key="MilaBackgroundBrush" Color="#FFFFFF" />
@@ -25,7 +29,6 @@
       <Setter Property="BorderThickness" Value="2" />
       <Setter Property="CornerRadius" Value="0" />
     </Style>
-    <XamlControlsResources
-        xmlns="using:Microsoft.UI.Xaml.Controls" />
+    </ResourceDictionary>
   </Application.Resources>
 </Application>
