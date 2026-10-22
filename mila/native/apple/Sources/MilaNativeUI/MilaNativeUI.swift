@@ -5,7 +5,7 @@ public struct MilaNativeRootView: View {
     private let adapter: any MilaFFIAdapter
     @State private var selection: MilaRoute = .machines
     @State private var machines: [MilaMachinePresentation] = []
-    @State private var status = "Ready"
+    @State private var status = MilaStrings.text(.ready)
 
     public init(adapter: any MilaFFIAdapter = LinkedMilaFFIAdapter(), snapshot: MilaValidatedSnapshot? = nil) {
         self.adapter = adapter
@@ -35,8 +35,8 @@ public struct MilaNativeRootView: View {
     }
 
     private func refresh() async {
-        do { let snapshot = try await adapter.refreshSnapshot(); machines = snapshot.machines; status = "Snapshot loaded" }
-        catch { status = "No snapshot loaded"; machines = [] }
+        do { let snapshot = try await adapter.refreshSnapshot(); machines = snapshot.machines; status = MilaStrings.text(.snapshotLoaded) }
+        catch { status = MilaStrings.text(.noSnapshotLoaded); machines = [] }
     }
 }
 
@@ -45,13 +45,13 @@ private struct MachinesView: View {
     let select: (UUID) -> Void
     var body: some View {
         List {
-            if machines.isEmpty { ContentUnavailableView("No machines", systemImage: "desktopcomputer", description: Text("Connect to a deployment to load a validated snapshot.")) }
+            if machines.isEmpty { ContentUnavailableView(MilaStrings.text(.machinesEmpty), systemImage: "desktopcomputer", description: Text(MilaStrings.text(.machinesHint))) }
             ForEach(machines) { machine in
                 Button { select(machine.id) } label: {
                     VStack(alignment: .leading) { Text(machine.machine.name); Text(machine.machine.observedState ?? "unknown").font(.caption).foregroundStyle(.secondary) }
                 }
             }
-        }.navigationTitle("Machines")
+        }.navigationTitle(MilaStrings.text(.machines))
     }
 }
 
@@ -67,14 +67,14 @@ private struct MachineDetailView: View {
                 Text(machine.machine.name).font(.title)
                 Text(machine.id.uuidString).font(.caption)
                 Text(machine.machine.observedState ?? "unknown").foregroundStyle(.secondary)
-                Button("Open terminal") { showTerminal = true }.disabled(!machine.machine.write)
+                Button(MilaStrings.text(.openTerminal)) { showTerminal = true }.disabled(!machine.machine.write)
                 ForEach(machine.actions.values, id: \.self) { action in
                     Button(action.title) {
                         Task {
                             do {
                                 try await adapter.submit(action, machine: machine, requestID: UUID())
-                                status = "Action submitted"
-                            } catch { status = "Action not submitted" }
+                                status = MilaStrings.text(.actionSubmitted)
+                            } catch { status = MilaStrings.text(.actionNotSubmitted) }
                         }
                     }
                 }
@@ -82,13 +82,13 @@ private struct MachineDetailView: View {
                     ForEach(["show", "resize", "share show", "web show"], id: \.self) { command in
                         Button(command) {
                             do { classified = String(describing: try adapter.classifyMachineCommand(command)) }
-                            catch { classified = "Rejected by Rust" }
+                            catch { classified = MilaStrings.text(.rejectedByRust) }
                         }
                     }
                 }
                 Text(classified).font(.caption).foregroundStyle(.secondary)
                 Text(status).font(.caption).foregroundStyle(.secondary)
-            } else { ContentUnavailableView("Machine unavailable", systemImage: "questionmark") }
+            } else { ContentUnavailableView(MilaStrings.text(.machineUnavailable), systemImage: "questionmark") }
         }.padding().sheet(isPresented: $showTerminal) { MilaTerminalView() }
     }
 
@@ -99,21 +99,21 @@ private struct ThreadsView: View {
     @State private var status = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Threads").font(.title)
-            Text("Commands are classified by Rust before execution.").font(.caption).foregroundStyle(.secondary)
+            Text(MilaStrings.text(.threads)).font(.title)
+            Text(MilaStrings.text(.commandsRust)).font(.caption).foregroundStyle(.secondary)
             ForEach(["threads list", "threads read"], id: \.self) { command in
                 Button(command) {
                     do { status = String(describing: try adapter.classifyThreadCommand(command)) }
-                    catch { status = "Unavailable" }
+                    catch { status = MilaStrings.text(.unavailable) }
                 }
             }
             Text(status).font(.caption)
-            ContentUnavailableView("No threads", systemImage: "bubble.left", description: Text("Connect to a deployment to load threads."))
+            ContentUnavailableView(MilaStrings.text(.noThreads), systemImage: "bubble.left", description: Text(MilaStrings.text(.threadsHint)))
         }.padding()
     }
 }
-private struct ThreadDetailView: View { let id: UUID; var body: some View { Text("Thread \(id.uuidString)").padding() } }
-private struct SettingsView: View { var body: some View { Form { Text("Runtime and deployment settings are managed by the core library.").foregroundStyle(.secondary) }.navigationTitle("Settings") } }
+private struct ThreadDetailView: View { let id: UUID; var body: some View { Text("\(MilaStrings.text(.threads)) \(id.uuidString)").padding() } }
+private struct SettingsView: View { var body: some View { Form { Text(MilaStrings.text(.runtimeUnavailable)).foregroundStyle(.secondary) }.navigationTitle(MilaStrings.text(.settings)) } }
 
 @MainActor public struct MilaNativeApp: App {
     private let adapter: any MilaFFIAdapter
@@ -128,10 +128,10 @@ private struct MilaTerminalView: View {
     @State private var command = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Terminal").font(.title2)
+            Text(MilaStrings.text(.terminal)).font(.title2)
             ScrollView { Text(String(decoding: terminal.output, as: UTF8.self)).font(.system(.body, design: .monospaced)).frame(maxWidth: .infinity, alignment: .leading) }
                 .frame(maxHeight: .infinity).background(.black).foregroundStyle(.green)
-            HStack { TextField("Input", text: $command).onSubmit { send() }; Button("Send") { send() }; Button("Reconnect") { Task { await terminal.reconnect() } } }
+            HStack { TextField(MilaStrings.text(.input), text: $command).onSubmit { send() }; Button(MilaStrings.text(.send)) { send() }; Button(MilaStrings.text(.reconnect)) { Task { await terminal.reconnect() } } }
             Text("\(String(describing: terminal.state)) · \(terminal.columns)x\(terminal.rows)").font(.caption).foregroundStyle(.secondary)
         }.padding().task { await terminal.attach() }.onDisappear { Task { await terminal.close() } }
     }

@@ -1,13 +1,13 @@
 import Foundation
 
 /// Stable message identities shared with the Rust localization catalog.
-public enum MilaMessage: String, Sendable { case appName, machines, threads, settings, ready, refresh, connecting, connected, runtimeUnavailable, noAction }
+public enum MilaMessage: String, Sendable { case appName, machines, threads, settings, ready, refresh, connecting, connected, runtimeUnavailable, noAction, snapshotLoaded, noSnapshotLoaded, machinesEmpty, machinesHint, openTerminal, actionSubmitted, actionNotSubmitted, rejectedByRust, machineUnavailable, commandsRust, noThreads, threadsHint, unavailable, terminal, input, send, reconnect }
 
 public enum MilaStrings {
     private static let ids: [MilaMessage: String] = [
         .appName: "appTitle", .machines: "machinesTitle", .threads: "tabThreads", .settings: "settingsTitle",
         .ready: "ready", .refresh: "refresh", .connecting: "signInConnecting", .connected: "connected",
-        .runtimeUnavailable: "runtimeUnavailable", .noAction: "noAction"
+        .runtimeUnavailable: "runtimeUnavailable", .noAction: "noAction", .snapshotLoaded: "snapshotLoaded", .noSnapshotLoaded: "noSnapshotLoaded", .machinesEmpty: "machinesEmpty", .machinesHint: "machinesEmptyHint", .openTerminal: "terminalAttach", .actionSubmitted: "requestSucceeded", .actionNotSubmitted: "requestFailed", .rejectedByRust: "linkRefused", .machineUnavailable: "machineNotFound", .commandsRust: "threadEventTool", .noThreads: "threadsEmpty", .threadsHint: "threadsEmptyHint", .unavailable: "runtimeUnavailable", .terminal: "tabTerminals", .input: "threadAnswerHint", .send: "threadSend", .reconnect: "signInReconnect"
     ]
 
     public static func text(_ message: MilaMessage, locale: Locale = .current) -> String {
@@ -17,7 +17,7 @@ public enum MilaStrings {
         switch message {
         case .appName: return "Mila"; case .machines: return "Machines"; case .threads: return "Threads"; case .settings: return "Settings"
         case .ready: return "Ready"; case .refresh: return "Refresh"; case .connecting: return "Connecting…"; case .connected: return "Connected"
-        case .runtimeUnavailable: return "Native runtime unavailable"; case .noAction: return "No action selected"
+        case .runtimeUnavailable: return "Native runtime unavailable"; case .noAction: return "No action selected"; case .snapshotLoaded: return "Snapshot loaded"; case .noSnapshotLoaded: return "No snapshot loaded"; case .machinesEmpty: return "No machines"; case .machinesHint: return "Connect to a deployment to load a validated snapshot."; case .openTerminal: return "Open terminal"; case .actionSubmitted: return "Action submitted"; case .actionNotSubmitted: return "Action not submitted"; case .rejectedByRust: return "Rejected by Rust"; case .machineUnavailable: return "Machine unavailable"; case .commandsRust: return "Commands are classified by Rust before execution."; case .noThreads: return "No threads"; case .threadsHint: return "Connect to a deployment to load threads."; case .unavailable: return "Unavailable"; case .terminal: return "Terminal"; case .input: return "Input"; case .send: return "Send"; case .reconnect: return "Reconnect"
         }
     }
 

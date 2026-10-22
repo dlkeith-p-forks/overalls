@@ -1,5 +1,5 @@
 ---
-digest: 0ed6abc0a8517ed01a75529c5b190ccaf4dd3a3f02ed02f80d1deda6ef07101e
+digest: a70039348ed5de79d568f65fdf5f91e8e90ac1bee6d1e6caacb56098a45ad89f
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple now has a resource-backed locale lookup with deterministic fallback; the empty resource directory keeps SwiftPM builds valid until generated bundles are supplied.
+Apple native presentation now routes visible navigation, status, terminal and thread copy through the existing typed MilaStrings adapter; documented behavior and contracts are unchanged.
