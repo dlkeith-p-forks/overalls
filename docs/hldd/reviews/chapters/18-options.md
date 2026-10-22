@@ -1,5 +1,5 @@
 ---
-digest: 508dafafd8772a8b99e5277fdce56bda9b27566145979975ae96a11109e4a954
+digest: 56d6ff5dfa49ede786cba440d57100c75b721b23b1e0616e79d3df8205e5ac11
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Regenerated options reference on current trunk adds the Marshall artifactContentHost option and per-instance artifactPort listener with their types, defaults and descriptions; upstream option rows are unchanged.
+Underclass pin bumped 39f5766 -> c58a972 (free-plan gate, Claude usage-percent and refresh-scope fixes); source hash refreshed, cargoHash and instrumentation patch unchanged; chapter 18 regenerated for the new derivation name and chapter 10 records the revision. No topology, option or recovery change.

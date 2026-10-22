@@ -364,10 +364,17 @@ and the sticky session moves to the serving account. When every account overload
 the original upstream bytes are returned and the SLO journal records one failure.
 Policy, quota and post-output errors pass through unchanged. Stream `error` events
 now record their nested code, so these failures count as `overloaded`.
-The current package pin is `dbaf7b8`, with a refreshed source archive hash and
-unchanged Cargo lock/vendor hash. Upstream Rust tests passed on the patched source
-and the package built offline; NixOS checks were not run, and live provider
-behavior and production activation remain unverified.
+Revision `c58a972` disables an account whose subscription plan is `free` and
+re-enables it once a known non-free plan returns, recording the cause in a new
+`accounts.disabled_reason` column so operator disables are never reverted (upstream
+ADR 0025). It also fixes Claude Code accounts that stayed cooling: the account
+usage API reports percent utilization, which was read as a fraction, and token
+refresh requested an ungranted scope and failed with `invalid_scope`.
+The current package pin is `c58a972`, with a refreshed source archive hash and
+unchanged Cargo lock/vendor hash. The instrumentation patch applies unchanged.
+Upstream Rust tests passed on the unpatched source; the package was not rebuilt
+for this pin, NixOS checks were not run, and live provider behavior and production
+activation remain unverified.
 Provider egress can be pinned to a tailnet exit node (ADR-0185).
 `underclass-egress.service` runs a separate unprivileged userspace `tailscaled`
 with its own state and socket, no TUN device and no routes. Its HTTP proxy

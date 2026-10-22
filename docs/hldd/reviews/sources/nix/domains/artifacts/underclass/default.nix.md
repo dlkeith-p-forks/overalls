@@ -1,24 +1,24 @@
 ---
-digest: 083f65bd0546b8400a19a9c9d01401ade36d51f64277bd3ef8f9d98bcff82db9
+digest: 13e6a2f0e545154f20fad3768641aac647b0b34ef8861879ab2fdd17dd1ca6b6
 disposition: updated
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
 path: nix/domains/artifacts/underclass/default.nix
 reviewed_chapters:
   marshall/priv/hldd/07-guests.md: 0f73d65e0218aa15612a351af492879d87f78f6e864901c932124fc394334f4e
-  marshall/priv/hldd/12-configuration.md: ff8e45aaf3daef1140ae8d0ff46e7dff0c95781487abc5511a3202ef1dfd2f15
-  marshall/priv/hldd/13-deployment.md: 2f53f560f187e1064b35d11d4b1c9c96dd4244a4f43579bc051298c147ebfb20
-  marshall/priv/hldd/14-operations.md: 4d9a416eb0df32a8281f24db06739142db91b637c4ea9416a9f23de49bf73010
-  marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
-  marshall/priv/hldd/16-recovery.md: c11d719cde9562dea123b9fff7630f8750bbf758b4919880a15715b86263d3db
-  marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
-  marshall/priv/hldd/18-options.md: 6fd711c1ab36fdc4283cfa81d25e1a3bb61aec87f25b79d825e1c471939bf64f
-  marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 68866597842c524f9f563a37b978a4464974ca2b21a486c94f60ecd1edd6b2da
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/12-configuration.md: 5318d494cf8479636aa2e2c3c61cb5505cb4cb8386e39b935cf62c62b997169f
+  marshall/priv/hldd/13-deployment.md: 0bc4fe19bb9cdf60d5edc24c3777c7f54b170426d9ae5d1f611a2240053c3350
+  marshall/priv/hldd/14-operations.md: 68c72d0e6fde22edd5d892f824dedd44f1843d68ece6c96ff5b3e2c1e50051c9
+  marshall/priv/hldd/15-monitoring.md: db740282f22afc4c76be24d9db3f9ef4f10bf2745089a754647c6cf7e8fdfeef
+  marshall/priv/hldd/16-recovery.md: 194fe77196ac4a25ab764d5cf4aee7558da547cd7b59726f32a302019b26136c
+  marshall/priv/hldd/17-reference.md: 7d88fca8dbe56f67c71ea207b0ed860f4cfc005f7cb9f6ccde4ffe4bc718cda5
+  marshall/priv/hldd/18-options.md: 56d6ff5dfa49ede786cba440d57100c75b721b23b1e0616e79d3df8205e5ac11
+  marshall/priv/hldd/19-coverage.md: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
+  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Reviewed the Underclass source revision and fixed-output hash update to 39f5766. Chapter 18 identifies the new package default; the Nix service integration and declared authority boundaries are unchanged.
+Underclass pin bumped 39f5766 -> c58a972 (free-plan gate, Claude usage-percent and refresh-scope fixes); source hash refreshed, cargoHash and instrumentation patch unchanged; chapter 18 regenerated for the new derivation name and chapter 10 records the revision. No topology, option or recovery change.
