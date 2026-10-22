@@ -317,9 +317,10 @@ pub struct ApprovalInfo {
 
 impl ApprovalInfo {
     pub fn validate(url: &str, fingerprint: &str, issued_at: u64) -> Result<Self, RuntimeError> {
-        let valid_url = url.starts_with("https://")
-            && url.len() <= 2048
-            && !url[8..].is_empty()
+        let authority = url.strip_prefix("https://").and_then(|rest| rest.split(['/', '?']).next());
+        let valid_url = url.len() <= 2048
+            && authority.is_some_and(|host| !host.is_empty() && host != ":443" && !host.starts_with(':')
+                && host.chars().all(|ch| ch.is_ascii_alphanumeric() || matches!(ch, '.' | '-')))
             && !url[8..].contains(['@', '#', ' ', '\t', '\n', '\r']);
         if !valid_url || fingerprint.is_empty() || fingerprint.len() > 256 {
             return Err(RuntimeError::InvalidInput);
@@ -515,6 +516,8 @@ mod tests {
     fn approval_url_validation_rejects_userinfo_and_non_https() {
         assert!(ApprovalInfo::validate("http://example.test/a", "fp", 0).is_err());
         assert!(ApprovalInfo::validate("https://user@example.test/a", "fp", 0).is_err());
+        assert!(ApprovalInfo::validate("https://?approval", "fp", 0).is_err());
+        assert!(ApprovalInfo::validate("https://:443/a", "fp", 0).is_err());
         assert!(ApprovalInfo::validate("https://example.test/a", "fp", 0).is_ok());
     }
 }

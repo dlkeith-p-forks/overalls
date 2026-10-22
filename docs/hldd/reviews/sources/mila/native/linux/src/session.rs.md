@@ -1,5 +1,5 @@
 ---
-digest: d8e3550c5cfc54f8b1d04906b29a812e7a9ba5c71d0a84827a22fd4f332529c0
+digest: 26cf14ed85357d9609d965aff33a65f6e39cb5971d26289a25fd4822fa7c1b86
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux native session module adds typed Rust-owned trust enrollment, authenticated handle lifecycle, bounded listings, and approval state without changing GTK deployment topology.
+Linux approval URL validation now requires a nonempty hostname-shaped HTTPS authority, rejecting malformed authority forms before browser launch.
