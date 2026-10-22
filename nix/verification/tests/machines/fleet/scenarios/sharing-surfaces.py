@@ -279,6 +279,9 @@ with subtest("one member concurrently holds shared terminal, Audi SSH and privat
     origin_source = client.succeed("base64 -w0 " + shlex.quote(sharing_guest_origin)).strip()
     install_origin = (
         "printf %s " + shlex.quote(origin_source) + " | base64 -d >/tmp/private-web-guest.py && "
+        # The Audi fixture's audi-http unit holds ports 8080 and 3000; release
+        # them so the private-web origin binds instead of failing silently.
+        "sudo systemctl stop audi-http.service && "
         "sudo systemd-run --quiet --unit=private-web-origin python3 /tmp/private-web-guest.py && "
         "printf ready"
     )
@@ -307,8 +310,24 @@ with subtest("one member concurrently holds shared terminal, Audi SSH and privat
         + repr([*member_args, "while true; do printf 'sharing-ssh-live\\n'; sleep .1; done"])
         + ",stdout=subprocess.PIPE,stderr=subprocess.DEVNULL); "
         "assert p.stdout.readline() == b'sharing-ssh-live\\n'; "
-        f"pathlib.Path('{sharing_dir}/ssh-live-ready').touch(); "
-        "p.communicate(timeout=15); assert p.returncode != 0"
+        f"pathlib.Path('{sharing_dir}/ssh-live-ready').touch()\n"
+        # The session stays open (and drained) through the browser subtest and
+        # closes with a failure status once the share is revoked.
+        "import threading,time\n"
+        "threading.Thread(target=lambda: [0 for _ in iter(lambda: p.stdout.read(4096), b'')], "
+        "daemon=True).start()\n"
+        # Revocation is posted just before its marker, so the close may land
+        # first; the marker must then follow within 30 seconds.
+        f"marker = pathlib.Path('{sharing_dir}/revoke-posted')\n"
+        "deadline = time.monotonic() + 900\n"
+        "while not marker.exists() and p.poll() is None:\n"
+        "    assert time.monotonic() < deadline\n"
+        "    time.sleep(0.2)\n"
+        "p.wait(timeout=15); assert p.returncode != 0\n"
+        "closed = time.monotonic()\n"
+        "while not marker.exists():\n"
+        "    assert time.monotonic() < closed + 30\n"
+        "    time.sleep(0.2)"
     )
     client.succeed(
         "systemd-run --quiet --no-block --unit=sharing-ssh-live --property=User=tester "
@@ -371,14 +390,12 @@ with subtest("one member concurrently holds shared terminal, Audi SSH and privat
     assert str(uuid.UUID(live_session)) == live_session
 
     # All three surfaces are live at once, on committed leases only.
-    assert (
-        sql(
-            f"SELECT count(*) FROM ingress_sessions s JOIN ssh_keys k ON k.id=s.key_id "
-            f"WHERE s.vm_id='{vm['vm_id']}' AND k.user_id='{users['member_id']}' "
-            f"AND s.closed_at IS NULL AND s.expires_at > (statement_timestamp() AT TIME ZONE 'UTC')"
-        )
-        == "1"
+    member_ssh_live = sql(
+        f"SELECT count(*) FROM ingress_sessions s JOIN ssh_keys k ON k.id=s.key_id "
+        f"WHERE s.vm_id='{vm['vm_id']}' AND k.user_id='{users['member_id']}' "
+        f"AND s.closed_at IS NULL AND s.expires_at > (statement_timestamp() AT TIME ZONE 'UTC')"
     )
+    assert member_ssh_live == "1", "member live SSH leases: " + member_ssh_live
     member_web_live = (
         f"SELECT count(*) FROM ingress_web_streams s JOIN ingress_web_credentials c "
         f"ON c.id=s.credential_id WHERE s.vm_id='{vm['vm_id']}' AND c.user_id='{users['member_id']}' "
@@ -441,11 +458,12 @@ with subtest("one direct revocation closes the three member surfaces within docu
     assert closed_browser["fresh_status"] == 403
 
     # Server-side terminal bound: the shared viewer's detach receipt follows the
-    # committed revocation receipt within the one-second recheck plus margin.
+    # committed VM access revocation within the one-second recheck plus margin.
+    # The terminal viewing grant itself survives (no terminal 'revoked' event).
     terminal_gap = float(
         sql(
             "SELECT extract(epoch FROM (d.inserted_at - s.inserted_at)) FROM "
-            f"(SELECT inserted_at FROM terminal_events WHERE vm_id='{vm['vm_id']}' AND kind='revoked' ORDER BY inserted_at DESC LIMIT 1) s, "
+            f"(SELECT inserted_at FROM access_changes WHERE vm_id='{vm['vm_id']}' AND role='revoked' AND user_id='{users['member_id']}' ORDER BY inserted_at DESC LIMIT 1) s, "
             f"(SELECT inserted_at FROM terminal_events WHERE vm_id='{vm['vm_id']}' AND kind='detached' AND actor_id='{users['member_id']}' ORDER BY inserted_at DESC LIMIT 1) d"
         )
     )
@@ -458,7 +476,19 @@ with subtest("one direct revocation closes the three member surfaces within docu
     assert revoked_counts["stream"] == 1 and revoked_counts["ws"] == 1
     assert revoked_counts["stream_closed"] == 1 and revoked_counts["ws_closed"] == 1
 
-    assert sql(member_web_live) == "0"
+    # Closed transports leave the live set by close receipt or, at the latest,
+    # when their 30-second renewal TTL lapses without a renewal.
+    db.wait_until_succeeds(
+        'test "$(sudo -u postgres psql --no-psqlrc -d marshall -Atc '
+        + shlex.quote(member_web_live)
+        + ')" = 0',
+        timeout=40,
+    )
+    member_web_identity = (
+        f"SELECT count(DISTINCT s.id) FROM ingress_web_streams s JOIN ingress_web_credentials c "
+        f"ON c.id=s.credential_id WHERE s.vm_id='{vm['vm_id']}' AND c.user_id='{users['member_id']}'"
+    )
+    revoked_streams = int(sql(member_web_identity))
     assert (
         sql(
             f"SELECT count(*) FROM access_grants WHERE vm_id='{vm['vm_id']}' "
@@ -523,11 +553,9 @@ with subtest("re-sharing restores fresh admission with new lease artifacts"):
     client.succeed("systemctl stop sharing-ssh-restored.service")
     ssh_swap("owner")
 
-    web_identity = sql(
-        f"SELECT count(DISTINCT s.id) FROM ingress_web_streams s JOIN ingress_web_credentials c "
-        f"ON c.id=s.credential_id WHERE s.vm_id='{vm['vm_id']}' AND c.user_id='{users['member_id']}'"
-    )
-    assert web_identity == "4"
+    # Fresh admission leases new stream rows (at least the fetch stream and the
+    # WebSocket; page and asset requests add short-lived rows per page load).
+    assert int(sql(member_web_identity)) >= revoked_streams + 2
     restored_counts = sharing_web_counts(owner_args)
     assert restored_counts["http"] > revoked_counts["http"]
 
