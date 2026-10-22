@@ -1,5 +1,5 @@
 ---
-digest: ccbf3a998f8bc49a89d29b6806d7ea8830885431f818229ecf1ec6b9fa1d168e
+digest: 68208a9b65baf4c1a005bf4c0bf879dcaa49ef21c75984c314f09fbb8b307270
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Rust FFI/JNI authenticated machine action boundary is typed and bounded.
+Authenticated SSH-key, sharing, and Android thread payload seams preserve typed session boundaries; tests cover malformed inputs.

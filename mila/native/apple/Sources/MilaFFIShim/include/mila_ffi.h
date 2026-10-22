@@ -71,6 +71,8 @@ int32_t mila_session_connect(const uint8_t *trust, size_t trust_len,
     size_t public_key_len, uint16_t port, uint32_t timeout_ms,
     MilaSessionSign signer, uintptr_t context, uint64_t *out_handle);
 int32_t mila_session_read_machines(uint64_t handle, uint8_t more);
+int32_t mila_session_ssh_keys(uint64_t handle, uint8_t *output, size_t capacity, size_t *written);
+int32_t mila_session_ssh_key_revoke(uint64_t handle, const uint8_t *key, size_t key_len, const uint8_t *request, size_t request_len);
 int32_t mila_session_listing(uint64_t handle, uint8_t *output, size_t capacity,
     size_t *written);
 int32_t mila_session_close(uint64_t handle);

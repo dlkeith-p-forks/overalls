@@ -48,6 +48,25 @@ public final class MilaLiveSession: @unchecked Sendable {
         return try copyListing(current)
     }
 
+    public func sshKeys() throws -> Data {
+        let current = try validHandle(); var required = 0
+        var status = mila_session_ssh_keys(current, nil, 0, &required)
+        guard status == -3, required > 0, required <= 262_144 else { throw Self.error(status) }
+        var bytes = [UInt8](repeating: 0, count: required)
+        status = mila_session_ssh_keys(current, &bytes, bytes.count, &required)
+        guard status == 0 else { throw Self.error(status) }; return Data(bytes.prefix(required))
+    }
+
+    public func revokeSSHKey(id: UUID, requestID: UUID) throws {
+        let current = try validHandle()
+        let key = Array(id.uuidString.lowercased().utf8)
+        let request = Array(("porsche-" + requestID.uuidString.lowercased().replacingOccurrences(of: "-", with: "")).utf8)
+        let status = key.withUnsafeBufferPointer { k in request.withUnsafeBufferPointer { r in
+            mila_session_ssh_key_revoke(current, k.baseAddress, k.count, r.baseAddress, r.count)
+        }}
+        guard status == 0 else { throw Self.error(status) }
+    }
+
     public func machineAction(machine: UUID, action: String, requestID: UUID) throws {
         let current = try validHandle()
         let machineBytes = Array(machine.uuidString.lowercased().utf8)

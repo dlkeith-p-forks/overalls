@@ -6,6 +6,7 @@ license.workspace = true
 
 [dependencies]
 mila-model = { path = "../mila-model" }
+mila-protocol = { path = "../mila-protocol" }
 mila-runtime = { path = "../mila-runtime" }
 mila-transport = { path = "../mila-transport" }
 serde.workspace = true

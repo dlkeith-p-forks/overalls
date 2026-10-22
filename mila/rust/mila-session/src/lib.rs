@@ -56,6 +56,21 @@ pub struct ApplicationSession {
     seen_cursors: HashSet<Identifier>,
 }
 
+fn validate_ssh_keys(bytes: &[u8]) -> Result<(), SessionError> {
+    let value: serde_json::Value = serde_json::from_slice(bytes).map_err(|_| SessionError::Refused)?;
+    let keys = value.get("keys").and_then(serde_json::Value::as_array).ok_or(SessionError::Refused)?;
+    if keys.len() > 256 { return Err(SessionError::Bounds); }
+    for key in keys {
+        let id = key.get("id").and_then(serde_json::Value::as_str).ok_or(SessionError::Refused)?;
+        Identifier::parse(id).map_err(|_| SessionError::Refused)?;
+        for field in ["fingerprint", "algorithm"] {
+            let text = key.get(field).and_then(serde_json::Value::as_str).ok_or(SessionError::Refused)?;
+            if text.is_empty() || text.len() > 256 || text.bytes().any(|b| b.is_ascii_control()) { return Err(SessionError::Refused); }
+        }
+    }
+    Ok(())
+}
+
 impl ApplicationSession {
     /// Execute one authenticated machine mutation on this connection. The command is
     /// constructed from closed vocabulary values and a validated request id; callers
@@ -82,6 +97,22 @@ impl ApplicationSession {
         }
     }
 
+    /// Execute authenticated approved-key listing and return bounded validated JSON.
+    pub async fn ssh_keys(&mut self) -> Result<Vec<u8>, SessionError> {
+        let output = self.ssh.exec("ssh-key list --json", &[]).await?;
+        if output.exit_status != 0 || output.stdout.len() > 256 * 1024 { return Err(SessionError::Refused); }
+        validate_ssh_keys(&output.stdout)?;
+        Ok(output.stdout)
+    }
+
+    /// Revoke one opaque approved-key identity with an at-most-once request id.
+    pub async fn ssh_key_revoke(&mut self, key_id: &str, request_id: &str) -> Result<(), SessionError> {
+        let key_id = Identifier::parse(key_id).map_err(|_| SessionError::MutationRefused)?;
+        let request_id = mila_model::RequestId::parse(request_id).map_err(|_| SessionError::MutationRefused)?;
+        let output = self.ssh.exec(&format!("ssh-key remove --json --request-id={request_id} {key_id}"), &[]).await?;
+        if output.exit_status == 0 { Ok(()) } else { Err(SessionError::MutationRefused) }
+    }
+
     /// Execute authenticated web endpoint inspection and return bounded JSON.
     pub async fn web_show(&mut self, machine: &str) -> Result<Vec<u8>, SessionError> {
         let machine = Identifier::parse(machine).map_err(|_| SessionError::InvalidListing)?;
@@ -98,6 +129,50 @@ impl ApplicationSession {
         let line = format!("web set {machine} --json --port={port} {visibility} --revision={revision} --request-id={request_id}");
         let output = self.ssh.exec(&line, &[]).await?;
         if output.exit_status == 0 { Ok(()) } else { Err(SessionError::MutationRefused) }
+    }
+
+    /// Execute an authenticated machine sharing mutation. The command is parsed by
+    /// the shared protocol grammar before it is sent, and request IDs provide the
+    /// same at-most-once boundary as lifecycle mutations.
+    pub async fn share_mutation(
+        &mut self,
+        machine: &str,
+        email: &str,
+        role: Option<&str>,
+        add: bool,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
+        let machine = Identifier::parse(machine).map_err(|_| SessionError::InvalidListing)?;
+        let request_id = mila_model::RequestId::parse(request_id)
+            .map_err(|_| SessionError::MutationRefused)?;
+        if email.is_empty()
+            || email.len() > 320
+            || email
+                .bytes()
+                .any(|byte| byte.is_ascii_whitespace() || byte == 0)
+        {
+            return Err(SessionError::MutationRefused);
+        }
+        let line = if add {
+            let role = role
+                .filter(|value| matches!(*value, "viewer" | "operator" | "manager"))
+                .ok_or(SessionError::MutationRefused)?;
+            format!("share add {machine} {email} {role} --json --request-id={request_id}")
+        } else {
+            if role.is_some() {
+                return Err(SessionError::MutationRefused);
+            }
+            format!("share remove {machine} {email} --json --request-id={request_id}")
+        };
+        let line = mila_protocol::Command::parse(&line)
+            .and_then(|command| command.format())
+            .map_err(|_| SessionError::MutationRefused)?;
+        let output = self.ssh.exec(&line, &[]).await?;
+        if output.exit_status == 0 {
+            Ok(())
+        } else {
+            Err(SessionError::MutationRefused)
+        }
     }
     /// Connects only through the transport's pre-authentication certificate policy.
     pub async fn connect<S: DeviceSigner>(

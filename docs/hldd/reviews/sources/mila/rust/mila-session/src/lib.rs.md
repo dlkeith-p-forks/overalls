@@ -1,5 +1,5 @@
 ---
-digest: 8288b15ca9c62c0740a4993799cf801dc591c5fd2557a87e7653f4e8b1fedfd1
+digest: 7f510773cb753f09c3df64e3c0f488fbf07d292ffba4e6c070a3c6c54275b78a
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows machine mutation UI remains gated on authenticated native session handle and Rust command boundary.
+Authenticated SSH-key, sharing, and Android thread payload seams preserve typed session boundaries; tests cover malformed inputs.

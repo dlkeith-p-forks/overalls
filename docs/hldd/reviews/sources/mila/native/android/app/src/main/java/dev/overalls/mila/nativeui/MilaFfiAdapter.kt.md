@@ -1,5 +1,5 @@
 ---
-digest: 1b8c58e5e5c644495d1b9c4699a2e060e7357f58eba15cb74ab83e4c2651e7db
+digest: c2e36d0157a1db8cec049d99702034407693f3278cdd07e14dfa6345c394c094
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android FFI adapter retains typed authenticated mutation binding.
+Authenticated SSH-key, sharing, and Android thread payload seams preserve typed session boundaries; tests cover malformed inputs.

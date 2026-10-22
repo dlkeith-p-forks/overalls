@@ -211,7 +211,13 @@ private struct SettingsView: View {
                 Text(notificationStatus).font(.caption).foregroundStyle(.secondary)
             }
             NavigationLink(MilaStrings.text(.sshKeysTitle)) {
-                MilaSSHKeysView(controller: MilaSSHKeysController(loader: { [], revoker: { _ in } }))
+                MilaSSHKeysView(controller: MilaSSHKeysController(
+                    loader: { try await adapter.listSSHKeys() },
+                    revoker: { keyID in
+                        let key = MilaSSHKey(id: keyID, fingerprint: "", algorithm: "")
+                        try await adapter.revokeSSHKey(key, requestID: UUID())
+                    }
+                ))
             }
             Text(MilaStrings.text(.runtimeUnavailable)).foregroundStyle(.secondary)
         }.navigationTitle(MilaStrings.text(.settings))

@@ -96,6 +96,31 @@ interface MilaFfiAdapter {
             is MilaFfiResult.Failure -> Result.failure(IllegalStateException("thread action unavailable"))
         }
 
+    /** Authenticated thread mutation with an optional bounded prompt/answer payload. */
+    suspend fun threadAction(threadId: UUID, command: MilaThreadCommand, input: String?): Result<Unit> {
+        if (input == null) return threadAction(threadId, command)
+        val payload = buildString {
+            append("{\"thread_id\":\"$threadId\",\"command\":${command.tag}")
+            if (input != null) append(",\"input\":\"").append(input.jsonEscaped()).append('\"')
+            append('}')
+        }
+        return when (call(MilaFfiRequest(MilaFfiOperation.ThreadAction, MilaFfiPayload(payload.toByteArray(Charsets.UTF_8))))) {
+            is MilaFfiResult.Success -> Result.success(Unit)
+            is MilaFfiResult.Failure -> Result.failure(IllegalStateException("thread action unavailable"))
+        }
+    }
+
+    private fun String.jsonEscaped(): String = buildString(length) {
+        for (character in this@jsonEscaped) when (character) {
+            '\\' -> append("\\\\")
+            '\"' -> append("\\\"")
+            '\n' -> append("\\n")
+            '\r' -> append("\\r")
+            '\t' -> append("\\t")
+            else -> if (character.code < 0x20) append("\\u%04x".format(character.code)) else append(character)
+        }
+    }
+
     fun threadCommandKind(value: String): Result<MilaThreadCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun machineCommandKind(value: String): Result<MilaMachineCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))
