@@ -1,5 +1,5 @@
 ---
-digest: 4d6124a3a25cbf17d6977c7cf25511457db94e6e41a5d2320a1c743e90006c65
+digest: 57316ac301be1198b5b2cbb9c8c9ccb67c182a0538e956652d28cf11e116e618
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple WKWebView endpoint validation and wrapper are now evidenced conservatively.
+Parity matrix records authenticated sharing, SSH-key, and thread payload evidence.
