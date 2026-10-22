@@ -1,5 +1,5 @@
 ---
-digest: c4e1a8383334befec8284db3844594e5eb790282798107fe517c7d7914d25009
+digest: 52830eaeb3c8d28a6884c72424b49471427e6a6eb066475dec793f151fe9ddb6
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-MainActivity explicitly constructs the linked Rust FFI adapter; unavailable adapter remains test-only fallback.
+Android Compose applies shared four-token monochrome design system with monospace typography and square border metric.
