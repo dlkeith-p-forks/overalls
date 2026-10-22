@@ -1559,6 +1559,7 @@ name = "mila-session"
 version = "0.1.0"
 dependencies = [
  "mila-model",
+ "mila-protocol",
  "mila-runtime",
  "mila-transport",
  "serde",

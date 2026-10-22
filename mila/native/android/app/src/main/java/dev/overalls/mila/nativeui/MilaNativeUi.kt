@@ -223,7 +223,9 @@ private fun controllerSelect(controller: MilaMachineDetailController, command: S
 
 @Composable private fun ThreadDetail(controller: MilaThreadDetailController, id: java.util.UUID) {
     val scope = rememberCoroutineScope()
+    var input by remember { mutableStateOf("") }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        OutlinedTextField(value = input, onValueChange = { if (it.length <= 4096) input = it }, label = { Text(MilaStrings.text(MilaMessage.Input)) })
         Text(MilaStrings.text(MilaMessage.ThreadCommands), style = MaterialTheme.typography.titleLarge)
         Text(id.toString(), style = MaterialTheme.typography.labelSmall)
         threadCommandChoices.chunked(3).forEach { row ->
@@ -242,7 +244,10 @@ private fun controllerSelect(controller: MilaMachineDetailController, command: S
                             "thread read" -> MilaThreadCommand.Read
                             else -> null
                         }
-                        if (command != null) scope.launch { controller.submit(command) }
+                        if (command != null) scope.launch {
+                            val payload = input.takeIf { command == MilaThreadCommand.Prompt || command == MilaThreadCommand.Answer || command == MilaThreadCommand.PlanRevise }
+                            controller.submit(command, payload)
+                        }
                     }) { Text(label) }
                 }
             }

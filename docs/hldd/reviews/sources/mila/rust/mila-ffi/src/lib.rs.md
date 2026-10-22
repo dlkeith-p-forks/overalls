@@ -1,5 +1,5 @@
 ---
-digest: 6e9e0b8121a4b129229ed5e0275a8f4e5f8ebe75c776970007cdb35b7c2ef34c
+digest: c26d8c44b2dcf91957ce544f6dcbfc086521e577c7f6833d921b21f98c22cdda
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Rust FFI/JNI authenticated machine action boundary is typed and bounded.
+JNI thread-action export is bounded and delegates to Rust session validation.

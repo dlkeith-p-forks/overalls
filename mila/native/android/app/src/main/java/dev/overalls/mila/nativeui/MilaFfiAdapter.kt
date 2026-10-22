@@ -96,11 +96,55 @@ interface MilaFfiAdapter {
             is MilaFfiResult.Failure -> Result.failure(IllegalStateException("thread action unavailable"))
         }
 
+    /** Authenticated thread mutation with an optional bounded prompt/answer payload. */
+    suspend fun threadAction(threadId: UUID, command: MilaThreadCommand, input: String?): Result<Unit> {
+        if (input == null) return threadAction(threadId, command)
+        val payload = buildString {
+            append("{\"thread_id\":\"$threadId\",\"command\":${command.tag}")
+            if (input != null) append(",\"input\":\"").append(input.jsonEscaped()).append('\"')
+            append('}')
+        }
+        return when (call(MilaFfiRequest(MilaFfiOperation.ThreadAction, MilaFfiPayload(payload.toByteArray(Charsets.UTF_8))))) {
+            is MilaFfiResult.Success -> Result.success(Unit)
+            is MilaFfiResult.Failure -> Result.failure(IllegalStateException("thread action unavailable"))
+        }
+    }
+
+    private fun String.jsonEscaped(): String = buildString(length) {
+        for (character in this@jsonEscaped) when (character) {
+            '\\' -> append("\\\\")
+            '\"' -> append("\\\"")
+            '\n' -> append("\\n")
+            '\r' -> append("\\r")
+            '\t' -> append("\\t")
+            else -> if (character.code < 0x20) append("\\u%04x".format(character.code)) else append(character)
+        }
+    }
+
     fun threadCommandKind(value: String): Result<MilaThreadCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun machineCommandKind(value: String): Result<MilaMachineCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun terminalInput(length: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))
+}
+
+/** Inputs needed to establish the certificate-authenticated Porsche session. */
+data class MilaSessionConnectConfig(
+    val trustDocument: ByteArray,
+    val publicKey: String,
+    val timeoutMs: Int = 15_000,
+) {
+    init {
+        require(trustDocument.isNotEmpty()) { "empty SSH trust document" }
+        require(publicKey.isNotBlank()) { "empty device public key" }
+        require(timeoutMs in 1..120_000) { "invalid session timeout" }
+    }
+}
+
+/** Adapter capability used by sign-in to retain the live Rust session authority. */
+interface MilaSessionConnector {
+    fun connect(deployment: MilaDeployment, config: MilaSessionConnectConfig, signer: MilaDeviceKey): MilaSessionHandle?
+    fun bindSession(session: MilaSessionHandle?)
 }
 
 /** Explicit placeholder until generated Rust bindings are linked by the host app. */
@@ -121,6 +165,7 @@ interface MilaRustBindings {
     fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = -12
     fun sessionWebShow(handle: Long, machine: String): ByteArray? = null
     fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = -12
+    fun sessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray? = null
     /** Returns the closed Rust thread-command tag, or -1 for an unknown command. */
     fun threadCommandKind(value: String): Int
     fun machineCommandKind(value: String): Int
@@ -159,6 +204,7 @@ internal object MilaRustFfi : MilaRustBindings {
     override fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = nativeSessionMachineAction(handle, machine, action, requestId)
     override fun sessionWebShow(handle: Long, machine: String): ByteArray? = nativeSessionWebShow(handle, machine)
     override fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = nativeSessionWebSet(handle, machine, port, public, revision, requestId)
+    override fun sessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray? = nativeSessionThreadAction(handle, thread, command, secondary, input, requestId)
 
     override fun threadCommandKind(value: String): Int {
         check(loaded) { "mila_ffi is unavailable" }
@@ -190,6 +236,7 @@ internal object MilaRustFfi : MilaRustBindings {
     @JvmStatic external fun nativeSessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int
     @JvmStatic external fun nativeSessionWebShow(handle: Long, machine: String): ByteArray?
     @JvmStatic external fun nativeSessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int
+    @JvmStatic external fun nativeSessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray?
     @JvmStatic
     external fun nativeSessionListing(handle: Long): ByteArray?
     @JvmStatic
@@ -225,17 +272,40 @@ class MilaSessionHandle internal constructor(private val nativeHandle: Long) : A
         check(!closed)
         check(MilaRustFfi.nativeSessionWebSet(nativeHandle, machine.toString(), port, public, revision, requestId) == 0)
     }
+    @Synchronized fun threadAction(thread: UUID, command: MilaThreadCommand, secondary: UUID? = null, input: String? = null, requestId: String? = null): Result<ByteArray> = runCatching {
+        check(!closed)
+        val wire = when (command) {
+            MilaThreadCommand.List -> "thread ls"
+            MilaThreadCommand.Show -> "thread show"
+            MilaThreadCommand.Turns -> "thread turns"
+            MilaThreadCommand.Prompt -> "thread prompt"
+            MilaThreadCommand.Answer -> "thread answer"
+            MilaThreadCommand.PlanApprove -> "thread plan approve"
+            MilaThreadCommand.PlanRevise -> "thread plan revise"
+            MilaThreadCommand.Mode -> "thread mode"
+            MilaThreadCommand.Read -> "thread read"
+        }
+        MilaRustFfi.nativeSessionThreadAction(nativeHandle, thread.toString(), wire, secondary?.toString(), input, requestId)
+            ?: error("thread action rejected")
+    }
     @Synchronized override fun close() { if (!closed) { MilaRustFfi.nativeSessionClose(nativeHandle); closed = true } }
 }
 
 /** Typed Android adapter. Native linkage is lazy so the UI remains testable without a device. */
 class LinkedMilaFfiAdapter(
     private val bindings: MilaRustBindings = MilaRustFfi,
-) : MilaFfiAdapter {
+) : MilaFfiAdapter, MilaSessionConnector {
     @Volatile private var authenticatedSession: MilaSessionHandle? = null
 
     /** Binds the adapter to the already certificate-authenticated session. */
-    fun bindSession(session: MilaSessionHandle?) { authenticatedSession = session }
+    override fun bindSession(session: MilaSessionHandle?) {
+        authenticatedSession?.close()
+        authenticatedSession = session
+    }
+
+    override fun connect(deployment: MilaDeployment, config: MilaSessionConnectConfig, signer: MilaDeviceKey): MilaSessionHandle? =
+        bindings.sessionConnect(config.trustDocument.copyOf(), deployment.host, config.publicKey,
+            deployment.port, config.timeoutMs, signer)
 
     override suspend fun machineAction(machineId: UUID, command: MilaMachineCommand): Result<Unit> {
         val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
@@ -249,6 +319,11 @@ class LinkedMilaFfiAdapter(
     override suspend fun webSet(machineId: UUID, port: Int, public: Boolean, revision: Long): Result<Unit> {
         val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
         return session.webSet(machineId, port, public, revision, "porsche-" + UUID.randomUUID().toString().replace("-", ""))
+    }
+    override suspend fun threadAction(threadId: UUID, command: MilaThreadCommand, input: String?): Result<Unit> {
+        val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
+        val payload = session.threadAction(threadId, command, input = input, requestId = if (command == MilaThreadCommand.Prompt || command == MilaThreadCommand.Answer || command == MilaThreadCommand.PlanApprove || command == MilaThreadCommand.PlanRevise) "porsche-" + UUID.randomUUID().toString().replace("-", "") else null)
+        return payload.map { Unit }
     }
 
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {

@@ -341,6 +341,19 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         return MilaValidatedSnapshot(machines: projected, metadata: metadata)
     }
 
+    public func listSSHKeys() async throws -> [MilaSSHKey] {
+        guard let liveSession else { throw MilaFFIError.unavailable }
+        let data = try liveSession.sshKeys()
+        let decoded = try JSONDecoder().decode(MilaSSHKeyEnvelope.self, from: data)
+        guard decoded.keys.count <= 256 else { throw MilaFFIError.outputTooSmall }
+        return try decoded.keys.map { try $0.presentation() }
+    }
+
+    public func revokeSSHKey(_ key: MilaSSHKey, requestID: UUID) async throws {
+        guard let liveSession else { throw MilaFFIError.unavailable }
+        try liveSession.revokeSSHKey(id: key.id, requestID: requestID)
+    }
+
     public func refreshSnapshot() async throws -> MilaValidatedSnapshot {
         guard let liveSession else { throw MilaFFIError.unavailable }
         let data = try liveSession.refresh()
@@ -395,6 +408,17 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
  * The Apple UI MUST exchange typed requests and validated snapshot projections with the Rust
  * adapter; raw pointers, credentials, and terminal bytes MUST NOT appear in this interface.
  */
+private struct MilaSSHKeyEnvelope: Codable {
+    let keys: [MilaSSHKeyWire]
+}
+private struct MilaSSHKeyWire: Codable {
+    let id: UUID; let label: String?; let algorithm: String; let fingerprint: String
+    func presentation() throws -> MilaSSHKey {
+        guard algorithm.count <= 64, fingerprint.count <= 256, (label?.count ?? 0) <= 256 else { throw MilaFFIError.invalidRoute }
+        return MilaSSHKey(id: id, fingerprint: fingerprint, algorithm: algorithm, label: label)
+    }
+}
+
 private struct MilaSnapshotEnvelope: Codable {
     let machines: [MilaSnapshotMachine]
     let hasMore: Bool
@@ -409,6 +433,8 @@ private struct MilaSnapshotEnvelope: Codable {
 public protocol MilaFFIAdapter: Sendable {
     func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse
     func refreshSnapshot() async throws -> MilaValidatedSnapshot
+    func listSSHKeys() async throws -> [MilaSSHKey]
+    func revokeSSHKey(_ key: MilaSSHKey, requestID: UUID) async throws
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
     func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind
@@ -418,6 +444,8 @@ public protocol MilaFFIAdapter: Sendable {
 }
 
 public extension MilaFFIAdapter {
+    func listSSHKeys() async throws -> [MilaSSHKey] { throw MilaFFIError.unavailable }
+    func revokeSSHKey(_ key: MilaSSHKey, requestID: UUID) async throws { _ = key; _ = requestID; throw MilaFFIError.unavailable }
     func refreshSnapshot() async throws -> MilaValidatedSnapshot { throw MilaFFIError.unavailable }
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
     func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws { _ = principal; _ = machine; _ = remove; _ = requestID; throw MilaMachineSharingError.unavailable }

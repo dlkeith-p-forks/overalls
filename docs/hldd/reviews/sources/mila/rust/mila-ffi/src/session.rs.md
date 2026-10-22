@@ -1,5 +1,5 @@
 ---
-digest: ccbf3a998f8bc49a89d29b6806d7ea8830885431f818229ecf1ec6b9fa1d168e
+digest: fd4ee24e9f7e7713280652e72f421f08d33b9de0b1b697d71a50e55c5d9194de
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Rust FFI/JNI authenticated machine action boundary is typed and bounded.
+Authenticated thread actions and Apple SSH-key operations are bounded at Rust and native FFI boundaries.

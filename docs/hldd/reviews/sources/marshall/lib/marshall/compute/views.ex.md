@@ -1,12 +1,12 @@
 ---
-digest: 7e7c8e8f01052f61c932765852046af5c2055cb555c3d60e8353a08d133c3aec
+digest: b1a303e72bf89b8c167ef59d848e06a61b6b3fdb43916e617ffb3dbd4a82ec78
 disposition: updated
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
 path: marshall/lib/marshall/compute/views.ex
 reviewed_chapters:
   marshall/priv/hldd/02-control-plane.md: 8398bc3791875b6bc8cf22b6602a6efccb886c001a0f78d5a1500a3f5707ff3d
-  marshall/priv/hldd/03-access.md: dcba620820216dd96aa41af97c0c9efb71b42980ef971b8450c38ccb780d74c4
+  marshall/priv/hldd/03-access.md: 5e197b8346180c9f65c712048048da17934c117a500fe63cfca781cd8933dae6
   marshall/priv/hldd/04-lifecycle.md: f3c40798f402b553640bb25852bcb205c327c87d7ad6735b4f1b243c5616b4a2
   marshall/priv/hldd/06-workflows.md: 37821743fdd87afefc8e10be455a247a49c10cb8fced69dd60588fe573bce8de
   marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-List query ANDs its exact filter with an indexed candidate superset (owner, current teams, grants, thread grants); 03-access documents it and the scenario records synthetic fleet-sized EXPLAIN evidence (ADR-0256).
+Relocation status for managed rows batched through RelocationStatus.latest_many/1 with a batch equivalence test; 03-access documents it.

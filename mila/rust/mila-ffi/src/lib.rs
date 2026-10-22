@@ -787,29 +787,161 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSession
 
 #[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionWebShow(
-    mut env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong,
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
     machine: jni::objects::JString<'_>,
 ) -> jni::sys::jbyteArray {
-    let machine = match env.get_string(&machine) { Ok(v) => v.to_bytes().to_vec(), Err(_) => return std::ptr::null_mut() };
+    let machine = match env.get_string(&machine) {
+        Ok(v) => v.to_bytes().to_vec(),
+        Err(_) => return std::ptr::null_mut(),
+    };
     let mut size = 0usize;
-    let status = unsafe { session::mila_session_web_show(handle as u64, machine.as_ptr(), machine.len(), std::ptr::null_mut(), 0, &mut size) };
-    if status != session::SessionStatus::SmallBuffer || size == 0 || size > 1 << 20 { return std::ptr::null_mut(); }
+    let status = unsafe {
+        session::mila_session_web_show(
+            handle as u64,
+            machine.as_ptr(),
+            machine.len(),
+            std::ptr::null_mut(),
+            0,
+            &mut size,
+        )
+    };
+    if status != session::SessionStatus::SmallBuffer || size == 0 || size > 1 << 20 {
+        return std::ptr::null_mut();
+    }
     let mut data = vec![0u8; size];
-    let status = unsafe { session::mila_session_web_show(handle as u64, machine.as_ptr(), machine.len(), data.as_mut_ptr(), size, &mut size) };
-    if status != session::SessionStatus::Ok { return std::ptr::null_mut(); }
-    env.byte_array_from_slice(&data[..size]).map_or(std::ptr::null_mut(), |a| a.into_raw())
+    let status = unsafe {
+        session::mila_session_web_show(
+            handle as u64,
+            machine.as_ptr(),
+            machine.len(),
+            data.as_mut_ptr(),
+            size,
+            &mut size,
+        )
+    };
+    if status != session::SessionStatus::Ok {
+        return std::ptr::null_mut();
+    }
+    env.byte_array_from_slice(&data[..size])
+        .map_or(std::ptr::null_mut(), |a| a.into_raw())
 }
 
 #[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionWebSet(
-    mut env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong,
-    machine: jni::objects::JString<'_>, port: jni::sys::jint, public: jni::sys::jboolean,
-    revision: jni::sys::jlong, request_id: jni::objects::JString<'_>,
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+    machine: jni::objects::JString<'_>,
+    port: jni::sys::jint,
+    public: jni::sys::jboolean,
+    revision: jni::sys::jlong,
+    request_id: jni::objects::JString<'_>,
 ) -> jni::sys::jint {
-    if !(1..=65535).contains(&port) || revision < 0 { return -4; }
-    let machine = match env.get_string(&machine) { Ok(v) => v.to_bytes().to_vec(), Err(_) => return -4 };
-    let request_id = match env.get_string(&request_id) { Ok(v) => v.to_bytes().to_vec(), Err(_) => return -4 };
-    unsafe { session::mila_session_web_set(handle as u64, machine.as_ptr(), machine.len(), port as u16, u8::from(public != 0), revision as u64, request_id.as_ptr(), request_id.len()) as jni::sys::jint }
+    if !(1..=65535).contains(&port) || revision < 0 {
+        return -4;
+    }
+    let machine = match env.get_string(&machine) {
+        Ok(v) => v.to_bytes().to_vec(),
+        Err(_) => return -4,
+    };
+    let request_id = match env.get_string(&request_id) {
+        Ok(v) => v.to_bytes().to_vec(),
+        Err(_) => return -4,
+    };
+    unsafe {
+        session::mila_session_web_set(
+            handle as u64,
+            machine.as_ptr(),
+            machine.len(),
+            port as u16,
+            u8::from(public != 0),
+            revision as u64,
+            request_id.as_ptr(),
+            request_id.len(),
+        ) as jni::sys::jint
+    }
+}
+
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionThreadAction(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+    thread: jni::objects::JString<'_>,
+    command: jni::objects::JString<'_>,
+    secondary: jni::sys::jobject,
+    input: jni::sys::jobject,
+    request_id: jni::sys::jobject,
+) -> jni::sys::jbyteArray {
+    let mut text = |s: jni::objects::JString<'_>| env.get_string(&s).map(|v| v.to_bytes().to_vec());
+    let thread = match text(thread) {
+        Ok(v) => v,
+        Err(_) => return std::ptr::null_mut(),
+    };
+    let command = match text(command) {
+        Ok(v) => v,
+        Err(_) => return std::ptr::null_mut(),
+    };
+    let mut optional = |obj: jni::sys::jobject| -> Option<Vec<u8>> {
+        if obj.is_null() {
+            None
+        } else {
+            env.get_string(&unsafe { jni::objects::JString::from_raw(obj) })
+                .ok()
+                .map(|v| v.to_bytes().to_vec())
+        }
+    };
+    let secondary = optional(secondary);
+    let input = optional(input);
+    let request = optional(request_id);
+    let mut size = 0usize;
+    let status = unsafe {
+        session::mila_session_thread_action(
+            handle as u64,
+            thread.as_ptr(),
+            thread.len(),
+            command.as_ptr(),
+            command.len(),
+            secondary.as_ref().map_or(std::ptr::null(), |v| v.as_ptr()),
+            secondary.as_ref().map_or(0, Vec::len),
+            input.as_ref().map_or(std::ptr::null(), |v| v.as_ptr()),
+            input.as_ref().map_or(0, Vec::len),
+            request.as_ref().map_or(std::ptr::null(), |v| v.as_ptr()),
+            request.as_ref().map_or(0, Vec::len),
+            std::ptr::null_mut(),
+            0,
+            &mut size,
+        )
+    };
+    if status != session::SessionStatus::SmallBuffer || size == 0 || size > 256 * 1024 {
+        return std::ptr::null_mut();
+    }
+    let mut data = vec![0u8; size];
+    let status = unsafe {
+        session::mila_session_thread_action(
+            handle as u64,
+            thread.as_ptr(),
+            thread.len(),
+            command.as_ptr(),
+            command.len(),
+            secondary.as_ref().map_or(std::ptr::null(), |v| v.as_ptr()),
+            secondary.as_ref().map_or(0, Vec::len),
+            input.as_ref().map_or(std::ptr::null(), |v| v.as_ptr()),
+            input.as_ref().map_or(0, Vec::len),
+            request.as_ref().map_or(std::ptr::null(), |v| v.as_ptr()),
+            request.as_ref().map_or(0, Vec::len),
+            data.as_mut_ptr(),
+            data.len(),
+            &mut size,
+        )
+    };
+    if status != session::SessionStatus::Ok {
+        return std::ptr::null_mut();
+    }
+    env.byte_array_from_slice(&data[..size])
+        .map_or(std::ptr::null_mut(), |a| a.into_raw())
 }
 
 fn session_copy(env: &mut jni::JNIEnv<'_>, handle: u64, snapshot: bool) -> jni::sys::jbyteArray {

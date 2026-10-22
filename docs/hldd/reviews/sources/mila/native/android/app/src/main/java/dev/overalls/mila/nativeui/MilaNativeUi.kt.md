@@ -1,5 +1,5 @@
 ---
-digest: aba6381aa195977cab3a24bacf6a7a45a4036d78401b7672c166b74ca67b6554
+digest: eabbf70705a0204da60c87180429768098570fc81c06408da42420fccc557c09
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android deployment persistence, Apple notification device CRUD, and Linux settings persistence use existing typed native storage boundaries.
+Authenticated SSH-key, sharing, and Android thread payload seams preserve typed session boundaries; tests cover malformed inputs.

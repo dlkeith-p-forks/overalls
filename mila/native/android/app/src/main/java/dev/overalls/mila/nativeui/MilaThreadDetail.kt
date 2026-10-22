@@ -34,11 +34,22 @@ class MilaThreadDetailController(private val adapter: MilaFfiAdapter) {
         return true
     }
 
-    suspend fun submit(command: MilaThreadCommand): Boolean {
+    suspend fun submit(command: MilaThreadCommand): Boolean = submit(command, null)
+
+    suspend fun submit(command: MilaThreadCommand, input: String?): Boolean {
         val thread = (state as? MilaThreadActionState.Ready)?.thread ?: return false
         if (!authenticated) { state = MilaThreadActionState.SignedOut; return false }
+        val needsInput = command == MilaThreadCommand.Prompt || command == MilaThreadCommand.Answer || command == MilaThreadCommand.PlanRevise
+        if (needsInput && (input == null || input.length !in 1..4096 || input.any { it.code < 0x20 && it !in "\n\r\t" })) {
+            state = MilaThreadActionState.Failed(thread, command, "invalid thread input")
+            return false
+        }
+        if (!needsInput && input != null) {
+            state = MilaThreadActionState.Failed(thread, command, "input is not accepted for this command")
+            return false
+        }
         state = MilaThreadActionState.Submitting(thread, command)
-        return adapter.threadAction(thread.id, command).fold(
+        return adapter.threadAction(thread.id, command, input).fold(
             { state = MilaThreadActionState.Applied(thread, command); true },
             { error -> state = MilaThreadActionState.Failed(thread, command, error.message ?: "command rejected"); false },
         )

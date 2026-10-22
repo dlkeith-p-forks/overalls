@@ -1,5 +1,5 @@
 ---
-digest: 45bc5e427f294588894d1b09aded24a1c32920bd271bde040f94a124f5fc810e
+digest: 362153d75be75cc24900cd98e6e91afc6fcfcfe972d87ca11903b0999f56b5d6
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android deployment persistence, Apple notification device CRUD, and Linux settings persistence use existing typed native storage boundaries.
+Android sign-in now establishes and binds a typed certificate-authenticated Rust session when connector inputs are supplied.

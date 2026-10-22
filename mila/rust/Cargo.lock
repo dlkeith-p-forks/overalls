@@ -1221,6 +1221,7 @@ dependencies = [
  "base64",
  "hegeltest",
  "mila-model",
+ "mila-protocol",
  "mila-runtime",
  "mila-transport",
  "p256 0.13.2",

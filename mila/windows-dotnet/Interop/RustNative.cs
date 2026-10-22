@@ -4,28 +4,51 @@ using System.Text;
 namespace Mila.Windows.Interop;
 
 internal enum MilaRouteKind { Machines, Machine, Threads, Thread, Settings }
-internal readonly record struct MilaRoute(MilaRouteKind Kind, Guid? Id = null);
+internal readonly record struct MilaRoute(MilaRouteKind Kind, string Host, Guid? Id = null)
+{
+    internal string Path => Kind switch
+    {
+        MilaRouteKind.Machines => "/machines",
+        MilaRouteKind.Machine => $"/machines/{Id?.ToString("D")}",
+        MilaRouteKind.Threads => "/threads",
+        MilaRouteKind.Thread => $"/threads/{Id?.ToString("D")}",
+        MilaRouteKind.Settings => "/settings",
+        _ => throw new InvalidOperationException("Unknown route kind")
+    };
+}
 
 internal static class MilaRouteParser
 {
     internal static MilaRoute? Parse(string value)
     {
-        if (!Uri.TryCreate(value, UriKind.Absolute, out Uri? uri) ||
-            uri.Scheme != "overalls" || !string.IsNullOrEmpty(uri.Query) || !string.IsNullOrEmpty(uri.Fragment) ||
-            !string.IsNullOrEmpty(uri.UserInfo)) return null;
+        if (value.Length is 0 or > 4096 || value.Any(char.IsControl) || value.Contains(' ') ||
+            !value.StartsWith("overalls://", StringComparison.Ordinal) ||
+            !Uri.TryCreate(value, UriKind.Absolute, out Uri? uri) || uri.Scheme != "overalls" ||
+            !string.IsNullOrEmpty(uri.Query) || !string.IsNullOrEmpty(uri.Fragment) ||
+            !string.IsNullOrEmpty(uri.UserInfo) || uri.Port != -1) return null;
+        string authority = value["overalls://".Length..].Split('/', 2)[0];
+        string host = uri.Host;
+        if (host.Length == 0 || host != host.ToLowerInvariant() || host.Contains('%')) return null;
+        if (authority != host) return null;
+        string remainder = value["overalls://".Length..];
+        int slash = remainder.IndexOf('/');
+        string rawPath = slash < 0 ? string.Empty : remainder[slash..].Split('?', 2)[0];
+        if (rawPath.Length == 0 || rawPath.Contains("//", StringComparison.Ordinal) || rawPath.EndsWith('/') || rawPath.Contains('%')) return null;
         string[] parts = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length == 0) return uri.Host.ToLowerInvariant() switch
+        if (parts.Length != 1 && parts.Length != 2) return null;
+        if (parts.Length == 1) return parts[0] switch
         {
-            "machines" => new(MilaRouteKind.Machines),
-            "threads" => new(MilaRouteKind.Threads),
-            "settings" => new(MilaRouteKind.Settings),
+            "machines" => new(MilaRouteKind.Machines, host),
+            "threads" => new(MilaRouteKind.Threads, host),
+            "settings" => new(MilaRouteKind.Settings, host),
             _ => null,
         };
-        if (parts.Length != 1 || !Guid.TryParseExact(parts[0], "D", out Guid id)) return null;
-        return uri.Host.ToLowerInvariant() switch
+        if (parts[1].Length == 0 ||
+            !Guid.TryParseExact(parts[1], "D", out Guid id) || parts[1] != id.ToString("D")) return null;
+        return parts[0] switch
         {
-            "machines" => new(MilaRouteKind.Machine, id),
-            "threads" => new(MilaRouteKind.Thread, id),
+            "machines" => new(MilaRouteKind.Machine, host, id),
+            "threads" => new(MilaRouteKind.Thread, host, id),
             _ => null,
         };
     }
@@ -41,6 +64,11 @@ internal enum MilaNativeStatus : int
     InvalidRoute = -2,
     OutputTooSmall = -3,
     InvalidRequest = -4,
+    InvalidHandle = -10,
+    Transport = -11,
+    NotLoaded = -12,
+    Busy = -13,
+    Internal = -14,
     Unavailable = -127,
 }
 
@@ -120,6 +148,10 @@ internal readonly record struct MilaNativeSessionActionResult(MilaNativeStatus S
 {
     internal bool Succeeded => Status == MilaNativeStatus.Ok;
 }
+internal readonly record struct MilaNativeSessionConnectResult(MilaNativeStatus Status, ulong? Handle)
+{
+    internal bool Succeeded => Status == MilaNativeStatus.Ok && Handle is > 0;
+}
 
 internal enum MilaThreadCommandKind : int
 {
@@ -150,6 +182,50 @@ internal readonly record struct MilaNativePokeResult(MilaNativeStatus Status)
 /// </summary>
 internal static partial class RustNative
 {
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate int MilaSignCallback(nuint context, IntPtr message, nuint messageLength, IntPtr signature);
+
+    /// Establishes an authenticated Rust session. The signer callback is retained only
+    /// for the duration of the synchronous native connect call.
+    internal static MilaNativeSessionConnectResult TrySessionConnect(
+        ReadOnlySpan<byte> trust, string host, ReadOnlySpan<byte> publicKey, ushort port,
+        uint timeoutMs, Func<byte[], byte[]> signer)
+    {
+        ArgumentNullException.ThrowIfNull(host);
+        ArgumentNullException.ThrowIfNull(signer);
+        if (host.Any(char.IsControl) || host.Contains('\0') || port == 0 || timeoutMs is < 1 or > 120_000)
+            return new(MilaNativeStatus.InvalidRequest, null);
+        GCHandle holder = GCHandle.Alloc(signer);
+        MilaSignCallback callback = (context, message, length, output) =>
+        {
+            try
+            {
+                byte[] input = new byte[checked((int)length)];
+                Marshal.Copy(message, input, 0, input.Length);
+                byte[] signature = ((Func<byte[], byte[]>)GCHandle.FromIntPtr((IntPtr)context).Target!)(input);
+                if (signature.Length != 64) return -1;
+                Marshal.Copy(signature, 0, output, signature.Length);
+                return 0;
+            }
+            catch { return -1; }
+        };
+        try
+        {
+            ulong handle = 0;
+            GCHandle trustPin = GCHandle.Alloc(trust.ToArray(), GCHandleType.Pinned);
+            GCHandle publicPin = GCHandle.Alloc(publicKey.ToArray(), GCHandleType.Pinned);
+            MilaNativeStatus status;
+            try { status = SessionConnectNative(trustPin.AddrOfPinnedObject(), (nuint)trust.Length,
+                host, (nuint)Encoding.UTF8.GetByteCount(host), publicPin.AddrOfPinnedObject(), (nuint)publicKey.Length,
+                port, timeoutMs, callback, (nuint)GCHandle.ToIntPtr(holder), out handle);
+            } finally { trustPin.Free(); publicPin.Free(); }
+            return status == MilaNativeStatus.Ok ? new(status, handle) : new(status, null);
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+        finally { holder.Free(); }
+    }
     /// <summary>Decodes a bounded listing copied from the live Rust session.</summary>
     internal static MilaSessionListing DecodeSessionListing(ReadOnlySpan<byte> bytes) => MilaSessionListing.Decode(bytes);
     private const string LibraryName = "mila_native";
@@ -340,6 +416,15 @@ internal static partial class RustNative
         finally { Marshal.FreeCoTaskMem(machine); Marshal.FreeCoTaskMem(operation); Marshal.FreeCoTaskMem(request); }
     }
 
+    internal static MilaNativeStatus TrySessionClose(ulong handle)
+    {
+        if (handle == 0) return MilaNativeStatus.InvalidRequest;
+        try { return (MilaNativeStatus)SessionCloseNative(handle); }
+        catch (DllNotFoundException) { return MilaNativeStatus.Unavailable; }
+        catch (EntryPointNotFoundException) { return MilaNativeStatus.Unavailable; }
+        catch (BadImageFormatException) { return MilaNativeStatus.Unavailable; }
+    }
+
     /// <summary>Projects only the closed Rust thread-command catalogue.</summary>
     internal static MilaNativeThreadCommandResult TryClassifyThreadCommand(string line)
     {
@@ -409,6 +494,15 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_action")]
     private static partial int SessionMachineActionNative(ulong handle, IntPtr machine, nuint machineLength,
         IntPtr action, nuint actionLength, IntPtr requestId, nuint requestIdLength);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_close")]
+    private static partial int SessionCloseNative(ulong handle);
+
+    [DllImport(LibraryName, EntryPoint = "mila_session_connect", CallingConvention = CallingConvention.Cdecl)]
+    private static extern MilaNativeStatus SessionConnectNative(
+        IntPtr trust, nuint trustLength, [MarshalAs(UnmanagedType.LPUTF8Str)] string host,
+        nuint hostLength, IntPtr publicKey, nuint publicKeyLength, ushort port, uint timeoutMs,
+        MilaSignCallback callback, nuint context, out ulong handle);
 
     private const int RouteOutputCapacity = 4096;
 

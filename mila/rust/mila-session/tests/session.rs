@@ -146,6 +146,61 @@ async fn invalid_refused_and_interrupted_refresh_never_replace_the_last_good_lis
 }
 
 #[tokio::test]
+async fn authenticated_share_mutations_use_typed_commands_and_reject_bad_roles() {
+    let responses = Arc::new(Mutex::new(VecDeque::from([
+        reply(
+            &format!("share add {FIRST} 'teammate@example.test' viewer --json --request-id=porsche-00000000000000000000000000000000"),
+            Vec::new(),
+        ),
+        reply(
+            &format!("share remove {FIRST} 'teammate@example.test' --json --request-id=porsche-11111111111111111111111111111111"),
+            Vec::new(),
+        ),
+    ])));
+    let (trust, port, _, task) = endpoint(responses.clone()).await;
+    let (public, signer) = identity(Arc::new(AtomicUsize::new(0)));
+    let mut session =
+        ApplicationSession::connect(trust, port, &public, signer, Duration::from_secs(5))
+            .await
+            .unwrap();
+    session
+        .share_mutation(
+            FIRST,
+            "teammate@example.test",
+            Some("viewer"),
+            true,
+            "porsche-00000000000000000000000000000000",
+        )
+        .await
+        .unwrap();
+    session
+        .share_mutation(
+            FIRST,
+            "teammate@example.test",
+            None,
+            false,
+            "porsche-11111111111111111111111111111111",
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        session
+            .share_mutation(
+                FIRST,
+                "teammate@example.test",
+                Some("owner"),
+                true,
+                "porsche-22222222222222222222222222222222"
+            )
+            .await,
+        Err(SessionError::MutationRefused)
+    ));
+    assert!(responses.lock().unwrap().is_empty());
+    session.close().await.unwrap();
+    task.abort();
+}
+
+#[tokio::test]
 async fn cyclic_pagination_keeps_previous_rows_and_cursor() {
     let responses = Arc::new(Mutex::new(VecDeque::from([
         reply("ls --json", page(vec![machine(FIRST, "kept")], Some(FIRST))),

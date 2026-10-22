@@ -77,9 +77,22 @@ int32_t mila_session_connect(const uint8_t *trust, size_t trust_len,
     size_t public_key_len, uint16_t port, uint32_t timeout_ms,
     MilaSessionSign signer, uintptr_t context, uint64_t *out_handle);
 int32_t mila_session_read_machines(uint64_t handle, uint8_t more);
+int32_t mila_session_ssh_keys(uint64_t handle, uint8_t *output, size_t capacity, size_t *written);
+int32_t mila_session_ssh_key_revoke(uint64_t handle, const uint8_t *key, size_t key_len, const uint8_t *request, size_t request_len);
 int32_t mila_session_machine_action(uint64_t handle, const uint8_t *machine,
     size_t machine_len, const uint8_t *action, size_t action_len,
     const uint8_t *request_id, size_t request_id_len);
+/* Execute authenticated share add/remove. For add, role is viewer/operator/
+ * manager; for remove role must be null/zero length. */
+int32_t mila_session_share_mutation(uint64_t handle, const uint8_t *machine,
+    size_t machine_len, const uint8_t *email, size_t email_len,
+    const uint8_t *role, size_t role_len, uint8_t add,
+    const uint8_t *request_id, size_t request_id_len);
+int32_t mila_session_thread_action(uint64_t handle, const uint8_t *thread,
+    size_t thread_len, const uint8_t *command, size_t command_len,
+    const uint8_t *secondary, size_t secondary_len, const uint8_t *input,
+    size_t input_len, const uint8_t *request_id, size_t request_id_len,
+    uint8_t *output, size_t capacity, size_t *written);
 /* Copy operations never issue a command. Null output/zero capacity queries size.
  * JSON is UTF-8 without NUL termination; written receives the required length.
  * Listing is {machines:[validated snapshot rows],has_more:boolean}.

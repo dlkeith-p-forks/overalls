@@ -25,6 +25,16 @@ class MilaThreadDetailTest {
         assertEquals(MilaThreadActionState.Applied(listing.threads.single(), MilaThreadCommand.Turns), controller.state)
     }
 
+    @Test fun promptAndAnswerRequireBoundedInput() = runBlocking {
+        val controller = MilaThreadDetailController(ThreadAdapter())
+        controller.setSession(true, listing)
+        controller.select(id)
+        assertFalse(controller.submit(MilaThreadCommand.Prompt, ""))
+        assertTrue(controller.state is MilaThreadActionState.Failed)
+        assertTrue(controller.submit(MilaThreadCommand.Prompt, "approve\nplan"))
+        assertFalse(controller.submit(MilaThreadCommand.Show, "unexpected"))
+    }
+
     @Test fun rejectedThreadCommandIsTyped() = runBlocking {
         val controller = MilaThreadDetailController(ThreadAdapter(false))
         controller.setSession(true, listing)

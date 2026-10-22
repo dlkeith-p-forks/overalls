@@ -2106,3 +2106,43 @@ interrupt, so simple loan exhaustion does not explain the stall; the remaining
 suspects are refill notification under the modern virtio transport and the
 absence of receive offload. Until then this check is a known failure, and
 retained GitHub tools on illumos are not qualified.
+
+### Follow-up: `vioif` receive descriptor budget
+
+The illumos stall above has a precise cause in the pinned `vioif` driver
+under Firecracker:
+
+- Firecracker offers no `VIRTIO_F_RING_INDIRECT_DESC`, so each receive buffer
+  uses direct ring descriptors: one for the virtio header plus one per data
+  cookie.
+- Receive buffers were `VIOIF_RX_DATA_SIZE` (65,550 bytes) even though the
+  driver never negotiates guest receive offload. Each spanned about 17 page
+  cookies, so the 256-entry ring held only about 14 posted buffers. That matches
+  Firecracker's very high `no_rx_avail_buffer` count.
+- Buffers lent upstream keep their descriptors until the stack frees them, and
+  the driver allowed up to half its 256 buffers on loan. Around 14 loans to a
+  socket that stops reading exhaust the ring. No receive interrupt then fires to
+  refill it, and inbound traffic stops until the socket closes.
+
+`0005-vioif-receive-budget.patch` follows the 0004 block-descriptor budget:
+
+- Without guest receive offload, receive buffers are sized to the MTU plus a
+  VLAN Ethernet header and the virtio header, and page-aligned when they fit in
+  a page. Each buffer is then one cookie and two descriptors.
+- `vioif_rx_loan_limit` caps loans at half the buffers the ring can hold: one
+  ring slot each with indirect descriptors, otherwise the header plus the largest
+  cookie count.
+
+`net_receive_budget_test.c` executes the helper extracted from the patched
+source under ASan/UBSan. Its vectors include the production 256-descriptor ring
+with 17-cookie buffers (former limit 128 loans against 14 buffers that fit).
+The kernel candidate build ran it, and the Nix KVM candidate
+`/nix/store/4marcra2m10kalj3m82zrf82iyvkpqm9-overalls-omnios-native-image-candidate`
+records `vioif` as `inputs-changed` against the promoted reference. On that
+candidate `native-omnios-transport` passed in 672 seconds and
+`native-omnios-reset` in 390 seconds on 2026-10-22.
+
+Retained GitHub tools are not used for native runs, so the change was not
+re-qualified against `github-tools-illumos-retained` and the candidate was not
+promoted. The promoted `45983bb7` image and its admission are unchanged and
+still carry the stall until a separate promotion under ADR-0190.

@@ -6,6 +6,8 @@ public struct MilaNativeRootView: View {
     @State private var selection: MilaRoute = .machines
     @State private var machines: [MilaMachinePresentation] = []
     @State private var status = MilaStrings.text(.ready)
+    @AppStorage("mila.appLockEnabled") private var appLockEnabled = false
+    @StateObject private var appLock = MilaAppLockController()
 
     public init(adapter: any MilaFFIAdapter = LinkedMilaFFIAdapter(), snapshot: MilaValidatedSnapshot? = nil) {
         self.adapter = adapter
@@ -13,6 +15,7 @@ public struct MilaNativeRootView: View {
     }
 
     public var body: some View {
+        MilaAppLockView(controller: appLock) {
         NavigationSplitView {
             List(selection: $selection) {
                 Label(MilaStrings.text(.machines), systemImage: "desktopcomputer").tag(MilaRoute.machines)
@@ -26,12 +29,16 @@ public struct MilaNativeRootView: View {
                 case .machine(let id): MachineDetailView(machine: machines.first { $0.id == id }, adapter: adapter)
                 case .threads: ThreadsView(adapter: adapter, select: { selection = .thread(id: $0) })
                 case .thread(let id): ThreadDetailView(id: id)
-                case .settings: SettingsView(adapter: adapter)
+                case .settings: SettingsView(adapter: adapter, lockController: appLock)
                 }
             }
             .toolbar { ToolbarItem { Button(MilaStrings.text(.refresh)) { Task { await refresh() } } } }
             .safeAreaInset(edge: .bottom) { Text(status).font(.caption).foregroundStyle(.secondary).padding(4) }
-        }.milaDesignSystem().task { await refresh() }
+        }.milaDesignSystem().task {
+            if appLockEnabled { await appLock.setEnabled(true) }
+            await refresh()
+        }
+        }
     }
 
     private func refresh() async {
@@ -164,6 +171,7 @@ private struct ThreadsView: View {
 private struct ThreadDetailView: View { let id: UUID; var body: some View { Text("\(MilaStrings.text(.threads)) \(id.uuidString)").padding() } }
 private struct SettingsView: View {
     let adapter: any MilaFFIAdapter
+    let lockController: MilaAppLockController
     @AppStorage("mila.appearance") private var appearance = "system"
     @AppStorage("mila.appLockEnabled") private var appLockEnabled = false
     @State private var notificationToken = ""
@@ -181,9 +189,12 @@ private struct SettingsView: View {
                 .pickerStyle(.segmented)
             }
             Section(MilaStrings.text(.lockTitle)) {
-                Toggle(MilaStrings.text(.lockTitle), isOn: $appLockEnabled)
-                    .disabled(true)
-                Text(MilaStrings.text(.lockUnavailable)).font(.caption).foregroundStyle(.secondary)
+                Toggle(MilaStrings.text(.lockTitle), isOn: Binding(get: { appLockEnabled }, set: { value in
+                    appLockEnabled = value
+                    Task { await lockController.setEnabled(value) }
+                }))
+                    .disabled(!lockController.canEnable)
+                Text(lockController.canEnable ? MilaStrings.text(.lockExplain) : MilaStrings.text(.lockUnavailable)).font(.caption).foregroundStyle(.secondary)
             }
             Section(MilaStrings.text(.notificationsTitle)) {
                 Text(MilaStrings.text(.notificationsExplain)).font(.caption)
@@ -211,7 +222,13 @@ private struct SettingsView: View {
                 Text(notificationStatus).font(.caption).foregroundStyle(.secondary)
             }
             NavigationLink(MilaStrings.text(.sshKeysTitle)) {
-                MilaSSHKeysView(controller: MilaSSHKeysController(loader: { [], revoker: { _ in } }))
+                MilaSSHKeysView(controller: MilaSSHKeysController(
+                    loader: { try await adapter.listSSHKeys() },
+                    revoker: { keyID in
+                        let key = MilaSSHKey(id: keyID, fingerprint: "", algorithm: "")
+                        try await adapter.revokeSSHKey(key, requestID: UUID())
+                    }
+                ))
             }
             Text(MilaStrings.text(.runtimeUnavailable)).foregroundStyle(.secondary)
         }.navigationTitle(MilaStrings.text(.settings))

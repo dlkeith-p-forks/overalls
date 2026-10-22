@@ -1,0 +1,107 @@
+--- a/usr/src/uts/common/io/vioif/vioif.c
++++ b/usr/src/uts/common/io/vioif/vioif.c
+@@ -82,6 +82,7 @@
+ #include <sys/mac_ether.h>
+ 
+ #include "virtio.h"
++#include "virtio_spec.h"
+ #include "vioif.h"
+ 
+ /*
+@@ -475,6 +476,30 @@ vioif_free_bufs(vioif_t *vif)
+ 	}
+ }
+ 
++/** @cc [owner:ghuntley,label:capacity;recovery] illumos-net-receive-descriptor-budget
++ * A receive buffer on loan to the network stack keeps its ring descriptors
++ * until the stack frees it. Without negotiated indirect descriptors each
++ * buffer costs its header descriptor plus every data cookie. Loans MUST be
++ * bounded by half the buffers the ring can hold, so a socket that stops
++ * reading can never leave the device without receive buffers. Indirect
++ * buffers retain one ring descriptor each.
++ */
++static uint_t
++vioif_rx_loan_limit(uint_t qsize, uint_t buffers, uint_t cookies,
++    boolean_t indirect)
++{
++	uint_t chains;
++
++	if (indirect) {
++		chains = qsize;
++	} else if (cookies == 0 || cookies >= qsize) {
++		chains = 0;
++	} else {
++		chains = qsize / (cookies + 1);
++	}
++	return (MIN(buffers, chains) / 2);
++}
++
+ static int
+ vioif_alloc_bufs(vioif_t *vif)
+ {
+@@ -509,12 +534,6 @@ vioif_alloc_bufs(vioif_t *vif)
+ 	list_create(&vif->vif_ctrlbufs, sizeof (vioif_ctrlbuf_t),
+ 	    offsetof(vioif_ctrlbuf_t, cb_link));
+ 
+-	/*
+-	 * Do not loan more than half of our allocated receive buffers into
+-	 * the networking stack.
+-	 */
+-	vif->vif_nrxbufs_onloan_max = vif->vif_rxbufs_capacity / 2;
+-
+ 	/*
+ 	 * Put everything in the free list straight away in order to simplify
+ 	 * the use of vioif_free_bufs() for cleanup on allocation failure.
+@@ -590,10 +609,35 @@ vioif_alloc_bufs(vioif_t *vif)
+ 	 */
+ 	attr.dma_attr_sgllen = VIOIF_MAX_SEGS - 1;
+ 
++	/*
++	 * Without VIRTIO_NET_F_MRG_RXBUF the device places each frame in one
++	 * receive buffer.  It delivers frames larger than the MTU only when a
++	 * guest receive offload is negotiated, which this driver never
++	 * requests; otherwise a buffer need only hold the MTU, a VLAN Ethernet
++	 * header and the virtio header.  Oversized buffers span many cookies,
++	 * and each cookie costs a ring descriptor when indirect descriptors are
++	 * unavailable.
++	 */
++	size_t rxbuf_size = VIOIF_RX_BUF_SIZE;
++	if (!vioif_has_feature(vif, VIRTIO_NET_F_GUEST_TSO4) &&
++	    !vioif_has_feature(vif, VIRTIO_NET_F_GUEST_TSO6) &&
++	    !vioif_has_feature(vif, VIRTIO_NET_F_GUEST_UFO)) {
++		rxbuf_size = vif->vif_mtu_max +
++		    sizeof (struct ether_vlan_header) + VIOIF_HEADER_SKIP;
++	}
++	if (rxbuf_size <= PAGESIZE) {
++		/*
++		 * A page-aligned buffer within one page is a single cookie, so
++		 * the header skip region always lies in the first cookie.
++		 */
++		attr.dma_attr_align = PAGESIZE;
++	}
++	uint_t rxbuf_cookies = 1;
++
+ 	for (vioif_rxbuf_t *rb = list_head(&vif->vif_rxbufs); rb != NULL;
+ 	    rb = list_next(&vif->vif_rxbufs, rb)) {
+ 		if ((rb->rb_dma = virtio_dma_alloc(vif->vif_virtio,
+-		    VIOIF_RX_BUF_SIZE, &attr, DDI_DMA_STREAMING | DDI_DMA_READ,
++		    rxbuf_size, &attr, DDI_DMA_STREAMING | DDI_DMA_READ,
+ 		    KM_SLEEP)) == NULL) {
+ 			goto fail;
+ 		}
+@@ -621,8 +665,15 @@ vioif_alloc_bufs(vioif_t *vif)
+ 		rb->rb_vioif = vif;
+ 		rb->rb_frtn.free_func = vioif_rx_free_callback;
+ 		rb->rb_frtn.free_arg = (caddr_t)rb;
++		rxbuf_cookies = MAX(rxbuf_cookies,
++		    virtio_dma_ncookies(rb->rb_dma));
+ 	}
+ 
++	vif->vif_nrxbufs_onloan_max = vioif_rx_loan_limit(
++	    virtio_queue_size(vif->vif_rx_vq), vif->vif_rxbufs_capacity,
++	    rxbuf_cookies, virtio_feature_present(vif->vif_virtio,
++	    VIRTIO_F_RING_INDIRECT_DESC));
++
+ 	return (0);
+ 
+ fail:

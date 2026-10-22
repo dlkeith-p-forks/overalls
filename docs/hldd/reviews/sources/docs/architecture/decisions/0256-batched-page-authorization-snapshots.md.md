@@ -1,5 +1,5 @@
 ---
-digest: f4d622d114041090ef43886bbfe9a050ebb7d32be47d78310a1dffa3e4880ea0
+digest: 7eaffcfd8688c5a64a48a1f53aab93d7f65c2458345c6fb664365d40da9cb5db
 disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-ADR-0256 and review record the EXPLAIN evidence, candidate design and user-approved deviations; matching 03-access and scenario changes are in this change's marshall receipt.
+ADR-0256, ADR-0258 and the review record live deployment measurements and relocation batching; matching 03-access change is in this change's marshall receipt.

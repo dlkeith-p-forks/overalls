@@ -117,6 +117,16 @@ Remaining gaps:
 - The targets are provisional. No production baseline has been measured, and
   seven-day eligibility has not been observed.
 - No browser test renders the Grafana dashboard.
+- **Live check** on `panterloons` (2026-10-22), through Grafana's API and the
+  live Prometheus:
+  - Six anonymous page loads reached the live `marshall_live` recorder as six
+    successes.
+  - The SLI panels returned completion 1, within-1 s 1 and p95 0.038 s.
+  - The callback diagnostic panels returned a 6.3 ms mean mount.
+  - Tempo returned `marshall.live.callback` spans.
+  - The objective panels stay empty until 100 requests and warmup, as
+    designed.
+  - The per-view refresh panels need signed-in refreshes.
 - Live components are not counted; Marshall has none today.
 
 ## Open questions

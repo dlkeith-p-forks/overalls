@@ -78,6 +78,13 @@ def main(arguments: list[str]) -> None:
     (output / "block_budget_limit.inc").write_text(
         f"#define VIRTIO_BLK_REQ_BUFS {definitions[0]}U\n"
     )
+    (output / "net_receive_budget_function.inc").write_text(
+        extract_function(
+            (source / "io/vioif/vioif.c").read_text(),
+            "vioif_rx_loan_limit(",
+            "static uint_t\n",
+        )
+    )
     completion = ""
     for name, declaration in (
         ("vioblk_req_alloc(", "static vioblk_req_t *\n"),

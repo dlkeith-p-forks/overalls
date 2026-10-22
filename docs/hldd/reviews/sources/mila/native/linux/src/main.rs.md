@@ -1,5 +1,5 @@
 ---
-digest: 62c7b6681a42028469a31b7f900e9d427ba728bf0b522e5d6b1b2d212ccadf18
+digest: f3679b95a2a33618c2d8a682cc211b898d798de589ae6d33a01d025c414a8393
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux settings persistence uses typed XDG JSON with locale validation; GTK controls are localized and tested
+Apple LocalAuthentication app lock and Linux GTK terminal lifecycle controls remain within typed native boundaries.

@@ -150,8 +150,22 @@ walk. The owner and team indexes matter only together with the candidates. The
 candidates add three small indexed reads, 17 queries per page in all, still
 constant in machine count.
 
-Relocation status is read per row only for machines that have a relocation.
-Machines without one are primed as `nil` from a single batched read.
+Relocation status for the rows the actor manages is batched.
+`RelocationStatus.latest_many/1` reads the latest relocations, their readiness
+requests, and the stop operations and outcomes, one query per kind. It returns
+exactly what the per-row `latest/1` returns.
+
+**Live deployment** (`panterloons`, 2026-10-22, 2 users and 19 machines):
+
+- All six indexes are present.
+- A read-only, rolled-back `EXPLAIN (ANALYZE, BUFFERS)` of the list query
+  takes 0.248 ms for the OR-of-EXISTS shape and 0.085 ms with candidates. The
+  user indexes serve the grant, team-member and thread-grant subqueries.
+- At 19 machines a sequential scan is the planner's correct choice, so the
+  synthetic 40,000-machine probe above remains the large-fleet evidence.
+- Anonymous page loads produced six `marshall_live` callbacks: all six
+  succeeded, a 38 ms five-minute p95, and a 6.3 ms mean mount on the
+  callback diagnostic panel.
 
 **Costs and risks:**
 
@@ -217,8 +231,11 @@ Remaining gaps:
   thread and team tables), not on production data.
 - An owner of very many machines sorts all of them before the limit. That is
   cheaper than the old walk, but not keyset-bounded.
-- Relocation status is still read per row for machines that have a relocation.
-- The dashboard panels have not been observed with live fleet data.
+- The batched relocation downtime branch is covered only by the unchanged
+  per-row logic it shares. The equivalence test's relocation has no completed
+  stop outcome.
+- The per-view refresh panels (`live_<view>_*`) need signed-in machine-page
+  refreshes and have not yet shown live values.
 
 ## Open questions
 

@@ -1,5 +1,5 @@
 ---
-digest: 0a92fb84d8b16fab45007a5d04f78650afb667cd75118eee2f349fc7771311a8
+digest: 4d180c298ad5492ecbe3b1f972725a7dcdbbb30b70d403718975e4d117bcb4c7
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows machine mutation UI remains gated on authenticated native session handle and Rust command boundary.
+Windows activation arguments are parsed through the typed route boundary and invalid links are refused.

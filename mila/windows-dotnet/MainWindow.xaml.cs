@@ -13,12 +13,36 @@ public sealed partial class MainWindow : Window
     private readonly MilaMachineMutationController _machineMutation = new();
     private MilaMachineRow? _selectedMachine;
     private readonly MilaAppLockController _appLock = new(new MilaWindowsHelloBroker());
-    public MainWindow()
+    public MainWindow(string? activation = null)
     {
         InitializeComponent();
         ApplyStrings();
         if (MilaDeploymentStore.Load() is { } deployment) { DeploymentHost.Text = deployment.Host; _activeHost = deployment.Host; }
         Navigation.SelectedItem = Navigation.MenuItems[0];
+        if (!string.IsNullOrWhiteSpace(activation)) ApplyActivation(activation);
+    }
+    private void ApplyActivation(string activation)
+    {
+        MilaRoute? route = MilaRouteParser.Parse(activation.Trim().Trim('"'));
+        if (route is null)
+        {
+            StatusText.Text = S("invalidRoute", "This link is not a valid Mila route.");
+            return;
+        }
+        _activeHost = route.Value.Host;
+        DeploymentHost.Text = route.Value.Host;
+        Navigation.SelectedItem = route.Value.Kind switch
+        {
+            MilaRouteKind.Thread or MilaRouteKind.Threads => Navigation.MenuItems[1],
+            MilaRouteKind.Settings => Navigation.MenuItems[2],
+            _ => Navigation.MenuItems[0]
+        };
+        StatusText.Text = route.Value.Kind switch
+        {
+            MilaRouteKind.Machine => $"{S("routeMachine", "Machine")}: {route.Value.Id?.ToString("D")}",
+            MilaRouteKind.Thread => $"{S("routeThread", "Thread")}: {route.Value.Id?.ToString("D")}",
+            _ => $"{S("routeOpened", "Opened")}: {route.Value.Path}"
+        };
     }
     private static string S(string id, string fallback) => MilaStrings.Text(id, fallback);
     private void ApplyStrings()

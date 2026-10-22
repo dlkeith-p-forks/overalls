@@ -603,7 +603,7 @@ principal read. Every row on a page therefore reflects the same moment.
 | Grant revoked while a refresh runs | That refresh uses its snapshot; the next refresh hides the machine |
 | Batch nested in a caller's transaction | No reuse; every read runs fresh |
 | Duplicate active resize rows | Batched read skips them; the per-row read fails as before |
-| Machine with a relocation | Batched read skips it; the per-row status read runs as before |
+| Machine with a relocation | Status for managed rows comes from one batched read per record kind, equal to the per-row read |
 
 Evidence:
 
@@ -621,9 +621,13 @@ Evidence:
   an UPDATE. It also asserts that a nested batch keeps its caller's isolation
   without reuse.
 
-Relocation status is not authorization input. Machines without any relocation
-are primed as `nil` from one batched read, and relocated machines keep their
-per-row read.
+Relocation status is not authorization input. It is projected only for rows
+with a current manage decision, and those rows are batched:
+`RelocationStatus.latest_many/1` reads the latest relocation, readiness request,
+stop operation and outcome once per kind. A
+[batch equivalence test](repo:marshall/test/marshall/compute/relocation_status_batch_test.exs)
+compares relocated, cancelled and never-relocated machines with the per-row
+read.
 
 ## Creation preference authority
 
