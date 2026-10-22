@@ -1,5 +1,5 @@
 ---
-digest: 347130fc1c617f8d232fc8b20221c6f5a2111e5e05a7fcc9b2d0f286081c4cc9
+digest: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Lyra advertises artifacts-v1 and runs the internal artifact_stage command, opening staged files without following links (ssh_files open_no_follow), validating paths and per-file SHA-256, and accepting files up to the 64 MiB per-publish limit Marshall sends; attachment transfer requests use their 360,448-byte body bound. Ziggy forwards the bounded artifact_chunk executor RPC route beside attachment/transfer, and control.ex is reformatted only. Chapters 10-services and 11-agents describe the staging path, capability and limits, and 17-reference and 19-coverage list the Ziggy chunk-route and Lyra tests.
+Reviewed the storage quota property test; 17-reference, 19-coverage and the artifacts scenario now cite it as passing evidence.

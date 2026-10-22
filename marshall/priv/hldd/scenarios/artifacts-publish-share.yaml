@@ -33,6 +33,13 @@ evidence:
   path: marshall/test/marshall/artifacts/publish_concurrency_property_test.exs
   scope: Generated concurrent publishes from one base version against PostgreSQL; one version is created and the
     rest are refused stale. Focused run passed on 2026-10-21.
+- assertion: storage writes match the quota and namespace model
+  execution: present
+  kind: property
+  path: marshall/test/marshall/artifacts/storage_quota_property_test.exs
+  scope: Generated owner, writer and viewer storage histories against PostgreSQL compare entries and usage rows with
+    a per-scope model; a second property fills a scope to the 20 MiB cap and checks the exact boundary. Focused run
+    passed on 2026-10-22.
 - assertion: rendered markdown carries no raw input tags or script URLs
   execution: present
   kind: property

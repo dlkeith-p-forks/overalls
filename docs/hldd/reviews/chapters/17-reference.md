@@ -1,5 +1,5 @@
 ---
-digest: f1763e53aa081b752df936173e2041b4cda3351ada40a096cc2eac99b020c4da
+digest: 7d88fca8dbe56f67c71ea207b0ed860f4cfc005f7cb9f6ccde4ffe4bc718cda5
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Shared diagnostics gain the marshall.agent.server_tool, marshall.artifact.publish, marshall.artifact.content and marshall.cedar.authorize spans, tool/namespace/via enum and version/file_count number attributes, and the server-tool and artifact publish, refusal, content and storage metrics; the regenerated trace schema matches. Chapters 15-monitoring and 17-reference list these signals and their closed attributes.
+Reviewed the storage quota property test; 17-reference, 19-coverage and the artifacts scenario now cite it as passing evidence.
