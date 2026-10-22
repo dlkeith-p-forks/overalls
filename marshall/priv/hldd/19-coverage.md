@@ -2822,6 +2822,7 @@ Tested scope: BEAM Covenant and unit tests through SSH.execute and the domain AP
 
 - **unit, present**: [SSH key removal and account retirement revoke bound devices](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I5..
 - **unit, present**: [device versions and registration receipts keep only the push-key digest](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I6 through SSH.execute..
+- **unit, present**: [WNS metadata registration](repo:mila/windows-dotnet-smoke/WindowsNotificationsSmoke.cs) — The typed Windows controller passes only bounded WNS metadata to the Rust validator, refuses a foreign channel and clears local state; live WNS exchange and Porsche device CRUD remain open..
 
 **Gaps:** No machine test drives device commands through a real Porsche SSH session.
 

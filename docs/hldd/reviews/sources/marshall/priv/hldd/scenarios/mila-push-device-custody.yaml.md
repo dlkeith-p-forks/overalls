@@ -1,24 +1,24 @@
 ---
-digest: bff9f5ccfdd61e0f0d017979847fd4c25256c80e6b1bc09fca57f82ba42c6932
-disposition: updated
+digest: 3daf16d2e1a940b018c98858bbce2ea92faf8249f76969005436937ecb8743ee
+disposition: no-impact
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
 path: marshall/priv/hldd/scenarios/mila-push-device-custody.yaml
 reviewed_chapters:
   marshall/priv/hldd/02-control-plane.md: 8398bc3791875b6bc8cf22b6602a6efccb886c001a0f78d5a1500a3f5707ff3d
-  marshall/priv/hldd/03-access.md: 08dc3c53c626ebafffba5f908f09ccd49edd919b7a03a3ef8c12113f5097bd96
-  marshall/priv/hldd/04-lifecycle.md: a3c881206a8331e5dbcd995c9762772639a9e28bdc22102c2a2e64bf63aa7449
-  marshall/priv/hldd/06-workflows.md: a35d0a72eb3b3b7afcd667d162ccba51020f8e47877ef29002a77a0dd4cef501
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
-  marshall/priv/hldd/11-agents.md: 583a34e60b6968f2e8e49141feed2e653b46074be845a1c918a1908e19fa04a4
-  marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
-  marshall/priv/hldd/17-reference.md: f873720e39141ec28babf1da9573796b2d87067b2f8779ea16340d22afb90576
-  marshall/priv/hldd/19-coverage.md: c976b09479ec9152ca196669500eddbc5814e4d04d35c616d4898aa19e2b0356
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/03-access.md: 5e197b8346180c9f65c712048048da17934c117a500fe63cfca781cd8933dae6
+  marshall/priv/hldd/04-lifecycle.md: f3c40798f402b553640bb25852bcb205c327c87d7ad6735b4f1b243c5616b4a2
+  marshall/priv/hldd/06-workflows.md: ad304114da706e2daaf6296aac5c058376e50742cc378ad4fc2a9d475d485124
+  marshall/priv/hldd/08-interactive.md: 89941cf1d313291a803dd9fc1155e152fc105fc6682f7e60b44f266289b9b342
+  marshall/priv/hldd/11-agents.md: 7d24214acefb26fbd3b08ce582578fd007e6ffa4bd55d986293050de8605356d
+  marshall/priv/hldd/15-monitoring.md: 185a956b7033aebff87a54c5b275b8368bd130205d7bb6a8cccb2ebdd4507c7a
+  marshall/priv/hldd/17-reference.md: 9b7c3c0ba2c93d62cda3b8c5b3914af2ebbab0f7f9c1e6345bdb926d15c8e8cb
+  marshall/priv/hldd/19-coverage.md: 3050f853271fa34efaae6d1cab714ed0169b1e1107ad27ccf4c0445857e3c127
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Reviewed all scenario and host YAML records against the legacy JSON: every data field is preserved. Chapter 19 is regenerated in stable scenario-ID order. Gate tests exercise independent merges, stale paths, tombstones and migration refusals; product behavior and existing scenario gaps are unchanged.
+Refreshed native notification and approval evidence.

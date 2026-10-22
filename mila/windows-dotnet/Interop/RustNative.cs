@@ -582,6 +582,33 @@ internal static partial class RustNative
         }
     }
 
+    /// <summary>Validates WNS channel metadata without retaining the bearer URI.</summary>
+    internal static MilaNativeStatus TryValidateWindowsPushRegistration(
+        string channelUri, string appId, string deployment)
+    {
+        ArgumentNullException.ThrowIfNull(channelUri);
+        ArgumentNullException.ThrowIfNull(appId);
+        ArgumentNullException.ThrowIfNull(deployment);
+        if (channelUri.Contains('\0') || appId.Contains('\0') || deployment.Contains('\0'))
+            return MilaNativeStatus.InvalidRequest;
+        IntPtr token = Marshal.StringToCoTaskMemUTF8(channelUri);
+        IntPtr application = Marshal.StringToCoTaskMemUTF8(appId);
+        IntPtr host = Marshal.StringToCoTaskMemUTF8(deployment);
+        try
+        {
+            return (MilaNativeStatus)PushRegistrationNative(2, 1, token, application, host, token);
+        }
+        catch (DllNotFoundException) { return MilaNativeStatus.Unavailable; }
+        catch (EntryPointNotFoundException) { return MilaNativeStatus.Unavailable; }
+        catch (BadImageFormatException) { return MilaNativeStatus.Unavailable; }
+        finally
+        {
+            Marshal.FreeCoTaskMem(token);
+            Marshal.FreeCoTaskMem(application);
+            Marshal.FreeCoTaskMem(host);
+        }
+    }
+
     private static MilaNativeTerminalResult TryTerminal(Func<MilaNativeStatus> call)
     {
         try { return new(call()); }
@@ -656,6 +683,11 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_push_poke_validate")]
     private static partial MilaNativeStatus PushPokeNative(
         IntPtr envelope, nuint length, ulong now);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_push_registration_validate")]
+    private static partial MilaNativeStatus PushRegistrationNative(
+        byte provider, byte environment, IntPtr token, IntPtr appId,
+        IntPtr deployment, IntPtr endpoint);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_snapshot_validate")]
     private static partial MilaNativeStatus ValidateSnapshotNative(

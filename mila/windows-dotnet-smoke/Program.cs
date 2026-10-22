@@ -18,6 +18,7 @@ internal static class Program
     {
         SessionLifecycleSmoke.Run();
         SignInFlowSmoke.Run();
+        WindowsNotificationsSmoke.Run();
         AssertDeploymentPorts();
         MilaNativeVersionResult version = RustNative.TryGetVersion();
         Require(version.Status == MilaNativeStatus.Ok && version.Version is { Major: 1, Minor: 0 }, "ABI version 1.0");

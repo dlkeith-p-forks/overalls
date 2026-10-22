@@ -10,6 +10,7 @@
   <ItemGroup>
     <Compile Include="../windows-dotnet/Interop/SessionConnection.cs" Link="Interop/SessionConnection.cs" />
     <Compile Include="../windows-dotnet/Interop/SignInFlow.cs" Link="Interop/SignInFlow.cs" />
+    <Compile Include="../windows-dotnet/Interop/WindowsNotifications.cs" Link="Interop/WindowsNotifications.cs" />
     <Compile Include="../windows-dotnet/Interop/TrustStore.cs" Link="Interop/TrustStore.cs" />
     <Compile Include="../windows-dotnet/Interop/WindowsHello.cs" Link="Interop/WindowsHello.cs" />
     <Compile Include="../windows-dotnet/Interop/RustNative.cs" Link="Interop/RustNative.cs" />

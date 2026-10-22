@@ -1802,3 +1802,14 @@ transport teardown. Real loopback SSH tests cover connect, listing, snapshot,
 refused refresh and stale-handle refusal. This establishes Rust FFI/session
 behavior only; platform callback/key-custody integration and production
 multi-device acceptance remain open.
+
+Android's native shell uses the same connection for browser approval. Rust
+returns the bounded `whoami --json` envelope even when Porsche reports a
+pending key, and Kotlin accepts only an HTTPS URL with a valid SSH fingerprint.
+The browser intent is navigation-only; the URL and fingerprint stay in memory
+and are never written to deployment preferences. After the user approves the
+key, Android polls `whoami` on that existing session every two seconds before
+publishing the machine listing. Closing, reconnecting or a failed refresh closes
+the pending handle and leaves only the validated deployment selection persisted.
+The Android unit tests cover malformed and foreign approval URLs; a packaged
+device browser journey remains unverified.

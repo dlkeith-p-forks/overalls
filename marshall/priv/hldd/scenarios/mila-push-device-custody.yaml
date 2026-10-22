@@ -13,6 +13,12 @@ evidence:
   kind: unit
   path: marshall/test/contract/marshall/notifications_contract_test.exs
   scope: Covenant marshall.notifications.I6 through SSH.execute.
+- assertion: WNS metadata registration
+  execution: present
+  kind: unit
+  path: mila/windows-dotnet-smoke/WindowsNotificationsSmoke.cs
+  scope: The typed Windows controller passes only bounded WNS metadata to the Rust validator,
+    refuses a foreign channel and clears local state; live WNS exchange and Porsche device CRUD remain open.
 gaps: No machine test drives device commands through a real Porsche SSH session.
 id: mila-push-device-custody
 journey: A Mila user registers, pauses and removes a push device over Porsche, and removing the SSH key

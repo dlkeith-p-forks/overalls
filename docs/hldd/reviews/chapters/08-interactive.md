@@ -1,5 +1,5 @@
 ---
-digest: 84c255e9addb5a9ef9fbc81ef61b98af77540835332915750a825e39b3c94919
+digest: 89941cf1d313291a803dd9fc1155e152fc105fc6682f7e60b44f266289b9b342
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Android declares POST_NOTIFICATIONS, gates provider registration on OS permission and validates FCM metadata through the Rust FFI without retaining tokens; focused provider tests cover refusal and persistence.
+Document Android approval URL validation, browser navigation, same-session polling, persistence boundary and remaining device evidence gap.
