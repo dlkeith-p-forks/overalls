@@ -374,6 +374,16 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         throw MilaFFIError.unavailable
     }
 
+    public func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws {
+        guard machine.machine.write else { throw MilaMachineSharingError.unavailable }
+        let operation = remove ? "remove" : "add"
+        let line = "share \(operation) \(machine.id.uuidString.lowercased()) \(principal.value) viewer"
+        guard try classifyMachineCommand(line) == (remove ? .shareRemove : .shareAdd) else { throw MilaMachineSharingError.unavailable }
+        _ = requestID
+        _ = remove
+        throw MilaMachineSharingError.unavailable
+    }
+
     private func abiCompatible() -> Bool {
         var version = MilaFfiAbiVersion(major: 0, minor: 0)
         return MilaRustFFI.getVersion(&version) == 0 && version.major == 1
@@ -400,6 +410,7 @@ public protocol MilaFFIAdapter: Sendable {
     func call(_ request: MilaFFIRequest) async throws -> MilaFFIResponse
     func refreshSnapshot() async throws -> MilaValidatedSnapshot
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
+    func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind
     func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind
     func classifyWebCommand(_ command: MilaWebCommand) throws -> MilaMachineCommandKind
@@ -409,6 +420,7 @@ public protocol MilaFFIAdapter: Sendable {
 public extension MilaFFIAdapter {
     func refreshSnapshot() async throws -> MilaValidatedSnapshot { throw MilaFFIError.unavailable }
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
+    func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws { _ = principal; _ = machine; _ = remove; _ = requestID; throw MilaMachineSharingError.unavailable }
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind { _ = line; throw MilaFFIError.unavailable }
     func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind { _ = line; throw MilaFFIError.unavailable }
     func classifyWebCommand(_ command: MilaWebCommand) throws -> MilaMachineCommandKind { _ = command; throw MilaFFIError.unavailable }

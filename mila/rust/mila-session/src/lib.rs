@@ -28,6 +28,8 @@ pub enum SessionError {
     RepeatedCursor,
     #[error("no listing has been loaded")]
     NotLoaded,
+    #[error("mutation was refused")]
+    MutationRefused,
 }
 
 /// Validated display rows. Permissions describe presentation, never server authority.
@@ -55,6 +57,30 @@ pub struct ApplicationSession {
 }
 
 impl ApplicationSession {
+    /// Execute one authenticated machine mutation on this connection. The command is
+    /// constructed from closed vocabulary values and a validated request id; callers
+    /// cannot inject shell text or reuse an untyped operation.
+    pub async fn machine_action(
+        &mut self,
+        machine: &str,
+        action: &str,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
+        let machine = Identifier::parse(machine).map_err(|_| SessionError::InvalidListing)?;
+        let request_id =
+            mila_model::RequestId::parse(request_id).map_err(|_| SessionError::MutationRefused)?;
+        let action = match action {
+            "start" | "stop" | "pause" | "resume" | "rm" => action,
+            _ => return Err(SessionError::MutationRefused),
+        };
+        let line = format!("{action} {machine} --json --request-id={request_id}");
+        let output = self.ssh.exec(&line, &[]).await?;
+        if output.exit_status == 0 {
+            Ok(())
+        } else {
+            Err(SessionError::MutationRefused)
+        }
+    }
     /// Connects only through the transport's pre-authentication certificate policy.
     pub async fn connect<S: DeviceSigner>(
         trust: TrustDocument,

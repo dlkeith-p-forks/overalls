@@ -751,6 +751,40 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSession
     session::mila_session_read_machines(handle as u64, more) as jni::sys::jint
 }
 
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionMachineAction(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+    machine: jni::objects::JString<'_>,
+    action: jni::objects::JString<'_>,
+    request_id: jni::objects::JString<'_>,
+) -> jni::sys::jint {
+    let machine = match env.get_string(&machine) {
+        Ok(v) => v.to_bytes().to_vec(),
+        Err(_) => return -4,
+    };
+    let action = match env.get_string(&action) {
+        Ok(v) => v.to_bytes().to_vec(),
+        Err(_) => return -4,
+    };
+    let request_id = match env.get_string(&request_id) {
+        Ok(v) => v.to_bytes().to_vec(),
+        Err(_) => return -4,
+    };
+    unsafe {
+        session::mila_session_machine_action(
+            handle as u64,
+            machine.as_ptr(),
+            machine.len(),
+            action.as_ptr(),
+            action.len(),
+            request_id.as_ptr(),
+            request_id.len(),
+        ) as jni::sys::jint
+    }
+}
+
 fn session_copy(env: &mut jni::JNIEnv<'_>, handle: u64, snapshot: bool) -> jni::sys::jbyteArray {
     let mut size = 0usize;
     let status = unsafe {

@@ -1,5 +1,5 @@
 ---
-digest: 0d023104d3fa3511326f18a6ccd863239fa4a506035303fe1117fd4d23cfbd55
+digest: 771d7dc4f385660fca917760ac4d19e8ed73b68a513e5d7d006fc8f12f2453a2
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -7,12 +7,12 @@ path: mila/native/apple/Sources/MilaNativeUI/MilaLiveSession.swift
 reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: c5a1bad02070018de2d0bf83b14bdb9770b44bbd4034f30a38c9041d59979757
-  marshall/priv/hldd/20-security.md: 995648da5f0c6af5caff1d1fdecb7147b9b8f91d9dd8f973f37447c122298348
-  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
-  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
+  marshall/priv/hldd/19-coverage.md: 8728371d7d3d458cf040ff3567c7406ec290bf4bb8f68fd672513f0aa0bc9cbe
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Apple live session signer ABI correction preserves existing native FFI boundary and uses the existing reviewed interactive-session evidence.
+Apple sharing and authenticated session FFI remain within native protocol boundaries.
