@@ -1652,7 +1652,7 @@ mod tests {
 
     #[test]
     fn reconciles_and_serializes_only_rust_selected_trust() {
-        let fixture = include_str!("../../../../protocol/test/fixtures/ssh_host_certificates.json");
+        let fixture = include_str!("../../mila-transport/tests/fixtures/ssh_host_certificates.json");
         let value: serde_json::Value = serde_json::from_str(fixture).expect("fixture");
         let ca = value["certificates"][0]["ca"].as_str().expect("ca");
         let fetched = trust_document(ca, 2_000);
@@ -1684,7 +1684,7 @@ mod tests {
 
     #[test]
     fn reconciliation_refuses_changed_authority_and_expired_fallback() {
-        let fixture = include_str!("../../../../protocol/test/fixtures/ssh_host_certificates.json");
+        let fixture = include_str!("../../mila-transport/tests/fixtures/ssh_host_certificates.json");
         let value: serde_json::Value = serde_json::from_str(fixture).expect("fixture");
         let ca = value["certificates"][0]["ca"].as_str().expect("ca");
         let other_ca = value["certificates"][5]["ca"].as_str().expect("other ca");
