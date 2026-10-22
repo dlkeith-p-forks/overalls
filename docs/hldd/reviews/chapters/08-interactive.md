@@ -1,5 +1,5 @@
 ---
-digest: 5a12016279aa9cabbc8387b02b24cc3aef172e874141f34cc6081993ff71ea00
+digest: 84c255e9addb5a9ef9fbc81ef61b98af77540835332915750a825e39b3c94919
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Android derives the current device SSH fingerprint from the non-exported public key before permitting approved-key revocation.
+Android declares POST_NOTIFICATIONS, gates provider registration on OS permission and validates FCM metadata through the Rust FFI without retaining tokens; focused provider tests cover refusal and persistence.

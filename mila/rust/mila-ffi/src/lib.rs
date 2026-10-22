@@ -9,7 +9,7 @@ use mila_model::MilaRoute;
 use mila_runtime::MachineSnapshot;
 use mila_runtime::{PokeEnvelope, PushEnvironment, PushProvider, PushRegistrationRequest};
 use mila_transport::{decode_watch_line, TerminalAttachRequest, WatchEvent};
-use std::ffi::{c_char, CStr};
+use std::ffi::{c_char, CStr, CString};
 
 /// FFI status values. Zero means success; negative values are stable failures.
 #[repr(i32)]
@@ -1201,6 +1201,59 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeAbiVers
     _class: jni::objects::JClass<'_>,
 ) -> jni::sys::jint {
     1
+}
+
+/// Validate provider registration metadata without retaining the provider token.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativePushRegistrationValidate(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    provider: jni::sys::jint,
+    environment: jni::sys::jint,
+    token: jni::objects::JString<'_>,
+    app_id: jni::objects::JString<'_>,
+    deployment: jni::objects::JString<'_>,
+    endpoint: jni::sys::jobject,
+) -> jni::sys::jint {
+    if !(0..=2).contains(&provider) || !(0..=1).contains(&environment) {
+        return MilaFfiStatus::InvalidRequest as jni::sys::jint;
+    }
+    let mut text = |value: jni::objects::JString<'_>| -> Option<CString> {
+        let bytes = env.get_string(&value).ok()?.to_bytes().to_vec();
+        CString::new(bytes).ok()
+    };
+    let token = match text(token) {
+        Some(value) => value,
+        None => return MilaFfiStatus::InvalidRequest as jni::sys::jint,
+    };
+    let app_id = match text(app_id) {
+        Some(value) => value,
+        None => return MilaFfiStatus::InvalidRequest as jni::sys::jint,
+    };
+    let deployment = match text(deployment) {
+        Some(value) => value,
+        None => return MilaFfiStatus::InvalidRequest as jni::sys::jint,
+    };
+    let endpoint = if endpoint.is_null() {
+        None
+    } else {
+        match text(unsafe { jni::objects::JString::from_raw(endpoint) }) {
+            Some(value) => Some(value),
+            None => return MilaFfiStatus::InvalidRequest as jni::sys::jint,
+        }
+    };
+    unsafe {
+        mila_push_registration_validate(
+            provider as u8,
+            environment as u8,
+            token.as_ptr(),
+            app_id.as_ptr(),
+            deployment.as_ptr(),
+            endpoint
+                .as_ref()
+                .map_or(std::ptr::null(), |value| value.as_ptr()),
+        ) as jni::sys::jint
+    }
 }
 
 /// JNI route canonicalization delegated to the Rust route parser.

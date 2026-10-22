@@ -14,3 +14,8 @@ paths, fragments, userinfo, encoded path segments, and non-canonical identifiers
 The native UI/runtime seam MUST exchange typed request and response values through a Rust trait;
 raw pointers, credentials, authentication tokens, and terminal bytes MUST NOT appear in its API or
 be logged by the scaffold.
+
+@cc [owner:ghuntley,label:security;terminal] linux-terminal-renderer-bounded
+The Linux terminal renderer MUST accept only decoded display text, reject unsupported control
+characters and oversized chunks, and retain at most its configured viewport; terminal bytes MUST
+remain owned by the authenticated transport and MUST NOT be logged or exposed to GTK state.

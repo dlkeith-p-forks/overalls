@@ -77,6 +77,9 @@ sealed interface MilaFfiResult {
  */
 interface MilaFfiAdapter {
     suspend fun call(request: MilaFfiRequest): MilaFfiResult
+    /** Rust validates provider metadata while borrowing the token for this call only. */
+    fun validatePushRegistration(token: String, appId: String, deployment: String, endpoint: String?): Result<Unit> =
+        Result.failure(IllegalStateException("push registration unavailable"))
     /** The currently authenticated session's key store, or null while signed out. */
     fun sshKeyStore(): MilaSshKeyStore? = null
     /** Executes a Rust-classified action for an authenticated machine session. */
@@ -175,6 +178,7 @@ interface MilaRustBindings {
     /** Revokes one opaque key id using a caller-supplied at-most-once request id. */
     fun sessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int = -12
     fun sessionClose(handle: Long): Int = -12
+    fun pushRegistrationValidate(provider: Int, environment: Int, token: String, appId: String, deployment: String, endpoint: String?): Int = -12
     /** Returns the closed Rust thread-command tag, or -1 for an unknown command. */
     fun threadCommandKind(value: String): Int
     fun machineCommandKind(value: String): Int
@@ -221,6 +225,8 @@ internal object MilaRustFfi : MilaRustBindings {
     override fun sessionSshKeys(handle: Long): ByteArray? = nativeSessionSshKeys(handle)
     override fun sessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int = nativeSessionSshKeyRevoke(handle, key, requestId)
     override fun sessionClose(handle: Long): Int = nativeSessionClose(handle)
+    override fun pushRegistrationValidate(provider: Int, environment: Int, token: String, appId: String, deployment: String, endpoint: String?): Int =
+        nativePushRegistrationValidate(provider, environment, token, appId, deployment, endpoint)
 
     override fun threadCommandKind(value: String): Int {
         check(loaded) { "mila_ffi is unavailable" }
@@ -257,6 +263,7 @@ internal object MilaRustFfi : MilaRustBindings {
     @JvmStatic external fun nativeSessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray?
     @JvmStatic external fun nativeSessionSshKeys(handle: Long): ByteArray?
     @JvmStatic external fun nativeSessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int
+    @JvmStatic external fun nativePushRegistrationValidate(provider: Int, environment: Int, token: String, appId: String, deployment: String, endpoint: String?): Int
     @JvmStatic
     external fun nativeSessionListing(handle: Long): ByteArray?
     @JvmStatic
@@ -365,6 +372,11 @@ class LinkedMilaFfiAdapter(
 
     override fun sshKeyStore(): MilaSshKeyStore? = authenticatedSession?.let {
         MilaSessionSshKeyStore(it, authenticatedFingerprint)
+    }
+
+    override fun validatePushRegistration(token: String, appId: String, deployment: String, endpoint: String?): Result<Unit> = runCatching {
+        require(token.isNotBlank() && appId.isNotBlank() && deployment.isNotBlank())
+        check(bindings.pushRegistrationValidate(1, 1, token, appId, deployment, endpoint) == 0)
     }
 
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {

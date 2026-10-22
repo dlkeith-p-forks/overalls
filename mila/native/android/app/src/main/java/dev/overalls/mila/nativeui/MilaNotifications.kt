@@ -43,6 +43,7 @@ class MilaAndroidNotificationOs(context: Context) : MilaNotificationOs {
 
 data class MilaNotificationDevice(val id: String, val enabled: Boolean)
 interface MilaNotificationStore { fun list(): List<MilaNotificationDevice>; fun setEnabled(id: String, enabled: Boolean): Boolean; fun remove(id: String): Boolean }
+fun interface MilaNotificationRegistrationValidator { fun validate(id: MilaNotificationProviderId): Boolean }
 interface MilaNotificationRegistrationStore : MilaNotificationStore {
     fun register(id: String, enabled: Boolean = true): Boolean
 }
@@ -81,7 +82,10 @@ class MilaPreferencesNotificationStore(private val preferences: SharedPreference
 
     private fun validId(id: String): Boolean = id.length in 1..256 && id.all { it.isLetterOrDigit() || it in ".:_-" }
 }
-class MilaNotificationController(private val store: MilaNotificationStore) {
+class MilaNotificationController(
+    private val store: MilaNotificationStore,
+    private val validator: MilaNotificationRegistrationValidator? = null,
+) {
  var devices: List<MilaNotificationDevice> = store.list().filter { it.id.isNotBlank() }; private set
  fun refresh() { devices = store.list().filter { it.id.isNotBlank() } }
  fun setEnabled(id: String, enabled: Boolean): Boolean = store.setEnabled(id, enabled).also { if (it) refresh() }
@@ -91,6 +95,7 @@ class MilaNotificationController(private val store: MilaNotificationStore) {
  fun register(provider: MilaNotificationProvider, os: MilaNotificationOs): Boolean {
   if (!os.notificationsEnabled()) return false
   val id = provider.registrationId() ?: return false
+  if (validator != null && !validator.validate(id)) return false
   val register = store as? MilaNotificationRegistrationStore ?: return false
   return register.register(id.value).also { if (it) refresh() }
  }

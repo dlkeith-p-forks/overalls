@@ -4,3 +4,4 @@ pub mod adapter;
 pub mod notifications;
 pub mod route;
 pub mod session;
+pub mod terminal;

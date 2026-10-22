@@ -1,13 +1,13 @@
 ---
-digest: 618be2474c0286099f0bd05adb61bb65d5c585a84ce2a941099c85374358691c
-disposition: no-impact
+digest: d1ae910b64ea59f368e6e3e957532c993bc197b30b55be143bd012941ce5ddb9
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/AndroidManifest.xml
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
+  marshall/priv/hldd/08-interactive.md: 84c255e9addb5a9ef9fbc81ef61b98af77540835332915750a825e39b3c94919
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 8728371d7d3d458cf040ff3567c7406ec290bf4bb8f68fd672513f0aa0bc9cbe
+  marshall/priv/hldd/19-coverage.md: 3c428f721611220654bb62ca6bd4251dc29ff549c1ef412f9be98a5e1862a5b3
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native WebView network permission and Windows Hello controller are reviewed within existing platform boundaries.
+Android declares POST_NOTIFICATIONS, gates provider registration on OS permission and validates FCM metadata through the Rust FFI without retaining tokens; focused provider tests cover refusal and persistence.

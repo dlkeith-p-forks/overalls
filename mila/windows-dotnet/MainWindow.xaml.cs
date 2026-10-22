@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.Security.Cryptography;
+using Windows.System;
 using Mila.Windows.Interop;
 namespace Mila.Windows;
 public sealed partial class MainWindow : Window
@@ -15,12 +16,13 @@ public sealed partial class MainWindow : Window
     private MilaMachineRow? _selectedMachine;
     private readonly MilaAppLockController _appLock = new(new MilaWindowsHelloBroker());
     private readonly MilaSessionConnection _session = new();
+    private readonly MilaSignInFlow _signIn = new();
     private bool _closed;
     public MainWindow(string? activation = null)
     {
         InitializeComponent();
         _sshKeys = new MilaSshKeysController(LoadSshKeysAsync, RevokeSshKeyAsync);
-        Closed += (_, _) => { _closed = true; _session.Dispose(); };
+        Closed += (_, _) => { _closed = true; _signIn.SignOut(); _session.Dispose(); };
         ApplyStrings();
         if (MilaDeploymentStore.Load() is { } deployment)
         {
@@ -65,6 +67,8 @@ public sealed partial class MainWindow : Window
         DeploymentHostLabel.Text = S("deploymentHostLabel", "Deployment host");
         DeploymentHost.PlaceholderText = S("deploymentHostHint", "overalls.example");
         ConnectDeployment.Content = S("signInStart", "Sign in in browser");
+        ApprovalFingerprint.Header = S("signInFingerprint", "Key fingerprint");
+        OpenApproval.Content = S("signInOpenBrowser", "Open approval page");
         MachineCommandsTitle.Text = S("machineMore", "Machine commands");
         MachineCommandsHelp.Text = S("machineAccess", "Commands are classified by the Rust core before execution.");
         MachineList.Content = S("tabInfo", "List"); MachineShow.Content = S("machineLoading", "Show");
@@ -191,6 +195,17 @@ public sealed partial class MainWindow : Window
             : S("pushUnsupported", "Notifications unavailable");
         NotificationsButton.Content = _notificationsEnabled ? S("notificationsTurnOff", "Turn notifications off") : S("notificationsTurnOn", "Turn notifications on");
     }
+
+    private async void OpenApprovalPage(object sender, RoutedEventArgs args)
+    {
+        MilaSignInState state = _signIn.State;
+        MilaApprovalInfo? approval = state.Approval;
+        if (approval is null && _signIn.SetApproval(state.Generation, ApprovalUrl.Text.Trim(), ApprovalFingerprint.Text.Trim(),
+                (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds()))
+            approval = _signIn.State.Approval;
+        if (approval is null || !await Launcher.LaunchUriAsync(new Uri(approval.Url)))
+            StatusText.Text = S("signInExpired", "The approval link is no longer valid. Start again to get a new one.");
+    }
     private void ValidateTerminalAttach(object sender, RoutedEventArgs args)
     {
         MilaNativeTerminalResult result = RustNative.TryValidateTerminalAttach(0, 80, 24, true);
@@ -225,11 +240,12 @@ public sealed partial class MainWindow : Window
         MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
         _threadController.SetSession(false, null);
         _machineMutation.SetSession(false);
+        long generation = _signIn.Start();
         _session.SignOut();
         _ = RefreshSshKeyListAsync();
-        _ = ConnectDeploymentAsync(host);
+        _ = ConnectDeploymentAsync(host, generation);
     }
-    private async Task ConnectDeploymentAsync(string host)
+    private async Task ConnectDeploymentAsync(string host, long generation)
     {
         try
         {
@@ -240,6 +256,10 @@ public sealed partial class MainWindow : Window
             {
                 _activeHost = null;
                 _session.SignOut();
+                if (!_signIn.AwaitApproval(generation)) return;
+                ApprovalUrl.Visibility = Visibility.Visible;
+                ApprovalFingerprint.Visibility = Visibility.Visible;
+                OpenApproval.Visibility = Visibility.Visible;
                 StatusText.Text = S("signInApprove", "Approve this device in your browser, then return here.");
                 return;
             }
@@ -255,12 +275,17 @@ public sealed partial class MainWindow : Window
             if (!connected || _session.Handle is not { } handle)
             {
                 _activeHost = null;
+                _signIn.Fail(MilaSignInFailure.Unreachable, generation);
                 _machineMutation.SetSession(false);
                 StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
                 return;
             }
 
             _activeHost = host;
+            _signIn.Authenticated(generation, host);
+            ApprovalUrl.Visibility = Visibility.Collapsed;
+            ApprovalFingerprint.Visibility = Visibility.Collapsed;
+            OpenApproval.Visibility = Visibility.Collapsed;
             MilaDeploymentStore.Save(new MilaDeployment(host, _deploymentPort));
             _machineMutation.SetSession(true, handle);
             StatusText.Text = S("connected", MilaStrings.Connected);
@@ -271,14 +296,18 @@ public sealed partial class MainWindow : Window
         {
             _activeHost = null;
             _session.SignOut();
-            if (!_closed) StatusText.Text = S("invalidHost", "Enter a valid deployment host.");
+            _signIn.Fail(MilaSignInFailure.HostUntrusted, generation);
+            if (!_closed && _signIn.State.Generation == generation)
+                StatusText.Text = S("invalidHost", "Enter a valid deployment host.");
         }
         catch (Exception error) when (error is CryptographicException or IOException or UnauthorizedAccessException)
         {
             _activeHost = null;
             _session.SignOut();
+            _signIn.Fail(MilaSignInFailure.Unreachable, generation);
             _machineMutation.SetSession(false);
-            if (!_closed) StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
+            if (!_closed && _signIn.State.Generation == generation)
+                StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
         }
         finally
         {

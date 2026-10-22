@@ -15,6 +15,20 @@ private class Os(private val enabled: Boolean) : MilaNotificationOs {
 }
 
 class MilaNotificationRegistrationTest {
+    @Test fun registrationRunsRustValidatorBeforePersistence() {
+        val backing = object : MilaNotificationRegistrationStore {
+            val values = mutableListOf<MilaNotificationDevice>()
+            override fun list() = values.toList()
+            override fun setEnabled(id: String, enabled: Boolean) = false
+            override fun remove(id: String) = false
+            override fun register(id: String, enabled: Boolean): Boolean { values += MilaNotificationDevice(id, enabled); return true }
+        }
+        val controller = MilaNotificationController(backing, MilaNotificationRegistrationValidator { it.value != "bad" })
+        assertFalse(controller.register(Provider(MilaNotificationProviderId.parse("bad")!!), Os(true)))
+        assertTrue(controller.devices.isEmpty())
+        assertTrue(controller.register(Provider(MilaNotificationProviderId.parse("good")!!), Os(true)))
+    }
+
     @Test fun registrationRequiresOsPermissionAndProviderId() {
         val backing = object : MilaNotificationRegistrationStore {
             val values = mutableListOf<MilaNotificationDevice>()

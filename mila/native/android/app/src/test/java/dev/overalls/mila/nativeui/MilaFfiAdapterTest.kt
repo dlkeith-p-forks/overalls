@@ -104,6 +104,21 @@ private class MemoryTrustStore(var value: ByteArray? = null) : MilaTrustStore {
 
 class MilaLinkedFfiAdapterTest {
     @Test
+    fun pushRegistrationUsesRustValidatorWithoutRetainingToken() {
+        val bindings = object : FakeRustBindings() {
+            var seen: String? = null
+            override fun pushRegistrationValidate(provider: Int, environment: Int, token: String, appId: String, deployment: String, endpoint: String?): Int {
+                seen = token
+                return if (provider == 1 && environment == 1 && endpoint == null) 0 else -4
+            }
+        }
+        val adapter = LinkedMilaFfiAdapter(bindings)
+        assertTrue(adapter.validatePushRegistration("provider-token", "com.example.mila", "mila.example", null).isSuccess)
+        assertEquals("provider-token", bindings.seen)
+        assertTrue(adapter.validatePushRegistration("", "com.example.mila", "mila.example", null).isFailure)
+    }
+
+    @Test
     fun linkedAdapterUsesTypedRustBindings() = runBlocking {
         val adapter = LinkedMilaFfiAdapter(FakeRustBindings())
         val payload = MilaFfiPayload(byteArrayOf(7, 8))
