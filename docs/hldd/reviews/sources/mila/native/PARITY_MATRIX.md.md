@@ -1,5 +1,5 @@
 ---
-digest: e29878c2e572f860b6dbbe8051347c09236ed294e7485ca5a2b94d3365439682
+digest: 1fd9c4ad43b1abb33731b051bf10924ac77f9d03082a4fa8b36cf6ced7dfc5aa
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Parity matrix updated with verified Linux PTY, Windows SSH key, Android lock, and Linux activation evidence.
+Parity matrix records Apple sharing and Android authenticated mutation evidence conservatively.
