@@ -1,11 +1,11 @@
 ---
-digest: 15e9326cab817506ffb2c1cee1927a268f96ded9dfa45cda424334eb2c63ce15
+digest: e43ae17443725a04b01855e1fd4aabef1380637e765f52ab39320eb32a5ec983
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/windows-dotnet-smoke/Program.cs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: c59d4f5f150f1983b6436262aecc63618bc721c93b9a6447b57464c3800b4c37
+  marshall/priv/hldd/08-interactive.md: 1178920c68a6912b0a5886ba1611d85e849c8dd189027e4b5620fca70e652cf2
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows terminal lifecycle reducer adds bounded UI state while preserving documented native transport boundaries.
+Windows settings persistence uses existing LocalApplicationData with typed locale validation and no architecture change.

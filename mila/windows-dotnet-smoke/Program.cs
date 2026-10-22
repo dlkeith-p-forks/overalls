@@ -21,6 +21,8 @@ internal static class Program
         WindowsNotificationsSmoke.Run();
         AssertDeploymentPorts();
         MilaNativeVersionResult version = RustNative.TryGetVersion();
+        MilaSettings settings = MilaSettings.Defaults;
+        Require(settings.Locale == "en" && !settings.DarkMode, "settings defaults");
         Require(version.Status == MilaNativeStatus.Ok && version.Version is { Major: 1, Minor: 0 }, "ABI version 1.0");
         const string route = "overalls://mgmt.example.test:8443/machines/0d9cc041-9db2-4e4c-b28b-1e41d7f472c1";
         MilaNativeRouteResult formatted = RustNative.TryFormatRoute(route);
