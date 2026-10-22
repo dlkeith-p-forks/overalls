@@ -1,5 +1,5 @@
 ---
-digest: c1e0a6b9b32c2bb9c62076a62e5634afa5957f1e019f5f2806c3714764d1e289
+digest: 23ae6a1801b129456418eec3edbb06cee95a19538ff42e2d1a6f4d5a0620d39d
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Parity matrix records authenticated thread and Apple SSH-key evidence.
+Parity matrix records Apple lock and Linux PTY UI evidence conservatively.
