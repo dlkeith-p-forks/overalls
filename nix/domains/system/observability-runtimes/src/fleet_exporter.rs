@@ -1,4 +1,5 @@
 mod common;
+use serde::Deserialize;
 use sha2::{Digest, Sha256};
 use std::env;
 use std::fs;
@@ -19,6 +20,14 @@ fn main() -> std::io::Result<()> {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
             "invalid descriptor",
+        ));
+    }
+    let typed: Descriptor = serde_json::from_str(&descriptor)
+        .map_err(|_| std::io::Error::new(std::io::ErrorKind::InvalidInput, "invalid descriptor"))?;
+    if typed.external_interfaces.len() > 128 || typed.services.len() > 128 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "descriptor bounds",
         ));
     }
     let port = descriptor
@@ -420,6 +429,14 @@ fn brady_metrics() -> Vec<(String, u64)> {
 struct UpdaterStatus {
     phase: Option<String>,
     revision: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct Descriptor {
+    #[serde(default)]
+    external_interfaces: Vec<String>,
+    #[serde(default)]
+    services: Vec<String>,
 }
 
 fn updater_status() -> Option<UpdaterStatus> {

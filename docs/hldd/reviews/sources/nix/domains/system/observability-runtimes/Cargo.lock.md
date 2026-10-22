@@ -1,5 +1,5 @@
 ---
-digest: 03b27faaa27068e4b143c58c0c0c8cdecb7f21fb88bfe9fa31bdd4eac1cb127e
+digest: 71a35059b0c484834d7d843e7963a7007256746dc2b50afba1b13921748d55fe
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter adds SHA-256-bound read-only VM network namespace inspection using bounded ip JSON output and allowlisted link counters.
+Fleet exporter descriptor loading now uses typed serde validation with explicit collection bounds before any projection.
