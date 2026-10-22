@@ -4,6 +4,7 @@ defmodule MarshallWeb.MachinesLiveTest do
   import Marshall.ComputeFixtures
   alias Marshall.{Access, Compute, Teams}
   alias Marshall.Compute.{Ledger, Operation, VirtualMachine}
+  alias Marshall.Threads.{ProvisionWorker, Thread}
   alias Marshall.EditorFixture
 
   setup do
@@ -446,7 +447,8 @@ defmodule MarshallWeb.MachinesLiveTest do
 
     view |> form("#provision-form", machine: %{image_id: ubuntu.id}) |> render_change()
     assert_patch(view)
-    view |> form("#provision-form", machine: %{}) |> render_submit()
+    thread = submit_provisioning(view, %{})
+    assert {:snooze, _} = admit(thread)
     assert [%{id: vm_id, image_id: selected}] = Ledger.read!(VirtualMachine, owner_id: owner.id)
     assert selected == ubuntu.id
 
@@ -549,7 +551,8 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert has_element?(view, "#machine_image_id option[selected][value='#{image.id}']")
     assert has_element?(view, "#machine_memory_mib[value='769']")
     assert has_element?(view, "#machine_disk_gib[value='3']")
-    view |> form("#provision-form", machine: %{}) |> render_submit()
+    thread = submit_provisioning(view, %{})
+    assert {:snooze, _} = admit(thread)
 
     assert [
              %{
@@ -610,9 +613,11 @@ defmodule MarshallWeb.MachinesLiveTest do
     {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new?#{%{machine: draft}}")
     assert has_element?(view, "#machine_memory_mib[value='512']")
     assert has_element?(view, "#machine_disk_gib[value='2']")
-    view |> form("#provision-form", machine: %{}) |> render_submit()
+    thread = submit_provisioning(view, %{})
+    assert %{"memory_bytes" => 536_870_912, "disk_bytes" => 2_147_483_648} = thread.machine_spec
+    assert {:error, _} = admit(thread)
     assert Ledger.read!(VirtualMachine, owner_id: owner.id) == []
-    assert has_element?(view, "#provision-form")
+    assert [%{status: :failed, machine_id: nil}] = Ledger.read!(Thread, id: thread.id)
   end
 
   test "machine routes require sign in", %{conn: conn} do
@@ -728,21 +733,25 @@ defmodule MarshallWeb.MachinesLiveTest do
     {:ok, view, _} = live(conn, ~p"/machines/new")
     assert has_element?(view, "#provision-submit:not([disabled])")
 
-    view
-    |> form("#provision-form",
-      machine: %{
+    thread =
+      submit_provisioning(view, %{
         image_id: image_id(),
         profile: "standard",
         vcpu: "1",
         memory_mib: "512",
         disk_gib: "2"
-      }
-    )
-    |> render_submit()
+      })
 
+    {:ok, receipt, _} = live(conn, ~p"/machines/provisioning/#{thread.id}")
+    assert has_element?(receipt, "#machine-provisioning")
+    assert {:snooze, _} = admit(thread)
     [vm] = Ledger.read!(VirtualMachine, owner_id: owner.id)
     assert vm.profile == :standard
-    assert_redirect(view, ~p"/machines/#{vm.id}")
+    vm_path = ~p"/machines/#{vm.id}"
+
+    assert {:error, {:live_redirect, %{to: ^vm_path}}} =
+             live(conn, ~p"/machines/provisioning/#{thread.id}")
+
     {:ok, detail, _} = live(conn, ~p"/machines/#{vm.id}/settings")
     assert has_element?(detail, "#machine-detail")
     assert has_element?(detail, "#machine-detail h1", vm.name)
@@ -782,19 +791,18 @@ defmodule MarshallWeb.MachinesLiveTest do
     {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
     assert has_element?(view, "#machine_team_id option[value='#{team.id}']", team.name)
 
-    view
-    |> form("#provision-form",
-      machine: %{
+    thread =
+      submit_provisioning(view, %{
         image_id: image_id(),
         profile: "standard",
         team_id: team.id,
         vcpu: "1",
         memory_mib: "512",
         disk_gib: "2"
-      }
-    )
-    |> render_submit()
+      })
 
+    assert thread.team_id == team.id
+    assert {:snooze, _} = admit(thread)
     [vm] = Ledger.read!(VirtualMachine, owner_id: owner.id)
     assert vm.team_id == team.id
 
@@ -1034,6 +1042,25 @@ defmodule MarshallWeb.MachinesLiveTest do
   end
 
   @spec drain_page_refreshes() :: :ok
+  # Machine creation hands admission to a durable setup thread: the form
+  # navigates to the provisioning receipt and ProvisionWorker admits the VM.
+  @spec submit_provisioning(Phoenix.LiveViewTest.View.t(), map()) :: Thread.t()
+  defp submit_provisioning(view, params) do
+    view |> form("#provision-form", machine: params) |> render_submit()
+    {"/machines/provisioning/" <> thread_id, _flash} = assert_redirect(view)
+    [thread] = Ledger.read!(Thread, id: thread_id)
+    thread
+  end
+
+  @spec admit(Thread.t()) :: :ok | {:snooze, pos_integer()} | {:error, term()}
+  defp admit(thread) do
+    Oban.Testing.perform_job(
+      ProvisionWorker,
+      %{"thread_id" => thread.id, "machine_key" => thread.machine_key},
+      repo: Marshall.Repo
+    )
+  end
+
   defp drain_page_refreshes do
     receive do
       {:page_refresh, _} -> drain_page_refreshes()

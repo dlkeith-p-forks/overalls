@@ -169,14 +169,33 @@ defmodule Marshall.Compute.LifecycleHistoryTest do
       owner = user()
       foreign = user()
       manager = user()
+      user_ids = [owner.id, foreign.id, manager.id]
+      forced_exit_cleanup(fixture.host.id, user_ids)
 
       Cleanup.protect do
         journey(fixture, owner, foreign, manager, middle, late)
       after
-        cleanup(fixture.host.id, [owner.id, foreign.id, manager.id])
+        cleanup(fixture.host.id, user_ids)
+        forced_exit_cleanup_done()
       end
     end)
   end
+
+  # @cc [owner:ghuntley,label:verification] lifecycle-history-forced-exit-cleanup
+  # A forced exit of the test process (an ExUnit timeout kills it without
+  # running `after`) MUST still remove the current generated case's committed
+  # host, VMs and actors before the suite inventory check, so no committed row
+  # can leak into later tests. Exactly one fallback is armed per case and it is
+  # disarmed once the case's own teardown has completed.
+  @spec forced_exit_cleanup(String.t(), [String.t()]) :: :ok
+  defp forced_exit_cleanup(host_id, user_ids) do
+    on_exit(:lifecycle_history_case_fixture, fn ->
+      unboxed(fn -> cleanup(host_id, user_ids) end)
+    end)
+  end
+
+  @spec forced_exit_cleanup_done() :: :ok
+  defp forced_exit_cleanup_done, do: on_exit(:lifecycle_history_case_fixture, fn -> :ok end)
 
   @spec journey(
           map(),

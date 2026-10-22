@@ -8,8 +8,9 @@ evidence:
   execution: present
   kind: unit
   path: marshall/test/marshall_web/machines_live_test.exs
-  scope: Current Work-default browser form and Ash-backed admission in the application test database;
-    saved preset behavior has separate scenario coverage.
+  scope: Current Work-default browser form, its setup-thread receipt and Ash-backed admission by the
+    durable thread ProvisionWorker in the application test database; saved preset behavior has separate
+    scenario coverage.
 - assertion: assert default.result["profile"] == "oss"
   execution: present
   kind: unit

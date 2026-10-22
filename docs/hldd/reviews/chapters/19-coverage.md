@@ -1,5 +1,5 @@
 ---
-digest: d4d4ea5596a25a31d383ff07f9fe303ee4f2bbb1c207358170260c1a6b168e46
+digest: 3013a16fd909d453f4c177ed004f5cbc0c52beab7ba86c0c2ab9a6b66cc838f8
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-List query ANDs its exact filter with an indexed candidate superset (owner, current teams, grants, thread grants); 03-access documents it and the scenario records synthetic fleet-sized EXPLAIN evidence (ADR-0256).
+Browser machine creation now hands admission to the setup thread: the machines LiveView tests follow the provisioning receipt and run the durable Threads.ProvisionWorker to admit the VM (or record the thread failure for an undersized request). The default-OSS-creation scenario scope and the generated coverage chapter now name the receipt and worker-based admission; no product behavior changed.
