@@ -1,13 +1,13 @@
 ---
-digest: ff886424323550483b6c732f74e4dd2bdf97d0f6267e126dc168c6d090f5b085
-disposition: updated
+digest: 21d871c4aee9c1d59481518e21d17cc5ca59c0f889363dff9d2868ede26c2a3a
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/test/java/dev/overalls/mila/nativeui/MilaNotificationsTest.kt
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 84c255e9addb5a9ef9fbc81ef61b98af77540835332915750a825e39b3c94919
+  marshall/priv/hldd/08-interactive.md: 5cd1ebbcc7a0aec75a8a6e1611fd4296e9c81b4fc19787930e559f74f384ebc8
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 3c428f721611220654bb62ca6bd4251dc29ff549c1ef412f9be98a5e1862a5b3
+  marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android declares POST_NOTIFICATIONS, gates provider registration on OS permission and validates FCM metadata through the Rust FFI without retaining tokens; focused provider tests cover refusal and persistence.
+Android notification registration now requires Rust metadata validation before durable provider-id projection; no architecture boundary change

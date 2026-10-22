@@ -1,6 +1,6 @@
 ---
-digest: 01bf6d24159b63ee673241c50012fcac498c8e91398475af68181c0cb5ef285c
-disposition: updated
+digest: 8b93b571647bd840a76b37585cbb6826042d9c15e2e357a2547705330ee73d40
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Added typed Linux deep-link decisions and GTK activation classification while retaining unknown and signed-out refusals.
+Android notification registration now requires Rust metadata validation before durable provider-id projection; no architecture boundary change

@@ -15,6 +15,25 @@ private class Os(private val enabled: Boolean) : MilaNotificationOs {
 }
 
 class MilaNotificationRegistrationTest {
+    @Test fun authenticatedRegistrationRequiresRustMetadataValidation() {
+        val backing = object : MilaNotificationRegistrationStore {
+            val values = mutableListOf<MilaNotificationDevice>()
+            override fun list() = values.toList(); override fun setEnabled(id: String, enabled: Boolean) = false
+            override fun remove(id: String) = false
+            override fun register(id: String, enabled: Boolean) = values.add(MilaNotificationDevice(id, enabled))
+        }
+        val adapter = object : MilaFfiAdapter {
+            override suspend fun call(request: MilaFfiRequest) = MilaFfiResult.Failure(MilaFfiError.Unavailable)
+            override fun validatePushRegistration(token: String, appId: String, deployment: String, endpoint: String?) =
+                if (token == "accepted" && appId == "mila" && deployment == "host") Result.success(Unit)
+                else Result.failure(IllegalArgumentException("rejected"))
+        }
+        val controller = MilaAuthenticatedNotificationController(adapter, backing, "mila", "host")
+        assertFalse(controller.register(Provider(MilaNotificationProviderId.parse("rejected")!!), Os(true)))
+        assertTrue(controller.register(Provider(MilaNotificationProviderId.parse("accepted")!!), Os(true)))
+        assertEquals(listOf(MilaNotificationDevice("accepted", true)), controller.devices)
+    }
+
     @Test fun registrationRunsRustValidatorBeforePersistence() {
         val backing = object : MilaNotificationRegistrationStore {
             val values = mutableListOf<MilaNotificationDevice>()

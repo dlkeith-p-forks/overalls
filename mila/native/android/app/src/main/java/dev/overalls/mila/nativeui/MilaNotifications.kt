@@ -100,3 +100,25 @@ class MilaNotificationController(
   return register.register(id.value).also { if (it) refresh() }
  }
 }
+
+/** Registration lifecycle that requires Rust's typed push metadata validator before the
+ * provider identifier is persisted. The token itself remains owned by FCM/Android. */
+class MilaAuthenticatedNotificationController(
+    private val adapter: MilaFfiAdapter,
+    store: MilaNotificationStore,
+    private val appId: String,
+    private val deployment: String,
+) {
+    private val delegate = MilaNotificationController(store)
+    val devices: List<MilaNotificationDevice> get() = delegate.devices
+
+    fun register(provider: MilaNotificationProvider, os: MilaNotificationOs): Boolean {
+        if (!os.notificationsEnabled()) return false
+        val id = provider.registrationId() ?: return false
+        if (adapter.validatePushRegistration(id.value, appId, deployment, null).isFailure) return false
+        return delegate.register(object : MilaNotificationProvider { override fun registrationId() = id }, os)
+    }
+
+    fun remove(id: String): Boolean = delegate.remove(id)
+    fun setEnabled(id: String, enabled: Boolean): Boolean = delegate.setEnabled(id, enabled)
+}
