@@ -1,6 +1,7 @@
 package dev.overalls.mila.nativeui
 
 import kotlinx.coroutines.runBlocking
+import java.io.IOException
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -194,7 +195,7 @@ class MilaTrustEnrollmentTest {
     fun transportFailureUsesPinnedTrustWithoutReplacingIt() = runBlocking {
         val bindings = TrustBindings()
         val store = MemoryTrustStore(byteArrayOf(4))
-        val result = MilaTrustEnrollment(bindings, store, MilaTrustFetcher { error("offline") })
+        val result = MilaTrustEnrollment(bindings, store, MilaTrustFetcher { throw IOException("offline") })
             .resolve("mila.example")
         assertArrayEquals(byteArrayOf(4), result.getOrThrow())
         assertEquals(0, store.writes)
@@ -209,6 +210,18 @@ class MilaTrustEnrollmentTest {
             .resolve("mila.example")
         assertTrue(result.isFailure)
         assertEquals(0, store.writes)
+    }
+
+    @Test
+    fun malformedFetchedTrustDoesNotFallBackToPinnedTrust() = runBlocking {
+        val bindings = TrustBindings()
+        val store = MemoryTrustStore(byteArrayOf(4))
+        val result = MilaTrustEnrollment(bindings, store, MilaTrustFetcher {
+            throw IllegalArgumentException("malformed trust response")
+        }).resolve("mila.example")
+        assertTrue(result.isFailure)
+        assertEquals(0, store.writes)
+        assertEquals(null, bindings.seenFetched)
     }
 }
 

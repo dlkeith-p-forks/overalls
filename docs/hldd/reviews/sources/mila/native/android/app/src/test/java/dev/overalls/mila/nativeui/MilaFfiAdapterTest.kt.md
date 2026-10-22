@@ -1,5 +1,5 @@
 ---
-digest: 18e4053f48122b7c807ffbd44906686560e1ad8ff6fab195679a9dda7b75692e
+digest: 0284b879577cc92ee130bd28aac960a04ffb9b34b9b523b7ae27b11fc2fd31e6
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Rust-owned trust enrollment validates and reconciles HTTPS trust before Android atomic persistence; platform headers expose the ABI for native clients.
+Android enrollment distinguishes transport IO failures from malformed trust responses; malformed data now fails closed instead of falling back to a pin.

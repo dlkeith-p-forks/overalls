@@ -4,6 +4,7 @@ import android.content.Context
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.file.Files
@@ -124,8 +125,10 @@ class MilaTrustEnrollment(
                 fetcher.fetch(host)
             } catch (cancelled: CancellationException) {
                 throw cancelled
-            } catch (_: Exception) {
+            } catch (_: IOException) {
                 null
+            } catch (failure: Exception) {
+                return@withContext Result.failure(failure)
             }
             coroutineContext.ensureActive()
             val selected = bindings.reconcileTrust(pinned, fetched, host, clock())
