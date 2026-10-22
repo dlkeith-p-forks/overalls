@@ -58,9 +58,14 @@ private struct MachinesView: View {
 private struct MachineDetailView: View {
     let machine: MilaMachinePresentation?
     let adapter: any MilaFFIAdapter
-    @State private var status = ""
+    @StateObject private var workflow: MilaMachineWorkflow
     @State private var classified = ""
     @State private var showTerminal = false
+    init(machine: MilaMachinePresentation?, adapter: any MilaFFIAdapter) {
+        self.machine = machine
+        self.adapter = adapter
+        _workflow = StateObject(wrappedValue: MilaMachineWorkflow(adapter: adapter))
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let machine {
@@ -70,13 +75,9 @@ private struct MachineDetailView: View {
                 Button(MilaStrings.text(.openTerminal)) { showTerminal = true }.disabled(!machine.machine.write)
                 ForEach(machine.actions.values, id: \.self) { action in
                     Button(action.title) {
-                        Task {
-                            do {
-                                try await adapter.submit(action, machine: machine, requestID: UUID())
-                                status = MilaStrings.text(.actionSubmitted)
-                            } catch { status = MilaStrings.text(.actionNotSubmitted) }
-                        }
+                        workflow.submit(action, machine: machine)
                     }
+                    .disabled(!isIdle)
                 }
                 HStack {
                     ForEach(["show", "resize", "share show", "web show"], id: \.self) { command in
@@ -87,9 +88,23 @@ private struct MachineDetailView: View {
                     }
                 }
                 Text(classified).font(.caption).foregroundStyle(.secondary)
-                Text(status).font(.caption).foregroundStyle(.secondary)
+                Text(mutationStatus).font(.caption).foregroundStyle(.secondary)
             } else { ContentUnavailableView(MilaStrings.text(.machineUnavailable), systemImage: "questionmark") }
         }.padding().sheet(isPresented: $showTerminal) { MilaTerminalView() }
+    }
+
+    private var isIdle: Bool {
+        if case .idle = workflow.state { return true }
+        return false
+    }
+
+    private var mutationStatus: String {
+        switch workflow.state {
+        case .idle: return MilaStrings.text(.ready)
+        case .submitting: return MilaStrings.text(.connecting)
+        case .applied: return MilaStrings.text(.actionSubmitted)
+        case .failed: return MilaStrings.text(.actionNotSubmitted)
+        }
     }
 
 }
@@ -161,8 +176,36 @@ private struct SettingsView: View {
                 }
                 Text(notificationStatus).font(.caption).foregroundStyle(.secondary)
             }
+            NavigationLink(MilaStrings.text(.sshKeysTitle)) {
+                MilaSSHKeysView(controller: MilaSSHKeysController(loader: { [], revoker: { _ in } }))
+            }
             Text(MilaStrings.text(.runtimeUnavailable)).foregroundStyle(.secondary)
         }.navigationTitle(MilaStrings.text(.settings))
+    }
+}
+
+public struct MilaSSHKeysView: View {
+    @StateObject private var controller: MilaSSHKeysController
+    public init(controller: MilaSSHKeysController) { _controller = StateObject(wrappedValue: controller) }
+    public var body: some View {
+        List {
+            Text(MilaStrings.text(.sshKeysExplain)).font(.caption)
+            switch controller.state {
+            case .signedOut: Text(MilaStrings.text(.sshKeysEmpty))
+            case .loading: ProgressView()
+            case .failed: Text(MilaStrings.text(.runtimeUnavailable))
+            case .loaded(let keys):
+                if keys.isEmpty { Text(MilaStrings.text(.sshKeysEmpty)) }
+                ForEach(keys) { key in
+                    HStack {
+                        VStack(alignment: .leading) { Text(key.label ?? MilaStrings.text(.sshKeysTitle)); Text(key.fingerprint).font(.caption); Text("\(MilaStrings.text(.sshKeyAlgorithm)): \(key.algorithm)").font(.caption) }
+                        Spacer()
+                        if key.isCurrentDevice { Text(MilaStrings.text(.sshKeyThisDevice)).font(.caption) }
+                        Button(MilaStrings.text(.sshKeyRevoke)) { Task { await controller.revoke(key) } }.disabled(key.isCurrentDevice)
+                    }
+                }
+            }
+        }.navigationTitle(MilaStrings.text(.sshKeysTitle)).task { await controller.load(signedIn: true) }
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -61,6 +63,8 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
     val deployment = remember { MilaDeploymentSelection(listOf(MilaDeployment("mila.example"))) }
     val signIn = remember { MilaSignInController(adapter) }
+    val machineDetail = remember { MilaMachineDetailController(adapter) }
+    val threadDetail = remember { MilaThreadDetailController(adapter) }
     var signInState by remember { mutableStateOf<MilaSignInState>(MilaSignInState.SignedOut) }
     fun refresh() { scope.launch {
         connection = MilaSessionConnection.Refreshing
@@ -73,6 +77,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         is MilaSessionConnection.Failed -> MilaStrings.text(MilaMessage.RuntimeUnavailable)
     }
     val listing = (signInState as? MilaSignInState.SignedIn)?.listing ?: (connection as? MilaSessionConnection.Connected)?.listing
+    machineDetail.setSession(signInState is MilaSignInState.SignedIn, listing)
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(MilaStrings.text(MilaMessage.AppName), style = MaterialTheme.typography.headlineSmall)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -86,15 +91,32 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         Text(status, style = MaterialTheme.typography.labelSmall)
         if (signInState is MilaSignInState.SignedIn) Text("Signed in", style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
-            MilaRoute.Machines -> MachineList(adapter, status, listing)
-            is MilaRoute.Machine -> Detail("Machine", selected.id.toString())
+            MilaRoute.Machines -> MachineList(adapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
+            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, adapter)
             MilaRoute.Threads -> ThreadList(adapter)
-            is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
-            MilaRoute.Settings -> Detail("Settings", "Runtime settings are managed by the core library.")
+            is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
+            MilaRoute.Settings -> MilaSettingsScreen()
         }
         if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(adapter)
     }
     LaunchedEffect(Unit) { refresh() }
+}
+
+@Composable
+private fun MilaSettingsScreen() {
+    val context = LocalContext.current
+    val controller = remember { MilaSettingsController(MilaSharedPreferencesStore(context.getSharedPreferences("mila.settings", 0))) }
+    var settings by remember { mutableStateOf(controller.load()) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(MilaStrings.text(MilaMessage.Settings), style = MaterialTheme.typography.titleLarge)
+        Text("${MilaStrings.text(MilaMessage.Appearance)}: ${settings.appearance}")
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            MilaAppearance.entries.forEach { appearance ->
+                Button({ settings = settings.copy(appearance = appearance); controller.save(settings) }) { Text(appearance.name) }
+            }
+        }
+        Text("${MilaStrings.text(MilaMessage.Locale)}: ${settings.locale}")
+    }
 }
 
 @Composable private fun TerminalControls(adapter: MilaFfiAdapter) {
@@ -110,11 +132,13 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     }
 }
 
-@Composable private fun MachineList(adapter: MilaFfiAdapter, status: String, listing: MilaSessionListing?) {
+@Composable private fun MachineList(adapter: MilaFfiAdapter, status: String, listing: MilaSessionListing?, onSelect: (MilaMachineRow) -> Unit) {
     var classified by remember { mutableStateOf<MilaMachineCommand?>(null) }
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(status, style = MaterialTheme.typography.bodyMedium)
-        listing?.machines?.forEach { machine -> Text("${machine.name} · ${machine.status}", style = MaterialTheme.typography.bodyMedium) }
+        listing?.machines?.forEach { machine ->
+            Button({ onSelect(machine) }) { Text("${machine.name} · ${machine.status}", style = MaterialTheme.typography.bodyMedium) }
+        }
         Text(MilaStrings.text(MilaMessage.MachineActions), style = MaterialTheme.typography.titleMedium)
         machineCommandChoices.chunked(3).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -126,6 +150,109 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
             }
         }
         Text(classified?.name ?: MilaStrings.text(MilaMessage.NoAction), style = MaterialTheme.typography.labelSmall)
+    }
+}
+
+@Composable private fun MachineDetail(controller: MilaMachineDetailController, id: java.util.UUID, adapter: MilaFfiAdapter) {
+    val scope = rememberCoroutineScope()
+    val state = controller.state
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(MilaStrings.text(MilaMessage.MachineActions), style = MaterialTheme.typography.titleLarge)
+        Text(id.toString(), style = MaterialTheme.typography.labelSmall)
+        val machine = when (state) {
+            is MilaMachineMutationState.Ready -> state.machine
+            is MilaMachineMutationState.Submitting -> state.machine
+            is MilaMachineMutationState.Applied -> state.machine
+            is MilaMachineMutationState.Failed -> state.machine
+            else -> null
+        }
+        if (machine != null) Text("${machine.name} · ${machine.status}")
+        machineCommandChoices.filter { it.command in setOf("start", "stop", "pause", "resume", "rm", "resize") }.chunked(3).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                row.forEach { choice ->
+                    Button({
+                        controller.select(id)
+                        controllerSelect(controller, choice.command, scope)
+                    }) { Text(choice.label) }
+                }
+            }
+        }
+        MachineSharingControls(adapter, machine)
+        Text(
+            when (val current = controller.state) {
+                MilaMachineMutationState.SignedOut -> MilaStrings.text(MilaMessage.RuntimeUnavailable)
+                MilaMachineMutationState.Idle -> MilaStrings.text(MilaMessage.NoAction)
+                is MilaMachineMutationState.Ready -> "Ready"
+                is MilaMachineMutationState.Submitting -> "Submitting ${current.command.name}"
+                is MilaMachineMutationState.Applied -> "Applied ${current.command.name}"
+                is MilaMachineMutationState.Failed -> current.reason
+            },
+            style = MaterialTheme.typography.labelSmall,
+        )
+    }
+}
+
+@Composable
+private fun MachineSharingControls(adapter: MilaFfiAdapter, machine: MilaMachineRow?) {
+    var principal by remember { mutableStateOf("") }
+    var result by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
+    // Sharing commands are classified and submitted by the typed controller.
+    val controller = remember { MilaMachineSharingController(adapter) }
+    if (machine != null) { controller.setSession(true, MilaSessionListing(listOf(machine), false)); controller.setMachine(machine) }
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        OutlinedTextField(value = principal, onValueChange = { principal = it }, label = { Text(MilaStrings.text(MilaMessage.SharePrincipal)) })
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button({ scope.launch { result = if (controller.submit(principal)) MilaStrings.text(MilaMessage.ShareAdded) else MilaStrings.text(MilaMessage.ShareRejected) } }) { Text(MilaStrings.text(MilaMessage.ShareAdd)) }
+            Button({ scope.launch { result = if (controller.submit(principal, remove = true)) MilaStrings.text(MilaMessage.ShareRemoved) else MilaStrings.text(MilaMessage.ShareRejected) } }) { Text(MilaStrings.text(MilaMessage.ShareRemove)) }
+        }
+        if (result.isNotEmpty()) Text(result, style = MaterialTheme.typography.labelSmall)
+    }
+}
+
+private fun controllerSelect(controller: MilaMachineDetailController, command: String, scope: kotlinx.coroutines.CoroutineScope) {
+    val value = MilaMachineCommand.entries.firstOrNull { it.name.equals(command, ignoreCase = true) }
+        ?: when (command) { "rm" -> MilaMachineCommand.Delete; else -> null }
+        ?: return
+    scope.launch { controller.submit(value) }
+}
+
+@Composable private fun ThreadDetail(controller: MilaThreadDetailController, id: java.util.UUID) {
+    val scope = rememberCoroutineScope()
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(MilaStrings.text(MilaMessage.ThreadCommands), style = MaterialTheme.typography.titleLarge)
+        Text(id.toString(), style = MaterialTheme.typography.labelSmall)
+        threadCommandChoices.chunked(3).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                row.forEach { (label, raw) ->
+                    Button({
+                        val command = when (raw) {
+                            "thread ls" -> MilaThreadCommand.List
+                            "thread show" -> MilaThreadCommand.Show
+                            "thread turns" -> MilaThreadCommand.Turns
+                            "thread prompt" -> MilaThreadCommand.Prompt
+                            "thread answer" -> MilaThreadCommand.Answer
+                            "thread plan approve" -> MilaThreadCommand.PlanApprove
+                            "thread plan revise" -> MilaThreadCommand.PlanRevise
+                            "thread mode" -> MilaThreadCommand.Mode
+                            "thread read" -> MilaThreadCommand.Read
+                            else -> null
+                        }
+                        if (command != null) scope.launch { controller.submit(command) }
+                    }) { Text(label) }
+                }
+            }
+        }
+        Text(
+            when (val state = controller.state) {
+                MilaThreadActionState.SignedOut -> MilaStrings.text(MilaMessage.RuntimeUnavailable)
+                MilaThreadActionState.Idle -> MilaStrings.text(MilaMessage.NoCommand)
+                is MilaThreadActionState.Ready -> "Ready"
+                is MilaThreadActionState.Submitting -> "Submitting ${state.command.name}"
+                is MilaThreadActionState.Applied -> "Applied ${state.command.name}"
+                is MilaThreadActionState.Failed -> state.reason
+            }, style = MaterialTheme.typography.labelSmall,
+        )
     }
 }
 @Composable private fun ThreadList(adapter: MilaFfiAdapter) {

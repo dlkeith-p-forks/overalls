@@ -6,10 +6,12 @@ public sealed partial class MainWindow : Window
 {
     private string? _activeHost;
     private bool _notificationsEnabled;
+    private readonly MilaThreadController _threadController = new();
     public MainWindow()
     {
         InitializeComponent();
         ApplyStrings();
+        if (MilaDeploymentStore.Load() is { } deployment) { DeploymentHost.Text = deployment.Host; _activeHost = deployment.Host; }
         Navigation.SelectedItem = Navigation.MenuItems[0];
     }
     private static string S(string id, string fallback) => MilaStrings.Text(id, fallback);
@@ -36,10 +38,15 @@ public sealed partial class MainWindow : Window
         CreateMachine.Content = S("actionCreate", "Create machine");
         ShareAdd.Content = S("sharingAdd", "Share add");
         ShareRemove.Content = S("sharingRemove", "Share remove");
+        SshKeysTitle.Text = S("sshKeysTitle", "SSH keys");
+        SshKeysStatus.Text = S("sshKeysSignInFirst", "Sign in to manage SSH keys.");
+        RefreshSshKeys.Content = S("refresh", "Refresh");
         ThreadCommandsTitle.Text = S("tabThreads", "Thread commands");
         ThreadCommandsHelp.Text = S("threadWorking", "Commands are validated by the Rust core before execution.");
         ThreadList.Content = S("tabInfo", "List"); ThreadShow.Content = S("machineLoading", "Show");
         ThreadTurns.Content = S("threadEventTurnStarted", "Turns"); ThreadRead.Content = S("threadEventOther", "Read");
+        ThreadPrompt.Content = S("threadPrompt", "Prompt"); ThreadAnswer.Content = S("threadAnswer", "Answer");
+        ThreadApprove.Content = S("threadPlanApprove", "Approve plan"); ThreadRevise.Content = S("threadPlanRevise", "Revise plan");
         Refresh.Content = S("refresh", "Refresh");
         LockButton.Content = S("lockTitle", "Lock app");
         LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
@@ -52,6 +59,12 @@ public sealed partial class MainWindow : Window
         WebOpen.Content = S("webOpen", "Open web");
         WebCopy.Content = S("webCopy", "Copy address");
         WebStatus.Text = S("webNoAddress", "No web address");
+    }
+    private void RefreshSshKeys(object sender, RoutedEventArgs args)
+    {
+        SshKeysStatus.Text = _activeHost is null
+            ? S("sshKeysSignInFirst", "Sign in to manage SSH keys.")
+            : S("sshKeysLoading", "Loading SSH keys…");
     }
     private void ShareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share add {SampleMachine} user viewer");
     private void UnshareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");
@@ -119,6 +132,7 @@ public sealed partial class MainWindow : Window
         if (result.Status == MilaNativeStatus.Ok)
         {
             _activeHost = host;
+            MilaDeploymentStore.Save(new MilaDeployment(host));
             StatusText.Text = S("signInApprove", "Approve this device in your browser, then return here.");
             RefreshMachines();
         }
@@ -153,6 +167,7 @@ public sealed partial class MainWindow : Window
             PageTitle.Text = item.Content?.ToString() ?? "Mila";
             PageBody.Text = tag switch { "threads" => S("threadsRecentTitle", "Recent conversations appear here."), "settings" => S("settingsOffline", "Runtime settings are managed by the core library."), _ => S("machinesEmpty", "Select a machine to view its status.") };
             ThreadPanel.Visibility = tag == "threads" ? Visibility.Visible : Visibility.Collapsed;
+            if (tag == "threads") RefreshThreads();
             MachineRows.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
             MachinePanel.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -181,6 +196,39 @@ public sealed partial class MainWindow : Window
         if (MachineRows.SelectedItem is not MilaMachineRow machine) return;
         string access = machine.CanManage ? S("machineAccessOwner", "Manage") : machine.CanWrite ? S("machineAccessShared", "Write") : S("terminalReadOnly", "Read only");
         MachineCommandStatus.Text = $"{machine.Name} ({machine.DesiredState}) — {access}";
+    }
+
+    private void RefreshThreads()
+    {
+        if (_activeHost is null)
+        {
+            _threadController.SetSession(false, null);
+            ThreadRows.ItemsSource = Array.Empty<MilaThreadRow>();
+            ThreadDetail.Text = S("signInFirst", "Sign in first");
+            return;
+        }
+        // The Rust session supplies this bounded envelope when connected. Keep an empty
+        // typed listing until that envelope arrives; no unvalidated JSON enters the UI.
+        MilaThreadListing listing = new(Array.Empty<MilaThreadRow>(), false);
+        _threadController.SetSession(true, listing);
+        ThreadRows.ItemsSource = listing.Threads;
+        ThreadDetail.Text = S("threadsEmpty", "No threads");
+    }
+
+    private void OnThreadSelected(object sender, SelectionChangedEventArgs args)
+    {
+        if (ThreadRows.SelectedItem is not MilaThreadRow thread || !_threadController.Select(thread.Id)) return;
+        ThreadDetail.Text = $"{thread.Title} ({thread.State})";
+        ThreadCommandStatus.Text = S("threadReady", "Thread selected");
+    }
+    private void SubmitThreadPrompt(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.Prompt);
+    private void SubmitThreadAnswer(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.Answer);
+    private void SubmitThreadApprove(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.PlanApprove);
+    private void SubmitThreadRevise(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.PlanRevise);
+    private void SubmitThread(MilaThreadAction action)
+    {
+        bool applied = _threadController.Submit(action);
+        ThreadCommandStatus.Text = applied ? S("requestSucceeded", "Request submitted") : S("requestFailed", "Request refused");
     }
 
     private void ClassifyThreadList(object sender, RoutedEventArgs args) => ClassifyThread("thread ls");
@@ -214,8 +262,19 @@ public sealed partial class MainWindow : Window
     private void ClassifyMachine(string command)
     {
         MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand(command);
-        MachineCommandStatus.Text = kind is { } value
-            ? $"{command}: {value} (Rust)"
-            : $"{command}: unavailable or requires arguments";
+        if (kind is not { } value)
+        {
+            MachineCommandStatus.Text = $"{command}: unavailable or requires arguments";
+            return;
+        }
+        if (_activeHost is null)
+        {
+            MachineCommandStatus.Text = $"{command}: {value} — {S("signInFirst", "Sign in first")}";
+            return;
+        }
+        MilaNativeCommandResult formatted = RustNative.TryFormatMachineCommand(command.Split(' ')[0], Guid.Parse(SampleMachine), null);
+        MachineCommandStatus.Text = formatted.Status == MilaNativeStatus.Ok
+            ? $"{command}: {value} — {S("requestWaiting", "Request formatted by Rust")}" 
+            : $"{command}: {S("requestRefused", "Request refused")}";
     }
 }

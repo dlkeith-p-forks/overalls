@@ -23,6 +23,11 @@ pub(crate) enum Message {
     WebShow,
     WebPublic,
     WebPrivate,
+    ShareEmail,
+    ShareRole,
+    ShareAdd,
+    ShareRemove,
+    ShareLoad,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -45,6 +50,11 @@ pub(crate) fn text(message: Message) -> String {
         Message::WebShow => "webOpen",
         Message::WebPublic => "webPublic",
         Message::WebPrivate => "webPrivate",
+        Message::ShareEmail => "sharingEmail",
+        Message::ShareRole => "sharingRole",
+        Message::ShareAdd => "sharingAdd",
+        Message::ShareRemove => "sharingRemove",
+        Message::ShareLoad => "sharingLoad",
     };
     catalog()
         .get(id)
@@ -73,6 +83,11 @@ fn fallback(message: Message) -> &'static str {
         Message::WebShow => "Web show",
         Message::WebPublic => "Web set public",
         Message::WebPrivate => "Web set private",
+        Message::ShareEmail => "Share email",
+        Message::ShareRole => "Role: viewer, operator, or manager",
+        Message::ShareAdd => "Share machine",
+        Message::ShareRemove => "Remove share",
+        Message::ShareLoad => "Load sharing",
     }
 }
 

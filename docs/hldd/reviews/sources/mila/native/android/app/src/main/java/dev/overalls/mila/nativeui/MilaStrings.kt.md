@@ -1,5 +1,5 @@
 ---
-digest: 933f525e5616c027a2e1867e554fecfd771d2af771c7b2c2926dabc5d8a6da6e
+digest: 9389cf20b9be667f039c3c5e842c6518d19ca95ff14e67f48243b0f2962c3c65
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -7,12 +7,12 @@ path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaStrin
 reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
-  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/19-coverage.md: 027a07c4be26ffb10455b4d9736ecd18fc555c5595773ddaceae84185a994ea0
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Android native labels now resolve through centralized generated locale catalog; no domain or protocol impact.
+Native sharing and Android settings remain within existing documented native UI boundaries.

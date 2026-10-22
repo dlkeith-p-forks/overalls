@@ -58,6 +58,93 @@ pub fn format_ssh_key_revoke(key_id: &str, request_id: &str) -> Result<String, R
     ))
 }
 
+/// A bounded machine sharing grant. User identity and role are server metadata;
+/// no credentials cross the native presentation boundary.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct ShareGrant {
+    pub id: String,
+    pub user_id: String,
+    pub email: String,
+    pub role: String,
+}
+
+/// Decode a bounded `share show --json` response before it reaches GTK.
+pub fn decode_share_listing(bytes: &[u8]) -> Result<(String, Vec<ShareGrant>), RuntimeError> {
+    if bytes.len() > 256 * 1024 {
+        return Err(RuntimeError::InvalidInput);
+    }
+    #[derive(Deserialize)]
+    struct Owner {
+        email: String,
+    }
+    #[derive(Deserialize)]
+    struct Envelope {
+        owner: Owner,
+        items: Vec<ShareGrant>,
+    }
+    let envelope: Envelope =
+        serde_json::from_slice(bytes).map_err(|_| RuntimeError::InvalidInput)?;
+    if envelope.owner.email.len() > 320
+        || !valid_email(&envelope.owner.email)
+        || envelope.items.len() > 512
+        || envelope.items.iter().any(|grant| {
+            grant.id.is_empty()
+                || grant.id.len() > 128
+                || grant.user_id.is_empty()
+                || grant.user_id.len() > 128
+                || !valid_email(&grant.email)
+                || grant.role.len() > 32
+                || !matches!(grant.role.as_str(), "viewer" | "operator" | "manager")
+        })
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok((envelope.owner.email, envelope.items))
+}
+
+fn valid_email(email: &str) -> bool {
+    email.len() <= 320
+        && email.len() >= 3
+        && email.contains('@')
+        && !email.bytes().any(|b| b.is_ascii_whitespace() || b == 0)
+}
+
+/// Format a sharing mutation through the shared Porsche command grammar.
+pub fn format_share_command(
+    operation: &str,
+    machine_id: &str,
+    email: &str,
+    role: Option<&str>,
+    request_id: &str,
+) -> Result<String, RuntimeError> {
+    if !matches!(operation, "add" | "remove")
+        || machine_id.is_empty()
+        || machine_id.len() > 128
+        || machine_id
+            .bytes()
+            .any(|b| b.is_ascii_whitespace() || b == 0)
+        || !valid_email(email)
+        || request_id.len() != 40
+        || !request_id.starts_with("porsche-")
+        || !request_id[8..].bytes().all(|b| b.is_ascii_hexdigit())
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    let mut line = format!("share {operation} {machine_id} {email}");
+    if operation == "add" {
+        let role = role
+            .filter(|value| matches!(*value, "viewer" | "operator" | "manager"))
+            .ok_or(RuntimeError::InvalidInput)?;
+        line.push(' ');
+        line.push_str(role);
+    }
+    line.push_str(" --json --request-id=");
+    line.push_str(request_id);
+    mila_protocol::Command::parse(&line)
+        .and_then(|command| command.format())
+        .map_err(|_| RuntimeError::InvalidInput)
+}
+
 /// Canonicalizes an activation route through the same Rust FFI entry point used by
 /// the other native clients. This keeps Linux from maintaining a second route grammar.
 pub fn canonical_route(value: &str) -> Result<String, RuntimeError> {
@@ -142,6 +229,88 @@ pub fn format_thread_command(
     mila_protocol::Command::parse(&line)
         .and_then(|c| c.format())
         .map_err(|_| RuntimeError::InvalidInput)
+}
+
+/// A bounded, presentation-safe thread summary returned by the runtime.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct ThreadSummary {
+    pub id: String,
+    #[serde(default)]
+    pub title: String,
+    #[serde(default)]
+    pub state: String,
+}
+
+/// Decode `thread ls --json` without allowing unbounded server data into GTK.
+pub fn decode_thread_list(bytes: &[u8]) -> Result<Vec<ThreadSummary>, RuntimeError> {
+    if bytes.len() > 256 * 1024 {
+        return Err(RuntimeError::InvalidInput);
+    }
+    #[derive(Deserialize)]
+    struct Envelope {
+        threads: Vec<ThreadSummary>,
+    }
+    let envelope: Envelope =
+        serde_json::from_slice(bytes).map_err(|_| RuntimeError::InvalidInput)?;
+    if envelope.threads.len() > 512
+        || envelope.threads.iter().any(|thread| {
+            thread.id.is_empty()
+                || thread.id.len() > 128
+                || thread.title.len() > 512
+                || thread.state.len() > 64
+        })
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok(envelope.threads)
+}
+
+/// Format the read-only turn history operation through the shared protocol parser.
+pub fn format_thread_turns(thread_id: &str, after: Option<&str>) -> Result<String, RuntimeError> {
+    if thread_id.is_empty()
+        || thread_id.len() > 128
+        || thread_id.bytes().any(|b| b.is_ascii_whitespace() || b == 0)
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    let mut line = format!("thread turns {thread_id} --json");
+    if let Some(cursor) = after {
+        if cursor.is_empty()
+            || cursor.len() > 128
+            || cursor.bytes().any(|b| b.is_ascii_whitespace() || b == 0)
+        {
+            return Err(RuntimeError::InvalidInput);
+        }
+        line.push_str(" --after=");
+        line.push_str(cursor);
+    }
+    mila_protocol::Command::parse(&line)
+        .and_then(|c| c.format())
+        .map_err(|_| RuntimeError::InvalidInput)
+}
+
+#[cfg(test)]
+mod thread_tests {
+    use super::*;
+    #[test]
+    fn turns_are_bounded_and_protocol_checked() {
+        assert_eq!(
+            format_thread_turns("00000000-0000-4000-8000-000000000001", None).unwrap(),
+            "thread turns 00000000-0000-4000-8000-000000000001 --json"
+        );
+        assert!(format_thread_turns("bad id", None).is_err());
+        assert!(format_thread_turns("thread-1", Some("bad cursor")).is_err());
+    }
+    #[test]
+    fn list_decoder_rejects_oversized_items() {
+        let data = br#"{"threads":[{"id":"t1","title":"A","state":"open"}]}"#;
+        assert_eq!(decode_thread_list(data).unwrap()[0].id, "t1");
+        let bad = format!(
+            r#"{{"threads":[{{"id":"t1","title":"{}"}}]}}"#,
+            "x".repeat(513)
+        );
+        assert!(decode_thread_list(bad.as_bytes()).is_err());
+    }
 }
 
 /// Formats web endpoint operations through Porsche's bounded command grammar.
@@ -477,8 +646,8 @@ impl RuntimeAdapter for InProcessRuntimeAdapter {
 #[cfg(test)]
 mod tests {
     use super::{
-        canonical_route, format_machine_action, InProcessRuntimeAdapter, RuntimeAdapter,
-        RuntimeError, RuntimeOperation, RuntimeRequest,
+        canonical_route, decode_share_listing, format_machine_action, format_share_command,
+        InProcessRuntimeAdapter, RuntimeAdapter, RuntimeError, RuntimeOperation, RuntimeRequest,
     };
 
     #[test]
@@ -524,6 +693,40 @@ mod tests {
         );
         assert!(format_machine_action("start", "bad", Some(request)).is_err());
         assert!(format_machine_action("start", id, None).is_err());
+    }
+
+    #[test]
+    fn sharing_commands_and_listing_are_bounded() {
+        let machine = "123e4567-e89b-12d3-a456-426614174000";
+        let request = "porsche-123e4567e89b12d3a456426614174001";
+        assert_eq!(
+            format_share_command(
+                "add",
+                machine,
+                "teammate@example.test",
+                Some("viewer"),
+                request
+            )
+            .unwrap(),
+            format!(
+                "share add {machine} 'teammate@example.test' viewer --json --request-id={request}"
+            )
+        );
+        assert!(
+            format_share_command("add", machine, "bad email", Some("viewer"), request).is_err()
+        );
+        assert!(
+            format_share_command("add", machine, "a@example.test", Some("owner"), request).is_err()
+        );
+        assert_eq!(
+            format_share_command("remove", machine, "a@example.test", None, request).unwrap(),
+            format!("share remove {machine} 'a@example.test' --json --request-id={request}")
+        );
+        let payload = br#"{"owner":{"email":"owner@example.test"},"items":[{"id":"g1","user_id":"u1","email":"a@example.test","role":"operator"}]}"#;
+        let (owner, grants) = decode_share_listing(payload).unwrap();
+        assert_eq!(owner, "owner@example.test");
+        assert_eq!(grants[0].role, "operator");
+        assert!(decode_share_listing(br#"{"owner":{"email":"owner@example.test"},"items":[{"id":"g1","user_id":"u1","email":"a@example.test","role":"owner"}]}"#).is_err());
     }
 
     #[test]

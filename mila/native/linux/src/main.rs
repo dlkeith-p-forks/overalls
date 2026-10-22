@@ -2,11 +2,12 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    format_machine_action, format_ssh_key_revoke, format_thread_command, format_web_command,
-    validate_terminal_operation, TerminalOperation,
+    format_machine_action, format_share_command, format_ssh_key_revoke, format_thread_command,
+    format_thread_turns, format_web_command, validate_terminal_operation, TerminalOperation,
 };
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
+mod persistence;
 mod strings;
 const APPLICATION_ID: &str = "dev.overalls.Mila.Linux";
 #[derive(Clone)]
@@ -58,18 +59,25 @@ impl NativeState {
         root.append(&nav);
 
         let deployment = Entry::builder()
-            .placeholder_text("Deployment host (example: overalls.example:443)")
+            .placeholder_text(&strings::text(strings::Message::DeploymentSelect))
             .hexpand(true)
             .build();
+        if let Ok(Some(selection)) = persistence::load() {
+            deployment.set_text(&selection.host);
+        }
         let select = Button::with_label(&strings::text(strings::Message::SelectDeployment));
         let deployment_status = content.clone();
         let deployment_input = deployment.clone();
         select.connect_clicked(move |_| {
             let host = deployment_input.text().trim().to_owned();
-            let route = format!("overalls://{host}/machines");
-            match ActivationRoute::parse(&route) {
-                Ok(parsed) => deployment_status
-                    .set_label(&format!("Deployment selected\n{}", parsed.canonical())),
+            match persistence::DeploymentSelection::validate(&host) {
+                Ok(selection) => {
+                    let route = selection.route();
+                    let _ = persistence::save(&selection);
+                    let parsed = ActivationRoute::parse(&route).expect("validated route");
+                    deployment_status
+                        .set_label(&format!("Deployment selected\n{}", parsed.canonical()))
+                }
                 Err(_) => deployment_status.set_label("Deployment host rejected by Rust policy."),
             }
         });
@@ -115,6 +123,62 @@ impl NativeState {
         root.append(&machine_id);
         root.append(&request_id);
         root.append(&actions);
+        let share_email = Entry::builder()
+            .placeholder_text(&strings::text(strings::Message::ShareEmail))
+            .hexpand(true)
+            .build();
+        let share_role = Entry::builder()
+            .placeholder_text(&strings::text(strings::Message::ShareRole))
+            .hexpand(true)
+            .build();
+        let share_actions = Box::new(Orientation::Horizontal, 8);
+        for (label_text, operation) in [
+            (strings::text(strings::Message::ShareAdd), "add"),
+            (strings::text(strings::Message::ShareRemove), "remove"),
+        ] {
+            let button = Button::with_label(&label_text);
+            let machine = machine_id.clone();
+            let email = share_email.clone();
+            let role = share_role.clone();
+            let status = content.clone();
+            button.connect_clicked(move |_| {
+                let request = "porsche-0000000000000000000000000000000000000000";
+                let selected_role =
+                    (!role.text().trim().is_empty()).then(|| role.text().trim().to_owned());
+                match format_share_command(
+                    operation,
+                    machine.text().trim(),
+                    email.text().trim(),
+                    selected_role.as_deref(),
+                    request,
+                ) {
+                    Ok(command) => status.set_label(&format!("Sharing command\n{command}")),
+                    Err(_) => status.set_label("Sharing request rejected by Rust policy."),
+                }
+            });
+            share_actions.append(&button);
+        }
+        root.append(&share_email);
+        root.append(&share_role);
+        root.append(&share_actions);
+        let share_response = Entry::builder()
+            .placeholder_text("share show JSON (paste response)")
+            .hexpand(true)
+            .build();
+        let share_load = Button::with_label(&strings::text(strings::Message::ShareLoad));
+        let share_status = content.clone();
+        let response_input = share_response.clone();
+        share_load.connect_clicked(
+            move |_| match mila_native_linux::adapter::decode_share_listing(
+                response_input.text().as_bytes(),
+            ) {
+                Ok((owner, grants)) => share_status
+                    .set_label(&format!("Owner: {owner}\n{} share grants", grants.len())),
+                Err(_) => share_status.set_label("Sharing listing rejected by Rust policy."),
+            },
+        );
+        root.append(&share_response);
+        root.append(&share_load);
         let terminal = Entry::builder()
             .placeholder_text("Terminal session ID")
             .hexpand(true)
@@ -167,6 +231,16 @@ impl NativeState {
             });
             thread_actions.append(&button);
         }
+        let turns = Button::with_label("Thread turns");
+        let turns_input = thread_id.clone();
+        let turns_status = content.clone();
+        turns.connect_clicked(move |_| {
+            match format_thread_turns(turns_input.text().trim(), None) {
+                Ok(command) => turns_status.set_label(&format!("Thread turns\n{command}")),
+                Err(_) => turns_status.set_label("Thread turns rejected by Rust policy."),
+            }
+        });
+        thread_actions.append(&turns);
         root.append(&thread_id);
         root.append(&thread_actions);
         let web_port = Entry::builder()
@@ -183,7 +257,7 @@ impl NativeState {
             (strings::text(strings::Message::WebPublic), "set", true),
             (strings::text(strings::Message::WebPrivate), "set", false),
         ] {
-            let button = Button::with_label(label_text);
+            let button = Button::with_label(&label_text);
             let machine = machine_id.clone();
             let port = web_port.clone();
             let request = web_request.clone();

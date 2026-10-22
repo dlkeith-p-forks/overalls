@@ -133,7 +133,9 @@ jobs:
         working-directory: mila/native/apple
         env:
           MILA_FFI_LIB_DIR: ${{ github.workspace }}/mila/rust/target/release
-        run: swift test
+        run: |
+          swift build
+          swift test
       - name: macOS and iOS dev targets
         run: |
           devenv shell -- mila-build macos dev
@@ -159,6 +161,8 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Install the pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
       - name: Build Rust FFI for Apple native tests
         run: cargo build --manifest-path mila/rust/Cargo.toml -p mila-ffi --release
       - name: Swift native package tests
@@ -265,6 +269,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - name: Install the pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
       - name: Build Rust Windows FFI
         run: cargo build --manifest-path mila/rust/Cargo.toml -p mila-ffi --release
       - name: Build native WinUI client (.NET 10)
@@ -291,13 +297,18 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Install the pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
       - name: Install GTK4 and libadwaita development libraries
         run: |
           sudo apt-get update
           sudo apt-get install --yes libgtk-4-dev libadwaita-1-dev pkg-config
       - name: Build and test native GTK client
         working-directory: mila/native/linux
-        run: cargo test --locked
+        run: |
+          cargo build --locked --release
+          test -x target/release/mila-linux
+          cargo test --locked
       - name: Check formatting
         working-directory: mila/native/linux
         run: cargo fmt --all -- --check
@@ -348,7 +359,9 @@ jobs:
       - name: Assemble native Compose APK
         timeout-minutes: 20
         working-directory: mila/native/android
-        run: gradle --no-daemon --stacktrace assembleDebug assembleDebugAndroidTest testDebugUnitTest
+        run: |
+          gradle --no-daemon --stacktrace assembleDebug assembleDebugAndroidTest testDebugUnitTest
+          test -f app/build/outputs/apk/debug/app-debug.apk
       - name: Invoke packaged Rust JNI on Android
         timeout-minutes: 20
         uses: reactivecircus/android-emulator-runner@v2
@@ -365,3 +378,42 @@ jobs:
           working-directory: mila/native/android
           disable-animations: true
           script: gradle --no-daemon connectedDebugAndroidTest
+
+  native-gate:
+    name: Native platform gate
+    if: ${{ always() }}
+    needs: [apple-native, android-native, linux-native, windows-native]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify parity matrix records remaining native gaps
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          matrix = Path("mila/native/PARITY_MATRIX.md").read_text(encoding="utf-8")
+          rows = [line for line in matrix.splitlines() if line.startswith("|") and "---" not in line]
+          if not any("partial" in row for row in rows):
+              raise SystemExit("parity matrix must retain partial evidence until end-to-end parity is proven")
+          if not any("open" in row for row in rows):
+              raise SystemExit("parity matrix must retain open gaps until every native feature is implemented")
+
+          workflow = Path(".github/workflows/mila-builds.yml").read_text(encoding="utf-8")
+          if "FLUTTER_VERSION:" not in workflow:
+              raise SystemExit("Flutter CI cannot be removed while parity gaps remain")
+          print("Parity matrix honestly records incomplete native workflows; Flutter remains until closure.")
+          PY
+      - name: Require every native platform job to pass
+        env:
+          APPLE: ${{ needs.apple-native.result }}
+          ANDROID: ${{ needs.android-native.result }}
+          LINUX: ${{ needs.linux-native.result }}
+          WINDOWS: ${{ needs.windows-native.result }}
+        run: |
+          set -eu
+          for result in "$APPLE" "$ANDROID" "$LINUX" "$WINDOWS"; do
+            test "$result" = success || {
+              echo "Native platform gate failed: $result" >&2
+              exit 1
+            }
+          done

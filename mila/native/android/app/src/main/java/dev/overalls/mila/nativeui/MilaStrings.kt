@@ -8,7 +8,7 @@ import org.json.JSONObject
 internal enum class MilaMessage(val catalogId: String) {
     AppName("appTitle"), Machines("machinesTitle"), Threads("tabThreads"), Settings("settingsTitle"),
     Ready("ready"), Refresh("refresh"), Connecting("signInConnecting"), Connected("connected"),
-    RuntimeUnavailable("runtimeUnavailable"), NoAction("noAction"), Terminal("tabTerminals"), Attach("terminalAttach"), Input("terminalAttach"), Resize("actionResize"), MachineActions("machineMore"), ThreadCommands("tabThreads"), NoCommand("noAction")
+    RuntimeUnavailable("runtimeUnavailable"), NoAction("noAction"), Terminal("tabTerminals"), Attach("terminalAttach"), Input("terminalAttach"), Resize("actionResize"), MachineActions("machineMore"), SharePrincipal("sharePrincipal"), ShareAdd("shareAdd"), ShareRemove("shareRemove"), ShareRejected("shareRejected"), ShareAdded("shareAdded"), ShareRemoved("shareRemoved"), Appearance("appearance"), Locale("locale"), ThreadCommands("tabThreads"), NoCommand("noAction")
 }
 
 internal object MilaStrings {
@@ -17,7 +17,7 @@ internal object MilaStrings {
         MilaMessage.AppName to "Mila", MilaMessage.Machines to "Machines", MilaMessage.Threads to "Threads",
         MilaMessage.Settings to "Settings", MilaMessage.Ready to "Ready", MilaMessage.Refresh to "Refresh",
         MilaMessage.Connecting to "Connecting…", MilaMessage.Connected to "Connected",
-        MilaMessage.RuntimeUnavailable to "Native runtime unavailable", MilaMessage.NoAction to "No action selected", MilaMessage.Terminal to "Terminals", MilaMessage.Attach to "Attach", MilaMessage.Input to "Input", MilaMessage.Resize to "Resize", MilaMessage.MachineActions to "Machine actions", MilaMessage.ThreadCommands to "Thread commands", MilaMessage.NoCommand to "No command selected",
+        MilaMessage.RuntimeUnavailable to "Native runtime unavailable", MilaMessage.NoAction to "No action selected", MilaMessage.Terminal to "Terminals", MilaMessage.Attach to "Attach", MilaMessage.Input to "Input", MilaMessage.Resize to "Resize", MilaMessage.MachineActions to "Machine actions", MilaMessage.SharePrincipal to "Share principal", MilaMessage.ShareAdd to "Share add", MilaMessage.ShareRemove to "Share remove", MilaMessage.ShareRejected to "Share rejected", MilaMessage.ShareAdded to "Share added", MilaMessage.ShareRemoved to "Share removed", MilaMessage.Appearance to "Appearance", MilaMessage.Locale to "Locale", MilaMessage.ThreadCommands to "Thread commands", MilaMessage.NoCommand to "No command selected",
     )
     fun configure(context: Context, locale: Locale = Locale.getDefault()) {
         val tag = locale.toLanguageTag().replace('_', '-')

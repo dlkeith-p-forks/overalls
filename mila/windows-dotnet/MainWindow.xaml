@@ -52,11 +52,24 @@
             <Button x:Name="ThreadTurns" Click="ClassifyThreadTurns" Margin="0,0,8,0" />
             <Button x:Name="ThreadRead" Click="ClassifyThreadRead" />
           </StackPanel>
+          <ListView x:Name="ThreadRows" DisplayMemberPath="Title" MinHeight="120" SelectionChanged="OnThreadSelected" />
+          <TextBlock x:Name="ThreadDetail" TextWrapping="Wrap" />
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button x:Name="ThreadPrompt" Click="SubmitThreadPrompt" />
+            <Button x:Name="ThreadAnswer" Click="SubmitThreadAnswer" />
+            <Button x:Name="ThreadApprove" Click="SubmitThreadApprove" />
+            <Button x:Name="ThreadRevise" Click="SubmitThreadRevise" />
+          </StackPanel>
           <TextBlock x:Name="ThreadCommandStatus" Opacity="0.7" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Spacing="8">
           <Button x:Name="Refresh" Click="CheckNativeBridge" />
           <Button x:Name="LockButton" Click="LockApp" />
+        </StackPanel>
+        <StackPanel Spacing="6">
+          <TextBlock x:Name="SshKeysTitle" />
+          <TextBlock x:Name="SshKeysStatus" TextWrapping="Wrap" Opacity="0.7" />
+          <Button x:Name="RefreshSshKeys" Click="RefreshSshKeys" HorizontalAlignment="Left" />
         </StackPanel>
         <TextBlock x:Name="LockStatus" Opacity="0.7" TextWrapping="Wrap" />
         <StackPanel Spacing="6">
