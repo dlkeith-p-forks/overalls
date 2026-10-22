@@ -1,6 +1,6 @@
 ---
-digest: b53d05c453c2d73cd6007069ffc0acd56f8d026689d34746bb43a9c92d60cd32
-disposition: no-impact
+digest: 4b0eef1139ef0e1f32515b23477181bf7799ba4cac9803a18cf01d02b08665cd
+disposition: updated
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
 path: marshall/priv/hldd/scenarios/mila-desktop-custody.yaml
@@ -9,11 +9,11 @@ reviewed_chapters:
   marshall/priv/hldd/03-access.md: 5e197b8346180c9f65c712048048da17934c117a500fe63cfca781cd8933dae6
   marshall/priv/hldd/04-lifecycle.md: f3c40798f402b553640bb25852bcb205c327c87d7ad6735b4f1b243c5616b4a2
   marshall/priv/hldd/06-workflows.md: ad304114da706e2daaf6296aac5c058376e50742cc378ad4fc2a9d475d485124
-  marshall/priv/hldd/08-interactive.md: 84c255e9addb5a9ef9fbc81ef61b98af77540835332915750a825e39b3c94919
+  marshall/priv/hldd/08-interactive.md: 43e1b55308537ab39797562f4a6bd5f935d8b4178f3fc149d20309636dca4f31
   marshall/priv/hldd/11-agents.md: 7d24214acefb26fbd3b08ce582578fd007e6ffa4bd55d986293050de8605356d
   marshall/priv/hldd/15-monitoring.md: 185a956b7033aebff87a54c5b275b8368bd130205d7bb6a8cccb2ebdd4507c7a
   marshall/priv/hldd/17-reference.md: 9b7c3c0ba2c93d62cda3b8c5b3914af2ebbab0f7f9c1e6345bdb926d15c8e8cb
-  marshall/priv/hldd/19-coverage.md: 422a9e67513564c0f01d2fb334a49f8d2a86f8ae11b3292ebc32cef8f7fb2ed6
+  marshall/priv/hldd/19-coverage.md: e602637358be185a2c40af73caf21ad4aefc7f252dfbaee2f5c64fe26945f5eb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Refreshed evidence after native sign-in smoke contract update.
+Windows machine listing and detail projection is now covered by bounded authenticated-session evidence while the live backend journey remains open.

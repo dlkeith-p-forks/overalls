@@ -1,5 +1,5 @@
 ---
-digest: 3050f853271fa34efaae6d1cab714ed0169b1e1107ad27ccf4c0445857e3c127
+digest: e602637358be185a2c40af73caf21ad4aefc7f252dfbaee2f5c64fe26945f5eb
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Windows notification registration now validates transient WNS channel metadata through Rust, exposes typed disabled/registered/refused states and records the live-provider/device-CRUD gap; XAML nesting is normalized for native compilation.
+Windows machine listing and detail projection is now covered by bounded authenticated-session evidence while the live backend journey remains open.

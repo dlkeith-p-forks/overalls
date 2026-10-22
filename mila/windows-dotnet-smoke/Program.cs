@@ -59,6 +59,8 @@ internal static class Program
         Require(invalidSession.Status == MilaNativeStatus.InvalidRequest, "missing authenticated session refusal");
         MilaNativeSessionBytesResult invalidKeys = RustNative.TrySessionSshKeys(0);
         Require(invalidKeys.Status == MilaNativeStatus.InvalidRequest && invalidKeys.Data is null, "missing authenticated SSH key listing refusal");
+        MilaNativeSessionBytesResult invalidListing = RustNative.TrySessionListing(0);
+        Require(invalidListing.Status == MilaNativeStatus.InvalidRequest && invalidListing.Data is null, "missing authenticated machine listing refusal");
         MilaNativeSessionActionResult invalidRevoke = RustNative.TrySessionSshKeyRevoke(
             0, keyId, "porsche-0123456789abcdef0123456789abcdef");
         Require(invalidRevoke.Status == MilaNativeStatus.InvalidRequest, "missing authenticated SSH key revoke refusal");

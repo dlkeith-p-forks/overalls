@@ -367,17 +367,26 @@ public sealed partial class MainWindow : Window
         RefreshMachines();
     }
 
-    private void RefreshMachines()
+    private async void RefreshMachines()
     {
         _selectedMachine = null;
         _machineMutation.SetSession(_session.Handle is { } handle, _session.Handle ?? 0);
         MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
-        if (_activeHost is { } host)
+        if (_activeHost is not { } host || _session.Handle is not { } sessionHandle)
+            return;
+        MilaNativeSessionBytesResult result = await Task.Run(() => RustNative.TrySessionListing(sessionHandle));
+        if (result.Succeeded && result.Data is { } bytes)
         {
-            string savedAt = S("machinesSavedAt", "Machines for");
-            string empty = S("machinesEmpty", "No machines");
-            StatusText.Text = $"{savedAt} {host}: {empty}";
+            try
+            {
+                MilaSessionListing listing = RustNative.DecodeSessionListing(bytes);
+                MachineRows.ItemsSource = listing.Machines;
+                StatusText.Text = $"{S("machinesSavedAt", "Machines for")} {host}: {listing.Machines.Count}";
+                return;
+            }
+            catch (InvalidDataException) { }
         }
+        StatusText.Text = S("requestFailed", "Unable to load machines.");
     }
     private void OnMachineSelected(object sender, SelectionChangedEventArgs args)
     {

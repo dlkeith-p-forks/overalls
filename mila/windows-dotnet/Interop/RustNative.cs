@@ -469,6 +469,13 @@ internal static partial class RustNative
             SessionSshKeysNative(handle, bytes, capacity, written));
     }
 
+    /// <summary>Copies the bounded machine listing from an authenticated Rust session.</summary>
+    internal static MilaNativeSessionBytesResult TrySessionListing(ulong handle)
+    {
+        if (handle == 0) return new(MilaNativeStatus.InvalidRequest, null);
+        return TrySessionBytes((bytes, capacity, written) => SessionListingNative(handle, bytes, capacity, written));
+    }
+
     /// <summary>Revokes one canonical approved-key identity through the Rust session.</summary>
     internal static MilaNativeSessionActionResult TrySessionSshKeyRevoke(
         ulong handle, Guid keyId, string requestId)
@@ -632,6 +639,10 @@ internal static partial class RustNative
 
     [LibraryImport(LibraryName, EntryPoint = "mila_session_ssh_keys")]
     private static partial MilaNativeStatus SessionSshKeysNative(
+        ulong handle, IntPtr output, nuint capacity, IntPtr written);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_listing")]
+    private static partial MilaNativeStatus SessionListingNative(
         ulong handle, IntPtr output, nuint capacity, IntPtr written);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_session_ssh_key_revoke")]

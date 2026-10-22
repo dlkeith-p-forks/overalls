@@ -12,6 +12,12 @@ evidence:
   scope: The production Windows interop invokes the Rust list/revoke ABI through owned buffers,
     rejects missing sessions and malformed request ids, and exercises the bounded controller projection;
     no live Windows host or Porsche journey is claimed.
+- assertion: missing authenticated machine listing refusal
+  execution: present
+  kind: unit
+  path: mila/windows-dotnet-smoke/Program.cs
+  scope: The Windows shell copies only bounded machine-list bytes from an authenticated Rust handle,
+    decodes typed rows for selection/detail and refuses a missing handle; no live Windows journey is claimed.
 - assertion: reconnect starts fresh generation
   execution: present
   kind: unit
