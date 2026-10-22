@@ -133,6 +133,33 @@ verification list.
   the six provisioning failures above. They fail identically on `95616c01d`,
   the commit before this change.
 
+## Live deployment check (2026-10-22)
+
+The user asked for measurement on this host, so this check ran read-only on
+`panterloons`.
+
+- **Data:** 2 users, 19 machines; all six indexes deployed.
+- **List query:** a rolled-back `READ ONLY` `EXPLAIN (ANALYZE, BUFFERS)` took
+  0.248 ms for the OR-of-EXISTS shape and 0.085 ms with candidates. A
+  sequential scan is correct at this size.
+- **SLIs:** six anonymous page loads gave six `marshall_live` successes. In
+  Grafana, the completion and within-1 s SLIs read 1 and p95 read 38 ms.
+- **Diagnostics:** the callback panels showed a 6.3 ms mean mount, and Tempo
+  holds `marshall.live.callback` spans.
+- **Gauge delay:** the `liveview_*` gauges reached Prometheus about a minute
+  after the first callbacks, at the next 60 s log-to-metric flush and 30 s
+  scrape.
+
+## Relocation batching
+
+`RelocationStatus.latest_many/1` batches the latest relocation, readiness
+request, stop operation and outcome for managed rows.
+`relocation_status_batch_test.exs` compares relocated, cancelled and
+never-relocated machines with `latest/1`, and also through `list_vms`.
+Returning nil from the batch makes that test fail. The affected suites pass:
+66 tests, including views, relocation capacity, evacuations, thread access,
+overview, pins and the relocation LiveView test.
+
 ## Follow-up
 
 - Repeat the `EXPLAIN` on production data.

@@ -291,19 +291,14 @@ defmodule Marshall.Compute.Views do
         |> Ash.read!(actor: SystemActor.compute())
         |> Enum.group_by(& &1.vm_id)
 
-      # Only machines without any relocation are primed (as nil, which is what
-      # the per-row latest read returns); relocated rows keep the per-row read.
-      relocated =
-        Marshall.Compute.Relocation
-        |> Ash.Query.filter(vm_id in ^ids)
-        |> Ash.Query.select([:id, :vm_id])
-        |> Ash.read!(actor: SystemActor.compute())
-        |> MapSet.new(& &1.vm_id)
-
+      # Relocation status is projected only for managers (relocation-status-projection),
+      # so only rows with a current manage decision are batched.
       DecisionSnapshot.prime(
-        ids
-        |> Enum.reject(&MapSet.member?(relocated, &1))
-        |> Map.new(&{{:latest_relocation, &1}, nil})
+        vms
+        |> Enum.filter(&Authorization.allowed?(&1, actor, "manage"))
+        |> Enum.map(& &1.id)
+        |> Marshall.Compute.RelocationStatus.latest_many()
+        |> Map.new(fn {id, status} -> {{:latest_relocation, id}, status} end)
       )
 
       DecisionSnapshot.prime(
