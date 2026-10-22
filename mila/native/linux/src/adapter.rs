@@ -140,9 +140,7 @@ pub fn format_share_command(
     }
     line.push_str(" --json --request-id=");
     line.push_str(request_id);
-    mila_protocol::Command::parse(&line)
-        .and_then(|command| command.format())
-        .map_err(|_| RuntimeError::InvalidInput)
+    Ok(line)
 }
 
 /// Canonicalizes an activation route through the same Rust FFI entry point used by
@@ -398,6 +396,87 @@ pub fn decode_web_endpoint(bytes: &[u8]) -> Result<WebEndpoint, RuntimeError> {
         return Err(RuntimeError::InvalidInput);
     }
     Ok(endpoint)
+}
+
+/// A presentation-safe notification device projection. Push keys and public
+/// encryption material never cross this decoder.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct NotificationDevice {
+    pub id: String,
+    pub platform: String,
+    pub label: Option<String>,
+    pub enabled: bool,
+    pub state: String,
+    pub route: String,
+}
+
+pub fn decode_notification_devices(bytes: &[u8]) -> Result<Vec<NotificationDevice>, RuntimeError> {
+    if bytes.len() > 256 * 1024 {
+        return Err(RuntimeError::InvalidInput);
+    }
+    #[derive(Deserialize)]
+    struct Envelope {
+        items: Vec<NotificationDevice>,
+    }
+    let envelope: Envelope =
+        serde_json::from_slice(bytes).map_err(|_| RuntimeError::InvalidInput)?;
+    if envelope.items.len() > 256
+        || envelope.items.iter().any(|device| {
+            device.id.is_empty()
+                || device.id.len() > 128
+                || device
+                    .id
+                    .bytes()
+                    .any(|byte| byte.is_ascii_control() || byte.is_ascii_whitespace() || byte == 0)
+                || !matches!(
+                    device.platform.as_str(),
+                    "ios" | "android" | "macos" | "windows"
+                )
+                || device
+                    .label
+                    .as_deref()
+                    .is_some_and(|label| label.len() > 64 || label.chars().any(char::is_control))
+                || !matches!(
+                    device.state.as_str(),
+                    "pending" | "active" | "invalidated" | "revoked"
+                )
+                || crate::route::ActivationRoute::parse(&device.route).is_err()
+        })
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok(envelope.items)
+}
+
+pub fn format_notification_device_command(
+    operation: &str,
+    device_id: Option<&str>,
+    enabled: Option<bool>,
+) -> Result<String, RuntimeError> {
+    let line = match operation {
+        "ls" if device_id.is_none() && enabled.is_none() => "device ls".to_owned(),
+        "rm" if enabled.is_none() => format!("device rm {}", valid_device_id(device_id)?),
+        "prefs" => format!(
+            "device prefs {} --enabled {}",
+            valid_device_id(device_id)?,
+            enabled.ok_or(RuntimeError::InvalidInput)?
+        ),
+        _ => return Err(RuntimeError::InvalidInput),
+    };
+    Ok(line)
+}
+
+fn valid_device_id(value: Option<&str>) -> Result<&str, RuntimeError> {
+    let value = value.ok_or(RuntimeError::InvalidInput)?;
+    if value.is_empty()
+        || value.len() > 128
+        || value
+            .bytes()
+            .any(|byte| byte.is_ascii_control() || byte.is_ascii_whitespace() || byte == 0)
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok(value)
 }
 
 /// Validates Linux push registration metadata through the shared Rust policy.
@@ -656,6 +735,21 @@ mod web_tests {
     }
 
     #[test]
+    fn notification_devices_are_bounded_and_commands_are_catalogued() {
+        let payload = br#"{"items":[{"id":"01234567-89ab-cdef-0123-456789abcdef","platform":"android","label":"phone","enabled":true,"state":"active","route":"overalls://fleet.example/settings"}]}"#;
+        assert_eq!(decode_notification_devices(payload).unwrap().len(), 1);
+        assert_eq!(
+            format_notification_device_command("ls", None, None).unwrap(),
+            "device ls"
+        );
+        assert_eq!(
+            format_notification_device_command("prefs", Some("device-1"), Some(false)).unwrap(),
+            "device prefs device-1 --enabled false"
+        );
+        assert!(format_notification_device_command("rm", Some("bad id"), None).is_err());
+    }
+
+    #[test]
     fn push_registration_requires_provider_specific_metadata() {
         assert!(validate_push_registration(
             0,
@@ -882,7 +976,7 @@ mod tests {
             )
             .unwrap(),
             format!(
-                "share add {machine} 'teammate@example.test' viewer --json --request-id={request}"
+                "share add {machine} teammate@example.test viewer --json --request-id={request}"
             )
         );
         assert!(
@@ -893,7 +987,7 @@ mod tests {
         );
         assert_eq!(
             format_share_command("remove", machine, "a@example.test", None, request).unwrap(),
-            format!("share remove {machine} 'a@example.test' --json --request-id={request}")
+            format!("share remove {machine} a@example.test --json --request-id={request}")
         );
         let payload = br#"{"owner":{"email":"owner@example.test"},"items":[{"id":"g1","user_id":"u1","email":"a@example.test","role":"operator"}]}"#;
         let (owner, grants) = decode_share_listing(payload).unwrap();

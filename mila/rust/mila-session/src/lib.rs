@@ -332,6 +332,51 @@ impl ApplicationSession {
         }
     }
 
+    /// Read the caller's push notification devices through Porsche.
+    pub async fn device_ls(&mut self) -> Result<Vec<u8>, SessionError> {
+        let output = self.ssh.exec("device ls", &[]).await?;
+        if output.exit_status == 0 {
+            Ok(output.stdout)
+        } else {
+            Err(SessionError::MutationRefused)
+        }
+    }
+
+    /// Revoke one caller-owned push notification device.
+    pub async fn device_rm(&mut self, device_id: &str) -> Result<(), SessionError> {
+        let device_id = Identifier::parse(device_id).map_err(|_| SessionError::MutationRefused)?;
+        let output = self
+            .ssh
+            .exec(&format!("device rm {device_id}"), &[])
+            .await?;
+        if output.exit_status == 0 {
+            Ok(())
+        } else {
+            Err(SessionError::MutationRefused)
+        }
+    }
+
+    /// Enable or disable one caller-owned push notification device.
+    pub async fn device_prefs(
+        &mut self,
+        device_id: &str,
+        enabled: bool,
+    ) -> Result<(), SessionError> {
+        let device_id = Identifier::parse(device_id).map_err(|_| SessionError::MutationRefused)?;
+        let output = self
+            .ssh
+            .exec(
+                &format!("device prefs {device_id} --enabled {enabled}"),
+                &[],
+            )
+            .await?;
+        if output.exit_status == 0 {
+            Ok(())
+        } else {
+            Err(SessionError::MutationRefused)
+        }
+    }
+
     /// Execute an authenticated machine sharing mutation. The command is parsed by
     /// the shared protocol grammar before it is sent, and request IDs provide the
     /// same at-most-once boundary as lifecycle mutations.

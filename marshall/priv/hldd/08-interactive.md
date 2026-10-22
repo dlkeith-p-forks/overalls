@@ -1292,6 +1292,7 @@ id and the key expiry.
 | Notification text | Fixed and localized ("An agent needs your input"). The decrypted route is used only as the tap link. A poke that fails to open shows the fixed text with no link on iOS (an APNs alert cannot be suppressed); Android shows nothing. |
 | Poke keys | iOS and macOS Keychain group shared with the notification extension (the data-protection keychain on macOS), readable after first unlock on this device only. On Android, wrapped by a Keystore AES key. Only the public key leaves native code. Removing the device deletes the key. |
 | Device list | Each device can be turned on or off, or removed (`device prefs`, `device rm`), and the list refreshes on request. A device missing from `device ls` shows as revoked. Registration sends `--label` with the computer's host name where the platform reports one (none on Android); the label is a display name, not an identifier. |
+| Linux device controls | The Linux shell has no push provider and never registers a device. An authenticated session can still list devices and issue bounded `device rm` and `device prefs` commands; unauthenticated handles refuse these operations. The GTK registration and live Porsche transport remain open. |
 | App lock | Optional, with biometrics or the device passcode (`local_auth`). It locks immediately or after 1 or 5 minutes in the background. A saved lock covers Mila from the first frame. Locked content is not painted and not in the accessibility tree. Linux has no lock, and the setting says so. |
 | Desktop push | macOS uses the same notification-extension path as iOS, from code shared in `mila/app/darwin/Shared`. An unsigned macOS dev build has no push entitlement and offers no notifications. Windows push needs Susan's WNS provider (ADR-0236), whose deployed configuration is not yet enabled; the Windows native channel and poke opener are not yet implemented. |
 | Offline list | The last complete machine listing per deployment is saved as an owner-only `0600` file holding machine rows only, at most 500. While offline, the saved list is shown with its save time and its actions are disabled. |
@@ -1341,6 +1342,11 @@ Evidence:
 - native [iOS and macOS extension](repo:mila/app/darwin/Shared/NotificationService.swift)
   with [shared poke tests](repo:mila/app/darwin/SharedTests/PushPokeTests.swift)
   and [Android service](repo:mila/app/android/app/src/main/kotlin/dev/overalls/mila/MilaMessagingService.kt);
+- Linux's bounded [device command and projection adapter](repo:mila/native/linux/src/adapter.rs),
+  authenticated [session controls](repo:mila/native/linux/src/session.rs), and
+  shared [device command wrappers](repo:mila/rust/mila-session/src/lib.rs)
+  with [FFI exports](repo:mila/rust/mila-ffi/src/session.rs) are covered by the
+  Linux unit test gate; provider registration and live Porsche transport remain unverified;
 - the [desktop machine test](repo:nix/verification/tests/machines/mila-desktop/default.nix)
   and the [M5 device review](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
 

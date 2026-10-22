@@ -211,6 +211,50 @@ impl LiveSession {
         }
     }
 
+    /// Read authenticated push notification devices. Provider registration is
+    /// intentionally host-owned; this method covers list and preference CRUD.
+    pub fn device_list(&mut self) -> Result<Vec<u8>, SessionError> {
+        let handle = self.handle()?;
+        copy_output(|out, capacity, written| unsafe {
+            mila_ffi::session::mila_session_device_ls(handle, out, capacity, written)
+        })
+    }
+
+    pub fn device_remove(&mut self, device_id: &str) -> Result<(), SessionError> {
+        validate_session_identifier(device_id)?;
+        let handle = self.handle()?;
+        let status = unsafe {
+            mila_ffi::session::mila_session_device_rm(
+                handle,
+                device_id.as_bytes().as_ptr(),
+                device_id.len(),
+            )
+        };
+        (status == mila_ffi::session::SessionStatus::Ok)
+            .then_some(())
+            .ok_or_else(|| status.into())
+    }
+
+    pub fn device_preference(
+        &mut self,
+        device_id: &str,
+        enabled: bool,
+    ) -> Result<(), SessionError> {
+        validate_session_identifier(device_id)?;
+        let handle = self.handle()?;
+        let status = unsafe {
+            mila_ffi::session::mila_session_device_prefs(
+                handle,
+                device_id.as_bytes().as_ptr(),
+                device_id.len(),
+                u8::from(enabled),
+            )
+        };
+        (status == mila_ffi::session::SessionStatus::Ok)
+            .then_some(())
+            .ok_or_else(|| status.into())
+    }
+
     pub fn close(&mut self) -> Result<(), SessionError> {
         let Some(handle) = self.handle.take() else {
             return Ok(());
@@ -815,6 +859,20 @@ mod tests {
                 7,
                 "porsche-0123456789abcdef0123456789abcdef"
             ),
+            Err(SessionError::StaleHandle)
+        );
+    }
+
+    #[test]
+    fn notification_device_controls_require_authenticated_session() {
+        let mut session = LiveSession { handle: None };
+        assert_eq!(session.device_list(), Err(SessionError::StaleHandle));
+        assert_eq!(
+            session.device_remove("bad device"),
+            Err(SessionError::InvalidInput)
+        );
+        assert_eq!(
+            session.device_preference("device-id", false),
             Err(SessionError::StaleHandle)
         );
     }

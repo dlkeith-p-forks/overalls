@@ -512,6 +512,77 @@ pub unsafe extern "C" fn mila_session_web_set(
             })
     })
 }
+
+/// Read the authenticated caller's notification devices.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_device_ls(
+    handle: u64,
+    out: *mut u8,
+    capacity: usize,
+    written: *mut usize,
+) -> SessionStatus {
+    guarded(|| {
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        let data = runtime.block_on(session.device_ls()).map_err(|e| match e {
+            mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+            _ => SessionStatus::Invalid,
+        })?;
+        output(&data, out, capacity, written)
+    })
+}
+
+/// Revoke one authenticated caller-owned notification device.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_device_rm(
+    handle: u64,
+    device: *const u8,
+    device_len: usize,
+) -> SessionStatus {
+    guarded(|| {
+        let device = std::str::from_utf8(bytes(device, device_len, 128)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        runtime
+            .block_on(session.device_rm(device))
+            .map_err(|e| match e {
+                mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+                _ => SessionStatus::Invalid,
+            })
+    })
+}
+
+/// Enable or disable one authenticated caller-owned notification device.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_device_prefs(
+    handle: u64,
+    device: *const u8,
+    device_len: usize,
+    enabled: u8,
+) -> SessionStatus {
+    guarded(|| {
+        if enabled > 1 {
+            return Err(SessionStatus::Invalid);
+        }
+        let device = std::str::from_utf8(bytes(device, device_len, 128)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        runtime
+            .block_on(session.device_prefs(device, enabled == 1))
+            .map_err(|e| match e {
+                mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+                _ => SessionStatus::Invalid,
+            })
+    })
+}
 /// Copy validated display JSON: {"machines":[snapshot rows],"has_more":bool}.
 /// # Safety
 /// out references capacity writable bytes; written is writable. Null out with zero
