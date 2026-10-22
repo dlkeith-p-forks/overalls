@@ -10,6 +10,11 @@
         <TextBlock x:Name="PageTitle" FontSize="28" />
         <TextBlock x:Name="PageBody" TextWrapping="Wrap" />
         <TextBlock x:Name="StatusText" Opacity="0.7" />
+        <StackPanel Spacing="6">
+          <TextBlock x:Name="DeploymentHostLabel" />
+          <TextBox x:Name="DeploymentHost" PlaceholderText="overalls.example" />
+          <Button x:Name="ConnectDeployment" Click="ConnectToDeployment" HorizontalAlignment="Left" />
+        </StackPanel>
         <ListView x:Name="MachineRows" DisplayMemberPath="Name" MinHeight="120" />
         <StackPanel x:Name="MachinePanel" Spacing="8">
           <TextBlock x:Name="MachineCommandsTitle" FontSize="18" />

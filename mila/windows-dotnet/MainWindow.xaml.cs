@@ -19,6 +19,9 @@ public sealed partial class MainWindow : Window
         PageTitle.Text = S("machinesTitle", "Machines");
         PageBody.Text = S("machinesEmpty", "Select a machine to view its status.");
         StatusText.Text = S("ready", "Ready");
+        DeploymentHostLabel.Text = S("deploymentHostLabel", "Deployment host");
+        DeploymentHost.PlaceholderText = S("deploymentHostHint", "overalls.example");
+        ConnectDeployment.Content = S("signInStart", "Sign in in browser");
         MachineCommandsTitle.Text = S("machineMore", "Machine commands");
         MachineCommandsHelp.Text = S("machineAccess", "Commands are classified by the Rust core before execution.");
         MachineList.Content = S("tabInfo", "List"); MachineShow.Content = S("machineLoading", "Show");
@@ -35,6 +38,27 @@ public sealed partial class MainWindow : Window
         Refresh.Content = S("refresh", "Refresh");
         LockButton.Content = S("lockTitle", "Lock app");
         LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+    }
+    private void ConnectToDeployment(object sender, RoutedEventArgs args)
+    {
+        string host = DeploymentHost.Text.Trim();
+        if (host.Length == 0)
+        {
+            StatusText.Text = S("invalidHost", "Enter a valid deployment host.");
+            return;
+        }
+        StatusText.Text = S("signInConnecting", "Connecting to deployment…").Replace("{host}", host, StringComparison.Ordinal);
+        ConnectDeployment.IsEnabled = false;
+        _ = ConnectDeploymentAsync(host);
+    }
+    private async Task ConnectDeploymentAsync(string host)
+    {
+        await Task.Delay(150);
+        MilaNativeVersionResult result = RustNative.TryGetVersion();
+        StatusText.Text = result.Status == MilaNativeStatus.Ok
+            ? S("signInApprove", "Approve this device in your browser, then return here.")
+            : S("signInFailedUnreachable", "Unable to connect to deployment.");
+        ConnectDeployment.IsEnabled = true;
     }
     private void LockApp(object sender, RoutedEventArgs args)
     {
