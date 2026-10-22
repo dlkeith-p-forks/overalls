@@ -1,5 +1,5 @@
 ---
-digest: 8153ea411757442362c88d904652db9275714a37019ebc30530d4804a813ce78
+digest: 63f2c014d454e961979d47da1a0b961774a7b97c76d34968e8d21c109d518d0a
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Concurrent native change is outside this Hegel verification update
+Native session and terminal UI changes preserve Rust-owned validation and existing boundaries.

@@ -72,7 +72,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         is MilaSessionConnection.Connected -> MilaStrings.text(MilaMessage.Connected)
         is MilaSessionConnection.Failed -> MilaStrings.text(MilaMessage.RuntimeUnavailable)
     }
-    val listing = (connection as? MilaSessionConnection.Connected)?.listing
+    val listing = (signInState as? MilaSignInState.SignedIn)?.listing ?: (connection as? MilaSessionConnection.Connected)?.listing
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(MilaStrings.text(MilaMessage.AppName), style = MaterialTheme.typography.headlineSmall)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -92,7 +92,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
             is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
             MilaRoute.Settings -> Detail("Settings", "Runtime settings are managed by the core library.")
         }
-        if (route == MilaRoute.Machines) TerminalControls(adapter)
+        if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(adapter)
     }
     LaunchedEffect(Unit) { refresh() }
 }
