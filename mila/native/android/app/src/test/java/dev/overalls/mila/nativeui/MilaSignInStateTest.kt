@@ -4,6 +4,11 @@ import org.junit.Assert.*
 import org.junit.Test
 private class SignInAdapter(private val result: MilaFfiResult): MilaFfiAdapter { override suspend fun call(request: MilaFfiRequest)=result }
 class MilaSignInStateTest {
+ @Test fun sessionConnectConfigRejectsMissingTrustAndKey() {
+  assertThrows(IllegalArgumentException::class.java) { MilaSessionConnectConfig(byteArrayOf(), "ssh-key") }
+  assertThrows(IllegalArgumentException::class.java) { MilaSessionConnectConfig(byteArrayOf(1), "") }
+ }
+
  @Test fun successfulBootstrapProducesSignedInListing() = runBlocking {
   val payload = MilaFfiPayload("{\"machines\":[],\"has_more\":false}".toByteArray())
   val d=MilaDeployment("mila.example"); val c=MilaSignInController(SignInAdapter(MilaFfiResult.Success(MilaFfiResponse(payload))))

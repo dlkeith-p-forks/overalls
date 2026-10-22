@@ -10,6 +10,35 @@ sealed interface MilaSignInState {
 
 class MilaSignInController(private val adapter: MilaFfiAdapter, private val store: MilaDeploymentStore? = null) {
  var state: MilaSignInState = MilaSignInState.SignedOut; private set
+
+ /**
+  * Establishes the real certificate-authenticated Rust session. Trust bytes and the signer
+  * remain in the native boundary; the controller only publishes the validated listing.
+  */
+ suspend fun signIn(deployment: MilaDeployment, config: MilaSessionConnectConfig, signer: MilaDeviceKey) {
+  store?.write(deployment)
+  state = MilaSignInState.Connecting(deployment)
+  val connector = adapter as? MilaSessionConnector
+  val session = runCatching {
+   require(connector != null) { "native session connector unavailable" }
+   connector.connect(deployment, config, signer) ?: error("session connection refused")
+  }.getOrNull()
+  if (session == null) {
+   state = MilaSignInState.Failed(deployment, MilaFfiError.Unavailable)
+   return
+  }
+  val listing = runCatching {
+   session.readMachines()
+   MilaSessionListing.decode(session.listing())
+  }.getOrNull()
+  if (listing == null) {
+   session.close()
+   state = MilaSignInState.Failed(deployment, MilaFfiError.Unavailable)
+  } else {
+   connector?.bindSession(session)
+   state = MilaSignInState.SignedIn(deployment, listing, store?.readApproval() ?: MilaApprovalState.NotRequired)
+  }
+ }
  suspend fun signIn(deployment: MilaDeployment) {
   store?.write(deployment)
   state = MilaSignInState.Connecting(deployment)
@@ -29,5 +58,8 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
   store?.writeApproval(state)
   this.state = signedIn.copy(approval = state)
  }
- fun signOut() { state = MilaSignInState.SignedOut }
+ fun signOut() {
+  (adapter as? MilaSessionConnector)?.bindSession(null)
+  state = MilaSignInState.SignedOut
+ }
 }

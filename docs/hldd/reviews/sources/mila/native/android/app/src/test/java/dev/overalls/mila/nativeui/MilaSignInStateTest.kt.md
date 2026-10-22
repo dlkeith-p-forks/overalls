@@ -1,5 +1,5 @@
 ---
-digest: ecb245cbc9cf74fd34e9461ff144d1a7230f7554c9d3b64d36ebf35c1f51dbbe
+digest: 8cf59db0cb6c3bf9335046f99cd166578b1743c236efd2eea10b255bd02b65ed
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -7,12 +7,12 @@ path: mila/native/android/app/src/test/java/dev/overalls/mila/nativeui/MilaSignI
 reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
-  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/19-coverage.md: d4d4ea5596a25a31d383ff07f9fe303ee4f2bbb1c207358170260c1a6b168e46
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Android sign-in controller maps typed Rust bootstrap outcomes to deployment-scoped session state; no protocol impact.
+Android sign-in now establishes and binds a typed certificate-authenticated Rust session when connector inputs are supplied.

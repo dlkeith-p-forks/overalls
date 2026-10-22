@@ -128,6 +128,25 @@ interface MilaFfiAdapter {
     fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))
 }
 
+/** Inputs needed to establish the certificate-authenticated Porsche session. */
+data class MilaSessionConnectConfig(
+    val trustDocument: ByteArray,
+    val publicKey: String,
+    val timeoutMs: Int = 15_000,
+) {
+    init {
+        require(trustDocument.isNotEmpty()) { "empty SSH trust document" }
+        require(publicKey.isNotBlank()) { "empty device public key" }
+        require(timeoutMs in 1..120_000) { "invalid session timeout" }
+    }
+}
+
+/** Adapter capability used by sign-in to retain the live Rust session authority. */
+interface MilaSessionConnector {
+    fun connect(deployment: MilaDeployment, config: MilaSessionConnectConfig, signer: MilaDeviceKey): MilaSessionHandle?
+    fun bindSession(session: MilaSessionHandle?)
+}
+
 /** Explicit placeholder until generated Rust bindings are linked by the host app. */
 object UnavailableMilaFfiAdapter : MilaFfiAdapter {
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {
@@ -275,11 +294,18 @@ class MilaSessionHandle internal constructor(private val nativeHandle: Long) : A
 /** Typed Android adapter. Native linkage is lazy so the UI remains testable without a device. */
 class LinkedMilaFfiAdapter(
     private val bindings: MilaRustBindings = MilaRustFfi,
-) : MilaFfiAdapter {
+) : MilaFfiAdapter, MilaSessionConnector {
     @Volatile private var authenticatedSession: MilaSessionHandle? = null
 
     /** Binds the adapter to the already certificate-authenticated session. */
-    fun bindSession(session: MilaSessionHandle?) { authenticatedSession = session }
+    override fun bindSession(session: MilaSessionHandle?) {
+        authenticatedSession?.close()
+        authenticatedSession = session
+    }
+
+    override fun connect(deployment: MilaDeployment, config: MilaSessionConnectConfig, signer: MilaDeviceKey): MilaSessionHandle? =
+        bindings.sessionConnect(config.trustDocument.copyOf(), deployment.host, config.publicKey,
+            deployment.port, config.timeoutMs, signer)
 
     override suspend fun machineAction(machineId: UUID, command: MilaMachineCommand): Result<Unit> {
         val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))

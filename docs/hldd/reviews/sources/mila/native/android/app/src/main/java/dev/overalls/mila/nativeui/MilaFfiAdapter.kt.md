@@ -1,5 +1,5 @@
 ---
-digest: c6b986d919f062bb30a57adb22c2f4e508e564f7ebd77056599a9903af010b9e
+digest: 8aeec6fb72ba1fa722ca227c8f462a14ee82e42aa7b1e7591362918c9676b442
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Authenticated thread actions and Apple SSH-key operations are bounded at Rust and native FFI boundaries.
+Android sign-in now establishes and binds a typed certificate-authenticated Rust session when connector inputs are supplied.
