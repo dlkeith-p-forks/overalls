@@ -1,5 +1,5 @@
 ---
-digest: 1178920c68a6912b0a5886ba1611d85e849c8dd189027e4b5620fca70e652cf2
+digest: c5cdac1b6e915b75cf6dac8e401c78ee0c504776a1b81c7c95072c1be5eb3a5f
 disposition: no-impact
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux settings and locale persistence changes; no new domain or topology impact.
+Reviewed Linux sign-in deployment selection UI; no new domain or topology impact.

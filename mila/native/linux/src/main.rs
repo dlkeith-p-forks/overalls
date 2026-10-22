@@ -246,12 +246,19 @@ impl NativeState {
         let sign_in_controls = Box::new(Orientation::Horizontal, 8);
         let sign_in = self.sign_in.clone();
         let sign_in_status = content.clone();
+        let deployment_input = deployment.clone();
         let sign_in_button = Button::with_label(&strings::text(strings::Message::SignInStart));
         sign_in_button.connect_clicked(move |_| {
+            let host = deployment_input.text().trim().to_owned();
+            let Ok(selection) = persistence::DeploymentSelection::validate(&host) else {
+                sign_in_status
+                    .set_label(&strings::text(strings::Message::SignInDeploymentRequired));
+                return;
+            };
+            let _ = persistence::save(&selection);
             let mut flow = sign_in.borrow_mut();
             *flow = flow.clone().apply(SignInEvent::Start);
-            sign_in_status
-                .set_label("Sign-in connecting; certificate session is pending native signer.");
+            sign_in_status.set_label(&strings::text(strings::Message::SignInConnecting));
         });
         sign_in_controls.append(&sign_in_button);
 

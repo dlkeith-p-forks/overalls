@@ -38,6 +38,8 @@ pub(crate) enum Message {
     Locale,
     SaveSettings,
     SignInStart,
+    SignInDeploymentRequired,
+    SignInConnecting,
     SignInApprove,
     SignInOpenBrowser,
     SignInSignOut,
@@ -82,6 +84,8 @@ pub(crate) fn text(message: Message) -> String {
         Message::Locale => "locale",
         Message::SaveSettings => "settingsSave",
         Message::SignInStart => "signInStart",
+        Message::SignInDeploymentRequired => "signInDeploymentRequired",
+        Message::SignInConnecting => "signInConnecting",
         Message::SignInApprove => "signInApprove",
         Message::SignInOpenBrowser => "signInOpenBrowser",
         Message::SignInSignOut => "signInSignOut",
@@ -132,6 +136,10 @@ fn fallback(message: Message) -> &'static str {
         Message::Locale => "Locale",
         Message::SaveSettings => "Save settings",
         Message::SignInStart => "Sign in with browser",
+        Message::SignInDeploymentRequired => "Select a deployment before signing in.",
+        Message::SignInConnecting => {
+            "Sign-in connecting; certificate session is pending native transport."
+        }
         Message::SignInApprove => "Await approval",
         Message::SignInOpenBrowser => "Open approval page",
         Message::SignInSignOut => "Sign out",

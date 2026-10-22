@@ -1408,6 +1408,11 @@ Forget deployment action. Forget removes only that selection; trust, key and
 remote device records remain under their separate authorities. A multi-deployment
 list and complete sign-in UI are still open.
 
+The GTK sign-in action refuses to start until the deployment field passes the
+same canonical host validator used by persistence, then saves that selection
+before entering the generation-scoped flow. Native transport, approval polling
+and a multi-deployment list remain separate gaps.
+
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command
