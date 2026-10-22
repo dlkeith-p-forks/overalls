@@ -5,7 +5,7 @@ defmodule Marshall.Agents.ExecutorRPC do
   alias Marshall.Inference.Credentials
 
   @maintenance_routes ~w(maintenance_claim maintenance_transition maintenance_artifact bootstrap_artifact)
-  @routes ~w(register heartbeat claim transition attachment_upload attachment_transfer) ++
+  @routes ~w(register heartbeat claim transition attachment_upload attachment_transfer artifact_chunk) ++
             @maintenance_routes
 
   # @cc [owner:ghuntley,label:security;recovery] executor-rpc-host-binding
@@ -177,6 +177,42 @@ defmodule Marshall.Agents.ExecutorRPC do
     end
   end
 
+  defp operation(
+         "artifact_chunk",
+         %{
+           "binding" => _,
+           "executor_id" => executor_id,
+           "fence_epoch" => fence,
+           "command_id" => command_id,
+           "publish_request_id" => request_id,
+           "file_index" => file_index,
+           "chunk_index" => chunk_index,
+           "sha256" => sha,
+           "data" => data
+         } = input
+       )
+       when map_size(input) == 9 and is_integer(fence) and fence > 0 and
+              is_integer(file_index) and file_index in 0..254 and is_integer(chunk_index) and
+              chunk_index >= 0 and is_binary(data) do
+    with true <- Enum.all?([executor_id, command_id, request_id], &OverallsProtocol.uuid?/1),
+         true <- valid_digest?(sha),
+         {:ok, bytes} <- Base.decode64(data),
+         true <- byte_size(bytes) in 1..Marshall.Artifacts.Staging.chunk_bytes(),
+         true <- Marshall.Artifacts.Blobs.sha256(bytes) == sha do
+      {:ok,
+       {:artifact_chunk, executor_id, fence, command_id,
+        %{
+          publish_request_id: request_id,
+          file_index: file_index,
+          chunk_index: chunk_index,
+          sha256: sha,
+          data: bytes
+        }}}
+    else
+      _ -> {:error, :invalid_request}
+    end
+  end
+
   defp operation(_, _), do: {:error, :invalid_request}
 
   @spec parse_transfer(term()) ::
@@ -332,6 +368,16 @@ defmodule Marshall.Agents.ExecutorRPC do
   defp execute!({:bootstrap_artifact, id, fence, attempt_id, digest}, binding) do
     parsed = unwrap!(OverallsProtocol.PrivateServices.binding(binding))
     Bootstrap.artifact_locked!(parsed, id, fence, attempt_id, digest)
+  end
+
+  defp execute!({:artifact_chunk, id, fence, command_id, chunk}, binding) do
+    parsed = unwrap!(OverallsProtocol.PrivateServices.binding(binding))
+
+    command =
+      ExecutorSession.started_command_locked!(parsed, id, fence, command_id, :artifact_stage)
+
+    Marshall.Artifacts.Staging.receive_chunk_locked!(command, chunk)
+    %{accepted: true}
   end
 
   defp unwrap!({:ok, value}), do: value

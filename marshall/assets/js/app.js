@@ -1,4 +1,5 @@
 import {ThreadComposer} from "./thread_composer.js";
+import {ArtifactFrame} from "./artifact_frame.js";
 import {AndroidDisplay} from "./android_display.js";
 import {Handbook} from "./handbook.js";
 import {WorkspaceNavigation, MachineConnection} from "./workspace.js";
@@ -83,6 +84,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
     DashboardVisibility,
     RepositoryLaunchComplete,
     ThreadComposer,
+    ArtifactFrame,
   },
 });
 // Show progress bar on live navigation and form submits

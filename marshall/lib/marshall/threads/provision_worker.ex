@@ -42,9 +42,7 @@ defmodule Marshall.Threads.ProvisionWorker do
         %Thread{} = thread ->
           if thread.machine_key == expected_key do
             Generation.ensure_current!(thread)
-            updated = Ledger.update!(thread, :bind_machine, %{status: :provisioning})
-            Generation.sync!(updated)
-            {:ok, updated}
+            {:ok, Ledger.update!(thread, :begin_provisioning, %{})}
           else
             :done
           end
@@ -77,8 +75,8 @@ defmodule Marshall.Threads.ProvisionWorker do
                 Marshall.Compute.Idle.enable_locked!(machine)
               end
 
-              bound = Ledger.update!(current, :bind_machine, %{machine_id: vm.id})
-              Generation.sync!(bound)
+              bound = Ledger.update!(current, :record_admitted_machine, %{machine_id: vm.id})
+              _generation = Generation.sync!(bound)
               {:ok, bound, actor, vm}
             else
               {:error, reason} -> Ledger.rollback(error_reason(reason))
@@ -176,14 +174,10 @@ defmodule Marshall.Threads.ProvisionWorker do
           Ledger.update!(agent_thread, :set_mode, %{mode: current.mode})
 
           bound =
-            Ledger.update!(current, :bind_machine, %{
+            Ledger.update!(current, :bind_agent, %{
               agent_root_id: root.id,
-              agent_thread_id: agent_thread.id,
-              status: :provisioning,
-              failure_reason: nil
+              agent_thread_id: agent_thread.id
             })
-
-          Generation.sync!(bound)
 
           case Marshall.Agents.submit_prompt(
                  %{
@@ -196,8 +190,7 @@ defmodule Marshall.Threads.ProvisionWorker do
                  actor: actor
                ) do
             {:ok, _turn} ->
-              ready = Ledger.update!(bound, :bind_machine, %{status: :ready, failure_reason: nil})
-              Generation.sync!(ready)
+              ready = Ledger.update!(bound, :mark_ready, %{})
               Marshall.Threads.TitleWorker.new(%{"thread_id" => ready.id}) |> Oban.insert!()
               {:ok, ready}
 
@@ -265,13 +258,7 @@ defmodule Marshall.Threads.ProvisionWorker do
              {:ok, current} ->
                cleanup_vm(current)
 
-               failed =
-                 Ledger.update!(current, :mark_failed, %{
-                   status: :failed,
-                   failure_reason: normalized
-                 })
-
-               Generation.sync!(failed)
+               _failed = Ledger.update!(current, :mark_failed, %{failure_reason: normalized})
 
                Ledger.after_commit(fn ->
                  Marshall.Events.emit("thread.provision_failed",

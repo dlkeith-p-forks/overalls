@@ -65,7 +65,7 @@ defmodule Marshall.MixProject do
       {:porsche, path: "../porsche", only: :test, runtime: false},
       {:audi, path: "../audi", only: :test, runtime: false},
       {:logger_json, "~> 7.0"},
-      {:earmark, "~> 1.4.49", runtime: false},
+      {:earmark, "~> 1.4.49"},
       {:picosat_elixir, "~> 0.2"},
       {:sourceror, "~> 1.8", only: [:dev, :test]},
       {:oban, "~> 2.0"},

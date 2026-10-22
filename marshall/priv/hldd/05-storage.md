@@ -629,3 +629,38 @@ observability layer. Reduced version-4 reports do not change pool ownership or
 native storage formats. A busy pool retains its last measured
 capacity and original freshness; an unavailable pool clears credit. Historical
 Marshall diagnostic columns remain retained but receive no active writes.
+
+## Artifact content and page storage
+
+Artifact content lives in Marshall's PostgreSQL, the only shared durable store
+([ADR-0253](repo:docs/architecture/decisions/0253-artifacts-domain.md)).
+A file is a content-addressed SHA-256 `Blob` split into 1 MiB chunks
+([blobs](repo:marshall/lib/marshall/artifacts/blobs.ex)). Identical bytes are
+stored once across versions and artifacts. `VersionFile` rows reference blobs
+by digest; versions never change. Existing database backups cover all content;
+no object store, local disk cache or guest copy is authoritative.
+
+| Bound | Value | Enforcement |
+| --- | --- | --- |
+| Page | 16 MiB | Before any row is written |
+| One publish | 255 files, 64 MiB | Before any row is written |
+| One version | 511 files, 256 MiB | Before any row is written |
+| Page storage per scope | 20 MiB UTF-8 text including keys | Under the `StorageUsage` row lock |
+| Storage key | 256 bytes | Before the write |
+| Per owner | None | Rejected by the user; total growth is a metric, not a quota |
+
+Page storage has two namespaces. `personal` is keyed by artifact and viewing
+user; `shared` is keyed by artifact. Values are text only and never logged.
+`StorageUsage` counts bytes and entries per scope. The daily
+[`UsageReconcileJob`](repo:marshall/lib/marshall/artifacts/usage_reconcile_job.ex)
+recomputes counters from entries under the usage row lock and emits
+`artifact.usage_drift` for each corrected scope.
+
+Reclamation is separate from deletion. The purge job removes a deleted
+artifact's rows in batches; the hourly
+[`SweepJob`](repo:marshall/lib/marshall/artifacts/sweep_job.ex) deletes at most
+500 blobs that no version references and that are older than one hour, then
+re-enqueues itself while full batches remain. Guest-staged chunks belong to
+their `PublishRequest` and are released on every terminal state. PostgreSQL
+grows with artifact content; moving blobs to an object store is the recorded
+upgrade if total bytes outgrow backup budgets.

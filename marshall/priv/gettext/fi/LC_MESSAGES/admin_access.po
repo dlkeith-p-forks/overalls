@@ -351,22 +351,22 @@ msgstr "kirjata tämän tilin ulos kaikkialta"
 msgid "start this node evacuation"
 msgstr "aloittaa tämän solmun tyhjennyksen"
 
-#: lib/marshall_web/live/admin/scim_live.ex:207
+#: lib/marshall_web/live/admin/scim_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr "Määritä hakemistojen provisiointi, identiteetin elinkaari ja hallitut tiimit."
 
-#: lib/marshall_web/live/admin/scim_live.ex:300
+#: lib/marshall_web/live/admin/scim_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr "Kopioi tämä haltijatunnus nyt. Sitä ei näytetä uudelleen."
 
-#: lib/marshall_web/live/admin/scim_live.ex:293
+#: lib/marshall_web/live/admin/scim_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr "Poista SCIM käytöstä"
 
-#: lib/marshall_web/live/admin/scim_live.ex:253
+#: lib/marshall_web/live/admin/scim_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr "Ota SCIM käyttöön ja luo tunnus"
@@ -376,32 +376,32 @@ msgstr "Ota SCIM käyttöön ja luo tunnus"
 msgid "SCIM configuration could not be updated."
 msgstr "SCIM-määritystä ei voitu päivittää."
 
-#: lib/marshall_web/live/admin/scim_live.ex:205
+#: lib/marshall_web/live/admin/scim_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "SCIM-provisiointi"
 
-#: lib/marshall_web/live/admin/scim_live.ex:331
+#: lib/marshall_web/live/admin/scim_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "A client secret is set. Leave blank to keep it."
 msgstr "Asiakassalaisuus on asetettu. Jätä tyhjäksi säilyttääksesi sen."
 
-#: lib/marshall_web/live/admin/scim_live.ex:226
+#: lib/marshall_web/live/admin/scim_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Accounts pending retirement"
 msgstr "Käytöstä poistoa odottavat tilit"
 
-#: lib/marshall_web/live/admin/scim_live.ex:344
+#: lib/marshall_web/live/admin/scim_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Clear the stored client secret"
 msgstr "Tyhjennä tallennettu asiakassalaisuus"
 
-#: lib/marshall_web/live/admin/scim_live.ex:287
+#: lib/marshall_web/live/admin/scim_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM provisioning? Managed teams stay locked until an administrator hands them off."
 msgstr "Poistetaanko SCIM-provisiointi käytöstä? Hallitut tiimit pysyvät lukittuina, kunnes ylläpitäjä luovuttaa ne."
 
-#: lib/marshall_web/live/admin/scim_live.ex:245
+#: lib/marshall_web/live/admin/scim_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
 msgstr "SCIM:n käyttöönotto poistaa taikalinkkikirjautumisen käytöstä, arkistoi alkuperäiset tiimit seitsemän päivän armonajan jälkeen ja luo haltijatunnuksen."
@@ -411,43 +411,43 @@ msgstr "SCIM:n käyttöönotto poistaa taikalinkkikirjautumisen käytöstä, ark
 msgid "Enter an absolute https:// issuer URL."
 msgstr "Anna absoluuttinen https://-alkuinen myöntäjän URL-osoite."
 
-#: lib/marshall_web/live/admin/scim_live.ex:335
+#: lib/marshall_web/live/admin/scim_live.ex:337
 #, elixir-autogen, elixir-format
 msgid "No client secret is set."
 msgstr "Asiakassalaisuutta ei ole asetettu."
 
-#: lib/marshall_web/live/admin/scim_live.ex:320
+#: lib/marshall_web/live/admin/scim_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "OIDC client ID"
 msgstr "OIDC-asiakastunnus"
 
-#: lib/marshall_web/live/admin/scim_live.ex:327
+#: lib/marshall_web/live/admin/scim_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "OIDC client secret"
 msgstr "OIDC-asiakassalaisuus"
 
-#: lib/marshall_web/live/admin/scim_live.ex:312
+#: lib/marshall_web/live/admin/scim_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "OIDC issuer"
 msgstr "OIDC-myöntäjä"
 
-#: lib/marshall_web/live/admin/scim_live.ex:215
-#: lib/marshall_web/live/admin/scim_live.ex:242
+#: lib/marshall_web/live/admin/scim_live.ex:217
+#: lib/marshall_web/live/admin/scim_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "Provisiointi"
 
-#: lib/marshall_web/live/admin/scim_live.ex:277
+#: lib/marshall_web/live/admin/scim_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Rotate bearer token"
 msgstr "Vaihda haltijatunnus"
 
-#: lib/marshall_web/live/admin/scim_live.ex:271
+#: lib/marshall_web/live/admin/scim_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Rotate the SCIM bearer token? The directory must be updated with the new token."
 msgstr "Vaihdetaanko SCIM-haltijatunnus? Hakemisto on päivitettävä uudella tunnuksella."
 
-#: lib/marshall_web/live/admin/scim_live.ex:259
+#: lib/marshall_web/live/admin/scim_live.ex:261
 #, elixir-autogen, elixir-format
 msgid "Rotating the bearer token immediately invalidates the previous token."
 msgstr "Haltijatunnuksen vaihtaminen mitätöi edellisen tunnuksen välittömästi."
@@ -467,17 +467,17 @@ msgstr "SCIM-provisiointi poistettu käytöstä."
 msgid "SCIM provisioning enabled."
 msgstr "SCIM-provisiointi otettu käyttöön."
 
-#: lib/marshall_web/live/admin/scim_live.ex:348
+#: lib/marshall_web/live/admin/scim_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Save single sign-on settings"
 msgstr "Tallenna kertakirjautumisen asetukset"
 
-#: lib/marshall_web/live/admin/scim_live.ex:232
+#: lib/marshall_web/live/admin/scim_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Single sign-on"
 msgstr "Kertakirjautuminen"
 
-#: lib/marshall_web/live/admin/scim_live.ex:306
+#: lib/marshall_web/live/admin/scim_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Single sign-on (OIDC)"
 msgstr "Kertakirjautuminen (OIDC)"
@@ -487,37 +487,37 @@ msgstr "Kertakirjautuminen (OIDC)"
 msgid "Single sign-on settings saved."
 msgstr "Kertakirjautumisen asetukset tallennettu."
 
-#: lib/marshall_web/live/admin/scim_live.ex:213
+#: lib/marshall_web/live/admin/scim_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Tila"
 
-#: lib/marshall_web/live/admin/scim_live.ex:229
+#: lib/marshall_web/live/admin/scim_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Teams retiring"
 msgstr "Käytöstä poistuvat tiimit"
 
-#: lib/marshall_web/live/admin/scim_live.ex:314
+#: lib/marshall_web/live/admin/scim_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "The exact https:// issuer URL from provider discovery."
 msgstr "Tarkka https://-alkuinen myöntäjän URL-osoite palveluntarjoajan etsinnästä."
 
-#: lib/marshall_web/live/admin/scim_live.ex:235
+#: lib/marshall_web/live/admin/scim_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "[configured]"
 msgstr "[määritetty]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:223
+#: lib/marshall_web/live/admin/scim_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "[disabled]"
 msgstr "[poistettu käytöstä]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:222
+#: lib/marshall_web/live/admin/scim_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "[enabled]"
 msgstr "[käytössä]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:236
+#: lib/marshall_web/live/admin/scim_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "[not configured]"
 msgstr "[ei määritetty]"
@@ -527,7 +527,7 @@ msgstr "[ei määritetty]"
 msgid "change SCIM provisioning"
 msgstr "muuta SCIM-provisiointia"
 
-#: lib/marshall_web/live/admin/scim_live.ex:187
+#: lib/marshall_web/live/admin/scim_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "ei saatavilla"

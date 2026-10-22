@@ -9,6 +9,8 @@ let
   names = builtins.attrNames cfg.instances;
   ports = map (instance: instance.port) (builtins.attrValues cfg.instances);
   fleetPorts = map (instance: instance.fleetPort) (builtins.attrValues cfg.instances);
+  artifactContent = cfg.artifactContent.host != null;
+  artifactPorts = lib.optionals artifactContent (map (instance: instance.artifactPort) (builtins.attrValues cfg.instances));
   fleetOtelEnabled = lib.attrByPath [ "services" "overallsOtelFleet" "enable" ] false config;
   editorReleases = {
     version = 1;
@@ -141,6 +143,32 @@ in
       keyFile = mkOption { type = types.nullOr localTypes.privatePath; default = null; description = "Runtime SSH CA private key delivered only to Marshall."; };
       retirement = mkOption { type = types.ints.positive; default = 2421446400; description = "SSH CA operational retirement in Unix seconds (2046-09-25)."; };
     };
+    # @cc [owner:ghuntley,label:security;deployment] marshall-artifact-content-origin
+    # services.marshall.artifactContent.host selects the separate artifact
+    # content origin. Only when it is non-null MUST the final launch wrapper set
+    # MARSHALL_ARTIFACT_CONTENT_HOST and the per-instance
+    # MARSHALL_ARTIFACT_TLS_PORT; otherwise both are cleared, so an
+    # EnvironmentFile cannot start a content listener. The content port MUST be
+    # distinct from every browser and fleet port. debugEcho is a machine-test
+    # fixture knob and MUST be refused unless machineTestFixture is set.
+    artifactContent = {
+      host = mkOption {
+        type = types.nullOr ((types.addCheck types.str (value: builtins.match "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+" value != null)) // { description = "lowercase multi-label DNS hostname"; });
+        default = null;
+        description = "Lowercase public DNS name of the isolated artifact content origin (for example usercontent.ghuntley.dev). It must differ from publicHost. Null disables the content listener and the artifact viewer reports that it is unavailable.";
+      };
+      debugEcho = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Machine-test only: makes GET /v/<ticket>/__echo report whether Cookie and Authorization reached Marshall and emit a probe Set-Cookie. Requires machineTestFixture; never enable in a deployment.";
+      };
+    };
+    machineTestFixture = mkOption {
+      type = types.bool;
+      default = false;
+      internal = true;
+      description = "Marks a disposable NixOS machine-test fixture. Test-only knobs such as artifactContent.debugEcho are refused unless this is set.";
+    };
     publicHostFile = mkOption {
       type = types.nullOr localTypes.privatePath;
       default = null;
@@ -253,6 +281,11 @@ in
             default = config.port + 1000;
             description = "Separate machine HTTPS port; never opened by openFirewall.";
           };
+          artifactPort = mkOption {
+            type = types.port;
+            default = config.port + 2000;
+            description = "Separate artifact content HTTPS port, bound on bindAddress with the backend certificate only when artifactContent.host is set. Opened by openFirewall like port.";
+          };
           fleetBindAddress = mkOption {
             type = types.addCheck localTypes.ipv4 (address: address != "0.0.0.0");
             default = "127.0.0.1";
@@ -314,13 +347,19 @@ in
         message = "Marshall backend ports must be distinct on a host."; }
       { assertion = builtins.length (ports ++ fleetPorts) == builtins.length (lib.unique (ports ++ fleetPorts));
         message = "Marshall browser and fleet ports must be distinct across local instances."; }
+      { assertion = builtins.length (ports ++ fleetPorts ++ artifactPorts) == builtins.length (lib.unique (ports ++ fleetPorts ++ artifactPorts));
+        message = "Marshall artifact content ports must be distinct from every browser and fleet port."; }
+      { assertion = !artifactContent || cfg.artifactContent.host != lib.toLower cfg.publicHost;
+        message = "Marshall artifactContent.host must differ from publicHost."; }
+      { assertion = !cfg.artifactContent.debugEcho || (cfg.machineTestFixture && artifactContent);
+        message = "Marshall artifactContent.debugEcho is a machine-test fixture knob; it requires machineTestFixture and a content host."; }
       { assertion = cfg.databaseConnectionBudget >= cfg.replicaCount * (cfg.poolSize + 1) + 10;
         message = "Marshall database budget must cover replicas * (poolSize + 1) + 10."; }
       { assertion = cfg.memoryMiB >= 256 * builtins.length names;
         message = "Marshall aggregate memory must provide at least 256 MiB per local instance."; }
     ];
 
-    networking.firewall.allowedTCPPorts = lib.optionals cfg.openFirewall ports;
+    networking.firewall.allowedTCPPorts = lib.optionals cfg.openFirewall (ports ++ artifactPorts);
     systemd.slices.marshall = {
       description = "Marshall control plane resource budget";
       sliceConfig = {
@@ -402,6 +441,7 @@ in
           export RELEASE_COOKIE
           RELEASE_COOKIE="$(${pkgs.coreutils}/bin/head -c 32 /dev/urandom | ${pkgs.coreutils}/bin/basenc --base16 -w0)"
           ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_FLEET_TLS_PORT -u MARSHALL_FLEET_BIND_IP \
+            -u MARSHALL_ARTIFACT_CONTENT_HOST -u MARSHALL_ARTIFACT_TLS_PORT -u MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO \
             -u MARSHALL_FLEET_ACME_DIRECTORY \
             -u MARSHALL_GITHUB_CLIENT_ID -u MARSHALL_GITHUB_CLIENT_SECRET_FILE -u MARSHALL_GITHUB_REDIRECT_URI \
             -u MARSHALL_GITHUB_TOOLS_MANIFEST_FILE -u MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE \
@@ -427,6 +467,7 @@ in
           default_image="$(${pkgs.python3}/bin/python3 ${./marshall-default-image.py} "$CREDENTIALS_DIRECTORY/default-image-id")" || exit 1
         ''}
         exec ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_SLO_SNAPSHOT -u MARSHALL_SERVICE_LEVEL_DIRECTORY -u MARSHALL_INGRESS_EDITOR_RELEASES -u OVERALLS_MARVIN_RELEASE \
+          -u MARSHALL_ARTIFACT_CONTENT_HOST -u MARSHALL_ARTIFACT_TLS_PORT -u MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO \
           -u MARSHALL_GITHUB_CLIENT_ID -u MARSHALL_GITHUB_CLIENT_SECRET_FILE -u MARSHALL_GITHUB_REDIRECT_URI -u MARSHALL_GITHUB_TOOLS_MANIFEST_FILE -u MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE \
           ${mailEnvironment}          PHX_SERVER=true RELEASE_DISTRIBUTION=none \
           ${lib.optionalString (cfg.githubBootstrapRelease != null) ("MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE=" + lib.escapeShellArg "${cfg.githubBootstrapRelease}/manifest.json")} \
@@ -455,6 +496,8 @@ in
           MARSHALL_DB_CA_CERTFILE="$CREDENTIALS_DIRECTORY/database-ca.crt" \
           MARSHALL_BIND_IP=${lib.escapeShellArg instance.bindAddress} \
           MARSHALL_TLS_PORT=${toString instance.port} \
+          ${lib.optionalString artifactContent ("MARSHALL_ARTIFACT_CONTENT_HOST=" + lib.escapeShellArg cfg.artifactContent.host + " MARSHALL_ARTIFACT_TLS_PORT=" + toString instance.artifactPort)} \
+          ${lib.optionalString cfg.artifactContent.debugEcho "MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO=true"} \
           MARSHALL_FLEET_BIND_IP=${lib.escapeShellArg instance.fleetBindAddress} \
           MARSHALL_FLEET_TLS_PORT=${toString instance.fleetPort} \
           MARSHALL_FLEET_LOOPBACK=${if instance.fleetLoopback then "true" else "false"} \

@@ -785,3 +785,42 @@ resource UUIDs, never capabilities, requests or guest content. Relay admission
 and renewal recheck the origin host's enabled, current authority as well as both
 gateway generations; retiring or disconnecting that origin ends its authority.
 An enabled evacuating origin may keep forwarding while its workloads move.
+
+## Artifacts and server-tool runbook
+
+Background work runs in Oban ([configuration](repo:marshall/config/config.exs)):
+
+| Job | Queue and schedule | Effect |
+| --- | --- | --- |
+| `Agents.ServerToolJob` | `agent_tools` (limit 10), enqueued with each server-tool command | Claims, executes and finishes one command; up to 5 attempts |
+| `Agents.ServerToolReconciler` | `maintenance`, every minute | Re-enqueues server-tool commands queued over 30 s; marks server claims older than 10 minutes `uncertain` |
+| `Artifacts.ExpiryJob` | `maintenance`, every minute | Expires tickets and staged publishes (resuming their parent command); deletes retired tickets after a day and audit rows after 90 days, 500 per run |
+| `Artifacts.PurgeJob` | `artifacts` (limit 5), enqueued by deletion | Deletes 1,000 content rows per step until done, then `deleted` |
+| `Artifacts.SweepJob` | `artifacts`, hourly at :20 | Deletes up to 500 unreferenced blobs older than one hour per run |
+| `Artifacts.UsageReconcileJob` | `maintenance`, daily at 03:40 | Corrects storage usage counters from entries |
+
+All jobs are idempotent; re-running one is safe.
+
+Routine actions:
+
+- **Moderate.** An elevated administrator opens `/admin/artifacts`, searches by
+  title, and deletes with a closed reason. The list shows metadata only. The
+  artifact moves to `deleting`, its tickets are revoked and the purge runs.
+  Moderation cannot be undone; versions are purged.
+- **Stuck deletion.** An artifact left in `deleting` has a missing or exhausted
+  `PurgeJob`. Re-enqueue it with the artifact ID; it resumes where it stopped.
+- **Stuck staged publish.** A `PublishRequest` in `staging` expires after 30
+  minutes; `ExpiryJob` releases its chunks and fails the parent command closed.
+  Do not edit request rows. Check that the guest executor advertises
+  `artifacts-v1` and that Ziggy accepts `artifact_chunk`.
+- **Uncertain server-tool command.** `uncertain` means the effect may have
+  committed. Inspect the artifact's versions or the subscription row before the
+  user retries. The model sees `claim_expired` and can read before writing.
+- **Storage drift.** `artifact.usage_drift` events name corrected scopes. A
+  steady stream indicates a bug in the storage writer, not a capacity problem.
+- **Disable the viewer.** Set `services.marshall.artifactContent.host = null`
+  and activate. Listing, publishing and moderation continue; content and the
+  storage bridge become unavailable. Outstanding tickets expire within five
+  minutes.
+- **Revoke access quickly.** Unsharing revokes the user's tickets in the same
+  transaction; the next content fetch fails. There is no cache to flush.

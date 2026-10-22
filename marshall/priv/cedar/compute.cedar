@@ -91,3 +91,39 @@ when { resource.owner == principal || resource.managers.contains(principal) ||
        resource.operators.contains(principal) || resource.viewers.contains(principal) ||
        resource.web_users.contains(principal) || resource.team_admins.contains(principal) ||
        resource.team_members.contains(principal) };
+
+// Artifacts: the immutable owner and co-owners hold every role; writers publish
+// and use all storage; viewers read, keep personal storage and read shared
+// storage. Every content action requires an active artifact.
+permit(principal is Marshall::User, action == Marshall::Action::"artifact_create",
+       resource is Marshall::ControlPlane);
+
+permit(principal is Marshall::User,
+       action in [Marshall::Action::"artifact_read", Marshall::Action::"artifact_publish",
+                  Marshall::Action::"artifact_share", Marshall::Action::"artifact_delete",
+                  Marshall::Action::"artifact_storage_personal",
+                  Marshall::Action::"artifact_storage_shared_read",
+                  Marshall::Action::"artifact_storage_shared_write"],
+       resource is Marshall::Artifact)
+when { resource.active && (resource.owner == principal || resource.owners.contains(principal)) };
+
+permit(principal is Marshall::User,
+       action in [Marshall::Action::"artifact_read", Marshall::Action::"artifact_publish",
+                  Marshall::Action::"artifact_storage_personal",
+                  Marshall::Action::"artifact_storage_shared_read",
+                  Marshall::Action::"artifact_storage_shared_write"],
+       resource is Marshall::Artifact)
+when { resource.active && resource.writers.contains(principal) };
+
+permit(principal is Marshall::User,
+       action in [Marshall::Action::"artifact_read",
+                  Marshall::Action::"artifact_storage_personal",
+                  Marshall::Action::"artifact_storage_shared_read"],
+       resource is Marshall::Artifact)
+when { resource.active && resource.viewers.contains(principal) };
+
+// Moderation: elevated administrators may delete any active artifact. They are
+// not granted content, storage or sharing access by this rule.
+permit(principal is Marshall::User, action == Marshall::Action::"artifact_admin_delete",
+       resource is Marshall::Artifact)
+when { resource.active && principal.administrator && principal.elevated };

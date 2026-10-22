@@ -737,6 +737,19 @@ Durable agent-event receipts also advance the enclosing thread's database activi
 clock after commit, so activity reflects work performed by its bound agent while
 archived and deleting threads remain unchanged.
 
+[ADR-0255](decisions/0255-thread-lifecycle-and-server-tool-dispatch.md) replaces
+the polling worker for ADR-0252's `thread` and `message_board` tools, and runs the
+`artifact` tool, with an Oban job under the prompting user's fresh Cedar and Access
+authority; it excludes Marshall-owned tools from guest executor claims and makes
+Thread status an AshStateMachine with one lifecycle audit event per transition.
+[ADR-0253](decisions/0253-artifacts-domain.md) adds `Marshall.Artifacts`:
+versioned, optimistic-base agent-published pages, Cedar owner/writer/viewer
+grants for users and teams, per-artifact storage, closed audit and administrator
+moderation. [ADR-0254](decisions/0254-isolated-artifact-content-origin.md) serves
+their content only from a cookie-free, sandboxed content host behind a separate
+proxy frontend. Machine-test acceptance remains pending in the
+[artifacts review](reviews/2026-10-21-artifacts-and-thread-tool.md).
+
 [ADR-0096](decisions/0096-lyra-developer-ssh.md) historically introduced the
 Rust `overalls` CLI, wildcard SSH setup and Audi proxying. ADR-0110 replaces
 its root guest username with a personal guest account. ADR-0158 now derives that

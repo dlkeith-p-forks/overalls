@@ -351,22 +351,22 @@ msgstr "ondoa akaunti hii kila mahali"
 msgid "start this node evacuation"
 msgstr "anza uhamishaji wa nodi hii"
 
-#: lib/marshall_web/live/admin/scim_live.ex:207
+#: lib/marshall_web/live/admin/scim_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr "Sanidi utoaji wa saraka, mzunguko wa maisha ya utambulisho na timu zinazosimamiwa."
 
-#: lib/marshall_web/live/admin/scim_live.ex:300
+#: lib/marshall_web/live/admin/scim_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr "Nakili tokeni hii ya bearer sasa. Haitaonyeshwa tena."
 
-#: lib/marshall_web/live/admin/scim_live.ex:293
+#: lib/marshall_web/live/admin/scim_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr "Lemaza SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:253
+#: lib/marshall_web/live/admin/scim_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr "Washa SCIM na uzalishe tokeni"
@@ -376,32 +376,32 @@ msgstr "Washa SCIM na uzalishe tokeni"
 msgid "SCIM configuration could not be updated."
 msgstr "Usanidi wa SCIM haukuweza kusasishwa."
 
-#: lib/marshall_web/live/admin/scim_live.ex:205
+#: lib/marshall_web/live/admin/scim_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "Utoaji wa SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:331
+#: lib/marshall_web/live/admin/scim_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "A client secret is set. Leave blank to keep it."
 msgstr "Siri ya mteja imewekwa. Acha wazi ili kuihifadhi."
 
-#: lib/marshall_web/live/admin/scim_live.ex:226
+#: lib/marshall_web/live/admin/scim_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Accounts pending retirement"
 msgstr "Akaunti zinazosubiri kustaafishwa"
 
-#: lib/marshall_web/live/admin/scim_live.ex:344
+#: lib/marshall_web/live/admin/scim_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Clear the stored client secret"
 msgstr "Futa siri ya mteja iliyohifadhiwa"
 
-#: lib/marshall_web/live/admin/scim_live.ex:287
+#: lib/marshall_web/live/admin/scim_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM provisioning? Managed teams stay locked until an administrator hands them off."
 msgstr "Zima utoaji wa SCIM? Timu zinazodhibitiwa zitabaki zimefungwa hadi msimamizi azikabidhi."
 
-#: lib/marshall_web/live/admin/scim_live.ex:245
+#: lib/marshall_web/live/admin/scim_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
 msgstr "Kuwasha SCIM huzima kuingia kwa kiungo cha ajabu, huhifadhi kumbukumbu za timu asilia baada ya kipindi cha neema cha siku saba na huunda tokeni ya mbebaji."
@@ -411,43 +411,43 @@ msgstr "Kuwasha SCIM huzima kuingia kwa kiungo cha ajabu, huhifadhi kumbukumbu z
 msgid "Enter an absolute https:// issuer URL."
 msgstr "Weka URL kamili ya mtoaji inayoanza na https://."
 
-#: lib/marshall_web/live/admin/scim_live.ex:335
+#: lib/marshall_web/live/admin/scim_live.ex:337
 #, elixir-autogen, elixir-format
 msgid "No client secret is set."
 msgstr "Hakuna siri ya mteja iliyowekwa."
 
-#: lib/marshall_web/live/admin/scim_live.ex:320
+#: lib/marshall_web/live/admin/scim_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "OIDC client ID"
 msgstr "Kitambulisho cha mteja wa OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:327
+#: lib/marshall_web/live/admin/scim_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "OIDC client secret"
 msgstr "Siri ya mteja wa OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:312
+#: lib/marshall_web/live/admin/scim_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "OIDC issuer"
 msgstr "Mtoaji wa OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:215
-#: lib/marshall_web/live/admin/scim_live.ex:242
+#: lib/marshall_web/live/admin/scim_live.ex:217
+#: lib/marshall_web/live/admin/scim_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "Utoaji"
 
-#: lib/marshall_web/live/admin/scim_live.ex:277
+#: lib/marshall_web/live/admin/scim_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Rotate bearer token"
 msgstr "Badilisha tokeni ya mbebaji"
 
-#: lib/marshall_web/live/admin/scim_live.ex:271
+#: lib/marshall_web/live/admin/scim_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Rotate the SCIM bearer token? The directory must be updated with the new token."
 msgstr "Badilisha tokeni ya mbebaji ya SCIM? Saraka lazima isasishwe kwa tokeni mpya."
 
-#: lib/marshall_web/live/admin/scim_live.ex:259
+#: lib/marshall_web/live/admin/scim_live.ex:261
 #, elixir-autogen, elixir-format
 msgid "Rotating the bearer token immediately invalidates the previous token."
 msgstr "Kubadilisha tokeni ya mbebaji hubatilisha mara moja tokeni iliyotangulia."
@@ -467,17 +467,17 @@ msgstr "Utoaji wa SCIM umezimwa."
 msgid "SCIM provisioning enabled."
 msgstr "Utoaji wa SCIM umewashwa."
 
-#: lib/marshall_web/live/admin/scim_live.ex:348
+#: lib/marshall_web/live/admin/scim_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Save single sign-on settings"
 msgstr "Hifadhi mipangilio ya kuingia mara moja"
 
-#: lib/marshall_web/live/admin/scim_live.ex:232
+#: lib/marshall_web/live/admin/scim_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Single sign-on"
 msgstr "Kuingia mara moja"
 
-#: lib/marshall_web/live/admin/scim_live.ex:306
+#: lib/marshall_web/live/admin/scim_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Single sign-on (OIDC)"
 msgstr "Kuingia mara moja (OIDC)"
@@ -487,37 +487,37 @@ msgstr "Kuingia mara moja (OIDC)"
 msgid "Single sign-on settings saved."
 msgstr "Mipangilio ya kuingia mara moja imehifadhiwa."
 
-#: lib/marshall_web/live/admin/scim_live.ex:213
+#: lib/marshall_web/live/admin/scim_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Hali"
 
-#: lib/marshall_web/live/admin/scim_live.ex:229
+#: lib/marshall_web/live/admin/scim_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Teams retiring"
 msgstr "Timu zinazostaafishwa"
 
-#: lib/marshall_web/live/admin/scim_live.ex:314
+#: lib/marshall_web/live/admin/scim_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "The exact https:// issuer URL from provider discovery."
 msgstr "URL kamili ya mtoaji ya https:// kutoka kwa ugunduzi wa mtoa huduma."
 
-#: lib/marshall_web/live/admin/scim_live.ex:235
+#: lib/marshall_web/live/admin/scim_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "[configured]"
 msgstr "[imesanidiwa]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:223
+#: lib/marshall_web/live/admin/scim_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "[disabled]"
 msgstr "[imezimwa]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:222
+#: lib/marshall_web/live/admin/scim_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "[enabled]"
 msgstr "[imewashwa]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:236
+#: lib/marshall_web/live/admin/scim_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "[not configured]"
 msgstr "[haijasanidiwa]"
@@ -527,7 +527,7 @@ msgstr "[haijasanidiwa]"
 msgid "change SCIM provisioning"
 msgstr "badilisha utoaji wa SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:187
+#: lib/marshall_web/live/admin/scim_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "haipatikani"

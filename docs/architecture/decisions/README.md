@@ -1,5 +1,14 @@
 # Architecture decision records
 
+[ADR-0253](0253-artifacts-domain.md) adds the Marshall Artifacts domain for
+versioned, Cedar-shared agent-published pages with per-artifact storage.
+[ADR-0254](0254-isolated-artifact-content-origin.md) serves their content from a
+locked-down, cookie-free content origin.
+[ADR-0255](0255-thread-lifecycle-and-server-tool-dispatch.md) dispatches the
+Marshall-owned `thread`, `message_board` and `artifact` tools through an Oban job
+instead of a polling worker, excludes them from guest executor claims, and makes
+Thread status a state machine.
+
 [ADR-0250](0250-independent-hldd-review-records.md) replaces aggregate HLDD review
 invalidation with independent source and chapter receipts, YAML scenario and host
 records, and explicit scoped recording. ADR-0122’s delivery requirements continue.
@@ -1066,6 +1075,8 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0248](0248-fleet-build-scheduling.md) | accepted | partial | Fleet build scheduling through a tribuchet hub and grpc:// stores |
 | [ADR-0250](0250-independent-hldd-review-records.md) | accepted | implemented | Independent HLDD review records |
 | [ADR-0249](0249-mila-rust-core-native-clients.md) | accepted | partial | Mila Rust core with native platform clients |
-
 | [ADR-0251](0251-thread-owned-durable-attachments.md) | accepted | partial | Thread-owned durable attachments |
 | [ADR-0252](0252-profile-boards-and-thread-subscriptions.md) | accepted | partial | Profile boards and authorized thread subscriptions |
+| [ADR-0253](0253-artifacts-domain.md) | accepted | partial | Artifacts domain for agent-published pages |
+| [ADR-0254](0254-isolated-artifact-content-origin.md) | accepted | partial | Isolated artifact content origin |
+| [ADR-0255](0255-thread-lifecycle-and-server-tool-dispatch.md) | accepted | partial | Thread lifecycle state machine and Oban server-tool dispatch |

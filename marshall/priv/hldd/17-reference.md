@@ -1374,6 +1374,65 @@ old candidate is unqualified and unselected. The
 [custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md)
 records source reconciliation and the missing exact-image browser/recovery evidence.
 
+## Artifact and server-tool reference
+
+`artifact` tool arguments ([tool](repo:marshall/lib/marshall/artifacts/tool.ex));
+unknown keys are refused:
+
+| Operation | Accepted keys |
+| --- | --- |
+| `publish` | `operation`, `artifact_id` (omit to create), `base_version` (required; `0` creates), `title`, `description`, `format` (`html`, `markdown`), at most one of `content`, `content_path`, `edits`, and `files` |
+| `read` | `operation`, `artifact_id`, `version`, `path`, `offset` |
+| `list` | `operation`, `query`, `cursor`, `limit` (1–100) |
+| `delete` | `operation`, `artifact_id` |
+
+`files` maps a target path to inline bytes, a staged absolute guest path or
+`null` (remove); unmentioned paths are kept. Refusal reasons returned to the
+model: `stale_base_version` (with the current version), `edit_not_found`,
+`edit_ambiguous` (with the edit index), `page_too_large`, `too_many_files`,
+`publish_too_large`, `version_too_large`, `invalid_path`, `manifest_conflict`,
+`inactive`, `upload_refused`, `staging_unavailable`,
+`forbidden`, `not_found`, plus the server-tool reasons `turn_inactive`,
+`capability_denied`, `access_revoked`, `invalid_arguments`, `tool_failed`,
+`result_too_large` and `claim_expired`.
+
+| Route | Listener | Authority |
+| --- | --- | --- |
+| `/artifacts`, `/artifacts/:id`, `/artifacts/:id/versions`, `/artifacts/:id/versions/:number`, `/artifacts/:id/sharing` | Browser endpoint | Signed-in user; Cedar per artifact |
+| `/admin/artifacts` | Browser endpoint | Elevated administrator; metadata only |
+| `GET`/`HEAD /v/<ticket>/[path]` | Content endpoint on `artifactPort` | View ticket plus fresh Cedar read |
+| `POST /agent/v1/artifact_chunk` | Ziggy guest agent API | Current executor lease and fence |
+
+Verification of [ADR-0253](repo:docs/architecture/decisions/0253-artifacts-domain.md),
+[ADR-0254](repo:docs/architecture/decisions/0254-isolated-artifact-content-origin.md)
+and [ADR-0255](repo:docs/architecture/decisions/0255-thread-lifecycle-and-server-tool-dispatch.md):
+
+| Evidence | Kind | Status |
+| --- | --- | --- |
+| [Edits](repo:marshall/test/marshall/artifacts/edits_property_test.exs), [manifest and limits](repo:marshall/test/marshall/artifacts/manifest_property_test.exs), [tool request parsing](repo:marshall/test/marshall/artifacts/tool_request_property_test.exs), [Markdown escaping](repo:marshall/test/marshall/artifacts/markdown_property_test.exs) | Hegel property | Present; focused Marshall run passed on 2026-10-21 |
+| [Versioning model](repo:marshall/test/marshall/artifacts/versioning_state_machine_property_test.exs) (publish, stale base, edits, storage roles, delete) and [publish concurrency](repo:marshall/test/marshall/artifacts/publish_concurrency_property_test.exs) (one winner per base) | Hegel property with PostgreSQL | Present; focused Marshall run passed on 2026-10-21 |
+| [Thread state machine](repo:marshall/test/marshall/threads/thread_state_machine_property_test.exs) | Hegel property | Present; focused Marshall run passed on 2026-10-21 |
+| [Server-tool end to end](repo:marshall/test/marshall/agents/server_tool_test.exs), including lazy subscription revocation | Unit with PostgreSQL | Present; focused Marshall run passed on 2026-10-21 |
+| [Authorization matrix](repo:marshall/test/marshall/artifacts/authorization_matrix_test.exs) (role × action × state, elevated administrators), [content endpoint](repo:marshall/test/marshall_web/artifact_content_endpoint_test.exs) (exact headers, no `Set-Cookie`, refusals, revocation, Markdown escaping, attachment types), [LiveViews](repo:marshall/test/marshall_web/artifacts_live_test.exs), [state-machine actions](repo:marshall/test/marshall/state_machines_test.exs) | Unit | Present; focused Marshall run passed on 2026-10-21 |
+| [Ziggy chunk route](repo:ziggy/test/artifact_chunk_test.exs) | Unit | Present |
+| [`artifact-origin`](repo:nix/verification/tests/machines/artifact-origin/driver.py) | NixOS machine (proxy, Marshall, Chromium) with Hegel `artifact_escape_payloads_stay_isolated` | Recorded PASS on 2026-10-21: all 8 subtests and the Hegel property ([review](repo:docs/architecture/reviews/2026-10-21-artifacts-and-thread-tool.md)) |
+| [`artifact-agent-publish`](repo:nix/verification/tests/machines/artifact-agent-publish/scenario.py) | NixOS machine (fleet with real guest) | Passed locally on 2026-10-21 (11 subtests); no execution record |
+| [`thread-tool`](repo:nix/verification/tests/machines/thread-tool/scenario.py) | NixOS machine (fleet with real guest) | Passed locally on 2026-10-21 (8 subtests); no execution record |
+
+The fleet-based tests (`artifact-agent-publish`, `thread-tool` and
+`agent-fleet`) previously failed every guest model call with
+`provider_failed`: the [provider fixture](repo:nix/verification/tests/machines/fleet/provider-catalog.py)
+sent its Responses SSE stream as `application/json`, and Ziggy collects only
+`text/event-stream` bodies. The fixture now sends `text/event-stream`; reruns
+are in progress and none of the three is passing yet.
+
+The focused passing runs are local BEAM results without an execution record in
+the repository; they do not establish native guest staging, proxy behavior or
+browser isolation. See the [review](repo:docs/architecture/reviews/2026-10-21-artifacts-and-thread-tool.md)
+and [scenario coverage](#coverage). The state-machine action test records two
+pre-existing exceptions that still accept their state attribute:
+`Scim.Configuration.create` and `Redaction.Shard.transition`.
+
 ## Keeping this handbook current
 
 `/hldd` lists sections. Each `/hldd/SECTION` page loads one chapter; previous and

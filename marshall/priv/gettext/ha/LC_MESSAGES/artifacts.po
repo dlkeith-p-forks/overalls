@@ -1,0 +1,246 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ha\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Abuse"
+msgstr "Cin zarafi"
+
+#: lib/marshall_web/live/artifacts_live.ex:157
+#: lib/marshall_web/live/artifacts_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Access could not be changed."
+msgstr "An kasa canza damar shiga."
+
+#: lib/marshall_web/live/artifacts_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Access updated."
+msgstr "An sabunta damar shiga."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Administrators can delete artifacts for a recorded reason. Content is never shown here."
+msgstr "Masu gudanarwa na iya share kayan tarihi saboda dalilin da aka rubuta. Ba a taɓa nuna abun ciki a nan."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Artifact deleted for moderation."
+msgstr "An share kayan tarihi saboda daidaitawa."
+
+#: lib/marshall_web/live/artifacts_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Artifact deleted."
+msgstr "An share kayan tarihi."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Artifact moderation"
+msgstr "Daidaita kayan tarihi"
+
+#: lib/marshall_web/live/artifacts_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Artifact sections"
+msgstr "Sassan kayan tarihi"
+
+#: lib/marshall_web/live/artifacts_live.ex:16
+#: lib/marshall_web/live/artifacts_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Artifacts"
+msgstr "Kayan tarihi"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Artifacts are unavailable."
+msgstr "Babu kayan tarihi a yanzu."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Bytes"
+msgstr "Baiti"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:112
+#: lib/marshall_web/live/admin/artifacts_live.ex:128
+#: lib/marshall_web/live/artifacts_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "Share"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:127
+#: lib/marshall_web/live/artifacts_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Delete this artifact and every version?"
+msgstr "A share wannan kayan tarihi da kowane sigarsa?"
+
+#: lib/marshall_web/live/artifacts_live.ex:353
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "Imel"
+
+#: lib/marshall_web/live/artifacts_live.ex:318
+#, elixir-autogen, elixir-format
+msgid "Files"
+msgstr "Fayiloli"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Legal"
+msgstr "Na shari'a"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Moderation reason"
+msgstr "Dalilin daidaitawa"
+
+#: lib/marshall_web/live/artifacts_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "No artifacts yet."
+msgstr "Har yanzu babu kayan tarihi."
+
+#: lib/marshall_web/live/artifacts_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Older artifacts"
+msgstr "Tsofaffin kayan tarihi"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr "Wani"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "Mai shi"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Owner request"
+msgstr "Buƙatar mai shi"
+
+#: lib/marshall_web/live/artifacts_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "Pages your agents publish from threads. Each publish creates a new version; only people you share with can open them."
+msgstr "Shafukan da wakilanka ke wallafawa daga zaren. Kowace wallafa tana ƙirƙirar sabon siga; mutanen da ka raba da su kaɗai ne za su iya buɗe su."
+
+#: lib/marshall_web/live/artifacts_live.ex:345
+#, elixir-autogen, elixir-format
+msgid "People with access"
+msgstr "Mutanen da ke da damar shiga"
+
+#: lib/marshall_web/live/artifacts_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "An wallafa"
+
+#: lib/marshall_web/live/artifacts_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Cire"
+
+#: lib/marshall_web/live/artifacts_live.ex:355
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Matsayi"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:101
+#: lib/marshall_web/live/artifacts_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Search titles"
+msgstr "Bincika taken"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Security"
+msgstr "Tsaro"
+
+#: lib/marshall_web/live/artifacts_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr "Raba"
+
+#: lib/marshall_web/live/artifacts_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Sharing"
+msgstr "Rabawa"
+
+#: lib/marshall_web/live/artifacts_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "That artifact is unavailable."
+msgstr "Wannan kayan tarihi babu shi."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:39
+#: lib/marshall_web/live/artifacts_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "The artifact could not be deleted."
+msgstr "An kasa share kayan tarihi."
+
+#: lib/marshall_web/live/artifacts_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "The viewer is unavailable on this deployment."
+msgstr "Mai nunawa ba ya samuwa a wannan tura."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:108
+#: lib/marshall_web/live/artifacts_live.ex:248
+#: lib/marshall_web/live/artifacts_live.ex:329
+#, elixir-autogen, elixir-format
+msgid "Title"
+msgstr "Take"
+
+#: lib/marshall_web/live/artifacts_live.ex:250
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "An sabunta"
+
+#: lib/marshall_web/live/artifacts_live.ex:249
+#: lib/marshall_web/live/artifacts_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Version"
+msgstr "Siga"
+
+#: lib/marshall_web/live/artifacts_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Version %{number} of %{current}"
+msgstr "Siga %{number} cikin %{current}"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:111
+#: lib/marshall_web/live/artifacts_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Versions"
+msgstr "Sigogi"
+
+#: lib/marshall_web/live/artifacts_live.ex:273
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr "Duba"
+
+#: lib/marshall_web/live/artifacts_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "no access"
+msgstr "babu damar shiga"
+
+#: lib/marshall_web/live/artifacts_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "owner"
+msgstr "mai shi"
+
+#: lib/marshall_web/live/artifacts_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "viewer"
+msgstr "mai kallo"
+
+#: lib/marshall_web/live/artifacts_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "writer"
+msgstr "marubuci"

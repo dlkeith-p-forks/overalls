@@ -15,3 +15,12 @@ HTTPS dependencies; binding alone MUST NOT grant readiness or user authority.
 A failed peer, identity or required probe MUST withhold the corresponding
 ready/authorized response; stale sockets and prior-boot receipts MUST NOT grant
 later service authority.
+
+@cc [owner:ghuntley,label:security;protocol] lyra-agent-artifact-staging
+The executor MUST advertise `artifacts-v1` only while it implements
+`artifact_stage`. Staging MUST refuse non-absolute, link, nonregular and
+over-limit sources before sending any chunk, send only fixed 196_608-byte chunks
+through the dedicated `artifact_chunk` RPC (bodies at most 270_336 bytes; every
+other route keeps the 12 KiB bound), heartbeat between chunks, stop on a lost
+lease or any reply other than `{"accepted": true}`, and fail only with the
+closed reasons. Paths, file bytes and digests MUST NOT enter diagnostics.

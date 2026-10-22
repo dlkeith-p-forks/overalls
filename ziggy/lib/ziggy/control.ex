@@ -44,6 +44,7 @@ defmodule Ziggy.Control do
              "agent_maintenance_transition",
              "agent_maintenance_artifact",
              "agent_bootstrap_artifact",
+             "agent_artifact_chunk",
              "agent_next",
              "agent_result",
              "ssh_roster",
@@ -52,11 +53,13 @@ defmodule Ziggy.Control do
              "ssh_authorize",
              "ssh_login"
            ] do
-    maximum = case route do
-      "agent_next" -> 524_288
-      "agent_attachment_transfer" -> 360_448
-      _ -> 16_384
-    end
+    maximum =
+      case route do
+        "agent_next" -> 524_288
+        "agent_attachment_transfer" -> 360_448
+        _ -> 16_384
+      end
+
     client = Map.get(config, :client, Ziggy.ControlClient)
 
     response =
@@ -131,6 +134,7 @@ defmodule Ziggy.Control do
   defp route_reason("agent_maintenance_transition"), do: :agent_maintenance_transition
   defp route_reason("agent_bootstrap_artifact"), do: :agent_bootstrap_artifact
   defp route_reason("agent_maintenance_artifact"), do: :agent_maintenance_artifact
+  defp route_reason("agent_artifact_chunk"), do: :agent_artifact_chunk
   defp route_reason("agent_next"), do: :agent_next
   defp route_reason("agent_result"), do: :agent_result
   defp route_reason("ssh_host_certificate"), do: :ssh_host_certificate

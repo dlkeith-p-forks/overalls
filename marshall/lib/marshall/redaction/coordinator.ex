@@ -23,7 +23,10 @@ defmodule Marshall.Redaction.Coordinator do
               changed: run.changed,
               skipped: run.skipped,
               failed: run.failed
-            }, action: :complete, actor: Marshall.Authorization.SystemActor.compute())
+            },
+            action: :complete,
+            actor: Marshall.Authorization.SystemActor.compute()
+          )
       end
 
       :ok
@@ -66,40 +69,50 @@ defmodule Marshall.Redaction.Coordinator do
 
     turns =
       from(t in "agent_turns",
-        join: th in "agent_threads", on: th.id == t.thread_id,
-        join: r in "agent_roots", on: r.id == th.root_id,
-        join: v in "compute_virtual_machines", on: v.id == r.vm_id,
+        join: th in "agent_threads",
+        on: th.id == t.thread_id,
+        join: r in "agent_roots",
+        on: r.id == th.root_id,
+        join: v in "compute_virtual_machines",
+        on: v.id == r.vm_id,
         where: v.desired_state in ["paused", "stopped"],
         where: not is_nil(t.prompt),
         where: is_nil(t.redaction_profile) or t.redaction_profile != ^run.profile_digest,
-        order_by: [asc: t.id], limit: ^@batch_size,
+        order_by: [asc: t.id],
+        limit: ^@batch_size,
         select: %{id: t.id, prompt: t.prompt}
       )
       |> Marshall.Repo.all()
 
     commands =
       from(c in "agent_commands",
-        join: r in "agent_roots", on: r.id == c.root_id,
-        join: v in "compute_virtual_machines", on: v.id == r.vm_id,
+        join: r in "agent_roots",
+        on: r.id == c.root_id,
+        join: v in "compute_virtual_machines",
+        on: v.id == r.vm_id,
         where: v.desired_state in ["paused", "stopped"],
         where: is_nil(c.redaction_profile) or c.redaction_profile != ^run.profile_digest,
-        order_by: [asc: c.id], limit: ^@batch_size,
+        order_by: [asc: c.id],
+        limit: ^@batch_size,
         select: %{id: c.id, arguments: c.arguments, result: c.result}
       )
       |> Marshall.Repo.all()
 
     event_results = scan(events, fn %{body: body} -> body end)
     turn_results = scan(turns, fn %{prompt: prompt} -> prompt end)
+
     command_results =
       commands
       |> Task.async_stream(
         fn %{arguments: arguments, result: result} ->
           {redacted_arguments, argument_findings} = Scanner.redact_json(arguments)
+
           {redacted_result, result_findings} =
             case result do
               nil -> {nil, []}
               value -> Scanner.redact_json(value)
             end
+
           {{redacted_arguments, argument_findings}, {redacted_result, result_findings}}
         end,
         max_concurrency: 4,
@@ -123,7 +136,10 @@ defmodule Marshall.Redaction.Coordinator do
           changed: run.changed + changed,
           skipped: 0,
           failed: 0
-        }, action: :progress, actor: Marshall.Authorization.SystemActor.compute())
+        },
+        action: :progress,
+        actor: Marshall.Authorization.SystemActor.compute()
+      )
 
     {:ok, processed, more_rows?(run.profile_digest)}
   end
@@ -131,68 +147,94 @@ defmodule Marshall.Redaction.Coordinator do
   defp more_rows?(profile) do
     event? =
       from(e in "agent_events",
-        join: t in "agent_threads", on: t.id == e.thread_id,
-        join: r in "agent_roots", on: r.id == t.root_id,
-        join: v in "compute_virtual_machines", on: v.id == r.vm_id,
+        join: t in "agent_threads",
+        on: t.id == e.thread_id,
+        join: r in "agent_roots",
+        on: r.id == t.root_id,
+        join: v in "compute_virtual_machines",
+        on: v.id == r.vm_id,
         where: v.desired_state in ["paused", "stopped"],
         where: fragment("?->>'redaction_profile' IS DISTINCT FROM ?", e.body, ^profile),
-        limit: 1, select: e.id
+        limit: 1,
+        select: e.id
       )
       |> Marshall.Repo.exists?()
 
     turn? =
       from(t in "agent_turns",
-        join: th in "agent_threads", on: th.id == t.thread_id,
-        join: r in "agent_roots", on: r.id == th.root_id,
-        join: v in "compute_virtual_machines", on: v.id == r.vm_id,
+        join: th in "agent_threads",
+        on: th.id == t.thread_id,
+        join: r in "agent_roots",
+        on: r.id == th.root_id,
+        join: v in "compute_virtual_machines",
+        on: v.id == r.vm_id,
         where: v.desired_state in ["paused", "stopped"],
         where: is_nil(t.redaction_profile) or t.redaction_profile != ^profile,
-        limit: 1, select: t.id
+        limit: 1,
+        select: t.id
       )
       |> Marshall.Repo.exists?()
 
     command? =
       from(c in "agent_commands",
-        join: r in "agent_roots", on: r.id == c.root_id,
-        join: v in "compute_virtual_machines", on: v.id == r.vm_id,
+        join: r in "agent_roots",
+        on: r.id == c.root_id,
+        join: v in "compute_virtual_machines",
+        on: v.id == r.vm_id,
         where: v.desired_state in ["paused", "stopped"],
         where: is_nil(c.redaction_profile) or c.redaction_profile != ^profile,
-        limit: 1, select: c.id
+        limit: 1,
+        select: c.id
       )
       |> Marshall.Repo.exists?()
+
     event? or turn? or command?
   end
 
   defp scan(rows, fun) do
     rows
     |> Task.async_stream(fn row -> {row, Scanner.redact_json(fun.(row))} end,
-      max_concurrency: 4, ordered: true, timeout: 10_000)
+      max_concurrency: 4,
+      ordered: true,
+      timeout: 10_000
+    )
     |> Enum.map(fn {:ok, result} -> result end)
   end
 
   defp update_events(_rows, results, profile) do
     Enum.count(results, fn {%{id: id}, {body, findings}} ->
       body = body |> Map.put("redaction_profile", profile) |> put_findings(findings)
-      {count, _} = Marshall.Repo.update_all(from(e in "agent_events", where: e.id == ^id), set: [body: body])
+
+      {count, _} =
+        Marshall.Repo.update_all(from(e in "agent_events", where: e.id == ^id), set: [body: body])
+
       count == 1 and findings != []
     end)
   end
 
   defp update_turns(_rows, results, profile) do
     Enum.count(results, fn {%{id: id}, {prompt, findings}} ->
-      {count, _} = Marshall.Repo.update_all(from(t in "agent_turns", where: t.id == ^id), set: [prompt: prompt, redaction_profile: profile])
+      {count, _} =
+        Marshall.Repo.update_all(from(t in "agent_turns", where: t.id == ^id),
+          set: [prompt: prompt, redaction_profile: profile]
+        )
+
       count == 1 and findings != []
     end)
   end
 
   defp update_commands(_rows, results, profile) do
-    Enum.count(results, fn {%{id: id}, {{arguments, argument_findings}, {result, result_findings}}} ->
-      {count, _} = Marshall.Repo.update_all(from(c in "agent_commands", where: c.id == ^id), set: [arguments: arguments, result: result, redaction_profile: profile])
+    Enum.count(results, fn {%{id: id},
+                            {{arguments, argument_findings}, {result, result_findings}}} ->
+      {count, _} =
+        Marshall.Repo.update_all(from(c in "agent_commands", where: c.id == ^id),
+          set: [arguments: arguments, result: result, redaction_profile: profile]
+        )
+
       count == 1 and (argument_findings != [] or result_findings != [])
     end)
   end
 
   defp put_findings(map, []), do: map
   defp put_findings(map, findings), do: Map.put(map, "redaction_findings", findings)
-
 end

@@ -27,9 +27,16 @@ defmodule Marshall.Administration.AuditEvent do
     uuid_primary_key :id
     attribute :actor_id, :uuid, allow_nil?: false
     attribute :request_id, :uuid, allow_nil?: false
-    attribute :action, :atom, allow_nil?: false,
-      constraints: [one_of: [:retry_job, :redaction_requested, :redaction_cancelled]]
-    attribute :resource_type, :atom, allow_nil?: false, constraints: [one_of: [:job, :redaction]]
+
+    attribute :action, :atom,
+      allow_nil?: false,
+      constraints: [
+        one_of: [:retry_job, :redaction_requested, :redaction_cancelled, :artifact_admin_delete]
+      ]
+
+    attribute :resource_type, :atom,
+      allow_nil?: false,
+      constraints: [one_of: [:job, :redaction, :artifact]]
 
     attribute :resource_id, :string,
       allow_nil?: false,

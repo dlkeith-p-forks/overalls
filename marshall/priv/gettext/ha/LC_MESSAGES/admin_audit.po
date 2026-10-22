@@ -14,6 +14,51 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: lib/marshall_web/live/admin/redaction_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Thread redaction"
+msgstr "Ɓoye bayanai a cikin zaren"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Scrub inactive threads"
+msgstr "Tsaftace zaren da ba sa aiki"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:21
+#, elixir-autogen, elixir-format
+msgid "Inactive thread scrub queued."
+msgstr "An sanya tsaftace zaren da ba sa aiki a layi."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "The scrub could not be queued."
+msgstr "An kasa sanya tsaftacewar a layi."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Text in prompts, model output, and tool results is scrubbed in bounded background batches. Attachments are not inspected."
+msgstr "Ana tsaftace rubutu a cikin umarni, fitowar samfuri da sakamakon kayan aiki a rukunoni masu iyaka a bango. Ba a duba haɗe-haɗe."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Redaction history is unavailable."
+msgstr "Babu tarihin ɓoye bayanai."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Processed %{count}"
+msgstr "An sarrafa: %{count}"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Changed %{count}"
+msgstr "An canza: %{count}"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Profile %{digest}"
+msgstr "Bayanin martaba %{digest}"
+
 #: lib/marshall_web/live/admin/audit_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "; the next due check can then request a new generation."
@@ -1009,3 +1054,28 @@ msgstr "An miƙa aiki"
 #, elixir-autogen, elixir-format
 msgid "Workflow ID"
 msgstr "Alamar tsarin aiki"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Soke"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "Dakata"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Redaction run updated."
+msgstr "An sabunta aikin ɓoye bayanai."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Resume"
+msgstr "Ci gaba"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "The redaction run could not be updated."
+msgstr "An kasa sabunta aikin ɓoye bayanai."

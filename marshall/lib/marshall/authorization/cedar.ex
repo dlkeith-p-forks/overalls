@@ -104,6 +104,18 @@ defmodule Marshall.Authorization.Cedar do
     })
   end
 
+  @doc "An artifact entity; role sets hold only the evaluated principal when it holds the role."
+  @spec artifact(String.t(), String.t(), map(), boolean()) :: Entity.t()
+  def artifact(id, owner_id, grants, active?) when is_boolean(active?) do
+    entity("Artifact", id, %{
+      "owner" => uid("User", owner_id),
+      "owners" => Enum.map(Map.get(grants, :owner, []), &uid("User", &1)),
+      "writers" => Enum.map(Map.get(grants, :writer, []), &uid("User", &1)),
+      "viewers" => Enum.map(Map.get(grants, :viewer, []), &uid("User", &1)),
+      "active" => active?
+    })
+  end
+
   # @cc [owner:ghuntley,label:security] cedar-team-fresh-membership
   # Team entities MUST be constructed from current unarchived memberships on
   # every decision; owners are a single user and admins include the owner so

@@ -417,6 +417,7 @@ defmodule MarshallWeb.Layouts do
          {"git", dgettext("shared", "Git mirrors"), "/admin/git"},
          {"audit", dgettext("shared", "Audit"), "/admin/audit"},
          {"redaction", dgettext("shared", "Thread redaction"), "/admin/redaction"},
+         {"artifacts", dgettext("shared", "Artifact moderation"), "/admin/artifacts"},
          {"scim", dgettext("shared", "SCIM provisioning"), "/admin/scim"}
        ]}
     ]
@@ -428,6 +429,7 @@ defmodule MarshallWeb.Layouts do
        [
          {"overview", dgettext("shared", "Overview"), "/overview"},
          {"threads", dgettext("shared", "Threads"), "/threads"},
+         {"artifacts", dgettext("shared", "Artifacts"), "/artifacts"},
          {"machines", dgettext("shared", "Machines"), "/machines"},
          {"integrations", dgettext("shared", "Integrations"), "/integrations"},
          {"git", dgettext("shared", "Git repositories"), "/git"},
@@ -451,6 +453,7 @@ defmodule MarshallWeb.Layouts do
       "account" => dgettext("shared", "Account"),
       "overview" => dgettext("shared", "Overview"),
       "threads" => dgettext("shared", "Threads"),
+      "artifacts" => dgettext("shared", "Artifacts"),
       "machines" => dgettext("shared", "Machines"),
       "integrations" => dgettext("shared", "Integrations"),
       "git" => dgettext("shared", "Git repositories"),

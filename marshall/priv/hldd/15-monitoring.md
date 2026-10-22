@@ -376,6 +376,36 @@ sessions. Optional burn delivery uses private runtime webhook/credential files,
 HTTPS-only startup validation and notification health; delivery failure does not
 change objective arithmetic. Receiver receipt still requires separate evidence.
 
+## Artifact and server-tool diagnostics
+
+Artifacts and server tools keep audit and diagnostics apart. Audit rows
+(`Artifacts.AuditEvent`, `Agents.AuditEvent`, `Administration.AuditEvent` for
+moderation) are business receipts committed with the mutation and read through
+authorized views. Diagnostics are best-effort and emitted after commit through
+the [`Marshall.Events`](repo:marshall/lib/marshall/events.ex) catalog and the
+shared diagnostics library. They carry UUIDs, integers and closed atoms only:
+never content, tickets, paths, storage keys or values, or tool arguments.
+
+| Signal | Kind | Metadata |
+| --- | --- | --- |
+| `agent.server_tool_finished` | event | VM, command, tool, outcome, optional reason |
+| `agent.server_tool_reconciled` | event | requeued and uncertain counts |
+| `artifact.published`, `artifact.publish_refused` | event | artifact (optional on refusal), version or reason, channel |
+| `artifact.access_changed`, `artifact.deleted`, `artifact.admin_deleted`, `artifact.purged` | event | artifact and operation, channel, moderation reason or outcome |
+| `artifact.content_refused` | event | closed reason only |
+| `artifact.storage_refused`, `artifact.usage_drift` | event | artifact, namespace, reason |
+| `artifact.blobs_swept` | event | count |
+| `marshall.agent.server_tool`, `marshall.artifact.publish`, `marshall.cedar.authorize` | internal spans | tool atom where present |
+| `marshall.artifact.content` | server span | none |
+| `marshall.agents.server_tool` | metric | duration, failed; tool |
+| `marshall.artifacts.publish`, `.refusal`, `.content`, `.storage` | metrics | bytes and file count; refusal count by reason; content duration and refused flag; storage bytes and refused flag by namespace |
+
+Content refusals deliberately collapse every ticket failure
+into `invalid_ticket` so logs cannot distinguish an expired ticket from a
+foreign one. To investigate an artifact, start from its audit rows by artifact
+ID; use events only to locate the transaction. A missing event never proves
+that a mutation did not commit.
+
 ## Verification and remaining acceptance
 
 The following current sources contain acceptance assertions; a declaration or

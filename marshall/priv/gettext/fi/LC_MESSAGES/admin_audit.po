@@ -14,6 +14,51 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: lib/marshall_web/live/admin/redaction_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Thread redaction"
+msgstr "Keskustelujen sensurointi"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Scrub inactive threads"
+msgstr "Siivoa passiiviset keskustelut"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:21
+#, elixir-autogen, elixir-format
+msgid "Inactive thread scrub queued."
+msgstr "Passiivisten keskustelujen siivous lisätty jonoon."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "The scrub could not be queued."
+msgstr "Siivousta ei voitu lisätä jonoon."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Text in prompts, model output, and tool results is scrubbed in bounded background batches. Attachments are not inspected."
+msgstr "Kehotteiden, mallin tulosteiden ja työkalujen tulosten teksti siivotaan rajatuissa taustaerissä. Liitteitä ei tarkasteta."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Redaction history is unavailable."
+msgstr "Sensurointihistoria ei ole käytettävissä."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Processed %{count}"
+msgstr "Käsitelty: %{count}"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Changed %{count}"
+msgstr "Muutettu: %{count}"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Profile %{digest}"
+msgstr "Profiili %{digest}"
+
 #: lib/marshall_web/live/admin/audit_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "; the next due check can then request a new generation."
@@ -1009,3 +1054,28 @@ msgstr "Töitä tarjolla"
 #, elixir-autogen, elixir-format
 msgid "Workflow ID"
 msgstr "Työnkulun tunniste"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "Keskeytä"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Redaction run updated."
+msgstr "Sensurointiajo päivitetty."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Resume"
+msgstr "Jatka"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "The redaction run could not be updated."
+msgstr "Sensurointiajoa ei voitu päivittää."

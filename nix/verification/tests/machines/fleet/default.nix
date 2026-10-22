@@ -1,4 +1,4 @@
-{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, editorFamily ? null, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, porscheThreads ? false, relocation ? false, suspension ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, githubIntegration ? false, githubFamily ? null, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, porscheTerminal ? false, hegel ? null }:
+{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, editorFamily ? null, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, porscheThreads ? false, relocation ? false, suspension ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, githubIntegration ? false, githubFamily ? null, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, porscheTerminal ? false, artifactAgentPublish ? false, threadTool ? false, hegel ? null }:
 let
   inherit (pkgs) lib;
   # @cc [owner:ghuntley,label:verification] editor-native-family-selection
@@ -318,7 +318,20 @@ let
     files = editorFixtureFiles;
   }
   else nixosGuest;
-  ziggyFixture = import ./ziggy.nix { inherit pkgs root agent executorLoss codingClis; };
+  # Server-tool journeys (artifact, thread) reuse the agent fleet with their own
+  # deterministic provider script and fixture operator.
+  serverTool = artifactAgentPublish || threadTool;
+  # Only the server-tool variants may select their reviewed operator script.
+  serverToolOperatorExec = ''
+    script=/etc/fleet-operator.exs
+    if [ "''${FLEET_OPERATOR_SCRIPT:-}" = /etc/fleet-server-tool-operator.exs ]; then
+      script=/etc/fleet-server-tool-operator.exs
+    fi
+    exec ${packages.marshall}/bin/marshall eval "Code.eval_file(\"$script\")" "$@"'';
+  ziggyFixture = import ./ziggy.nix {
+    inherit pkgs root agent executorLoss codingClis;
+    serverToolMode = if artifactAgentPublish then "artifacts" else if threadTool then "thread-tool" else null;
+  };
   # @cc [owner:ghuntley,label:verification] executor-loss-typed-artifacts
   # The exact guest observer and browser artifact MUST pass pinned Python typing.
   # They are installed only for this disposable fault fixture; the driver retains
@@ -702,6 +715,9 @@ let
       serperOrigin = lib.mkIf agent "http://127.0.0.1:18080";
       databaseCAFile = "${root}/ca.crt";
       secretUnits = [ "fleet-credentials.service" ];
+      # The artifact journey fetches tickets from each replica's real content
+      # listener (artifactPort 6443) with the replica's own backend certificate.
+      artifactContent.host = lib.mkIf artifactAgentPublish "usercontent.example.test";
       instances.${name} = {
         terminalPeerUrl = "https://${name}:5443";
         terminalPeerCAFile = "${root}/ca.crt";
@@ -736,6 +752,8 @@ let
     environment.etc."fleet-operator.exs".source = ./operator.exs;
     environment.etc."fleet-account-lifecycle.exs".source = ../account-lifecycle/operator.exs;
     environment.etc."fleet-github-historical.exs".source = ../github-integration-fleet/historical.exs;
+    environment.etc."fleet-server-tool-operator.exs" = lib.mkIf serverTool { source = ./server-tool-operator.exs; };
+    environment.etc."fleet-artifact-fixture.exs" = lib.mkIf serverTool { source = ../../support/artifact_fixture.exs; };
     environment.etc."fleet-audi-ssh.conf.in".source = ./audi-ssh.conf.in;
     environment.systemPackages = [ (pkgs.writeShellScriptBin "fleet-op" ''
       set -euo pipefail
@@ -754,6 +772,7 @@ let
       export FLEET_GUEST_NAME=${lib.escapeShellArg (if foreignGuest then (if selectedForeignFamily == "arch" then "Arch Linux" else "AlmaLinux") else if ubuntu || (githubIntegration && selectedGitHubFamily == "ubuntu") then "Ubuntu 26.04 LTS" else "nixos-fleet")}
       export FLEET_NODE=${name}
       ${lib.optionalString suspension "export FLEET_SUSPENSION_RELAY=1"}
+      ${lib.optionalString artifactAgentPublish "export MARSHALL_ARTIFACT_CONTENT_HOST=usercontent.example.test"}
       mkdir -p "$RELEASE_TMP"
       if [ "$#" = 1 ] && [ "$1" = migrate ]; then
         exec ${packages.marshall}/bin/marshall eval 'Marshall.Operations.Migrate.main()'
@@ -761,7 +780,7 @@ let
       if [[ "''${1:-}" = gateway-* || "''${1:-}" = ziggy-* || "''${1:-}" = galileo-* || "''${1:-}" = peach-* ]]; then
         exec ${packages.marshall}/bin/marshall eval 'Marshall.Operations.CLI.main()' "$@"
       fi
-      exec ${packages.marshall}/bin/marshall eval 'Code.eval_file("/etc/fleet-operator.exs")' "$@"
+      ${if serverTool then serverToolOperatorExec else "exec ${packages.marshall}/bin/marshall eval 'Code.eval_file(\"/etc/fleet-operator.exs\")' \"$@\""}
     '') ];
   };
   # @cc [owner:ghuntley,label:verification;security] suspension-private-ssh-prerequisites
@@ -1436,6 +1455,7 @@ assert !otelAudiSsh || (builtins.length otelAudiSshScenarioParts == 2
   && !(lib.hasInfix "with subtest(\"Lilly process crash closes live ingress" (builtins.head otelAudiSshScenarioParts)));
 assert !guestCliRecovery || (agent && galileo && audi);
 assert !executorLoss || (agent && galileo && audi && agentCli && !ubuntu);
+assert !serverTool || (agent && galileo && audi && !ubuntu && !agentCli && !guestCliRecovery && !executorLoss && !otelGuest && !(artifactAgentPublish && threadTool));
 # @cc [owner:ghuntley,label:verification] sharing-surfaces-real-stack
 # The combined sharing journey MUST run on the Audi-enabled real guest image;
 # the variant flag cannot stand alone.
@@ -1467,7 +1487,7 @@ assert editorFamily == null || (editor && !ubuntu
     redact = false;
   };
   hostPkgs = lib.mkForce (import ../../support/driver-pkgs.nix pkgs);
-  name = if porscheTerminal then "overalls-porsche-terminal-fleet" else if suspension then "overalls-memory-suspension-fleet" else if codingClis then (if ubuntu then "overalls-coding-clis-ubuntu-fleet" else "overalls-coding-clis-nixos-fleet") else if editor then "overalls-vscode-web-${selectedEditorFamily}-fleet" else if observabilityRecovery then "overalls-lilly-observability-recovery" else if porscheThreads then "overalls-porsche-threads-fleet" else if porscheLifecycleOnly then (if ubuntu then "overalls-porsche-lifecycle-ubuntu-fleet" else "overalls-porsche-lifecycle-fleet") else if runtimeReadiness then "overalls-lilly-runtime-readiness" else if otelPorsche then "overalls-otel-porsche-native" else if otelAudiSsh then "overalls-otel-audi-ssh-native" else if otelGalileo then "overalls-otel-galileo-native" else if otelGuest then "overalls-otel-guest-native" else if cloneDestinationLoss then "overalls-clone-destination-loss" else if cloneMarshallRestart then "overalls-clone-marshall-restart" else if hostReplacement then "overalls-host-replacement" else if executorLoss then "overalls-executor-loss" else if sharingSurfaces then "overalls-sharing-surfaces" else if cloneCancellation then "overalls-clone-cancellation" else if guestCliRecovery then (if ubuntu then "overalls-guest-cli-recovery-ubuntu" else "overalls-guest-cli-recovery") else if maintenanceEvacuation then "overalls-maintenance-evacuation" else if agentCli then "overalls-agent-cli-journey" else if privateWeb then "overalls-private-web" else if integrationRenewals then "overalls-integration-renewals" else if teamResources then "overalls-team-resources" else if guestTrust then "overalls-fleet-guest-trust" else if accountLifecycle then "overalls-account-lifecycle" else if resize then "overalls-resize-browser" else if githubIntegration then "overalls-github-integration-${selectedGitHubFamily}-fleet" else if repositoryLaunch then (if ubuntu then "overalls-repository-launch-ubuntu-fleet" else "overalls-repository-launch") else if defaultOss then "overalls-default-oss-creation" else if userSshJourney then (if ubuntu then "overalls-user-ssh-journey-ubuntu-fleet" else "overalls-user-ssh-journey-fleet") else if agent then (if ubuntu then "overalls-agent-ubuntu-fleet" else "overalls-agent-fleet") else if terminal then (if ubuntu then "overalls-terminal-ubuntu-fleet" else "overalls-terminal-fleet") else if galileo then "overalls-galileo-fleet" else if brady then "overalls-brady-fleet" else if sshRosterMatrix then (if ubuntu then "overalls-ssh-roster-matrix-ubuntu-fleet" else "overalls-ssh-roster-matrix-fleet") else if sshBootstrap then (if ubuntu then "overalls-ssh-bootstrap-ubuntu-fleet" else "overalls-ssh-bootstrap-fleet") else if ubuntu && audi then (if relocation then "overalls-audi-ubuntu-relocation-fleet" else "overalls-audi-ubuntu-fleet") else if ubuntu then "overalls-ubuntu-fleet" else if customerIsolation then "overalls-customer-isolation-fleet" else if cloning then "overalls-cloning-fleet" else if audi && relocation then "overalls-audi-relocation-fleet" else if audi then "overalls-audi-fleet" else if relocation then "overalls-relocation-fleet" else if porsche then "overalls-porsche-fleet" else "overalls-fleet";
+  name = if porscheTerminal then "overalls-porsche-terminal-fleet" else if suspension then "overalls-memory-suspension-fleet" else if codingClis then (if ubuntu then "overalls-coding-clis-ubuntu-fleet" else "overalls-coding-clis-nixos-fleet") else if editor then "overalls-vscode-web-${selectedEditorFamily}-fleet" else if observabilityRecovery then "overalls-lilly-observability-recovery" else if porscheThreads then "overalls-porsche-threads-fleet" else if porscheLifecycleOnly then (if ubuntu then "overalls-porsche-lifecycle-ubuntu-fleet" else "overalls-porsche-lifecycle-fleet") else if runtimeReadiness then "overalls-lilly-runtime-readiness" else if otelPorsche then "overalls-otel-porsche-native" else if otelAudiSsh then "overalls-otel-audi-ssh-native" else if otelGalileo then "overalls-otel-galileo-native" else if otelGuest then "overalls-otel-guest-native" else if cloneDestinationLoss then "overalls-clone-destination-loss" else if cloneMarshallRestart then "overalls-clone-marshall-restart" else if hostReplacement then "overalls-host-replacement" else if executorLoss then "overalls-executor-loss" else if sharingSurfaces then "overalls-sharing-surfaces" else if cloneCancellation then "overalls-clone-cancellation" else if guestCliRecovery then (if ubuntu then "overalls-guest-cli-recovery-ubuntu" else "overalls-guest-cli-recovery") else if maintenanceEvacuation then "overalls-maintenance-evacuation" else if agentCli then "overalls-agent-cli-journey" else if privateWeb then "overalls-private-web" else if integrationRenewals then "overalls-integration-renewals" else if teamResources then "overalls-team-resources" else if guestTrust then "overalls-fleet-guest-trust" else if accountLifecycle then "overalls-account-lifecycle" else if resize then "overalls-resize-browser" else if githubIntegration then "overalls-github-integration-${selectedGitHubFamily}-fleet" else if repositoryLaunch then (if ubuntu then "overalls-repository-launch-ubuntu-fleet" else "overalls-repository-launch") else if defaultOss then "overalls-default-oss-creation" else if userSshJourney then (if ubuntu then "overalls-user-ssh-journey-ubuntu-fleet" else "overalls-user-ssh-journey-fleet") else if artifactAgentPublish then "overalls-artifact-agent-publish" else if threadTool then "overalls-thread-tool" else if agent then (if ubuntu then "overalls-agent-ubuntu-fleet" else "overalls-agent-fleet") else if terminal then (if ubuntu then "overalls-terminal-ubuntu-fleet" else "overalls-terminal-fleet") else if galileo then "overalls-galileo-fleet" else if brady then "overalls-brady-fleet" else if sshRosterMatrix then (if ubuntu then "overalls-ssh-roster-matrix-ubuntu-fleet" else "overalls-ssh-roster-matrix-fleet") else if sshBootstrap then (if ubuntu then "overalls-ssh-bootstrap-ubuntu-fleet" else "overalls-ssh-bootstrap-fleet") else if ubuntu && audi then (if relocation then "overalls-audi-ubuntu-relocation-fleet" else "overalls-audi-ubuntu-fleet") else if ubuntu then "overalls-ubuntu-fleet" else if customerIsolation then "overalls-customer-isolation-fleet" else if cloning then "overalls-cloning-fleet" else if audi && relocation then "overalls-audi-relocation-fleet" else if audi then "overalls-audi-fleet" else if relocation then "overalls-relocation-fleet" else if porsche then "overalls-porsche-fleet" else "overalls-fleet";
   requiredFeatures.nested-kvm = true;
   inherit skipTypeCheck;
   globalTimeout = if githubIntegration && selectedGitHubFamily == "windows" then 14400 else if relocation then 10800 else 3600;
@@ -1914,7 +1934,15 @@ assert editorFamily == null || (editor && !ubuntu
       ./scenarios/updates.py
       ./scenarios/provisioner-recovery.py
       ./scenarios/customer-recovery.py
-    ] else if agent then builtins.readFile ./scenarios/agent.py
+    ] else if serverTool then
+      # Host services from the agent scenario's first subtest, then the shared
+      # server-tool guest setup and the selected journey.
+      # (its hashlib import serves only the omitted agent subtests).
+      lib.replaceStrings [ "\nimport hashlib\n" ] [ "\n" ]
+        (builtins.head (lib.splitString "\nwith subtest(\"shared operator prompt wakes guest" (builtins.readFile ./scenarios/agent.py)))
+      + "\n" + builtins.readFile ./scenarios/server-tool-setup.py
+      + "\n" + builtins.readFile (if artifactAgentPublish then ../artifact-agent-publish/scenario.py else ../thread-tool/scenario.py)
+      else if agent then builtins.readFile ./scenarios/agent.py
       else if otelAudiSsh then builtins.head otelAudiSshScenarioParts + "\n" + ''
         def audi_slo_ready() -> None:
             eventually(lambda: audi_ready(host, "gateway"), timeout=60)

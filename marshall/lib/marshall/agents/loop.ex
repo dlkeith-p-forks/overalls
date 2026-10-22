@@ -208,7 +208,7 @@ defmodule Marshall.Agents.Loop do
       %{status: :completed} ->
         commands =
           Ledger.read!(Command, turn_id: turn.id)
-          |> Enum.reject(&Context.internal_tool?(&1.tool))
+          |> Enum.reject(&(Context.internal_tool?(&1.tool) or &1.tool == :artifact_stage))
 
         children = Ledger.read!(Event, turn_id: turn.id, kind: :child_spawned)
         answered = Ledger.read!(Event, turn_id: turn.id, kind: :questions_answered)
@@ -411,6 +411,12 @@ defmodule Marshall.Agents.Loop do
 
   @spec fail_context(String.t(), atom()) :: term()
   defp fail_context(turn_id, reason) do
+    # Closed reason atoms only; any other term is reported as :unexpected.
+    Marshall.Events.emit("agent.turn_preparation_failed",
+      turn_id: turn_id,
+      reason: if(is_atom(reason), do: reason, else: :unexpected)
+    )
+
     closed =
       cond do
         reason in [

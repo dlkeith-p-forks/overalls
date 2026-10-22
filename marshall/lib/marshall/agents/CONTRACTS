@@ -18,3 +18,11 @@ approval of a hash of the CLI's random secret. Marshall MUST store only that
 hash, bind it to one VM and actor for a short lifetime, and recheck current VM
 write access before every CLI mutation. An approval URL alone MUST NOT act as
 a bearer credential.
+
+@cc [owner:ghuntley,label:security;durability] server-tool-claim-exclusive
+Marshall-owned tools (`web_search` and every `ServerTool` module) MUST NOT be
+returned by a guest executor claim. Each server-tool command MUST be claimed by
+at most one job under its row lock, re-check turn activity, capability, the
+prompting user's account, machine Access write and user-thread Cedar write
+before running, and finish exactly once with one dispatch and one finish audit
+row.

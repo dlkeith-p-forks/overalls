@@ -615,8 +615,70 @@ Cross-host clone copies carry no checkpoint and pull no RAM
 prepare step reports its own closed reason instead of one generic refusal.
 These are BEAM unit results; the composed `porsche-fleet` relocate and clone
 journey is the native evidence.
+
+## Artifact, publish request and view ticket lifecycles
+
+Artifacts ([ADR-0253](repo:docs/architecture/decisions/0253-artifacts-domain.md))
+use three AshStateMachines. Desired state is the `Artifact` row; the purge job
+and expiry cron are the only cleanup authorities. Publishes, grants, storage
+and views require `active`.
+
+```mermaid
+stateDiagram-v2
+  [*] --> active: create
+  active --> deleting: request_delete (owner)
+  active --> deleting: admin_delete (moderation reason)
+  deleting --> deleted: finish_delete (PurgeJob)
+  deleted --> [*]
+```
+
+`request_delete` and `admin_delete` lock the artifact, revoke every issued view
+ticket and enqueue [`PurgeJob`](repo:marshall/lib/marshall/artifacts/purge_job.ex)
+(queue `artifacts`, unique per artifact) in the same transaction. Each
+transition writes one LifecycleEvent. The purge deletes at most 1,000 content
+rows per transaction (storage, usage, tickets, version files, then versions)
+and re-enqueues itself until none remain. It then moves the artifact to
+`deleted`, zeroes its totals and writes one `purged` audit row. The `deleted`
+row is a tombstone; blobs are reclaimed later by the sweep once unreferenced.
+Repeating a delete on a non-active artifact returns it unchanged for its owner
+or, through moderation, an elevated administrator; anyone else receives
+`not_found`.
+
+```mermaid
+stateDiagram-v2
+  [*] --> staging: open (artifact publish with staged sources)
+  staging --> committed: commit (version written)
+  staging --> refused: refuse (digest, upload or publish refusal)
+  staging --> expired: expire (30 minutes, ExpiryJob)
+  committed --> [*]
+  refused --> [*]
+  expired --> [*]
+```
+
+A [`PublishRequest`](repo:marshall/lib/marshall/artifacts/publish_request.ex)
+accepts chunks only while `staging`. Every terminal state releases staged
+chunks. Expiry also re-enqueues the parent `ServerToolJob`, so the parent
+`artifact` command fails closed instead of waiting.
+
+```mermaid
+stateDiagram-v2
+  [*] --> issued: issue (fresh Cedar read)
+  issued --> expired: expire (five minutes, ExpiryJob)
+  issued --> revoked: revoke (delete, unshare, role change)
+  expired --> [*]
+  revoked --> [*]
+```
+
+A [`ViewTicket`](repo:marshall/lib/marshall/artifacts/view_ticket.ex) is
+bound to one artifact, version, user and content host. Redemption still
+rechecks Cedar on every fetch, so a ticket never outlives lost read access even
+before revocation reaches it. `ExpiryJob` deletes retired tickets one day after
+expiry. Thread status uses its own state machine; see [agents](#agents).
+
 # Agent history cleanup
 
 VM pause, stop and delete state-machine transitions remove machine-tagged
-message-board history after the durable transition. Cleanup records identifiers
+message-board history after the durable transition. The purge query casts the
+VM and thread UUIDs explicitly ([message boards](repo:marshall/lib/marshall/message_boards.ex));
+uncast binds previously raised a Postgrex encode error on VM stop. Cleanup records identifiers
 and counts for authorized thread subscribers; message content is never emitted.

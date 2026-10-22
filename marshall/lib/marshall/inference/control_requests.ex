@@ -24,6 +24,7 @@ defmodule Marshall.Inference.ControlRequests do
     "agent_maintenance_transition",
     "agent_maintenance_artifact",
     "agent_bootstrap_artifact",
+    "agent_artifact_chunk",
     "agent_next",
     "agent_result",
     "ssh_roster",

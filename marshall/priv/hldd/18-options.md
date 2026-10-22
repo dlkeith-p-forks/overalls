@@ -4472,6 +4472,32 @@ Default:
 ```
 
 
+## `services.marshall.artifactContent.debugEcho`
+
+Machine-test only: makes GET /v/<ticket>/__echo report whether Cookie and Authorization reached Marshall and emit a probe Set-Cookie. Requires machineTestFixture; never enable in a deployment.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+
+## `services.marshall.artifactContent.host`
+
+Lowercase public DNS name of the isolated artifact content origin (for example usercontent.ghuntley.dev). It must differ from publicHost. Null disables the content listener and the artifact viewer reports that it is unavailable.
+
+Type: `null or lowercase multi-label DNS hostname`.
+
+Default:
+
+```nix
+null
+```
+
+
 ## `services.marshall.cpuCores`
 
 Aggregate CPU quota in logical cores for Marshall instances.
@@ -5156,6 +5182,19 @@ Type: `unspecified value`.
 Default: Required when its service or enclosing record is selected.
 
 
+## `services.marshall.instances.<name>.artifactPort`
+
+Separate artifact content HTTPS port, bound on bindAddress with the backend certificate only when artifactContent.host is set. Opened by openFirewall like port.
+
+Type: `16 bit unsigned integer; between 0 and 65535 (both inclusive)`.
+
+Default:
+
+```nix
+<derived from required configuration>
+```
+
+
 ## `services.marshall.instances.<name>.bindAddress`
 
 Literal IPv4 backend bind address.
@@ -5297,6 +5336,19 @@ Default:
 
 ```nix
 null
+```
+
+
+## `services.marshall.machineTestFixture`
+
+Marks a disposable NixOS machine-test fixture. Test-only knobs such as artifactContent.debugEcho are refused unless this is set.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
 ```
 
 
@@ -6077,6 +6129,32 @@ Default:
 ```
 
 
+## `services.marshallProxy.artifactContent.certificateFile`
+
+Atomically published PEM key and full certificate chain for the content host, readable by the haproxy group. Required with host; ACME sets it when enabled.
+
+Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshallProxy.artifactContent.host`
+
+Lowercase public DNS name of the isolated artifact content origin, served on the same HTTPS listener by SNI and Host. Null routes no content traffic.
+
+Type: `null or lowercase multi-label DNS hostname`.
+
+Default:
+
+```nix
+null
+```
+
+
 ## `services.marshallProxy.backendCAFile`
 
 CA bundle authenticating Marshall backend certificates.
@@ -6211,6 +6289,19 @@ Backend IPv4 address or hostname.
 Type: `string matching the pattern [a-zA-Z0-9][a-zA-Z0-9.-]*`.
 
 Default: Required when its service or enclosing record is selected.
+
+
+## `services.marshallProxy.backends.<name>.artifactPort`
+
+Backend artifact content HTTPS port, used only when artifactContent.host is set. Health follows the browser port's readiness check.
+
+Type: `16 bit unsigned integer; between 0 and 65535 (both inclusive)`.
+
+Default:
+
+```nix
+6443
+```
 
 
 ## `services.marshallProxy.backends.<name>.port`

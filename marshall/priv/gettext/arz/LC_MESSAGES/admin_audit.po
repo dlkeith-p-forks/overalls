@@ -14,6 +14,51 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 
+#: lib/marshall_web/live/admin/redaction_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Thread redaction"
+msgstr "تنقيح المحادثات"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Scrub inactive threads"
+msgstr "نضّف المحادثات اللي مش نشطة"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:21
+#, elixir-autogen, elixir-format
+msgid "Inactive thread scrub queued."
+msgstr "اتضاف تنضيف المحادثات اللي مش نشطة للطابور."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "The scrub could not be queued."
+msgstr "ما قدرناش نضيف التنضيف للطابور."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Text in prompts, model output, and tool results is scrubbed in bounded background batches. Attachments are not inspected."
+msgstr "النص اللي في الطلبات ومخرجات النموذج ونتايج الأدوات بيتنضّف على دفعات محدودة في الخلفية. المرفقات مش بتتفحص."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Redaction history is unavailable."
+msgstr "سجل التنقيح مش متاح."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Processed %{count}"
+msgstr "اتعالج: %{count}"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Changed %{count}"
+msgstr "اتغيّر: %{count}"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Profile %{digest}"
+msgstr "الملف التعريفي %{digest}"
+
 #: lib/marshall_web/live/admin/audit_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "; the next due check can then request a new generation."
@@ -1009,3 +1054,28 @@ msgstr "الشغل اتعرض"
 #, elixir-autogen, elixir-format
 msgid "Workflow ID"
 msgstr "معرّف سير العمل"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "إيقاف مؤقت"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Redaction run updated."
+msgstr "اتحدّثت عملية التنقيح."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Resume"
+msgstr "كمّل"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "The redaction run could not be updated."
+msgstr "ما قدرناش نحدّث عملية التنقيح."

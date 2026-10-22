@@ -28,11 +28,25 @@ defmodule MarshallWeb.Admin.RedactionLive do
   end
 
   def handle_event(action, %{"id" => id}, socket) when action in ["pause", "resume", "cancel"] do
-    with {:ok, run} <- Ash.get(Marshall.Redaction.Run, id, actor: Marshall.Authorization.SystemActor.compute()),
-         {:ok, _} <- Ash.update(run, %{}, action: String.to_existing_atom(action), actor: Marshall.Authorization.SystemActor.compute()) do
-      {:noreply, socket |> put_flash(:info, dgettext("admin_audit", "Redaction run updated.")) |> refresh()}
+    with {:ok, run} <-
+           Ash.get(Marshall.Redaction.Run, id,
+             actor: Marshall.Authorization.SystemActor.compute()
+           ),
+         {:ok, _} <-
+           Ash.update(run, %{},
+             action: String.to_existing_atom(action),
+             actor: Marshall.Authorization.SystemActor.compute()
+           ) do
+      {:noreply,
+       socket |> put_flash(:info, dgettext("admin_audit", "Redaction run updated.")) |> refresh()}
     else
-      _ -> {:noreply, put_flash(socket, :error, dgettext("admin_audit", "The redaction run could not be updated."))}
+      _ ->
+        {:noreply,
+         put_flash(
+           socket,
+           :error,
+           dgettext("admin_audit", "The redaction run could not be updated.")
+         )}
     end
   end
 
@@ -72,19 +86,43 @@ defmodule MarshallWeb.Admin.RedactionLive do
       <section id="admin-redaction" class="stack">
         <header class="row">
           <h1>{dgettext("admin_audit", "Thread redaction")}</h1>
-          <button id="redaction-enqueue" class="console-button primary" phx-click="enqueue">{dgettext("admin_audit", "Scrub inactive threads")}</button>
+          <button id="redaction-enqueue" class="console-button primary" phx-click="enqueue">{dgettext(
+            "admin_audit",
+            "Scrub inactive threads"
+          )}</button>
         </header>
-        <p class="muted">{dgettext("admin_audit", "Text in prompts, model output, and tool results is scrubbed in bounded background batches. Attachments are not inspected.")}</p>
+        <p class="muted">
+          {dgettext(
+            "admin_audit",
+            "Text in prompts, model output, and tool results is scrubbed in bounded background batches. Attachments are not inspected."
+          )}
+        </p>
         <p :if={@unavailable?}>{dgettext("admin_audit", "Redaction history is unavailable.")}</p>
         <div id="redaction-runs">
           <div :for={run <- @runs} id={"redaction-run-#{run.id}"} class="panel kv">
             <span>#{run.id}</span><span>{run.state}</span>
-            <span>{dgettext("admin_audit", "Processed %{count}", count: run.processed)}</span><span>{dgettext("admin_audit", "Changed %{count}", count: run.changed)}</span>
-            <span class="muted">{dgettext("admin_audit", "Profile %{digest}", digest: run.profile_digest)}</span>
+            <span>{dgettext("admin_audit", "Processed %{count}", count: run.processed)}</span><span>{dgettext(
+              "admin_audit",
+              "Changed %{count}",
+              count: run.changed
+            )}</span>
+            <span class="muted">{dgettext("admin_audit", "Profile %{digest}",
+              digest: run.profile_digest
+            )}</span>
             <span class="row">
-              <button :if={run.state == :running} phx-click="pause" phx-value-id={run.id}>{dgettext("admin_audit", "Pause")}</button>
-              <button :if={run.state == :paused} phx-click="resume" phx-value-id={run.id}>{dgettext("admin_audit", "Resume")}</button>
-              <button :if={run.state in [:queued, :running, :paused]} phx-click="cancel" phx-value-id={run.id}>{dgettext("admin_audit", "Cancel")}</button>
+              <button :if={run.state == :running} phx-click="pause" phx-value-id={run.id}>{dgettext(
+                "admin_audit",
+                "Pause"
+              )}</button>
+              <button :if={run.state == :paused} phx-click="resume" phx-value-id={run.id}>{dgettext(
+                "admin_audit",
+                "Resume"
+              )}</button>
+              <button
+                :if={run.state in [:queued, :running, :paused]}
+                phx-click="cancel"
+                phx-value-id={run.id}
+              >{dgettext("admin_audit", "Cancel")}</button>
             </span>
           </div>
         </div>

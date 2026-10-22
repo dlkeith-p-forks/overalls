@@ -1,0 +1,243 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Abuse"
+msgstr "악용"
+
+#: lib/marshall_web/live/artifacts_live.ex:157
+#: lib/marshall_web/live/artifacts_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Access could not be changed."
+msgstr "액세스를 변경할 수 없습니다."
+
+#: lib/marshall_web/live/artifacts_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Access updated."
+msgstr "액세스를 업데이트했습니다."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Administrators can delete artifacts for a recorded reason. Content is never shown here."
+msgstr "관리자는 기록된 사유로 아티팩트를 삭제할 수 있습니다. 내용은 여기에 표시되지 않습니다."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Artifact deleted for moderation."
+msgstr "모더레이션으로 아티팩트를 삭제했습니다."
+
+#: lib/marshall_web/live/artifacts_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Artifact deleted."
+msgstr "아티팩트를 삭제했습니다."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Artifact moderation"
+msgstr "아티팩트 모더레이션"
+
+#: lib/marshall_web/live/artifacts_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Artifact sections"
+msgstr "아티팩트 섹션"
+
+#: lib/marshall_web/live/artifacts_live.ex:16
+#: lib/marshall_web/live/artifacts_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Artifacts"
+msgstr "아티팩트"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Artifacts are unavailable."
+msgstr "아티팩트를 사용할 수 없습니다."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Bytes"
+msgstr "바이트"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:112
+#: lib/marshall_web/live/admin/artifacts_live.ex:128
+#: lib/marshall_web/live/artifacts_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "삭제"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:127
+#: lib/marshall_web/live/artifacts_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Delete this artifact and every version?"
+msgstr "이 아티팩트와 모든 버전을 삭제할까요?"
+
+#: lib/marshall_web/live/artifacts_live.ex:353
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "이메일"
+
+#: lib/marshall_web/live/artifacts_live.ex:318
+#, elixir-autogen, elixir-format
+msgid "Files"
+msgstr "파일"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Legal"
+msgstr "법적 사유"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Moderation reason"
+msgstr "모더레이션 사유"
+
+#: lib/marshall_web/live/artifacts_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "No artifacts yet."
+msgstr "아직 아티팩트가 없습니다."
+
+#: lib/marshall_web/live/artifacts_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Older artifacts"
+msgstr "이전 아티팩트"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr "기타"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "소유자"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Owner request"
+msgstr "소유자 요청"
+
+#: lib/marshall_web/live/artifacts_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "Pages your agents publish from threads. Each publish creates a new version; only people you share with can open them."
+msgstr "에이전트가 스레드에서 게시하는 페이지입니다. 게시할 때마다 새 버전이 만들어지며, 공유한 사람만 열 수 있습니다."
+
+#: lib/marshall_web/live/artifacts_live.ex:345
+#, elixir-autogen, elixir-format
+msgid "People with access"
+msgstr "액세스 권한이 있는 사람"
+
+#: lib/marshall_web/live/artifacts_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "게시됨"
+
+#: lib/marshall_web/live/artifacts_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "제거"
+
+#: lib/marshall_web/live/artifacts_live.ex:355
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "역할"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:101
+#: lib/marshall_web/live/artifacts_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Search titles"
+msgstr "제목 검색"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Security"
+msgstr "보안"
+
+#: lib/marshall_web/live/artifacts_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr "공유"
+
+#: lib/marshall_web/live/artifacts_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Sharing"
+msgstr "공유 설정"
+
+#: lib/marshall_web/live/artifacts_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "That artifact is unavailable."
+msgstr "해당 아티팩트를 사용할 수 없습니다."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:39
+#: lib/marshall_web/live/artifacts_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "The artifact could not be deleted."
+msgstr "아티팩트를 삭제할 수 없습니다."
+
+#: lib/marshall_web/live/artifacts_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "The viewer is unavailable on this deployment."
+msgstr "이 배포에서는 뷰어를 사용할 수 없습니다."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:108
+#: lib/marshall_web/live/artifacts_live.ex:248
+#: lib/marshall_web/live/artifacts_live.ex:329
+#, elixir-autogen, elixir-format
+msgid "Title"
+msgstr "제목"
+
+#: lib/marshall_web/live/artifacts_live.ex:250
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "업데이트됨"
+
+#: lib/marshall_web/live/artifacts_live.ex:249
+#: lib/marshall_web/live/artifacts_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Version"
+msgstr "버전"
+
+#: lib/marshall_web/live/artifacts_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Version %{number} of %{current}"
+msgstr "버전 %{number}/%{current}"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:111
+#: lib/marshall_web/live/artifacts_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Versions"
+msgstr "버전"
+
+#: lib/marshall_web/live/artifacts_live.ex:273
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr "보기"
+
+#: lib/marshall_web/live/artifacts_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "no access"
+msgstr "액세스 없음"
+
+#: lib/marshall_web/live/artifacts_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "owner"
+msgstr "소유자"
+
+#: lib/marshall_web/live/artifacts_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "viewer"
+msgstr "뷰어"
+
+#: lib/marshall_web/live/artifacts_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "writer"
+msgstr "작성자"

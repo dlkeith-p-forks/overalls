@@ -20,6 +20,13 @@ pub fn read_system_public_trust(path: &Path, maximum: usize) -> io::Result<Vec<u
     read_regular(path, maximum, true)
 }
 
+/// Open `path` for reading without following a final-component link and
+/// without blocking on a FIFO or device. Callers MUST still inspect the opened
+/// descriptor's metadata before trusting it as a regular file.
+pub fn open_no_follow(path: &Path) -> io::Result<File> {
+    open_regular(path, false)
+}
+
 #[cfg(unix)]
 fn open_regular(path: &Path, follow: bool) -> io::Result<File> {
     use std::os::unix::fs::OpenOptionsExt;

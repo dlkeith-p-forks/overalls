@@ -248,6 +248,13 @@ in
     secretUnits = [ "overalls-secrets-porsche.service" "overalls-porsche-authority.service" ];
   };
 
+  # @cc [owner:ghuntley,label:deployment;security] overalls-artifact-content-origin
+  # The isolated artifact content origin stays off until a host sets
+  # services.marshall.artifactContent.host. The proxy MUST then follow that
+  # one value, so the colocated proxy routes, ACME issues and Marshall binds
+  # the same content host on the instance's artifactPort (6443) behind the
+  # existing public listener; no additional public port is opened.
+  services.marshallProxy.artifactContent.host = lib.mkDefault config.services.marshall.artifactContent.host;
   services.marshallProxy = {
     enable = true;
     bindAddressFile = primary;

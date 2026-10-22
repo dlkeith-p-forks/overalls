@@ -173,7 +173,7 @@ defmodule MarshallWeb.ThreadsLiveTest do
     archived = create_thread(c.owner, "Retain the previous release")
     Ledger.update!(archived, :set_title, %{title: "Deployment notes"})
 
-    Ledger.update!(archived, :mark_archived, %{status: :archived, archived_at: DateTime.utc_now()})
+    Marshall.ThreadStateFixture.archived!(archived)
 
     private = create_thread(user(), "Deployment details for another owner")
 
@@ -300,11 +300,10 @@ defmodule MarshallWeb.ThreadsLiveTest do
     [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
     thread = create_thread(c.owner, "Follow the deployment", c.vm.idempotency_key)
 
-    Ledger.update!(thread, :bind_machine, %{
+    Marshall.ThreadStateFixture.ready!(thread, %{
       machine_id: c.vm.id,
       agent_root_id: root.id,
-      agent_thread_id: agent_thread.id,
-      status: :ready
+      agent_thread_id: agent_thread.id
     })
 
     current_thread = Ledger.read!(Marshall.Threads.Thread, id: thread.id) |> hd()
@@ -399,11 +398,10 @@ defmodule MarshallWeb.ThreadsLiveTest do
         fixture.vm.idempotency_key
       )
 
-    Ledger.update!(thread, :bind_machine, %{
+    Marshall.ThreadStateFixture.ready!(thread, %{
       machine_id: fixture.vm.id,
       agent_root_id: root.id,
-      agent_thread_id: agent_thread.id,
-      status: :ready
+      agent_thread_id: agent_thread.id
     })
 
     {:ok, view, _html} = live(signed_in(c.conn, fixture.owner), ~p"/threads/#{thread.id}")
@@ -436,11 +434,10 @@ defmodule MarshallWeb.ThreadsLiveTest do
     [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
     thread = create_thread(c.owner, "A shared release investigation", c.vm.idempotency_key)
 
-    Ledger.update!(thread, :bind_machine, %{
+    Marshall.ThreadStateFixture.ready!(thread, %{
       machine_id: c.vm.id,
       agent_root_id: root.id,
-      agent_thread_id: agent_thread.id,
-      status: :ready
+      agent_thread_id: agent_thread.id
     })
 
     Marshall.Threads.Generation.sync!(
@@ -548,10 +545,7 @@ defmodule MarshallWeb.ThreadsLiveTest do
              )
 
     failed =
-      Marshall.Compute.Ledger.update!(thread, :mark_failed, %{
-        status: :failed,
-        failure_reason: :capacity
-      })
+      Marshall.ThreadStateFixture.failed!(thread, :capacity)
 
     {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/#{failed.id}")
     assert has_element?(view, "#thread-provision-error", "Provisioning needs attention.")
@@ -595,11 +589,10 @@ defmodule MarshallWeb.ThreadsLiveTest do
              )
 
     bound =
-      Ledger.update!(thread, :bind_machine, %{
+      Marshall.ThreadStateFixture.ready!(thread, %{
         machine_id: c.vm.id,
         agent_root_id: root.id,
-        agent_thread_id: agent_thread.id,
-        status: :ready
+        agent_thread_id: agent_thread.id
       })
 
     Marshall.Threads.Generation.sync!(bound)
@@ -612,7 +605,7 @@ defmodule MarshallWeb.ThreadsLiveTest do
     })
 
     :ok = Ledger.archive!(c.vm, :archive)
-    Ledger.update!(bound, :mark_archived, %{status: :archived, archived_at: DateTime.utc_now()})
+    Marshall.ThreadStateFixture.archived!(bound)
 
     {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/#{thread.id}")
     assert has_element?(view, "#thread-archived", "read-only")

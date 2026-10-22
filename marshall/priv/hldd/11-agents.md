@@ -623,6 +623,187 @@ service, private Git credential flow or plugin marketplace is introduced.
 ## Commit attribution
 
 Marshall supplies a current trusted developer instruction selected by the stable thread configuration owner. Attribution defaults on and requests exactly one Co-authored-by: Overalls <noreply@overalls.dev> trailer while preserving other trailers. Disabling attribution supersedes earlier attribution instructions. Existing commits are not rewritten. This instructional policy does not intercept Git or guarantee model compliance.
+
+## Marshall server tools
+
+[ADR-0255](repo:docs/architecture/decisions/0255-thread-lifecycle-and-server-tool-dispatch.md)
+defines how Marshall executes the tools it owns: `thread`, `message_board` and
+`artifact` ([ServerTool](repo:marshall/lib/marshall/agents/server_tool.ex)).
+`attachment` remains executor-run. The guest executor claim query excludes
+`web_search` and every Marshall-owned tool
+([executor session](repo:marshall/lib/marshall/agents/executor_session.ex)), so a
+guest cannot claim or answer them.
+
+Queuing a Marshall-owned command inserts a
+[`ServerToolJob`](repo:marshall/lib/marshall/agents/server_tool_job.ex) in the
+same transaction (Oban queue `agent_tools`, unique on command ID); it replaced
+the 500 ms polling worker. For `thread` and `message_board` the job runs
+[`ThreadToolDispatch`](repo:marshall/lib/marshall/agents/thread_tool_dispatch.ex)
+in one transaction with the lock order, authority checks and results described
+under "Thread tool and profile boards" below. The typed
+`artifact` tool has one parser that validates the model response and is rerun at
+execution. For it, the job locks the command and its VM, then rechecks in order:
+
+| Check | Refusal (command status) |
+| --- | --- |
+| Turn is running and is the agent thread's active turn | `turn_inactive` (cancelled) |
+| VM profile capability allows the tool | `capability_denied` (cancelled) |
+| Prompting user is current, VM is not archived, Access `write` on the VM, Cedar `write` on the bound user thread | `access_revoked` (cancelled) |
+| Arguments parse with the tool's parser | `invalid_arguments` (failed) |
+
+An admitted queued command moves to `claimed` with a server claim ID and a
+`tool_dispatched` audit row. The tool runs with the prompting user's authority
+(`Turn.actor_id`), never the VM owner's or the guest's. The finish transaction
+requires the same claim ID, writes the bounded result (64 KiB JSON, otherwise
+`result_too_large`), one `tool_finished` audit row and any tool-specific audit
+kind, and touches the VM idle clock on success. A stale claim's result is
+discarded. Refusal reasons are a closed vocabulary; any other failure is
+`tool_failed`. Database connection errors are re-raised so Oban retries.
+
+[`ServerToolReconciler`](repo:marshall/lib/marshall/agents/server_tool_reconciler.ex)
+runs every minute. It re-enqueues server-tool commands still `queued` after
+30 seconds; the job's unique key makes this idempotent. A server claim older
+than ten minutes with no live job and no staging publish request becomes
+`uncertain` (`claim_expired`) with one finish audit row. It is not re-run,
+because its effect may already have committed.
+
+## Artifacts
+
+[ADR-0253](repo:docs/architecture/decisions/0253-artifacts-domain.md) adds the
+[`Marshall.Artifacts`](repo:marshall/lib/marshall/artifacts.ex) Ash domain:
+agent-published HTML or Markdown pages, versioned, private by default and
+shared through Cedar roles. Users browse them at `/artifacts`; content renders
+only on the isolated content origin
+([ADR-0254](repo:docs/architecture/decisions/0254-isolated-artifact-content-origin.md),
+see [security](#security)). The domain adds no service: PostgreSQL holds
+metadata, content and page storage.
+
+| Resource | Role |
+| --- | --- |
+| `Artifact` | Head row and AshStateMachine (`active → deleting → deleted`); owner, title, format, current version, totals, moderation reason |
+| `Version` | Immutable published version; dense per artifact; unique per originating command |
+| `VersionFile` | Path, media type and SHA-256 of one file in a version |
+| `Blob` | Content-addressed bytes, stored as 1 MiB PostgreSQL chunks |
+| `Grant` / `AccessChange` | Current user or team role (archived on revoke, paper-trailed) and the immutable change record |
+| `StorageEntry` / `StorageUsage` | Page storage values and per-scope byte counters |
+| `ViewTicket` | Five-minute content capability (`issued → expired | revoked`) |
+| `PublishRequest` | Guest-staged upload (`staging → committed | refused | expired`) |
+| `AuditEvent` | Payload-free receipt with closed kinds and reasons, retained 90 days |
+
+### Agent artifact tool
+
+The [`artifact` tool](repo:marshall/lib/marshall/artifacts/tool.ex) offers
+`publish`, `read`, `list` and `delete`. It is in the standard capability set
+and runs as a server tool. Each operation accepts only its closed argument set.
+An artifact the user cannot read answers `not_found`, the same as an unknown ID.
+
+`read` returns at most 48 KiB of text per call at a UTF-8 boundary, with
+`next_offset` for the next window. `list` pages up to 100 readable artifacts
+with an opaque cursor. `delete` needs the Cedar delete role. Repeating a
+delete of a `deleting` or `deleted` artifact is a no-op for its owner (or for
+an elevated administrator through moderation) and `not_found` for anyone else,
+so a repeat reveals nothing to another user.
+
+### Publishing and read-before-write
+
+Every `publish` names `base_version`; `0` creates an artifact. Under the
+artifact row lock, any base other than the current version is refused with
+`stale_base_version` and the current version. Nothing changes except the
+refusal audit row. The model must read the current version and publish again.
+Replaying the same originating command returns the version it created.
+
+The page source is exactly one of inline `content` (at most 128 KiB),
+`content_path` (staged from the guest) or `edits`. Edits are exact `old_str`
+→ `new_str` pairs (at most 64), applied in order, all or none; a missing or
+ambiguous match is refused with that edit's index
+([edits](repo:marshall/lib/marshall/artifacts/edits.ex)). A `files` manifest
+adds, replaces or keeps paths, and `null` removes one. Paths are normalized;
+traversal, conflicting keys and changing the page path through `files` are
+refused ([paths](repo:marshall/lib/marshall/artifacts/paths.ex),
+[manifest](repo:marshall/lib/marshall/artifacts/manifest.ex)).
+
+Limits are inclusive and checked before any blob, version or file row is
+written ([limits](repo:marshall/lib/marshall/artifacts/limits.ex)):
+
+| Limit | Value | Refusal |
+| --- | --- | --- |
+| Page | 16 MiB | `page_too_large` |
+| Files sent in one publish | 255 files, 64 MiB | `too_many_files`, `publish_too_large` |
+| Resulting version | 511 files, 256 MiB | `too_many_files`, `version_too_large` |
+| Inline content | 128 KiB | `invalid_arguments` |
+
+No per-owner quota exists. A successful publish writes one `Version`, its
+`VersionFile` rows, any new blobs, the head update and one `published` audit
+row in one transaction ([publisher](repo:marshall/lib/marshall/artifacts/publisher.ex)).
+
+### Guest-staged uploads
+
+Content larger than the inline bound is staged from the guest
+([staging](repo:marshall/lib/marshall/artifacts/staging.ex)). The job opens a
+`PublishRequest` (30-minute expiry) and queues an internal `artifact_stage`
+command for executors that advertise `artifacts-v1`. The parent `artifact`
+command stays `claimed` (`:pending`) meanwhile. Current Lyra executors register
+four capabilities (`artifacts-v1`, `context-v1`, `github-tools-v1`,
+`skills-v1`), stored sorted; the executor's capability list admits at most four
+distinct known values ([executor](repo:marshall/lib/marshall/agents/executor.ex)).
+The earlier three-entry bound refused every current guest registration.
+
+[Lyra's stager](repo:lyra/src/agent/artifact_stage.rs) refuses non-absolute,
+symbolic-link, non-regular and over-limit sources before sending anything. It
+sends fixed 196,608-byte chunks through the fenced `artifact_chunk` executor
+RPC, heartbeats between chunks, and stops on lease loss or any reply other than
+`{"accepted": true}`. Ziggy relays that route with a 270,336-byte body bound;
+every other agent route keeps 12 KiB ([Ziggy HTTP](repo:ziggy/lib/ziggy/http.ex)).
+Marshall accepts chunks only from the current executor lease and fence of the
+command's VM, only while `staging`, only for declared files, in dense order and
+within limits. An empty file is staged as zero chunks with the empty-content
+SHA-256. Promotion recomputes SHA-256 from the stored chunks. Every
+terminal state releases staged chunks and resumes the parent command; expiry
+fails it closed. Guest failure reasons are closed: `path_invalid`,
+`not_regular_file`, `too_large`, `io_error`, `upload_refused`.
+
+### Viewing, storage and moderation
+
+`/artifacts` lists readable artifacts; `/artifacts/:id` shows the current
+version in `<iframe sandbox="allow-scripts" credentialless
+referrerpolicy="no-referrer">` on the content origin. Each render issues a fresh
+view ticket ([tickets](repo:marshall/lib/marshall/artifacts/tickets.ex)); the
+ticket travels in the path, never a query string. `/artifacts/:id/versions`
+browses immutable versions and `/artifacts/:id/sharing` manages grants, labelled
+with the user's email or the team's name. When no
+content host is configured the viewer reports that content is unavailable.
+
+Served pages receive an inline helper (`window.marshallStorage`) that sends
+storage requests to the parent through `postMessage`
+([page helper](repo:marshall/lib/marshall/artifacts/page_helper.ex)).
+[The frame bridge](repo:marshall/assets/js/artifact_frame.js) accepts only
+messages from the frame's own window with the closed request shape, bounded
+UTF-8 keys and values and a known namespace, with at most 16 in flight. The
+LiveView then authorizes each request with Cedar
+([storage](repo:marshall/lib/marshall/artifacts/storage.ex)). Personal storage
+is keyed by artifact and user; shared storage by artifact. Each scope holds at
+most 20 MiB of UTF-8 text including 256-byte keys; a refused write changes
+nothing but its audit row.
+
+`/admin/artifacts` ([admin view](repo:marshall/lib/marshall_web/live/admin/artifacts_live.ex))
+lists active artifacts as metadata only for elevated administrators. Deletion
+requires a closed moderation reason (`abuse`, `legal`, `security`,
+`owner_request`, `other`) and Cedar `artifact_admin_delete`. It writes an
+`Artifacts.AuditEvent` and an `Administration.AuditEvent`. Moderation never
+reads page, file or storage content.
+
+### Audit and diagnostics
+
+Audit and diagnostics are separate records. Every mutation writes its
+closed-kind `Artifacts.AuditEvent` in the transaction that commits it; a
+refusal is audited in its own transaction after rollback. Audit rows hold IDs,
+kind, channel (`agent`, `web`, `admin`, `content`, `system`), reason, version
+and byte count. They never hold content, storage keys or values, tickets, paths
+or tool arguments. Lifecycle transitions also write LifecycleEvents; grants
+write AccessChanges and paper trail. Diagnostics are catalogued
+`Marshall.Events`, spans and metrics emitted after commit; see
+[monitoring](#monitoring).
+
 # Thread tool and profile boards
 
 Marshall exposes typed `thread` operations for authorized metadata search,
@@ -634,7 +815,7 @@ execution binding. A linked user thread is derived from that binding; model
 arguments cannot supply account, profile, machine or thread identities. Ordinary
 machines without a user thread still receive machine-tagged posts.
 
-These commands execute in the server worker, under current running-turn and VM
+These commands execute in `ServerToolJob`, under current running-turn and VM
 authority, and are excluded from guest command claims. The worker locks a linked
 user thread before VM and command locks. Post content is bounded to 64 KiB with a
 128-byte retry key. Lists return the latest 100 posts with user-thread links and
@@ -647,3 +828,44 @@ Profile message boards retain
 machine and thread tags; links resolve through the existing thread
 authorization boundary. A machine reaching the paused, stopped or deleted
 state-machine state purges tagged history and records a redacted replay event.
+
+## Thread status state machine
+
+`Threads.Thread.status` is an AshStateMachine
+([thread resource](repo:marshall/lib/marshall/threads/thread.ex)). No action
+accepts `status`; callers use named transitions. `record_admitted_machine`
+records the admitted VM and is not a transition. Every transition that changes
+the row writes one LifecycleEvent in the same transaction; an unchanged replay of
+a self-transition writes none. Every transition synchronizes the current
+generation row. A transition from a
+state not in its source list is refused and changes nothing.
+
+```mermaid
+stateDiagram-v2
+  [*] --> pending
+  pending --> provisioning: begin_provisioning / bind_agent
+  failed --> provisioning: begin_provisioning / bind_agent
+  provisioning --> provisioning: begin_provisioning / bind_agent
+  provisioning --> ready: mark_ready
+  pending --> failed: mark_failed
+  provisioning --> failed: mark_failed
+  failed --> failed: mark_failed
+  pending --> pending: requeue / replace_generation
+  failed --> pending: requeue / replace_generation
+  pending --> deleting: mark_deleting
+  provisioning --> deleting: mark_deleting
+  ready --> deleting: mark_deleting
+  failed --> deleting: mark_deleting
+  pending --> archived: mark_archived
+  provisioning --> archived: mark_archived
+  ready --> archived: mark_archived
+  failed --> archived: mark_archived
+  deleting --> archived: mark_archived
+  archived --> pending: reopen
+```
+
+`replace_generation` and `reopen` require a fresh machine key and clear the
+archived time, machine, agent root, agent thread and failure reason. The
+`threads_status_valid` check constraint bounds stored states. Subscriptions,
+receivers and delivery remain those of
+[ADR-0252](repo:docs/architecture/decisions/0252-profile-boards-and-thread-subscriptions.md).

@@ -276,6 +276,17 @@ the check failed — it never creates, extends or clears the candidate rejection
 The refusal matrix is pinned by generated histories on both sides per the
 [update failure matrix review](repo:docs/architecture/reviews/2026-09-26-update-failure-matrix.md).
 
+Ziggy relays the guest executor's agent RPC routes to Marshall's control
+connection with Audi's binding injected; a guest-supplied `binding` is refused.
+Agent route bodies are bounded at 12,288 bytes, except
+`POST /agent/v1/artifact_chunk`, which admits up to 270,336 bytes (one base64
+196,608-byte artifact chunk plus identity fields) and forwards only to control
+route `agent_artifact_chunk` ([HTTP](repo:ziggy/lib/ziggy/http.ex)). Chunk
+bodies are not inspected beyond JSON object shape and never logged; Marshall
+applies the executor lease, fence and staging checks described in
+[agents](#agents). [Route tests](repo:ziggy/test/artifact_chunk_test.exs) pin
+the bounds and binding refusal.
+
 Set `services.ziggy.enabledProviders` explicitly and supply credentials for each
 selected provider. Readiness requires provider catalog and control authority. A failed or partial
 provider discovery retries after five seconds, doubling to the fifteen-minute

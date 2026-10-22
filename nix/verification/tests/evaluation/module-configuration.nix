@@ -192,6 +192,24 @@ let
     services.marshall.databaseConnectionBudget = lib.mkForce 49;
   };
   invalidAcme = settings: !(valid (evaluate { imports = [ acme settings ]; }));
+  contentHost = "usercontent.example.test";
+  contentMarshall = settings: evaluate { imports = [ marshall settings ]; services.marshall.artifactContent.host = contentHost; };
+  artifactMarshall = contentMarshall {};
+  contentProxySettings = {
+    services.marshallProxy.artifactContent = { host = contentHost; certificateFile = "/run/proxy/content.pem"; };
+  };
+  contentProxy = evaluate { imports = [ proxy contentProxySettings ]; };
+  contentProxyConfig = contentProxy.services.haproxy.config;
+  invalidProxy = settings: !(valid (evaluate { imports = [ proxy settings ]; }));
+  contentAcme = evaluate { imports = [ acme ]; services.marshallProxy.artifactContent.host = contentHost; };
+  contentDnsAcme = evaluate {
+    imports = [ acme ];
+    services.marshallProxy.artifactContent.host = contentHost;
+    services.marshallProxy.acme = {
+      challengeType = "dns-01";
+      route53 = { hostedZoneId = "ZEXAMPLE"; credentialsFile = "/run/route53/credentials"; };
+    };
+  };
   invalidSecrets = settings: !(valid (evaluate { imports = [ secrets settings ]; }));
   invalid = settings: !(valid (evaluate { imports = [ marshall lilly settings ]; }));
   zfsPool = {
@@ -559,6 +577,88 @@ let
     acmeRootProxy = invalidAcme { services.haproxy.user = "root"; };
     acmeWithoutTerms = invalidAcme { security.acme.acceptTerms = lib.mkForce false; };
     acmeWrongPublication = invalidAcme { services.marshallProxy.certificateFile = lib.mkForce "/run/other/full.pem"; };
+    # @cc [owner:ghuntley,label:verification;security] artifact-content-module-rendering
+    # The content origin MUST be absent by default, MUST reach Marshall only
+    # through the final wrapper with a distinct per-instance port, and the
+    # proxy MUST render the content ACL, credential deletes, method denial,
+    # Set-Cookie deletion and a health-tracking content backend while keeping
+    # request logs free of URLs and headers.
+    artifactContentDefault = let script = onlyMarshall.systemd.services.marshall-one.script; in
+      onlyMarshall.services.marshall.artifactContent.host == null
+      && onlyMarshall.services.marshall.instances.one.artifactPort == 6443
+      && lib.hasInfix "-u MARSHALL_ARTIFACT_CONTENT_HOST -u MARSHALL_ARTIFACT_TLS_PORT -u MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO" script
+      && !(lib.hasInfix "MARSHALL_ARTIFACT_CONTENT_HOST=" script)
+      && !(lib.hasInfix "MARSHALL_ARTIFACT_TLS_PORT=" script)
+      && !(lib.hasInfix "MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO=" script)
+      && lib.hasInfix "-u MARSHALL_ARTIFACT_CONTENT_HOST" onlyMarshall.systemd.services.marshall-one.preStart
+      && !(builtins.elem 6443 (evaluate { imports = [ marshall ]; services.marshall.openFirewall = true; }).networking.firewall.allowedTCPPorts);
+    artifactContentRendered = valid artifactMarshall
+      && lib.all ({ name, port }: lib.hasInfix "MARSHALL_ARTIFACT_CONTENT_HOST=${contentHost} MARSHALL_ARTIFACT_TLS_PORT=${toString port}"
+        artifactMarshall.systemd.services."marshall-${name}".script)
+        [ { name = "one"; port = 6443; } { name = "two"; port = 6444; } { name = "three"; port = 6445; } ]
+      && !(lib.hasInfix "MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO=" artifactMarshall.systemd.services.marshall-one.script)
+      && !(artifactMarshall.systemd.services.marshall-one.environment ? MARSHALL_ARTIFACT_CONTENT_HOST);
+    artifactContentFirewall = builtins.elem 6443 (contentMarshall { services.marshall.openFirewall = true; }).networking.firewall.allowedTCPPorts;
+    artifactPortCollision = !(valid (contentMarshall { services.marshall.instances.two.artifactPort = 5443; }));
+    artifactBrowserPortCollision = !(valid (contentMarshall { services.marshall.instances.two.artifactPort = 4445; }));
+    artifactSamePublicHost = !(valid (evaluate { imports = [ marshall ]; services.marshall.artifactContent.host = "control.example.test"; }));
+    artifactHostType = lib.all (host: !(builtins.tryEval (builtins.deepSeq
+      (evaluate { imports = [ marshall ]; services.marshall.artifactContent.host = host; }).services.marshall.artifactContent.host true)).success)
+      [ "UserContent.Example.Test" "usercontent" "*.example.test" "usercontent.example.test:443" ];
+    artifactDebugEchoRefused = !(valid (contentMarshall { services.marshall.artifactContent.debugEcho = true; }))
+      && !(valid (evaluate { imports = [ marshall ]; services.marshall = { machineTestFixture = true; artifactContent.debugEcho = true; }; }));
+    artifactDebugEchoFixture = let cfg = contentMarshall { services.marshall = { machineTestFixture = true; artifactContent.debugEcho = true; }; };
+      in valid cfg && lib.hasInfix "MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO=true" cfg.systemd.services.marshall-one.script;
+    proxyContentDefault = !(lib.hasInfix "content_host" onlyProxy.services.haproxy.config)
+      && !(lib.hasInfix "marshall_artifact_nodes" onlyProxy.services.haproxy.config)
+      && lib.hasInfix "http-request deny deny_status 421 unless public_host\n" onlyProxy.services.haproxy.config;
+    proxyContentRendered = valid contentProxy && lib.all (fragment: lib.hasInfix fragment contentProxyConfig) [
+      "ssl crt /run/proxy/full.pem crt /run/proxy/content.pem alpn h2,http/1.1"
+      "acl content_host hdr(host),lower -m str ${contentHost} ${contentHost}:443"
+      "http-request deny deny_status 421 unless public_host || content_host"
+      "http-request deny deny_status 405 if content_host !METH_GET"
+      "http-request del-header Cookie if content_host"
+      "http-request del-header Authorization if content_host"
+      "http-request del-header Proxy-Authorization if content_host"
+      "http-request set-header X-Forwarded-Host ${contentHost} if content_host"
+      "use_backend marshall_artifact_nodes if content_host"
+      "use_backend marshall_nodes if public_host"
+      "backend marshall_artifact_nodes"
+      "http-response del-header Set-Cookie"
+      "server one 127.0.0.1:6443 resolve-prefer ipv4 ssl verify required verifyhost backend.example.test sni str(backend.example.test) ca-file"
+      "track marshall_nodes/one"
+      "server one 127.0.0.1:4443 resolve-prefer ipv4 ssl verify required verifyhost backend.example.test sni str(backend.example.test) check check-ssl"
+    ] && !(lib.hasInfix "default_backend" contentProxyConfig)
+      && !(lib.any (field: lib.hasInfix field contentProxyConfig) [ "%r" "%HU" "%HP" "%hr" "%hs" "capture" ]);
+    proxyContentWithoutCertificate = invalidProxy { services.marshallProxy.artifactContent.host = contentHost; };
+    proxyContentCertificateWithoutHost = invalidProxy { services.marshallProxy.artifactContent.certificateFile = "/run/proxy/content.pem"; };
+    proxyContentSameHost = invalidProxy { services.marshallProxy.artifactContent = { host = "control.example.test"; certificateFile = "/run/proxy/content.pem"; }; };
+    proxyContentSharedCertificate = invalidProxy { services.marshallProxy.artifactContent = { host = contentHost; certificateFile = "/run/proxy/full.pem"; }; };
+    proxyContentColocatedMismatch = invalid { imports = [ proxy contentProxySettings ]; services.marshallProxy.port = 8443; };
+    proxyContentColocated = valid (evaluate { imports = [ marshall proxy contentProxySettings ];
+      services.marshallProxy.port = 8443; services.marshall.artifactContent.host = contentHost; });
+    proxyArtifactPortCollision = !(valid (evaluate { imports = [ marshall proxy contentProxySettings ];
+      services.marshallProxy.port = 6443; services.marshall.artifactContent.host = contentHost; }))
+      && valid (evaluate { imports = [ marshall proxy ]; services.marshallProxy.port = 6443; });
+    acmeContentCertificate = valid contentAcme
+      && contentAcme.services.marshallProxy.artifactContent.certificateFile == "/var/lib/overalls-certificates/marshall-artifact-content/full.pem"
+      && contentAcme.security.acme.certs.${contentHost}.listenHTTP == "127.0.0.1:9080"
+      && contentAcme.security.acme.certs.${contentHost}.extraDomainNames == []
+      && contentAcme.security.acme.certs."control.example.test".extraDomainNames == []
+      && builtins.elem "acme-order-renew-control.example.test.service" contentAcme.systemd.services."acme-order-renew-${contentHost}".after
+      && builtins.elem "marshall-acme-http.service" contentAcme.systemd.services."acme-order-renew-${contentHost}".after
+      && contentAcme.systemd.services ? marshall-artifact-certificate
+      && contentAcme.systemd.timers ? marshall-artifact-certificate
+      && builtins.elem "marshall-artifact-certificate.service" contentAcme.systemd.services.haproxy.wants
+      && builtins.length (lib.filter (lib.hasInfix "publish.py --cached") contentAcme.systemd.services.haproxy.serviceConfig.ExecStartPre) == 2
+      && lib.hasInfix "crt /var/lib/overalls-certificates/marshall/full.pem crt /var/lib/overalls-certificates/marshall-artifact-content/full.pem" contentAcme.services.haproxy.config
+      && !(onlyAcme.systemd.services ? marshall-artifact-certificate)
+      && builtins.length (lib.filter (lib.hasInfix "publish.py --cached") onlyAcme.systemd.services.haproxy.serviceConfig.ExecStartPre) == 1;
+    acmeContentDns = valid contentDnsAcme && contentDnsAcme.security.acme.certs.${contentHost}.dnsProvider == "route53"
+      && !(contentDnsAcme.systemd.services ? marshall-acme-http);
+    acmeContentWrongPublication = invalidAcme {
+      services.marshallProxy.artifactContent = { host = contentHost; certificateFile = lib.mkForce "/run/other/content.pem"; };
+    };
   };
   failed = lib.attrNames (lib.filterAttrs (_: result: !result) cases);
 in

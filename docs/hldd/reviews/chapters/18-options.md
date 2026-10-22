@@ -1,5 +1,5 @@
 ---
-digest: 0f0719f4bf760ff8d76eab63b4da72cf574a54e10cf9a18561d9d5577ddc2354
+digest: 508dafafd8772a8b99e5277fdce56bda9b27566145979975ae96a11109e4a954
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Regenerated the options reference for the current entryMemoryMiB description and default.
+Regenerated options reference on current trunk adds the Marshall artifactContentHost option and per-instance artifactPort listener with their types, defaults and descriptions; upstream option rows are unchanged.

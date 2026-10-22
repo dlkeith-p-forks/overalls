@@ -5,7 +5,7 @@ defmodule Marshall.Threads.Thread do
     domain: Marshall.Threads,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Marshall.Authorization.AshAuthorizer],
-    extensions: [AshArchival.Resource, AshPaperTrail.Resource]
+    extensions: [AshStateMachine, AshArchival.Resource, AshPaperTrail.Resource]
 
   postgres do
     table "threads"
@@ -17,6 +17,32 @@ defmodule Marshall.Threads.Thread do
       index [:machine_id]
       index [:creator_id, :inserted_at]
       index [:team_id, :inserted_at]
+    end
+  end
+
+  # @cc [owner:ghuntley,label:durability;recovery] thread-status-state-machine
+  # Thread status MUST change only through the named transitions below; no
+  # action may accept `:status`. Every committed transition MUST record its
+  # lifecycle evidence and synchronize the current generation inside the same
+  # transaction (ADR-0255).
+  state_machine do
+    state_attribute :status
+    initial_states [:pending]
+    default_initial_state :pending
+
+    transitions do
+      transition :begin_provisioning, from: [:pending, :provisioning, :failed], to: :provisioning
+      transition :bind_agent, from: [:pending, :provisioning, :failed], to: :provisioning
+      transition :mark_ready, from: [:provisioning], to: :ready
+      transition :mark_failed, from: [:pending, :provisioning, :failed], to: :failed
+      transition :requeue, from: [:pending, :failed], to: :pending
+      transition :replace_generation, from: [:pending, :failed], to: :pending
+      transition :reopen, from: [:archived], to: :pending
+      transition :mark_deleting, from: [:pending, :provisioning, :ready, :failed], to: :deleting
+
+      transition :mark_archived,
+        from: [:pending, :provisioning, :ready, :failed, :deleting],
+        to: :archived
     end
   end
 
@@ -74,6 +100,11 @@ defmodule Marshall.Threads.Thread do
     action :list_page_for_user, :map do
       argument :after, :uuid
       argument :machine_id, :uuid
+      argument :query, :string, constraints: [min_length: 1, max_length: 256]
+
+      argument :status, :atom,
+        constraints: [one_of: [:pending, :provisioning, :ready, :failed, :deleting, :archived]]
+
       argument :limit, :integer, default: 50, constraints: [min: 1, max: 100]
       run {Marshall.Threads.Coordinator, operation: :list_page}
     end
@@ -238,41 +269,72 @@ defmodule Marshall.Threads.Thread do
       ]
     end
 
-    update :bind_machine do
-      accept [
-        :machine_id,
-        :agent_root_id,
-        :agent_thread_id,
-        :status,
-        :failure_reason,
-        :archived_at
-      ]
+    # Records the admitted Compute machine before readiness; not a transition.
+    update :record_admitted_machine do
+      accept [:machine_id]
+    end
+
+    update :begin_provisioning do
+      accept []
+      change transition_state(:provisioning)
+    end
+
+    update :bind_agent do
+      accept [:agent_root_id, :agent_thread_id]
+      change set_attribute(:failure_reason, nil)
+      change transition_state(:provisioning)
+    end
+
+    update :mark_ready do
+      accept []
+      change set_attribute(:failure_reason, nil)
+      change transition_state(:ready)
     end
 
     update :mark_failed do
-      accept [:status, :failure_reason]
+      accept [:failure_reason]
+      change transition_state(:failed)
     end
 
-    update :mark_archived do
-      accept [:status, :archived_at]
+    update :requeue do
+      accept []
+      change set_attribute(:failure_reason, nil)
+      change transition_state(:pending)
+    end
+
+    for {name, state} <- [replace_generation: :pending, reopen: :pending] do
+      update name do
+        atomic_upgrade_with :history
+
+        argument :machine_key, :string,
+          allow_nil?: false,
+          constraints: [min_length: 1, max_length: 160]
+
+        change set_attribute(:machine_key, arg(:machine_key))
+
+        for attribute <- [
+              :archived_at,
+              :machine_id,
+              :agent_root_id,
+              :agent_thread_id,
+              :failure_reason
+            ] do
+          change set_attribute(attribute, nil)
+        end
+
+        change transition_state(state)
+      end
     end
 
     update :mark_deleting do
-      accept [:status]
+      accept []
+      change transition_state(:deleting)
     end
 
-    update :reopen do
-      atomic_upgrade_with :history
-
-      accept [
-        :status,
-        :archived_at,
-        :machine_id,
-        :agent_root_id,
-        :agent_thread_id,
-        :machine_key,
-        :failure_reason
-      ]
+    update :mark_archived do
+      accept []
+      change set_attribute(:archived_at, &DateTime.utc_now/0)
+      change transition_state(:archived)
     end
 
     update :set_title do
@@ -293,6 +355,22 @@ defmodule Marshall.Threads.Thread do
     destroy :archive
   end
 
+  @transitions [
+    :begin_provisioning,
+    :bind_agent,
+    :mark_ready,
+    :mark_failed,
+    :requeue,
+    :replace_generation,
+    :reopen,
+    :mark_deleting,
+    :mark_archived
+  ]
+
+  @doc "Named status transitions; each records lifecycle evidence and syncs its generation."
+  @spec transitions() :: [atom()]
+  def transitions, do: @transitions
+
   # @cc [owner:ghuntley,label:protocol;observability] thread-change-hint
   # Every committed thread change, including the activity projection that
   # follows each durable agent event, MUST emit a `:thread` hint carrying only
@@ -301,6 +379,9 @@ defmodule Marshall.Threads.Thread do
   changes do
     change {Marshall.Control.Hints.Change, kind: :thread, from: :id},
       on: [:create, :update, :destroy]
+
+    change Marshall.Compute.LifecycleAudit, where: [action_is(@transitions)]
+    change Marshall.Threads.Changes.SyncGeneration, where: [action_is(@transitions)]
   end
 
   attributes do

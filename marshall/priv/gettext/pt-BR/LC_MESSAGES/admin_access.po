@@ -353,22 +353,22 @@ msgstr "encerrar todas as sessões desta conta"
 msgid "start this node evacuation"
 msgstr "iniciar a evacuação deste nó"
 
-#: lib/marshall_web/live/admin/scim_live.ex:207
+#: lib/marshall_web/live/admin/scim_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr "Configure o provisionamento de diretórios, o ciclo de vida de identidades e as equipes gerenciadas."
 
-#: lib/marshall_web/live/admin/scim_live.ex:300
+#: lib/marshall_web/live/admin/scim_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr "Copie este token bearer agora. Ele não será exibido novamente."
 
-#: lib/marshall_web/live/admin/scim_live.ex:293
+#: lib/marshall_web/live/admin/scim_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr "Desativar SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:253
+#: lib/marshall_web/live/admin/scim_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr "Ativar SCIM e gerar token"
@@ -378,32 +378,32 @@ msgstr "Ativar SCIM e gerar token"
 msgid "SCIM configuration could not be updated."
 msgstr "Não foi possível atualizar a configuração do SCIM."
 
-#: lib/marshall_web/live/admin/scim_live.ex:205
+#: lib/marshall_web/live/admin/scim_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "Provisionamento SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:331
+#: lib/marshall_web/live/admin/scim_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "A client secret is set. Leave blank to keep it."
 msgstr "Um segredo do cliente está definido. Deixe em branco para mantê-lo."
 
-#: lib/marshall_web/live/admin/scim_live.ex:226
+#: lib/marshall_web/live/admin/scim_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Accounts pending retirement"
 msgstr "Contas com desativação pendente"
 
-#: lib/marshall_web/live/admin/scim_live.ex:344
+#: lib/marshall_web/live/admin/scim_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Clear the stored client secret"
 msgstr "Limpar o segredo do cliente armazenado"
 
-#: lib/marshall_web/live/admin/scim_live.ex:287
+#: lib/marshall_web/live/admin/scim_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM provisioning? Managed teams stay locked until an administrator hands them off."
 msgstr "Desativar o provisionamento SCIM? As equipes gerenciadas permanecem bloqueadas até que um administrador as transfira."
 
-#: lib/marshall_web/live/admin/scim_live.ex:245
+#: lib/marshall_web/live/admin/scim_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
 msgstr "Ativar o SCIM desativa o login por link mágico, arquiva as equipes nativas após um período de carência de sete dias e gera um token bearer."
@@ -413,43 +413,43 @@ msgstr "Ativar o SCIM desativa o login por link mágico, arquiva as equipes nati
 msgid "Enter an absolute https:// issuer URL."
 msgstr "Insira uma URL absoluta do emissor com https://."
 
-#: lib/marshall_web/live/admin/scim_live.ex:335
+#: lib/marshall_web/live/admin/scim_live.ex:337
 #, elixir-autogen, elixir-format
 msgid "No client secret is set."
 msgstr "Nenhum segredo do cliente está definido."
 
-#: lib/marshall_web/live/admin/scim_live.ex:320
+#: lib/marshall_web/live/admin/scim_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "OIDC client ID"
 msgstr "ID do cliente OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:327
+#: lib/marshall_web/live/admin/scim_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "OIDC client secret"
 msgstr "Segredo do cliente OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:312
+#: lib/marshall_web/live/admin/scim_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "OIDC issuer"
 msgstr "Emissor OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:215
-#: lib/marshall_web/live/admin/scim_live.ex:242
+#: lib/marshall_web/live/admin/scim_live.ex:217
+#: lib/marshall_web/live/admin/scim_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "Provisionamento"
 
-#: lib/marshall_web/live/admin/scim_live.ex:277
+#: lib/marshall_web/live/admin/scim_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Rotate bearer token"
 msgstr "Rotacionar token bearer"
 
-#: lib/marshall_web/live/admin/scim_live.ex:271
+#: lib/marshall_web/live/admin/scim_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Rotate the SCIM bearer token? The directory must be updated with the new token."
 msgstr "Rotacionar o token bearer do SCIM? O diretório precisa ser atualizado com o novo token."
 
-#: lib/marshall_web/live/admin/scim_live.ex:259
+#: lib/marshall_web/live/admin/scim_live.ex:261
 #, elixir-autogen, elixir-format
 msgid "Rotating the bearer token immediately invalidates the previous token."
 msgstr "Rotacionar o token bearer invalida imediatamente o token anterior."
@@ -469,17 +469,17 @@ msgstr "Provisionamento SCIM desativado."
 msgid "SCIM provisioning enabled."
 msgstr "Provisionamento SCIM ativado."
 
-#: lib/marshall_web/live/admin/scim_live.ex:348
+#: lib/marshall_web/live/admin/scim_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Save single sign-on settings"
 msgstr "Salvar configurações de login único"
 
-#: lib/marshall_web/live/admin/scim_live.ex:232
+#: lib/marshall_web/live/admin/scim_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Single sign-on"
 msgstr "Login único"
 
-#: lib/marshall_web/live/admin/scim_live.ex:306
+#: lib/marshall_web/live/admin/scim_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Single sign-on (OIDC)"
 msgstr "Login único (OIDC)"
@@ -489,37 +489,37 @@ msgstr "Login único (OIDC)"
 msgid "Single sign-on settings saved."
 msgstr "Configurações de login único salvas."
 
-#: lib/marshall_web/live/admin/scim_live.ex:213
+#: lib/marshall_web/live/admin/scim_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Estado"
 
-#: lib/marshall_web/live/admin/scim_live.ex:229
+#: lib/marshall_web/live/admin/scim_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Teams retiring"
 msgstr "Equipes em desativação"
 
-#: lib/marshall_web/live/admin/scim_live.ex:314
+#: lib/marshall_web/live/admin/scim_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "The exact https:// issuer URL from provider discovery."
 msgstr "A URL exata do emissor com https:// obtida na descoberta do provedor."
 
-#: lib/marshall_web/live/admin/scim_live.ex:235
+#: lib/marshall_web/live/admin/scim_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "[configured]"
 msgstr "[configurado]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:223
+#: lib/marshall_web/live/admin/scim_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "[disabled]"
 msgstr "[desativado]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:222
+#: lib/marshall_web/live/admin/scim_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "[enabled]"
 msgstr "[ativado]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:236
+#: lib/marshall_web/live/admin/scim_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "[not configured]"
 msgstr "[não configurado]"
@@ -529,7 +529,7 @@ msgstr "[não configurado]"
 msgid "change SCIM provisioning"
 msgstr "alterar o provisionamento SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:187
+#: lib/marshall_web/live/admin/scim_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "indisponível"

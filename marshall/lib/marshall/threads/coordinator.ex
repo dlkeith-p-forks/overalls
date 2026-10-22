@@ -97,10 +97,11 @@ defmodule Marshall.Threads.Coordinator do
     limit = args[:limit] || 50
 
     query =
-      case args[:machine_id] do
-        nil -> thread_query(actor)
-        machine_id -> Ash.Query.filter(thread_query(actor), machine_id == ^machine_id)
-      end
+      actor
+      |> thread_query()
+      |> narrow(:machine_id, args[:machine_id])
+      |> narrow(:status, args[:status])
+      |> narrow(:query, args[:query])
 
     case page_query(query, args[:after], actor) do
       {:ok, query} ->
@@ -192,14 +193,7 @@ defmodule Marshall.Threads.Coordinator do
         archive_machine!(locked, actor)
 
       _ ->
-        archived =
-          Ledger.update!(locked, :mark_archived, %{
-            status: :archived,
-            archived_at: DateTime.utc_now()
-          })
-
-        Generation.sync!(archived)
-        archived
+        Ledger.update!(locked, :mark_archived, %{})
     end
   end
 
@@ -217,13 +211,7 @@ defmodule Marshall.Threads.Coordinator do
 
     reopened =
       Ledger.update!(current, :reopen, %{
-        status: :pending,
-        archived_at: nil,
-        machine_id: nil,
-        agent_root_id: nil,
-        agent_thread_id: nil,
-        machine_key: "thread-reopen:" <> current.id <> ":" <> Ash.UUID.generate(),
-        failure_reason: nil
+        machine_key: "thread-reopen:" <> current.id <> ":" <> Ash.UUID.generate()
       })
 
     _generation = Generation.open_next!(reopened)
@@ -256,6 +244,30 @@ defmodule Marshall.Threads.Coordinator do
     )
     |> Ash.Query.sort(inserted_at: :desc, id: :desc)
   end
+
+  # @cc [owner:ghuntley,label:security] thread-search-literal
+  # A thread title or objective search MUST match the caller's text literally:
+  # LIKE wildcards and the escape character are escaped, and the filter only
+  # narrows the already-authorized query.
+  @spec narrow(Ash.Query.t(), :machine_id | :status | :query, term()) :: Ash.Query.t()
+  defp narrow(query, _field, nil), do: query
+  defp narrow(query, :machine_id, id), do: Ash.Query.filter(query, machine_id == ^id)
+  defp narrow(query, :status, status), do: Ash.Query.filter(query, status == ^status)
+
+  defp narrow(query, :query, text) do
+    pattern = "%" <> escape_like(text) <> "%"
+
+    Ash.Query.filter(
+      query,
+      fragment("? ILIKE ? ESCAPE '\\'", title, ^pattern) or
+        fragment("? ILIKE ? ESCAPE '\\'", objective, ^pattern)
+    )
+  end
+
+  @doc false
+  @spec escape_like(String.t()) :: String.t()
+  def escape_like(text) when is_binary(text),
+    do: String.replace(text, ["\\", "%", "_"], &("\\" <> &1))
 
   @spec page_query(Ash.Query.t(), String.t() | nil, Marshall.Accounts.User.t()) ::
           {:ok, Ash.Query.t()} | :empty
@@ -359,14 +371,7 @@ defmodule Marshall.Threads.Coordinator do
   defp archive_machine!(thread, actor) do
     case Ledger.history!(Marshall.Compute.VirtualMachine, id: thread.machine_id) do
       [%{archived_at: archived_at}] when not is_nil(archived_at) ->
-        archived =
-          Ledger.update!(thread, :mark_archived, %{
-            status: :archived,
-            archived_at: DateTime.utc_now()
-          })
-
-        Generation.sync!(archived)
-        archived
+        Ledger.update!(thread, :mark_archived, %{})
 
       [%{desired_state: :deleted}] ->
         # Deleted intent is monotone, but is not a physical deletion receipt.
@@ -405,7 +410,7 @@ defmodule Marshall.Threads.Coordinator do
            owner_id: thread.creator_id,
            idempotency_key: thread.machine_key
          ) do
-      [vm] -> Ledger.update!(thread, :bind_machine, %{machine_id: vm.id})
+      [vm] -> Ledger.update!(thread, :record_admitted_machine, %{machine_id: vm.id})
       [] -> thread
     end
   end
@@ -418,24 +423,15 @@ defmodule Marshall.Threads.Coordinator do
   end
 
   @spec prepare_retry!(Thread.t()) :: Thread.t()
-  defp prepare_retry!(%Thread{machine_id: nil} = thread) do
-    updated = Ledger.update!(thread, :bind_machine, %{status: :pending, failure_reason: nil})
-    Generation.sync!(updated)
-    updated
-  end
+  defp prepare_retry!(%Thread{machine_id: nil} = thread),
+    do: Ledger.update!(thread, :requeue, %{})
 
   defp prepare_retry!(thread) do
     case Ledger.history!(Marshall.Compute.VirtualMachine, id: thread.machine_id) do
       [%{archived_at: archived_at}] when not is_nil(archived_at) ->
         reopened =
-          Ledger.update!(thread, :reopen, %{
-            status: :pending,
-            archived_at: nil,
-            machine_id: nil,
-            agent_root_id: nil,
-            agent_thread_id: nil,
-            machine_key: "thread-retry:" <> thread.id <> ":" <> Ash.UUID.generate(),
-            failure_reason: nil
+          Ledger.update!(thread, :replace_generation, %{
+            machine_key: "thread-retry:" <> thread.id <> ":" <> Ash.UUID.generate()
           })
 
         _generation = Generation.open_next!(reopened)
@@ -445,9 +441,7 @@ defmodule Marshall.Threads.Coordinator do
         Ledger.rollback(:retry_unavailable)
 
       [_vm] ->
-        updated = Ledger.update!(thread, :bind_machine, %{status: :pending, failure_reason: nil})
-        Generation.sync!(updated)
-        updated
+        Ledger.update!(thread, :requeue, %{})
 
       [] ->
         Ledger.rollback(:machine_unavailable)
@@ -456,8 +450,7 @@ defmodule Marshall.Threads.Coordinator do
 
   @spec mark_deleting!(Thread.t()) :: Thread.t()
   defp mark_deleting!(thread) do
-    deleting = Ledger.update!(thread, :mark_deleting, %{status: :deleting})
-    Generation.sync!(deleting)
+    deleting = Ledger.update!(thread, :mark_deleting, %{})
 
     Marshall.Threads.ArchiveWorker.new(%{
       "thread_id" => deleting.id,

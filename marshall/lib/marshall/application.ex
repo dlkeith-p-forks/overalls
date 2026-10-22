@@ -109,7 +109,7 @@ defmodule Marshall.Application do
         # Start to serve requests, typically the last entry
         MarshallWeb.Endpoint,
         {AshAuthentication.Supervisor, [otp_app: :marshall]}
-      ] ++ agent_children() ++ fleet_children()
+      ] ++ agent_children() ++ fleet_children() ++ artifact_children()
   end
 
   defp agent_children do
@@ -118,7 +118,6 @@ defmodule Marshall.Application do
         Marshall.Agents.Loop,
         {Task.Supervisor, name: Marshall.Agents.SearchTasks},
         Marshall.Agents.WebSearch,
-        Marshall.Agents.ThreadToolWorker,
         Marshall.Agents.ThreadDelivery,
         Marshall.Agents.AttachmentCleanup
       ],
@@ -133,6 +132,20 @@ defmodule Marshall.Application do
     Enum.map(Application.get_env(:marshall, :fleet_listeners, []), fn options ->
       Supervisor.child_spec({Bandit, options},
         id: {MarshallWeb.FleetEndpoint, options[:ip], options[:port]}
+      )
+    end)
+  end
+
+  # @cc [owner:ghuntley,label:security] application-artifact-content-listener
+  # The artifact content listener MUST start only from validated serving
+  # configuration and only with ArtifactContentEndpoint, independently of the
+  # browser and fleet endpoints.
+  defp artifact_children do
+    (Application.get_env(:marshall, :artifact_content) || %{})
+    |> Map.get(:listeners, [])
+    |> Enum.map(fn options ->
+      Supervisor.child_spec({Bandit, options},
+        id: {MarshallWeb.ArtifactContentEndpoint, options[:ip], options[:port]}
       )
     end)
   end

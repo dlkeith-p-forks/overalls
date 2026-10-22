@@ -14,6 +14,51 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
+#: lib/marshall_web/live/admin/redaction_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Thread redaction"
+msgstr "Скрытие данных в ветках"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Scrub inactive threads"
+msgstr "Очистить неактивные ветки"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:21
+#, elixir-autogen, elixir-format
+msgid "Inactive thread scrub queued."
+msgstr "Очистка неактивных веток поставлена в очередь."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "The scrub could not be queued."
+msgstr "Не удалось поставить очистку в очередь."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Text in prompts, model output, and tool results is scrubbed in bounded background batches. Attachments are not inspected."
+msgstr "Текст в запросах, ответах модели и результатах инструментов очищается ограниченными фоновыми пакетами. Вложения не проверяются."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Redaction history is unavailable."
+msgstr "История скрытия данных недоступна."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Processed %{count}"
+msgstr "Обработано: %{count}"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Changed %{count}"
+msgstr "Изменено: %{count}"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Profile %{digest}"
+msgstr "Профиль %{digest}"
+
 #: lib/marshall_web/live/admin/audit_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "; the next due check can then request a new generation."
@@ -1015,3 +1060,28 @@ msgstr "Предлагается работа"
 #, elixir-autogen, elixir-format
 msgid "Workflow ID"
 msgstr "ID рабочего процесса"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Отмена"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "Приостановить"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Redaction run updated."
+msgstr "Запуск скрытия данных обновлён."
+
+#: lib/marshall_web/live/admin/redaction_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Resume"
+msgstr "Возобновить"
+
+#: lib/marshall_web/live/admin/redaction_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "The redaction run could not be updated."
+msgstr "Не удалось обновить запуск скрытия данных."

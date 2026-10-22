@@ -45,7 +45,13 @@ apps = %{
       "lib/marshall/compute/workflow_service_levels.ex",
       # Editor.Releases.approved?/2 is a pure registry membership predicate;
       # it has no security-significant side effect to announce.
-      "lib/marshall/editor/releases.ex"
+      "lib/marshall/editor/releases.ex",
+      # Artifacts.Limits publish_* functions are compile-time size constants.
+      "lib/marshall/artifacts/limits.ex",
+      # Artifacts.Tool.publisher_request/2 only maps a parsed request; the
+      # publish outcome is emitted by Artifacts.Publisher and the tool outcome
+      # by Agents.ServerToolJob after commit.
+      "lib/marshall/artifacts/tool.ex"
     ]
   },
   "lilly" => %{

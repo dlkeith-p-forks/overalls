@@ -1,4 +1,4 @@
-{ pkgs, root, agent ? false, executorLoss ? false, codingClis ? false }:
+{ pkgs, root, agent ? false, executorLoss ? false, codingClis ? false, serverToolMode ? null }:
 let
   provider = pkgs.runCommand "fleet-provider-catalog-typed" { nativeBuildInputs = [ pkgs.ty ]; } ''
     mkdir -p "$out"
@@ -52,7 +52,7 @@ in {
     systemd.services.fleet-provider-catalog = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.python3}/bin/python3 ${provider}/provider-catalog.py ${tls}/server.pem ${tls}/server.key ${if codingClis then "coding-clis" else if executorLoss then "executor-loss" else if agent then "agent" else "discovery"}";
+        ExecStart = "${pkgs.python3}/bin/python3 ${provider}/provider-catalog.py ${tls}/server.pem ${tls}/server.key ${if codingClis then "coding-clis" else if executorLoss then "executor-loss" else if serverToolMode != null then serverToolMode else if agent then "agent" else "discovery"}";
         DynamicUser = true;
         AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
         CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];

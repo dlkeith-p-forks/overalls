@@ -1,28 +1,24 @@
 ---
-digest: 2b3eb712f05fc7e423db40d8438d61fbd7d2a0c4538b6194f72dda8c2b0a16f4
-disposition: no-impact
+digest: 1f2ad5b0881f3111009b16346d81b19b8db3def418b47e608c75538f684481da
+disposition: updated
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
-migration:
-  marshall:
-    chapter_digest: 611713216c60038ac614a76a8aa4c5cb29f705024b6f3d45fb4b34d1ac794463
-    source_digest: 66cd97c314ea56b581e84f078c4745e952d0cd805117b65f0d777dadac728694
 path: marshall/priv/gettext/fr/LC_MESSAGES/admin_access.po
 reviewed_chapters:
   marshall/priv/hldd/02-control-plane.md: 8398bc3791875b6bc8cf22b6602a6efccb886c001a0f78d5a1500a3f5707ff3d
-  marshall/priv/hldd/03-access.md: 08dc3c53c626ebafffba5f908f09ccd49edd919b7a03a3ef8c12113f5097bd96
-  marshall/priv/hldd/04-lifecycle.md: a3c881206a8331e5dbcd995c9762772639a9e28bdc22102c2a2e64bf63aa7449
-  marshall/priv/hldd/06-workflows.md: a35d0a72eb3b3b7afcd667d162ccba51020f8e47877ef29002a77a0dd4cef501
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
-  marshall/priv/hldd/11-agents.md: 583a34e60b6968f2e8e49141feed2e653b46074be845a1c918a1908e19fa04a4
-  marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
-  marshall/priv/hldd/17-reference.md: 5513e1fb7deb5378fef4713fb925a9d0c0f2b1bc2539548d98e72c856262e897
-  marshall/priv/hldd/19-coverage.md: 5dc84656f2a81c5674ed8311af44a7f2e9c33262d36f624e11f8ba378a32db61
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/03-access.md: 9637f378d65cb4e5cd6ca8b852818cbad487a9a6d008a61ede50e7655fbd6669
+  marshall/priv/hldd/04-lifecycle.md: f3c40798f402b553640bb25852bcb205c327c87d7ad6735b4f1b243c5616b4a2
+  marshall/priv/hldd/06-workflows.md: e1ad826a83ee16829cca5e5ce4b6d53490e3887e52799bc184bf5096a74e7bfb
+  marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
+  marshall/priv/hldd/11-agents.md: 7d24214acefb26fbd3b08ce582578fd007e6ffa4bd55d986293050de8605356d
+  marshall/priv/hldd/15-monitoring.md: db740282f22afc4c76be24d9db3f9ef4f10bf2745089a754647c6cf7e8fdfeef
+  marshall/priv/hldd/17-reference.md: f1763e53aa081b752df936173e2041b4cda3351ada40a096cc2eac99b020c4da
+  marshall/priv/hldd/19-coverage.md: 347130fc1c617f8d232fc8b20221c6f5a2111e5e05a7fcc9b2d0f286081c4cc9
+  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-marshall: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
+Marshall adds the Artifacts Ash domain (artifact, version, file, blob chunk, grant, access change, storage, view ticket and publish request resources; state machines for artifact, ticket and publish request; Cedar owner/writer/viewer and elevated-admin delete; same-transaction audit; purge, sweep, expiry and usage Oban jobs), the session-free ArtifactContentEndpoint with exact lockdown headers and ticketed fetches, /artifacts and /admin/artifacts LiveViews with a postMessage storage bridge and artifacts Gettext catalogs, and the artifact server tool with guest staging over the artifact_chunk RPC. Thread status becomes an AshStateMachine with one lifecycle event per transition and a status check constraint; ServerToolJob replaces the polling ThreadToolWorker for ADR-0252 thread and message_board commands through ThreadToolDispatch, a reconciler re-enqueues lost jobs, and executor claims exclude Marshall-owned tools. Chapters 03-access, 04-lifecycle, 05-storage, 06-workflows, 11-agents, 15-monitoring, 17-reference, 19-coverage, 20-security, 21-domains and 22-topology and the agents, artifacts-publish-share and thread-tool scenarios describe the behaviour, boundaries, refusals and evidence.

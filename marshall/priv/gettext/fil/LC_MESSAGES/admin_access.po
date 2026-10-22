@@ -351,22 +351,22 @@ msgstr "i-sign out ang account na ito sa lahat ng lugar"
 msgid "start this node evacuation"
 msgstr "simulan ang paglilipat palabas sa kompyuter na ito"
 
-#: lib/marshall_web/live/admin/scim_live.ex:207
+#: lib/marshall_web/live/admin/scim_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Configure directory provisioning, identity lifecycle and managed teams."
 msgstr "I-configure ang directory provisioning, lifecycle ng pagkakakilanlan at mga pinamamahalaang team."
 
-#: lib/marshall_web/live/admin/scim_live.ex:300
+#: lib/marshall_web/live/admin/scim_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Copy this bearer token now. It will not be shown again."
 msgstr "Kopyahin ngayon ang bearer token na ito. Hindi na ito ipapakita muli."
 
-#: lib/marshall_web/live/admin/scim_live.ex:293
+#: lib/marshall_web/live/admin/scim_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM"
 msgstr "I-disable ang SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:253
+#: lib/marshall_web/live/admin/scim_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Enable SCIM and generate token"
 msgstr "I-enable ang SCIM at gumawa ng token"
@@ -376,32 +376,32 @@ msgstr "I-enable ang SCIM at gumawa ng token"
 msgid "SCIM configuration could not be updated."
 msgstr "Hindi ma-update ang configuration ng SCIM."
 
-#: lib/marshall_web/live/admin/scim_live.ex:205
+#: lib/marshall_web/live/admin/scim_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "Paglalaan ng SCIM"
 
-#: lib/marshall_web/live/admin/scim_live.ex:331
+#: lib/marshall_web/live/admin/scim_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "A client secret is set. Leave blank to keep it."
 msgstr "May nakatakdang client secret. Iwanang blangko para mapanatili ito."
 
-#: lib/marshall_web/live/admin/scim_live.ex:226
+#: lib/marshall_web/live/admin/scim_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Accounts pending retirement"
 msgstr "Mga account na nakabinbin ang pagreretiro"
 
-#: lib/marshall_web/live/admin/scim_live.ex:344
+#: lib/marshall_web/live/admin/scim_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Clear the stored client secret"
 msgstr "I-clear ang naka-store na client secret"
 
-#: lib/marshall_web/live/admin/scim_live.ex:287
+#: lib/marshall_web/live/admin/scim_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Disable SCIM provisioning? Managed teams stay locked until an administrator hands them off."
 msgstr "I-disable ang SCIM provisioning? Mananatiling naka-lock ang mga pinamamahalaang team hanggang ipasa ng isang administrator ang mga ito."
 
-#: lib/marshall_web/live/admin/scim_live.ex:245
+#: lib/marshall_web/live/admin/scim_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enabling SCIM disables magic-link sign-in, archives native teams after a seven-day grace period and generates a bearer token."
 msgstr "Ang pag-enable ng SCIM ay magdi-disable sa pag-sign in gamit ang magic link, mag-a-archive ng mga native na team pagkatapos ng pitong araw na palugit at gagawa ng bearer token."
@@ -411,43 +411,43 @@ msgstr "Ang pag-enable ng SCIM ay magdi-disable sa pag-sign in gamit ang magic l
 msgid "Enter an absolute https:// issuer URL."
 msgstr "Maglagay ng absolute na https:// issuer URL."
 
-#: lib/marshall_web/live/admin/scim_live.ex:335
+#: lib/marshall_web/live/admin/scim_live.ex:337
 #, elixir-autogen, elixir-format
 msgid "No client secret is set."
 msgstr "Walang nakatakdang client secret."
 
-#: lib/marshall_web/live/admin/scim_live.ex:320
+#: lib/marshall_web/live/admin/scim_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "OIDC client ID"
 msgstr "Client ID ng OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:327
+#: lib/marshall_web/live/admin/scim_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "OIDC client secret"
 msgstr "Client secret ng OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:312
+#: lib/marshall_web/live/admin/scim_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "OIDC issuer"
 msgstr "Tagapag-isyu ng OIDC"
 
-#: lib/marshall_web/live/admin/scim_live.ex:215
-#: lib/marshall_web/live/admin/scim_live.ex:242
+#: lib/marshall_web/live/admin/scim_live.ex:217
+#: lib/marshall_web/live/admin/scim_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "Pag-provision"
 
-#: lib/marshall_web/live/admin/scim_live.ex:277
+#: lib/marshall_web/live/admin/scim_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Rotate bearer token"
 msgstr "I-rotate ang bearer token"
 
-#: lib/marshall_web/live/admin/scim_live.ex:271
+#: lib/marshall_web/live/admin/scim_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Rotate the SCIM bearer token? The directory must be updated with the new token."
 msgstr "I-rotate ang SCIM bearer token? Kailangang i-update ang directory gamit ang bagong token."
 
-#: lib/marshall_web/live/admin/scim_live.ex:259
+#: lib/marshall_web/live/admin/scim_live.ex:261
 #, elixir-autogen, elixir-format
 msgid "Rotating the bearer token immediately invalidates the previous token."
 msgstr "Agad na pinawawalang-bisa ng pag-rotate ng bearer token ang naunang token."
@@ -467,17 +467,17 @@ msgstr "Na-disable ang SCIM provisioning."
 msgid "SCIM provisioning enabled."
 msgstr "Na-enable ang SCIM provisioning."
 
-#: lib/marshall_web/live/admin/scim_live.ex:348
+#: lib/marshall_web/live/admin/scim_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Save single sign-on settings"
 msgstr "I-save ang mga setting ng single sign-on"
 
-#: lib/marshall_web/live/admin/scim_live.ex:232
+#: lib/marshall_web/live/admin/scim_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Single sign-on"
 msgstr "Isahang pag-sign in"
 
-#: lib/marshall_web/live/admin/scim_live.ex:306
+#: lib/marshall_web/live/admin/scim_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Single sign-on (OIDC)"
 msgstr "Isahang pag-sign in (OIDC)"
@@ -487,37 +487,37 @@ msgstr "Isahang pag-sign in (OIDC)"
 msgid "Single sign-on settings saved."
 msgstr "Na-save ang mga setting ng single sign-on."
 
-#: lib/marshall_web/live/admin/scim_live.ex:213
+#: lib/marshall_web/live/admin/scim_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Katayuan"
 
-#: lib/marshall_web/live/admin/scim_live.ex:229
+#: lib/marshall_web/live/admin/scim_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Teams retiring"
 msgstr "Mga team na nagreretiro"
 
-#: lib/marshall_web/live/admin/scim_live.ex:314
+#: lib/marshall_web/live/admin/scim_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "The exact https:// issuer URL from provider discovery."
 msgstr "Ang eksaktong https:// issuer URL mula sa discovery ng provider."
 
-#: lib/marshall_web/live/admin/scim_live.ex:235
+#: lib/marshall_web/live/admin/scim_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "[configured]"
 msgstr "[naka-configure]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:223
+#: lib/marshall_web/live/admin/scim_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "[disabled]"
 msgstr "[naka-disable]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:222
+#: lib/marshall_web/live/admin/scim_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "[enabled]"
 msgstr "[naka-enable]"
 
-#: lib/marshall_web/live/admin/scim_live.ex:236
+#: lib/marshall_web/live/admin/scim_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "[not configured]"
 msgstr "[hindi naka-configure]"
@@ -527,7 +527,7 @@ msgstr "[hindi naka-configure]"
 msgid "change SCIM provisioning"
 msgstr "baguhin ang SCIM provisioning"
 
-#: lib/marshall_web/live/admin/scim_live.ex:187
+#: lib/marshall_web/live/admin/scim_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "hindi available"

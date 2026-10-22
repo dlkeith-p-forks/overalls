@@ -1,16 +1,16 @@
 ---
-digest: 7ffecec7698f16c910cc91c964777e29e3f18c606a17e920988758169c241283
-disposition: no-impact
+digest: df6f0113bb71ee4238e2a08b973c3b00b396057d5208bc0eb42b09656282f176
+disposition: updated
 kind: source
 mapping_digest: 2272062390f820f27790d68b944163b5a8c4aa097bb58fe18257524d8b10bbd0
 path: elixir/diagnostics/generate_schema.exs
 reviewed_chapters:
   marshall/priv/hldd/01-system.md: e746f0ac6783bb5037c9fd2785c8d8b6aee0f5b279cd263d673ad95462566aa2
-  marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
-  marshall/priv/hldd/21-domains.md: 587584208f1a71100280b9e438b46416b8b56f0f0af2eda585006ad373ff22dc
-  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
+  marshall/priv/hldd/17-reference.md: f1763e53aa081b752df936173e2041b4cda3351ada40a096cc2eac99b020c4da
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Reviewed diagnostics, logging, audit and privacy changes; no-impact evidence remains aligned with implementation.
+Shared diagnostics gain the marshall.agent.server_tool, marshall.artifact.publish, marshall.artifact.content and marshall.cedar.authorize spans, tool/namespace/via enum and version/file_count number attributes, and the server-tool and artifact publish, refusal, content and storage metrics; the regenerated trace schema matches. Chapters 15-monitoring and 17-reference list these signals and their closed attributes.

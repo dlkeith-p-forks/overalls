@@ -35,20 +35,20 @@ msgid "A reference for the system, its configuration, and its operation."
 msgstr "시스템, 구성 및 작동에 대한 참조입니다."
 
 #: lib/marshall_web/components/layouts.ex:337
-#: lib/marshall_web/components/layouts.ex:444
+#: lib/marshall_web/components/layouts.ex:447
 #, elixir-autogen, elixir-format
 msgid "AI usage"
 msgstr "AI 사용"
 
 #: lib/marshall_web/components/layouts.ex:416
-#: lib/marshall_web/components/layouts.ex:462
+#: lib/marshall_web/components/layouts.ex:466
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "접근권한"
 
 #: lib/marshall_web/components/layouts.ex:241
 #: lib/marshall_web/components/layouts.ex:329
-#: lib/marshall_web/components/layouts.ex:450
+#: lib/marshall_web/components/layouts.ex:453
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "계정"
@@ -75,8 +75,8 @@ msgid "Administration"
 msgstr "관리"
 
 #: lib/marshall_web/components/layouts.ex:245
-#: lib/marshall_web/components/layouts.ex:509
-#: lib/marshall_web/components/layouts.ex:510
+#: lib/marshall_web/components/layouts.ex:513
+#: lib/marshall_web/components/layouts.ex:514
 #: lib/marshall_web/controllers/docs_html/show.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Appearance"
@@ -89,7 +89,7 @@ msgid "Attempting to reconnect"
 msgstr "다시 연결을 시도하는 중"
 
 #: lib/marshall_web/components/layouts.ex:418
-#: lib/marshall_web/components/layouts.ex:463
+#: lib/marshall_web/components/layouts.ex:467
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "심사"
@@ -141,17 +141,17 @@ msgstr "내용물"
 msgid "Control room"
 msgstr "제어실"
 
-#: lib/marshall_web/components/layouts.ex:442
+#: lib/marshall_web/components/layouts.ex:445
 #, elixir-autogen, elixir-format
 msgid "Control room · %{section}"
 msgstr "제어실 · %{section}"
 
-#: lib/marshall_web/components/layouts.ex:439
+#: lib/marshall_web/components/layouts.ex:442
 #, elixir-autogen, elixir-format
 msgid "Control room · AI usage"
 msgstr "상황실·AI 활용"
 
-#: lib/marshall_web/components/layouts.ex:513
+#: lib/marshall_web/components/layouts.ex:517
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr "어두운"
@@ -188,8 +188,8 @@ msgstr "함대 AI 사용"
 msgid "Git mirrors"
 msgstr "Git 미러"
 
-#: lib/marshall_web/components/layouts.ex:432
-#: lib/marshall_web/components/layouts.ex:455
+#: lib/marshall_web/components/layouts.ex:435
+#: lib/marshall_web/components/layouts.ex:459
 #, elixir-autogen, elixir-format
 msgid "Git repositories"
 msgstr "힘내 저장소"
@@ -221,14 +221,14 @@ msgstr "핸드북 내용"
 msgid "Home"
 msgstr "집"
 
-#: lib/marshall_web/components/layouts.ex:431
-#: lib/marshall_web/components/layouts.ex:454
+#: lib/marshall_web/components/layouts.ex:434
+#: lib/marshall_web/components/layouts.ex:458
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "통합"
 
 #: lib/marshall_web/components/layouts.ex:410
-#: lib/marshall_web/components/layouts.ex:459
+#: lib/marshall_web/components/layouts.ex:463
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "채용 정보"
@@ -238,7 +238,7 @@ msgstr "채용 정보"
 msgid "LLM index"
 msgstr "LLM 지수"
 
-#: lib/marshall_web/components/layouts.ex:512
+#: lib/marshall_web/components/layouts.ex:516
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr "빛"
@@ -248,8 +248,8 @@ msgstr "빛"
 msgid "Machine readable"
 msgstr "기계 판독 가능"
 
-#: lib/marshall_web/components/layouts.ex:430
-#: lib/marshall_web/components/layouts.ex:453
+#: lib/marshall_web/components/layouts.ex:433
+#: lib/marshall_web/components/layouts.ex:457
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "기계"
@@ -280,7 +280,7 @@ msgid "Menu"
 msgstr "메뉴"
 
 #: lib/marshall_web/components/layouts.ex:408
-#: lib/marshall_web/components/layouts.ex:457
+#: lib/marshall_web/components/layouts.ex:461
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "노드 유지 관리"
@@ -301,14 +301,14 @@ msgstr "운영"
 msgid "Overalls"
 msgstr "작업복"
 
-#: lib/marshall_web/components/layouts.ex:428
-#: lib/marshall_web/components/layouts.ex:451
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:454
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "개요"
 
 #: lib/marshall_web/components/layouts.ex:411
-#: lib/marshall_web/components/layouts.ex:460
+#: lib/marshall_web/components/layouts.ex:464
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "플랫폼 상태"
@@ -353,13 +353,13 @@ msgstr "원천"
 msgid "Source code"
 msgstr "소스 코드"
 
-#: lib/marshall_web/components/layouts.ex:511
+#: lib/marshall_web/components/layouts.ex:515
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "체계"
 
-#: lib/marshall_web/components/layouts.ex:433
-#: lib/marshall_web/components/layouts.ex:456
+#: lib/marshall_web/components/layouts.ex:436
+#: lib/marshall_web/components/layouts.ex:460
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "팀"
@@ -369,8 +369,8 @@ msgstr "팀"
 msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
 msgstr "이 변경에는 새로운 패스키 확인이 필요합니다. 확인은 15분 동안 지속됩니다."
 
-#: lib/marshall_web/components/layouts.ex:429
-#: lib/marshall_web/components/layouts.ex:452
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:455
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "스레드"
@@ -381,7 +381,7 @@ msgid "Time zone"
 msgstr "시간대"
 
 #: lib/marshall_web/components/layouts.ex:415
-#: lib/marshall_web/components/layouts.ex:461
+#: lib/marshall_web/components/layouts.ex:465
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "사용자"
@@ -402,13 +402,13 @@ msgid "Welcome to Overalls. Make yourself at home."
 msgstr "오버올에 오신 것을 환영합니다. 집처럼 편안하게 지내세요."
 
 #: lib/marshall_web/components/layouts.ex:409
-#: lib/marshall_web/components/layouts.ex:458
+#: lib/marshall_web/components/layouts.ex:462
 #, elixir-autogen, elixir-format
 msgid "Workloads"
 msgstr "워크로드"
 
 #: lib/marshall_web/components/layouts.ex:283
-#: lib/marshall_web/components/layouts.ex:465
+#: lib/marshall_web/components/layouts.ex:469
 #, elixir-autogen, elixir-format
 msgid "Workspace"
 msgstr "작업공간"
@@ -428,7 +428,7 @@ msgstr "작업공간 탐색"
 msgid "Your account"
 msgstr "귀하의 계정"
 
-#: lib/marshall_web/components/layouts.ex:426
+#: lib/marshall_web/components/layouts.ex:428
 #, elixir-autogen, elixir-format
 msgid "Your workspace"
 msgstr "귀하의 작업 공간"
@@ -443,8 +443,24 @@ msgstr "닫다"
 msgid "← All sections"
 msgstr "← 모든 섹션"
 
-#: lib/marshall_web/components/layouts.ex:419
-#: lib/marshall_web/components/layouts.ex:464
+#: lib/marshall_web/components/layouts.ex:421
+#: lib/marshall_web/components/layouts.ex:468
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "SCIM 프로비저닝"
+
+#: lib/marshall_web/components/layouts.ex:420
+#, elixir-autogen, elixir-format
+msgid "Artifact moderation"
+msgstr "아티팩트 모더레이션"
+
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:456
+#, elixir-autogen, elixir-format
+msgid "Artifacts"
+msgstr "아티팩트"
+
+#: lib/marshall_web/components/layouts.ex:419
+#, elixir-autogen, elixir-format
+msgid "Thread redaction"
+msgstr "스레드 가림 처리"

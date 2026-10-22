@@ -35,20 +35,20 @@ msgid "A reference for the system, its configuration, and its operation."
 msgstr "Rejeleo la mfumo, usanidi wake, na uendeshaji wake."
 
 #: lib/marshall_web/components/layouts.ex:337
-#: lib/marshall_web/components/layouts.ex:444
+#: lib/marshall_web/components/layouts.ex:447
 #, elixir-autogen, elixir-format
 msgid "AI usage"
 msgstr "Matumizi ya AI"
 
 #: lib/marshall_web/components/layouts.ex:416
-#: lib/marshall_web/components/layouts.ex:462
+#: lib/marshall_web/components/layouts.ex:466
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "Mamlaka ya ufikiaji"
 
 #: lib/marshall_web/components/layouts.ex:241
 #: lib/marshall_web/components/layouts.ex:329
-#: lib/marshall_web/components/layouts.ex:450
+#: lib/marshall_web/components/layouts.ex:453
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Akaunti"
@@ -75,8 +75,8 @@ msgid "Administration"
 msgstr "Utawala"
 
 #: lib/marshall_web/components/layouts.ex:245
-#: lib/marshall_web/components/layouts.ex:509
-#: lib/marshall_web/components/layouts.ex:510
+#: lib/marshall_web/components/layouts.ex:513
+#: lib/marshall_web/components/layouts.ex:514
 #: lib/marshall_web/controllers/docs_html/show.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Appearance"
@@ -89,7 +89,7 @@ msgid "Attempting to reconnect"
 msgstr "Kujaribu kuunganisha tena"
 
 #: lib/marshall_web/components/layouts.ex:418
-#: lib/marshall_web/components/layouts.ex:463
+#: lib/marshall_web/components/layouts.ex:467
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "Ukaguzi"
@@ -141,17 +141,17 @@ msgstr "Yaliyomo"
 msgid "Control room"
 msgstr "Chumba cha kudhibiti"
 
-#: lib/marshall_web/components/layouts.ex:442
+#: lib/marshall_web/components/layouts.ex:445
 #, elixir-autogen, elixir-format
 msgid "Control room · %{section}"
 msgstr "Chumba cha kudhibiti · %{section}"
 
-#: lib/marshall_web/components/layouts.ex:439
+#: lib/marshall_web/components/layouts.ex:442
 #, elixir-autogen, elixir-format
 msgid "Control room · AI usage"
 msgstr "Chumba cha kudhibiti · Matumizi ya AI"
 
-#: lib/marshall_web/components/layouts.ex:513
+#: lib/marshall_web/components/layouts.ex:517
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr "Giza"
@@ -188,8 +188,8 @@ msgstr "Matumizi ya AI ya kundi la mashine"
 msgid "Git mirrors"
 msgstr "Nakala za hazina za Git"
 
-#: lib/marshall_web/components/layouts.ex:432
-#: lib/marshall_web/components/layouts.ex:455
+#: lib/marshall_web/components/layouts.ex:435
+#: lib/marshall_web/components/layouts.ex:459
 #, elixir-autogen, elixir-format
 msgid "Git repositories"
 msgstr "Hazina za Git"
@@ -221,14 +221,14 @@ msgstr "Yaliyomo kwenye kijitabu"
 msgid "Home"
 msgstr "Nyumbani"
 
-#: lib/marshall_web/components/layouts.ex:431
-#: lib/marshall_web/components/layouts.ex:454
+#: lib/marshall_web/components/layouts.ex:434
+#: lib/marshall_web/components/layouts.ex:458
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "Miunganisho"
 
 #: lib/marshall_web/components/layouts.ex:410
-#: lib/marshall_web/components/layouts.ex:459
+#: lib/marshall_web/components/layouts.ex:463
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "Kazi"
@@ -238,7 +238,7 @@ msgstr "Kazi"
 msgid "LLM index"
 msgstr "index ya LLM"
 
-#: lib/marshall_web/components/layouts.ex:512
+#: lib/marshall_web/components/layouts.ex:516
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr "Mwanga"
@@ -248,8 +248,8 @@ msgstr "Mwanga"
 msgid "Machine readable"
 msgstr "Inayosomeka na mashine"
 
-#: lib/marshall_web/components/layouts.ex:430
-#: lib/marshall_web/components/layouts.ex:453
+#: lib/marshall_web/components/layouts.ex:433
+#: lib/marshall_web/components/layouts.ex:457
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Mashine"
@@ -280,7 +280,7 @@ msgid "Menu"
 msgstr "Menyu"
 
 #: lib/marshall_web/components/layouts.ex:408
-#: lib/marshall_web/components/layouts.ex:457
+#: lib/marshall_web/components/layouts.ex:461
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "Matengenezo ya nodi"
@@ -301,14 +301,14 @@ msgstr "Shughuli"
 msgid "Overalls"
 msgstr "Overalls"
 
-#: lib/marshall_web/components/layouts.ex:428
-#: lib/marshall_web/components/layouts.ex:451
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:454
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "Muhtasari"
 
 #: lib/marshall_web/components/layouts.ex:411
-#: lib/marshall_web/components/layouts.ex:460
+#: lib/marshall_web/components/layouts.ex:464
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "Hali ya jukwaa"
@@ -353,13 +353,13 @@ msgstr "Chanzo"
 msgid "Source code"
 msgstr "Msimbo wa chanzo"
 
-#: lib/marshall_web/components/layouts.ex:511
+#: lib/marshall_web/components/layouts.ex:515
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Mfumo"
 
-#: lib/marshall_web/components/layouts.ex:433
-#: lib/marshall_web/components/layouts.ex:456
+#: lib/marshall_web/components/layouts.ex:436
+#: lib/marshall_web/components/layouts.ex:460
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "Timu"
@@ -369,8 +369,8 @@ msgstr "Timu"
 msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
 msgstr "Mabadiliko haya yanahitaji uthibitishaji mpya wa nenosiri. Uthibitishaji wako hudumu dakika 15."
 
-#: lib/marshall_web/components/layouts.ex:429
-#: lib/marshall_web/components/layouts.ex:452
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:455
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "Mizizi"
@@ -381,7 +381,7 @@ msgid "Time zone"
 msgstr "Saa za eneo"
 
 #: lib/marshall_web/components/layouts.ex:415
-#: lib/marshall_web/components/layouts.ex:461
+#: lib/marshall_web/components/layouts.ex:465
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Watumiaji"
@@ -402,13 +402,13 @@ msgid "Welcome to Overalls. Make yourself at home."
 msgstr "Karibu Overalls. Jifanye nyumbani."
 
 #: lib/marshall_web/components/layouts.ex:409
-#: lib/marshall_web/components/layouts.ex:458
+#: lib/marshall_web/components/layouts.ex:462
 #, elixir-autogen, elixir-format
 msgid "Workloads"
 msgstr "Mizigo ya kazi"
 
 #: lib/marshall_web/components/layouts.ex:283
-#: lib/marshall_web/components/layouts.ex:465
+#: lib/marshall_web/components/layouts.ex:469
 #, elixir-autogen, elixir-format
 msgid "Workspace"
 msgstr "Nafasi ya kazi"
@@ -428,7 +428,7 @@ msgstr "Urambazaji wa nafasi ya kazi"
 msgid "Your account"
 msgstr "Akaunti yako"
 
-#: lib/marshall_web/components/layouts.ex:426
+#: lib/marshall_web/components/layouts.ex:428
 #, elixir-autogen, elixir-format
 msgid "Your workspace"
 msgstr "Nafasi yako ya kazi"
@@ -443,8 +443,24 @@ msgstr "funga"
 msgid "← All sections"
 msgstr "← Sehemu zote"
 
-#: lib/marshall_web/components/layouts.ex:419
-#: lib/marshall_web/components/layouts.ex:464
+#: lib/marshall_web/components/layouts.ex:421
+#: lib/marshall_web/components/layouts.ex:468
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "Utoaji wa SCIM"
+
+#: lib/marshall_web/components/layouts.ex:420
+#, elixir-autogen, elixir-format
+msgid "Artifact moderation"
+msgstr "Udhibiti wa vibaki"
+
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:456
+#, elixir-autogen, elixir-format
+msgid "Artifacts"
+msgstr "Vibaki"
+
+#: lib/marshall_web/components/layouts.ex:419
+#, elixir-autogen, elixir-format
+msgid "Thread redaction"
+msgstr "Uondoaji wa taarifa nyeti kwenye mizizi"

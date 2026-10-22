@@ -267,6 +267,18 @@ defmodule Marshall.Agents.ExecutorSessionTest do
     end
   end
 
+  # The current Lyra executor (lyra/src/agent.rs) advertises every capability
+  # Marshall accepts; the stored set must admit all of them at once.
+  test "registration admits the full capability set a current executor advertises", c do
+    advertised = ["context-v1", "skills-v1", "github-tools-v1", "artifacts-v1"]
+    assert ExecutorSession.valid_capabilities?(advertised)
+
+    assert {:ok, %{capabilities: stored}} =
+             ExecutorSession.register(c.binding, nil, advertised)
+
+    assert stored == Enum.sort(advertised)
+  end
+
   test "an old guest receives no internal command and its refusal is durable", c do
     {:ok, executor} = ExecutorSession.register(c.binding)
     command = internal_command(c, :context_inventory, %{"version" => 1})
@@ -308,8 +320,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
         "path" => "/tmp/input"
       })
 
-    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
-    _ = :sys.get_state(worker)
+    run_server_tools!()
     assert [%{status: :queued}] = Ledger.read!(Command, id: command.id)
     id = command.id
 
@@ -327,8 +338,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
         "path" => "/tmp/output"
       })
 
-    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
-    _ = :sys.get_state(worker)
+    run_server_tools!()
     assert [%{status: :queued}] = Ledger.read!(Command, id: command.id)
     id = command.id
 
@@ -623,11 +633,10 @@ defmodule Marshall.Agents.ExecutorSessionTest do
       })
 
     user_thread =
-      Ledger.update!(user_thread, :bind_machine, %{
+      Marshall.ThreadStateFixture.ready!(user_thread, %{
         machine_id: c.vm.id,
         agent_root_id: c.root.id,
-        agent_thread_id: c.thread.id,
-        status: :ready
+        agent_thread_id: c.thread.id
       })
 
     command =
@@ -639,9 +648,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
 
     {:ok, executor} = ExecutorSession.register(c.binding)
     assert {:ok, nil} = ExecutorSession.claim(c.binding, executor.id, executor.fence_epoch)
-    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
-    _ = :sys.get_state(worker)
-    stop_supervised!(Marshall.Agents.ThreadToolWorker)
+    run_server_tools!()
     assert [%{status: :completed}] = Ledger.read!(Command, id: command.id)
 
     assert [%{kind: :tool_finished, outcome: :completed}] =
@@ -662,8 +669,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
         arguments: %{"operation" => "list"}
       })
 
-    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
-    _ = :sys.get_state(worker)
+    run_server_tools!()
 
     assert [%{status: :completed, result: %{"items" => [item]}}] =
              Ledger.read!(Command, id: listing.id)
@@ -685,25 +691,22 @@ defmodule Marshall.Agents.ExecutorSessionTest do
       })
 
     target =
-      Ledger.update!(target, :bind_machine, %{
+      Marshall.ThreadStateFixture.ready!(target, %{
         machine_id: c.vm.id,
         agent_root_id: c.root.id,
-        agent_thread_id: c.thread.id,
-        status: :ready
+        agent_thread_id: c.thread.id
       })
 
     command =
       internal_command(c, :thread, %{"operation" => "subscribe", "thread_id" => target.id})
 
-    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
-    _ = :sys.get_state(worker)
+    run_server_tools!()
     assert [%{status: :completed}] = Ledger.read!(Command, id: command.id)
 
     assert [%{destination_kind: :user_thread, destination_id: id, state: :active}] =
              Ledger.read!(Marshall.Agents.ThreadReceiver)
 
     assert id == target.id
-    stop_supervised!(Marshall.Agents.ThreadToolWorker)
 
     child =
       Ledger.create!(Thread, :open, %{
@@ -730,8 +733,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
         arguments: %{"operation" => "subscribe", "thread_id" => target.id, "active" => false}
       })
 
-    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
-    _ = :sys.get_state(worker)
+    run_server_tools!()
     assert [%{status: :completed}] = Ledger.read!(Command, id: unsubscribe.id)
 
     assert [%{state: :inactive}] =
@@ -760,9 +762,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
 
     log =
       ExUnit.CaptureLog.capture_log([metadata: [:event, :reason]], fn ->
-        worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
-        _ = :sys.get_state(worker)
-        stop_supervised!(Marshall.Agents.ThreadToolWorker)
+        run_server_tools!()
       end)
 
     refute log =~ "agent.server_tool_poll_failed"
@@ -804,8 +804,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
         "attachment_id" => Ecto.UUID.generate()
       })
 
-    worker = start_supervised!(Marshall.Agents.ThreadToolWorker)
-    _ = :sys.get_state(worker)
+    run_server_tools!()
 
     assert [%{status: :failed, result: %{"reason" => "invalid_operation"}}] =
              Ledger.read!(Command, id: command.id)
@@ -923,5 +922,17 @@ defmodule Marshall.Agents.ExecutorSessionTest do
       tool: tool,
       arguments: arguments
     })
+  end
+
+  # Drives every queued Marshall-owned command through the Oban job that the
+  # command transaction enqueued, as the agent_tools queue would.
+  @spec run_server_tools!() :: :ok
+  defp run_server_tools! do
+    Command
+    |> Ledger.read!(status: :queued)
+    |> Enum.filter(&(&1.tool in Marshall.Agents.ServerTool.tools()))
+    |> Enum.each(fn command ->
+      :ok = Marshall.Agents.ServerToolJob.perform(%Oban.Job{args: %{"command_id" => command.id}})
+    end)
   end
 end

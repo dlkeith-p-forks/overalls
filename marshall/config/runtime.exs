@@ -149,6 +149,8 @@ case Marshall.Ingress.FleetACMEConfig.from_env(System.get_env()) do
         github: 2,
         notifications: 5,
         redaction: 2,
+        agent_tools: 10,
+        artifacts: 5,
         certificates: 1
       ]
 
@@ -263,6 +265,7 @@ if config_env() == :prod do
 
   config :marshall, Marshall.Repo, deployment.repo
   config :marshall, :fleet_listeners, deployment.fleet_listeners
+  config :marshall, :artifact_content, deployment.artifact_content
 
   config :marshall,
          :deployment,

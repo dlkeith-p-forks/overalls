@@ -28,6 +28,26 @@ defmodule Overalls.Diagnostics.Metrics do
       metadata: [status: :http_status]
     },
     [:marshall, :terminal, :input] => %{measurements: [duration: :integer], metadata: []},
+    [:marshall, :agents, :server_tool] => %{
+      measurements: [duration: :integer, failed: :binary_flag],
+      metadata: [tool: :atom]
+    },
+    [:marshall, :artifacts, :publish] => %{
+      measurements: [bytes: :integer, file_count: :integer],
+      metadata: []
+    },
+    [:marshall, :artifacts, :refusal] => %{
+      measurements: [count: :integer],
+      metadata: [reason: :atom]
+    },
+    [:marshall, :artifacts, :content] => %{
+      measurements: [duration: :integer, refused: :binary_flag],
+      metadata: []
+    },
+    [:marshall, :artifacts, :storage] => %{
+      measurements: [bytes: :integer, refused: :binary_flag],
+      metadata: [namespace: :atom]
+    },
     [:marshall, :repo, :query] => %{
       measurements: [total_time: :integer, queue_time: :integer],
       metadata: []

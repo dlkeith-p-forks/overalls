@@ -1900,3 +1900,96 @@ remain separate acceptance; no browser preference can establish them.
 The [SCIM scenarios](#coverage) record the application and machine evidence.
 Administrator handoff of SCIM-managed teams after SCIM is disabled is not
 implemented.
+
+## Artifact content origin lockdown
+
+Artifact pages are arbitrary agent-authored HTML, script and SVG.
+[ADR-0254](repo:docs/architecture/decisions/0254-isolated-artifact-content-origin.md)
+serves them only from a dedicated content host (default
+`usercontent.ghuntley.dev`, same-site with Marshall) through
+[`ArtifactContentEndpoint`](repo:marshall/lib/marshall_web/artifact_content_endpoint.ex).
+It is a separate Bandit listener per Marshall replica with no session, socket,
+body parser or browser route. It answers only `GET` and `HEAD` on
+`/v/<ticket>/` and `/v/<ticket>/<path>`; every other path, including health,
+is an uncached `404` with the lockdown headers.
+
+```mermaid
+sequenceDiagram
+  participant B as Browser on Marshall origin
+  participant M as Marshall LiveView
+  participant P as HAProxy content frontend
+  participant C as ArtifactContentEndpoint
+  participant D as PostgreSQL
+  B->>M: open /artifacts/:id (session cookie)
+  M->>D: lock artifact, fresh Cedar read, issue ticket (hash only)
+  M-->>B: sandboxed credentialless iframe src=https://content/v/ticket/
+  B->>P: GET /v/ticket/ (no Marshall cookie: __Host- scope)
+  P->>P: refuse non-GET/HEAD and foreign Host, delete Cookie and Authorization
+  P->>C: verified backend TLS on artifactPort
+  C->>D: ticket by hash, issued, unexpired, host, active artifact, fresh Cedar read
+  C-->>P: page or file with lockdown headers, never Set-Cookie
+  P-->>B: response with Set-Cookie deleted
+  B->>M: postMessage storage request from the frame window
+  M->>D: Cedar storage check and bounded write with audit
+```
+
+[`ArtifactContentHeaders`](repo:marshall/lib/marshall_web/artifact_content_headers.ex)
+replaces these headers on every response, including refusals:
+
+| Header | Value and purpose |
+| --- | --- |
+| `content-security-policy` | `sandbox allow-scripts` (opaque origin even on a direct visit: no cookies, storage, forms, popups, top navigation or downloads); `default-src 'none'`; inline and content-origin script and style; images `data:`, `blob:` and the content origin; `connect-src`, `worker-src`, `manifest-src`, `frame-src`, `child-src`, `object-src`, `form-action` and `base-uri` all `'none'`; `frame-ancestors` only Marshall's origin |
+| `cross-origin-opener-policy: same-origin`, `cross-origin-embedder-policy: require-corp`, `cross-origin-resource-policy: same-site` | Window and subresource isolation |
+| `permissions-policy` | Every listed feature denied, including clipboard, camera, microphone, fullscreen and passkeys |
+| `x-content-type-options: nosniff`, `referrer-policy: no-referrer`, `cache-control: private, no-store` | No sniffing, referrer or shared caching |
+| `strict-transport-security: max-age=63072000` | No `includeSubDomains` |
+
+The endpoint deletes any `Set-Cookie`. Media types come from a closed
+extension allowlist; other files are `attachment` downloads. Markdown is
+rendered from its parsed AST ([renderer](repo:marshall/lib/marshall/artifacts/markdown.ex)):
+verbatim HTML blocks become escaped preformatted text, inline HTML is escaped,
+and `href`/`src` keep only relative, `http`, `https` and `mailto` URLs. Marshall's own CSP `frame-src` adds only the configured
+content origin ([security headers](repo:marshall/lib/marshall_web/security_headers.ex)).
+
+| Layer | Authority and refusal |
+| --- | --- |
+| Identity | Marshall's `__Host-marshall` cookie has no Domain, so browsers never send it to the content host. The content listener reads no session; the ticket names the user, who must still be current and active. |
+| Authorization | Ticket issue and every content fetch evaluate Cedar read with fresh grants and require `active`. Unknown, expired, revoked, foreign-host, wrong-version and other users' tickets all receive the same `404`. Storage requests from the frame are authorized again by the LiveView. |
+| Transport | HAProxy serves the content host on the existing public listener by SNI and Host with its own single-name certificate. It refuses other methods with `405` and unknown hosts with `421`, routes the content host only to `marshall_artifact_nodes` over verified backend TLS, deletes request `Cookie`, `Authorization` and `Proxy-Authorization` twice and deletes response `Set-Cookie` ([proxy](repo:nix/domains/system/proxy.nix)). Marshall's host never reaches the content backend. |
+| Execution | Tickets are 32 random bytes; only the SHA-256 is stored. They live five minutes, are bound to artifact, version, user and content host, travel only in the path and are never logged. Deletion, unsharing and role changes revoke issued tickets. Server-tool calls run under the prompting user's fresh authority; the guest executor cannot claim them and staged chunks need the current executor lease and fence. |
+| Isolation | The iframe is `sandbox="allow-scripts" credentialless referrerpolicy="no-referrer"`; the CSP sandbox gives the document an opaque origin, no network and no worker. The postMessage bridge accepts only the frame window's closed message shape. Moderation reads metadata only. |
+| Storage | Content and page storage stay in PostgreSQL; personal and shared namespaces are separate, text-only and capped. Audit rows and events contain no content, keys, values, tickets, paths or tool arguments. |
+| Recovery | Tickets expire and are deleted after a day, so a restored database cannot revive a usable ticket beyond five minutes from issue. Deletion revokes tickets before purge. |
+
+Expected refusals: a non-GET/HEAD request is `405` at the proxy; a direct Marshall
+route on the content host is a locked-down `404`; a page cannot read Marshall's
+cookies, frame Marshall, reach the network or submit forms; a viewer's shared
+storage write answers `forbidden`. `MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO`
+exposes `/v/<ticket>/__echo` for machine tests only; the Nix module refuses it
+without `machineTestFixture`.
+
+The content host is same-site with Marshall until a separate registrable domain
+exists, so `SameSite` gives no protection between them; CSRF tokens on
+Marshall forms remain the control. The [artifact scenario](#coverage) records
+unit and property evidence. The `artifact-origin` NixOS machine test covers
+headers, proxy stripping, method and host refusal, MIME handling, ticket
+refusal, Chromium opaque-origin isolation and generated hostile payloads. Its
+recorded run on 2026-10-21 passed all 8 subtests and the Hegel escape
+property; it does not exercise a real guest.
+
+## Server tool authority layers
+
+Marshall server tools (`thread`, `attachment`, `artifact`; ADR-0255) act inside
+Marshall, so their authority is the prompting user's, not the guest's.
+
+| Layer | Authority and refusal |
+| --- | --- |
+| Identity | The actor is `Turn.actor_id`, reloaded at claim; a deleted or inactive account refuses `access_revoked`. |
+| Authorization | Each claim rechecks VM profile capability, Access `write` on the VM and Cedar `write` on the bound user thread; each operation then uses Threads or Artifacts Cedar `read`/role checks. Unreadable targets answer `not_found`. |
+| Transport | Model arguments never reach the guest; staged artifact bytes arrive only through Ziggy's bounded `artifact_chunk` route with Audi's binding injected and guest-supplied bindings refused. |
+| Execution | The command is locked and claimed once with a server claim ID; only that claim may finish it. An inactive turn cancels with `turn_inactive`. The executor claim query excludes every server tool. Stale server claims become `uncertain`, never re-run. |
+| Isolation | The guest cannot claim, answer or widen a server tool; a staged path must be a guest-local absolute path to a regular file; Lyra refuses symbolic links and over-limit files before sending any chunk. |
+| Storage | Results are bounded to 64 KiB; audit rows (`tool_dispatched`, `tool_finished`, tool-specific kinds) carry IDs and outcomes only. |
+| Recovery | Oban retries the job; the reconciler re-enqueues orphaned queued commands and expires stuck claims after ten minutes. |
+
+Expected refusals and evidence are in the [thread tool scenario](#coverage).

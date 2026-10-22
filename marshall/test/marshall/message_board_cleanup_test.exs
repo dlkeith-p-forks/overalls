@@ -53,11 +53,10 @@ defmodule Marshall.MessageBoardCleanupTest do
       })
 
     thread =
-      Ledger.update!(thread, :bind_machine, %{
+      Marshall.ThreadStateFixture.ready!(thread, %{
         machine_id: vm.id,
         agent_root_id: root.id,
-        agent_thread_id: agent.id,
-        status: :ready
+        agent_thread_id: agent.id
       })
 
     assert {:ok, _} = Marshall.Agents.ThreadTool.subscribe(actor.id, thread.id)
@@ -174,7 +173,9 @@ defmodule Marshall.MessageBoardCleanupTest do
                      CREATE FUNCTION pg_temp.reject_delivery_receipt() RETURNS trigger LANGUAGE plpgsql AS
                      $$ BEGIN RAISE EXCEPTION 'injected delivery receipt failure'; END $$
                      """,
-                     [], log: false)
+                     [],
+                     log: false
+                   )
 
                    Ecto.Adapters.SQL.query!(
                      Marshall.Repo,
@@ -183,7 +184,9 @@ defmodule Marshall.MessageBoardCleanupTest do
                      FOR EACH ROW WHEN (NEW.kind = 'maintenance_admitted')
                      EXECUTE FUNCTION pg_temp.reject_delivery_receipt()
                      """,
-                     [], log: false)
+                     [],
+                     log: false
+                   )
 
                    Marshall.Agents.ThreadDelivery.deliver_one()
                  end,

@@ -14,35 +14,23 @@ defmodule Marshall.Agents.CapabilitiesTest do
     :web_fetch,
     :thread,
     :attachment,
-    :message_board
+    :message_board,
+    :artifact
   ]
 
+  # Marshall-owned tools follow the guest tools; Inception has no message board.
+  @shared_server [:thread, :attachment, :artifact]
+  @server [:thread, :attachment, :message_board, :artifact]
+
   @spec expected(term()) :: [Capabilities.tool()]
+
   defp expected(:oss),
-    do: [
-      :exec_command,
-      :read_file,
-      :spawn_child_agent,
-      :web_search,
-      :web_fetch,
-      :thread,
-      :attachment,
-      :message_board
-    ]
+    do: [:exec_command, :read_file, :spawn_child_agent, :web_search, :web_fetch] ++ @server
 
   defp expected(:inception),
-    do: [
-      :exec_command,
-      :read_file,
-      :spawn_child_agent,
-      :web_search,
-      :web_fetch,
-      :thread,
-      :attachment
-    ]
+    do: [:exec_command, :read_file, :spawn_child_agent, :web_search, :web_fetch] ++ @shared_server
 
-  defp expected(:standard),
-    do: [:exec_command, :read_file, :web_search, :web_fetch, :thread, :attachment, :message_board]
+  defp expected(:standard), do: [:exec_command, :read_file, :web_search, :web_fetch] ++ @server
 
   defp expected(_), do: []
 
@@ -77,7 +65,7 @@ defmodule Marshall.Agents.CapabilitiesTest do
 
   test "persisted model tools follow profile policy while internal tools require guest capabilities" do
     tools = Ash.Resource.Info.attribute(Marshall.Agents.Command, :tool).constraints[:one_of]
-    internal = [:context_inventory, :context_read, :skill_install, :skill_status]
+    internal = [:context_inventory, :context_read, :skill_install, :skill_status, :artifact_stage]
     assert tools != []
 
     for profile <- [:oss, :standard, :inception], tool <- tools -- internal do
@@ -89,13 +77,14 @@ defmodule Marshall.Agents.CapabilitiesTest do
       refute ExecutorSession.supported?(%Executor{capabilities: []}, tool)
 
       assert ExecutorSession.supported?(
-               %Executor{capabilities: ["context-v1", "skills-v1"]},
+               %Executor{capabilities: ["context-v1", "skills-v1", "artifacts-v1"]},
                tool
              )
     end
 
     refute ExecutorSession.supported?(%Executor{capabilities: ["context-v1"]}, :skill_install)
     refute ExecutorSession.supported?(%Executor{capabilities: ["skills-v1"]}, :context_read)
+    refute ExecutorSession.supported?(%Executor{capabilities: ["context-v1"]}, :artifact_stage)
   end
 
   property "any forbidden call rejects a whole generated model response" do

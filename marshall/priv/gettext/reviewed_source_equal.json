@@ -11174,5 +11174,104 @@
     "msgid_plural": null,
     "note": "Standard native word for team in this locale, matching existing catalogs.",
     "reason": "cognate"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "de",
+    "msgid": "Version",
+    "msgid_plural": null,
+    "note": "German uses this exact spelling for the artifact version label.",
+    "reason": "cognate"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "es",
+    "msgid": "Bytes",
+    "msgid_plural": null,
+    "note": "The byte unit plural is spelled identically in Spanish; used as the artifact size column header.",
+    "reason": "unit"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "es",
+    "msgid": "Legal",
+    "msgid_plural": null,
+    "note": "Spanish uses this exact spelling for the legal moderation reason label.",
+    "reason": "cognate"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "fr",
+    "msgid": "Version",
+    "msgid_plural": null,
+    "note": "French uses this exact spelling for the artifact version label.",
+    "reason": "cognate"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "fr",
+    "msgid": "Versions",
+    "msgid_plural": null,
+    "note": "French uses this exact spelling for the artifact version label.",
+    "reason": "cognate"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "pt-BR",
+    "msgid": "Bytes",
+    "msgid_plural": null,
+    "note": "The byte unit plural is spelled identically in Brazilian Portuguese; used as the artifact size column header.",
+    "reason": "unit"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "pt-PT",
+    "msgid": "Bytes",
+    "msgid_plural": null,
+    "note": "The byte unit plural is spelled identically in European Portuguese; used as the artifact size column header.",
+    "reason": "unit"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "sv",
+    "msgid": "Version",
+    "msgid_plural": null,
+    "note": "Swedish uses this exact spelling for the artifact version label.",
+    "reason": "cognate"
+  },
+  {
+    "app": "marshall",
+    "context": null,
+    "domain": "artifacts",
+    "form": 0,
+    "locale": "fil",
+    "msgid": "Email",
+    "msgid_plural": null,
+    "note": "Filipino uses this exact spelling as a native term or conventional software loanword in this interface, matching the account and auth catalogs.",
+    "reason": "cognate"
   }
 ]

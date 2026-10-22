@@ -187,11 +187,10 @@ defmodule Marshall.ThreadsTranscriptTest do
       })
 
     thread =
-      Ledger.update!(thread, :bind_machine, %{
+      Marshall.ThreadStateFixture.ready!(thread, %{
         machine_id: first_vm.id,
         agent_root_id: first_root.id,
-        agent_thread_id: first_agent.id,
-        status: :ready
+        agent_thread_id: first_agent.id
       })
 
     Marshall.Threads.Generation.open!(thread, 1)
@@ -224,15 +223,10 @@ defmodule Marshall.ThreadsTranscriptTest do
     :ok = Ledger.archive!(first_vm, :archive)
 
     reopened =
-      Ledger.update!(thread, :reopen, %{
-        status: :pending,
-        archived_at: nil,
-        machine_id: nil,
-        agent_root_id: nil,
-        agent_thread_id: nil,
-        machine_key: "thread-reopen:" <> thread.id <> ":" <> Ash.UUID.generate(),
-        failure_reason: nil
-      })
+      Marshall.ThreadStateFixture.reopened!(
+        thread,
+        "thread-reopen:" <> thread.id <> ":" <> Ash.UUID.generate()
+      )
 
     Marshall.Threads.Generation.open!(reopened, 2)
 
@@ -254,11 +248,10 @@ defmodule Marshall.ThreadsTranscriptTest do
     [second_agent] = Ledger.read!(Marshall.Agents.Thread, root_id: second_root.id)
 
     current =
-      Ledger.update!(reopened, :bind_machine, %{
+      Marshall.ThreadStateFixture.ready!(reopened, %{
         machine_id: second_vm.id,
         agent_root_id: second_root.id,
-        agent_thread_id: second_agent.id,
-        status: :ready
+        agent_thread_id: second_agent.id
       })
 
     Marshall.Threads.Generation.sync!(current)
@@ -296,7 +289,9 @@ defmodule Marshall.ThreadsTranscriptTest do
         Ecto.UUID.dump!(Ash.UUID.generate()),
         Ecto.UUID.dump!(second_agent.id),
         Ecto.UUID.dump!(creator.id)
-      ], log: false)
+      ],
+      log: false
+    )
 
     assert {:ok, [%{sequence: 3}]} = Marshall.Agents.ThreadTool.replay(creator.id, thread.id, 2)
 
@@ -464,11 +459,10 @@ defmodule Marshall.ThreadsTranscriptTest do
       })
 
     thread =
-      Ledger.update!(thread, :bind_machine, %{
+      Marshall.ThreadStateFixture.ready!(thread, %{
         machine_id: vm.id,
         agent_root_id: root.id,
-        agent_thread_id: agent_thread.id,
-        status: :ready
+        agent_thread_id: agent_thread.id
       })
 
     thread = Ledger.update!(thread, :set_title, %{title: "Visible title"})
@@ -479,9 +473,6 @@ defmodule Marshall.ThreadsTranscriptTest do
     assert [%{archived_at: %DateTime{}}] =
              Ledger.history!(Marshall.Compute.VirtualMachine, id: vm.id)
 
-    Ledger.update!(thread, :mark_archived, %{
-      status: :archived,
-      archived_at: DateTime.utc_now()
-    })
+    Marshall.ThreadStateFixture.archived!(thread)
   end
 end

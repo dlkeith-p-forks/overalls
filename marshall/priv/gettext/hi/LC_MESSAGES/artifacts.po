@@ -1,0 +1,246 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: hi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Abuse"
+msgstr "दुरुपयोग"
+
+#: lib/marshall_web/live/artifacts_live.ex:157
+#: lib/marshall_web/live/artifacts_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Access could not be changed."
+msgstr "पहुँच बदली नहीं जा सकी।"
+
+#: lib/marshall_web/live/artifacts_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Access updated."
+msgstr "पहुँच अपडेट की गई।"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Administrators can delete artifacts for a recorded reason. Content is never shown here."
+msgstr "व्यवस्थापक दर्ज किए गए कारण से आर्टिफ़ैक्ट हटा सकते हैं। सामग्री यहाँ कभी नहीं दिखाई जाती।"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Artifact deleted for moderation."
+msgstr "मॉडरेशन के कारण आर्टिफ़ैक्ट हटाया गया।"
+
+#: lib/marshall_web/live/artifacts_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Artifact deleted."
+msgstr "आर्टिफ़ैक्ट हटाया गया।"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Artifact moderation"
+msgstr "आर्टिफ़ैक्ट मॉडरेशन"
+
+#: lib/marshall_web/live/artifacts_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Artifact sections"
+msgstr "आर्टिफ़ैक्ट अनुभाग"
+
+#: lib/marshall_web/live/artifacts_live.ex:16
+#: lib/marshall_web/live/artifacts_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Artifacts"
+msgstr "आर्टिफ़ैक्ट"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Artifacts are unavailable."
+msgstr "आर्टिफ़ैक्ट उपलब्ध नहीं हैं।"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Bytes"
+msgstr "बाइट"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:112
+#: lib/marshall_web/live/admin/artifacts_live.ex:128
+#: lib/marshall_web/live/artifacts_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "हटाएँ"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:127
+#: lib/marshall_web/live/artifacts_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Delete this artifact and every version?"
+msgstr "यह आर्टिफ़ैक्ट और इसके सभी संस्करण हटाएँ?"
+
+#: lib/marshall_web/live/artifacts_live.ex:353
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "ईमेल"
+
+#: lib/marshall_web/live/artifacts_live.ex:318
+#, elixir-autogen, elixir-format
+msgid "Files"
+msgstr "फ़ाइलें"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Legal"
+msgstr "कानूनी"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Moderation reason"
+msgstr "मॉडरेशन का कारण"
+
+#: lib/marshall_web/live/artifacts_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "No artifacts yet."
+msgstr "अभी तक कोई आर्टिफ़ैक्ट नहीं।"
+
+#: lib/marshall_web/live/artifacts_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Older artifacts"
+msgstr "पुराने आर्टिफ़ैक्ट"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr "अन्य"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "मालिक"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Owner request"
+msgstr "मालिक का अनुरोध"
+
+#: lib/marshall_web/live/artifacts_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "Pages your agents publish from threads. Each publish creates a new version; only people you share with can open them."
+msgstr "वे पेज जो आपके एजेंट थ्रेड से प्रकाशित करते हैं। हर प्रकाशन एक नया संस्करण बनाता है; केवल वे लोग इन्हें खोल सकते हैं जिनके साथ आप साझा करते हैं।"
+
+#: lib/marshall_web/live/artifacts_live.ex:345
+#, elixir-autogen, elixir-format
+msgid "People with access"
+msgstr "पहुँच वाले लोग"
+
+#: lib/marshall_web/live/artifacts_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "प्रकाशित"
+
+#: lib/marshall_web/live/artifacts_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "हटाएँ"
+
+#: lib/marshall_web/live/artifacts_live.ex:355
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "भूमिका"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:101
+#: lib/marshall_web/live/artifacts_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Search titles"
+msgstr "शीर्षक खोजें"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Security"
+msgstr "सुरक्षा"
+
+#: lib/marshall_web/live/artifacts_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr "साझा करें"
+
+#: lib/marshall_web/live/artifacts_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Sharing"
+msgstr "साझाकरण"
+
+#: lib/marshall_web/live/artifacts_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "That artifact is unavailable."
+msgstr "वह आर्टिफ़ैक्ट उपलब्ध नहीं है।"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:39
+#: lib/marshall_web/live/artifacts_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "The artifact could not be deleted."
+msgstr "आर्टिफ़ैक्ट हटाया नहीं जा सका।"
+
+#: lib/marshall_web/live/artifacts_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "The viewer is unavailable on this deployment."
+msgstr "इस परिनियोजन पर व्यूअर उपलब्ध नहीं है।"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:108
+#: lib/marshall_web/live/artifacts_live.ex:248
+#: lib/marshall_web/live/artifacts_live.ex:329
+#, elixir-autogen, elixir-format
+msgid "Title"
+msgstr "शीर्षक"
+
+#: lib/marshall_web/live/artifacts_live.ex:250
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "अपडेट किया गया"
+
+#: lib/marshall_web/live/artifacts_live.ex:249
+#: lib/marshall_web/live/artifacts_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Version"
+msgstr "संस्करण"
+
+#: lib/marshall_web/live/artifacts_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Version %{number} of %{current}"
+msgstr "संस्करण %{number} / %{current}"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:111
+#: lib/marshall_web/live/artifacts_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Versions"
+msgstr "संस्करण"
+
+#: lib/marshall_web/live/artifacts_live.ex:273
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr "देखें"
+
+#: lib/marshall_web/live/artifacts_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "no access"
+msgstr "कोई पहुँच नहीं"
+
+#: lib/marshall_web/live/artifacts_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "owner"
+msgstr "मालिक"
+
+#: lib/marshall_web/live/artifacts_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "viewer"
+msgstr "दर्शक"
+
+#: lib/marshall_web/live/artifacts_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "writer"
+msgstr "लेखक"

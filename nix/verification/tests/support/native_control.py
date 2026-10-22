@@ -496,7 +496,18 @@ class Authority:
                 not isinstance(digest, str)
                 or re.fullmatch(r"[0-9a-f]{64}", digest) is None
                 or request["capabilities"]
-                not in (["context-v1", "skills-v1"], ["context-v1", "skills-v1", "github-tools-v1"])
+                not in (
+                    ["context-v1", "skills-v1"],
+                    ["context-v1", "skills-v1", "github-tools-v1"],
+                    ["context-v1", "skills-v1", "github-tools-v1", "attachments-v1"],
+                    [
+                        "context-v1",
+                        "skills-v1",
+                        "github-tools-v1",
+                        "attachments-v1",
+                        "artifacts-v1",
+                    ],
+                )
             ):
                 raise Refused("invalid fixture registration")
             self.fence_epoch += 1

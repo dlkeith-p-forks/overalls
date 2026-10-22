@@ -598,7 +598,10 @@ establish native archive/reopen or worker-loss recovery.
 ## Historical thread redaction
 
 Marshall stores a text-only redaction profile and runs bounded Oban scrubs over
-inactive machine threads. A coordinator snapshots the profile, partitions work
+inactive machine threads. The scanner reads `priv/redaction/profile.json` from
+the running release's application directory (`Application.app_dir`, contract
+`redaction-profile-runtime-path`); a compile-time source path did not exist in
+Nix releases ([scanner](repo:marshall/lib/marshall/redaction/scanner.ex)). A coordinator snapshots the profile, partitions work
 into short batches, and updates prompts, model output and tool text only after
 the scanner has completed outside the database transaction. Profile and content
 generation fences make retries idempotent; active or running machines are

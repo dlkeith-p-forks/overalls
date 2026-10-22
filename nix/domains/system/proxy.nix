@@ -4,6 +4,40 @@ let
   cfg = config.services.marshallProxy;
   localTypes = import ./types.nix { inherit lib; };
   names = builtins.attrNames cfg.backends;
+  content = cfg.artifactContent;
+  contentEnabled = content.host != null;
+  contentHost = if contentEnabled then lib.toLower content.host else "";
+  # @cc [owner:ghuntley,label:security] proxy-artifact-content-isolation
+  # The content host shares the public listener by SNI and Host only. Its
+  # requests MUST lose Cookie, Authorization and Proxy-Authorization, MUST be
+  # limited to GET and HEAD (405 otherwise) and MUST reach only
+  # marshall_artifact_nodes; Marshall's host MUST reach only marshall_nodes.
+  # Any other Host MUST still receive 421. Without a content host the frontend
+  # is unchanged.
+  frontendRules = if !contentEnabled then [
+    "http-request deny deny_status 421 unless public_host"
+    "http-request del-header Forwarded"
+    "http-request set-header X-Forwarded-Proto https"
+    "http-request set-header X-Forwarded-Host ${cfg.publicHost}"
+    "http-request set-header X-Forwarded-For %[src]"
+    "default_backend marshall_nodes"
+  ] else [
+    "acl content_host hdr(host),lower -m str ${contentHost} ${contentHost}:${toString cfg.port}"
+    "http-request deny deny_status 421 unless public_host || content_host"
+    "http-request deny deny_status 405 if content_host !METH_GET"
+    "http-request del-header Cookie if content_host"
+    "http-request del-header Authorization if content_host"
+    "http-request del-header Proxy-Authorization if content_host"
+    "http-request del-header Forwarded"
+    "http-request set-header X-Forwarded-Proto https"
+    "http-request set-header X-Forwarded-Host ${cfg.publicHost} if public_host"
+    "http-request set-header X-Forwarded-Host ${contentHost} if content_host"
+    "http-request set-header X-Forwarded-For %[src]"
+    "use_backend marshall_artifact_nodes if content_host"
+    "use_backend marshall_nodes if public_host"
+  ];
+  backendServer = name: backend: port:
+    "server ${name} ${backend.address}:${toString port} resolve-prefer ipv4 ssl verify required verifyhost ${backend.serverName} sni str(${backend.serverName})";
   runtime = cfg.bindAddressFile != null;
   variable = "MARSHALL_PROXY_BIND_IPV4";
   addressDirectory = "/run/marshall-proxy-address";
@@ -94,22 +128,39 @@ in
       default = true;
       description = "Open the public HTTPS port.";
     };
+    artifactContent = {
+      host = mkOption {
+        type = types.nullOr ((types.addCheck types.str (value: builtins.match "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+" value != null)) // { description = "lowercase multi-label DNS hostname"; });
+        default = null;
+        description = "Lowercase public DNS name of the isolated artifact content origin, served on the same HTTPS listener by SNI and Host. Null routes no content traffic.";
+      };
+      certificateFile = mkOption {
+        type = types.nullOr localTypes.privatePath;
+        default = null;
+        description = "Atomically published PEM key and full certificate chain for the content host, readable by the haproxy group. Required with host; ACME sets it when enabled.";
+      };
+    };
     backends = mkOption {
       default = {};
       description = "Marshall TLS endpoints, keyed by backend identity.";
-      type = types.attrsOf (types.submodule {
+      type = types.attrsOf (types.submodule ({ config, ... }: {
         options = {
           address = mkOption {
             type = types.strMatching "[a-zA-Z0-9][a-zA-Z0-9.-]*";
             description = "Backend IPv4 address or hostname.";
           };
           port = mkOption { type = types.port; default = 4443; description = "Backend HTTPS port."; };
+          artifactPort = mkOption {
+            type = types.port;
+            default = config.port + 2000;
+            description = "Backend artifact content HTTPS port, used only when artifactContent.host is set. Health follows the browser port's readiness check.";
+          };
           serverName = mkOption {
             type = types.strMatching "[a-zA-Z0-9][a-zA-Z0-9.-]*";
             description = "Required certificate hostname and TLS SNI for traffic and health checks.";
           };
         };
-      });
+      }));
     };
   };
 
@@ -119,9 +170,15 @@ in
         message = "Marshall proxy requires 1..100 explicitly configured TLS backends."; }
       { assertion = lib.all (name: builtins.match "[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}" name != null) names;
         message = "Marshall proxy backend names must be valid identifiers."; }
-      { assertion = !config.services.marshall.enable || lib.all (instance: instance.port != cfg.port && instance.fleetPort != cfg.port)
+      { assertion = !config.services.marshall.enable || lib.all (instance: instance.port != cfg.port && instance.fleetPort != cfg.port
+          && (config.services.marshall.artifactContent.host == null || instance.artifactPort != cfg.port))
           (builtins.attrValues config.services.marshall.instances);
         message = "Marshall proxy and local backend ports must be distinct."; }
+      { assertion = contentEnabled == (content.certificateFile != null)
+          && (!contentEnabled || (contentHost != lib.toLower cfg.publicHost && content.certificateFile != cfg.certificateFile));
+        message = "Marshall proxy artifactContent requires a host distinct from publicHost and its own certificateFile, set together."; }
+      { assertion = !config.services.marshall.enable || config.services.marshall.artifactContent.host == content.host;
+        message = "A colocated Marshall and proxy must configure the same artifactContent.host."; }
       { assertion = runtime == (cfg.bindAddressUnit != null) && (!runtime || cfg.bindAddress == "0.0.0.0");
         message = "A runtime proxy address requires bindAddressUnit and replaces bindAddress."; }
       { assertion = !runtime || !cfg.openFirewall || (config.overalls.fleetFirewall.enable or false);
@@ -163,14 +220,9 @@ in
       frontend marshall_public
         unique-id-format %[uuid()]
         http-request set-header X-Request-ID %[unique-id]
-        bind ${cfg.bindSpec cfg.port} ssl crt ${cfg.certificateFile} alpn h2,http/1.1
+        bind ${cfg.bindSpec cfg.port} ssl crt ${cfg.certificateFile}${lib.optionalString contentEnabled " crt ${content.certificateFile}"} alpn h2,http/1.1
         acl public_host hdr(host),lower -m str ${lib.toLower cfg.publicHost} ${lib.toLower cfg.publicHost}:${toString cfg.port}
-        http-request deny deny_status 421 unless public_host
-        http-request del-header Forwarded
-        http-request set-header X-Forwarded-Proto https
-        http-request set-header X-Forwarded-Host ${cfg.publicHost}
-        http-request set-header X-Forwarded-For %[src]
-        default_backend marshall_nodes
+        ${lib.concatStringsSep "\n  " frontendRules}
 
       backend marshall_nodes
         balance roundrobin
@@ -179,7 +231,22 @@ in
         http-check expect status 200
         default-server inter 1s fall 2 rise 2
         ${lib.concatStringsSep "\n  " (lib.mapAttrsToList (name: backend:
-          "server ${name} ${backend.address}:${toString backend.port} resolve-prefer ipv4 ssl verify required verifyhost ${backend.serverName} sni str(${backend.serverName}) check check-ssl check-sni ${backend.serverName} ca-file ${cfg.backendCAFile}") cfg.backends)}
+          "${backendServer name backend backend.port} check check-ssl check-sni ${backend.serverName} ca-file ${cfg.backendCAFile}") cfg.backends)}
+    '' + lib.optionalString contentEnabled ''
+
+      # @cc [owner:ghuntley,label:security] proxy-artifact-content-backend
+      # Content backends MUST verify the same backend CA and hostname, MUST
+      # take health only from the matching marshall_nodes server (the content
+      # listener has no health route), MUST strip credentials again and MUST
+      # delete every Set-Cookie before a content response leaves the proxy.
+      backend marshall_artifact_nodes
+        balance roundrobin
+        http-request del-header Cookie
+        http-request del-header Authorization
+        http-request del-header Proxy-Authorization
+        http-response del-header Set-Cookie
+        ${lib.concatStringsSep "\n  " (lib.mapAttrsToList (name: backend:
+          "${backendServer name backend backend.artifactPort} ca-file ${cfg.backendCAFile} track marshall_nodes/${name}") cfg.backends)}
     '';
 
     # @cc [owner:ghuntley,label:security] proxy-reload-and-diagnostics

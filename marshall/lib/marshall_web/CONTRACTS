@@ -25,3 +25,8 @@ Machine connection controls MUST retain the Overalls installation and SSH comman
 for eligible machines. Marshall Web MUST NOT offer or serve per-machine SSH
 configuration downloads; the public installer and Lyra's local setup remain the
 supported configuration path.
+
+@cc [owner:ghuntley,label:security] artifact-content-origin-cookieless
+The artifact content listener MUST NOT fetch a session or set a cookie, and
+Marshall's session cookie MUST keep the `__Host-` prefix without a Domain
+attribute so it is never sent to the content host.

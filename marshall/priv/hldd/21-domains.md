@@ -35,7 +35,8 @@ is a retry mechanism and cannot independently authorize delivery or machine wake
 | `Marshall.Redaction` | Immutable text-redaction runs and bounded inactive-thread scrub shards. It owns profile fencing and progress; thread and VM domains remain authoritative for content and machine state. |
 | `Marshall.MessageBoards.Domain` | Account/profile boards and machine-attributed posts. PostgreSQL transactions serialize post admission with machine cleanup and retain content-free thread notifications. User-thread permissions govern linked posts and subscriber reads; the board adds no authority. |
 | `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Attachment metadata, encrypted chunks and content-free audit receipts share PostgreSQL authority; subscriptions and cleanup notifications use current user-thread read authority. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |
-| `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants, immutable sharing results and per-reader monotonic transcript read markers. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
+| `Marshall.Artifacts` | Agent-published, versioned HTML/Markdown pages (ADR-0253): artifact head state machine, immutable versions and files, content-addressed blobs, user/team grants and access changes, personal/shared page storage, view tickets, guest-staged publish requests and payload-free audit. Cedar `Artifact` roles are rebuilt from current grants and team membership on every decision; agent calls carry the prompting user's authority, and moderation grants no content access. Serving content belongs to the separate content endpoint, not to this domain. |
+| `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants, immutable sharing results and per-reader monotonic transcript read markers. Thread status is an AshStateMachine (ADR-0255): every committed transition writes one lifecycle audit event and keeps its machine generation in step. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
 | `Marshall.Compute` | Host enrollment, pools, reservations, VM intent, placements, operation receipts and lifecycle workflows. The ledger owns admission and durable execution authority, including immutable source2 provider/namespace/revision `WorkspaceSource` references pinned in provision/start commands. Current manifest4 image identity/capability gates source admission and new source-bearing command snapshots, including retained starts; the signed pending browser cookie owns no domain authority. |
 | `Marshall.Editor` | Personal browser Login, Credential and Lease authority. Current stored login/write, permanent account and exact execution/release locks hold through the outer ledger commit; generic web/DNS visibility cannot authorize the editor. |
 | `Marshall.Enrico` | Repository registration, refresh state and audit. The Enrico service holds the quota-bound mirror cache; the domain holds control-plane intent. |
@@ -155,6 +156,34 @@ skill files. Ziggy owns provider execution/accounting within current admission,
 not scheduling or checkpoint authority. A browser, PubSub hint or guest path
 cannot independently authorize a context or configuration change.
 
+`Marshall.Artifacts` sits beside Threads and Agents inside Marshall. It adds
+no service: its resources share PostgreSQL and the Compute ledger's transaction
+helpers. Its writers are the agent `artifact` tool, the browser LiveViews and
+its own Oban jobs. The content endpoint ([ADR-0254](repo:docs/architecture/decisions/0254-isolated-artifact-content-origin.md))
+reads versions through tickets but owns no resource.
+
+```mermaid
+flowchart LR
+  Turn[Agents turn and ServerToolJob] -->|prompting user authority| Tool[Artifacts tool]
+  Browser[Signed-in LiveViews] --> Library[Artifacts library and sharing]
+  Tool --> Library
+  Guest[Lyra artifact_stage] -->|fenced executor chunks| Staging[Artifacts PublishRequest]
+  Staging --> Library
+  Library -->|fresh roles| Cedar[Cedar Artifact entity]
+  Teams[Teams membership] --> Cedar
+  Accounts[Accounts current owner] --> Cedar
+  Library --> DB[(Marshall PostgreSQL)]
+  Library -->|moderation receipt| Admin[Administration audit]
+  Content[Content endpoint] -->|ticket and fresh read| Library
+```
+
+Authority flows from the current user and grants into Cedar; neither the guest,
+the content endpoint nor an administrator role confers content access. The
+Agents domain owns commands and their claims; Artifacts owns versions and the
+staged request, so a lost job never leaves a half-written version. Purge, sweep,
+expiry and usage reconciliation are Oban jobs acting as the system actor on
+`deleting` or expired rows only.
+
 [Lilly.Lifecycle](repo:lilly/lib/lilly/lifecycle.ex) uses host-local journals and
 native locks. Delivery, observation and accepted control-plane outcome remain
 separate states. Loss of a host report does not prove that its guest stopped.
@@ -178,22 +207,23 @@ flowchart LR
   app --> d1["Marshall.Accounts"]
   app --> d2["Marshall.Administration"]
   app --> d3["Marshall.Agents"]
-  app --> d4["Marshall.Compute"]
-  app --> d5["Marshall.Editor"]
-  app --> d6["Marshall.Enrico"]
-  app --> d7["Marshall.Galileo"]
-  app --> d8["Marshall.GitHub"]
-  app --> d9["Marshall.Inference"]
-  app --> d10["Marshall.Ingress"]
-  app --> d11["Marshall.MessageBoards.Domain"]
-  app --> d12["Marshall.Notifications"]
-  app --> d13["Marshall.Peach"]
-  app --> d14["Marshall.Redaction"]
-  app --> d15["Marshall.SSH"]
-  app --> d16["Marshall.Scim"]
-  app --> d17["Marshall.Teams"]
-  app --> d18["Marshall.Terminal"]
-  app --> d19["Marshall.Threads"]
+  app --> d4["Marshall.Artifacts"]
+  app --> d5["Marshall.Compute"]
+  app --> d6["Marshall.Editor"]
+  app --> d7["Marshall.Enrico"]
+  app --> d8["Marshall.Galileo"]
+  app --> d9["Marshall.GitHub"]
+  app --> d10["Marshall.Inference"]
+  app --> d11["Marshall.Ingress"]
+  app --> d12["Marshall.MessageBoards.Domain"]
+  app --> d13["Marshall.Notifications"]
+  app --> d14["Marshall.Peach"]
+  app --> d15["Marshall.Redaction"]
+  app --> d16["Marshall.SSH"]
+  app --> d17["Marshall.Scim"]
+  app --> d18["Marshall.Teams"]
+  app --> d19["Marshall.Terminal"]
+  app --> d20["Marshall.Threads"]
 ```
 
 ```mermaid
@@ -210,6 +240,7 @@ flowchart LR
 | [`Marshall.Accounts`](repo:marshall/lib/marshall/accounts.ex) | `Marshall.Accounts.AdminBootstrap`, `Marshall.Accounts.AdminEvent`, `Marshall.Accounts.AuthEmail`, `Marshall.Accounts.GuestAccount`, `Marshall.Accounts.GuestAccount.Version`, `Marshall.Accounts.Passkey`, `Marshall.Accounts.PasskeyChallenge`, `Marshall.Accounts.ScimMachineSuspension`, `Marshall.Accounts.Token`, `Marshall.Accounts.User`, `Marshall.Accounts.UserDeletion`, `Marshall.Accounts.Verification` |
 | [`Marshall.Administration`](repo:marshall/lib/marshall/administration.ex) | `Marshall.Administration.AuditEvent`, `Marshall.Administration.JobEvent`, `Marshall.Administration.JobSnapshot` |
 | [`Marshall.Agents`](repo:marshall/lib/marshall/agents.ex) | `Marshall.Agents.Attachment`, `Marshall.Agents.AttachmentAudit`, `Marshall.Agents.AttachmentChunk`, `Marshall.Agents.AuditEvent`, `Marshall.Agents.CLISession`, `Marshall.Agents.Command`, `Marshall.Agents.ContextCheckpoint`, `Marshall.Agents.ContextSnapshot`, `Marshall.Agents.Event`, `Marshall.Agents.Executor`, `Marshall.Agents.ModelCall`, `Marshall.Agents.PlanProposal`, `Marshall.Agents.PlanningQuestion`, `Marshall.Agents.Root`, `Marshall.Agents.SearchCache`, `Marshall.Agents.SearchUsage`, `Marshall.Agents.SkillInstallation`, `Marshall.Agents.SkillOperation`, `Marshall.Agents.SkillRevision`, `Marshall.Agents.Thread`, `Marshall.Agents.ThreadNotification`, `Marshall.Agents.ThreadReceiver`, `Marshall.Agents.ThreadSubscription`, `Marshall.Agents.ToolBootstrap`, `Marshall.Agents.ToolMaintenance`, `Marshall.Agents.Turn` |
+| [`Marshall.Artifacts`](repo:marshall/lib/marshall/artifacts.ex) | `Marshall.Artifacts.AccessChange`, `Marshall.Artifacts.Artifact`, `Marshall.Artifacts.AuditEvent`, `Marshall.Artifacts.Blob`, `Marshall.Artifacts.Grant`, `Marshall.Artifacts.PublishRequest`, `Marshall.Artifacts.StorageEntry`, `Marshall.Artifacts.StorageUsage`, `Marshall.Artifacts.Version`, `Marshall.Artifacts.VersionFile`, `Marshall.Artifacts.ViewTicket` |
 | [`Marshall.Compute`](repo:marshall/lib/marshall/compute.ex) | `Marshall.Compute.CleanupRequest`, `Marshall.Compute.CloneEffect`, `Marshall.Compute.CloneRequest`, `Marshall.Compute.EnrollmentOperation`, `Marshall.Compute.Evacuation`, `Marshall.Compute.EvacuationItem`, `Marshall.Compute.Host`, `Marshall.Compute.HostCredential`, `Marshall.Compute.HostDrain`, `Marshall.Compute.HostSession`, `Marshall.Compute.Image`, `Marshall.Compute.LifecycleEvent`, `Marshall.Compute.NetworkAddress`, `Marshall.Compute.Operation`, `Marshall.Compute.PhysicalOutcome`, `Marshall.Compute.ProbeRequest`, `Marshall.Compute.ReadinessRequest`, `Marshall.Compute.Relocation`, `Marshall.Compute.RelocationRetry`, `Marshall.Compute.Reservation`, `Marshall.Compute.ResizeRequest`, `Marshall.Compute.ServiceLevelAttempt`, `Marshall.Compute.ServiceLevelTotal`, `Marshall.Compute.SourcePermitRequest`, `Marshall.Compute.StoragePool`, `Marshall.Compute.TransferSlot`, `Marshall.Compute.VirtualMachine`, `Marshall.Compute.WakeRequest`, `Marshall.Compute.WakeRequestKey`, `Marshall.Compute.WorkflowServiceLevelAttempt`, `Marshall.Compute.WorkloadPlacement`, `Marshall.Compute.WorkspaceSource` |
 | [`Marshall.Editor`](repo:marshall/lib/marshall/editor.ex) | `Marshall.Editor.Credential`, `Marshall.Editor.Lease`, `Marshall.Editor.Login` |
 | [`Marshall.Enrico`](repo:marshall/lib/marshall/enrico.ex) | `Marshall.Enrico.AuditEvent`, `Marshall.Enrico.Repository` |
@@ -231,6 +262,16 @@ flowchart LR
 <!-- hldd:view:end -->
 
 ## Verification and gaps
+
+### Artifacts ownership
+
+The [authorization matrix](repo:marshall/test/marshall/artifacts/authorization_matrix_test.exs)
+compares every principal, action and artifact state with the role table, and
+Hegel properties cover edits, the manifest, limits and tool parsing. The
+`artifact-origin` machine test has a recorded pass on 2026-10-21 (proxy,
+content listener and Chromium isolation); `artifact-agent-publish` passed all 11
+subtests locally on 2026-10-21, including native staging and sharing through a real
+guest, without a repository execution record.
 
 ### Peach reflection authority
 

@@ -1,24 +1,24 @@
 ---
-digest: b75b94478c353223625387cab2ba6e9f68750623340b92cb3dc25e5ef9fa148f
+digest: 025451f5e437d543e878b6842a94299d22b6030dec9716185c10e2e1779e8abb
 disposition: updated
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
 path: marshall/test/marshall/message_board_cleanup_test.exs
 reviewed_chapters:
   marshall/priv/hldd/02-control-plane.md: 8398bc3791875b6bc8cf22b6602a6efccb886c001a0f78d5a1500a3f5707ff3d
-  marshall/priv/hldd/03-access.md: 08dc3c53c626ebafffba5f908f09ccd49edd919b7a03a3ef8c12113f5097bd96
-  marshall/priv/hldd/04-lifecycle.md: a3c881206a8331e5dbcd995c9762772639a9e28bdc22102c2a2e64bf63aa7449
-  marshall/priv/hldd/06-workflows.md: 97fca2ee73a5dc431d8f040eb16468eaf0f28233c146be2b53804063fadb565b
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
-  marshall/priv/hldd/11-agents.md: 68956625723c19b5a925bba19c82c8a525457b48130a153b45963f379d5b5302
-  marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
-  marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
-  marshall/priv/hldd/19-coverage.md: 4eeaf4262a43bb43546a9372a2cf2c499f6c2d480a1cec68c77d585d727dc5d9
-  marshall/priv/hldd/20-security.md: c6acd9d0dc9ad13a47d0b6a3b2ec63fffb1b062d169f766cac577b01935407af
-  marshall/priv/hldd/21-domains.md: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/03-access.md: 9637f378d65cb4e5cd6ca8b852818cbad487a9a6d008a61ede50e7655fbd6669
+  marshall/priv/hldd/04-lifecycle.md: f3c40798f402b553640bb25852bcb205c327c87d7ad6735b4f1b243c5616b4a2
+  marshall/priv/hldd/06-workflows.md: e1ad826a83ee16829cca5e5ce4b6d53490e3887e52799bc184bf5096a74e7bfb
+  marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
+  marshall/priv/hldd/11-agents.md: 7d24214acefb26fbd3b08ce582578fd007e6ffa4bd55d986293050de8605356d
+  marshall/priv/hldd/15-monitoring.md: db740282f22afc4c76be24d9db3f9ef4f10bf2745089a754647c6cf7e8fdfeef
+  marshall/priv/hldd/17-reference.md: f1763e53aa081b752df936173e2041b4cda3351ada40a096cc2eac99b020c4da
+  marshall/priv/hldd/19-coverage.md: 347130fc1c617f8d232fc8b20221c6f5a2111e5e05a7fcc9b2d0f286081c4cc9
+  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Reviewed durable boards, thread receivers, attachment cleanup, and property/audit evidence.
+Marshall adds the Artifacts Ash domain (artifact, version, file, blob chunk, grant, access change, storage, view ticket and publish request resources; state machines for artifact, ticket and publish request; Cedar owner/writer/viewer and elevated-admin delete; same-transaction audit; purge, sweep, expiry and usage Oban jobs), the session-free ArtifactContentEndpoint with exact lockdown headers and ticketed fetches, /artifacts and /admin/artifacts LiveViews with a postMessage storage bridge and artifacts Gettext catalogs, and the artifact server tool with guest staging over the artifact_chunk RPC. Thread status becomes an AshStateMachine with one lifecycle event per transition and a status check constraint; ServerToolJob replaces the polling ThreadToolWorker for ADR-0252 thread and message_board commands through ThreadToolDispatch, a reconciler re-enqueues lost jobs, and executor claims exclude Marshall-owned tools. Chapters 03-access, 04-lifecycle, 05-storage, 06-workflows, 11-agents, 15-monitoring, 17-reference, 19-coverage, 20-security, 21-domains and 22-topology and the agents, artifacts-publish-share and thread-tool scenarios describe the behaviour, boundaries, refusals and evidence.

@@ -181,6 +181,72 @@ defmodule Marshall.Events do
     ]
   )
 
+  defevent("agent.server_tool_finished",
+    message: "Agent server tool finished",
+    metadata: [
+      vm_id: :uuid,
+      command_id: :uuid,
+      tool: :atom,
+      outcome: :atom,
+      reason: {:atom, :optional}
+    ]
+  )
+
+  defevent("agent.server_tool_reconciled",
+    message: "Agent server tool commands reconciled",
+    metadata: [requeued: :int, uncertain: :int]
+  )
+
+  defevent("artifact.published",
+    message: "Artifact version published",
+    metadata: [artifact_id: :uuid, version: :int, via: :atom]
+  )
+
+  defevent("artifact.publish_refused",
+    message: "Artifact publish refused",
+    metadata: [artifact_id: {:uuid, :optional}, reason: :atom, via: :atom]
+  )
+
+  defevent("artifact.access_changed",
+    message: "Artifact access changed",
+    metadata: [artifact_id: :uuid, operation: :atom]
+  )
+
+  defevent("artifact.deleted",
+    message: "Artifact deletion requested",
+    metadata: [artifact_id: :uuid, via: :atom]
+  )
+
+  defevent("artifact.admin_deleted",
+    message: "Artifact deleted by an elevated administrator",
+    metadata: [artifact_id: :uuid, reason: :atom]
+  )
+
+  defevent("artifact.purged",
+    message: "Artifact content purged",
+    metadata: [artifact_id: :uuid, outcome: :atom]
+  )
+
+  defevent("artifact.content_refused",
+    message: "Artifact content request refused",
+    metadata: [reason: :atom]
+  )
+
+  defevent("artifact.storage_refused",
+    message: "Artifact storage operation refused",
+    metadata: [artifact_id: :uuid, namespace: :atom, reason: :atom]
+  )
+
+  defevent("artifact.usage_drift",
+    message: "Artifact storage usage counter corrected",
+    metadata: [artifact_id: :uuid, namespace: :atom]
+  )
+
+  defevent("artifact.blobs_swept",
+    message: "Unreferenced artifact blobs swept",
+    metadata: [count: :int]
+  )
+
   defevent("agent.model_claimed",
     message: "Agent model call claimed",
     metadata: [vm_id: :uuid, call_id: :uuid]
@@ -217,6 +283,11 @@ defmodule Marshall.Events do
       kind: {:enum, [:bootstrap, :maintenance]},
       phase: {:enum, [:claimed, :started, :completed, :failed, :uncertain]}
     ]
+  )
+
+  defevent("agent.turn_preparation_failed",
+    message: "Agent turn preparation failed",
+    metadata: [turn_id: :uuid, reason: :atom]
   )
 
   defevent("agent.context_published",

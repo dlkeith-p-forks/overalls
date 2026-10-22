@@ -1,0 +1,62 @@
+boundary: The ADR-0252 thread tool runs in the ADR-0255 Oban ServerToolJob, which locks the command for the
+  active running turn and rechecks capability, prompting-user and VM Access write authority in one transaction;
+  every lookup uses the prompting user's current Threads Cedar read authority; Thread status changes only through
+  named state-machine transitions that write lifecycle evidence in the same transaction.
+denial: The guest executor never claims a thread command; revoked machine access finishes the command failed with
+  access_revoked before it runs; unreadable threads are absent from search and refused as forbidden; subscribing
+  to a thread without an agent binding answers machine_unavailable; replay without an active subscription answers
+  not_subscribed; no thread action accepts status.
+evidence:
+- assertion: random transitions follow the model and leave complete evidence
+  execution: present
+  kind: property
+  path: marshall/test/marshall/threads/thread_state_machine_property_test.exs
+  scope: Hegel-generated transition sequences against real PostgreSQL compare status, lifecycle events and generation
+    sync with the reviewed model; a focused Marshall run passed on 2026-10-21 without a
+    repository execution record.
+- assertion: no thread action accepts the status attribute
+  execution: present
+  kind: unit
+  path: marshall/test/marshall/threads/thread_state_machine_property_test.exs
+  scope: Static check of every Thread action's accepted attributes and the declared transition graph.
+- assertion: thread search returns only Cedar-visible threads
+  execution: present
+  kind: unit
+  path: marshall/test/marshall/agents/server_tool_test.exs
+  scope: End-to-end ServerToolJob with a real agent command and two users' threads. Focused run passed on 2026-10-21.
+- assertion: revoked machine access cancels the command before it runs
+  execution: present
+  kind: unit
+  path: marshall/test/marshall/agents/server_tool_test.exs
+  scope: Claim-time Access recheck and closed refusal reason; no effect beyond the command and its audit rows.
+- assertion: no action accepts a state machine's state attribute
+  execution: present
+  kind: unit
+  path: marshall/test/marshall/state_machines_test.exs
+  scope: Every governed state-machine resource, including Thread; two recorded pre-existing exceptions
+    (Scim.Configuration.create, Redaction.Shard.transition). Focused run passed on 2026-10-21.
+- assertion: thread search, read, subscribe and replay honour Cedar read access
+  execution: present
+  kind: machine
+  path: nix/verification/tests/machines/thread-tool/scenario.py
+  scope: Fleet with a real NixOS guest and model fixture; the owner's machine thread is shared with the member
+    as operator and an unbound private thread is not; search returns only the shared thread, and read,
+    subscribe with an active receiver and replay complete with one tool_finished audit row per command, no
+    executor identity and payload-free logs.
+gaps: The thread-tool NixOS machine test passed locally on 2026-10-21 on the merged design but has no repository
+  execution record. The reconciler's requeue and uncertain-claim paths have no dedicated test.
+id: thread-tool
+journey: An agent searches, reads, subscribes to and replays a user thread the prompting user can read, and is
+  refused threads it cannot read
+layers:
+- identity
+- authorization
+- execution
+- storage
+- recovery
+preferred_gap: Add a repository execution record for the thread-tool NixOS machine run and a reconciler test
+  for orphaned queued and stale claimed commands.
+scope: A Hegel state-machine property against PostgreSQL, graph and accepted-attribute units, PostgreSQL-backed
+  server-tool units for Cedar-visible search and claim-time access refusal, and one present but unrecorded NixOS
+  machine test.
+status: partial

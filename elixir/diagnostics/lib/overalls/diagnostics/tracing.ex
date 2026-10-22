@@ -13,6 +13,10 @@ defmodule Overalls.Diagnostics.Tracing do
     ziggy.http
     porsche.ssh.dispatch
     peach.http
+    marshall.agent.server_tool
+    marshall.artifact.publish
+    marshall.artifact.content
+    marshall.cedar.authorize
   )
 
   @type metadata :: Overalls.Diagnostics.metadata()
@@ -98,7 +102,7 @@ defmodule Overalls.Diagnostics.Tracing do
 
   @spec span_kind(binary()) :: :internal | :server
   defp span_kind(name) do
-    if name in ~w(marshall.http audi.http brady.http galileo.http ziggy.http porsche.ssh.dispatch peach.http enrico.http),
+    if name in ~w(marshall.http marshall.artifact.content audi.http brady.http galileo.http ziggy.http porsche.ssh.dispatch peach.http enrico.http),
       do: :server,
       else: :internal
   end

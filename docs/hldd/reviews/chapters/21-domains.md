@@ -1,5 +1,5 @@
 ---
-digest: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
+digest: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed durable boards, thread receivers, attachment cleanup, and property/audit evidence.
+Shared diagnostics gain the marshall.agent.server_tool, marshall.artifact.publish, marshall.artifact.content and marshall.cedar.authorize spans, tool/namespace/via enum and version/file_count number attributes, and the server-tool and artifact publish, refusal, content and storage metrics; the regenerated trace schema matches. Chapters 15-monitoring and 17-reference list these signals and their closed attributes.

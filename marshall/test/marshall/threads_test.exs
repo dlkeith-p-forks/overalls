@@ -246,7 +246,7 @@ defmodule Marshall.ThreadsTest do
     assert {:ok, thread} = Marshall.Threads.create_thread(thread_arguments(), actor: actor)
 
     failed =
-      Ledger.update!(thread, :mark_failed, %{status: :failed, failure_reason: :capacity})
+      Marshall.ThreadStateFixture.failed!(thread, :capacity)
 
     assert_thread_error(
       Marshall.Threads.archive_thread(%{thread_id: failed.id}, actor: stranger),
@@ -307,11 +307,10 @@ defmodule Marshall.ThreadsTest do
     [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
 
     bound =
-      Ledger.update!(thread, :bind_machine, %{
+      Marshall.ThreadStateFixture.ready!(thread, %{
         machine_id: vm.id,
         agent_root_id: root.id,
-        agent_thread_id: agent_thread.id,
-        status: :ready
+        agent_thread_id: agent_thread.id
       })
 
     :ok = Ledger.archive!(vm, :archive)

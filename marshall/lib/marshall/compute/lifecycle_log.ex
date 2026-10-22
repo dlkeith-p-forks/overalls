@@ -63,6 +63,11 @@ defmodule Marshall.Compute.LifecycleLog do
   defp resource_atom("Provisioning"), do: :provisioning
   defp resource_atom("ImageTemplate"), do: :image_template
   defp resource_atom("WorkspaceSource"), do: :workspace_source
+  defp resource_atom("Thread"), do: :thread
+  defp resource_atom("Artifact"), do: :artifact
+  defp resource_atom("ViewTicket"), do: :view_ticket
+  defp resource_atom("PublishRequest"), do: :publish_request
+  defp resource_atom("Subscription"), do: :subscription
   defp resource_atom(_), do: :unrecognized_resource
 
   # @cc [owner:ghuntley,label:durability;observability] lifecycle-log-total-projection
@@ -91,6 +96,16 @@ defmodule Marshall.Compute.LifecycleLog do
   defp action_atom("mark_quarantined"), do: :mark_quarantined
   defp action_atom("mark_retiring"), do: :mark_retiring
   defp action_atom("mark_deleted"), do: :mark_deleted
+  defp action_atom("begin_provisioning"), do: :begin_provisioning
+  defp action_atom("bind_agent"), do: :bind_agent
+  defp action_atom("requeue"), do: :requeue
+  defp action_atom("replace_generation"), do: :replace_generation
+  defp action_atom("reopen"), do: :reopen
+  defp action_atom("mark_deleting"), do: :mark_deleting
+  defp action_atom("mark_archived"), do: :mark_archived
+  defp action_atom("request_delete"), do: :request_delete
+  defp action_atom("admin_delete"), do: :admin_delete
+  defp action_atom("finish_delete"), do: :finish_delete
   defp action_atom(value), do: existing_atom(value, :unrecognized_action)
 
   defp state_atom("pending"), do: :pending
@@ -110,6 +125,10 @@ defmodule Marshall.Compute.LifecycleLog do
   defp state_atom("quarantined"), do: :quarantined
   defp state_atom("retiring"), do: :retiring
   defp state_atom("deleted"), do: :deleted
+  defp state_atom("provisioning"), do: :provisioning
+  defp state_atom("deleting"), do: :deleting
+  defp state_atom("archived"), do: :archived
+  defp state_atom("active"), do: :active
   defp state_atom(value), do: existing_atom(value, :unrecognized_state)
 
   @spec existing_atom(term(), atom()) :: atom()

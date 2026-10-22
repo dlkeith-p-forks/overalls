@@ -24,6 +24,7 @@ from cryptography.hazmat.primitives import serialization
 class Configuration(TypedDict):
     runtime: str
     destination: str
+    peerCertificates: list[str]
     source: str
     issuer: str
     group: str
@@ -56,12 +57,19 @@ def optional_string(value: object) -> str | None:
     return None if value is None else string(value)
 
 
+def string_list(value: object) -> list[str]:
+    if not isinstance(value, list):
+        raise ValueError("expected list")
+    return [string(item) for item in value]
+
+
 def configuration_value(raw: object) -> Configuration:
     if not isinstance(raw, dict):
         raise ValueError("invalid publication configuration")
     return Configuration(
         runtime=string(raw["runtime"]),
         destination=string(raw["destination"]),
+        peerCertificates=string_list(raw.get("peerCertificates", [])),
         source=string(raw["source"]),
         issuer=string(raw["issuer"]),
         group=string(raw["group"]),
@@ -195,11 +203,33 @@ def validate(
     reference = "crt " + str(destination / "full.pem")
     if proxy_config.count(reference) not in (1, 2) or len(proxy_config) > 262144:
         raise ValueError("unexpected proxy certificate configuration")
-    (runtime / "haproxy.cfg").write_text(
-        proxy_config.replace(reference, "crt " + str(runtime / "full.pem"))
-    )
+    candidate_config = proxy_config.replace(reference, "crt " + str(runtime / "full.pem"))
+    candidate_config = substitute_unpublished_peers(candidate_config, runtime, configuration)
+    (runtime / "haproxy.cfg").write_text(candidate_config)
     run([configuration["haproxy"], "-c", "-f", str(runtime / "haproxy.cfg")])
     return candidate
+
+
+def substitute_unpublished_peers(
+    proxy_config: str, runtime: Path, configuration: Configuration
+) -> str:
+    """@cc [owner:ghuntley,label:recovery] certificate-independent-peer-publication
+    A sibling certificate on the same listener that has never been published
+    MUST NOT block this certificate's validation: only inside the disposable
+    candidate configuration, each absent peer reference is replaced by this
+    candidate. A present peer is checked as published; the served proxy
+    configuration is never rewritten.
+    """
+    for peer in configuration["peerCertificates"]:
+        path = Path(peer)
+        if not path.is_absolute() or path == Path(configuration["destination"]) / "full.pem":
+            raise ValueError("invalid peer certificate")
+        reference = "crt " + peer
+        if proxy_config.count(reference) not in (1, 2):
+            raise ValueError("unexpected peer certificate configuration")
+        if not os.path.lexists(path):
+            proxy_config = proxy_config.replace(reference, "crt " + str(runtime / "full.pem"))
+    return proxy_config
 
 
 def published_file(configuration: Configuration) -> bytes:

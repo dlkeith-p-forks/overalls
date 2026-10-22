@@ -115,11 +115,19 @@ with subtest("shared operator prompt wakes guest and completes model tool round 
         ),
         timeout=180,
     )
-    # The source-built Lyra executor now advertises the context and managed
-    # skill operations that Marshall's context coordinator requires. Keeping
-    # this assertion beside the real guest round trip prevents a stale image
-    # from appearing healthy while silently omitting those operations.
-    assert executor_capabilities(vm["vm_id"]) == ["context-v1", "skills-v1"]
+    # The source-built Lyra executor now advertises the context, managed skill,
+    # GitHub tool, attachment and artifact staging operations Marshall requires
+    # (stored sorted). Keeping this assertion beside the real guest round trip
+    # prevents a stale image from appearing healthy while silently omitting them.
+    capabilities = executor_capabilities(vm["vm_id"])
+    expected_capabilities = [
+        "artifacts-v1",
+        "attachments-v1",
+        "context-v1",
+        "github-tools-v1",
+        "skills-v1",
+    ]
+    assert capabilities == expected_capabilities, capabilities
     lifecycle(vm["vm_id"], "stop")
     eventually(lambda: vm_state(vm["vm_id"]) == "stopped", timeout=180)
     submitted = operator(
@@ -135,9 +143,29 @@ with subtest("shared operator prompt wakes guest and completes model tool round 
     assert submitted["status"] == "queued"
     eventually(lambda: vm_state(vm["vm_id"]) == "running", timeout=300)
     eventually(
-        lambda: sql(f"SELECT status FROM agent_turns WHERE id='{turn_id}'") == "completed",
+        lambda: (
+            sql(f"SELECT status FROM agent_turns WHERE id='{turn_id}'") in ("completed", "failed")
+        ),
         timeout=300,
     )
+    # Closed columns and response structure only (purpose, status, item types
+    # and fixture tool names): no prompt, argument, result or reasoning bytes.
+    turn_shape = sql(
+        "SELECT status || ':' || coalesce(failure_reason, '') FROM agent_turns "
+        f"WHERE id='{turn_id}'"
+    )
+    call_shapes = sql(
+        "SELECT coalesce(string_agg(purpose || ':' || status || ':' || coalesce(("
+        "SELECT string_agg(coalesce(i->>'type', '?') || '/' || coalesce(i->>'name', ''), '+') "
+        "FROM jsonb_array_elements(CASE WHEN jsonb_typeof(response->'output') = 'array' "
+        "THEN response->'output' ELSE '[]'::jsonb END) i), '') || ':' || "
+        "coalesce(response->>'status', '') || ':' || coalesce(("
+        "SELECT string_agg(coalesce(t->>'name', '?'), '+') "
+        "FROM jsonb_array_elements(CASE WHEN jsonb_typeof(request->'tools') = 'array' "
+        "THEN request->'tools' ELSE '[]'::jsonb END) t), ''), ',' ORDER BY inserted_at), '') "
+        f"FROM agent_model_calls WHERE turn_id='{turn_id}'"
+    )
+    assert turn_shape == "completed:", (turn_shape, call_shapes)
     result = operator(m3, dict(action="agent-result", actor_id=users["member_id"], turn_id=turn_id))
     assert result == {"status": "completed", "answer_matches": True, "reason": None}
     if otel_guest_enabled:
@@ -158,10 +186,19 @@ with subtest("shared operator prompt wakes guest and completes model tool round 
         )
         == "2"
     )
-    assert (
-        sql(f"SELECT count(*) FROM agent_commands WHERE turn_id='{turn_id}' AND status='completed'")
-        == "1"
+    # Context collection (context_inventory/context_read) precedes the model
+    # turn; the guest tool round trip is exactly one fenced read_file.
+    commands = sql(
+        "SELECT coalesce(string_agg(tool || ':' || status, ',' ORDER BY inserted_at), '') "
+        f"FROM agent_commands WHERE turn_id='{turn_id}'"
     )
+    guest_commands = [
+        command
+        for command in commands.split(",")
+        if command and not command.startswith(("context_inventory:", "context_read:"))
+    ]
+    assert guest_commands == ["read_file:completed"], commands
+    assert all(command.endswith(":completed") for command in commands.split(",")), commands
     if otel_guest_enabled:
         # @cc [owner:ghuntley,label:verification;security] otel-native-guest-path
         # The observed count MUST come from the running Firecracker guest's
@@ -175,7 +212,9 @@ with subtest("shared operator prompt wakes guest and completes model tool round 
         # @cc [owner:ghuntley,label:verification;security] otel-native-guest-trace
         # Query the exact trace from the acknowledged real command at the
         # selected host's disposable Tempo; no host-side OTLP injection counts.
-        command_id = sql(f"SELECT id FROM agent_commands WHERE turn_id='{turn_id}'")
+        command_id = sql(
+            f"SELECT id FROM agent_commands WHERE turn_id='{turn_id}' AND tool='read_file'"
+        )
         assert command_id is not None
         trace_id = hashlib.sha256(
             b"overalls.lyra.tool.trace.v1:" + command_id.replace("-", "").encode()
@@ -288,7 +327,14 @@ with subtest("Standard model cannot create a forbidden child agent"):
         "answer_matches": False,
         "reason": "capability_denied",
     }
-    assert sql(f"SELECT count(*) FROM agent_commands WHERE turn_id='{denied_turn}'") == "0"
+    # Context collection precedes the model; the refused turn ran no guest tool.
+    assert (
+        sql(
+            f"SELECT count(*) FROM agent_commands WHERE turn_id='{denied_turn}' "
+            "AND tool NOT IN ('context_inventory', 'context_read')"
+        )
+        == "0"
+    )
     assert (
         sql(f"SELECT count(*) FROM agent_threads WHERE parent_thread_id='{denied['thread_id']}'")
         == "0"
@@ -312,7 +358,8 @@ with subtest("Rust guest fetch reaches a VM-local HTTP service with content-free
     )
     assert (
         sql(
-            f"SELECT count(*) FROM agent_commands WHERE turn_id='{fetched_id}' AND status='completed'"
+            f"SELECT count(*) FROM agent_commands WHERE turn_id='{fetched_id}' "
+            "AND status='completed' AND tool NOT IN ('context_inventory', 'context_read')"
         )
         == "2"
     )
@@ -347,18 +394,21 @@ with subtest("Marshall web search returns every synthetic result and caches the 
     )
     assert (
         sql(
-            f"SELECT credits FROM agent_search_usage WHERE command_id=(SELECT id FROM agent_commands WHERE turn_id='{first_id}')"
+            f"SELECT credits FROM agent_search_usage WHERE command_id=(SELECT id FROM agent_commands WHERE turn_id='{first_id}' AND tool='web_search')"
         )
         == "3"
     )
     assert (
         sql(
-            f"SELECT cache_hit FROM agent_search_usage WHERE command_id=(SELECT id FROM agent_commands WHERE turn_id='{first_id}')"
+            f"SELECT cache_hit FROM agent_search_usage WHERE command_id=(SELECT id FROM agent_commands WHERE turn_id='{first_id}' AND tool='web_search')"
         )
         == "f"
     )
     assert (
-        sql(f"SELECT result->'results'->1->>'url' FROM agent_commands WHERE turn_id='{first_id}'")
+        sql(
+            "SELECT result->'results'->1->>'url' FROM agent_commands "
+            f"WHERE turn_id='{first_id}' AND tool='web_search'"
+        )
         == "https://example.org/2"
     )
 
@@ -379,19 +429,21 @@ with subtest("Marshall web search returns every synthetic result and caches the 
     )
     assert (
         sql(
-            f"SELECT credits FROM agent_search_usage WHERE command_id=(SELECT id FROM agent_commands WHERE turn_id='{second_id}')"
+            f"SELECT credits FROM agent_search_usage WHERE command_id=(SELECT id FROM agent_commands WHERE turn_id='{second_id}' AND tool='web_search')"
         )
         == "0"
     )
     assert (
         sql(
-            f"SELECT cache_hit FROM agent_search_usage WHERE command_id=(SELECT id FROM agent_commands WHERE turn_id='{second_id}')"
+            f"SELECT cache_hit FROM agent_search_usage WHERE command_id=(SELECT id FROM agent_commands WHERE turn_id='{second_id}' AND tool='web_search')"
         )
         == "t"
     )
     assert (
         sql(
-            f"SELECT count(*) FROM agent_audit_events WHERE turn_id='{second_id}' AND kind='tool_finished'"
+            f"SELECT count(*) FROM agent_audit_events WHERE turn_id='{second_id}' "
+            "AND kind='tool_finished' AND target_id=(SELECT id FROM agent_commands "
+            f"WHERE turn_id='{second_id}' AND tool='web_search')"
         )
         == "1"
     )

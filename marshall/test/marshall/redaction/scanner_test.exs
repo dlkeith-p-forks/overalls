@@ -4,9 +4,11 @@ defmodule Marshall.Redaction.ScannerTest do
   alias Marshall.Redaction.Scanner
 
   property "redaction is idempotent for generated secret-bearing text" do
-    check all prefix <- string(:alphanumeric, min_length: 0, max_length: 32),
-              suffix <- string(:alphanumeric, min_length: 0, max_length: 32),
-              token <- string(:alphanumeric, length: 24) do
+    check all(
+            prefix <- string(:alphanumeric, min_length: 0, max_length: 32),
+            suffix <- string(:alphanumeric, min_length: 0, max_length: 32),
+            token <- string(:alphanumeric, length: 24)
+          ) do
       input = prefix <> " ghp_" <> token <> " " <> suffix
       first = Scanner.redact(input)
       second = Scanner.redact(first.value)
@@ -28,7 +30,8 @@ defmodule Marshall.Redaction.ScannerTest do
   end
 
   test "recursively redacts JSON text while preserving structure" do
-    {value, findings} = Scanner.redact_json(%{"prompt" => "sk-" <> String.duplicate("b", 24), "n" => 3})
+    {value, findings} =
+      Scanner.redact_json(%{"prompt" => "sk-" <> String.duplicate("b", 24), "n" => 3})
 
     assert value["prompt"] == "[REDACTED:openai-key]"
     assert value["n"] == 3

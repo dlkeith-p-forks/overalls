@@ -19,13 +19,13 @@ msgstr ""
 msgid "%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed."
 msgstr "%{value1} Päättelytaso säilyy tässä keskustelussa. Vaihda tarvittaessa Suunnitelma- ja Työ-tilan välillä."
 
-#: lib/marshall_web/live/threads_live.ex:2194
+#: lib/marshall_web/live/threads_live.ex:2200
 #, elixir-autogen, elixir-format
 msgid "%{value1} reasoning"
 msgstr "%{value1} päättely"
 
-#: lib/marshall_web/live/threads_live.ex:2753
-#: lib/marshall_web/live/threads_live.ex:2756
+#: lib/marshall_web/live/threads_live.ex:2759
+#: lib/marshall_web/live/threads_live.ex:2762
 #, elixir-autogen, elixir-format
 msgid "A context source could not be fully loaded."
 msgstr "Kontekstin lähdettä ei voitu ladata kokonaan."
@@ -45,12 +45,12 @@ msgstr "Valittu taito ei ole enää saatavilla. Lataa taidot uudelleen ja valits
 msgid "A space for your next idea"
 msgstr "Tilaa seuraavalle ideallesi"
 
-#: lib/marshall_web/live/threads_live.ex:1962
+#: lib/marshall_web/live/threads_live.ex:1968
 #, elixir-autogen, elixir-format
 msgid "Access details are temporarily unavailable. Close sharing and try again shortly."
 msgstr "Pääsytiedot eivät ole tilapäisesti saatavilla. Sulje jakaminen ja yritä pian uudelleen."
 
-#: lib/marshall_web/live/threads_live.ex:1927
+#: lib/marshall_web/live/threads_live.ex:1933
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Toiminnot"
@@ -67,7 +67,7 @@ msgid "Activity"
 msgstr "Tapahtumat"
 
 #: lib/marshall_web/live/agent_threads_live.ex:116
-#: lib/marshall_web/live/threads_live.ex:2792
+#: lib/marshall_web/live/threads_live.ex:2798
 #, elixir-autogen, elixir-format
 msgid "Agent"
 msgstr "Agentti"
@@ -79,7 +79,7 @@ msgstr "Agentin komentorivin käyttö hyväksytty tunniksi. Palaa päätteeseesi
 
 #: lib/marshall_web/live/agent_threads_live.ex:117
 #: lib/marshall_web/live/agent_threads_live.ex:141
-#: lib/marshall_web/live/threads_live.ex:2800
+#: lib/marshall_web/live/threads_live.ex:2806
 #, elixir-autogen, elixir-format
 msgid "Agent started working"
 msgstr "Agentti aloitti työn"
@@ -105,7 +105,7 @@ msgstr "Kaikki keskustelut"
 msgid "All visible"
 msgstr "Kaikki näkyvät"
 
-#: lib/marshall_web/live/threads_live.ex:2267
+#: lib/marshall_web/live/threads_live.ex:2273
 #, elixir-autogen, elixir-format
 msgid "An operator can answer these questions."
 msgstr "Operaattori voi vastata näihin kysymyksiin."
@@ -115,7 +115,7 @@ msgstr "Operaattori voi vastata näihin kysymyksiin."
 msgid "Answer each question with a choice, your own answer, or both."
 msgstr "Vastaa jokaiseen kysymykseen valinnalla, omalla vastauksellasi tai molemmilla."
 
-#: lib/marshall_web/live/threads_live.ex:2219
+#: lib/marshall_web/live/threads_live.ex:2225
 #, elixir-autogen, elixir-format
 msgid "Answer these questions to continue the plan."
 msgstr "Vastaa näihin kysymyksiin jatkaaksesi suunnitelmaa."
@@ -145,34 +145,34 @@ msgstr "Hyväksy agentin komentorivi"
 msgid "Approving…"
 msgstr "Hyväksytään…"
 
-#: lib/marshall_web/live/threads_live.ex:1930
+#: lib/marshall_web/live/threads_live.ex:1936
 #, elixir-autogen, elixir-format
 msgid "Archive"
 msgstr "Arkistoi"
 
 #: lib/marshall_web/live/threads_live.ex:1640
 #: lib/marshall_web/live/threads_live.ex:1737
-#: lib/marshall_web/live/threads_live.ex:2774
+#: lib/marshall_web/live/threads_live.ex:2780
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "Arkistoitu"
 
-#: lib/marshall_web/live/threads_live.ex:2312
+#: lib/marshall_web/live/threads_live.ex:2318
 #, elixir-autogen, elixir-format
 msgid "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
 msgstr "Arkistoitu keskustelu. Keskustelutallenne on vain luettavissa. Avaa uudelleen jatkaaksesi uudella koneella."
 
-#: lib/marshall_web/live/threads_live.ex:2788
+#: lib/marshall_web/live/threads_live.ex:2794
 #, elixir-autogen, elixir-format
 msgid "Archived · conversation retained"
 msgstr "Arkistoitu · keskustelu säilytetty"
 
-#: lib/marshall_web/live/threads_live.ex:2773
+#: lib/marshall_web/live/threads_live.ex:2779
 #, elixir-autogen, elixir-format
 msgid "Archiving"
 msgstr "Arkistoidaan"
 
-#: lib/marshall_web/live/threads_live.ex:2144
+#: lib/marshall_web/live/threads_live.ex:2150
 #, elixir-autogen, elixir-format
 msgid "Archiving is in progress. Waiting for the machine to be deleted."
 msgstr "Arkistointi on käynnissä. Odotetaan koneen poistamista."
@@ -182,7 +182,7 @@ msgstr "Arkistointi on käynnissä. Odotetaan koneen poistamista."
 msgid "Archiving requested. The machine will be deleted before archival completes."
 msgstr "Arkistointia pyydetty. Kone poistetaan ennen arkistoinnin valmistumista."
 
-#: lib/marshall_web/live/threads_live.ex:2787
+#: lib/marshall_web/live/threads_live.ex:2793
 #, elixir-autogen, elixir-format
 msgid "Archiving · releasing the machine"
 msgstr "Arkistoidaan · vapautetaan kone"
@@ -194,8 +194,8 @@ msgstr "Arkistoidaan · vapautetaan kone"
 msgid "Back to threads"
 msgstr "Takaisin keskusteluihin"
 
-#: lib/marshall_web/live/threads_live.ex:2583
-#: lib/marshall_web/live/threads_live.ex:2632
+#: lib/marshall_web/live/threads_live.ex:2589
+#: lib/marshall_web/live/threads_live.ex:2638
 #, elixir-autogen, elixir-format
 msgid "Branch, tag or commit"
 msgstr "Haara, tunniste tai muutos"
@@ -210,7 +210,7 @@ msgstr "Rakenna jotain, korjaa virhe tai tutki ideaa…"
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/threads_live.ex:1997
+#: lib/marshall_web/live/threads_live.ex:2003
 #, elixir-autogen, elixir-format
 msgid "Change"
 msgstr "Muuta"
@@ -231,13 +231,13 @@ msgstr "Alikeskustelu luotu"
 msgid "Choose a valid image and machine size."
 msgstr "Valitse kelvollinen levykuva ja koneen koko."
 
-#: lib/marshall_web/live/threads_live.ex:2379
-#: lib/marshall_web/live/threads_live.ex:2423
+#: lib/marshall_web/live/threads_live.ex:2385
+#: lib/marshall_web/live/threads_live.ex:2429
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Sulje"
 
-#: lib/marshall_web/live/threads_live.ex:2179
+#: lib/marshall_web/live/threads_live.ex:2185
 #, elixir-autogen, elixir-format
 msgid "Collaboration mode"
 msgstr "Yhteistyötila"
@@ -247,26 +247,26 @@ msgstr "Yhteistyötila"
 msgid "Collaboration mode updated."
 msgstr "Yhteistyötila päivitetty."
 
-#: lib/marshall_web/live/threads_live.ex:2663
+#: lib/marshall_web/live/threads_live.ex:2669
 #, elixir-autogen, elixir-format
 msgid "Command suggestions"
 msgstr "Komentoehdotukset"
 
 #: lib/marshall_web/live/threads_live.ex:1478
 #: lib/marshall_web/live/threads_live.ex:1872
-#: lib/marshall_web/live/threads_live.ex:2197
-#: lib/marshall_web/live/threads_live.ex:2375
-#: lib/marshall_web/live/threads_live.ex:2396
+#: lib/marshall_web/live/threads_live.ex:2203
+#: lib/marshall_web/live/threads_live.ex:2381
+#: lib/marshall_web/live/threads_live.ex:2402
 #, elixir-autogen, elixir-format
 msgid "Commands"
 msgstr "Komennot"
 
-#: lib/marshall_web/live/threads_live.ex:2567
+#: lib/marshall_web/live/threads_live.ex:2573
 #, elixir-autogen, elixir-format
 msgid "Commit: %{value1}"
 msgstr "Muutos: %{value1}"
 
-#: lib/marshall_web/live/threads_live.ex:2511
+#: lib/marshall_web/live/threads_live.ex:2517
 #: lib/marshall_web/thread_commands.ex:18
 #, elixir-autogen, elixir-format
 msgid "Compact context"
@@ -277,12 +277,12 @@ msgstr "Tiivistä konteksti"
 msgid "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
 msgstr "Tiivistys ei voinut pienentää tätä kontekstia. Vähennä pakollisia ohjeita tai aloita rajattu keskustelu."
 
-#: lib/marshall_web/live/threads_live.ex:2730
+#: lib/marshall_web/live/threads_live.ex:2736
 #, elixir-autogen, elixir-format
 msgid "Composer help"
 msgstr "Viestieditorin ohje"
 
-#: lib/marshall_web/live/threads_live.ex:2477
+#: lib/marshall_web/live/threads_live.ex:2483
 #, elixir-autogen, elixir-format
 msgid "Context bytes"
 msgstr "Kontekstin tavumäärä"
@@ -302,7 +302,7 @@ msgstr "Konteksti tiivistetty"
 msgid "Context compaction queued."
 msgstr "Kontekstin tiivistys lisätty jonoon."
 
-#: lib/marshall_web/live/threads_live.ex:2455
+#: lib/marshall_web/live/threads_live.ex:2461
 #, elixir-autogen, elixir-format
 msgid "Context details are unavailable. The thread may still be preparing its workspace."
 msgstr "Kontekstin tiedot eivät ole saatavilla. Keskustelun työtilaa saatetaan vielä valmistella."
@@ -312,7 +312,7 @@ msgstr "Kontekstin tiedot eivät ole saatavilla. Keskustelun työtilaa saatetaan
 msgid "Context reload queued."
 msgstr "Kontekstin uudelleenlataus lisätty jonoon."
 
-#: lib/marshall_web/live/threads_live.ex:2165
+#: lib/marshall_web/live/threads_live.ex:2171
 #, elixir-autogen, elixir-format
 msgid "Continue the work…"
 msgstr "Jatka työtä…"
@@ -332,12 +332,12 @@ msgstr "Luo alikeskustelu"
 msgid "Create thread"
 msgstr "Luo keskustelu"
 
-#: lib/marshall_web/live/threads_live.ex:2830
+#: lib/marshall_web/live/threads_live.ex:2836
 #, elixir-autogen, elixir-format
 msgid "Delegated a task"
 msgstr "Delegoi tehtävän"
 
-#: lib/marshall_web/live/threads_live.ex:1934
+#: lib/marshall_web/live/threads_live.ex:1940
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Poista"
@@ -352,12 +352,12 @@ msgstr "Poistetaan"
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "Kuvaile tehtävä. Agenttisi saa koneen ja aloittaa työn."
 
-#: lib/marshall_web/live/threads_live.ex:2599
+#: lib/marshall_web/live/threads_live.ex:2605
 #, elixir-autogen, elixir-format
 msgid "Disable"
 msgstr "Poista käytöstä"
 
-#: lib/marshall_web/live/threads_live.ex:2540
+#: lib/marshall_web/live/threads_live.ex:2546
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "Ei käytössä"
@@ -367,18 +367,18 @@ msgstr "Ei käytössä"
 msgid "Disk (GiB)"
 msgstr "Levy (GiB)"
 
-#: lib/marshall_web/live/threads_live.ex:2600
+#: lib/marshall_web/live/threads_live.ex:2606
 #, elixir-autogen, elixir-format
 msgid "Enable"
 msgstr "Ota käyttöön"
 
 #: lib/marshall_web/live/threads_live.ex:1735
-#: lib/marshall_web/live/threads_live.ex:2772
+#: lib/marshall_web/live/threads_live.ex:2778
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Epäonnistunut"
 
-#: lib/marshall_web/live/threads_live.ex:2386
+#: lib/marshall_web/live/threads_live.ex:2392
 #, elixir-autogen, elixir-format
 msgid "Find a command"
 msgstr "Etsi komento"
@@ -390,7 +390,7 @@ msgid "Find a task…"
 msgstr "Etsi tehtävä…"
 
 #: lib/marshall_web/live/threads_live.ex:1682
-#: lib/marshall_web/live/threads_live.ex:2009
+#: lib/marshall_web/live/threads_live.ex:2015
 #, elixir-autogen, elixir-format
 msgid "First page"
 msgstr "Ensimmäinen sivu"
@@ -415,7 +415,7 @@ msgstr "Hyvä työ alkaa keskustelusta."
 msgid "High"
 msgstr "Korkea"
 
-#: lib/marshall_web/live/threads_live.ex:2764
+#: lib/marshall_web/live/threads_live.ex:2770
 #, elixir-autogen, elixir-format
 msgid "High gives difficult work more reasoning time."
 msgstr "Korkea taso antaa vaikealle työlle enemmän päättelyaikaa."
@@ -425,7 +425,7 @@ msgstr "Korkea taso antaa vaikealle työlle enemmän päättelyaikaa."
 msgid "Image"
 msgstr "Levykuva"
 
-#: lib/marshall_web/live/threads_live.ex:2295
+#: lib/marshall_web/live/threads_live.ex:2301
 #, elixir-autogen, elixir-format
 msgid "Implement plan"
 msgstr "Toteuta suunnitelma"
@@ -440,32 +440,32 @@ msgstr "Tämän suunnitelman toteutus on jo alkanut."
 msgid "Implementation queued."
 msgstr "Toteutus lisätty jonoon."
 
-#: lib/marshall_web/live/threads_live.ex:2281
+#: lib/marshall_web/live/threads_live.ex:2287
 #, elixir-autogen, elixir-format
 msgid "Implementation started"
 msgstr "Toteutus aloitettu"
 
-#: lib/marshall_web/live/threads_live.ex:2472
+#: lib/marshall_web/live/threads_live.ex:2478
 #, elixir-autogen, elixir-format
 msgid "Input tokens"
 msgstr "Syötetokenit"
 
-#: lib/marshall_web/live/threads_live.ex:2616
+#: lib/marshall_web/live/threads_live.ex:2622
 #, elixir-autogen, elixir-format
 msgid "Install a skill"
 msgstr "Asenna taito"
 
-#: lib/marshall_web/live/threads_live.ex:2643
+#: lib/marshall_web/live/threads_live.ex:2649
 #, elixir-autogen, elixir-format
 msgid "Install skill"
 msgstr "Asenna taito"
 
-#: lib/marshall_web/live/threads_live.ex:2642
+#: lib/marshall_web/live/threads_live.ex:2648
 #, elixir-autogen, elixir-format
 msgid "Installing…"
 msgstr "Asennetaan…"
 
-#: lib/marshall_web/live/threads_live.ex:2482
+#: lib/marshall_web/live/threads_live.ex:2488
 #, elixir-autogen, elixir-format
 msgid "Loaded sources"
 msgstr "Ladatut lähteet"
@@ -475,12 +475,12 @@ msgstr "Ladatut lähteet"
 msgid "Low"
 msgstr "Matala"
 
-#: lib/marshall_web/live/threads_live.ex:2763
+#: lib/marshall_web/live/threads_live.ex:2769
 #, elixir-autogen, elixir-format
 msgid "Low is for small, well-defined tasks."
 msgstr "Matala taso sopii pieniin, tarkasti määriteltyihin tehtäviin."
 
-#: lib/marshall_web/live/threads_live.ex:2074
+#: lib/marshall_web/live/threads_live.ex:2080
 #, elixir-autogen, elixir-format
 msgid "Machine generations"
 msgstr "Koneen sukupolvet"
@@ -510,13 +510,13 @@ msgstr "Kone:"
 msgid "Maintenance finished"
 msgstr "Ylläpito valmis"
 
-#: lib/marshall_web/live/threads_live.ex:2559
+#: lib/marshall_web/live/threads_live.ex:2565
 #, elixir-autogen, elixir-format
 msgid "Managed installations"
 msgstr "Hallitut asennukset"
 
-#: lib/marshall_web/live/threads_live.ex:2546
-#: lib/marshall_web/live/threads_live.ex:2699
+#: lib/marshall_web/live/threads_live.ex:2552
+#: lib/marshall_web/live/threads_live.ex:2705
 #, elixir-autogen, elixir-format
 msgid "Managed skill"
 msgstr "Hallittu taito"
@@ -526,8 +526,8 @@ msgstr "Hallittu taito"
 msgid "Managed skill removed."
 msgstr "Hallittu taito poistettu."
 
-#: lib/marshall_web/live/threads_live.ex:2044
-#: lib/marshall_web/live/threads_live.ex:2853
+#: lib/marshall_web/live/threads_live.ex:2050
+#: lib/marshall_web/live/threads_live.ex:2859
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "Hallinnoija"
@@ -542,7 +542,7 @@ msgstr "Vertaa tätä pyyntökoodia päätteesi koodiin ennen hyväksymistä:"
 msgid "Medium"
 msgstr "Keskitaso"
 
-#: lib/marshall_web/live/threads_live.ex:2766
+#: lib/marshall_web/live/threads_live.ex:2772
 #, elixir-autogen, elixir-format
 msgid "Medium is a good starting point for most work."
 msgstr "Keskitaso on hyvä lähtökohta useimpiin töihin."
@@ -552,7 +552,7 @@ msgstr "Keskitaso on hyvä lähtökohta useimpiin töihin."
 msgid "Memory (MiB)"
 msgstr "Muisti (MiB)"
 
-#: lib/marshall_web/live/threads_live.ex:2164
+#: lib/marshall_web/live/threads_live.ex:2170
 #, elixir-autogen, elixir-format
 msgid "Message"
 msgstr "Viesti"
@@ -580,7 +580,7 @@ msgid "New thread"
 msgstr "Uusi keskustelu"
 
 #: lib/marshall_web/live/threads_live.ex:1689
-#: lib/marshall_web/live/threads_live.ex:2015
+#: lib/marshall_web/live/threads_live.ex:2021
 #, elixir-autogen, elixir-format
 msgid "Next page"
 msgstr "Seuraava sivu"
@@ -590,17 +590,17 @@ msgstr "Seuraava sivu"
 msgid "No activity matches this filter."
 msgstr "Yksikään tapahtuma ei vastaa tätä suodatinta."
 
-#: lib/marshall_web/live/threads_live.ex:2001
+#: lib/marshall_web/live/threads_live.ex:2007
 #, elixir-autogen, elixir-format
 msgid "No individual thread grants yet."
 msgstr "Ei vielä yksittäisiä keskustelun käyttöoikeuksia."
 
-#: lib/marshall_web/live/threads_live.ex:2484
+#: lib/marshall_web/live/threads_live.ex:2490
 #, elixir-autogen, elixir-format
 msgid "No instruction sources collected yet."
 msgstr "Ohjelähteitä ei ole vielä kerätty."
 
-#: lib/marshall_web/live/threads_live.ex:2685
+#: lib/marshall_web/live/threads_live.ex:2691
 #, elixir-autogen, elixir-format
 msgid "No matching skills. Use /skills to inspect the catalog."
 msgstr "Ei vastaavia taitoja. Tarkastele luetteloa komennolla /skills."
@@ -615,23 +615,23 @@ msgstr "Tällä sivulla ei ole vanhempia keskusteluja saatavilla."
 msgid "No recent threads match your search."
 msgstr "Yksikään viimeaikainen keskustelu ei vastaa hakuasi."
 
-#: lib/marshall_web/live/threads_live.ex:2528
+#: lib/marshall_web/live/threads_live.ex:2534
 #, elixir-autogen, elixir-format
 msgid "No skills were discovered in this workspace."
 msgstr "Tästä työtilasta ei löytynyt taitoja."
 
-#: lib/marshall_web/live/threads_live.ex:2470
+#: lib/marshall_web/live/threads_live.ex:2476
 #, elixir-autogen, elixir-format
 msgid "Not collected yet"
 msgstr "Ei vielä kerätty"
 
 #: lib/marshall_web/live/threads_live.ex:1439
-#: lib/marshall_web/live/threads_live.ex:2333
+#: lib/marshall_web/live/threads_live.ex:2339
 #, elixir-autogen, elixir-format
 msgid "Objective"
 msgstr "Tavoite"
 
-#: lib/marshall_web/live/threads_live.ex:2839
+#: lib/marshall_web/live/threads_live.ex:2845
 #, elixir-autogen, elixir-format
 msgid "Older context summarized"
 msgstr "Vanhempi konteksti tiivistetty"
@@ -663,13 +663,13 @@ msgstr "Avaa pääte"
 msgid "Open terminal here"
 msgstr "Avaa pääte tähän"
 
-#: lib/marshall_web/live/threads_live.ex:2043
-#: lib/marshall_web/live/threads_live.ex:2852
+#: lib/marshall_web/live/threads_live.ex:2049
+#: lib/marshall_web/live/threads_live.ex:2858
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Operaattori"
 
-#: lib/marshall_web/live/threads_live.ex:1975
+#: lib/marshall_web/live/threads_live.ex:1981
 #, elixir-autogen, elixir-format
 msgid "Owner · cannot be changed"
 msgstr "Omistaja · ei voi muuttaa"
@@ -685,8 +685,8 @@ msgid "Past 7 days"
 msgstr "Viimeiset 7 päivää"
 
 #: lib/marshall_web/live/threads_live.ex:1732
-#: lib/marshall_web/live/threads_live.ex:2733
-#: lib/marshall_web/live/threads_live.ex:2769
+#: lib/marshall_web/live/threads_live.ex:2739
+#: lib/marshall_web/live/threads_live.ex:2775
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Odottaa"
@@ -697,7 +697,7 @@ msgid "Pick up where you left off."
 msgstr "Jatka siitä, mihin jäit."
 
 #: lib/marshall_web/live/threads_live.ex:1461
-#: lib/marshall_web/live/threads_live.ex:2724
+#: lib/marshall_web/live/threads_live.ex:2730
 #: lib/marshall_web/thread_commands.ex:14
 #, elixir-autogen, elixir-format
 msgid "Plan"
@@ -708,19 +708,19 @@ msgstr "Suunnitelma"
 msgid "Plan proposed"
 msgstr "Suunnitelma ehdotettu"
 
-#: lib/marshall_web/live/threads_live.ex:2781
+#: lib/marshall_web/live/threads_live.ex:2787
 #, elixir-autogen, elixir-format
 msgid "Preparing a machine for this task"
 msgstr "Valmistellaan konetta tätä tehtävää varten"
 
-#: lib/marshall_web/live/threads_live.ex:2114
+#: lib/marshall_web/live/threads_live.ex:2120
 #, elixir-autogen, elixir-format
 msgid "Preparing your workspace"
 msgstr "Valmistellaan työtilaasi"
 
 #: lib/marshall_web/live/agent_threads_live.ex:115
 #: lib/marshall_web/live/agent_threads_live.ex:225
-#: lib/marshall_web/live/threads_live.ex:2791
+#: lib/marshall_web/live/threads_live.ex:2797
 #, elixir-autogen, elixir-format
 msgid "Prompt"
 msgstr "Kehote"
@@ -736,18 +736,18 @@ msgstr "Kehote lisätty jonoon."
 msgid "Prompts wake a stopped machine when you have write access."
 msgstr "Kehotteet käynnistävät pysäytetyn koneen, kun sinulla on kirjoitusoikeus."
 
-#: lib/marshall_web/live/threads_live.ex:2278
+#: lib/marshall_web/live/threads_live.ex:2284
 #, elixir-autogen, elixir-format
 msgid "Proposed plan"
 msgstr "Ehdotettu suunnitelma"
 
 #: lib/marshall_web/live/threads_live.ex:1733
-#: lib/marshall_web/live/threads_live.ex:2770
+#: lib/marshall_web/live/threads_live.ex:2776
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "Provisioidaan"
 
-#: lib/marshall_web/live/threads_live.ex:2124
+#: lib/marshall_web/live/threads_live.ex:2130
 #, elixir-autogen, elixir-format
 msgid "Provisioning needs attention."
 msgstr "Provisiointi vaatii huomiota."
@@ -772,14 +772,14 @@ msgstr "Kysymykset peruttu"
 msgid "Questions requested"
 msgstr "Kysymyksiä pyydetty"
 
-#: lib/marshall_web/live/threads_live.ex:2812
+#: lib/marshall_web/live/threads_live.ex:2818
 #, elixir-autogen, elixir-format
 msgid "Queued: %{tools}"
 msgstr "Jonossa: %{tools}"
 
 #: lib/marshall_web/live/threads_live.ex:1734
-#: lib/marshall_web/live/threads_live.ex:2734
-#: lib/marshall_web/live/threads_live.ex:2771
+#: lib/marshall_web/live/threads_live.ex:2740
+#: lib/marshall_web/live/threads_live.ex:2777
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Valmis"
@@ -794,49 +794,49 @@ msgstr "Päättely"
 msgid "Recent threads"
 msgstr "Viimeaikaiset keskustelut"
 
-#: lib/marshall_web/live/threads_live.ex:2034
+#: lib/marshall_web/live/threads_live.ex:2040
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Rekisteröity sähköpostiosoite"
 
-#: lib/marshall_web/live/threads_live.ex:2505
+#: lib/marshall_web/live/threads_live.ex:2511
 #, elixir-autogen, elixir-format
 msgid "Reload context"
 msgstr "Lataa konteksti uudelleen"
 
-#: lib/marshall_web/live/threads_live.ex:2606
-#: lib/marshall_web/live/threads_live.ex:2714
+#: lib/marshall_web/live/threads_live.ex:2612
+#: lib/marshall_web/live/threads_live.ex:2720
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Poista"
 
-#: lib/marshall_web/live/threads_live.ex:2713
+#: lib/marshall_web/live/threads_live.ex:2719
 #, elixir-autogen, elixir-format
 msgid "Remove %{skill}"
 msgstr "Poista %{skill}"
 
-#: lib/marshall_web/live/threads_live.ex:1944
+#: lib/marshall_web/live/threads_live.ex:1950
 #, elixir-autogen, elixir-format
 msgid "Reopen"
 msgstr "Avaa uudelleen"
 
-#: lib/marshall_web/live/threads_live.ex:2077
+#: lib/marshall_web/live/threads_live.ex:2083
 #, elixir-autogen, elixir-format
 msgid "Reopened machines keep their earlier transcripts. Select one to read it."
 msgstr "Uudelleen avatut koneet säilyttävät aiemmat keskustelutallenteensa. Valitse tallenne lukeaksesi sen."
 
-#: lib/marshall_web/live/threads_live.ex:2625
+#: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
 msgid "Repository URL"
 msgstr "Tietovaraston URL"
 
 #: lib/marshall_web/live/agent_threads_live.ex:118
-#: lib/marshall_web/live/threads_live.ex:2801
+#: lib/marshall_web/live/threads_live.ex:2807
 #, elixir-autogen, elixir-format
 msgid "Response received"
 msgstr "Vastaus vastaanotettu"
 
-#: lib/marshall_web/live/threads_live.ex:2134
+#: lib/marshall_web/live/threads_live.ex:2140
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Yritä uudelleen"
@@ -846,37 +846,37 @@ msgstr "Yritä uudelleen"
 msgid "Return to the conversation whenever you need."
 msgstr "Palaa keskusteluun aina tarvittaessa."
 
-#: lib/marshall_web/live/threads_live.ex:2303
+#: lib/marshall_web/live/threads_live.ex:2309
 #, elixir-autogen, elixir-format
 msgid "Revise"
 msgstr "Muokkaa"
 
-#: lib/marshall_web/live/threads_live.ex:2631
+#: lib/marshall_web/live/threads_live.ex:2637
 #, elixir-autogen, elixir-format
 msgid "Revision (optional)"
 msgstr "Versio (valinnainen)"
 
-#: lib/marshall_web/live/threads_live.ex:2045
+#: lib/marshall_web/live/threads_live.ex:2051
 #, elixir-autogen, elixir-format
 msgid "Revoke thread grant"
 msgstr "Peruuta keskustelun käyttöoikeus"
 
-#: lib/marshall_web/live/threads_live.ex:2854
+#: lib/marshall_web/live/threads_live.ex:2860
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "Peruutettu"
 
-#: lib/marshall_web/live/threads_live.ex:2040
+#: lib/marshall_web/live/threads_live.ex:2046
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Rooli"
 
-#: lib/marshall_web/live/threads_live.ex:2052
+#: lib/marshall_web/live/threads_live.ex:2058
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "Tallenna käyttöoikeudet"
 
-#: lib/marshall_web/live/threads_live.ex:2051
+#: lib/marshall_web/live/threads_live.ex:2057
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "Tallennetaan…"
@@ -906,7 +906,7 @@ msgstr "Hakee tämän sivun keskusteluista."
 msgid "Select this skill from the workspace catalog when the machine starts."
 msgstr "Valitse tämä taito työtilan luettelosta, kun kone käynnistyy."
 
-#: lib/marshall_web/live/threads_live.ex:2206
+#: lib/marshall_web/live/threads_live.ex:2212
 #, elixir-autogen, elixir-format
 msgid "Send"
 msgstr "Lähetä"
@@ -917,7 +917,7 @@ msgid "Send prompt"
 msgstr "Lähetä kehote"
 
 #: lib/marshall_web/live/agent_threads_live.ex:233
-#: lib/marshall_web/live/threads_live.ex:2204
+#: lib/marshall_web/live/threads_live.ex:2210
 #, elixir-autogen, elixir-format
 msgid "Sending…"
 msgstr "Lähetetään…"
@@ -928,7 +928,7 @@ msgstr "Lähetetään…"
 msgid "Share"
 msgstr "Jaa"
 
-#: lib/marshall_web/live/threads_live.ex:1954
+#: lib/marshall_web/live/threads_live.ex:1960
 #, elixir-autogen, elixir-format
 msgid "Share this thread"
 msgstr "Jaa tämä keskustelu"
@@ -953,7 +953,7 @@ msgstr "Näytä"
 msgid "Skill availability updated."
 msgstr "Taidon saatavuus päivitetty."
 
-#: lib/marshall_web/live/threads_live.ex:2636
+#: lib/marshall_web/live/threads_live.ex:2642
 #, elixir-autogen, elixir-format
 msgid "Skill directory"
 msgstr "Taitohakemisto"
@@ -963,7 +963,7 @@ msgstr "Taitohakemisto"
 msgid "Skill installation queued."
 msgstr "Taidon asennus lisätty jonoon."
 
-#: lib/marshall_web/live/threads_live.ex:2682
+#: lib/marshall_web/live/threads_live.ex:2688
 #, elixir-autogen, elixir-format
 msgid "Skill suggestions"
 msgstr "Taitoehdotukset"
@@ -974,18 +974,18 @@ msgstr "Taitoehdotukset"
 msgid "Skill update queued."
 msgstr "Taidon päivitys lisätty jonoon."
 
-#: lib/marshall_web/live/threads_live.ex:2729
+#: lib/marshall_web/live/threads_live.ex:2735
 #: lib/marshall_web/thread_commands.ex:20
 #, elixir-autogen, elixir-format
 msgid "Skills"
 msgstr "Taidot"
 
-#: lib/marshall_web/live/threads_live.ex:2516
+#: lib/marshall_web/live/threads_live.ex:2522
 #, elixir-autogen, elixir-format
 msgid "Skills add reusable instructions to a task. Choose the source you intend to use."
 msgstr "Taidot lisäävät tehtävään uudelleenkäytettäviä ohjeita. Valitse lähde, jota aiot käyttää."
 
-#: lib/marshall_web/live/threads_live.ex:2522
+#: lib/marshall_web/live/threads_live.ex:2528
 #, elixir-autogen, elixir-format
 msgid "Skills are unavailable until the workspace context has been collected."
 msgstr "Taidot eivät ole käytettävissä ennen työtilan kontekstin keräämistä."
@@ -995,7 +995,7 @@ msgstr "Taidot eivät ole käytettävissä ennen työtilan kontekstin keräämis
 msgid "Standard"
 msgstr "Vakiotaso"
 
-#: lib/marshall_web/live/threads_live.ex:2447
+#: lib/marshall_web/live/threads_live.ex:2453
 #, elixir-autogen, elixir-format
 msgid "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
 msgstr "Aloita välilyönnillä lähettääksesi kauttaviivalla alkavan tekstin sellaisenaan. Kirjoita $ valitaksesi taidon sen tarkan lähteen perusteella."
@@ -1006,17 +1006,17 @@ msgid "Starting…"
 msgstr "Käynnistetään…"
 
 #: lib/marshall_web/live/threads_live.ex:1729
-#: lib/marshall_web/live/threads_live.ex:2462
+#: lib/marshall_web/live/threads_live.ex:2468
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Tila"
 
-#: lib/marshall_web/live/threads_live.ex:2262
+#: lib/marshall_web/live/threads_live.ex:2268
 #, elixir-autogen, elixir-format
 msgid "Submit answers"
 msgstr "Lähetä vastaukset"
 
-#: lib/marshall_web/live/threads_live.ex:2261
+#: lib/marshall_web/live/threads_live.ex:2267
 #, elixir-autogen, elixir-format
 msgid "Submitting…"
 msgstr "Lähetetään…"
@@ -1048,7 +1048,7 @@ msgstr "Tämä sähköpostiosoite ei kuulu rekisteröidylle tilille."
 
 #: lib/marshall_web/live/agent_threads_live.ex:123
 #: lib/marshall_web/live/agent_threads_live.ex:145
-#: lib/marshall_web/live/threads_live.ex:2834
+#: lib/marshall_web/live/threads_live.ex:2840
 #, elixir-autogen, elixir-format
 msgid "The agent encountered a problem"
 msgstr "Agentti kohtasi ongelman"
@@ -1094,7 +1094,7 @@ msgstr "Keskustelutoimintoa ei voitu suorittaa."
 msgid "The thread owner's access cannot be changed."
 msgstr "Keskustelun omistajan käyttöoikeutta ei voi muuttaa."
 
-#: lib/marshall_web/live/threads_live.ex:2323
+#: lib/marshall_web/live/threads_live.ex:2329
 #, elixir-autogen, elixir-format
 msgid "The transcript is temporarily unavailable. Try again shortly."
 msgstr "Keskustelutallenne ei ole tilapäisesti saatavilla. Yritä pian uudelleen."
@@ -1169,7 +1169,7 @@ msgstr "Tämä keskustelu on ehkä poistettu tai linkki on virheellinen."
 msgid "This tool is not available for the machine profile."
 msgstr "Tämä työkalu ei ole käytettävissä koneprofiilissa."
 
-#: lib/marshall_web/live/threads_live.ex:1955
+#: lib/marshall_web/live/threads_live.ex:1961
 #, elixir-autogen, elixir-format
 msgid "Thread access also applies to its machine. Separate machine grants and team access are managed independently."
 msgstr "Keskustelun käyttöoikeus koskee myös sen konetta. Erillisiä koneen käyttöoikeuksia ja tiimin käyttöoikeuksia hallitaan itsenäisesti."
@@ -1179,12 +1179,12 @@ msgstr "Keskustelun käyttöoikeus koskee myös sen konetta. Erillisiä koneen k
 msgid "Thread access updated."
 msgstr "Keskustelun käyttöoikeudet päivitetty."
 
-#: lib/marshall_web/live/threads_live.ex:1926
+#: lib/marshall_web/live/threads_live.ex:1932
 #, elixir-autogen, elixir-format
 msgid "Thread actions"
 msgstr "Keskustelun toiminnot"
 
-#: lib/marshall_web/live/threads_live.ex:2728
+#: lib/marshall_web/live/threads_live.ex:2734
 #, elixir-autogen, elixir-format
 msgid "Thread context"
 msgstr "Keskustelun konteksti"
@@ -1221,7 +1221,7 @@ msgstr "Keskustelu ei ole saatavilla"
 
 #: lib/marshall_web/live/agent_threads_live.ex:132
 #: lib/marshall_web/live/agent_threads_live.ex:149
-#: lib/marshall_web/live/threads_live.ex:2844
+#: lib/marshall_web/live/threads_live.ex:2850
 #, elixir-autogen, elixir-format
 msgid "Thread updated"
 msgstr "Keskustelu päivitetty"
@@ -1251,47 +1251,47 @@ msgstr "Keskustelut eivät ole tilapäisesti saatavilla. Yritä pian uudelleen."
 msgid "Today"
 msgstr "Tänään"
 
-#: lib/marshall_web/live/threads_live.ex:2475
+#: lib/marshall_web/live/threads_live.ex:2481
 #, elixir-autogen, elixir-format
 msgid "Token allowance"
 msgstr "Tokenraja"
 
-#: lib/marshall_web/live/threads_live.ex:2821
+#: lib/marshall_web/live/threads_live.ex:2827
 #, elixir-autogen, elixir-format
 msgid "Tool cancelled"
 msgstr "Työkalu peruutettu"
 
-#: lib/marshall_web/live/threads_live.ex:2824
+#: lib/marshall_web/live/threads_live.ex:2830
 #, elixir-autogen, elixir-format
 msgid "Tool completed"
 msgstr "Työkalu valmistui"
 
-#: lib/marshall_web/live/threads_live.ex:2818
+#: lib/marshall_web/live/threads_live.ex:2824
 #, elixir-autogen, elixir-format
 msgid "Tool failed"
 msgstr "Työkalu epäonnistui"
 
-#: lib/marshall_web/live/threads_live.ex:2827
+#: lib/marshall_web/live/threads_live.ex:2833
 #, elixir-autogen, elixir-format
 msgid "Tool outcome uncertain"
 msgstr "Työkalun tulos epävarma"
 
 #: lib/marshall_web/live/agent_threads_live.ex:120
 #: lib/marshall_web/live/agent_threads_live.ex:148
-#: lib/marshall_web/live/threads_live.ex:2829
+#: lib/marshall_web/live/threads_live.ex:2835
 #, elixir-autogen, elixir-format
 msgid "Tool result received"
 msgstr "Työkalun tulos vastaanotettu"
 
 #: lib/marshall_web/live/agent_threads_live.ex:119
 #: lib/marshall_web/live/agent_threads_live.ex:147
-#: lib/marshall_web/live/threads_live.ex:2811
-#: lib/marshall_web/live/threads_live.ex:2815
+#: lib/marshall_web/live/threads_live.ex:2817
+#: lib/marshall_web/live/threads_live.ex:2821
 #, elixir-autogen, elixir-format
 msgid "Tools queued"
 msgstr "Työkalut jonossa"
 
-#: lib/marshall_web/live/threads_live.ex:2095
+#: lib/marshall_web/live/threads_live.ex:2101
 #, elixir-autogen, elixir-format
 msgid "Transcript"
 msgstr "Keskustelutallenne"
@@ -1303,7 +1303,7 @@ msgstr "Yritä pian uudelleen."
 
 #: lib/marshall_web/live/agent_threads_live.ex:122
 #: lib/marshall_web/live/agent_threads_live.ex:142
-#: lib/marshall_web/live/threads_live.ex:2831
+#: lib/marshall_web/live/threads_live.ex:2837
 #, elixir-autogen, elixir-format
 msgid "Turn complete"
 msgstr "Vuoro valmis"
@@ -1313,15 +1313,15 @@ msgstr "Vuoro valmis"
 msgid "Ultra"
 msgstr "Huipputaso"
 
-#: lib/marshall_web/live/threads_live.ex:2765
+#: lib/marshall_web/live/threads_live.ex:2771
 #, elixir-autogen, elixir-format
 msgid "Ultra is for complex, open-ended work."
 msgstr "Huipputaso sopii monimutkaiseen, avoimeen työhön."
 
-#: lib/marshall_web/live/threads_live.ex:2735
 #: lib/marshall_web/live/threads_live.ex:2741
-#: lib/marshall_web/live/threads_live.ex:2775
-#: lib/marshall_web/live/threads_live.ex:2855
+#: lib/marshall_web/live/threads_live.ex:2747
+#: lib/marshall_web/live/threads_live.ex:2781
+#: lib/marshall_web/live/threads_live.ex:2861
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Tuntematon"
@@ -1343,12 +1343,12 @@ msgstr "Poista tämän keskustelun koneen kiinnitys ennen sen poistamista."
 msgid "Untitled thread"
 msgstr "Nimetön keskustelu"
 
-#: lib/marshall_web/live/threads_live.ex:2589
+#: lib/marshall_web/live/threads_live.ex:2595
 #, elixir-autogen, elixir-format
 msgid "Update"
 msgstr "Päivitä"
 
-#: lib/marshall_web/live/threads_live.ex:2582
+#: lib/marshall_web/live/threads_live.ex:2588
 #, elixir-autogen, elixir-format
 msgid "Update revision (optional)"
 msgstr "Päivitettävä versio (valinnainen)"
@@ -1358,27 +1358,27 @@ msgstr "Päivitettävä versio (valinnainen)"
 msgid "Updated"
 msgstr "Päivitetty"
 
-#: lib/marshall_web/live/threads_live.ex:2588
+#: lib/marshall_web/live/threads_live.ex:2594
 #, elixir-autogen, elixir-format
 msgid "Updating…"
 msgstr "Päivitetään…"
 
-#: lib/marshall_web/live/threads_live.ex:2428
+#: lib/marshall_web/live/threads_live.ex:2434
 #, elixir-autogen, elixir-format
 msgid "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
 msgstr "Käytä Komennot-valikkoa tai paina Ctrl/Cmd+K kirjoittaessasi. Aloita viesti merkillä / löytääksesi komennon; täydennä se sarkainnäppäimellä."
 
-#: lib/marshall_web/live/threads_live.ex:2617
+#: lib/marshall_web/live/threads_live.ex:2623
 #, elixir-autogen, elixir-format
 msgid "Use a public GitHub, GitLab, Codeberg or Bitbucket repository."
 msgstr "Käytä julkista GitHub-, GitLab-, Codeberg- tai Bitbucket-tietovarastoa."
 
-#: lib/marshall_web/live/threads_live.ex:2025
+#: lib/marshall_web/live/threads_live.ex:2031
 #, elixir-autogen, elixir-format
 msgid "Use an existing account's email to grant, change or revoke a thread role."
 msgstr "Käytä olemassa olevan tilin sähköpostiosoitetta myöntääksesi, muuttaaksesi tai peruuttaaksesi keskusteluroolin."
 
-#: lib/marshall_web/live/threads_live.ex:2555
+#: lib/marshall_web/live/threads_live.ex:2561
 #, elixir-autogen, elixir-format
 msgid "Use this skill"
 msgstr "Käytä tätä taitoa"
@@ -1388,13 +1388,13 @@ msgstr "Käytä tätä taitoa"
 msgid "View activity"
 msgstr "Näytä tapahtumat"
 
-#: lib/marshall_web/live/threads_live.ex:2042
-#: lib/marshall_web/live/threads_live.ex:2851
+#: lib/marshall_web/live/threads_live.ex:2048
+#: lib/marshall_web/live/threads_live.ex:2857
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "Katselija"
 
-#: lib/marshall_web/live/threads_live.ex:2055
+#: lib/marshall_web/live/threads_live.ex:2061
 #, elixir-autogen, elixir-format
 msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
 msgstr "Katselijat lukevat. Operaattorit lähettävät kehotteita. Hallinnoijat myös jakavat ja hallitsevat keskustelua."
@@ -1405,7 +1405,7 @@ msgstr "Katselijat lukevat. Operaattorit lähettävät kehotteita. Hallinnoijat 
 msgid "Wait for the current work or pending questions to finish before changing this setting."
 msgstr "Odota nykyisen työn tai avoimien kysymysten valmistumista ennen tämän asetuksen muuttamista."
 
-#: lib/marshall_web/live/threads_live.ex:2778
+#: lib/marshall_web/live/threads_live.ex:2784
 #, elixir-autogen, elixir-format
 msgid "Waiting for a workspace"
 msgstr "Odotetaan työtilaa"
@@ -1415,22 +1415,22 @@ msgstr "Odotetaan työtilaa"
 msgid "Waiting for machine"
 msgstr "Odotetaan konetta"
 
-#: lib/marshall_web/live/threads_live.ex:2340
+#: lib/marshall_web/live/threads_live.ex:2346
 #, elixir-autogen, elixir-format
 msgid "Waiting for the agent's first update."
 msgstr "Odotetaan agentin ensimmäistä päivitystä."
 
-#: lib/marshall_web/live/threads_live.ex:2836
+#: lib/marshall_web/live/threads_live.ex:2842
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine"
 msgstr "Odotetaan konetta"
 
-#: lib/marshall_web/live/threads_live.ex:2837
+#: lib/marshall_web/live/threads_live.ex:2843
 #, elixir-autogen, elixir-format
 msgid "Waiting for your answers"
 msgstr "Odotetaan vastauksiasi"
 
-#: lib/marshall_web/live/threads_live.ex:2850
+#: lib/marshall_web/live/threads_live.ex:2856
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "Verkkosovellukset"
@@ -1441,13 +1441,13 @@ msgid "What are we working on?"
 msgstr "Minkä parissa työskentelemme?"
 
 #: lib/marshall_web/live/threads_live.ex:1460
-#: lib/marshall_web/live/threads_live.ex:2725
+#: lib/marshall_web/live/threads_live.ex:2731
 #: lib/marshall_web/thread_commands.ex:16
 #, elixir-autogen, elixir-format
 msgid "Work"
 msgstr "Työ"
 
-#: lib/marshall_web/live/threads_live.ex:2465
+#: lib/marshall_web/live/threads_live.ex:2471
 #, elixir-autogen, elixir-format
 msgid "Working directory"
 msgstr "Työhakemisto"
@@ -1462,7 +1462,7 @@ msgstr "Työtilan kontekstia kerätään. Yritä pian uudelleen."
 msgid "Workspace context is unavailable. Reload it when the machine is ready."
 msgstr "Työtilan konteksti ei ole saatavilla. Lataa se uudelleen koneen valmistuttua."
 
-#: lib/marshall_web/live/threads_live.ex:2842
+#: lib/marshall_web/live/threads_live.ex:2848
 #, elixir-autogen, elixir-format
 msgid "Workspace context reloaded"
 msgstr "Työtilan konteksti ladattu uudelleen"
@@ -1472,12 +1472,12 @@ msgstr "Työtilan konteksti ladattu uudelleen"
 msgid "Workspace files changed during collection. Reload context and try again."
 msgstr "Työtilan tiedostot muuttuivat keräyksen aikana. Lataa konteksti uudelleen ja yritä uudelleen."
 
-#: lib/marshall_web/live/threads_live.ex:2784
+#: lib/marshall_web/live/threads_live.ex:2790
 #, elixir-autogen, elixir-format
 msgid "Workspace ready · open the conversation"
 msgstr "Työtila valmis · avaa keskustelu"
 
-#: lib/marshall_web/live/threads_live.ex:2786
+#: lib/marshall_web/live/threads_live.ex:2792
 #, elixir-autogen, elixir-format
 msgid "Workspace setup needs attention"
 msgstr "Työtilan määritys vaatii huomiota"
@@ -1487,7 +1487,7 @@ msgstr "Työtilan määritys vaatii huomiota"
 msgid "Workspace skill"
 msgstr "Työtilan taito"
 
-#: lib/marshall_web/live/threads_live.ex:2491
+#: lib/marshall_web/live/threads_live.ex:2497
 #, elixir-autogen, elixir-format
 msgid "Workspace source"
 msgstr "Työtilan lähde"
@@ -1503,7 +1503,7 @@ msgstr "Voit lukea näitä keskusteluja. Pyydä operaattorin tai hallinnoijan oi
 msgid "You do not have access to this thread."
 msgstr "Sinulla ei ole käyttöoikeutta tähän keskusteluun."
 
-#: lib/marshall_web/live/threads_live.ex:2106
+#: lib/marshall_web/live/threads_live.ex:2112
 #, elixir-autogen, elixir-format
 msgid "You have read-only access to this thread."
 msgstr "Sinulla on tähän keskusteluun vain lukuoikeus."
@@ -1513,27 +1513,27 @@ msgstr "Sinulla on tähän keskusteluun vain lukuoikeus."
 msgid "Your agent's work runs in a dedicated environment."
 msgstr "Agenttisi työ suoritetaan erillisessä ympäristössä."
 
-#: lib/marshall_web/live/threads_live.ex:2254
+#: lib/marshall_web/live/threads_live.ex:2260
 #, elixir-autogen, elixir-format
 msgid "Your answer or additional detail"
 msgstr "Vastauksesi tai lisätiedot"
 
-#: lib/marshall_web/live/threads_live.ex:2838
+#: lib/marshall_web/live/threads_live.ex:2844
 #, elixir-autogen, elixir-format
 msgid "Your answers were received"
 msgstr "Vastauksesi vastaanotettiin"
 
-#: lib/marshall_web/live/threads_live.ex:2216
+#: lib/marshall_web/live/threads_live.ex:2222
 #, elixir-autogen, elixir-format
 msgid "Your input is needed"
 msgstr "Panostasi tarvitaan"
 
-#: lib/marshall_web/live/threads_live.ex:2116
+#: lib/marshall_web/live/threads_live.ex:2122
 #, elixir-autogen, elixir-format
 msgid "Your machine is starting. The agent will begin with your objective as soon as it is ready."
 msgstr "Koneesi käynnistyy. Agentti aloittaa tavoitteesi parissa heti koneen valmistuttua."
 
-#: lib/marshall_web/live/threads_live.ex:2128
+#: lib/marshall_web/live/threads_live.ex:2134
 #, elixir-autogen, elixir-format
 msgid "Your objective is saved. Retry to prepare the workspace again."
 msgstr "Tavoitteesi on tallennettu. Yritä uudelleen valmistellaksesi työtilan uudelleen."
@@ -1543,12 +1543,12 @@ msgstr "Tavoitteesi on tallennettu. Yritä uudelleen valmistellaksesi työtilan 
 msgid "Your threads"
 msgstr "Keskustelusi"
 
-#: lib/marshall_web/live/threads_live.ex:2440
+#: lib/marshall_web/live/threads_live.ex:2446
 #, elixir-autogen, elixir-format
 msgid "and"
 msgstr "ja"
 
-#: lib/marshall_web/live/threads_live.ex:2441
+#: lib/marshall_web/live/threads_live.ex:2447
 #, elixir-autogen, elixir-format
 msgid "choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine."
 msgstr "valitse tila ja lähetä tehtävä samalla. Tilan valitseminen uudessa keskustelussa ei luo konetta."
@@ -1558,7 +1558,7 @@ msgstr "valitse tila ja lähetä tehtävä samalla. Tilan valitseminen uudessa k
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· %{value1} päättely · %{value2}"
 
-#: lib/marshall_web/live/threads_live.ex:2408
+#: lib/marshall_web/live/threads_live.ex:2414
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ valitse · Enter suorita · Escape sulje"
@@ -1617,3 +1617,8 @@ msgstr "Avaa tämän keskustelun koneen pääte"
 #, elixir-autogen, elixir-format
 msgid "Summarize older context for the next turn"
 msgstr "Tiivistä vanhempi konteksti seuraavaa vuoroa varten"
+
+#: lib/marshall_web/live/threads_live.ex:1924
+#, elixir-autogen, elixir-format
+msgid "Message board"
+msgstr "Ilmoitustaulu"

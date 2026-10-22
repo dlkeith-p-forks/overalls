@@ -309,7 +309,7 @@ defmodule Marshall.Agents.AgentContextRecoveryDistributedTest do
             machine_key: Ash.UUID.generate()
           })
 
-        Ledger.update!(thread, :bind_machine, %{machine_id: vm.id, status: :ready})
+        Marshall.ThreadStateFixture.ready!(thread, %{machine_id: vm.id})
       end)
 
     %{owner: owner, thread: thread}

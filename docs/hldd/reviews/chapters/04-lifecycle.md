@@ -1,26 +1,12 @@
 ---
-digest: a3c881206a8331e5dbcd995c9762772639a9e28bdc22102c2a2e64bf63aa7449
-disposition: no-impact
+digest: f3c40798f402b553640bb25852bcb205c327c87d7ad6735b4f1b243c5616b4a2
+disposition: updated
 kind: chapter
 mapping_digest: null
-migration:
-  lilly:
-    chapter_digest: 985473887db844b21221e9cd15fc4274003de7e7113e496f5a79143075489161
-    source_digest: 2b3fed271b8c7d9725d4b0ab37d59c1d7e6d8292013cf4927f5a66f57ebc968c
-  marshall:
-    chapter_digest: 611713216c60038ac614a76a8aa4c5cb29f705024b6f3d45fb4b34d1ac794463
-    source_digest: 66cd97c314ea56b581e84f078c4745e952d0cd805117b65f0d777dadac728694
-  protocol:
-    chapter_digest: 6ad8755133568a29871821ead8496649cf2eb94dd919470761b790d2b8335ec1
-    source_digest: baafb9219dcfb35323e5f8ac2408613cc9637c63de94aa8d58146da77693afa3
 path: marshall/priv/hldd/04-lifecycle.md
 reviewed_chapters: {}
 state: present
 version: 2
 ---
 
-marshall: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
-
-protocol: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
-
-lilly: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
+Marshall adds the Artifacts Ash domain (artifact, version, file, blob chunk, grant, access change, storage, view ticket and publish request resources; state machines for artifact, ticket and publish request; Cedar owner/writer/viewer and elevated-admin delete; same-transaction audit; purge, sweep, expiry and usage Oban jobs), the session-free ArtifactContentEndpoint with exact lockdown headers and ticketed fetches, /artifacts and /admin/artifacts LiveViews with a postMessage storage bridge and artifacts Gettext catalogs, and the artifact server tool with guest staging over the artifact_chunk RPC. Thread status becomes an AshStateMachine with one lifecycle event per transition and a status check constraint; ServerToolJob replaces the polling ThreadToolWorker for ADR-0252 thread and message_board commands through ThreadToolDispatch, a reconciler re-enqueues lost jobs, and executor claims exclude Marshall-owned tools. Chapters 03-access, 04-lifecycle, 05-storage, 06-workflows, 11-agents, 15-monitoring, 17-reference, 19-coverage, 20-security, 21-domains and 22-topology and the agents, artifacts-publish-share and thread-tool scenarios describe the behaviour, boundaries, refusals and evidence.

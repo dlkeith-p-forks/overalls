@@ -571,3 +571,44 @@ revoked-login attempts leave preferences unchanged. The internal storage update
 is reserved to trusted coordinators. Preferences never authorize machine access,
 reserve host capacity or alter existing profile permissions; new machine creation
 still crosses current Compute admission and its image/host checks.
+
+## Artifact sharing roles
+
+Artifacts are private to their owner until shared
+([ADR-0253](repo:docs/architecture/decisions/0253-artifacts-domain.md)).
+[`Artifacts.Authorization`](repo:marshall/lib/marshall/artifacts/authorization.ex)
+builds a fresh Cedar `Artifact {owner, owners, writers, viewers, active}`
+entity for every decision. It reads the immutable owner, the actor's current
+unarchived direct grant and grants held through teams of which the actor is
+currently a member. No permission is cached. A retired or SCIM-inactive owner
+denies every actor except moderation.
+
+| Action | Owner and co-owner | Writer | Viewer | Elevated administrator |
+| --- | --- | --- | --- | --- |
+| `artifact_read` | yes | yes | yes | no |
+| `artifact_publish` | yes | yes | no | no |
+| `artifact_share` | yes | no | no | no |
+| `artifact_delete` | yes | no | no | no |
+| `artifact_storage_personal` | yes | yes | yes | no |
+| `artifact_storage_shared_read` | yes | yes | yes | no |
+| `artifact_storage_shared_write` | yes | yes | no | no |
+| `artifact_admin_delete` | no | no | no | yes, with a moderation reason |
+
+Every content action also requires `active`. `artifact_create` is open to any
+current user and refused to the system actor. Teams hold only `writer` or
+`viewer`; a check constraint refuses a team owner. Each artifact/user and
+artifact/team pair has at most one unarchived grant. Owners share by email or
+team at `/artifacts/:id/sharing` ([sharing](repo:marshall/lib/marshall/artifacts/sharing.ex)).
+The owner's own role cannot change. A change archives the previous grant, writes
+an `AccessChange`, a paper-trail version and a `shared` or `unshared` audit
+row, and revokes the affected user's issued view tickets (every ticket for a
+team change). Revoked readers also fail the fresh Cedar check on the next
+content fetch.
+
+Unreadable and unknown artifacts answer `not_found` through the agent tool and
+an unavailable notice in the browser, so existence does not leak. Agent calls
+use the prompting user's roles, never the VM owner's. Moderation grants no
+content, storage or sharing access. Policy:
+[Cedar](repo:marshall/priv/cedar/compute.cedar),
+[schema](repo:marshall/priv/cedar/schema.cedarschema);
+evidence: [authorization matrix](repo:marshall/test/marshall/artifacts/authorization_matrix_test.exs).

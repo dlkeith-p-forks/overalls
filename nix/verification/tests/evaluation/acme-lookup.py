@@ -31,6 +31,7 @@ lookup = load("lookup", sys.argv.pop(1))
 lego = load("lego", sys.argv.pop(1))
 TOKENS = [letter * 43 for letter in "abc"]
 HOST = "control.example.test"
+CONTENT = "usercontent.example.test"
 
 
 class LookupState(Protocol):
@@ -40,6 +41,7 @@ class LookupState(Protocol):
 class LookupTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:
         self.calls: list[int] = [0, 0, 0]
+        self.hosts: list[str] = []
         self.modes: list[str] = ["normal"] * 3
         self.waiting = asyncio.Event()
         self.release = asyncio.Event()
@@ -59,7 +61,8 @@ class LookupTests(unittest.IsolatedAsyncioTestCase):
     def responder(self, index: int) -> Handler:
         async def handle(request: web.Request) -> web.Response:
             self.calls[index] += 1
-            self.assertEqual(request.headers["Host"], HOST)
+            self.assertIn(request.headers["Host"], (HOST, CONTENT))
+            self.hosts.append(request.headers["Host"])
             mode = self.modes[index]
             if mode in ("slow", "blocked"):
                 self.waiting.set()
@@ -82,9 +85,12 @@ class LookupTests(unittest.IsolatedAsyncioTestCase):
 
         return handle
 
-    async def router(self, order: Sequence[int] = (0, 1, 2)) -> tuple[TestServer, LookupState]:
+    async def router(
+        self, order: Sequence[int] = (0, 1, 2), additional: Sequence[str] = ()
+    ) -> tuple[TestServer, LookupState]:
         config: dict[str, object] = {
             "hostname": HOST,
+            "additionalHostnames": list(additional),
             "local": self.endpoints[order[0]],
             "peers": [],
         }
@@ -129,6 +135,33 @@ class LookupTests(unittest.IsolatedAsyncioTestCase):
         )
         async with self.client.post(server.make_url(lookup.PREFIX + TOKENS[0])) as response:
             self.assertEqual(response.status, 405)
+
+    async def test_additional_hostname_is_forwarded_exactly(self) -> None:
+        """@cc [owner:ghuntley,label:verification;security] acme-lookup-additional-hostname
+        A configured additional name MUST be looked up under exactly that Host,
+        and an unconfigured name MUST still be refused before any responder.
+        """
+        server, _ = await self.router(additional=[CONTENT])
+        self.assertEqual((await self.get(server, TOKENS[1], headers={"Host": CONTENT}))[0], 200)
+        self.assertTrue(self.hosts)
+        self.assertTrue(all(host == CONTENT for host in self.hosts))
+        self.hosts.clear()
+        self.assertEqual((await self.get(server, TOKENS[1]))[0], 200)
+        self.assertTrue(all(host == HOST for host in self.hosts))
+        plain, _ = await self.router()
+        calls = list(self.calls)
+        self.assertEqual((await self.get(plain, TOKENS[1], headers={"Host": CONTENT}))[0], 421)
+        self.assertEqual(self.calls, calls)
+        for bad in ([HOST], [CONTENT, CONTENT], [CONTENT, "other.example.test"], "x"):
+            with self.assertRaises(ValueError):
+                lookup.configuration(
+                    {
+                        "hostname": HOST,
+                        "additionalHostnames": bad,
+                        "local": {"address": "127.0.0.1", "port": 9080},
+                        "peers": [],
+                    }
+                )
 
     async def test_slow_peer_does_not_delay_success_and_tasks_are_cancelled(self) -> None:
         self.modes[0] = "slow"

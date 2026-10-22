@@ -25,6 +25,7 @@ defmodule Marshall.Agents.Command do
 
     update :transition do
       accept [:status, :executor_id, :fence_epoch, :claim_id, :claimed_at, :result]
+      change Marshall.Artifacts.Changes.ResumeStagedPublish
     end
   end
 
@@ -50,6 +51,8 @@ defmodule Marshall.Agents.Command do
           :thread,
           :attachment,
           :message_board,
+          :artifact,
+          :artifact_stage,
           :context_inventory,
           :context_read,
           :skill_install,

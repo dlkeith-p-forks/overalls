@@ -31,6 +31,7 @@ class Endpoint(TypedDict):
 
 class EndpointList(TypedDict):
     hostname: str
+    additionalHostnames: list[str]
     local: Endpoint
     peers: list[Endpoint]
 
@@ -74,7 +75,21 @@ def configuration(raw: object) -> EndpointList:
         seen.add(address)
     if peers and (local_address.is_loopback or not local_address.is_private):
         raise ValueError("invalid local endpoint")
-    return EndpointList(hostname=string(raw.get("hostname")), local=local, peers=[*endpoints[1:]])
+    hostname = string(raw.get("hostname"))
+    additional = raw.get("additionalHostnames", [])
+    if not isinstance(additional, list) or len(additional) > 1:
+        raise ValueError("invalid configuration")
+    additional_hostnames = [string(name) for name in additional]
+    if hostname in additional_hostnames or len(set(additional_hostnames)) != len(
+        additional_hostnames
+    ):
+        raise ValueError("invalid configuration")
+    return EndpointList(
+        hostname=hostname,
+        additionalHostnames=additional_hostnames,
+        local=local,
+        peers=[*endpoints[1:]],
+    )
 
 
 def string(value: object) -> str:
@@ -102,7 +117,7 @@ class Lookup:
             auto_decompress=False,
             cookie_jar=aiohttp.DummyCookieJar(),
             timeout=aiohttp.ClientTimeout(total=ENDPOINT_TIMEOUT, sock_connect=1),
-            headers={"Host": self.config["hostname"], "Accept-Encoding": "identity"},
+            headers={"Accept-Encoding": "identity"},
             max_line_size=1024,
             max_field_size=1024,
         )
@@ -111,13 +126,17 @@ class Lookup:
         assert self.session is not None
         await self.session.close()
 
-    async def fetch(self, endpoint: Endpoint, token: str) -> tuple[int, bytes | None]:
+    async def fetch(
+        self, endpoint: Endpoint, host_name: str, token: str
+    ) -> tuple[int, bytes | None]:
         address = ipaddress.IPv4Address(endpoint["address"])
         host = str(address)
         url = f"http://{host}:{endpoint['port']}{PREFIX}{token}"
         try:
             assert self.session is not None
-            async with self.session.get(url, allow_redirects=False) as response:
+            async with self.session.get(
+                url, allow_redirects=False, headers={"Host": host_name}
+            ) as response:
                 if response.status == 404:
                     return 404, None
                 if response.status != 200:
@@ -144,11 +163,13 @@ class Lookup:
         bounded key authorization, cancel outstanding reads, and never log
         tokens, URLs, bodies or raw failures. No redirect or peer recursion.
         """
-        if request.headers.get("Host", "").lower() not in (
-            self.config["hostname"],
-            self.config["hostname"] + ":80",
-        ):
+        requested = request.headers.get("Host", "").lower().removesuffix(":80")
+        # Each challenge is looked up under the exact configured name it
+        # arrived for; no other Host value reaches a responder.
+        names = [self.config["hostname"], *self.config["additionalHostnames"]]
+        if requested not in names:
             return web.Response(status=421)
+        host_name = names[names.index(requested)]
         if request.method != "GET":
             return web.Response(status=405)
         token = request.raw_path.removeprefix(PREFIX)
@@ -162,7 +183,7 @@ class Lookup:
         tasks: list[asyncio.Task[tuple[int, bytes | None]]] = []
         try:
             tasks = [
-                asyncio.create_task(self.fetch(endpoint, token))
+                asyncio.create_task(self.fetch(endpoint, host_name, token))
                 for endpoint in [self.config["local"], *self.config["peers"]]
             ]
             failed = False

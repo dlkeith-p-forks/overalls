@@ -1,0 +1,243 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Abuse"
+msgstr "Missbruk"
+
+#: lib/marshall_web/live/artifacts_live.ex:157
+#: lib/marshall_web/live/artifacts_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Access could not be changed."
+msgstr "Åtkomsten kunde inte ändras."
+
+#: lib/marshall_web/live/artifacts_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Access updated."
+msgstr "Åtkomsten har uppdaterats."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Administrators can delete artifacts for a recorded reason. Content is never shown here."
+msgstr "Administratörer kan radera artefakter med ett registrerat skäl. Innehållet visas aldrig här."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Artifact deleted for moderation."
+msgstr "Artefakten raderades genom moderering."
+
+#: lib/marshall_web/live/artifacts_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Artifact deleted."
+msgstr "Artefakten har raderats."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Artifact moderation"
+msgstr "Moderering av artefakter"
+
+#: lib/marshall_web/live/artifacts_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Artifact sections"
+msgstr "Artefaktavsnitt"
+
+#: lib/marshall_web/live/artifacts_live.ex:16
+#: lib/marshall_web/live/artifacts_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Artifacts"
+msgstr "Artefakter"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Artifacts are unavailable."
+msgstr "Artefakter är inte tillgängliga."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Bytes"
+msgstr "Byte"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:112
+#: lib/marshall_web/live/admin/artifacts_live.ex:128
+#: lib/marshall_web/live/artifacts_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "Radera"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:127
+#: lib/marshall_web/live/artifacts_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Delete this artifact and every version?"
+msgstr "Radera den här artefakten och alla versioner?"
+
+#: lib/marshall_web/live/artifacts_live.ex:353
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "E-post"
+
+#: lib/marshall_web/live/artifacts_live.ex:318
+#, elixir-autogen, elixir-format
+msgid "Files"
+msgstr "Filer"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Legal"
+msgstr "Juridiskt"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Moderation reason"
+msgstr "Modereringsskäl"
+
+#: lib/marshall_web/live/artifacts_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "No artifacts yet."
+msgstr "Inga artefakter ännu."
+
+#: lib/marshall_web/live/artifacts_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Older artifacts"
+msgstr "Äldre artefakter"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr "Annat"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "Ägare"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Owner request"
+msgstr "Ägarens begäran"
+
+#: lib/marshall_web/live/artifacts_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "Pages your agents publish from threads. Each publish creates a new version; only people you share with can open them."
+msgstr "Sidor som dina agenter publicerar från trådar. Varje publicering skapar en ny version; endast personer du delar med kan öppna dem."
+
+#: lib/marshall_web/live/artifacts_live.ex:345
+#, elixir-autogen, elixir-format
+msgid "People with access"
+msgstr "Personer med åtkomst"
+
+#: lib/marshall_web/live/artifacts_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "Publicerad"
+
+#: lib/marshall_web/live/artifacts_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Ta bort"
+
+#: lib/marshall_web/live/artifacts_live.ex:355
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Roll"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:101
+#: lib/marshall_web/live/artifacts_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Search titles"
+msgstr "Sök i titlar"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Security"
+msgstr "Säkerhet"
+
+#: lib/marshall_web/live/artifacts_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr "Dela"
+
+#: lib/marshall_web/live/artifacts_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Sharing"
+msgstr "Delning"
+
+#: lib/marshall_web/live/artifacts_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "That artifact is unavailable."
+msgstr "Den artefakten är inte tillgänglig."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:39
+#: lib/marshall_web/live/artifacts_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "The artifact could not be deleted."
+msgstr "Artefakten kunde inte raderas."
+
+#: lib/marshall_web/live/artifacts_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "The viewer is unavailable on this deployment."
+msgstr "Visaren är inte tillgänglig i den här driftsättningen."
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:108
+#: lib/marshall_web/live/artifacts_live.ex:248
+#: lib/marshall_web/live/artifacts_live.ex:329
+#, elixir-autogen, elixir-format
+msgid "Title"
+msgstr "Titel"
+
+#: lib/marshall_web/live/artifacts_live.ex:250
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "Uppdaterad"
+
+#: lib/marshall_web/live/artifacts_live.ex:249
+#: lib/marshall_web/live/artifacts_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Version"
+msgstr "Version"
+
+#: lib/marshall_web/live/artifacts_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Version %{number} of %{current}"
+msgstr "Version %{number} av %{current}"
+
+#: lib/marshall_web/live/admin/artifacts_live.ex:111
+#: lib/marshall_web/live/artifacts_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Versions"
+msgstr "Versioner"
+
+#: lib/marshall_web/live/artifacts_live.ex:273
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr "Visa"
+
+#: lib/marshall_web/live/artifacts_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "no access"
+msgstr "ingen åtkomst"
+
+#: lib/marshall_web/live/artifacts_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "owner"
+msgstr "ägare"
+
+#: lib/marshall_web/live/artifacts_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "viewer"
+msgstr "läsare"
+
+#: lib/marshall_web/live/artifacts_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "writer"
+msgstr "skribent"

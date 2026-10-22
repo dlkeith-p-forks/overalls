@@ -15,6 +15,8 @@ defmodule Marshall.Compute.ExpireLifecycleEvents do
     account_guest_accounts_versions
     agent_roots_versions
     agent_threads_versions
+    artifact_grants_versions
+    artifacts_versions
     compute_clone_requests_versions
     compute_evacuation_items_versions
     compute_evacuations_versions

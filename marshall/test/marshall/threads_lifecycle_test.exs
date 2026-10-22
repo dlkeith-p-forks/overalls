@@ -211,7 +211,7 @@ defmodule Marshall.ThreadsLifecycleTest do
     bound = current(thread)
 
     failed =
-      Ledger.update!(bound, :mark_failed, %{status: :failed, failure_reason: :agent_unavailable})
+      Marshall.ThreadStateFixture.failed!(bound, :agent_unavailable)
 
     assert [%VirtualMachine{} = vm] = Ledger.history!(VirtualMachine, id: failed.machine_id)
 

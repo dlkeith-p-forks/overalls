@@ -107,7 +107,7 @@ defmodule MarshallWeb.SecurityHeaders do
   @spec headers() :: [{String.t(), String.t()}]
   def headers do
     [
-      {"content-security-policy", policy(@development_tooling)},
+      {"content-security-policy", policy(@development_tooling, artifact_content_host())},
       {"permissions-policy", @permissions_policy},
       {"cross-origin-opener-policy", "same-origin"},
       {"cross-origin-resource-policy", "same-origin"},
@@ -126,15 +126,33 @@ defmodule MarshallWeb.SecurityHeaders do
   # request, header or runtime option.
   @doc "The Content-Security-Policy value; `true` adds the development-tooling sources."
   @spec policy(boolean()) :: policy_source()
-  def policy(development_tooling?) when is_boolean(development_tooling?) do
+  def policy(development_tooling?) when is_boolean(development_tooling?),
+    do: policy(development_tooling?, nil)
+
+  # @cc [owner:ghuntley,label:security] browser-frame-src-artifact-origin
+  # The only foreign frame source MUST be the configured artifact content
+  # origin (ADR-0254); without one, frames stay same-origin only.
+  @doc "The policy with the configured artifact content origin admitted as a frame source."
+  @spec policy(boolean(), String.t() | nil) :: policy_source()
+  def policy(development_tooling?, content_host) when is_boolean(development_tooling?) do
     @production_directives
     |> Enum.map(fn {directive, sources} ->
       extra =
         if development_tooling?, do: Map.get(@development_additions, directive, ""), else: ""
 
-      directive <> " " <> sources <> extra
+      frame =
+        if directive == "frame-src" and is_binary(content_host),
+          do: " https://" <> content_host,
+          else: ""
+
+      directive <> " " <> sources <> frame <> extra
     end)
     |> Enum.join("; ")
+  end
+
+  @spec artifact_content_host() :: String.t() | nil
+  defp artifact_content_host do
+    (Application.get_env(:marshall, :artifact_content) || %{}) |> Map.get(:host)
   end
 
   @doc "Whether the compiled policy includes the development-tooling sources."

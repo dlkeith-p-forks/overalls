@@ -2,6 +2,8 @@ defmodule Marshall.Agents.ModelProtocol do
   @moduledoc "Bounded Responses conversation and tool-call wire format."
   alias Marshall.Agents.{Capabilities, Compaction, Planning}
 
+  @artifact_arguments_limit 196_608
+
   @tools [
     %{
       "type" => "function",
@@ -124,6 +126,66 @@ defmodule Marshall.Agents.ModelProtocol do
         "required" => ["operation"],
         "additionalProperties" => false
       }
+    },
+    %{
+      "type" => "function",
+      "name" => "artifact",
+      "description" =>
+        "Publish, read, list or delete versioned HTML or Markdown pages (artifacts) that the " <>
+          "user views at /artifacts. Every publish names base_version: 0 creates a new artifact, " <>
+          "otherwise it must equal the current version (read first); a stale base is refused " <>
+          "with current_version. Send either full content or exact edits, never both. Large " <>
+          "pages and files can be staged from absolute guest paths with content_path and " <>
+          "files[].source_path.",
+      "parameters" => %{
+        "type" => "object",
+        "properties" => %{
+          "operation" => %{"type" => "string", "enum" => ["publish", "read", "list", "delete"]},
+          "artifact_id" => %{"type" => "string"},
+          "base_version" => %{"type" => "integer", "minimum" => 0},
+          "title" => %{"type" => "string", "maxLength" => 200},
+          "description" => %{"type" => "string", "maxLength" => 1000},
+          "format" => %{"type" => "string", "enum" => ["html", "markdown"]},
+          "content" => %{"type" => "string", "maxLength" => 131_072},
+          "content_path" => %{"type" => "string", "maxLength" => 4096},
+          "edits" => %{
+            "type" => "array",
+            "maxItems" => 64,
+            "items" => %{
+              "type" => "object",
+              "properties" => %{
+                "old_str" => %{"type" => "string"},
+                "new_str" => %{"type" => "string"}
+              },
+              "required" => ["old_str", "new_str"],
+              "additionalProperties" => false
+            }
+          },
+          "files" => %{
+            "type" => "object",
+            "description" =>
+              "Supporting files by relative path: {content, content_type} or {source_path}; null removes.",
+            "additionalProperties" => %{
+              "type" => ["object", "null"],
+              "properties" => %{
+                "content" => %{"type" => "string"},
+                "content_base64" => %{"type" => "string"},
+                "source_path" => %{"type" => "string"},
+                "content_type" => %{"type" => "string"}
+              },
+              "additionalProperties" => false
+            }
+          },
+          "version" => %{"type" => "integer", "minimum" => 1},
+          "path" => %{"type" => "string", "maxLength" => 512},
+          "offset" => %{"type" => "integer", "minimum" => 0},
+          "query" => %{"type" => "string", "maxLength" => 256},
+          "cursor" => %{"type" => "string"},
+          "limit" => %{"type" => "integer", "minimum" => 1, "maximum" => 100}
+        },
+        "required" => ["operation"],
+        "additionalProperties" => false
+      }
     }
   ]
 
@@ -144,6 +206,7 @@ defmodule Marshall.Agents.ModelProtocol do
             | :thread
             | :attachment
             | :message_board
+            | :artifact
             | :request_user_input,
           arguments: map()
         }
@@ -481,9 +544,12 @@ defmodule Marshall.Agents.ModelProtocol do
 
   defp parse_call(_), do: {:error, :invalid_response}
 
+  # Artifact publishes carry inline page content; every other tool keeps the
+  # 8 KiB argument bound. Ziggy's 256 KiB request limit bounds both.
   defp parse_function(id, tool, raw)
        when is_binary(id) and byte_size(id) in 1..128 and is_binary(raw) and
-              byte_size(raw) <= 8192 do
+              (byte_size(raw) <= 8192 or
+                 (tool == "artifact" and byte_size(raw) <= @artifact_arguments_limit)) do
     with {:ok, arguments} when is_map(arguments) <- Jason.decode(raw),
          {:ok, name} <- tool_name(tool),
          true <- valid_arguments?(name, arguments) do
@@ -503,6 +569,7 @@ defmodule Marshall.Agents.ModelProtocol do
   defp tool_name("thread"), do: {:ok, :thread}
   defp tool_name("attachment"), do: {:ok, :attachment}
   defp tool_name("message_board"), do: {:ok, :message_board}
+  defp tool_name("artifact"), do: {:ok, :artifact}
   defp tool_name("request_user_input"), do: {:ok, :request_user_input}
   defp tool_name(_), do: {:error, :invalid_response}
 
@@ -584,6 +651,10 @@ defmodule Marshall.Agents.ModelProtocol do
            absolute_path?(path) and Map.keys(args) -- ~w(operation attachment_id path) == []
 
   defp valid_arguments?(:attachment, _), do: false
+
+  defp valid_arguments?(:artifact, arguments),
+    do: match?({:ok, _}, Marshall.Artifacts.Tool.parse(arguments))
+
   defp valid_arguments?(_, _), do: false
 
   defp valid_thread_operation?("search", arguments) do

@@ -1,16 +1,12 @@
 ---
-digest: c11d719cde9562dea123b9fff7630f8750bbf758b4919880a15715b86263d3db
-disposition: no-impact
+digest: 194fe77196ac4a25ab764d5cf4aee7558da547cd7b59726f32a302019b26136c
+disposition: updated
 kind: chapter
 mapping_digest: null
-migration:
-  deployment:
-    chapter_digest: 9a9e9255eb86fa91f3418b1c398853a745a51fd15f2f5eca5737439f6caf08c2
-    source_digest: 32939571a328dfb45510183c422eecb46bdb38fa777346f23c0fd9cc2bb9c079
 path: marshall/priv/hldd/16-recovery.md
 reviewed_chapters: {}
 state: present
 version: 2
 ---
 
-deployment: Reviewed the Android SDK setup correction; it only makes the native CI job install declared API 36 build inputs and does not alter deployment roles or runtime behavior.
+Marshall gains the artifactContentHost option and per-instance artifactPort listener; HAProxy adds a separate content-host frontend that strips Cookie, Authorization and Proxy-Authorization, deletes backend Set-Cookie, admits only GET and HEAD and answers 421 across hosts, and ACME issues and publishes the second name; release Oban queues include agent_tools and artifacts. The new artifact-origin, artifact-agent-publish and thread-tool machine tests and their fleet fixtures (server-tool operator, provider scripts, thread seeding through a genuine machine binding, current executor capability lists) are catalogued. Chapters 12-configuration, 13-deployment, 14-operations, 16-recovery, 18-options, 19-coverage, 20-security and 22-topology describe the options, rollout, jobs, recovery, proxy lockdown and recorded local machine passes.

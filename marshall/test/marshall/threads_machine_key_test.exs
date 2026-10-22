@@ -27,7 +27,7 @@ defmodule Marshall.ThreadsMachineKeyTest do
   end
 
   test "archival refuses missing or malformed keys without archiving the thread" do
-    thread = Ledger.update!(thread(), :mark_deleting, %{status: :deleting})
+    thread = Marshall.ThreadStateFixture.deleting!(thread())
 
     for args <- [
           %{"thread_id" => thread.id},
@@ -42,7 +42,7 @@ defmodule Marshall.ThreadsMachineKeyTest do
   end
 
   test "an archive job from an older generation cannot archive the current thread" do
-    thread = Ledger.update!(thread(), :mark_deleting, %{status: :deleting})
+    thread = Marshall.ThreadStateFixture.deleting!(thread())
 
     assert :ok =
              ArchiveWorker.perform(%Oban.Job{

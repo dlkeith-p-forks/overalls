@@ -400,6 +400,13 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   guest-cli-recovery-ubuntu = import ./machines/fleet (service // {
     hostFixture = fixtures.hetzner-uefi; audi = true; galileo = true; agent = true; guestCliRecovery = true; ubuntu = true;
   });
+  # Server tools end to end through a real guest (plan: artifacts, thread tool).
+  artifact-agent-publish = import ./machines/fleet (service // {
+    hostFixture = fixtures.hetzner-uefi; audi = true; galileo = true; agent = true; artifactAgentPublish = true;
+  });
+  thread-tool = import ./machines/fleet (service // {
+    hostFixture = fixtures.hetzner-uefi; audi = true; galileo = true; agent = true; threadTool = true;
+  });
   agent-ubuntu-fleet = import ./machines/fleet (service // {
     hostFixture = fixtures.hetzner-uefi; audi = true; galileo = true; agent = true; ubuntu = true;
   });
@@ -473,6 +480,8 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   memory-suspension-fleet = featureFleets.memory-suspension-fleet;
   secret-custody = import ./machines/secret-custody (service // { inherit hegel; });
   sharing-surfaces = featureFleets.sharing-surfaces;
+  # Artifact content origin lockdown (plan §6): proxy + Marshall + Chromium.
+  artifact-origin = import ./machines/artifact-origin (service // { inherit hegel; });
   credential-rotation = import ./machines/credential-rotation service;
   acme-lookup = import ./evaluation/acme-lookup.nix { pkgs = testPkgs; };
   acme-http01 = import ./machines/acme-http01 service;

@@ -19,13 +19,13 @@ msgstr ""
 msgid "%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed."
 msgstr "Nananatili ang %{value1} Reasoning sa thread na ito. Lumipat sa pagitan ng Plano at Trabaho kung kinakailangan."
 
-#: lib/marshall_web/live/threads_live.ex:2194
+#: lib/marshall_web/live/threads_live.ex:2200
 #, elixir-autogen, elixir-format
 msgid "%{value1} reasoning"
 msgstr "%{value1} pangangatwiran"
 
-#: lib/marshall_web/live/threads_live.ex:2753
-#: lib/marshall_web/live/threads_live.ex:2756
+#: lib/marshall_web/live/threads_live.ex:2759
+#: lib/marshall_web/live/threads_live.ex:2762
 #, elixir-autogen, elixir-format
 msgid "A context source could not be fully loaded."
 msgstr "Hindi ganap na mai-load ang isang pinagmulan ng konteksto."
@@ -45,12 +45,12 @@ msgstr "Hindi na available ang isang napiling kasanayan. I-reload ang Mga Kasana
 msgid "A space for your next idea"
 msgstr "Isang puwang para sa iyong susunod na ideya"
 
-#: lib/marshall_web/live/threads_live.ex:1962
+#: lib/marshall_web/live/threads_live.ex:1968
 #, elixir-autogen, elixir-format
 msgid "Access details are temporarily unavailable. Close sharing and try again shortly."
 msgstr "Pansamantalang hindi available ang mga detalye ng pag-access. Isara ang pagbabahagi at subukang muli sa ilang sandali."
 
-#: lib/marshall_web/live/threads_live.ex:1927
+#: lib/marshall_web/live/threads_live.ex:1933
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Mga aksyon"
@@ -67,7 +67,7 @@ msgid "Activity"
 msgstr "Aktibidad"
 
 #: lib/marshall_web/live/agent_threads_live.ex:116
-#: lib/marshall_web/live/threads_live.ex:2792
+#: lib/marshall_web/live/threads_live.ex:2798
 #, elixir-autogen, elixir-format
 msgid "Agent"
 msgstr "Ahente"
@@ -79,7 +79,7 @@ msgstr "Inaprubahan ng Agent CLI sa loob ng isang oras. Bumalik sa iyong termina
 
 #: lib/marshall_web/live/agent_threads_live.ex:117
 #: lib/marshall_web/live/agent_threads_live.ex:141
-#: lib/marshall_web/live/threads_live.ex:2800
+#: lib/marshall_web/live/threads_live.ex:2806
 #, elixir-autogen, elixir-format
 msgid "Agent started working"
 msgstr "Nagsimulang magtrabaho ang ahente"
@@ -105,7 +105,7 @@ msgstr "Lahat ng mga thread"
 msgid "All visible"
 msgstr "Lahat nakikita"
 
-#: lib/marshall_web/live/threads_live.ex:2267
+#: lib/marshall_web/live/threads_live.ex:2273
 #, elixir-autogen, elixir-format
 msgid "An operator can answer these questions."
 msgstr "Maaaring sagutin ng operator ang mga tanong na ito."
@@ -115,7 +115,7 @@ msgstr "Maaaring sagutin ng operator ang mga tanong na ito."
 msgid "Answer each question with a choice, your own answer, or both."
 msgstr "Sagutin ang bawat tanong na may pagpipilian, sarili mong sagot, o pareho."
 
-#: lib/marshall_web/live/threads_live.ex:2219
+#: lib/marshall_web/live/threads_live.ex:2225
 #, elixir-autogen, elixir-format
 msgid "Answer these questions to continue the plan."
 msgstr "Sagutin ang mga tanong na ito para ipagpatuloy ang plano."
@@ -145,34 +145,34 @@ msgstr "Aprubahan ang ahente CLI"
 msgid "Approving…"
 msgstr "Inaprubahan…"
 
-#: lib/marshall_web/live/threads_live.ex:1930
+#: lib/marshall_web/live/threads_live.ex:1936
 #, elixir-autogen, elixir-format
 msgid "Archive"
 msgstr "Arkibo"
 
 #: lib/marshall_web/live/threads_live.ex:1640
 #: lib/marshall_web/live/threads_live.ex:1737
-#: lib/marshall_web/live/threads_live.ex:2774
+#: lib/marshall_web/live/threads_live.ex:2780
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "Naka-archive"
 
-#: lib/marshall_web/live/threads_live.ex:2312
+#: lib/marshall_web/live/threads_live.ex:2318
 #, elixir-autogen, elixir-format
 msgid "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
 msgstr "Naka-archive na thread. Ang transcript ay read-only. Muling buksan upang magpatuloy sa isang bagong makina."
 
-#: lib/marshall_web/live/threads_live.ex:2788
+#: lib/marshall_web/live/threads_live.ex:2794
 #, elixir-autogen, elixir-format
 msgid "Archived · conversation retained"
 msgstr "Naka-archive · pinanatili ang pag-uusap"
 
-#: lib/marshall_web/live/threads_live.ex:2773
+#: lib/marshall_web/live/threads_live.ex:2779
 #, elixir-autogen, elixir-format
 msgid "Archiving"
 msgstr "Pag-archive"
 
-#: lib/marshall_web/live/threads_live.ex:2144
+#: lib/marshall_web/live/threads_live.ex:2150
 #, elixir-autogen, elixir-format
 msgid "Archiving is in progress. Waiting for the machine to be deleted."
 msgstr "Kasalukuyang isinasagawa ang pag-archive. Naghihintay na matanggal ang makina."
@@ -182,7 +182,7 @@ msgstr "Kasalukuyang isinasagawa ang pag-archive. Naghihintay na matanggal ang m
 msgid "Archiving requested. The machine will be deleted before archival completes."
 msgstr "Hiniling ang pag-archive. Ang makina ay tatanggalin bago makumpleto ang archival."
 
-#: lib/marshall_web/live/threads_live.ex:2787
+#: lib/marshall_web/live/threads_live.ex:2793
 #, elixir-autogen, elixir-format
 msgid "Archiving · releasing the machine"
 msgstr "Pag-archive · paglabas ng makina"
@@ -194,8 +194,8 @@ msgstr "Pag-archive · paglabas ng makina"
 msgid "Back to threads"
 msgstr "Bumalik sa mga thread"
 
-#: lib/marshall_web/live/threads_live.ex:2583
-#: lib/marshall_web/live/threads_live.ex:2632
+#: lib/marshall_web/live/threads_live.ex:2589
+#: lib/marshall_web/live/threads_live.ex:2638
 #, elixir-autogen, elixir-format
 msgid "Branch, tag or commit"
 msgstr "Branch, tag o commit"
@@ -210,7 +210,7 @@ msgstr "Bumuo ng isang bagay, ayusin ang isang bug, galugarin ang isang ideya...
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/threads_live.ex:1997
+#: lib/marshall_web/live/threads_live.ex:2003
 #, elixir-autogen, elixir-format
 msgid "Change"
 msgstr "Baguhin"
@@ -231,13 +231,13 @@ msgstr "Nagawa ang thread ng bata"
 msgid "Choose a valid image and machine size."
 msgstr "Pumili ng wastong larawan at laki ng makina."
 
-#: lib/marshall_web/live/threads_live.ex:2379
-#: lib/marshall_web/live/threads_live.ex:2423
+#: lib/marshall_web/live/threads_live.ex:2385
+#: lib/marshall_web/live/threads_live.ex:2429
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Isara"
 
-#: lib/marshall_web/live/threads_live.ex:2179
+#: lib/marshall_web/live/threads_live.ex:2185
 #, elixir-autogen, elixir-format
 msgid "Collaboration mode"
 msgstr "Mode ng pakikipagtulungan"
@@ -247,26 +247,26 @@ msgstr "Mode ng pakikipagtulungan"
 msgid "Collaboration mode updated."
 msgstr "Na-update ang mode ng pakikipagtulungan."
 
-#: lib/marshall_web/live/threads_live.ex:2663
+#: lib/marshall_web/live/threads_live.ex:2669
 #, elixir-autogen, elixir-format
 msgid "Command suggestions"
 msgstr "Mga mungkahi ng command"
 
 #: lib/marshall_web/live/threads_live.ex:1478
 #: lib/marshall_web/live/threads_live.ex:1872
-#: lib/marshall_web/live/threads_live.ex:2197
-#: lib/marshall_web/live/threads_live.ex:2375
-#: lib/marshall_web/live/threads_live.ex:2396
+#: lib/marshall_web/live/threads_live.ex:2203
+#: lib/marshall_web/live/threads_live.ex:2381
+#: lib/marshall_web/live/threads_live.ex:2402
 #, elixir-autogen, elixir-format
 msgid "Commands"
 msgstr "Mga utos"
 
-#: lib/marshall_web/live/threads_live.ex:2567
+#: lib/marshall_web/live/threads_live.ex:2573
 #, elixir-autogen, elixir-format
 msgid "Commit: %{value1}"
 msgstr "Mag-commit: %{value1}"
 
-#: lib/marshall_web/live/threads_live.ex:2511
+#: lib/marshall_web/live/threads_live.ex:2517
 #: lib/marshall_web/thread_commands.ex:18
 #, elixir-autogen, elixir-format
 msgid "Compact context"
@@ -277,12 +277,12 @@ msgstr "Compact na konteksto"
 msgid "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
 msgstr "Hindi mababawasan ng compaction ang kontekstong ito. Bawasan ang mga kinakailangang tagubilin o magsimula ng isang nakatutok na thread."
 
-#: lib/marshall_web/live/threads_live.ex:2730
+#: lib/marshall_web/live/threads_live.ex:2736
 #, elixir-autogen, elixir-format
 msgid "Composer help"
 msgstr "Tulong ng kompositor"
 
-#: lib/marshall_web/live/threads_live.ex:2477
+#: lib/marshall_web/live/threads_live.ex:2483
 #, elixir-autogen, elixir-format
 msgid "Context bytes"
 msgstr "Mga byte ng konteksto"
@@ -302,7 +302,7 @@ msgstr "Pinaikli ang konteksto"
 msgid "Context compaction queued."
 msgstr "Nakapila ang compaction ng konteksto."
 
-#: lib/marshall_web/live/threads_live.ex:2455
+#: lib/marshall_web/live/threads_live.ex:2461
 #, elixir-autogen, elixir-format
 msgid "Context details are unavailable. The thread may still be preparing its workspace."
 msgstr "Hindi available ang mga detalye ng konteksto. Maaaring inihahanda pa rin ng thread ang workspace nito."
@@ -312,7 +312,7 @@ msgstr "Hindi available ang mga detalye ng konteksto. Maaaring inihahanda pa rin
 msgid "Context reload queued."
 msgstr "Nakapila ang pag-reload ng konteksto."
 
-#: lib/marshall_web/live/threads_live.ex:2165
+#: lib/marshall_web/live/threads_live.ex:2171
 #, elixir-autogen, elixir-format
 msgid "Continue the work…"
 msgstr "Ipagpatuloy ang gawain…"
@@ -332,12 +332,12 @@ msgstr "Lumikha ng bata"
 msgid "Create thread"
 msgstr "Gumawa ng thread"
 
-#: lib/marshall_web/live/threads_live.ex:2830
+#: lib/marshall_web/live/threads_live.ex:2836
 #, elixir-autogen, elixir-format
 msgid "Delegated a task"
 msgstr "Nagtalaga ng gawain"
 
-#: lib/marshall_web/live/threads_live.ex:1934
+#: lib/marshall_web/live/threads_live.ex:1940
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Tanggalin"
@@ -352,12 +352,12 @@ msgstr "Tinatanggal"
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "Ilarawan ang isang gawain. Kumuha ng makina ang iyong ahente at nagsimulang magtrabaho."
 
-#: lib/marshall_web/live/threads_live.ex:2599
+#: lib/marshall_web/live/threads_live.ex:2605
 #, elixir-autogen, elixir-format
 msgid "Disable"
 msgstr "Huwag paganahin"
 
-#: lib/marshall_web/live/threads_live.ex:2540
+#: lib/marshall_web/live/threads_live.ex:2546
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "Hindi pinagana"
@@ -367,18 +367,18 @@ msgstr "Hindi pinagana"
 msgid "Disk (GiB)"
 msgstr "Disk (GiB)"
 
-#: lib/marshall_web/live/threads_live.ex:2600
+#: lib/marshall_web/live/threads_live.ex:2606
 #, elixir-autogen, elixir-format
 msgid "Enable"
 msgstr "Paganahin"
 
 #: lib/marshall_web/live/threads_live.ex:1735
-#: lib/marshall_web/live/threads_live.ex:2772
+#: lib/marshall_web/live/threads_live.ex:2778
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Nabigo"
 
-#: lib/marshall_web/live/threads_live.ex:2386
+#: lib/marshall_web/live/threads_live.ex:2392
 #, elixir-autogen, elixir-format
 msgid "Find a command"
 msgstr "Maghanap ng utos"
@@ -390,7 +390,7 @@ msgid "Find a task…"
 msgstr "Maghanap ng gawain..."
 
 #: lib/marshall_web/live/threads_live.ex:1682
-#: lib/marshall_web/live/threads_live.ex:2009
+#: lib/marshall_web/live/threads_live.ex:2015
 #, elixir-autogen, elixir-format
 msgid "First page"
 msgstr "Unang pahina"
@@ -415,7 +415,7 @@ msgstr "Ang mabuting gawain ay nagsisimula sa isang thread."
 msgid "High"
 msgstr "Mataas"
 
-#: lib/marshall_web/live/threads_live.ex:2764
+#: lib/marshall_web/live/threads_live.ex:2770
 #, elixir-autogen, elixir-format
 msgid "High gives difficult work more reasoning time."
 msgstr "Ang mataas ay nagbibigay ng mahirap na trabaho ng mas maraming oras sa pangangatwiran."
@@ -425,7 +425,7 @@ msgstr "Ang mataas ay nagbibigay ng mahirap na trabaho ng mas maraming oras sa p
 msgid "Image"
 msgstr "Imahe"
 
-#: lib/marshall_web/live/threads_live.ex:2295
+#: lib/marshall_web/live/threads_live.ex:2301
 #, elixir-autogen, elixir-format
 msgid "Implement plan"
 msgstr "Ipatupad ang plano"
@@ -440,32 +440,32 @@ msgstr "Nagsimula na ang pagpapatupad para sa planong ito."
 msgid "Implementation queued."
 msgstr "Nakapila ang pagpapatupad."
 
-#: lib/marshall_web/live/threads_live.ex:2281
+#: lib/marshall_web/live/threads_live.ex:2287
 #, elixir-autogen, elixir-format
 msgid "Implementation started"
 msgstr "Nagsimula ang pagpapatupad"
 
-#: lib/marshall_web/live/threads_live.ex:2472
+#: lib/marshall_web/live/threads_live.ex:2478
 #, elixir-autogen, elixir-format
 msgid "Input tokens"
 msgstr "Mga token ng input"
 
-#: lib/marshall_web/live/threads_live.ex:2616
+#: lib/marshall_web/live/threads_live.ex:2622
 #, elixir-autogen, elixir-format
 msgid "Install a skill"
 msgstr "Mag-install ng isang kasanayan"
 
-#: lib/marshall_web/live/threads_live.ex:2643
+#: lib/marshall_web/live/threads_live.ex:2649
 #, elixir-autogen, elixir-format
 msgid "Install skill"
 msgstr "Kasanayan sa pag-install"
 
-#: lib/marshall_web/live/threads_live.ex:2642
+#: lib/marshall_web/live/threads_live.ex:2648
 #, elixir-autogen, elixir-format
 msgid "Installing…"
 msgstr "Ini-install…"
 
-#: lib/marshall_web/live/threads_live.ex:2482
+#: lib/marshall_web/live/threads_live.ex:2488
 #, elixir-autogen, elixir-format
 msgid "Loaded sources"
 msgstr "Nag-load ng mga mapagkukunan"
@@ -475,12 +475,12 @@ msgstr "Nag-load ng mga mapagkukunan"
 msgid "Low"
 msgstr "Mababa"
 
-#: lib/marshall_web/live/threads_live.ex:2763
+#: lib/marshall_web/live/threads_live.ex:2769
 #, elixir-autogen, elixir-format
 msgid "Low is for small, well-defined tasks."
 msgstr "Ang mababa ay para sa maliliit, mahusay na tinukoy na mga gawain."
 
-#: lib/marshall_web/live/threads_live.ex:2074
+#: lib/marshall_web/live/threads_live.ex:2080
 #, elixir-autogen, elixir-format
 msgid "Machine generations"
 msgstr "Mga henerasyon ng makina"
@@ -510,13 +510,13 @@ msgstr "makina:"
 msgid "Maintenance finished"
 msgstr "Tapos na ang pagpapanatili"
 
-#: lib/marshall_web/live/threads_live.ex:2559
+#: lib/marshall_web/live/threads_live.ex:2565
 #, elixir-autogen, elixir-format
 msgid "Managed installations"
 msgstr "Pinamamahalaang mga pag-install"
 
-#: lib/marshall_web/live/threads_live.ex:2546
-#: lib/marshall_web/live/threads_live.ex:2699
+#: lib/marshall_web/live/threads_live.ex:2552
+#: lib/marshall_web/live/threads_live.ex:2705
 #, elixir-autogen, elixir-format
 msgid "Managed skill"
 msgstr "Pinamamahalaang kasanayan"
@@ -526,8 +526,8 @@ msgstr "Pinamamahalaang kasanayan"
 msgid "Managed skill removed."
 msgstr "Inalis ang pinamamahalaang kasanayan."
 
-#: lib/marshall_web/live/threads_live.ex:2044
-#: lib/marshall_web/live/threads_live.ex:2853
+#: lib/marshall_web/live/threads_live.ex:2050
+#: lib/marshall_web/live/threads_live.ex:2859
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "Tagapamahala"
@@ -542,7 +542,7 @@ msgstr "Itugma ang request code na ito sa iyong terminal bago aprubahan:"
 msgid "Medium"
 msgstr "Katamtaman"
 
-#: lib/marshall_web/live/threads_live.ex:2766
+#: lib/marshall_web/live/threads_live.ex:2772
 #, elixir-autogen, elixir-format
 msgid "Medium is a good starting point for most work."
 msgstr "Ang medium ay isang magandang panimulang punto para sa karamihan ng trabaho."
@@ -552,7 +552,7 @@ msgstr "Ang medium ay isang magandang panimulang punto para sa karamihan ng trab
 msgid "Memory (MiB)"
 msgstr "Memorya (MiB)"
 
-#: lib/marshall_web/live/threads_live.ex:2164
+#: lib/marshall_web/live/threads_live.ex:2170
 #, elixir-autogen, elixir-format
 msgid "Message"
 msgstr "Mensahe"
@@ -580,7 +580,7 @@ msgid "New thread"
 msgstr "Bagong thread"
 
 #: lib/marshall_web/live/threads_live.ex:1689
-#: lib/marshall_web/live/threads_live.ex:2015
+#: lib/marshall_web/live/threads_live.ex:2021
 #, elixir-autogen, elixir-format
 msgid "Next page"
 msgstr "Susunod na pahina"
@@ -590,17 +590,17 @@ msgstr "Susunod na pahina"
 msgid "No activity matches this filter."
 msgstr "Walang aktibidad na tumutugma sa filter na ito."
 
-#: lib/marshall_web/live/threads_live.ex:2001
+#: lib/marshall_web/live/threads_live.ex:2007
 #, elixir-autogen, elixir-format
 msgid "No individual thread grants yet."
 msgstr "Wala pang indibidwal na thread grant."
 
-#: lib/marshall_web/live/threads_live.ex:2484
+#: lib/marshall_web/live/threads_live.ex:2490
 #, elixir-autogen, elixir-format
 msgid "No instruction sources collected yet."
 msgstr "Wala pang nakolektang source ng pagtuturo."
 
-#: lib/marshall_web/live/threads_live.ex:2685
+#: lib/marshall_web/live/threads_live.ex:2691
 #, elixir-autogen, elixir-format
 msgid "No matching skills. Use /skills to inspect the catalog."
 msgstr "Walang tugmang kasanayan. Gamitin ang /skills upang suriin ang katalogo."
@@ -615,23 +615,23 @@ msgstr "Walang mga mas lumang thread na available sa page na ito."
 msgid "No recent threads match your search."
 msgstr "Walang mga kamakailang thread na tumutugma sa iyong paghahanap."
 
-#: lib/marshall_web/live/threads_live.ex:2528
+#: lib/marshall_web/live/threads_live.ex:2534
 #, elixir-autogen, elixir-format
 msgid "No skills were discovered in this workspace."
 msgstr "Walang mga kasanayan ang natuklasan sa workspace na ito."
 
-#: lib/marshall_web/live/threads_live.ex:2470
+#: lib/marshall_web/live/threads_live.ex:2476
 #, elixir-autogen, elixir-format
 msgid "Not collected yet"
 msgstr "Hindi pa nakolekta"
 
 #: lib/marshall_web/live/threads_live.ex:1439
-#: lib/marshall_web/live/threads_live.ex:2333
+#: lib/marshall_web/live/threads_live.ex:2339
 #, elixir-autogen, elixir-format
 msgid "Objective"
 msgstr "Layunin"
 
-#: lib/marshall_web/live/threads_live.ex:2839
+#: lib/marshall_web/live/threads_live.ex:2845
 #, elixir-autogen, elixir-format
 msgid "Older context summarized"
 msgstr "Naka-summarize ang mas lumang konteksto"
@@ -663,13 +663,13 @@ msgstr "Buksan ang terminal"
 msgid "Open terminal here"
 msgstr "Buksan ang terminal dito"
 
-#: lib/marshall_web/live/threads_live.ex:2043
-#: lib/marshall_web/live/threads_live.ex:2852
+#: lib/marshall_web/live/threads_live.ex:2049
+#: lib/marshall_web/live/threads_live.ex:2858
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Tagapagpatakbo"
 
-#: lib/marshall_web/live/threads_live.ex:1975
+#: lib/marshall_web/live/threads_live.ex:1981
 #, elixir-autogen, elixir-format
 msgid "Owner · cannot be changed"
 msgstr "May-ari · hindi maaaring baguhin"
@@ -685,8 +685,8 @@ msgid "Past 7 days"
 msgstr "Nakalipas na 7 araw"
 
 #: lib/marshall_web/live/threads_live.ex:1732
-#: lib/marshall_web/live/threads_live.ex:2733
-#: lib/marshall_web/live/threads_live.ex:2769
+#: lib/marshall_web/live/threads_live.ex:2739
+#: lib/marshall_web/live/threads_live.ex:2775
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Nakabinbin"
@@ -697,7 +697,7 @@ msgid "Pick up where you left off."
 msgstr "Kunin kung saan ka tumigil."
 
 #: lib/marshall_web/live/threads_live.ex:1461
-#: lib/marshall_web/live/threads_live.ex:2724
+#: lib/marshall_web/live/threads_live.ex:2730
 #: lib/marshall_web/thread_commands.ex:14
 #, elixir-autogen, elixir-format
 msgid "Plan"
@@ -708,19 +708,19 @@ msgstr "Plano"
 msgid "Plan proposed"
 msgstr "Iminungkahi ang plano"
 
-#: lib/marshall_web/live/threads_live.ex:2781
+#: lib/marshall_web/live/threads_live.ex:2787
 #, elixir-autogen, elixir-format
 msgid "Preparing a machine for this task"
 msgstr "Paghahanda ng makina para sa gawaing ito"
 
-#: lib/marshall_web/live/threads_live.ex:2114
+#: lib/marshall_web/live/threads_live.ex:2120
 #, elixir-autogen, elixir-format
 msgid "Preparing your workspace"
 msgstr "Inihahanda ang iyong workspace"
 
 #: lib/marshall_web/live/agent_threads_live.ex:115
 #: lib/marshall_web/live/agent_threads_live.ex:225
-#: lib/marshall_web/live/threads_live.ex:2791
+#: lib/marshall_web/live/threads_live.ex:2797
 #, elixir-autogen, elixir-format
 msgid "Prompt"
 msgstr "Tagubilin"
@@ -736,18 +736,18 @@ msgstr "Mabilis na nakapila."
 msgid "Prompts wake a stopped machine when you have write access."
 msgstr "Mga senyales na gumising sa isang tumigil na makina kapag mayroon kang access sa pagsulat."
 
-#: lib/marshall_web/live/threads_live.ex:2278
+#: lib/marshall_web/live/threads_live.ex:2284
 #, elixir-autogen, elixir-format
 msgid "Proposed plan"
 msgstr "Iminungkahing plano"
 
 #: lib/marshall_web/live/threads_live.ex:1733
-#: lib/marshall_web/live/threads_live.ex:2770
+#: lib/marshall_web/live/threads_live.ex:2776
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "Paglalaan"
 
-#: lib/marshall_web/live/threads_live.ex:2124
+#: lib/marshall_web/live/threads_live.ex:2130
 #, elixir-autogen, elixir-format
 msgid "Provisioning needs attention."
 msgstr "Ang pagbibigay ay nangangailangan ng pansin."
@@ -772,14 +772,14 @@ msgstr "Kinansela ang mga tanong"
 msgid "Questions requested"
 msgstr "Humiling ng mga tanong"
 
-#: lib/marshall_web/live/threads_live.ex:2812
+#: lib/marshall_web/live/threads_live.ex:2818
 #, elixir-autogen, elixir-format
 msgid "Queued: %{tools}"
 msgstr "Nakapila: %{tools}"
 
 #: lib/marshall_web/live/threads_live.ex:1734
-#: lib/marshall_web/live/threads_live.ex:2734
-#: lib/marshall_web/live/threads_live.ex:2771
+#: lib/marshall_web/live/threads_live.ex:2740
+#: lib/marshall_web/live/threads_live.ex:2777
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "handa na"
@@ -794,49 +794,49 @@ msgstr "Pangangatwiran"
 msgid "Recent threads"
 msgstr "Mga kamakailang thread"
 
-#: lib/marshall_web/live/threads_live.ex:2034
+#: lib/marshall_web/live/threads_live.ex:2040
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Nakarehistrong email"
 
-#: lib/marshall_web/live/threads_live.ex:2505
+#: lib/marshall_web/live/threads_live.ex:2511
 #, elixir-autogen, elixir-format
 msgid "Reload context"
 msgstr "I-reload ang konteksto"
 
-#: lib/marshall_web/live/threads_live.ex:2606
-#: lib/marshall_web/live/threads_live.ex:2714
+#: lib/marshall_web/live/threads_live.ex:2612
+#: lib/marshall_web/live/threads_live.ex:2720
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Alisin"
 
-#: lib/marshall_web/live/threads_live.ex:2713
+#: lib/marshall_web/live/threads_live.ex:2719
 #, elixir-autogen, elixir-format
 msgid "Remove %{skill}"
 msgstr "Alisin ang %{skill}"
 
-#: lib/marshall_web/live/threads_live.ex:1944
+#: lib/marshall_web/live/threads_live.ex:1950
 #, elixir-autogen, elixir-format
 msgid "Reopen"
 msgstr "Muling buksan"
 
-#: lib/marshall_web/live/threads_live.ex:2077
+#: lib/marshall_web/live/threads_live.ex:2083
 #, elixir-autogen, elixir-format
 msgid "Reopened machines keep their earlier transcripts. Select one to read it."
 msgstr "Ang mga muling binuksan na makina ay nagpapanatili ng kanilang mga naunang transcript. Pumili ng isa para basahin ito."
 
-#: lib/marshall_web/live/threads_live.ex:2625
+#: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
 msgid "Repository URL"
 msgstr "URL ng repositoryo"
 
 #: lib/marshall_web/live/agent_threads_live.ex:118
-#: lib/marshall_web/live/threads_live.ex:2801
+#: lib/marshall_web/live/threads_live.ex:2807
 #, elixir-autogen, elixir-format
 msgid "Response received"
 msgstr "Natanggap ang tugon"
 
-#: lib/marshall_web/live/threads_live.ex:2134
+#: lib/marshall_web/live/threads_live.ex:2140
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Subukan muli"
@@ -846,37 +846,37 @@ msgstr "Subukan muli"
 msgid "Return to the conversation whenever you need."
 msgstr "Bumalik sa usapan kung kailan mo kailangan."
 
-#: lib/marshall_web/live/threads_live.ex:2303
+#: lib/marshall_web/live/threads_live.ex:2309
 #, elixir-autogen, elixir-format
 msgid "Revise"
 msgstr "Baguhin"
 
-#: lib/marshall_web/live/threads_live.ex:2631
+#: lib/marshall_web/live/threads_live.ex:2637
 #, elixir-autogen, elixir-format
 msgid "Revision (optional)"
 msgstr "Rebisyon (opsyonal)"
 
-#: lib/marshall_web/live/threads_live.ex:2045
+#: lib/marshall_web/live/threads_live.ex:2051
 #, elixir-autogen, elixir-format
 msgid "Revoke thread grant"
 msgstr "Bawiin ang thread grant"
 
-#: lib/marshall_web/live/threads_live.ex:2854
+#: lib/marshall_web/live/threads_live.ex:2860
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "Binawi"
 
-#: lib/marshall_web/live/threads_live.ex:2040
+#: lib/marshall_web/live/threads_live.ex:2046
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Tungkulin"
 
-#: lib/marshall_web/live/threads_live.ex:2052
+#: lib/marshall_web/live/threads_live.ex:2058
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "I-save ang access"
 
-#: lib/marshall_web/live/threads_live.ex:2051
+#: lib/marshall_web/live/threads_live.ex:2057
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "Sine-save..."
@@ -906,7 +906,7 @@ msgstr "Hinahanap ang pahinang ito ng mga thread."
 msgid "Select this skill from the workspace catalog when the machine starts."
 msgstr "Piliin ang kasanayang ito mula sa catalog ng workspace kapag nagsimula ang makina."
 
-#: lib/marshall_web/live/threads_live.ex:2206
+#: lib/marshall_web/live/threads_live.ex:2212
 #, elixir-autogen, elixir-format
 msgid "Send"
 msgstr "Ipadala"
@@ -917,7 +917,7 @@ msgid "Send prompt"
 msgstr "Ipadala ang tagubilin"
 
 #: lib/marshall_web/live/agent_threads_live.ex:233
-#: lib/marshall_web/live/threads_live.ex:2204
+#: lib/marshall_web/live/threads_live.ex:2210
 #, elixir-autogen, elixir-format
 msgid "Sending…"
 msgstr "Ipinapadala…"
@@ -928,7 +928,7 @@ msgstr "Ipinapadala…"
 msgid "Share"
 msgstr "Ibahagi"
 
-#: lib/marshall_web/live/threads_live.ex:1954
+#: lib/marshall_web/live/threads_live.ex:1960
 #, elixir-autogen, elixir-format
 msgid "Share this thread"
 msgstr "Ibahagi ang thread na ito"
@@ -953,7 +953,7 @@ msgstr "Ipakita"
 msgid "Skill availability updated."
 msgstr "Na-update ang availability ng kasanayan."
 
-#: lib/marshall_web/live/threads_live.ex:2636
+#: lib/marshall_web/live/threads_live.ex:2642
 #, elixir-autogen, elixir-format
 msgid "Skill directory"
 msgstr "Direktoryo ng kasanayan"
@@ -963,7 +963,7 @@ msgstr "Direktoryo ng kasanayan"
 msgid "Skill installation queued."
 msgstr "Nakapila ang pag-install ng kasanayan."
 
-#: lib/marshall_web/live/threads_live.ex:2682
+#: lib/marshall_web/live/threads_live.ex:2688
 #, elixir-autogen, elixir-format
 msgid "Skill suggestions"
 msgstr "Mga mungkahi sa kasanayan"
@@ -974,18 +974,18 @@ msgstr "Mga mungkahi sa kasanayan"
 msgid "Skill update queued."
 msgstr "Nakapila ang pag-update ng kasanayan."
 
-#: lib/marshall_web/live/threads_live.ex:2729
+#: lib/marshall_web/live/threads_live.ex:2735
 #: lib/marshall_web/thread_commands.ex:20
 #, elixir-autogen, elixir-format
 msgid "Skills"
 msgstr "Mga kasanayan"
 
-#: lib/marshall_web/live/threads_live.ex:2516
+#: lib/marshall_web/live/threads_live.ex:2522
 #, elixir-autogen, elixir-format
 msgid "Skills add reusable instructions to a task. Choose the source you intend to use."
 msgstr "Nagdaragdag ang mga kasanayan ng magagamit-muling tagubilin sa isang gawain. Piliin ang pinagmulang nais mong gamitin."
 
-#: lib/marshall_web/live/threads_live.ex:2522
+#: lib/marshall_web/live/threads_live.ex:2528
 #, elixir-autogen, elixir-format
 msgid "Skills are unavailable until the workspace context has been collected."
 msgstr "Hindi magagamit ang mga kasanayan hangga't hindi nakokolekta ang konteksto ng lugar-paggawa."
@@ -995,7 +995,7 @@ msgstr "Hindi magagamit ang mga kasanayan hangga't hindi nakokolekta ang konteks
 msgid "Standard"
 msgstr "Karaniwan"
 
-#: lib/marshall_web/live/threads_live.ex:2447
+#: lib/marshall_web/live/threads_live.ex:2453
 #, elixir-autogen, elixir-format
 msgid "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
 msgstr "Magsimula sa espasyo upang ipadala nang literal ang tekstong mukhang slash command. I-type ang $ upang pumili ng kasanayan ayon sa eksaktong pinagmulan nito."
@@ -1006,17 +1006,17 @@ msgid "Starting…"
 msgstr "Sinisimulan…"
 
 #: lib/marshall_web/live/threads_live.ex:1729
-#: lib/marshall_web/live/threads_live.ex:2462
+#: lib/marshall_web/live/threads_live.ex:2468
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Katayuan"
 
-#: lib/marshall_web/live/threads_live.ex:2262
+#: lib/marshall_web/live/threads_live.ex:2268
 #, elixir-autogen, elixir-format
 msgid "Submit answers"
 msgstr "Isumite ang mga sagot"
 
-#: lib/marshall_web/live/threads_live.ex:2261
+#: lib/marshall_web/live/threads_live.ex:2267
 #, elixir-autogen, elixir-format
 msgid "Submitting…"
 msgstr "Isinusumite…"
@@ -1048,7 +1048,7 @@ msgstr "Walang nakarehistrong account na gumagamit ng email na iyon."
 
 #: lib/marshall_web/live/agent_threads_live.ex:123
 #: lib/marshall_web/live/agent_threads_live.ex:145
-#: lib/marshall_web/live/threads_live.ex:2834
+#: lib/marshall_web/live/threads_live.ex:2840
 #, elixir-autogen, elixir-format
 msgid "The agent encountered a problem"
 msgstr "Nagkaroon ng problema ang ahente"
@@ -1094,7 +1094,7 @@ msgstr "Hindi makumpleto ang operasyon sa usapan."
 msgid "The thread owner's access cannot be changed."
 msgstr "Hindi mababago ang pag-access ng may-ari ng usapan."
 
-#: lib/marshall_web/live/threads_live.ex:2323
+#: lib/marshall_web/live/threads_live.ex:2329
 #, elixir-autogen, elixir-format
 msgid "The transcript is temporarily unavailable. Try again shortly."
 msgstr "Pansamantalang hindi magagamit ang sipi ng usapan. Subukang muli maya-maya."
@@ -1169,7 +1169,7 @@ msgstr "Maaaring nabura na ang usapang ito o hindi wasto ang link."
 msgid "This tool is not available for the machine profile."
 msgstr "Hindi magagamit ang kasangkapang ito para sa propayl ng makina."
 
-#: lib/marshall_web/live/threads_live.ex:1955
+#: lib/marshall_web/live/threads_live.ex:1961
 #, elixir-autogen, elixir-format
 msgid "Thread access also applies to its machine. Separate machine grants and team access are managed independently."
 msgstr "Nalalapat din sa makina nito ang pag-access sa usapan. Hiwalay na pinamamahalaan ang mga direktang pahintulot sa makina at pag-access ng koponan."
@@ -1179,12 +1179,12 @@ msgstr "Nalalapat din sa makina nito ang pag-access sa usapan. Hiwalay na pinama
 msgid "Thread access updated."
 msgstr "Na-update ang pag-access sa usapan."
 
-#: lib/marshall_web/live/threads_live.ex:1926
+#: lib/marshall_web/live/threads_live.ex:1932
 #, elixir-autogen, elixir-format
 msgid "Thread actions"
 msgstr "Mga aksiyon sa usapan"
 
-#: lib/marshall_web/live/threads_live.ex:2728
+#: lib/marshall_web/live/threads_live.ex:2734
 #, elixir-autogen, elixir-format
 msgid "Thread context"
 msgstr "Konteksto ng usapan"
@@ -1221,7 +1221,7 @@ msgstr "Hindi magagamit ang usapan"
 
 #: lib/marshall_web/live/agent_threads_live.ex:132
 #: lib/marshall_web/live/agent_threads_live.ex:149
-#: lib/marshall_web/live/threads_live.ex:2844
+#: lib/marshall_web/live/threads_live.ex:2850
 #, elixir-autogen, elixir-format
 msgid "Thread updated"
 msgstr "Na-update ang usapan"
@@ -1251,47 +1251,47 @@ msgstr "Pansamantalang hindi magagamit ang mga usapan. Subukang muli maya-maya."
 msgid "Today"
 msgstr "Ngayong araw"
 
-#: lib/marshall_web/live/threads_live.ex:2475
+#: lib/marshall_web/live/threads_live.ex:2481
 #, elixir-autogen, elixir-format
 msgid "Token allowance"
 msgstr "Pinapayagang dami ng token"
 
-#: lib/marshall_web/live/threads_live.ex:2821
+#: lib/marshall_web/live/threads_live.ex:2827
 #, elixir-autogen, elixir-format
 msgid "Tool cancelled"
 msgstr "Nakansela ang kasangkapan"
 
-#: lib/marshall_web/live/threads_live.ex:2824
+#: lib/marshall_web/live/threads_live.ex:2830
 #, elixir-autogen, elixir-format
 msgid "Tool completed"
 msgstr "Natapos ang kasangkapan"
 
-#: lib/marshall_web/live/threads_live.ex:2818
+#: lib/marshall_web/live/threads_live.ex:2824
 #, elixir-autogen, elixir-format
 msgid "Tool failed"
 msgstr "Nabigo ang kasangkapan"
 
-#: lib/marshall_web/live/threads_live.ex:2827
+#: lib/marshall_web/live/threads_live.ex:2833
 #, elixir-autogen, elixir-format
 msgid "Tool outcome uncertain"
 msgstr "Hindi tiyak ang resulta ng kasangkapan"
 
 #: lib/marshall_web/live/agent_threads_live.ex:120
 #: lib/marshall_web/live/agent_threads_live.ex:148
-#: lib/marshall_web/live/threads_live.ex:2829
+#: lib/marshall_web/live/threads_live.ex:2835
 #, elixir-autogen, elixir-format
 msgid "Tool result received"
 msgstr "Natanggap ang resulta ng kasangkapan"
 
 #: lib/marshall_web/live/agent_threads_live.ex:119
 #: lib/marshall_web/live/agent_threads_live.ex:147
-#: lib/marshall_web/live/threads_live.ex:2811
-#: lib/marshall_web/live/threads_live.ex:2815
+#: lib/marshall_web/live/threads_live.ex:2817
+#: lib/marshall_web/live/threads_live.ex:2821
 #, elixir-autogen, elixir-format
 msgid "Tools queued"
 msgstr "Nakapila ang mga kasangkapan"
 
-#: lib/marshall_web/live/threads_live.ex:2095
+#: lib/marshall_web/live/threads_live.ex:2101
 #, elixir-autogen, elixir-format
 msgid "Transcript"
 msgstr "Sipi ng usapan"
@@ -1303,7 +1303,7 @@ msgstr "Subukang muli maya-maya."
 
 #: lib/marshall_web/live/agent_threads_live.ex:122
 #: lib/marshall_web/live/agent_threads_live.ex:142
-#: lib/marshall_web/live/threads_live.ex:2831
+#: lib/marshall_web/live/threads_live.ex:2837
 #, elixir-autogen, elixir-format
 msgid "Turn complete"
 msgstr "Natapos ang tugon"
@@ -1313,15 +1313,15 @@ msgstr "Natapos ang tugon"
 msgid "Ultra"
 msgstr "Napakataas"
 
-#: lib/marshall_web/live/threads_live.ex:2765
+#: lib/marshall_web/live/threads_live.ex:2771
 #, elixir-autogen, elixir-format
 msgid "Ultra is for complex, open-ended work."
 msgstr "Ang Napakataas ay para sa masalimuot na gawaing walang tiyak na hangganan."
 
-#: lib/marshall_web/live/threads_live.ex:2735
 #: lib/marshall_web/live/threads_live.ex:2741
-#: lib/marshall_web/live/threads_live.ex:2775
-#: lib/marshall_web/live/threads_live.ex:2855
+#: lib/marshall_web/live/threads_live.ex:2747
+#: lib/marshall_web/live/threads_live.ex:2781
+#: lib/marshall_web/live/threads_live.ex:2861
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Hindi alam"
@@ -1343,12 +1343,12 @@ msgstr "Alisin ang pag-pin sa makina ng usapang ito bago ito burahin."
 msgid "Untitled thread"
 msgstr "Usapang walang pamagat"
 
-#: lib/marshall_web/live/threads_live.ex:2589
+#: lib/marshall_web/live/threads_live.ex:2595
 #, elixir-autogen, elixir-format
 msgid "Update"
 msgstr "I-update"
 
-#: lib/marshall_web/live/threads_live.ex:2582
+#: lib/marshall_web/live/threads_live.ex:2588
 #, elixir-autogen, elixir-format
 msgid "Update revision (optional)"
 msgstr "I-update ang rebisyon (opsiyonal)"
@@ -1358,27 +1358,27 @@ msgstr "I-update ang rebisyon (opsiyonal)"
 msgid "Updated"
 msgstr "Na-update"
 
-#: lib/marshall_web/live/threads_live.ex:2588
+#: lib/marshall_web/live/threads_live.ex:2594
 #, elixir-autogen, elixir-format
 msgid "Updating…"
 msgstr "Ina-update…"
 
-#: lib/marshall_web/live/threads_live.ex:2428
+#: lib/marshall_web/live/threads_live.ex:2434
 #, elixir-autogen, elixir-format
 msgid "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
 msgstr "Gamitin ang Mga command o pindutin ang Ctrl/Cmd+K habang nagsusulat. Magsimula ng mensahe sa / upang maghanap ng command; gamitin ang Tab upang kumpletuhin ito."
 
-#: lib/marshall_web/live/threads_live.ex:2617
+#: lib/marshall_web/live/threads_live.ex:2623
 #, elixir-autogen, elixir-format
 msgid "Use a public GitHub, GitLab, Codeberg or Bitbucket repository."
 msgstr "Gumamit ng pampublikong repositoryo sa GitHub, GitLab, Codeberg o Bitbucket."
 
-#: lib/marshall_web/live/threads_live.ex:2025
+#: lib/marshall_web/live/threads_live.ex:2031
 #, elixir-autogen, elixir-format
 msgid "Use an existing account's email to grant, change or revoke a thread role."
 msgstr "Gamitin ang email ng umiiral na account upang magbigay, magbago o magbawi ng tungkulin sa usapan."
 
-#: lib/marshall_web/live/threads_live.ex:2555
+#: lib/marshall_web/live/threads_live.ex:2561
 #, elixir-autogen, elixir-format
 msgid "Use this skill"
 msgstr "Gamitin ang kasanayang ito"
@@ -1388,13 +1388,13 @@ msgstr "Gamitin ang kasanayang ito"
 msgid "View activity"
 msgstr "Tingnan ang aktibidad"
 
-#: lib/marshall_web/live/threads_live.ex:2042
-#: lib/marshall_web/live/threads_live.ex:2851
+#: lib/marshall_web/live/threads_live.ex:2048
+#: lib/marshall_web/live/threads_live.ex:2857
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "Tagatingin"
 
-#: lib/marshall_web/live/threads_live.ex:2055
+#: lib/marshall_web/live/threads_live.ex:2061
 #, elixir-autogen, elixir-format
 msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
 msgstr "Nagbabasa ang mga tagatingin. Nagpapadala ng tagubilin ang mga tagapagpatakbo. Nagbabahagi at namamahala rin ng usapan ang mga tagapamahala."
@@ -1405,7 +1405,7 @@ msgstr "Nagbabasa ang mga tagatingin. Nagpapadala ng tagubilin ang mga tagapagpa
 msgid "Wait for the current work or pending questions to finish before changing this setting."
 msgstr "Hintaying matapos ang kasalukuyang gawain o mga nakabinbing tanong bago baguhin ang setting na ito."
 
-#: lib/marshall_web/live/threads_live.ex:2778
+#: lib/marshall_web/live/threads_live.ex:2784
 #, elixir-autogen, elixir-format
 msgid "Waiting for a workspace"
 msgstr "Naghihintay ng lugar-paggawa"
@@ -1415,22 +1415,22 @@ msgstr "Naghihintay ng lugar-paggawa"
 msgid "Waiting for machine"
 msgstr "Naghihintay sa makina"
 
-#: lib/marshall_web/live/threads_live.ex:2340
+#: lib/marshall_web/live/threads_live.ex:2346
 #, elixir-autogen, elixir-format
 msgid "Waiting for the agent's first update."
 msgstr "Naghihintay ng unang ulat ng ahente."
 
-#: lib/marshall_web/live/threads_live.ex:2836
+#: lib/marshall_web/live/threads_live.ex:2842
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine"
 msgstr "Naghihintay sa makina"
 
-#: lib/marshall_web/live/threads_live.ex:2837
+#: lib/marshall_web/live/threads_live.ex:2843
 #, elixir-autogen, elixir-format
 msgid "Waiting for your answers"
 msgstr "Naghihintay ng iyong mga sagot"
 
-#: lib/marshall_web/live/threads_live.ex:2850
+#: lib/marshall_web/live/threads_live.ex:2856
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "Mga web app"
@@ -1441,13 +1441,13 @@ msgid "What are we working on?"
 msgstr "Ano ang gagawin natin?"
 
 #: lib/marshall_web/live/threads_live.ex:1460
-#: lib/marshall_web/live/threads_live.ex:2725
+#: lib/marshall_web/live/threads_live.ex:2731
 #: lib/marshall_web/thread_commands.ex:16
 #, elixir-autogen, elixir-format
 msgid "Work"
 msgstr "Trabaho"
 
-#: lib/marshall_web/live/threads_live.ex:2465
+#: lib/marshall_web/live/threads_live.ex:2471
 #, elixir-autogen, elixir-format
 msgid "Working directory"
 msgstr "Direktoryo ng paggawa"
@@ -1462,7 +1462,7 @@ msgstr "Kinokolekta ang konteksto ng lugar-paggawa. Subukang muli maya-maya."
 msgid "Workspace context is unavailable. Reload it when the machine is ready."
 msgstr "Hindi magagamit ang konteksto ng lugar-paggawa. I-reload ito kapag handa na ang makina."
 
-#: lib/marshall_web/live/threads_live.ex:2842
+#: lib/marshall_web/live/threads_live.ex:2848
 #, elixir-autogen, elixir-format
 msgid "Workspace context reloaded"
 msgstr "Muling na-load ang konteksto ng lugar-paggawa"
@@ -1472,12 +1472,12 @@ msgstr "Muling na-load ang konteksto ng lugar-paggawa"
 msgid "Workspace files changed during collection. Reload context and try again."
 msgstr "Nagbago ang mga file ng lugar-paggawa habang nangongolekta. I-reload ang konteksto at subukang muli."
 
-#: lib/marshall_web/live/threads_live.ex:2784
+#: lib/marshall_web/live/threads_live.ex:2790
 #, elixir-autogen, elixir-format
 msgid "Workspace ready · open the conversation"
 msgstr "Handa na ang lugar-paggawa · buksan ang pag-uusap"
 
-#: lib/marshall_web/live/threads_live.ex:2786
+#: lib/marshall_web/live/threads_live.ex:2792
 #, elixir-autogen, elixir-format
 msgid "Workspace setup needs attention"
 msgstr "Kailangang asikasuhin ang paghahanda ng lugar-paggawa"
@@ -1487,7 +1487,7 @@ msgstr "Kailangang asikasuhin ang paghahanda ng lugar-paggawa"
 msgid "Workspace skill"
 msgstr "Kasanayan ng lugar-paggawa"
 
-#: lib/marshall_web/live/threads_live.ex:2491
+#: lib/marshall_web/live/threads_live.ex:2497
 #, elixir-autogen, elixir-format
 msgid "Workspace source"
 msgstr "Pinagmulan ng lugar-paggawa"
@@ -1503,7 +1503,7 @@ msgstr "Maaari mong basahin ang mga usapang ito. Humiling ng pag-access bilang t
 msgid "You do not have access to this thread."
 msgstr "Wala kang pag-access sa usapang ito."
 
-#: lib/marshall_web/live/threads_live.ex:2106
+#: lib/marshall_web/live/threads_live.ex:2112
 #, elixir-autogen, elixir-format
 msgid "You have read-only access to this thread."
 msgstr "Maaari ka lamang magbasa sa usapang ito."
@@ -1513,27 +1513,27 @@ msgstr "Maaari ka lamang magbasa sa usapang ito."
 msgid "Your agent's work runs in a dedicated environment."
 msgstr "Tumatakbo ang gawain ng iyong ahente sa isang nakalaang kapaligiran."
 
-#: lib/marshall_web/live/threads_live.ex:2254
+#: lib/marshall_web/live/threads_live.ex:2260
 #, elixir-autogen, elixir-format
 msgid "Your answer or additional detail"
 msgstr "Iyong sagot o karagdagang detalye"
 
-#: lib/marshall_web/live/threads_live.ex:2838
+#: lib/marshall_web/live/threads_live.ex:2844
 #, elixir-autogen, elixir-format
 msgid "Your answers were received"
 msgstr "Natanggap ang iyong mga sagot"
 
-#: lib/marshall_web/live/threads_live.ex:2216
+#: lib/marshall_web/live/threads_live.ex:2222
 #, elixir-autogen, elixir-format
 msgid "Your input is needed"
 msgstr "Kailangan ang iyong sagot"
 
-#: lib/marshall_web/live/threads_live.ex:2116
+#: lib/marshall_web/live/threads_live.ex:2122
 #, elixir-autogen, elixir-format
 msgid "Your machine is starting. The agent will begin with your objective as soon as it is ready."
 msgstr "Sinisimulan ang iyong makina. Sisimulan ng ahente ang iyong layunin kapag handa na ito."
 
-#: lib/marshall_web/live/threads_live.ex:2128
+#: lib/marshall_web/live/threads_live.ex:2134
 #, elixir-autogen, elixir-format
 msgid "Your objective is saved. Retry to prepare the workspace again."
 msgstr "Na-save ang iyong layunin. Subukang muli upang ihanda muli ang lugar-paggawa."
@@ -1543,12 +1543,12 @@ msgstr "Na-save ang iyong layunin. Subukang muli upang ihanda muli ang lugar-pag
 msgid "Your threads"
 msgstr "Iyong mga usapan"
 
-#: lib/marshall_web/live/threads_live.ex:2440
+#: lib/marshall_web/live/threads_live.ex:2446
 #, elixir-autogen, elixir-format
 msgid "and"
 msgstr "at"
 
-#: lib/marshall_web/live/threads_live.ex:2441
+#: lib/marshall_web/live/threads_live.ex:2447
 #, elixir-autogen, elixir-format
 msgid "choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine."
 msgstr "pumili ng paraan at isumite ang gawain nang magkasama. Hindi lumilikha ng makina ang pagpili ng paraan sa bagong usapan."
@@ -1558,7 +1558,7 @@ msgstr "pumili ng paraan at isumite ang gawain nang magkasama. Hindi lumilikha n
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· %{value1} na pangangatwiran · %{value2}"
 
-#: lib/marshall_web/live/threads_live.ex:2408
+#: lib/marshall_web/live/threads_live.ex:2414
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ pumili · Enter patakbuhin · Escape isara"
@@ -1617,3 +1617,8 @@ msgstr "Buksan ang terminal ng makina ng thread na ito"
 #, elixir-autogen, elixir-format
 msgid "Summarize older context for the next turn"
 msgstr "Ibuod ang lumang konteksto para sa susunod na palitan"
+
+#: lib/marshall_web/live/threads_live.ex:1924
+#, elixir-autogen, elixir-format
+msgid "Message board"
+msgstr "Pisara ng mensahe"

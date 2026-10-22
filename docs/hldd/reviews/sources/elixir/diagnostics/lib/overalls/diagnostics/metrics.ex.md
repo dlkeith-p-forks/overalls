@@ -1,20 +1,16 @@
 ---
-digest: 88a7c21e8b3679666cc7252621e13298c723faad8a17db6d8434f4fc25ed2443
-disposition: no-impact
+digest: 9555fdfcdb66ea8d9082b82a105316ec660efde26b6a631cb2aeb692f5f61188
+disposition: updated
 kind: source
 mapping_digest: 2272062390f820f27790d68b944163b5a8c4aa097bb58fe18257524d8b10bbd0
-migration:
-  system:
-    chapter_digest: 494e592f230e1f0b746f9eb420ba17cb4c837f31d5d2ce870eac56d922c369a5
-    source_digest: 47039dcaa34d541ff79bf833ddd72228d68396789313d69ec0e6a326674277ee
 path: elixir/diagnostics/lib/overalls/diagnostics/metrics.ex
 reviewed_chapters:
   marshall/priv/hldd/01-system.md: e746f0ac6783bb5037c9fd2785c8d8b6aee0f5b279cd263d673ad95462566aa2
-  marshall/priv/hldd/17-reference.md: 5513e1fb7deb5378fef4713fb925a9d0c0f2b1bc2539548d98e72c856262e897
-  marshall/priv/hldd/21-domains.md: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/17-reference.md: f1763e53aa081b752df936173e2041b4cda3351ada40a096cc2eac99b020c4da
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-system: Reviewed the Mila transport model additions; they do not add Ash domains, hosts, deployment topology, or system handbook behavior.
+Shared diagnostics gain the marshall.agent.server_tool, marshall.artifact.publish, marshall.artifact.content and marshall.cedar.authorize spans, tool/namespace/via enum and version/file_count number attributes, and the server-tool and artifact publish, refusal, content and storage metrics; the regenerated trace schema matches. Chapters 15-monitoring and 17-reference list these signals and their closed attributes.

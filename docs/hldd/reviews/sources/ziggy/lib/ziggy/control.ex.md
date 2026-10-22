@@ -1,21 +1,21 @@
 ---
-digest: d78927cea692b15d5a350308b897dfa617bfdf130b30fcacee5fd9c5820cd966
+digest: f12645d73306f43a8c89008a3e0094b69bd13d74ca0fe09f5f4390d4b316cda6
 disposition: updated
 kind: source
 mapping_digest: f5fc9d76317e24062e0e2b16713ab5e149eff5538f68346d30e34292f21dbae4
 path: ziggy/lib/ziggy/control.ex
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: cf0280940ef764edd70bd6eefff72711c307481314287fdc1dcef96d866e4538
+  marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/10-services.md: 335189b7e048e9c1eff6fc26178af2bff4378dc8d20a9f207f65e11dbb6c2b5b
-  marshall/priv/hldd/11-agents.md: 68956625723c19b5a925bba19c82c8a525457b48130a153b45963f379d5b5302
-  marshall/priv/hldd/17-reference.md: 7cbeeb5bb6bbbbc170df005edbd41b0b9ea84cc90b0598b4e99b800aa95475b2
-  marshall/priv/hldd/19-coverage.md: 4eeaf4262a43bb43546a9372a2cf2c499f6c2d480a1cec68c77d585d727dc5d9
-  marshall/priv/hldd/20-security.md: c6acd9d0dc9ad13a47d0b6a3b2ec63fffb1b062d169f766cac577b01935407af
-  marshall/priv/hldd/21-domains.md: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/10-services.md: f9b33deb62ddad83d0c957305d3c23949679032392fbe4c4f0b8381dc86b756d
+  marshall/priv/hldd/11-agents.md: 7d24214acefb26fbd3b08ce582578fd007e6ffa4bd55d986293050de8605356d
+  marshall/priv/hldd/17-reference.md: f1763e53aa081b752df936173e2041b4cda3351ada40a096cc2eac99b020c4da
+  marshall/priv/hldd/19-coverage.md: 347130fc1c617f8d232fc8b20221c6f5a2111e5e05a7fcc9b2d0f286081c4cc9
+  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Reviewed Ziggy and Lyra attachment transfer evidence and explicit native acceptance gaps.
+Lyra advertises artifacts-v1 and runs the internal artifact_stage command, opening staged files without following links (ssh_files open_no_follow), validating paths and per-file SHA-256, and accepting files up to the 64 MiB per-publish limit Marshall sends; attachment transfer requests use their 360,448-byte body bound. Ziggy forwards the bounded artifact_chunk executor RPC route beside attachment/transfer, and control.ex is reformatted only. Chapters 10-services and 11-agents describe the staging path, capability and limits, and 17-reference and 19-coverage list the Ziggy chunk-route and Lyra tests.

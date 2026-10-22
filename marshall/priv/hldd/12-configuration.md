@@ -298,6 +298,50 @@ maintenance. `MARSHALL_AGENT_NATIVE_COMPACTION_VERIFIED=true` is rejected as a
 global switch. The digest is an operator receipt reference and does not replace
 live provider acceptance evidence.
 
+## Artifact content origin
+
+The artifact viewer needs a separate content host
+([ADR-0254](repo:docs/architecture/decisions/0254-isolated-artifact-content-origin.md)).
+It is off by default; with no host, `/artifacts` still lists and manages
+artifacts and the viewer reports that it is unavailable.
+
+```nix
+services.marshall.artifactContent.host = "usercontent.example.com";
+# The control-plane role makes the colocated proxy follow this value:
+# services.marshallProxy.artifactContent.host = config.services.marshall.artifactContent.host;
+```
+
+| Setting | Effect |
+| --- | --- |
+| `services.marshall.artifactContent.host` | Lowercase DNS name; must differ from `publicHost`. Sets `MARSHALL_ARTIFACT_CONTENT_HOST` and each instance's `MARSHALL_ARTIFACT_TLS_PORT`. Null clears both, so an environment file cannot start a content listener. |
+| `services.marshall.instances.<n>.artifactPort` | Default `port + 2000` (6443 for 4443). Bound on the instance's `bindAddress` with the backend certificate. Must differ from every browser and fleet port; opened by `openFirewall` like `port`. |
+| `services.marshall.artifactContent.debugEcho` | Machine-test fixture only; refused unless the internal `machineTestFixture` option and a content host are set. Sets `MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO=true`. |
+| `services.marshallProxy.artifactContent.host` | Content host served on the existing public listener by SNI and Host. A colocated Marshall and proxy must use the same value. |
+| `services.marshallProxy.artifactContent.certificateFile` | Published PEM key and chain for the content host, distinct from the Marshall certificate. Required with the host; the ACME module sets it. |
+| `services.marshallProxy.backends.<n>.artifactPort` | Backend content port, default `port + 2000`; health follows the browser port's check. |
+
+At startup [runtime configuration](repo:marshall/lib/marshall/operations/runtime_config.ex)
+validates the host as a DNS name and, on a serving instance, requires
+`MARSHALL_ARTIFACT_TLS_PORT` in 1–65535 and distinct from the HTTP, HTTPS and
+fleet ports. `MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO` accepts only `true` or
+`false`. Invalid values refuse startup. The listener binds `MARSHALL_BIND_IP`
+with the browser TLS certificate files and only `ArtifactContentEndpoint`.
+
+DNS for the content host must resolve to the public proxy. With ACME enabled,
+the content host receives its own single-name certificate through the same
+challenge method and account; see [deployment](#deployment). Artifact limits
+and the 30-minute staging and five-minute ticket lifetimes are compiled
+constants, not configuration.
+
+The production [runtime configuration](repo:marshall/config/runtime.exs)
+replaces the compile-time Oban queue list, so it repeats every queue, including
+`agent_tools: 10` and `artifacts: 5`. A queue missing there is silently never
+served in a release. [Oban queue test](repo:marshall/test/marshall/operations/oban_queues_test.exs)
+(`release-oban-queues-complete`) asserts that the release serves every
+compile-time queue. A `nil` `:artifact_content` setting is treated as
+unconfigured by the content endpoint, the browser security headers and
+application start, so no content listener or extra frame source appears.
+
 ## Push notification switch
 
 `services.marshall.notifications.enable` (default `true`) reaches Marshall as

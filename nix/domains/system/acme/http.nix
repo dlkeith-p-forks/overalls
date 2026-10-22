@@ -5,6 +5,9 @@ let
   http = cfg.http01;
   proxy = config.services.marshallProxy;
   enabled = cfg.enable && cfg.challengeType == "http-01";
+  contentHost = proxy.artifactContent.host;
+  content = contentHost != null;
+  redirect = "https://${lib.toLower proxy.publicHost}${lib.optionalString (proxy.port != 443) ":${toString proxy.port}"}";
   ipType = (import ../types.nix { inherit lib; }).ipv4;
   isLoopback = address: lib.hasPrefix "127." address;
   isPrivate = address:
@@ -15,6 +18,7 @@ let
   python = pkgs.python3.withPackages (p: [ p.aiohttp ]);
   lookupConfig = pkgs.writeText "marshall-acme-http.json" (builtins.toJSON {
     hostname = lib.toLower proxy.publicHost;
+    additionalHostnames = lib.optional content contentHost;
     local = { address = http.bindAddress; inherit (http) port; };
     peers = http.peers;
     socket = "/run/marshall-acme-http/lookup.sock";
@@ -34,9 +38,18 @@ let
       bind ${proxy.bindSpec 80}
       acl public_host hdr(host),lower -m str ${lib.toLower proxy.publicHost} ${lib.toLower proxy.publicHost}:80
       acl challenge path_beg /.well-known/acme-challenge/
-      http-request deny deny_status 421 unless public_host
-      http-request deny deny_status 405 if challenge !METH_GET
-      http-request redirect code 308 prefix https://${lib.toLower proxy.publicHost}${lib.optionalString (proxy.port != 443) ":${toString proxy.port}"} unless challenge
+      ${lib.concatStringsSep "\n  " (if !content then [
+        "http-request deny deny_status 421 unless public_host"
+        "http-request deny deny_status 405 if challenge !METH_GET"
+        "http-request redirect code 308 prefix ${redirect} unless challenge"
+      ] else [
+        # The content host answers only its own challenges; it never redirects.
+        "acl content_host hdr(host),lower -m str ${contentHost} ${contentHost}:80"
+        "http-request deny deny_status 421 unless public_host || content_host"
+        "http-request deny deny_status 405 if challenge !METH_GET"
+        "http-request redirect code 308 prefix ${redirect} if public_host !challenge"
+        "http-request deny deny_status 404 if content_host !challenge"
+      ])}
       default_backend lookup
     backend lookup
       server local /run/marshall-acme-http/lookup.sock
@@ -92,7 +105,8 @@ in
       { assertion = lib.all (peer: isPrivate peer.address) http.peers; message = "HTTP-01 peers require private IPv4 addresses."; }
       { assertion = lib.unique addresses == addresses && !(builtins.elem http.bindAddress addresses); message = "HTTP-01 peers must not contain duplicate or self addresses."; }
       { assertion = proxy.port != 80 && proxy.port != http.port && lib.all
-          (instance: instance.port != 80 && instance.port != http.port && instance.fleetPort != 80 && instance.fleetPort != http.port)
+          (instance: instance.port != 80 && instance.port != http.port && instance.fleetPort != 80 && instance.fleetPort != http.port
+            && (config.services.marshall.artifactContent.host == null || (instance.artifactPort != 80 && instance.artifactPort != http.port)))
           (lib.optionals config.services.marshall.enable (builtins.attrValues config.services.marshall.instances));
         message = "HTTP-01 public and responder ports must not collide with HTTPS or Marshall listeners."; }
     ];
@@ -153,6 +167,10 @@ in
       comment = "Marshall proxy public listeners";
     };
     systemd.services."acme-order-renew-${proxy.publicHost}" = {
+      after = [ "marshall-acme-http.service" ];
+      requires = [ "marshall-acme-http.service" ];
+    };
+    systemd.services."acme-order-renew-${toString contentHost}" = mkIf content {
       after = [ "marshall-acme-http.service" ];
       requires = [ "marshall-acme-http.service" ];
     };

@@ -1,64 +1,31 @@
-defmodule Marshall.Agents.ThreadToolWorker do
-  @moduledoc "Executes server-owned typed thread tool commands."
-  use GenServer
-  require Marshall.Events
+defmodule Marshall.Agents.ThreadToolDispatch do
+  @moduledoc """
+  Executes one server-owned `thread` or `message_board` command.
+
+  `Marshall.Agents.ServerToolJob` runs it per command inside a transaction; the
+  lock order, authority checks, dispatch and result shape are those of the
+  former polling worker.
+  """
   alias Marshall.Agents.{Capabilities, Command, Root, ThreadTool, Turn}
   alias Marshall.Compute.Ledger
 
-  @poll_ms 500
+  @tools [:thread, :message_board]
 
-  @spec start_link(keyword()) :: GenServer.on_start()
-  def start_link(options), do: GenServer.start_link(__MODULE__, options, name: __MODULE__)
-
-  @impl true
-  def init(_options) do
-    send(self(), :poll)
-    {:ok, %{}}
-  end
-
-  @impl true
-  def handle_info(:poll, state) do
-    claim_one()
-    Process.send_after(self(), :poll, @poll_ms)
-    {:noreply, state}
-  end
-
-  defp claim_one do
-    Ledger.transaction(fn -> claim_locked() end)
-  rescue
-    _ ->
-      Marshall.Events.emit("agent.server_tool_poll_failed", reason: :exception)
-      :ok
-  end
+  @doc "The command tools this module executes."
+  @spec tools() :: [atom()]
+  def tools, do: @tools
 
   # @cc [owner:ghuntley,label:concurrency;security] server-tool-claim-transaction
   # Server-owned thread commands MUST be selected and executed
   # under a database row lock and only for the thread's current running turn.
-  @spec claim_locked() :: term()
-  defp claim_locked do
-    %{rows: rows} =
-      Ecto.Adapters.SQL.query!(
-        Marshall.Repo,
-        """
-          SELECT c.id FROM agent_commands c
-          JOIN agent_turns t ON t.id = c.turn_id AND t.thread_id = c.thread_id
-          JOIN agent_threads th ON th.id = c.thread_id AND th.root_id = c.root_id
-          WHERE c.tool IN ('thread', 'message_board') AND c.status = 'queued'
-            AND t.status = 'running' AND th.active_turn_id = t.id
-          ORDER BY c.inserted_at, c.id LIMIT 1
-        """,
-        [],
-        log: false
-      )
+  @doc "Runs one queued command; the caller MUST hold an open transaction."
+  @spec run_locked(String.t()) :: term()
+  def run_locked(command_id) do
+    case Ledger.read!(Command, id: command_id) do
+      [%Command{status: :queued, tool: tool} = candidate] when tool in @tools ->
+        claim_candidate(candidate)
 
-    case rows do
-      [[raw_id]] ->
-        case Ledger.read!(Command, id: Ecto.UUID.load!(raw_id)) do
-          [candidate] -> claim_candidate(candidate)
-          [] -> :ok
-        end
-
-      [] ->
+      _ ->
         :ok
     end
   end

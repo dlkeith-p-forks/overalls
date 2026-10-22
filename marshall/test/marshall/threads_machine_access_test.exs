@@ -69,10 +69,7 @@ defmodule Marshall.ThreadsMachineAccessTest do
     grant = grant(c.thread, c.member, :operator)
 
     archived =
-      Ledger.update!(c.thread, :mark_archived, %{
-        status: :archived,
-        archived_at: DateTime.utc_now()
-      })
+      Marshall.ThreadStateFixture.archived!(c.thread)
 
     refute Authorization.allowed?(c.vm, c.member, "read")
     assert {:ok, %{items: []}} = Marshall.Compute.list_vms(%{}, actor: c.member)
@@ -80,16 +77,9 @@ defmodule Marshall.ThreadsMachineAccessTest do
     assert {:ok, replacement} = Marshall.Compute.provision(request(), actor: c.owner)
 
     reopened =
-      Ledger.update!(archived, :reopen, %{
-        status: :pending,
-        archived_at: nil,
-        machine_id: nil,
-        agent_root_id: nil,
-        agent_thread_id: nil,
-        machine_key: Ash.UUID.generate()
-      })
+      Marshall.ThreadStateFixture.reopened!(archived, Ash.UUID.generate())
 
-    Ledger.update!(reopened, :bind_machine, %{machine_id: replacement.id, status: :provisioning})
+    Marshall.ThreadStateFixture.provisioning!(reopened, %{machine_id: replacement.id})
 
     refute Authorization.allowed?(c.vm, c.member, "read")
     assert Authorization.allowed?(replacement, c.member, "write")
@@ -214,7 +204,7 @@ defmodule Marshall.ThreadsMachineAccessTest do
       idempotency_key: key,
       machine_key: key
     })
-    |> Ledger.update!(:bind_machine, %{machine_id: vm.id, status: :ready})
+    |> Marshall.ThreadStateFixture.ready!(%{machine_id: vm.id})
   end
 
   @spec grant(Thread.t(), User.t(), role()) :: Grant.t()

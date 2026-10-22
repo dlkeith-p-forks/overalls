@@ -701,3 +701,31 @@ The [publishing recovery property](repo:docs/architecture/reviews/2026-10-03-bac
 publishing journals through installed cleanup with retained component/manifest
 references and unchanged last success. Combined native execution passed in 155 seconds; synthetic references
 do not prove upload durability or producer-death recovery.
+
+## Artifact and server-tool recovery
+
+Artifact metadata, versions, blobs, grants, page storage and audit rows are
+ordinary Marshall PostgreSQL tables, so the backup custody described in this chapter
+covers them. There is no second store to reconcile. Restoration consequences:
+
+| After restore | Result |
+| --- | --- |
+| View tickets | Tickets keep their stored `expires_at`; any older than five minutes are unusable. Viewers reopen the page for a new ticket. |
+| Artifacts deleted after the backup | Reappear as `active` or `deleting`. A `deleting` artifact resumes purge when `PurgeJob` is re-enqueued; moderation must be repeated for rows restored as `active`. |
+| Grants revoked after the backup | Reappear. Owners must revoke again; Cedar uses whatever grants the restored database holds. |
+| Staged publishes | Expire within 30 minutes and fail their parent command closed. |
+| Server-tool commands | Queued commands are re-enqueued by the reconciler; server claims older than ten minutes become `uncertain`, never re-run. |
+
+Loss of a Marshall replica during a server-tool job leaves the command
+`claimed` under a server claim ID. The Oban retry re-executes under the same
+claim; only that claim may finish it. If no job remains, the reconciler marks
+it `uncertain` after ten minutes. A `thread` or `message_board` job runs its
+claim, effect and finish in one transaction, so an interrupted job leaves the
+command `queued` and its retry runs it once. A purge or sweep interrupted mid-batch resumes
+on its next run because each step is one transaction. A staged upload
+interrupted by executor lease loss stops sending; the request expires and
+releases its chunks.
+
+The content origin holds no state. Losing the content certificate or listener
+makes the viewer unavailable without affecting stored artifacts; restoring the
+configuration restores viewing.

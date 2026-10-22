@@ -13,6 +13,7 @@ use std::process::{Command, Stdio};
 use std::thread;
 use std::time::{Duration, Instant};
 
+mod artifact_stage;
 mod attachment;
 mod context;
 pub mod maintenance;
@@ -33,6 +34,14 @@ const ORIGIN: &str = "https://llm.internal/agent/v1/";
 const OUTPUT_LIMIT: usize = 4096;
 /// Seconds an `exec_command` may run before its process tree is killed.
 const COMMAND_SECONDS: u64 = 20;
+/// Largest serialized control RPC body; only `attachment/transfer` and
+/// `artifact_chunk` may exceed it.
+const RPC_BODY_LIMIT: usize = 12_288;
+/// Largest `attachment/transfer` request and response body.
+const ATTACHMENT_TRANSFER_BODY_LIMIT: usize = 360_448;
+/// Largest serialized `artifact_chunk` body: one base64 196_608-byte chunk
+/// (262_144 bytes) plus the fixed identity fields, within Ziggy's route limit.
+const ARTIFACT_CHUNK_BODY_LIMIT: usize = 270_336;
 
 #[derive(Debug)]
 pub struct AgentError;
@@ -123,7 +132,7 @@ pub fn run(host: &impl Host) -> Result<i32, AgentError> {
         let digest = host.digest().map_err(|_| AgentError)?;
         match rpc::<Registration, _>(
             "register",
-            &json!({"digest": digest, "capabilities": ["context-v1", "skills-v1", "github-tools-v1", "attachments-v1"]}),
+            &json!({"digest": digest, "capabilities": ["context-v1", "skills-v1", "github-tools-v1", "attachments-v1", "artifacts-v1"]}),
         ) {
             Ok(registration)
                 if registration.fence_epoch > 0 && !registration.executor_id.is_empty() =>
@@ -226,6 +235,16 @@ fn execute(
             &mut heartbeat,
         )),
         "skill_status" => skill_result(managed_skills::run_status(&command.arguments)),
+        "artifact_stage" => artifact_result(artifact_stage::run(
+            &command.arguments,
+            &artifact_stage::Identity {
+                executor_id: lease.executor_id,
+                fence_epoch: lease.fence_epoch,
+                command_id: &command.id,
+            },
+            &mut heartbeat,
+            &mut |request| artifact_chunk(request),
+        )),
         _ => ("failed", json!({"reason": "unsupported_tool"})),
     };
     if !lease_valid {
@@ -254,6 +273,13 @@ fn context_result(result: Result<Value, context::Failure>) -> (&'static str, Val
 }
 
 fn skill_result(result: Result<Value, managed_skills::Failure>) -> (&'static str, Value) {
+    match result {
+        Ok(value) => ("completed", value),
+        Err(error) => ("failed", json!({"reason": error.code()})),
+    }
+}
+
+fn artifact_result(result: Result<Value, artifact_stage::Failure>) -> (&'static str, Value) {
     match result {
         Ok(value) => ("completed", value),
         Err(error) => ("failed", json!({"reason": error.code()})),
@@ -496,25 +522,60 @@ fn rpc_observed<Response: DeserializeOwned, Body: Serialize>(
         AgentError
     })?;
     let maximum = if route == "attachment/transfer" {
-        360_448
+        ATTACHMENT_TRANSFER_BODY_LIMIT
     } else {
-        12_288
+        RPC_BODY_LIMIT
     };
     if payload.len() > maximum {
         failed(RpcFailure::Encode);
         return Err(AgentError);
     }
+    post(route, &payload, Duration::from_secs(10), failed)
+}
+
+/// @cc [owner:ghuntley,label:security] lyra-artifact-chunk-rpc-bound
+/// Only `artifact_chunk` MAY send a body above the 12 KiB control RPC limit, and
+/// never above 270_336 bytes; an oversized body is refused before any network
+/// effect. Only `{"accepted": true}` acknowledges a chunk.
+fn artifact_chunk(request: &artifact_stage::ChunkRequest<'_>) -> bool {
+    let Ok(payload) = serde_json::to_vec(request) else {
+        return false;
+    };
+    if !artifact_chunk_fits(&payload) {
+        return false;
+    }
+    matches!(
+        post::<artifact_stage::ChunkResponse>(
+            "artifact_chunk",
+            &payload,
+            Duration::from_secs(30),
+            &mut |_| {},
+        ),
+        Ok(artifact_stage::ChunkResponse { accepted: true })
+    )
+}
+
+fn artifact_chunk_fits(payload: &[u8]) -> bool {
+    payload.len() <= ARTIFACT_CHUNK_BODY_LIMIT
+}
+
+fn post<Response: DeserializeOwned>(
+    route: &str,
+    payload: &[u8],
+    timeout: Duration,
+    failed: &mut impl FnMut(RpcFailure),
+) -> Result<Response, AgentError> {
     let bytes = http::request_observed(
         &format!("{ORIGIN}{route}"),
         Method::POST,
-        Some(&payload),
+        Some(payload),
         None,
         if route == "attachment/transfer" {
-            360_448
+            ATTACHMENT_TRANSFER_BODY_LIMIT
         } else {
             16_384
         },
-        Duration::from_secs(10),
+        timeout,
         &mut |failure| failed(RpcFailure::Request(failure)),
     )
     .map_err(|_| AgentError)?;
@@ -527,8 +588,35 @@ fn rpc_observed<Response: DeserializeOwned, Body: Serialize>(
 #[cfg(test)]
 mod tests {
     use super::{
-        absolute_guest_path, read_limited, valid_identifier, Claim, Registration, OUTPUT_LIMIT,
+        absolute_guest_path, artifact_chunk_fits, artifact_stage, read_limited, valid_identifier,
+        Claim, Registration, ARTIFACT_CHUNK_BODY_LIMIT, OUTPUT_LIMIT,
     };
+    use base64::{engine::general_purpose::STANDARD, Engine};
+
+    // Pin: a full chunk with maximal identity fields fits the dedicated bound,
+    // and a body one byte larger is refused before any network effect.
+    #[test]
+    fn artifact_chunk_body_bound() {
+        let id = "11111111-1111-4111-8111-111111111111";
+        let request = artifact_stage::ChunkRequest {
+            executor_id: id,
+            fence_epoch: u64::MAX,
+            command_id: id,
+            publish_request_id: id,
+            file_index: u32::MAX,
+            chunk_index: u32::MAX,
+            sha256: "f".repeat(64),
+            data: STANDARD.encode(vec![0_u8; artifact_stage::CHUNK_BYTES]),
+        };
+        let payload = serde_json::to_vec(&request).expect("encode");
+        assert!(payload.len() > super::RPC_BODY_LIMIT);
+        assert!(artifact_chunk_fits(&payload));
+        assert!(artifact_chunk_fits(&vec![b' '; ARTIFACT_CHUNK_BODY_LIMIT]));
+        assert!(!artifact_chunk_fits(&vec![
+            b' ';
+            ARTIFACT_CHUNK_BODY_LIMIT + 1
+        ]));
+    }
 
     #[test]
     fn guest_paths_are_absolute_for_this_platform() {

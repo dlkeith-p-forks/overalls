@@ -65,7 +65,11 @@ defmodule Marshall.Agents.AuditEvent do
           :skill_disabled,
           :skill_removed,
           :skill_installed,
-          :skill_failed
+          :skill_failed,
+          :artifact_published,
+          :artifact_read,
+          :artifact_listed,
+          :artifact_deleted
         ]
       ]
 

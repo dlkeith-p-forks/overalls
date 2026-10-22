@@ -429,7 +429,7 @@ defmodule Marshall.Agents.ModelCallsTest do
     assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
 
     assert Enum.map(call.request["tools"], & &1["name"]) ==
-             ~w(exec_command read_file web_search web_fetch)
+             ~w(exec_command read_file web_search web_fetch thread attachment message_board artifact)
 
     assert {:ok, %{call: work}} = ModelCalls.claim(c.token)
 

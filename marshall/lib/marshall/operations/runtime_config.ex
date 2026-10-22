@@ -2,15 +2,29 @@ defmodule Marshall.Operations.RuntimeConfig do
   @moduledoc "Validated production listeners and a fleet-wide PostgreSQL connection budget."
   @derive {Inspect, except: [:repo]}
   @enforce_keys [:repo, :endpoint, :fleet_listeners, :replicas, :connection_budget, :instance_id]
-  defstruct [:repo, :endpoint, :fleet_listeners, :replicas, :connection_budget, :instance_id]
+  defstruct [
+    :repo,
+    :endpoint,
+    :fleet_listeners,
+    :replicas,
+    :connection_budget,
+    :instance_id,
+    artifact_content: %{host: nil, listeners: [], debug_echo: false}
+  ]
 
   @type t :: %__MODULE__{
           repo: keyword(),
           endpoint: keyword(),
           fleet_listeners: [keyword()],
+          artifact_content: artifact_content(),
           replicas: pos_integer(),
           connection_budget: pos_integer(),
           instance_id: String.t()
+        }
+  @type artifact_content :: %{
+          host: String.t() | nil,
+          listeners: [keyword()],
+          debug_echo: boolean()
         }
   # @cc [owner:ghuntley,label:deployment] configured-default-image-identity
   # A configured default image MUST be a canonical SHA-256 content identity.
@@ -114,7 +128,8 @@ defmodule Marshall.Operations.RuntimeConfig do
          id when is_binary(id) <- env["MARSHALL_INSTANCE_ID"],
          true <- Regex.match?(~r/\A[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}\z/, id),
          {:ok, endpoint} <- endpoint(env),
-         {:ok, fleet_listeners} <- fleet_listeners(env, endpoint) do
+         {:ok, fleet_listeners} <- fleet_listeners(env, endpoint),
+         {:ok, artifact_content} <- artifact_content(env, endpoint, fleet_listeners) do
       {:ok,
        %__MODULE__{
          repo:
@@ -138,6 +153,7 @@ defmodule Marshall.Operations.RuntimeConfig do
            ),
          endpoint: endpoint,
          fleet_listeners: fleet_listeners,
+         artifact_content: artifact_content,
          replicas: replicas,
          connection_budget: budget,
          instance_id: id
@@ -284,6 +300,72 @@ defmodule Marshall.Operations.RuntimeConfig do
       _ -> :error
     end
   end
+
+  # @cc [owner:ghuntley,label:security] artifact-content-listener
+  # The artifact content origin is optional. When MARSHALL_ARTIFACT_CONTENT_HOST
+  # names a valid DNS host, a serving instance MUST bind a separate TLS socket on
+  # MARSHALL_BIND_IP and MARSHALL_ARTIFACT_TLS_PORT, distinct from the browser,
+  # HTTP and fleet ports, with the browser certificate files and only
+  # ArtifactContentEndpoint. The debug echo is accepted only as "true"/"false".
+  @spec artifact_content(map(), keyword(), [keyword()]) ::
+          {:ok, artifact_content()} | :error
+  def artifact_content(env, endpoint, fleet_listeners) do
+    with {:ok, debug} <- boolean(env, "MARSHALL_ARTIFACT_CONTENT_DEBUG_ECHO") do
+      case Map.get(env, "MARSHALL_ARTIFACT_CONTENT_HOST") do
+        value when value in [nil, ""] ->
+          {:ok, %{host: nil, listeners: [], debug_echo: false}}
+
+        host ->
+          with true <- dns_host?(host),
+               {:ok, listeners} <- artifact_listeners(env, endpoint, fleet_listeners) do
+            {:ok, %{host: String.downcase(host), listeners: listeners, debug_echo: debug}}
+          else
+            _ -> :error
+          end
+      end
+    end
+  end
+
+  defp artifact_listeners(env, endpoint, fleet_listeners) do
+    if endpoint[:server] do
+      with {:ok, port} <- integer(env, "MARSHALL_ARTIFACT_TLS_PORT", nil, 1..65_535),
+           taken = Enum.map([endpoint[:http], endpoint[:https] | fleet_listeners], &port_of/1),
+           false <- port in taken do
+        {:ok,
+         [
+           Keyword.merge(endpoint[:https],
+             port: port,
+             scheme: :https,
+             plug: MarshallWeb.ArtifactContentEndpoint
+           )
+         ]}
+      else
+        _ -> :error
+      end
+    else
+      {:ok, []}
+    end
+  end
+
+  defp port_of(false), do: nil
+  defp port_of(listener), do: listener[:port]
+
+  defp boolean(env, key) do
+    case Map.get(env, key, "false") do
+      "true" -> {:ok, true}
+      "false" -> {:ok, false}
+      _ -> :error
+    end
+  end
+
+  defp dns_host?(host) when is_binary(host) and byte_size(host) in 1..253 do
+    labels = String.split(host, ".")
+
+    length(labels) >= 2 and
+      Enum.all?(labels, &Regex.match?(~r/\A[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\z/, &1))
+  end
+
+  defp dns_host?(_), do: false
 
   defp https(env, ip, serving?) do
     case {env["MARSHALL_TLS_CERTFILE"], env["MARSHALL_TLS_KEYFILE"]} do

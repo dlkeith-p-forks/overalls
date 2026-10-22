@@ -4,6 +4,7 @@
 
 - [Mila native Rust session (2026-10-21)](2026-10-21-mila-native-session.md): actual certificate-pinned SSH machine pagination and atomic refresh, with local scripted-server and Hegel evidence; native adapters and real Porsche journeys remain open.
 
+- [Artifacts and thread tool (2026-10-21)](2026-10-21-artifacts-and-thread-tool.md): ADR-0253–0255: the Artifacts domain, isolated content origin, Thread lifecycle state machine and Oban server-tool dispatch; records executed checks separately from pending machine-test acceptance.
 - [Independent HLDD reviews](2026-10-20-hldd-independent-reviews.md): ADR-0250, review isolation, safe migration and merge verification.
 - [Thread redaction (2026-10-20)](2026-10-20-thread-redaction.md): bounded inactive-machine text scrubs, profile fencing, and admin audit controls.
 

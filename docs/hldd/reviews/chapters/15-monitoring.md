@@ -1,21 +1,12 @@
 ---
-digest: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
-disposition: no-impact
+digest: db740282f22afc4c76be24d9db3f9ef4f10bf2745089a754647c6cf7e8fdfeef
+disposition: updated
 kind: chapter
 mapping_digest: null
-migration:
-  deployment:
-    chapter_digest: 9a9e9255eb86fa91f3418b1c398853a745a51fd15f2f5eca5737439f6caf08c2
-    source_digest: 32939571a328dfb45510183c422eecb46bdb38fa777346f23c0fd9cc2bb9c079
-  marshall:
-    chapter_digest: 611713216c60038ac614a76a8aa4c5cb29f705024b6f3d45fb4b34d1ac794463
-    source_digest: 66cd97c314ea56b581e84f078c4745e952d0cd805117b65f0d777dadac728694
 path: marshall/priv/hldd/15-monitoring.md
 reviewed_chapters: {}
 state: present
 version: 2
 ---
 
-marshall: Reviewed concurrent thread-tools and Mila FFI changes; this group’s documented behavior and authority boundaries remain unchanged.
-
-deployment: Reviewed the Android SDK setup correction; it only makes the native CI job install declared API 36 build inputs and does not alter deployment roles or runtime behavior.
+Marshall gains the artifactContentHost option and per-instance artifactPort listener; HAProxy adds a separate content-host frontend that strips Cookie, Authorization and Proxy-Authorization, deletes backend Set-Cookie, admits only GET and HEAD and answers 421 across hosts, and ACME issues and publishes the second name; release Oban queues include agent_tools and artifacts. The new artifact-origin, artifact-agent-publish and thread-tool machine tests and their fleet fixtures (server-tool operator, provider scripts, thread seeding through a genuine machine binding, current executor capability lists) are catalogued. Chapters 12-configuration, 13-deployment, 14-operations, 16-recovery, 18-options, 19-coverage, 20-security and 22-topology describe the options, rollout, jobs, recovery, proxy lockdown and recorded local machine passes.

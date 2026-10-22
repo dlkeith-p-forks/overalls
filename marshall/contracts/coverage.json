@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 42,
+      "active": 47,
       "coverage": 1.0,
-      "covered": 42
+      "covered": 47
     },
     "system": {
       "active": 0,
@@ -12,6 +12,65 @@
     }
   },
   "components": {
+    "marshall.artifacts": {
+      "active": 5,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 5,
+      "form": "light",
+      "obligations": {
+        "marshall.artifacts.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.artifacts.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test edits apply all or none"
+          ]
+        },
+        "marshall.artifacts.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test paths are normalized without traversal"
+          ]
+        },
+        "marshall.artifacts.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test tool requests are closed"
+          ]
+        },
+        "marshall.artifacts.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test content responses carry the lockdown header set"
+          ]
+        }
+      }
+    },
     "marshall.compute": {
       "active": 4,
       "app": "marshall",
@@ -515,8 +574,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 42,
+    "active": 47,
     "coverage": 1.0,
-    "covered": 42
+    "covered": 47
   }
 }

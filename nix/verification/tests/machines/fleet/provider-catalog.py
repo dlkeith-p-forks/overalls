@@ -24,6 +24,184 @@ def object_fields(value: object) -> dict[str, object] | None:
     return result
 
 
+SERVER_TOOL_MODES = ("artifacts", "thread-tool")
+BASE_TOOLS = ["exec_command", "read_file", "web_search", "web_fetch"]
+SERVER_TOOLS = {"thread", "attachment", "artifact", "message_board"}
+STAGED_DIRECTORY = "/tmp/overalls-artifact"
+SCRIPTED_PROMPTS = {
+    "artifacts": [
+        "Publish artifact fixture",
+        "Publish stale artifact fixture",
+        "Publish staged artifact fixture",
+    ],
+    "thread-tool": ["Use thread tool fixture"],
+}
+
+
+def tool_output(item: dict[str, object]) -> dict[str, object] | None:
+    raw = item.get("output")
+    if not isinstance(raw, str):
+        return None
+    try:
+        return object_fields(json.loads(raw))
+    except ValueError:
+        return None
+
+
+def call(call_id: str, name: str, arguments: dict[str, object]) -> dict[str, object]:
+    return {
+        "type": "function_call",
+        "call_id": call_id,
+        "name": name,
+        "arguments": json.dumps(arguments),
+    }
+
+
+def reply_message() -> dict[str, object]:
+    return {
+        "type": "message",
+        "role": "assistant",
+        "content": [{"type": "output_text", "text": "fixture agent reply"}],
+    }
+
+
+def published_artifact(messages: list[dict[str, object]]) -> str | None:
+    """The artifact id from the earliest successful publish in this thread."""
+    for item in messages:
+        if item.get("type") != "function_call_output":
+            continue
+        result = tool_output(item)
+        if result is not None and result.get("version") == 1:
+            artifact = result.get("artifact_id")
+            if isinstance(artifact, str):
+                return artifact
+    return None
+
+
+def scripted(
+    prompt: str, outputs: list[dict[str, object]], messages: list[dict[str, object]]
+) -> list[dict[str, object]] | None:
+    """@cc [owner:ghuntley,label:verification;security] provider-server-tool-script
+    The artifact and thread modes MUST drive only the fixed server-tool calls
+    for their fixed prompts and MUST accept each next step only after the exact
+    expected typed result (or typed refusal) of the previous call. Any other
+    result refuses the request with the closed tool_output code.
+    """
+    results = [tool_output(item) for item in outputs]
+    if any(result is None for result in results):
+        return None
+    done = [result for result in results if result is not None]
+    if prompt == "Publish artifact fixture":
+        if not done:
+            return [
+                call(
+                    "fleet-artifact-publish",
+                    "artifact",
+                    {
+                        "operation": "publish",
+                        "base_version": 0,
+                        "title": "Fleet artifact",
+                        "content": "<!doctype html><title>Fleet artifact</title>"
+                        "<p>fleet artifact v1</p>",
+                    },
+                )
+            ]
+        if (
+            len(done) == 1
+            and done[0].get("version") == 1
+            and isinstance(done[0].get("artifact_id"), str)
+        ):
+            return [reply_message()]
+        return None
+    artifact = published_artifact(messages)
+    if artifact is None:
+        return None
+    if prompt == "Publish stale artifact fixture":
+        if not done:
+            return [
+                call(
+                    "fleet-artifact-stale",
+                    "artifact",
+                    {
+                        "operation": "publish",
+                        "artifact_id": artifact,
+                        "base_version": 0,
+                        "content": "<p>stale</p>",
+                    },
+                )
+            ]
+        if (
+            len(done) == 1
+            and done[0].get("reason") == "stale_base_version"
+            and done[0].get("current_version") == 1
+        ):
+            return [reply_message()]
+        return None
+    if prompt == "Publish staged artifact fixture":
+        if not done:
+            return [
+                call(
+                    "fleet-artifact-stage-files",
+                    "exec_command",
+                    {
+                        "cmd": f"mkdir -p {STAGED_DIRECTORY} && head -c 3145728 /dev/zero "
+                        f"| tr '\\0' a >{STAGED_DIRECTORY}/large.txt && printf "
+                        f"'<!doctype html><title>Staged</title><p>staged artifact</p>' "
+                        f">{STAGED_DIRECTORY}/index.html"
+                    },
+                )
+            ]
+        if len(done) == 1:
+            return [
+                call(
+                    "fleet-artifact-staged",
+                    "artifact",
+                    {
+                        "operation": "publish",
+                        "artifact_id": artifact,
+                        "base_version": 1,
+                        "content_path": f"{STAGED_DIRECTORY}/index.html",
+                        "files": {"large.txt": {"source_path": f"{STAGED_DIRECTORY}/large.txt"}},
+                    },
+                )
+            ]
+        if len(done) == 2 and done[1].get("version") == 2:
+            return [reply_message()]
+        return None
+    return None
+
+
+def thread_script(outputs: list[dict[str, object]]) -> list[dict[str, object]] | None:
+    """Search, then read, subscribe to and replay the first visible thread.
+
+    Results follow the ADR-0252 thread tool: every success is `{"items": [...]}`.
+    """
+    results = [tool_output(item) for item in outputs]
+    if any(result is None for result in results):
+        return None
+    done = [result for result in results if result is not None]
+    if not done:
+        return [call("fleet-thread-search", "thread", {"operation": "search"})]
+    items = [object_list(result.get("items")) for result in done]
+    if any(item is None for item in items):
+        return None
+    found = [item for item in items if item is not None]
+    first = found[0][0] if found[0] else None
+    target = None if first is None else first.get("id")
+    if not isinstance(target, str):
+        return None
+    steps: list[dict[str, object]] = [
+        {"operation": "read", "thread_id": target},
+        {"operation": "subscribe", "thread_id": target},
+        {"operation": "replay", "thread_id": target, "cursor": 0},
+    ]
+    if len(done) <= len(steps):
+        return [call(f"fleet-thread-{len(done)}", "thread", steps[len(done) - 1])]
+    if len(done) == len(steps) + 1:
+        return [reply_message()]
+    return None
+
+
 def object_list(value: object) -> list[dict[str, object]] | None:
     if not isinstance(value, list):
         return None
@@ -78,7 +256,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         if len(sys.argv) == 4 and sys.argv[3] == "coding-clis":
             return self.coding_cli_post()
-        if len(sys.argv) != 4 or sys.argv[3] not in ("agent", "executor-loss"):
+        if len(sys.argv) != 4 or sys.argv[3] not in ("agent", "executor-loss", *SERVER_TOOL_MODES):
             return self.reject("mode", 404)
         if (
             self.headers.get("Host") != "api.openai.com"
@@ -104,7 +282,16 @@ class Handler(BaseHTTPRequestHandler):
         if messages is None or tools is None or request.get("store") is not False:
             return self.reject("input")
         names = [item.get("name") for item in tools]
-        if names != ["exec_command", "read_file", "web_search", "web_fetch"]:
+        # Marshall-owned server tools follow the four guest tools; the
+        # server-tool modes additionally require the tool they exercise.
+        extra = names[len(BASE_TOOLS) :]
+        if (
+            names[: len(BASE_TOOLS)] != BASE_TOOLS
+            or not all(isinstance(name, str) and name in SERVER_TOOLS for name in extra)
+            or len(set(extra)) != len(extra)
+            or (sys.argv[3] == "artifacts" and "artifact" not in extra)
+            or (sys.argv[3] == "thread-tool" and "thread" not in extra)
+        ):
             return self.reject("tools")
         prompts = [item.get("content") for item in messages if item.get("role") == "user"]
         allowed_prompts = [
@@ -116,6 +303,7 @@ class Handler(BaseHTTPRequestHandler):
         ]
         if sys.argv[3] == "executor-loss":
             allowed_prompts += ["Perform interruptible effect", "Explicitly retry effect"]
+        allowed_prompts += SCRIPTED_PROMPTS.get(sys.argv[3], [])
         if not prompts or prompts[-1] not in allowed_prompts:
             return self.reject("prompt")
         last_prompt_index = max(
@@ -126,7 +314,16 @@ class Handler(BaseHTTPRequestHandler):
             for item in messages[last_prompt_index + 1 :]
             if item.get("type") == "function_call_output"
         ]
-        if prompts[-1] in ("Perform interruptible effect", "Explicitly retry effect"):
+        if sys.argv[3] in SERVER_TOOL_MODES and prompts[-1] in SCRIPTED_PROMPTS[sys.argv[3]]:
+            planned = (
+                thread_script(tool_messages)
+                if sys.argv[3] == "thread-tool"
+                else scripted(str(prompts[-1]), tool_messages, messages)
+            )
+            if planned is None:
+                return self.reject("tool_output")
+            output: list[dict[str, object]] = planned
+        elif prompts[-1] in ("Perform interruptible effect", "Explicitly retry effect"):
             if tool_messages:
                 if prompts[-1] != "Explicitly retry effect" or len(tool_messages) != 1:
                     return self.reject("tool_output")
@@ -144,7 +341,7 @@ class Handler(BaseHTTPRequestHandler):
                     "stderr": "",
                 }:
                     return self.reject("tool_output")
-                output: list[dict[str, object]] = [
+                output = [
                     {
                         "type": "message",
                         "role": "assistant",
@@ -273,7 +470,8 @@ class Handler(BaseHTTPRequestHandler):
         )
         raw = b"".join(("data: " + json.dumps(event) + "\n\n").encode() for event in events)
         self.send_response(200)
-        self.send_header("Content-Type", "application/json")
+        # Ziggy collects only `text/event-stream` bodies as Responses streams.
+        self.send_header("Content-Type", "text/event-stream")
         self.send_header("Content-Length", str(len(raw)))
         self.end_headers()
         self.wfile.write(raw)

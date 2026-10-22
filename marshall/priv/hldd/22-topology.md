@@ -821,6 +821,33 @@ flowchart LR
 Arrows mean configured service placement. Configuration: `salopettes`. Marshall instances: none. Fleet address: `10.90.0.3`. Fleet peers: `panterloons`. Administrative SSH ports: 22.
 <!-- hldd:view:end -->
 
+## Artifact content listener placement
+
+The artifact content origin
+([ADR-0254](repo:docs/architecture/decisions/0254-isolated-artifact-content-origin.md))
+adds no host or service unit. When `services.marshall.artifactContent.host` is
+set, each Marshall instance starts a second Bandit listener on its
+`artifactPort` (default 6443) at its backend address, and the colocated public
+proxy serves the content host on its existing HTTPS listener by SNI and Host,
+with a second ACME certificate and a `marshall_artifact_nodes` backend.
+
+```mermaid
+flowchart LR
+  Browser[Browser] -->|HTTPS 443 publicHost| Proxy[HAProxy public listener]
+  Browser -->|HTTPS 443 content host| Proxy
+  Proxy -->|verified TLS 4443| Web[Marshall browser endpoint]
+  Proxy -->|verified TLS 6443, credentials stripped| Content[Marshall content endpoint]
+  Web --> DB[(PostgreSQL)]
+  Content -->|ticket and Cedar read| DB
+```
+
+No enrolled host sets the content host yet, so the evaluated placement below is
+unchanged and the content listener is not in the topology projection. The
+listener shares the Marshall process, certificate files and failure boundary:
+losing an instance removes both its browser and content backends, and content
+health follows the browser port's readiness check. Guest staging uses the
+existing Ziggy and Audi path; it opens no new fleet port.
+
 ## Configuration and change procedure
 
 Edit `fleet/hosts/NAME/host.json` for reviewed identity and budgets, the host's

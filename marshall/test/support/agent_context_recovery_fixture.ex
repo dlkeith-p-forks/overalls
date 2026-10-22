@@ -163,6 +163,12 @@ defmodule Marshall.AgentContextRecoveryFixture do
           activity_threads
         ])
 
+        # Thread state-machine transitions write one lifecycle event each.
+        query(
+          "DELETE FROM compute_lifecycle_events WHERE resource_type='Thread' AND resource_id=ANY($1::uuid[])",
+          [activity_threads]
+        )
+
         query("DELETE FROM threads WHERE id=ANY($1::uuid[])", [activity_threads])
         query("DELETE FROM agent_executors WHERE vm_id=$1", [vm])
         query("DELETE FROM agent_cli_sessions WHERE vm_id=$1", [vm])

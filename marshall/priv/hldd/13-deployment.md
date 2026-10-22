@@ -587,3 +587,38 @@ remote SMTP settings cannot override an enabled local relay. Environment removal
 options precede assignments, including the optional executor bootstrap manifest.
 A source-built release and successful migrations do not establish successful
 pre-start execution, activation, fresh control reports or ordinary CLI routing.
+
+## Artifacts and content origin rollout
+
+Artifacts ship inside the Marshall release; no new service or host is added.
+The release migrations create the artifact tables and add the
+`threads_status_valid` check constraint. Thread status values are unchanged; only
+the writers moved to named transitions. Thread subscription tables are those of
+ADR-0252 and are not changed.
+
+Enable the content origin in this order:
+
+1. Create a DNS record for the content host pointing at the public proxy
+   address. Use a name distinct from `publicHost`.
+2. Set `services.marshall.artifactContent.host` on the control-plane host. The
+   control-plane role makes the colocated proxy follow it.
+3. Activate. ACME orders a separate single-name certificate for the content host
+   after the `publicHost` order, so the two never contend for the HTTP-01
+   responder; DNS-01 adds the content `_acme-challenge` name to the Route 53
+   policy. On port 80 the content host answers only its own challenges and
+   `404` otherwise. Each certificate publishes independently: an unpublished
+   sibling does not block the first certificate's validation
+   ([ACME module](repo:nix/domains/system/acme/default.nix)).
+4. Confirm that HAProxy serves both certificates on the public listener and that
+   each Marshall instance listens on `artifactPort` (6443 by default) on its
+   backend address only.
+
+No additional public port opens: the content host shares the existing HTTPS
+listener by SNI and Host. Without a content host the rendered proxy
+configuration is unchanged.
+
+Guest-staged uploads need executors that advertise `artifacts-v1` (updated
+Lyra) and Ziggy with the `artifact_chunk` route. Older executors still run the
+`artifact` tool with inline content up to 128 KiB; staged publishes cannot
+start without a capable executor. Roll out Ziggy and guest images before
+relying on large publishes.

@@ -567,7 +567,8 @@ defmodule Marshall.Agents.ModelCalls do
     {command_calls, child_calls} = Enum.split_with(calls, &(&1.tool != :spawn_child_agent))
 
     Enum.each(command_calls, fn item ->
-      Ledger.create!(Command, :queue, %{
+      Command
+      |> Ledger.create!(:queue, %{
         root_id: call.root_id,
         thread_id: thread.id,
         turn_id: call.turn_id,
@@ -575,6 +576,7 @@ defmodule Marshall.Agents.ModelCalls do
         tool: item.tool,
         arguments: command_arguments(item, turn)
       })
+      |> Marshall.Agents.ServerToolJob.enqueue!()
     end)
 
     Ledger.create!(Event, :append, %{

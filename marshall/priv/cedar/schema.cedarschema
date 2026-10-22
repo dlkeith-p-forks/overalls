@@ -28,6 +28,13 @@ namespace Marshall {
     team_admins: Set<User>,
     team_members: Set<User>
   };
+  entity Artifact = {
+    owner: User,
+    owners: Set<User>,
+    writers: Set<User>,
+    viewers: Set<User>,
+    active: Bool
+  };
   entity Integration = {
     owner: User,
     managers: Set<User>
@@ -46,6 +53,14 @@ namespace Marshall {
   };
   action "team_read", "team_manage_members", "team_transfer" appliesTo {
     principal: [User], resource: [Team], context: {}
+  };
+  action "artifact_read", "artifact_publish", "artifact_share", "artifact_delete",
+         "artifact_storage_personal", "artifact_storage_shared_read",
+         "artifact_storage_shared_write", "artifact_admin_delete" appliesTo {
+    principal: [User], resource: [Artifact], context: {}
+  };
+  action "artifact_create" appliesTo {
+    principal: [User], resource: [ControlPlane], context: {}
   };
   action "integration_read", "integration_manage" appliesTo {
     principal: [User], resource: [Integration], context: {}

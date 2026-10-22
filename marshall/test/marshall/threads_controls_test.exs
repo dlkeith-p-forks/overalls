@@ -143,7 +143,12 @@ defmodule Marshall.ThreadsControlsTest do
     owner = user()
     assert {:ok, thread} = Threads.create_thread(arguments(), actor: owner)
     thread = ready(thread)
-    Ledger.update!(thread, :bind_machine, %{agent_root_id: Ash.UUID.generate()})
+    # Simulate a stale binding: the recorded agent root no longer exists.
+    {1, _} =
+      Marshall.Repo.update_all(
+        Ecto.Query.from(t in "threads", where: t.id == type(^thread.id, :binary_id)),
+        set: [agent_root_id: Ecto.UUID.dump!(Ash.UUID.generate())]
+      )
 
     assert_error(
       Threads.thread_controls(%{thread_id: thread.id}, actor: owner),

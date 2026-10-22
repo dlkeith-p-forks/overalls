@@ -26,7 +26,7 @@ defmodule Marshall.Agents.SkillsTest do
         machine_key: Ash.UUID.generate()
       })
 
-    thread = Ledger.update!(thread, :bind_machine, %{machine_id: vm.id, status: :ready})
+    thread = Marshall.ThreadStateFixture.ready!(thread, %{machine_id: vm.id})
     %{owner: owner, member: user(), thread: thread, vm: vm}
   end
 
@@ -106,7 +106,7 @@ defmodule Marshall.Agents.SkillsTest do
 
     assert {:ok, operation} = Skills.install(arguments(c), actor: c.owner)
     assert {:ok, _} = Skills.dispatch(operation.id, fn _, _, _ -> Ash.UUID.generate() end)
-    Ledger.update!(c.thread, :reopen, %{machine_key: Ash.UUID.generate()})
+    Marshall.ThreadStateFixture.reopened!(c.thread, Ash.UUID.generate())
 
     assert {:ok, %{status: :failed, failure_reason: :machine_changed}} =
              Skills.complete(operation.id, result(operation))
@@ -129,7 +129,11 @@ defmodule Marshall.Agents.SkillsTest do
   test "replacement machine restoration pins the prior commit and digest", c do
     operation = installed(c)
     [old_revision] = Ledger.read!(SkillRevision, id: operation.revision_id)
-    Ledger.update!(c.thread, :reopen, %{machine_key: Ash.UUID.generate()})
+
+    c.thread
+    |> Marshall.ThreadStateFixture.reopened!(Ash.UUID.generate())
+    |> Marshall.ThreadStateFixture.ready!(%{machine_id: Ash.UUID.generate()})
+
     thread_id = c.thread.id
     assert [^thread_id] = Skills.restoration_threads()
     assert [^thread_id] = Skills.restoration_threads(thread_id)

@@ -493,7 +493,7 @@ defmodule Marshall.ThreadsSharingTest do
     refute MachineAuthorization.allowed?(%{vm | profile: :customer}, context.member, "read")
     refute MachineAuthorization.allowed?(%{vm | id: Ash.UUID.generate()}, context.member, "read")
 
-    Ledger.update!(thread, :mark_archived, %{status: :archived, archived_at: DateTime.utc_now()})
+    Marshall.ThreadStateFixture.archived!(thread)
     refute MachineAuthorization.allowed?(vm, context.member, "read")
 
     assert {:ok, %{status: :archived}} =

@@ -6,8 +6,14 @@ defmodule Marshall.Agents.ExecutorSession do
   require Marshall.Events
 
   @lease_seconds 30
-  @capabilities ["context-v1", "skills-v1", "github-tools-v1", "attachments-v1"]
-  @internal_tools [:context_inventory, :context_read, :skill_install, :skill_status]
+  @capabilities ["context-v1", "skills-v1", "github-tools-v1", "attachments-v1", "artifacts-v1"]
+  @internal_tools [
+    :context_inventory,
+    :context_read,
+    :skill_install,
+    :skill_status,
+    :artifact_stage
+  ]
 
   @type capability :: String.t()
 
@@ -31,6 +37,10 @@ defmodule Marshall.Agents.ExecutorSession do
 
   def supported?(%Executor{capabilities: capabilities}, :attachment) when is_list(capabilities),
     do: "attachments-v1" in capabilities
+
+  def supported?(%Executor{capabilities: capabilities}, :artifact_stage)
+      when is_list(capabilities),
+      do: "artifacts-v1" in capabilities
 
   def supported?(%Executor{}, tool) when tool in [:exec_command, :read_file, :web_fetch], do: true
   def supported?(_, _), do: false
@@ -303,6 +313,15 @@ defmodule Marshall.Agents.ExecutorSession do
     end
   end
 
+  # @cc [owner:ghuntley,label:security] executor-never-claims-server-tools
+  # The guest executor MUST NOT claim web search or any Marshall server tool;
+  # those commands are executed only by Marshall under the prompting user's
+  # fresh authority.
+  @spec marshall_owned_tools() :: [String.t()]
+  def marshall_owned_tools do
+    ["web_search" | Enum.map(Marshall.Agents.ServerTool.tools(), &Atom.to_string/1)]
+  end
+
   @spec claim!(map(), String.t(), pos_integer()) :: Command.t() | nil
   defp claim!(parsed, executor_id, fence) do
     executor = valid_lease!(parsed, executor_id, fence)
@@ -314,14 +333,13 @@ defmodule Marshall.Agents.ExecutorSession do
         SELECT c.id FROM agent_commands AS c
         JOIN agent_turns AS t ON t.id = c.turn_id AND t.thread_id = c.thread_id
         JOIN agent_threads AS th ON th.id = c.thread_id AND th.root_id = c.root_id
-        WHERE c.root_id = $1 AND c.status = 'queued'
-          AND c.tool NOT IN ('web_search', 'thread', 'message_board')
+        WHERE c.root_id = $1 AND c.status = 'queued' AND c.tool <> ALL($2::text[])
           AND t.status = 'running'
           AND th.active_turn_id = t.id
         ORDER BY c.inserted_at, c.id
         LIMIT 1 FOR UPDATE OF c SKIP LOCKED
         """,
-        [Ecto.UUID.dump!(executor.root_id)],
+        [Ecto.UUID.dump!(executor.root_id), marshall_owned_tools()],
         log: false
       )
 
@@ -485,13 +503,36 @@ defmodule Marshall.Agents.ExecutorSession do
   # Internal context and skill commands MUST require their persisted executor
   # capability and version-one arguments at both claim and start. Unsupported
   # queued commands MUST end with a closed refusal without reaching the guest.
+  @doc """
+  Locks a started command held by the caller's current fenced executor lease.
+  The caller MUST hold an open transaction.
+  """
+  # @cc [owner:ghuntley,label:security] executor-command-lease
+  # Data sent for a command (such as staged artifact chunks) MUST come from the
+  # current binding's live executor lease, under the same fence epoch, for a
+  # started command of the expected tool that this executor claimed.
+  @spec started_command_locked!(map(), String.t(), pos_integer(), String.t(), atom()) ::
+          Command.t()
+  def started_command_locked!(parsed, executor_id, fence, command_id, tool) do
+    executor = valid_lease!(parsed, executor_id, fence)
+    command = Ledger.lock!(Command, command_id) || Ledger.rollback(:not_found)
+
+    unless command.executor_id == executor.id and command.fence_epoch == fence and
+             command.root_id == executor.root_id and command.status == :started and
+             command.tool == tool,
+           do: Ledger.rollback(:stale_fence)
+
+    command
+  end
+
   @spec eligibility(Executor.t(), Command.t()) :: :ok | {:error, atom()}
   defp eligibility(executor, command) do
     cond do
       not supported?(executor, command.tool) ->
         {:error, :executor_upgrade_required}
 
-      command.tool in @internal_tools and command.arguments["version"] !== 1 ->
+      command.tool in @internal_tools and command.tool != :artifact_stage and
+          command.arguments["version"] !== 1 ->
         {:error, :invalid_internal_command}
 
       true ->

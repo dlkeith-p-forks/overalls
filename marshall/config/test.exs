@@ -18,7 +18,8 @@ transport =
         do: [socket_dir: socket, username: System.get_env("PGUSER", System.get_env("USER"))],
         else: [hostname: socket, username: System.get_env("PGUSER", System.get_env("USER"))]
 
-    _ -> [hostname: "localhost", username: "postgres"]
+    _ ->
+      [hostname: "localhost", username: "postgres"]
   end
 
 config :marshall,
@@ -26,12 +27,17 @@ config :marshall,
        [
          password: System.get_env("PGPASSWORD", "postgres"),
          maintenance_database: System.get_env("MARSHALL_MAINTENANCE_DATABASE", "postgres"),
-         ssl: if(System.get_env("PGSSLMODE") == "require", do: [verify: :verify_none], else: false),
+         ssl:
+           if(System.get_env("PGSSLMODE") == "require", do: [verify: :verify_none], else: false),
          port:
            String.to_integer(
              System.get_env("MARSHALL_TEST_PORT", System.get_env("PGPORT", "5432"))
            ),
-         database: System.get_env("MARSHALL_TEST_DATABASE", "marshall_test#{System.get_env("MIX_TEST_PARTITION")}"),
+         database:
+           System.get_env(
+             "MARSHALL_TEST_DATABASE",
+             "marshall_test#{System.get_env("MIX_TEST_PARTITION")}"
+           ),
          pool: Ecto.Adapters.SQL.Sandbox,
          pool_size: System.schedulers_online() * 2
        ] ++ transport

@@ -3,6 +3,10 @@ defmodule Ziggy.HTTP do
   @behaviour Plug
   import Plug.Conn
   require Ziggy.Events
+
+  # Largest `artifact_chunk` request body; every other agent route keeps 12_288.
+  @artifact_chunk_limit 270_336
+
   @impl true
   def init(opts), do: opts
 
@@ -305,36 +309,34 @@ defmodule Ziggy.HTTP do
   # Guest executor calls MUST use the binding that Audi attached from the
   # pre-NAT peer. Guest-supplied binding fields are rejected before Marshall
   # receives the RPC. Ziggy does not inspect or log tool arguments or results.
-  # Only attachment transfers MAY exceed 12 KiB, and MUST remain at most 352 KiB.
+  # Only attachment transfers (at most 352 KiB) and artifact chunks (at most
+  # 264 KiB, below) MAY exceed 12 KiB.
   defp dispatch(
          %{method: "POST", request_path: "/agent/v1/" <> route, query_string: ""} = conn,
          config,
          wire
        )
        when route in ~w(register heartbeat claim transition maintenance/claim maintenance/transition attachment/transfer) do
-    maximum = if route == "attachment/transfer", do: 360_448, else: 12_288
+    agent_rpc(
+      conn,
+      config,
+      wire,
+      route,
+      if(route == "attachment/transfer", do: 360_448, else: 12_288)
+    )
+  end
 
-    with [content_type] <- get_req_header(conn, "content-type"),
-         {:ok, "application", "json", _} <- Plug.Conn.Utils.content_type(content_type),
-         {:ok, body, conn} <- read_body(conn, length: maximum, read_length: maximum),
-         true <- byte_size(body) <= maximum,
-         {:ok, input} when is_map(input) <- Jason.decode(body),
-         false <- Map.has_key?(input, "binding"),
-         {:ok, result} <-
-           Ziggy.Control.request(
-             config.control,
-             "agent_" <> String.replace(route, "/", "_"),
-             Map.put(input, "binding", wire)
-           ) do
-      conn
-      |> put_resp_content_type("application/json")
-      |> send_resp(200, Jason.encode!(result))
-    else
-      {:more, _, conn} -> error(conn, 413, "request_too_large")
-      {:error, :authority_unavailable} -> error(conn, 503, "authority_unavailable")
-      {:error, :unsupported_version} -> error(conn, 503, "authority_unavailable")
-      _ -> error(conn, 400, "invalid_request")
-    end
+  # @cc [owner:ghuntley,label:security] ziggy-artifact-chunk-relay
+  # `artifact_chunk` MAY carry up to 270_336 bytes (one base64 196_608-byte chunk
+  # plus identity fields). It keeps the same Audi binding injection and
+  # guest-binding refusal, goes only to control route `agent_artifact_chunk`,
+  # and its body is never inspected beyond the JSON object shape or logged.
+  defp dispatch(
+         %{method: "POST", request_path: "/agent/v1/artifact_chunk", query_string: ""} = conn,
+         config,
+         wire
+       ) do
+    agent_rpc(conn, config, wire, "artifact_chunk", @artifact_chunk_limit)
   end
 
   defp dispatch(conn, config, wire) do
@@ -352,6 +354,31 @@ defmodule Ziggy.HTTP do
         else: error(conn, 503, "provider_unavailable")
     else
       {:more, _, conn} -> error(conn, 413, "request_too_large")
+      _ -> error(conn, 400, "invalid_request")
+    end
+  end
+
+  @spec agent_rpc(Plug.Conn.t(), map(), map(), String.t(), pos_integer()) :: Plug.Conn.t()
+  defp agent_rpc(conn, config, wire, route, limit) do
+    with [content_type] <- get_req_header(conn, "content-type"),
+         {:ok, "application", "json", _} <- Plug.Conn.Utils.content_type(content_type),
+         {:ok, body, conn} <- read_body(conn, length: limit, read_length: limit),
+         true <- byte_size(body) <= limit,
+         {:ok, input} when is_map(input) <- Jason.decode(body),
+         false <- Map.has_key?(input, "binding"),
+         {:ok, result} <-
+           Ziggy.Control.request(
+             config.control,
+             "agent_" <> String.replace(route, "/", "_"),
+             Map.put(input, "binding", wire)
+           ) do
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, Jason.encode!(result))
+    else
+      {:more, _, conn} -> error(conn, 413, "request_too_large")
+      {:error, :authority_unavailable} -> error(conn, 503, "authority_unavailable")
+      {:error, :unsupported_version} -> error(conn, 503, "authority_unavailable")
       _ -> error(conn, 400, "invalid_request")
     end
   end

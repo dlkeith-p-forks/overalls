@@ -35,20 +35,20 @@ msgid "A reference for the system, its configuration, and its operation."
 msgstr "有关系统、配置与运维的参考资料。"
 
 #: lib/marshall_web/components/layouts.ex:337
-#: lib/marshall_web/components/layouts.ex:444
+#: lib/marshall_web/components/layouts.ex:447
 #, elixir-autogen, elixir-format
 msgid "AI usage"
 msgstr "AI 用量"
 
 #: lib/marshall_web/components/layouts.ex:416
-#: lib/marshall_web/components/layouts.ex:462
+#: lib/marshall_web/components/layouts.ex:466
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "访问授权"
 
 #: lib/marshall_web/components/layouts.ex:241
 #: lib/marshall_web/components/layouts.ex:329
-#: lib/marshall_web/components/layouts.ex:450
+#: lib/marshall_web/components/layouts.ex:453
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "账户"
@@ -75,8 +75,8 @@ msgid "Administration"
 msgstr "管理"
 
 #: lib/marshall_web/components/layouts.ex:245
-#: lib/marshall_web/components/layouts.ex:509
-#: lib/marshall_web/components/layouts.ex:510
+#: lib/marshall_web/components/layouts.ex:513
+#: lib/marshall_web/components/layouts.ex:514
 #: lib/marshall_web/controllers/docs_html/show.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Appearance"
@@ -89,7 +89,7 @@ msgid "Attempting to reconnect"
 msgstr "正在尝试重新连接"
 
 #: lib/marshall_web/components/layouts.ex:418
-#: lib/marshall_web/components/layouts.ex:463
+#: lib/marshall_web/components/layouts.ex:467
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "审计"
@@ -141,17 +141,17 @@ msgstr "目录"
 msgid "Control room"
 msgstr "控制室"
 
-#: lib/marshall_web/components/layouts.ex:442
+#: lib/marshall_web/components/layouts.ex:445
 #, elixir-autogen, elixir-format
 msgid "Control room · %{section}"
 msgstr "控制室 · %{section}"
 
-#: lib/marshall_web/components/layouts.ex:439
+#: lib/marshall_web/components/layouts.ex:442
 #, elixir-autogen, elixir-format
 msgid "Control room · AI usage"
 msgstr "控制室 · AI 用量"
 
-#: lib/marshall_web/components/layouts.ex:513
+#: lib/marshall_web/components/layouts.ex:517
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr "深色"
@@ -188,8 +188,8 @@ msgstr "集群 AI 用量"
 msgid "Git mirrors"
 msgstr "Git 镜像仓库"
 
-#: lib/marshall_web/components/layouts.ex:432
-#: lib/marshall_web/components/layouts.ex:455
+#: lib/marshall_web/components/layouts.ex:435
+#: lib/marshall_web/components/layouts.ex:459
 #, elixir-autogen, elixir-format
 msgid "Git repositories"
 msgstr "Git 仓库"
@@ -221,14 +221,14 @@ msgstr "手册目录"
 msgid "Home"
 msgstr "首页"
 
-#: lib/marshall_web/components/layouts.ex:431
-#: lib/marshall_web/components/layouts.ex:454
+#: lib/marshall_web/components/layouts.ex:434
+#: lib/marshall_web/components/layouts.ex:458
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "集成"
 
 #: lib/marshall_web/components/layouts.ex:410
-#: lib/marshall_web/components/layouts.ex:459
+#: lib/marshall_web/components/layouts.ex:463
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "任务"
@@ -238,7 +238,7 @@ msgstr "任务"
 msgid "LLM index"
 msgstr "LLM 索引"
 
-#: lib/marshall_web/components/layouts.ex:512
+#: lib/marshall_web/components/layouts.ex:516
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr "浅色"
@@ -248,8 +248,8 @@ msgstr "浅色"
 msgid "Machine readable"
 msgstr "机器可读"
 
-#: lib/marshall_web/components/layouts.ex:430
-#: lib/marshall_web/components/layouts.ex:453
+#: lib/marshall_web/components/layouts.ex:433
+#: lib/marshall_web/components/layouts.ex:457
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "机器"
@@ -280,7 +280,7 @@ msgid "Menu"
 msgstr "菜单"
 
 #: lib/marshall_web/components/layouts.ex:408
-#: lib/marshall_web/components/layouts.ex:457
+#: lib/marshall_web/components/layouts.ex:461
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "节点维护"
@@ -301,14 +301,14 @@ msgstr "操作"
 msgid "Overalls"
 msgstr "Overalls"
 
-#: lib/marshall_web/components/layouts.ex:428
-#: lib/marshall_web/components/layouts.ex:451
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:454
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "概览"
 
 #: lib/marshall_web/components/layouts.ex:411
-#: lib/marshall_web/components/layouts.ex:460
+#: lib/marshall_web/components/layouts.ex:464
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "平台状态"
@@ -353,13 +353,13 @@ msgstr "源"
 msgid "Source code"
 msgstr "源代码"
 
-#: lib/marshall_web/components/layouts.ex:511
+#: lib/marshall_web/components/layouts.ex:515
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "系统"
 
-#: lib/marshall_web/components/layouts.ex:433
-#: lib/marshall_web/components/layouts.ex:456
+#: lib/marshall_web/components/layouts.ex:436
+#: lib/marshall_web/components/layouts.ex:460
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "团队"
@@ -369,8 +369,8 @@ msgstr "团队"
 msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
 msgstr "此更改需要新的通行密钥验证。验证有效期为 15 分钟。"
 
-#: lib/marshall_web/components/layouts.ex:429
-#: lib/marshall_web/components/layouts.ex:452
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:455
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "会话"
@@ -381,7 +381,7 @@ msgid "Time zone"
 msgstr "时区"
 
 #: lib/marshall_web/components/layouts.ex:415
-#: lib/marshall_web/components/layouts.ex:461
+#: lib/marshall_web/components/layouts.ex:465
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "用户"
@@ -402,13 +402,13 @@ msgid "Welcome to Overalls. Make yourself at home."
 msgstr "欢迎来到 Overalls。像在家一样自在。"
 
 #: lib/marshall_web/components/layouts.ex:409
-#: lib/marshall_web/components/layouts.ex:458
+#: lib/marshall_web/components/layouts.ex:462
 #, elixir-autogen, elixir-format
 msgid "Workloads"
 msgstr "工作负载"
 
 #: lib/marshall_web/components/layouts.ex:283
-#: lib/marshall_web/components/layouts.ex:465
+#: lib/marshall_web/components/layouts.ex:469
 #, elixir-autogen, elixir-format
 msgid "Workspace"
 msgstr "工作区"
@@ -428,7 +428,7 @@ msgstr "工作区导航"
 msgid "Your account"
 msgstr "你的账户"
 
-#: lib/marshall_web/components/layouts.ex:426
+#: lib/marshall_web/components/layouts.ex:428
 #, elixir-autogen, elixir-format
 msgid "Your workspace"
 msgstr "你的工作区"
@@ -443,8 +443,24 @@ msgstr "关闭"
 msgid "← All sections"
 msgstr "← 所有章节"
 
-#: lib/marshall_web/components/layouts.ex:419
-#: lib/marshall_web/components/layouts.ex:464
+#: lib/marshall_web/components/layouts.ex:421
+#: lib/marshall_web/components/layouts.ex:468
 #, elixir-autogen, elixir-format
 msgid "SCIM provisioning"
 msgstr "SCIM 预配"
+
+#: lib/marshall_web/components/layouts.ex:420
+#, elixir-autogen, elixir-format
+msgid "Artifact moderation"
+msgstr "工件审核"
+
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:456
+#, elixir-autogen, elixir-format
+msgid "Artifacts"
+msgstr "工件"
+
+#: lib/marshall_web/components/layouts.ex:419
+#, elixir-autogen, elixir-format
+msgid "Thread redaction"
+msgstr "会话脱敏"

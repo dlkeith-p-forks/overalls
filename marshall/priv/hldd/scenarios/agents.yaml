@@ -36,12 +36,13 @@ evidence:
   record: docs/architecture/reviews/2026-09-23-agent-threads-foundation.md
   record_assertion: full `agent-fleet` guest round trip
   scope: Real stopped guest, Marshall, Ziggy and tool executor with fixture model.
-- assertion: executor_capabilities(vm["vm_id"]) == ["context-v1", "skills-v1"]
+- assertion: capabilities == expected_capabilities
   execution: present
   kind: machine
   path: nix/verification/tests/machines/fleet/scenarios/agent.py
-  scope: The real Firecracker Lyra executor registration exposes exactly the context inventory/read and
-    managed-skill operation capabilities; no prompt, file content or credential is inspected.
+  scope: The real Firecracker Lyra executor registration exposes exactly the artifact staging, attachment,
+    context inventory/read, GitHub tool and managed-skill capabilities, stored sorted; no prompt, file content
+    or credential is inspected. The agent-fleet run passed locally on 2026-10-21 without an execution record.
 gaps: Native browser-approved CLI journeys are recorded under the agent-cli scenario; this row retains
   its generated-matrix, SQL-backed prompt/claim and deterministic-provider scopes. Concurrent same-key
   prompt and model claims, lost replies and actual provider effects remain open. Native hostile-tool/profile

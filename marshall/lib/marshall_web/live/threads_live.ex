@@ -1917,8 +1917,11 @@ defmodule MarshallWeb.ThreadsLive do
                           class="console-button ghost"
                         >{dgettext("agents", "Open VS Code")} <.glyph name="arrow_up_right" /></.link>
                         <.link
+                          :if={@selected.machine_id}
                           id="thread-message-board"
-                          navigate={~p"/message-board?profile=standard&vm_id=#{@selected.machine_id}&thread_id=#{@selected.id}"}
+                          navigate={
+                            ~p"/message-board?profile=standard&vm_id=#{@selected.machine_id}&thread_id=#{@selected.id}"
+                          }
                           class="console-button ghost"
                         >{dgettext("agents", "Message board")}</.link>
                         <details

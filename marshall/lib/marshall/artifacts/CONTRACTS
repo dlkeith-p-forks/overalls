@@ -1,0 +1,43 @@
+@cc [owner:ghuntley,label:durability] artifact-version-immutable
+Published versions MUST be immutable and dense per artifact, numbered from one.
+A publish MUST create exactly one version, or none on refusal. Replaying the
+same originating command MUST return the version it created and MUST NOT create
+another.
+
+@cc [owner:ghuntley,label:durability] artifact-optimistic-base
+A publish MUST name the version it was based on. Under the artifact row lock a
+base other than the current version MUST be refused with `stale_base_version`
+and the current version, leaving every row except the refusal audit unchanged.
+
+@cc [owner:ghuntley,label:durability] artifact-edits-all-or-none
+Edits MUST apply exact, uniquely matching old strings in order. If any edit is
+missing or ambiguous the publish MUST be refused with that edit's index and no
+edit applied.
+
+@cc [owner:ghuntley,label:capacity;security] artifact-limits-before-persist
+Page, per-publish and per-version file count and byte limits, path
+normalization and the media-type allowlist MUST be checked before any blob,
+version or file row is written. No per-owner quota exists.
+
+@cc [owner:ghuntley,label:security;authorization] artifact-cedar-fresh-decisions
+Every read, publish, share, delete, storage and moderation decision MUST call
+Cedar with roles read from current grants and current team membership in the
+same request. Ticket redemption MUST recheck read authority on every fetch.
+Administrator moderation MUST NOT grant content, storage or sharing access.
+
+@cc [owner:ghuntley,label:audit] artifact-audit-same-transaction
+Every artifact mutation MUST write its closed-kind audit row in the transaction
+that commits the mutation; refusals MUST be audited in their own transaction
+after rollback. Audit rows MUST NOT contain content, storage keys or values,
+tickets, paths or tool arguments.
+
+@cc [owner:ghuntley,label:security] artifact-storage-namespaces
+Personal storage MUST be keyed by artifact and user; shared storage by artifact
+only. Only owners and writers MAY write shared storage. Writes MUST be text,
+within the key and per-artifact byte caps, and a refused write MUST change
+nothing but its audit row.
+
+@cc [owner:ghuntley,label:security;authorization] artifact-tool-turn-authority
+The agent `artifact` tool MUST act with the authority of the user who prompted
+the turn, freshly checked by the server-tool job, and MUST report unreadable
+artifacts as `not_found`.

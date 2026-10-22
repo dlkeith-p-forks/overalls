@@ -10,7 +10,7 @@ defmodule Marshall.Threads.ArchiveWorker do
     ]
 
   alias Marshall.Compute.Ledger
-  alias Marshall.Threads.{Generation, Thread}
+  alias Marshall.Threads.Thread
 
   @impl true
   @spec perform(Oban.Job.t()) ::
@@ -54,14 +54,7 @@ defmodule Marshall.Threads.ArchiveWorker do
   defp archive(thread) do
     cancel_pending_question!(thread)
 
-    archived =
-      Ledger.update!(thread, :mark_archived, %{
-        status: :archived,
-        archived_at: DateTime.utc_now()
-      })
-
-    Generation.sync!(archived)
-
+    _archived = Ledger.update!(thread, :mark_archived, %{})
     :ok
   end
 

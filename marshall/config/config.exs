@@ -110,6 +110,8 @@ config :marshall, Oban,
     github: 2,
     notifications: 5,
     redaction: 2,
+    agent_tools: 10,
+    artifacts: 5,
     certificates: [limit: 1, paused: true]
   ],
   lifeline: [rescue_after: {2, :hours}],
@@ -122,7 +124,11 @@ config :marshall, Oban,
        {"* * * * *", Marshall.Compute.IdleWorker},
        {"* * * * *", Marshall.Scim.RetirementWorker},
        {"* * * * *", Marshall.GitHub.Worker, args: %{"op" => "reconcile"}},
-       {"15 * * * *", Marshall.Redaction.SweepWorker}
+       {"15 * * * *", Marshall.Redaction.SweepWorker},
+       {"* * * * *", Marshall.Agents.ServerToolReconciler},
+       {"* * * * *", Marshall.Artifacts.ExpiryJob},
+       {"20 * * * *", Marshall.Artifacts.SweepJob},
+       {"40 3 * * *", Marshall.Artifacts.UsageReconcileJob}
      ]}
   ]
 
@@ -198,6 +204,7 @@ config :marshall,
     Marshall.Agents,
     Marshall.Threads,
     Marshall.MessageBoards.Domain,
+    Marshall.Artifacts,
     Marshall.Notifications,
     Marshall.Administration,
     Marshall.Scim,
