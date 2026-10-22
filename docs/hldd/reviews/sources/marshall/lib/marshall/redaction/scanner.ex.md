@@ -1,6 +1,6 @@
 ---
-digest: 0a8fe4f390da7cef0703116394969e903541095512496aaefba6b191d1cc00cf
-disposition: no-impact
+digest: e7ec46166832a35c4372744cd7a57d502ca1193e5536989bacf0b9aebb3c2002
+disposition: updated
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
 path: marshall/lib/marshall/redaction/scanner.ex
@@ -8,7 +8,7 @@ reviewed_chapters:
   marshall/priv/hldd/02-control-plane.md: 8398bc3791875b6bc8cf22b6602a6efccb886c001a0f78d5a1500a3f5707ff3d
   marshall/priv/hldd/03-access.md: 08dc3c53c626ebafffba5f908f09ccd49edd919b7a03a3ef8c12113f5097bd96
   marshall/priv/hldd/04-lifecycle.md: a3c881206a8331e5dbcd995c9762772639a9e28bdc22102c2a2e64bf63aa7449
-  marshall/priv/hldd/06-workflows.md: 97fca2ee73a5dc431d8f040eb16468eaf0f28233c146be2b53804063fadb565b
+  marshall/priv/hldd/06-workflows.md: 9e5fd38c1d244d8587c0b957f9dd506829c7db096c400dc6df4cdcef239ca87b
   marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
   marshall/priv/hldd/11-agents.md: 41a0b83814dcf3ef333ec020a29d5879a4336a6c91f418e43b233223e9ea69aa
   marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed runtime release path resolution for the redaction profile; no handbook behavior change.
+Startup objectives bind to the user thread identity, executor waits are bounded and observable, and transient provider overloads retry; Hegel and fleet machine evidence added.

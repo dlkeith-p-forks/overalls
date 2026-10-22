@@ -50,6 +50,7 @@ defmodule Marshall.Agents.Thread do
 
     create :open do
       accept [
+        :id,
         :root_id,
         :parent_thread_id,
         :title,

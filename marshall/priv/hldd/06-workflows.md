@@ -560,6 +560,14 @@ under the current executor fence becomes an attached snapshot. A changed source
 retries collection twice, then fails explicitly. Runtime and native evidence
 are tracked in the [context review](repo:docs/architecture/reviews/2026-10-16-agent-context-and-planning.md).
 
+Context preparation waits for a matching guest executor and emits structured
+waiting and timeout diagnostics at fifteen-second boundaries. A turn that has
+waited beyond the bounded context deadline fails with `context_unavailable`;
+the diagnostic event preserves the turn and thread identifiers and the
+classified executor state for operational correlation. This does not claim
+that the guest booted or registered successfully; those remain separate
+execution observations.
+
 Compaction is durable model work with its own completion validation. Publication
 compares the context generation and eligible event frontier; failure leaves the
 prior checkpoint. A root Plan turn may wait on persisted human questions, and

@@ -29,6 +29,10 @@ defmodule Marshall.Threads.ProvisionWorker do
 
   def perform(%Oban.Job{}), do: {:cancel, :invalid_job}
 
+  @doc false
+  @spec retryable_activation_reason?(term()) :: boolean()
+  def retryable_activation_reason?(reason), do: reason in [:machine_not_ready, :agent_unavailable]
+
   @spec claim(String.t(), String.t()) :: :done | {:ok, Thread.t()} | {:error, term()}
   defp claim(thread_id, expected_key) do
     transact(fn ->
@@ -107,10 +111,18 @@ defmodule Marshall.Threads.ProvisionWorker do
 
       {:ok, running_vm} ->
         case activate(thread, actor, running_vm) do
-          :done -> :ok
-          {:ok, _ready} -> :ok
-          {:error, :machine_not_ready} -> {:snooze, 5}
-          {:error, reason} -> fail(thread, reason)
+          :done ->
+            :ok
+
+          {:ok, _ready} ->
+            :ok
+
+          # The guest may report running before its agent root/thread has
+          # registered. Keep the durable thread in provisioning and retry the
+          # initial objective admission instead of deleting the machine and
+          # losing the user's prompt as agent_unavailable.
+          {:error, reason} ->
+            if retryable_activation_reason?(reason), do: {:snooze, 5}, else: fail(thread, reason)
         end
     end
   end

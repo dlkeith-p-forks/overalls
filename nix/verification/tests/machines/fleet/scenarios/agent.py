@@ -51,6 +51,54 @@ with subtest("private guest agent path has authenticated host services"):
             timeout=120,
         )
 
+with subtest("machine objective is admitted and executed after provisioning"):
+    # Creating a user thread with an objective must provision its machine and
+    # admit the initial prompt automatically once the real guest is available.
+    created = operator(
+        m1,
+        dict(
+            action="thread-create",
+            owner_id=users["owner_id"],
+            image_id=users["image_id"],
+            key=str(uuid.uuid4()),
+        ),
+    )
+    thread_id = str(uuid.UUID(str(created["thread_id"])))
+    eventually(
+        lambda: sql(f"SELECT status FROM threads WHERE id='{thread_id}'") == "ready",
+        timeout=600,
+    )
+    vm_id = sql(f"SELECT machine_id FROM threads WHERE id='{thread_id}'")
+    assert vm_id is not None
+    vm_id = str(uuid.UUID(vm_id))
+    assert sql(f"SELECT agent_thread_id FROM threads WHERE id='{thread_id}'") == thread_id
+    eventually(lambda: vm_state(vm_id) == "running", timeout=300)
+    initial = f"thread-initial:{thread_id}"
+    eventually(
+        lambda: sql("SELECT count(*) FROM agent_turns WHERE request_key='" + initial + "'") == "1",
+        timeout=300,
+    )
+    turn_id = sql("SELECT id FROM agent_turns WHERE request_key='" + initial + "'")
+    assert turn_id is not None
+    eventually(
+        lambda: sql(f"SELECT status FROM agent_turns WHERE id='{turn_id}'") == "completed",
+        timeout=600,
+    )
+    assert (
+        sql(
+            f"SELECT count(*) FROM agent_model_calls WHERE turn_id='{turn_id}' AND status='completed'"
+        )
+        >= "1"
+    )
+    # Reconciliation/retry must preserve the idempotent initial admission.
+    m1.succeed("systemctl restart marshall-m1.service")
+    m1.wait_for_unit("marshall-m1.service")
+    eventually(
+        lambda: sql("SELECT count(*) FROM agent_turns WHERE request_key='" + initial + "'") == "1",
+        timeout=120,
+    )
+
+
 with subtest("shared operator prompt wakes guest and completes model tool round trip"):
     vm = provision_when_available(m1, "standard", disk_bytes=6_442_450_944)
     await_running(vm["vm_id"])

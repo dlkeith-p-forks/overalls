@@ -455,6 +455,17 @@ defmodule Marshall.Agents.ModelCalls do
       recoverable_rejection?(call, response) ->
         :ok
 
+      transient_provider_failure?(call, response) ->
+        Ledger.update!(call, :transition, %{
+          status: :queued,
+          response: nil,
+          finished_at: nil,
+          claim_id: nil,
+          claimed_at: nil
+        })
+
+        :ok
+
       match?({:ok, {:assistant, _}}, outcome) ->
         {:ok, {:assistant, text}} = outcome
         record_output!(thread, turn, response)
@@ -482,6 +493,23 @@ defmodule Marshall.Agents.ModelCalls do
 
     %{acknowledged: call.id}
   end
+
+  @doc false
+  @spec retryable_provider_response?(atom(), pos_integer(), map()) :: boolean()
+  def retryable_provider_response?(purpose, iteration, response)
+      when is_atom(purpose) and is_integer(iteration) and is_map(response) do
+    purpose == :inference and iteration < 3 and
+      get_in(response, ["error"]) in ["upstream_failed", "server_is_overloaded"]
+  end
+
+  def retryable_provider_response?(_, _, _), do: false
+
+  @spec transient_provider_failure?(ModelCall.t(), map()) :: boolean()
+  defp transient_provider_failure?(%ModelCall{purpose: purpose, iteration: iteration}, response) do
+    retryable_provider_response?(purpose, iteration, response)
+  end
+
+  defp transient_provider_failure?(_, _), do: false
 
   @spec recoverable_rejection?(ModelCall.t(), map()) :: boolean()
   defp recoverable_rejection?(call, response) do

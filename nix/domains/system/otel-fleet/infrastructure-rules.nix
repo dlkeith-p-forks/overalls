@@ -55,6 +55,8 @@ in {
         "An application SDK refused volatile trace admission")
       (eventAlert "OverallsSDKExportFailed" (''increase(overalls_gauge_trace_export_failed[5m]) > 0'' + fresh)
         "An application SDK failed a trace custody handoff")
+      (alert "OverallsAgentStuckTurns" ''overalls_gauge_agent_stuck_turns > 0''
+        "One or more agent turns have waited for context beyond two minutes")
     ] else []) ++ (if fleetExporterEnabled then [
       (alert "OverallsFleetCollectionMissing"
         ''${any (builtins.map (host: ''absent(overalls_fleet_collection_valid{host_name="${host}"})'') hosts)}''

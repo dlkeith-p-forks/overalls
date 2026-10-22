@@ -124,7 +124,8 @@ defmodule Marshall.Observability do
       "beam_memory_bytes" => :erlang.memory(:total),
       "beam_processes" => :erlang.system_info(:process_count),
       "beam_atoms" => :erlang.system_info(:atom_count),
-      "beam_run_queue" => :erlang.statistics(:total_run_queue_lengths)
+      "beam_run_queue" => :erlang.statistics(:total_run_queue_lengths),
+      "agent_stuck_turns" => stuck_agent_turns()
     })
     |> Map.merge(Marshall.Terminal.Metrics.snapshot())
   end
@@ -166,6 +167,7 @@ defmodule Marshall.Observability do
       beam_processes: metric_value(metrics, "beam_processes", 1),
       beam_atoms: metric_value(metrics, "beam_atoms", 1),
       beam_run_queue: metric_value(metrics, "beam_run_queue", 1),
+      agent_stuck_turns: metric_value(metrics, "agent_stuck_turns", 0),
       terminal_host_streams: metric_value(metrics, "terminal_host_streams", 1),
       terminal_viewer_sockets: metric_value(metrics, "terminal_viewer_sockets", 1),
       terminal_peer_sockets: metric_value(metrics, "terminal_peer_sockets", 1)
@@ -173,6 +175,21 @@ defmodule Marshall.Observability do
 
     Process.send_after(self(), :report, 60_000)
     {:noreply, state}
+  end
+
+  @spec stuck_agent_turns() :: non_neg_integer()
+  defp stuck_agent_turns do
+    case Ecto.Adapters.SQL.query(
+           Marshall.Repo,
+           "SELECT count(*) FROM agent_turns WHERE status = 'running' AND started_at < now() - interval '120 seconds'",
+           [],
+           log: false
+         ) do
+      {:ok, %{rows: [[count]]}} when is_integer(count) -> count
+      _ -> 0
+    end
+  rescue
+    _ -> 0
   end
 
   @impl true

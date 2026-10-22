@@ -27,6 +27,10 @@ defmodule Marshall.Agents.Loop do
   @claim_batch 16
   @running_batch 128
 
+  @doc false
+  @spec context_wait_event?(non_neg_integer()) :: boolean()
+  def context_wait_event?(wait_seconds), do: wait_seconds == 0 or rem(wait_seconds, 15) == 0
+
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(options), do: GenServer.start_link(__MODULE__, options, name: __MODULE__)
 
@@ -376,8 +380,25 @@ defmodule Marshall.Agents.Loop do
           :ok
 
         {:error, reason} when reason in [:executor_unavailable, :stale_execution] ->
-          if DateTime.diff(Ledger.now(), turn.started_at, :second) > 120,
-            do: TurnCoordinator.finish(turn_id, :failed, :context_unavailable)
+          wait_seconds = DateTime.diff(Ledger.now(), turn.started_at, :second)
+
+          if context_wait_event?(wait_seconds) do
+            Marshall.Events.emit("agent.context_waiting",
+              thread_id: turn.thread_id,
+              turn_id: turn.id,
+              reason: reason
+            )
+          end
+
+          if wait_seconds > 120 do
+            Marshall.Events.emit("agent.context_timeout",
+              thread_id: turn.thread_id,
+              turn_id: turn.id,
+              reason: reason
+            )
+
+            TurnCoordinator.finish(turn_id, :failed, :context_unavailable)
+          end
 
         {:error, reason} ->
           fail_context(turn_id, reason)

@@ -1,5 +1,5 @@
 ---
-digest: d7476169b349f79d0f563ce7a1ee94a64c6f74f26e6388ad0ecb5581223ff48d
+digest: 99f0e291831281a975bbfe77f2192b2b0e9ad08e1a3a3f82818f7c1f872fcc69
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Rust packaging and service command wiring preserve the documented observability endpoints, ports, sandbox boundaries and operational behavior; full native collector parity remains pending verification.
+Reviewed operational configuration and fleet scenario changes; existing handbook chapters already describe these boundaries and no chapter text change is required.

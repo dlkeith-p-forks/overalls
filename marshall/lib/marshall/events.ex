@@ -146,6 +146,18 @@ defmodule Marshall.Events do
     metadata: [vm_id: :uuid, thread_id: :uuid, turn_id: :uuid, outcome: :atom]
   )
 
+  defevent("agent.context_waiting",
+    level: :warning,
+    message: "Agent turn is waiting for execution context",
+    metadata: [thread_id: :uuid, turn_id: :uuid, reason: :atom]
+  )
+
+  defevent("agent.context_timeout",
+    level: :error,
+    message: "Agent turn context wait timed out",
+    metadata: [thread_id: :uuid, turn_id: :uuid, reason: :atom]
+  )
+
   defevent("agent.executor_registered",
     message: "Agent executor registered",
     metadata: [vm_id: :uuid, executor_id: :uuid]
@@ -1379,6 +1391,7 @@ defmodule Marshall.Events do
       beam_processes: {:int64, :optional},
       beam_atoms: {:int64, :optional},
       beam_run_queue: {:int64, :optional},
+      agent_stuck_turns: {:int64, :optional},
       terminal_host_streams: {:int64, :optional},
       terminal_viewer_sockets: {:int64, :optional},
       terminal_peer_sockets: {:int64, :optional}

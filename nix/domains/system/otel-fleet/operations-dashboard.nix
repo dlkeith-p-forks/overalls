@@ -32,7 +32,7 @@ in {
     (table 7 "Logging source validity and output budgets" 36
       ''{__name__=~"overalls_logging_.*valid|overalls_logging_.*budget_bytes|overalls_logging_shard_cursor_present"}'')
     (table 8 "Current infrastructure alerts" 46
-        ''ALERTS{alertname=~"OverallsLogging.*|OverallsFleet.*|OverallsBackup.*|OverallsUpdate.*|OverallsTelemetry.*|OverallsTrace.*|OverallsMetrics.*|OverallsLogStore.*|OverallsSDK.*"}'')
+        ''ALERTS{alertname=~"OverallsLogging.*|OverallsFleet.*|OverallsBackup.*|OverallsUpdate.*|OverallsTelemetry.*|OverallsTrace.*|OverallsMetrics.*|OverallsLogStore.*|OverallsSDK.*|OverallsAgent.*"}'')
     (table 9 "Trace custody · source validity, backlog and retained storage" 56
       ''{__name__=~"overalls_trace_spool_.*"}'')
     (table 10 "SDK producer health · fresh local counters by host and unit" 66
@@ -47,5 +47,7 @@ in {
       ''overalls_gauge_beam_memory_bytes and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds >= 0) and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds < 90)'' "bytes")
     (timeseries 15 "BEAM run queue · fresh runtime observations" 92
       ''overalls_gauge_beam_run_queue and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds >= 0) and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds < 90)'' "short")
+    (timeseries 16 "Stuck agent turns" 100
+      ''overalls_gauge_agent_stuck_turns'' "short")
   ];
 }
