@@ -17,7 +17,20 @@ fn main() -> std::io::Result<()> {
             "invalid descriptor",
         ));
     }
-    common::serve("127.0.0.1", 9466, || {
+    let port = descriptor
+        .split("\"port\"")
+        .nth(1)
+        .and_then(|value| value.split(':').nth(1))
+        .and_then(|value| {
+            value
+                .trim()
+                .trim_start_matches(':')
+                .split(|c: char| !c.is_ascii_digit())
+                .next()
+        })
+        .and_then(|value| value.parse::<u16>().ok())
+        .unwrap_or(9466);
+    common::serve("127.0.0.1", port, || {
         let now = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .map_or(0.0, |d| d.as_secs_f64());

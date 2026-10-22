@@ -1,5 +1,5 @@
 ---
-digest: e2e96211f6d0916e0dc5dfdf60c3f77f3c3a0a8b3072e11a0a6933c9bd2053b4
+digest: aa32f8c3c2cc692e9d34ec516ac0e0a30eedfc69e002d4bbaff575ff710090f2
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now emits bounded native host load and available-memory gauges from procfs while preserving loopback endpoint and collection validity behavior.
+Fleet exporter now reads its configured descriptor port while retaining the bounded native host metric projection.
