@@ -178,8 +178,26 @@ private struct SettingsView: View {
     @State private var notificationEndpoint = ""
     @State private var notificationStatus = ""
     @State private var notificationsEnabled = false
+    @State private var deploymentHost = ""
+    @State private var deploymentPort = "22"
+    @State private var deploymentTrust = ""
+    @State private var deploymentStatus = ""
+    @State private var deployments: [MilaDeployment] = MilaDeploymentStore().list()
     var body: some View {
         Form {
+            Section("Deployment") {
+                TextField("Host", text: $deploymentHost)
+                TextField("Port", text: $deploymentPort)
+                TextField("Pinned trust", text: $deploymentTrust)
+                Button("Save deployment") {
+                    guard let port = UInt16(deploymentPort), let trust = Data(base64Encoded: deploymentTrust), MilaDeploymentStore().upsert(MilaDeployment(host: deploymentHost, port: port, trust: trust)) else { deploymentStatus = "Invalid deployment"; return }
+                    deployments = MilaDeploymentStore().list(); deploymentStatus = "Deployment saved"
+                }
+                ForEach(deployments) { deployment in
+                    HStack { Text("\(deployment.host):\(deployment.port)"); Spacer(); Button("Remove") { MilaDeploymentStore().remove(deployment.id); deployments = MilaDeploymentStore().list() } }
+                }
+                Text(deploymentStatus).font(.caption)
+            }
             Section(MilaStrings.text(.appearance)) {
                 Picker(MilaStrings.text(.appearance), selection: $appearance) {
                     Text(MilaStrings.text(.appearanceSystem)).tag("system")
