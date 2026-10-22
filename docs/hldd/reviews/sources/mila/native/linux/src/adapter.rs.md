@@ -1,11 +1,11 @@
 ---
-digest: e84c9127d6a91c0fd705b1e4efcb3da753ea2e0c285d828429eea2a74a41dd95
+digest: 2626b87ffb5bbbe4382230d9167aa9e24740b1c7bddf1708b446298559e687a8
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/adapter.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 5cd1ebbcc7a0aec75a8a6e1611fd4296e9c81b4fc19787930e559f74f384ebc8
+  marshall/priv/hldd/08-interactive.md: c59d4f5f150f1983b6436262aecc63618bc721c93b9a6447b57464c3800b4c37
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent native platform change; domain and topology boundaries remain unchanged.
+Bound web endpoint routes to the authenticated machine identifier; this tightens the documented projection without changing its user-facing scope.
