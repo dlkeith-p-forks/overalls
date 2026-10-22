@@ -431,6 +431,83 @@ pub fn validate_terminal_operation(operation: TerminalOperation) -> Result<(), R
     }
 }
 
+/// Payload-free PTY lifecycle owned by the Linux host. The stream bytes stay in
+/// the GTK transport; this reducer only tracks generation, cursor and authority.
+#[derive(Debug)]
+pub struct TerminalStream {
+    state: mila_runtime::TerminalAttach,
+}
+
+impl TerminalStream {
+    pub fn new() -> Self {
+        Self {
+            state: mila_runtime::TerminalAttach::initial(),
+        }
+    }
+    pub fn state(&self) -> &mila_runtime::TerminalAttach {
+        &self.state
+    }
+    pub fn attach(&mut self) -> Result<u64, RuntimeError> {
+        self.state
+            .request()
+            .then_some(self.state.generation())
+            .ok_or(RuntimeError::Unavailable)
+    }
+    pub fn connected(
+        &mut self,
+        generation: u64,
+        cursor: u64,
+        read_write: bool,
+    ) -> Result<(), RuntimeError> {
+        let mode = if read_write {
+            mila_runtime::AttachMode::ReadWrite
+        } else {
+            mila_runtime::AttachMode::ReadOnly
+        };
+        self.state
+            .header(
+                generation,
+                Some(mila_runtime::AttachHeader::Attached { from: cursor, mode }),
+            )
+            .then_some(())
+            .ok_or(RuntimeError::InvalidInput)
+    }
+    pub fn output(&mut self, generation: u64, length: usize) -> Result<(), RuntimeError> {
+        self.state
+            .output(generation, length)
+            .then_some(())
+            .ok_or(RuntimeError::InvalidInput)
+    }
+    pub fn reconnect(&mut self) -> Result<u64, RuntimeError> {
+        self.attach()
+    }
+    pub fn kill(&mut self, generation: u64) -> Result<(), RuntimeError> {
+        self.state
+            .ended(generation, mila_runtime::AttachOutcome::Closed)
+            .then_some(())
+            .ok_or(RuntimeError::InvalidInput)
+    }
+    pub fn validate_input(&self, length: usize) -> Result<(), RuntimeError> {
+        if !self.state.can_send_input() {
+            return Err(RuntimeError::Unavailable);
+        }
+        validate_terminal_operation(TerminalOperation::Input {
+            length,
+            read_write: true,
+        })
+    }
+    pub fn validate_resize(&self, columns: u16, rows: u16) -> Result<(), RuntimeError> {
+        if !self.state.can_resize() {
+            return Err(RuntimeError::Unavailable);
+        }
+        validate_terminal_operation(TerminalOperation::Resize {
+            columns,
+            rows,
+            read_write: true,
+        })
+    }
+}
+
 /// Operations the native UI may request from the generated runtime.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RuntimeOperation {
@@ -550,6 +627,36 @@ mod web_tests {
             None
         )
         .is_err());
+    }
+}
+
+#[cfg(test)]
+mod terminal_stream_tests {
+    use super::*;
+    use mila_runtime::AttachPhase;
+
+    #[test]
+    fn stream_reconnect_and_kill_are_generation_scoped() {
+        let mut stream = TerminalStream::new();
+        let generation = stream.attach().expect("attach");
+        stream.connected(generation, 0, true).expect("connected");
+        stream.output(generation, 4).expect("output");
+        stream.validate_input(4).expect("input grant");
+        stream.kill(generation).expect("kill");
+        assert_eq!(stream.state().phase(), AttachPhase::Ended);
+        assert!(stream.output(generation, 1).is_err());
+        let next = stream.reconnect().expect("reconnect");
+        assert_ne!(next, generation);
+        assert!(stream.kill(generation).is_err());
+    }
+
+    #[test]
+    fn read_only_stream_rejects_input_and_resize() {
+        let mut stream = TerminalStream::new();
+        let generation = stream.attach().expect("attach");
+        stream.connected(generation, 0, false).expect("connected");
+        assert!(stream.validate_input(1).is_err());
+        assert!(stream.validate_resize(80, 24).is_err());
     }
 }
 

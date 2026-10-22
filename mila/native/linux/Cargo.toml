@@ -16,6 +16,7 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 mila-ffi = { path = "../../rust/mila-ffi" }
 mila-session = { path = "../../rust/mila-session" }
+mila-runtime = { path = "../../rust/mila-runtime" }
 mila-protocol = { path = "../../rust/mila-protocol" }
 # Keep the GTK and libadwaita bindings on the same generation. The host's GTK runtime
 # remains responsible for supplying the system libraries at build and run time.

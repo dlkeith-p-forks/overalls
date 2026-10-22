@@ -6,6 +6,9 @@ public sealed partial class MainWindow : Window
 {
     private string? _activeHost;
     private bool _notificationsEnabled;
+    private readonly MilaSshKeysController _sshKeys = new(
+        _ => Task.FromResult<IReadOnlyList<MilaSshKey>>(Array.Empty<MilaSshKey>()),
+        (_, _) => Task.CompletedTask);
     private readonly MilaThreadController _threadController = new();
     public MainWindow()
     {
@@ -60,11 +63,15 @@ public sealed partial class MainWindow : Window
         WebCopy.Content = S("webCopy", "Copy address");
         WebStatus.Text = S("webNoAddress", "No web address");
     }
-    private void RefreshSshKeys(object sender, RoutedEventArgs args)
+    private async void RefreshSshKeys(object sender, RoutedEventArgs args)
     {
+        await _sshKeys.LoadAsync(_activeHost is not null);
+        SshKeyRows.ItemsSource = _sshKeys.Keys;
         SshKeysStatus.Text = _activeHost is null
             ? S("sshKeysSignInFirst", "Sign in to manage SSH keys.")
-            : S("sshKeysLoading", "Loading SSH keys…");
+            : _sshKeys.Status == MilaSshKeysStatus.Failed
+                ? S("sshKeysFailed", "Unable to load SSH keys.")
+                : string.Format(S("sshKeysLoaded", "{0} approved keys."), _sshKeys.Keys.Count);
     }
     private void ShareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share add {SampleMachine} user viewer");
     private void UnshareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");

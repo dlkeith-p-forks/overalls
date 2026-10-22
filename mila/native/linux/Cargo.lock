@@ -1526,6 +1526,7 @@ dependencies = [
  "libadwaita",
  "mila-ffi",
  "mila-protocol",
+ "mila-runtime",
  "mila-session",
  "serde",
  "serde_json",

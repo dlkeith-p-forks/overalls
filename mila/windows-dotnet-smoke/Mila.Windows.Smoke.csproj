@@ -11,6 +11,7 @@
     <Compile Include="../windows-dotnet/Interop/RustNative.cs" Link="Interop/RustNative.cs" />
     <Compile Include="../windows-dotnet/Interop/DeviceKey.cs" Link="Interop/DeviceKey.cs" />
     <Compile Include="../windows-dotnet/Interop/SessionListing.cs" Link="Interop/SessionListing.cs" />
+    <Compile Include="../windows-dotnet/Interop/SshKeys.cs" Link="Interop/SshKeys.cs" />
   </ItemGroup>
   <Target Name="StageMilaNative" AfterTargets="Build">
     <Error Condition="'$(MilaNativeDll)' == '' Or !Exists('$(MilaNativeDll)')" Text="Supply MilaNativeDll pointing to the staged production mila_native.dll." />
