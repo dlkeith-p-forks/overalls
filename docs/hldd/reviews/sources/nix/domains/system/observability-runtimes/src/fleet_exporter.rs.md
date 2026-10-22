@@ -1,5 +1,5 @@
 ---
-digest: d57976e00b54ba09ddd69d7b319f69df3a5ce2b3875ea55d6507993027c36da5
+digest: f4a08a4976198ccaf0423db9882490752aa4e82cb151a49709de1ebdd7a27bb8
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter adds read-only bounded ZFS pool health, size and free-space projection when configured, with strict validation and no lifecycle mutation.
+Fleet exporter adds a bounded allowlisted backup state projection only when backups are enabled in its descriptor.

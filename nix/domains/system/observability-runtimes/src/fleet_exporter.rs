@@ -71,6 +71,13 @@ fn main() -> std::io::Result<()> {
                 output.push_str(&format!("overalls_fleet_info{{kind=\"zpool\",entity=\"{name}\",health=\"{health}\"}} 1\n"));
             }
         }
+        if descriptor.contains("\"backups_enabled\":true") {
+            if let Some(state) = backup_state() {
+                output.push_str(&format!(
+                    "overalls_fleet_backup_state{{state=\"{state}\"}} 1\n"
+                ));
+            }
+        }
         if let Some(status) = updater_status() {
             if let Some(phase) = status.phase {
                 output.push_str(&format!(
@@ -243,6 +250,22 @@ fn zpool_metrics(command: &str) -> Vec<(String, String, u64, u64)> {
             .filter(|(name, health, _, _)| valid(name) && valid(health))
         })
         .collect()
+}
+
+fn backup_state() -> Option<String> {
+    let text = fs::read_to_string("/var/lib/overalls-backups/status.json").ok()?;
+    if text.len() > 8192 {
+        return None;
+    }
+    let state = text
+        .split("\"state\"")
+        .nth(1)?
+        .split(':')
+        .nth(1)?
+        .split('"')
+        .nth(1)?;
+    matches!(state, "idle" | "running" | "success" | "failed" | "unknown")
+        .then_some(state.to_owned())
 }
 
 fn unit_state(unit: &str) -> Option<(String, String)> {
