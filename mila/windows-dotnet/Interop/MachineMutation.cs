@@ -13,7 +13,9 @@ internal sealed class MilaMachineMutationController
     internal void SetSession(bool authenticated, ulong handle = 0) {
         _authenticated = authenticated && handle != 0;
         _handle = _authenticated ? handle : 0;
-        State = authenticated ? new(MilaMachineMutationStateKind.Ready, null, null, null) : new(MilaMachineMutationStateKind.SignedOut, null, null, null);
+        State = _authenticated
+            ? new(MilaMachineMutationStateKind.Ready, null, null, null)
+            : new(MilaMachineMutationStateKind.SignedOut, null, null, null);
     }
 
     internal bool Submit(Guid machineId, string action, string requestId)

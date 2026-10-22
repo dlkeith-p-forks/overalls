@@ -10,6 +10,8 @@ public sealed partial class MainWindow : Window
         _ => Task.FromResult<IReadOnlyList<MilaSshKey>>(Array.Empty<MilaSshKey>()),
         (_, _) => Task.CompletedTask);
     private readonly MilaThreadController _threadController = new();
+    private readonly MilaMachineMutationController _machineMutation = new();
+    private MilaMachineRow? _selectedMachine;
     private readonly MilaAppLockController _appLock = new(new MilaWindowsHelloBroker());
     public MainWindow()
     {
@@ -132,6 +134,10 @@ public sealed partial class MainWindow : Window
         }
         StatusText.Text = S("signInConnecting", "Connecting to deployment…").Replace("{host}", host, StringComparison.Ordinal);
         ConnectDeployment.IsEnabled = false;
+        // A browser connection is not an authenticated Rust session yet. Keep
+        // mutation controls explicitly signed out until the session broker
+        // supplies its non-zero handle.
+        _machineMutation.SetSession(false);
         _ = ConnectDeploymentAsync(host);
     }
     private async Task ConnectDeploymentAsync(string host)
@@ -207,6 +213,8 @@ public sealed partial class MainWindow : Window
 
     private void RefreshMachines()
     {
+        _selectedMachine = null;
+        _machineMutation.SetSession(false);
         MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
         if (_activeHost is { } host)
         {
@@ -218,6 +226,7 @@ public sealed partial class MainWindow : Window
     private void OnMachineSelected(object sender, SelectionChangedEventArgs args)
     {
         if (MachineRows.SelectedItem is not MilaMachineRow machine) return;
+        _selectedMachine = machine;
         string access = machine.CanManage ? S("machineAccessOwner", "Manage") : machine.CanWrite ? S("machineAccessShared", "Write") : S("terminalReadOnly", "Read only");
         MachineCommandStatus.Text = $"{machine.Name} ({machine.DesiredState}) — {access}";
     }
@@ -273,11 +282,11 @@ public sealed partial class MainWindow : Window
     private void ClassifyMachineShow(object sender, RoutedEventArgs args) => ClassifyMachine("show demo");
     private void ClassifyMachineNew(object sender, RoutedEventArgs args) => ClassifyMachine("new");
     private void ClassifyMachineResize(object sender, RoutedEventArgs args) => ClassifyMachine($"resize {SampleMachine}");
-    private void ClassifyMachineStart(object sender, RoutedEventArgs args) => ClassifyMachine($"start {SampleMachine}");
-    private void ClassifyMachineStop(object sender, RoutedEventArgs args) => ClassifyMachine($"stop {SampleMachine}");
-    private void ClassifyMachinePause(object sender, RoutedEventArgs args) => ClassifyMachine($"pause {SampleMachine}");
-    private void ClassifyMachineResume(object sender, RoutedEventArgs args) => ClassifyMachine($"resume {SampleMachine}");
-    private void ClassifyMachineDelete(object sender, RoutedEventArgs args) => ClassifyMachine($"rm {SampleMachine}");
+    private void ClassifyMachineStart(object sender, RoutedEventArgs args) => SubmitMachineMutation("start");
+    private void ClassifyMachineStop(object sender, RoutedEventArgs args) => SubmitMachineMutation("stop");
+    private void ClassifyMachinePause(object sender, RoutedEventArgs args) => SubmitMachineMutation("pause");
+    private void ClassifyMachineResume(object sender, RoutedEventArgs args) => SubmitMachineMutation("resume");
+    private void ClassifyMachineDelete(object sender, RoutedEventArgs args) => SubmitMachineMutation("rm");
     private void ClassifyMachineShareAdd(object sender, RoutedEventArgs args) => ClassifyMachine($"share add {SampleMachine} user viewer");
     private void ClassifyMachineShareRemove(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");
     private void ClassifyMachineWebShow(object sender, RoutedEventArgs args) => ClassifyMachine($"web show {SampleMachine}");
@@ -300,5 +309,23 @@ public sealed partial class MainWindow : Window
         MachineCommandStatus.Text = formatted.Status == MilaNativeStatus.Ok
             ? $"{command}: {value} — {S("requestWaiting", "Request formatted by Rust")}" 
             : $"{command}: {S("requestRefused", "Request refused")}";
+    }
+
+    private void SubmitMachineMutation(string action)
+    {
+        if (_selectedMachine is null)
+        {
+            MachineCommandStatus.Text = S("machineNotSelected", "Select a machine first.");
+            return;
+        }
+        bool applied = _machineMutation.Submit(
+            _selectedMachine.Id,
+            action,
+            Guid.NewGuid().ToString("D"));
+        MachineCommandStatus.Text = applied
+            ? S("requestSucceeded", "Request submitted")
+            : _machineMutation.State.Kind == MilaMachineMutationStateKind.SignedOut
+                ? S("signInFirst", "Sign in first")
+                : S("requestFailed", "Request refused");
     }
 }

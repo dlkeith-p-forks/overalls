@@ -49,6 +49,8 @@ internal static class Program
             Require(RustNative.TryFormatMachineCommand(action, machineId, "porsche-0123456789abcdef0123456789abcdef").Command is null, "action injection refusal");
         Require(RustNative.TryFormatMachineCommand("stop", machineId, null).Command is null, "mutation request required");
         Require(RustNative.TryFormatMachineCommand("stop", machineId, "id\0suffix").Command is null, "request truncation refusal");
+        MilaNativeSessionActionResult invalidSession = RustNative.TrySessionMachineAction(0, machineId, "stop", "porsche-0123456789abcdef0123456789abcdef");
+        Require(invalidSession.Status == MilaNativeStatus.InvalidRequest, "missing authenticated session refusal");
         MilaNativeThreadCommandResult thread = RustNative.TryClassifyThreadCommand("thread ls");
         Require(thread.Status == MilaNativeStatus.Ok && thread.Kind == MilaThreadCommandKind.List, "thread command projection");
         Require(RustNative.TryClassifyThreadCommand("thread delete abc").Kind is null, "unknown thread command refusal");

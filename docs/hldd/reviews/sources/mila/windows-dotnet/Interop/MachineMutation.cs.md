@@ -1,5 +1,5 @@
 ---
-digest: 1ef2de4d5387427bf2ae9d22b31b5213c9e8045ce4f9198af7fa0805b5342d42
+digest: a6fe8eb7950cc608e7ec556730a5aebd3444666438c1ba5168b634dd5d7d3b24
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android notification OS adapter and Windows mutation controller preserve typed native boundaries.
+Windows machine mutation UI remains gated on authenticated native session handle and Rust command boundary.

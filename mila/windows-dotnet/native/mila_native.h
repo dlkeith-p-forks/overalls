@@ -51,6 +51,13 @@ typedef enum MilaThreadCommandKind { MILA_THREAD_UNKNOWN = 0, MILA_THREAD_LIST =
 MilaFfiStatus mila_thread_command_kind(const char *line, MilaThreadCommandKind *out_kind);
 typedef enum MilaMachineCommandKind { MILA_MACHINE_UNKNOWN = 0, MILA_MACHINE_LIST = 1, MILA_MACHINE_SHOW = 2, MILA_MACHINE_NEW = 3, MILA_MACHINE_RESIZE = 4, MILA_MACHINE_START = 5, MILA_MACHINE_STOP = 6, MILA_MACHINE_PAUSE = 7, MILA_MACHINE_RESUME = 8, MILA_MACHINE_DELETE = 9, MILA_MACHINE_SHARE_ADD = 10, MILA_MACHINE_SHARE_REMOVE = 11, MILA_MACHINE_WEB_SHOW = 12, MILA_MACHINE_WEB_SET = 13 } MilaMachineCommandKind;
 MilaFfiStatus mila_machine_command_kind(const char *line, MilaMachineCommandKind *out_kind);
+
+/* Authenticated session mutation. Inputs are bounded UTF-8 and are never shell
+ * interpreted by the native boundary; the Rust session owns command creation. */
+int32_t mila_session_machine_action(uint64_t handle, const uint8_t *machine,
+                                    size_t machine_len, const uint8_t *action,
+                                    size_t action_len, const uint8_t *request_id,
+                                    size_t request_id_len);
 MilaFfiStatus mila_terminal_attach_validate(uint64_t from, uint16_t columns,
                                            uint16_t rows, uint8_t read_write);
 MilaFfiStatus mila_terminal_input_validate(size_t length, uint8_t read_write);

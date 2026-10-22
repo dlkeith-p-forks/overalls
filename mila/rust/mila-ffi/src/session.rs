@@ -242,6 +242,37 @@ pub unsafe extern "C" fn mila_session_machine_action(
         Ok(())
     })
 }
+
+pub unsafe extern "C" fn mila_session_web_show(
+    handle: u64, machine: *const u8, machine_len: usize, out: *mut u8,
+    capacity: usize, written: *mut usize,
+) -> SessionStatus {
+    guarded(|| {
+        let machine = std::str::from_utf8(bytes(machine, machine_len, 128)?).map_err(|_| SessionStatus::Invalid)?;
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        let data = runtime.block_on(session.web_show(machine)).map_err(|e| match e { mila_session::SessionError::Transport(_) => SessionStatus::Transport, _ => SessionStatus::Invalid })?;
+        output(&data, out, capacity, written)
+    })
+}
+
+pub unsafe extern "C" fn mila_session_web_set(
+    handle: u64, machine: *const u8, machine_len: usize, port: u16, public: u8,
+    revision: u64, request_id: *const u8, request_id_len: usize,
+) -> SessionStatus {
+    guarded(|| {
+        if public > 1 { return Err(SessionStatus::Invalid); }
+        let machine = std::str::from_utf8(bytes(machine, machine_len, 128)?).map_err(|_| SessionStatus::Invalid)?;
+        let request_id = std::str::from_utf8(bytes(request_id, request_id_len, 64)?).map_err(|_| SessionStatus::Invalid)?;
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        runtime.block_on(session.web_set(machine, port, public == 1, revision, request_id)).map_err(|e| match e { mila_session::SessionError::Transport(_) => SessionStatus::Transport, _ => SessionStatus::Invalid })
+    })
+}
 /// Copy validated display JSON: {"machines":[snapshot rows],"has_more":bool}.
 /// # Safety
 /// out references capacity writable bytes; written is writable. Null out with zero

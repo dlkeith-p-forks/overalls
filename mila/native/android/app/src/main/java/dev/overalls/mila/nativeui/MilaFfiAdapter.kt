@@ -119,6 +119,8 @@ interface MilaRustBindings {
     fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int?
     fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle?
     fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = -12
+    fun sessionWebShow(handle: Long, machine: String): ByteArray? = null
+    fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = -12
     /** Returns the closed Rust thread-command tag, or -1 for an unknown command. */
     fun threadCommandKind(value: String): Int
     fun machineCommandKind(value: String): Int
@@ -155,6 +157,8 @@ internal object MilaRustFfi : MilaRustBindings {
         return nativeSessionConnect(trust, host, publicKey, port, timeoutMs, signer)?.let(::MilaSessionHandle)
     }
     override fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = nativeSessionMachineAction(handle, machine, action, requestId)
+    override fun sessionWebShow(handle: Long, machine: String): ByteArray? = nativeSessionWebShow(handle, machine)
+    override fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = nativeSessionWebSet(handle, machine, port, public, revision, requestId)
 
     override fun threadCommandKind(value: String): Int {
         check(loaded) { "mila_ffi is unavailable" }
@@ -184,6 +188,8 @@ internal object MilaRustFfi : MilaRustBindings {
     @JvmStatic
     external fun nativeSessionRead(handle: Long, more: Boolean): Int
     @JvmStatic external fun nativeSessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int
+    @JvmStatic external fun nativeSessionWebShow(handle: Long, machine: String): ByteArray?
+    @JvmStatic external fun nativeSessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int
     @JvmStatic
     external fun nativeSessionListing(handle: Long): ByteArray?
     @JvmStatic
@@ -211,6 +217,14 @@ class MilaSessionHandle internal constructor(private val nativeHandle: Long) : A
         val status = MilaRustFfi.nativeSessionMachineAction(nativeHandle, machine.toString(), action, requestId)
         if (status != 0) error("machine action rejected")
     }
+    @Synchronized fun webShow(machine: UUID): Result<ByteArray> = runCatching {
+        check(!closed)
+        MilaRustFfi.nativeSessionWebShow(nativeHandle, machine.toString()) ?: error("web endpoint unavailable")
+    }
+    @Synchronized fun webSet(machine: UUID, port: Int, public: Boolean, revision: Long, requestId: String): Result<Unit> = runCatching {
+        check(!closed)
+        check(MilaRustFfi.nativeSessionWebSet(nativeHandle, machine.toString(), port, public, revision, requestId) == 0)
+    }
     @Synchronized override fun close() { if (!closed) { MilaRustFfi.nativeSessionClose(nativeHandle); closed = true } }
 }
 
@@ -227,6 +241,14 @@ class LinkedMilaFfiAdapter(
         val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
         val requestId = "porsche-" + java.util.UUID.randomUUID().toString().replace("-", "")
         return session.machineAction(machineId, command, requestId)
+    }
+    override suspend fun webShow(machineId: UUID): Result<String> {
+        val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
+        return session.webShow(machineId).map { it.toString(Charsets.UTF_8) }
+    }
+    override suspend fun webSet(machineId: UUID, port: Int, public: Boolean, revision: Long): Result<Unit> {
+        val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
+        return session.webSet(machineId, port, public, revision, "porsche-" + UUID.randomUUID().toString().replace("-", ""))
     }
 
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {
