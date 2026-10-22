@@ -1,5 +1,5 @@
 ---
-digest: 4427d108ba9e262f4d6da257bbccff5bf591f52141df3c6644872cf070cb466a
+digest: 7877900694511943de5579901806d994595a6c9dfb8984ee213c3ba26aa744e3
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native compile fixes preserve existing localized web controls and WinUI resource styling while restoring platform build validity.
+CI-driven Swift concurrency/localization typing and WinUI resource ordering fixes restore native compilation without changing product behavior.

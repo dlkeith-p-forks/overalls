@@ -12,7 +12,7 @@ public enum MilaStrings {
 
     public static func text(_ message: MilaMessage, locale: Locale = .current) -> String {
         for candidate in [locale.identifier.replacingOccurrences(of: "_", with: "-"), locale.language.languageCode ?? "en", "en"] {
-            if let value = resourceValue(message, locale: candidate) { return value }
+            if let value: String = resourceValue(message, locale: candidate) { return value }
         }
         switch message {
         case .appName: return "Mila"; case .sharePrincipal: return "Share principal"; case .shareAdd: return "Share"; case .shareRemove: return "Remove share"; case .shareAdded: return "Share added"; case .shareRemoved: return "Share removed"; case .machines: return "Machines"; case .threads: return "Threads"; case .settings: return "Settings"

@@ -1,5 +1,5 @@
 ---
-digest: 3d8eeb28d6a7d5eaabb4f5bb7176a41a93463cef2be12bb0df7e719d308213fd
+digest: 970b6c985e37cc9ca21fe9a575c703769aa8f5dd8e895eb1c212fbdb971deb93
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-WinUI resource dictionary syntax now uses the supported merged dictionary form without changing user-visible styling.
+CI-driven Swift concurrency/localization typing and WinUI resource ordering fixes restore native compilation without changing product behavior.
