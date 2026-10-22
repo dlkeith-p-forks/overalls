@@ -345,6 +345,51 @@ pub fn format_web_command(
         .map_err(|_| RuntimeError::InvalidInput)
 }
 
+/// A bounded authenticated web endpoint projection safe for GTK display.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct WebEndpoint {
+    pub machine_id: String,
+    pub label: String,
+    pub port: u16,
+    pub visibility: String,
+    pub policy_revision: u64,
+    pub url: Option<String>,
+    pub route: String,
+}
+
+/// Decode and validate the authenticated `web show --json` result without
+/// retaining the server envelope or accepting non-HTTPS browser destinations.
+pub fn decode_web_endpoint(bytes: &[u8]) -> Result<WebEndpoint, RuntimeError> {
+    if bytes.len() > 64 * 1024 {
+        return Err(RuntimeError::InvalidInput);
+    }
+    let endpoint: WebEndpoint =
+        serde_json::from_slice(bytes).map_err(|_| RuntimeError::InvalidInput)?;
+    if endpoint.machine_id.is_empty()
+        || endpoint.machine_id.len() > 128
+        || endpoint
+            .machine_id
+            .bytes()
+            .any(|byte| byte.is_ascii_control() || byte.is_ascii_whitespace() || byte == 0)
+        || endpoint.label.is_empty()
+        || endpoint.label.len() > 256
+        || endpoint.label.chars().any(char::is_control)
+        || endpoint.port == 0
+        || !matches!(endpoint.visibility.as_str(), "private" | "public")
+        || endpoint.route.len() > 2_048
+        || endpoint.route.chars().any(char::is_control)
+        || crate::route::ActivationRoute::parse(&endpoint.route).is_err()
+        || endpoint.url.as_deref().is_some_and(|url| {
+            url.len() > 2_048
+                || !url.starts_with("https://")
+                || url.contains(['@', '#', ' ', '\t', '\n', '\r'])
+        })
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok(endpoint)
+}
+
 /// Validates Linux push registration metadata through the shared Rust policy.
 /// Token material is accepted only for the duration of this call and never
 /// returned to GTK or retained by the adapter.
@@ -587,6 +632,15 @@ mod web_tests {
             format_web_command("set", MACHINE, Some(8080), true, Some(REQUEST)).unwrap(),
             format!("web set {MACHINE} --json --port=8080 --public --request-id={REQUEST}")
         );
+    }
+
+    #[test]
+    fn authenticated_web_projection_requires_https_and_canonical_route() {
+        let value = br#"{"machine_id":"01234567-89ab-cdef-0123-456789abcdef","label":"web-box","port":8080,"visibility":"private","policy_revision":4,"url":null,"route":"overalls://fleet.example/machines/01234567-89ab-cdef-0123-456789abcdef/web"}"#;
+        let endpoint = decode_web_endpoint(value).expect("web endpoint");
+        assert_eq!(endpoint.policy_revision, 4);
+        let bad = br#"{"machine_id":"01234567-89ab-cdef-0123-456789abcdef","label":"web-box","port":8080,"visibility":"private","policy_revision":4,"url":"http://web-box.example","route":"overalls://fleet.example/machines/01234567-89ab-cdef-0123-456789abcdef/web"}"#;
+        assert!(decode_web_endpoint(bad).is_err());
     }
 
     #[test]

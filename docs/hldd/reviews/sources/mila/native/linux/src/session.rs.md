@@ -1,11 +1,11 @@
 ---
-digest: b72917e28d615ef5556735d28df6f6a6a44c969cb10a03ace03efb30f88f38c2
+digest: 30cfc3d872028c2ff07c824d01f2acdf9e80af55d53103329684d8d6e90259f0
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/session.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: d1210da76cefdad36e8e57ad8dcc19cb557d8ca390979c2efcdb7075b02d60b7
+  marshall/priv/hldd/08-interactive.md: 5cd1ebbcc7a0aec75a8a6e1611fd4296e9c81b4fc19787930e559f74f384ebc8
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Tightened malformed HTTPS fetch handling to preserve the documented fail-closed trust behavior; no new reader-visible scope.
+Reviewed concurrent Linux session source; no impact on Android locale change

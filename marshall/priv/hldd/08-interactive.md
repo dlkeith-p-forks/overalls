@@ -1256,6 +1256,11 @@ and HTTPS implementation remain integration boundaries, so GTK does not claim a
 live production sign-in journey until those adapters and approval polling are
 wired.
 
+Once a session is authenticated, Linux web controls call Rust-owned `web show`
+and `web set` operations. Endpoint projections accept only bounded canonical
+routes and HTTPS URLs; mutations carry the displayed policy revision and a
+client request id. GTK browser launch and a live ingress journey remain open.
+
 Evidence: [transport](repo:mila/packages/mila_transport/lib/src/ssh_porsche.dart)
 and its [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart),
 [host certificates](repo:mila/packages/mila_core/lib/src/host_trust.dart),

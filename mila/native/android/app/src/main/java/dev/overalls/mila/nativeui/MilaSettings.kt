@@ -1,6 +1,7 @@
 package dev.overalls.mila.nativeui
 
 import android.content.SharedPreferences
+import java.util.Locale
 
 /** Persisted user preferences shared by the Android shell and its tests. */
 enum class MilaAppearance { System, Light, Dark }
@@ -9,9 +10,14 @@ data class MilaSettings(
     val appearance: MilaAppearance = MilaAppearance.System,
     val locale: String = "en",
 ) {
-    init {
-        require(locale.matches(Regex("^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$"))) { "invalid locale" }
-    }
+    init { require(canonicalMilaLocale(locale) != null) { "invalid locale" } }
+}
+
+/** Canonical BCP-47 locale accepted by the shared catalog loader. */
+fun canonicalMilaLocale(value: String): String? {
+    if (!value.matches(Regex("^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"))) return null
+    val tag = Locale.forLanguageTag(value).toLanguageTag()
+    return tag.takeIf { it != "und" && it.substringBefore('-').length in 2..3 }
 }
 
 interface MilaSettingsStore {
@@ -32,7 +38,7 @@ class MilaSettingsController(private val store: MilaSettingsStore) {
             "dark" -> MilaAppearance.Dark
             else -> MilaAppearance.System
         }
-        val locale = store.read(KEY_LOCALE)?.takeIf { it.matches(LOCALE_PATTERN) } ?: "en"
+        val locale = store.read(KEY_LOCALE)?.let(::canonicalMilaLocale) ?: "en"
         return MilaSettings(appearance, locale)
     }
 
@@ -44,6 +50,5 @@ class MilaSettingsController(private val store: MilaSettingsStore) {
     private companion object {
         const val KEY_APPEARANCE = "mila.appearance"
         const val KEY_LOCALE = "mila.locale"
-        val LOCALE_PATTERN = Regex("^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$")
     }
 }

@@ -2,8 +2,9 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    decode_listing, format_machine_action, format_share_command, format_ssh_key_revoke,
-    format_thread_command, format_thread_turns, format_web_command, TerminalStream,
+    decode_listing, decode_web_endpoint, format_machine_action, format_share_command,
+    format_ssh_key_revoke, format_thread_command, format_thread_turns, format_web_command,
+    TerminalStream,
 };
 use mila_native_linux::machine_view::{project_detail, project_listing};
 use mila_native_linux::notifications::NotificationState;
@@ -619,6 +620,10 @@ impl NativeState {
             .placeholder_text("Request UUID (for web changes)")
             .hexpand(true)
             .build();
+        let web_revision = Entry::builder()
+            .placeholder_text("Policy revision")
+            .hexpand(true)
+            .build();
         let web_actions = Box::new(Orientation::Horizontal, 8);
         for (label_text, operation, public) in [
             (strings::text(strings::Message::WebShow), "show", false),
@@ -629,27 +634,73 @@ impl NativeState {
             let machine = machine_id.clone();
             let port = web_port.clone();
             let request = web_request.clone();
+            let revision = web_revision.clone();
+            let session = self.session.clone();
             let status = content.clone();
             button.connect_clicked(move |_| {
+                let machine_id = machine.text().trim().to_owned();
                 let parsed_port = (!port.text().is_empty())
                     .then(|| port.text().parse::<u16>().ok())
                     .flatten();
                 let request_id = (!request.text().is_empty()).then(|| request.text().to_string());
-                match format_web_command(
-                    operation,
-                    machine.text().as_str(),
-                    parsed_port,
-                    public,
-                    request_id.as_deref(),
-                ) {
-                    Ok(command) => status.set_label(&format!("Web command\n{command}")),
-                    Err(_) => status.set_label("Web request rejected by Rust policy."),
+                let parsed_revision = (!revision.text().is_empty())
+                    .then(|| revision.text().parse::<u64>().ok())
+                    .flatten();
+                let mut binding = session.borrow_mut();
+                let Some(live) = binding.session_mut() else {
+                    status.set_label("Web endpoint unavailable until sign-in.");
+                    return;
+                };
+                if operation == "show" {
+                    match live.web_show(&machine_id).and_then(|bytes| {
+                        decode_web_endpoint(&bytes)
+                            .map_err(|_| mila_native_linux::session::SessionError::InvalidInput)
+                    }) {
+                        Ok(endpoint) => status.set_label(&format!(
+                            "Web endpoint\n{}:{} ({}, revision {})",
+                            endpoint.label,
+                            endpoint.port,
+                            endpoint.visibility,
+                            endpoint.policy_revision
+                        )),
+                        Err(_) => status.set_label("Web endpoint read rejected."),
+                    }
+                } else {
+                    let Some(port) = parsed_port else {
+                        status.set_label("Web port rejected.");
+                        return;
+                    };
+                    let Some(revision) = parsed_revision else {
+                        status.set_label("Web policy revision rejected.");
+                        return;
+                    };
+                    let Some(request_id) = request_id.as_deref() else {
+                        status.set_label("Web request id rejected.");
+                        return;
+                    };
+                    if format_web_command(
+                        operation,
+                        &machine_id,
+                        Some(port),
+                        public,
+                        Some(request_id),
+                    )
+                    .is_err()
+                    {
+                        status.set_label("Web request rejected by Rust policy.");
+                        return;
+                    }
+                    match live.web_set(&machine_id, port, public, revision, request_id) {
+                        Ok(()) => status.set_label("Web endpoint change submitted."),
+                        Err(_) => status.set_label("Web endpoint change rejected."),
+                    }
                 }
             });
             web_actions.append(&button);
         }
         root.append(&web_port);
         root.append(&web_request);
+        root.append(&web_revision);
         root.append(&web_actions);
         let key_id = Entry::builder()
             .placeholder_text("SSH key ID")

@@ -1,5 +1,5 @@
 ---
-digest: 5cd1ebbcc7a0aec75a8a6e1611fd4296e9c81b4fc19787930e559f74f384ebc8
+digest: c59d4f5f150f1983b6436262aecc63618bc721c93b9a6447b57464c3800b4c37
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Documented Linux deep-link classification for unknown, signed-out and authenticated deployment targets.
+Documented authenticated Linux web endpoint controls, optimistic revisions and bounded HTTPS projection limits.

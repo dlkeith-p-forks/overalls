@@ -1,6 +1,6 @@
 ---
-digest: 926291431967f23029ded5b37fb6019e1abcdef460c6d7bfa76cd5df53d2fdc9
-disposition: updated
+digest: 69ec8bf24d12d6578b5bc92a0a51b8d5815c68fb7cf2aaa118f2f70f6ab6f50e
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/main.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Added typed Linux deep-link decisions and GTK activation classification while retaining unknown and signed-out refusals.
+Reviewed concurrent native platform change; domain and topology boundaries remain unchanged.

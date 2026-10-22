@@ -157,6 +157,60 @@ impl LiveSession {
         self.listing()
     }
 
+    /// Read a machine-bound web endpoint through the authenticated session.
+    /// The response remains bounded and owned by the Rust adapter.
+    pub fn web_show(&mut self, machine_id: &str) -> Result<Vec<u8>, SessionError> {
+        validate_session_identifier(machine_id)?;
+        let handle = self.handle()?;
+        copy_output(|out, capacity, written| unsafe {
+            mila_ffi::session::mila_session_web_show(
+                handle,
+                machine_id.as_bytes().as_ptr(),
+                machine_id.len(),
+                out,
+                capacity,
+                written,
+            )
+        })
+    }
+
+    /// Change a machine web endpoint using its optimistic policy revision.
+    pub fn web_set(
+        &mut self,
+        machine_id: &str,
+        port: u16,
+        public: bool,
+        revision: u64,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
+        validate_session_identifier(machine_id)?;
+        if port == 0
+            || request_id.len() != 40
+            || !request_id.starts_with("porsche-")
+            || !request_id[8..].bytes().all(|byte| byte.is_ascii_hexdigit())
+        {
+            return Err(SessionError::InvalidInput);
+        }
+        let handle = self.handle()?;
+        let status = unsafe {
+            mila_ffi::session::mila_session_web_set(
+                handle,
+                machine_id.as_bytes().as_ptr(),
+                machine_id.len(),
+                port,
+                u8::from(public),
+                revision,
+                request_id.as_bytes().as_ptr(),
+                request_id.len(),
+            )
+        };
+        if status == mila_ffi::session::SessionStatus::Ok {
+            Ok(())
+        } else {
+            Err(status.into())
+        }
+    }
+
     pub fn close(&mut self) -> Result<(), SessionError> {
         let Some(handle) = self.handle.take() else {
             return Ok(());
@@ -202,6 +256,18 @@ fn copy_output(
     }
     bytes.truncate(size);
     Ok(bytes)
+}
+
+fn validate_session_identifier(value: &str) -> Result<(), SessionError> {
+    if value.is_empty()
+        || value.len() > 128
+        || value
+            .bytes()
+            .any(|byte| byte.is_ascii_control() || byte.is_ascii_whitespace() || byte == 0)
+    {
+        return Err(SessionError::InvalidInput);
+    }
+    Ok(())
 }
 
 /// The one session authority presented to the rest of the native UI.
@@ -722,6 +788,35 @@ mod tests {
         assert_eq!(*fetch_calls.borrow(), 0);
         assert!(writes.borrow().is_empty());
         assert_eq!(signer_calls.load(Ordering::SeqCst), 0);
+    }
+
+    #[test]
+    fn web_controls_require_an_authenticated_handle_and_bounded_request() {
+        let mut session = LiveSession { handle: None };
+        assert_eq!(
+            session.web_show("bad machine"),
+            Err(SessionError::InvalidInput)
+        );
+        assert_eq!(
+            session.web_set(
+                "01234567-89ab-cdef-0123-456789abcdef",
+                8080,
+                true,
+                7,
+                "request-without-porsche-id"
+            ),
+            Err(SessionError::InvalidInput)
+        );
+        assert_eq!(
+            session.web_set(
+                "01234567-89ab-cdef-0123-456789abcdef",
+                8080,
+                true,
+                7,
+                "porsche-0123456789abcdef0123456789abcdef"
+            ),
+            Err(SessionError::StaleHandle)
+        );
     }
 
     #[test]
