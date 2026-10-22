@@ -1,5 +1,5 @@
 ---
-digest: 6e9e0b8121a4b129229ed5e0275a8f4e5f8ebe75c776970007cdb35b7c2ef34c
+digest: c4c6c483b77f2f436da67601a853161805c43e4fd94db38a6fdb356e980bec42
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Rust FFI/JNI authenticated machine action boundary is typed and bounded.
+Rust JNI/FFI exports for authenticated thread and SSH-key operations remain typed.

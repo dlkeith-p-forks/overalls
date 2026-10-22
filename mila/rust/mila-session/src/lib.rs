@@ -30,6 +30,8 @@ pub enum SessionError {
     NotLoaded,
     #[error("mutation was refused")]
     MutationRefused,
+    #[error("invalid thread action")]
+    InvalidThreadAction,
 }
 
 /// Validated display rows. Permissions describe presentation, never server authority.
@@ -57,21 +59,135 @@ pub struct ApplicationSession {
 }
 
 fn validate_ssh_keys(bytes: &[u8]) -> Result<(), SessionError> {
-    let value: serde_json::Value = serde_json::from_slice(bytes).map_err(|_| SessionError::Refused)?;
-    let keys = value.get("keys").and_then(serde_json::Value::as_array).ok_or(SessionError::Refused)?;
-    if keys.len() > 256 { return Err(SessionError::Bounds); }
+    let value: serde_json::Value =
+        serde_json::from_slice(bytes).map_err(|_| SessionError::Refused)?;
+    let keys = value
+        .get("keys")
+        .and_then(serde_json::Value::as_array)
+        .ok_or(SessionError::Refused)?;
+    if keys.len() > 256 {
+        return Err(SessionError::Bounds);
+    }
     for key in keys {
-        let id = key.get("id").and_then(serde_json::Value::as_str).ok_or(SessionError::Refused)?;
+        let id = key
+            .get("id")
+            .and_then(serde_json::Value::as_str)
+            .ok_or(SessionError::Refused)?;
         Identifier::parse(id).map_err(|_| SessionError::Refused)?;
         for field in ["fingerprint", "algorithm"] {
-            let text = key.get(field).and_then(serde_json::Value::as_str).ok_or(SessionError::Refused)?;
-            if text.is_empty() || text.len() > 256 || text.bytes().any(|b| b.is_ascii_control()) { return Err(SessionError::Refused); }
+            let text = key
+                .get(field)
+                .and_then(serde_json::Value::as_str)
+                .ok_or(SessionError::Refused)?;
+            if text.is_empty() || text.len() > 256 || text.bytes().any(|b| b.is_ascii_control()) {
+                return Err(SessionError::Refused);
+            }
         }
     }
     Ok(())
 }
 
 impl ApplicationSession {
+    /// Execute one closed-vocabulary thread operation. Response JSON is bounded and
+    /// parsed before crossing a native boundary; stdin is accepted only for commands
+    /// whose protocol grammar requires it.
+    pub async fn thread_action(
+        &mut self,
+        thread: Option<&str>,
+        command: &str,
+        secondary: Option<&str>,
+        input: Option<&str>,
+        request_id: Option<&str>,
+    ) -> Result<Vec<u8>, SessionError> {
+        let thread_id = thread
+            .map(|v| Identifier::parse(v).map_err(|_| SessionError::InvalidThreadAction))
+            .transpose()?;
+        let arg = secondary
+            .map(|v| Identifier::parse(v).map_err(|_| SessionError::InvalidThreadAction))
+            .transpose()?;
+        let (line, stdin) = match command {
+            "thread ls" if thread_id.is_none() && secondary.is_none() && input.is_none() => {
+                ("thread ls --json".to_string(), Vec::new())
+            }
+            "thread show" | "thread turns"
+                if thread_id.is_some() && secondary.is_none() && input.is_none() =>
+            {
+                (
+                    format!("{command} {} --json", thread_id.as_ref().expect("checked")),
+                    Vec::new(),
+                )
+            }
+            "thread prompt" if thread_id.is_some() && secondary.is_none() => (
+                format!(
+                    "thread prompt {} - --json",
+                    thread_id.as_ref().expect("checked")
+                ),
+                input
+                    .ok_or(SessionError::InvalidThreadAction)?
+                    .as_bytes()
+                    .to_vec(),
+            ),
+            "thread answer" if thread_id.is_some() && arg.is_some() => (
+                format!(
+                    "thread answer {} {} - --json",
+                    thread_id.as_ref().expect("checked"),
+                    arg.as_ref().expect("checked")
+                ),
+                input
+                    .ok_or(SessionError::InvalidThreadAction)?
+                    .as_bytes()
+                    .to_vec(),
+            ),
+            "thread plan approve" if thread_id.is_some() && arg.is_some() && input.is_none() => (
+                format!(
+                    "thread plan approve {} {} --json",
+                    thread_id.as_ref().expect("checked"),
+                    arg.as_ref().expect("checked")
+                ),
+                Vec::new(),
+            ),
+            "thread plan revise" if thread_id.is_some() && arg.is_some() => (
+                format!(
+                    "thread plan revise {} {} - --json",
+                    thread_id.as_ref().expect("checked"),
+                    arg.as_ref().expect("checked")
+                ),
+                input
+                    .ok_or(SessionError::InvalidThreadAction)?
+                    .as_bytes()
+                    .to_vec(),
+            ),
+            _ => return Err(SessionError::InvalidThreadAction),
+        };
+        if stdin.is_empty()
+            && matches!(
+                command,
+                "thread prompt" | "thread answer" | "thread plan revise"
+            )
+        {
+            return Err(SessionError::InvalidThreadAction);
+        }
+        if stdin.len() > 64 * 1024 || stdin.iter().any(|b| *b == 0) {
+            return Err(SessionError::Bounds);
+        }
+        let line = mila_protocol::Command::parse(&line)
+            .and_then(|c| c.format())
+            .map_err(|_| SessionError::InvalidThreadAction)?;
+        let line = if let Some(request) = request_id {
+            let request =
+                mila_model::RequestId::parse(request).map_err(|_| SessionError::MutationRefused)?;
+            format!("{line} --request-id={request}")
+        } else {
+            line
+        };
+        let output = self.ssh.exec(&line, &stdin).await?;
+        if output.exit_status != 0 || output.stdout.len() > 256 * 1024 {
+            return Err(SessionError::MutationRefused);
+        }
+        serde_json::from_slice::<serde_json::Value>(&output.stdout)
+            .map_err(|_| SessionError::Refused)?;
+        Ok(output.stdout)
+    }
     /// Execute one authenticated machine mutation on this connection. The command is
     /// constructed from closed vocabulary values and a validated request id; callers
     /// cannot inject shell text or reuse an untyped operation.
@@ -100,17 +216,34 @@ impl ApplicationSession {
     /// Execute authenticated approved-key listing and return bounded validated JSON.
     pub async fn ssh_keys(&mut self) -> Result<Vec<u8>, SessionError> {
         let output = self.ssh.exec("ssh-key list --json", &[]).await?;
-        if output.exit_status != 0 || output.stdout.len() > 256 * 1024 { return Err(SessionError::Refused); }
+        if output.exit_status != 0 || output.stdout.len() > 256 * 1024 {
+            return Err(SessionError::Refused);
+        }
         validate_ssh_keys(&output.stdout)?;
         Ok(output.stdout)
     }
 
     /// Revoke one opaque approved-key identity with an at-most-once request id.
-    pub async fn ssh_key_revoke(&mut self, key_id: &str, request_id: &str) -> Result<(), SessionError> {
+    pub async fn ssh_key_revoke(
+        &mut self,
+        key_id: &str,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
         let key_id = Identifier::parse(key_id).map_err(|_| SessionError::MutationRefused)?;
-        let request_id = mila_model::RequestId::parse(request_id).map_err(|_| SessionError::MutationRefused)?;
-        let output = self.ssh.exec(&format!("ssh-key remove --json --request-id={request_id} {key_id}"), &[]).await?;
-        if output.exit_status == 0 { Ok(()) } else { Err(SessionError::MutationRefused) }
+        let request_id =
+            mila_model::RequestId::parse(request_id).map_err(|_| SessionError::MutationRefused)?;
+        let output = self
+            .ssh
+            .exec(
+                &format!("ssh-key remove --json --request-id={request_id} {key_id}"),
+                &[],
+            )
+            .await?;
+        if output.exit_status == 0 {
+            Ok(())
+        } else {
+            Err(SessionError::MutationRefused)
+        }
     }
 
     /// Execute authenticated web endpoint inspection and return bounded JSON.
@@ -118,17 +251,33 @@ impl ApplicationSession {
         let machine = Identifier::parse(machine).map_err(|_| SessionError::InvalidListing)?;
         let line = format!("web show {machine} --json");
         let output = self.ssh.exec(&line, &[]).await?;
-        if output.exit_status == 0 { Ok(output.stdout) } else { Err(SessionError::MutationRefused) }
+        if output.exit_status == 0 {
+            Ok(output.stdout)
+        } else {
+            Err(SessionError::MutationRefused)
+        }
     }
 
     /// Execute authenticated web endpoint mutation with optimistic revision.
-    pub async fn web_set(&mut self, machine: &str, port: u16, public: bool, revision: u64, request_id: &str) -> Result<(), SessionError> {
+    pub async fn web_set(
+        &mut self,
+        machine: &str,
+        port: u16,
+        public: bool,
+        revision: u64,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
         let machine = Identifier::parse(machine).map_err(|_| SessionError::InvalidListing)?;
-        let request_id = mila_model::RequestId::parse(request_id).map_err(|_| SessionError::MutationRefused)?;
+        let request_id =
+            mila_model::RequestId::parse(request_id).map_err(|_| SessionError::MutationRefused)?;
         let visibility = if public { "--public" } else { "--private" };
         let line = format!("web set {machine} --json --port={port} {visibility} --revision={revision} --request-id={request_id}");
         let output = self.ssh.exec(&line, &[]).await?;
-        if output.exit_status == 0 { Ok(()) } else { Err(SessionError::MutationRefused) }
+        if output.exit_status == 0 {
+            Ok(())
+        } else {
+            Err(SessionError::MutationRefused)
+        }
     }
 
     /// Execute an authenticated machine sharing mutation. The command is parsed by
@@ -143,8 +292,8 @@ impl ApplicationSession {
         request_id: &str,
     ) -> Result<(), SessionError> {
         let machine = Identifier::parse(machine).map_err(|_| SessionError::InvalidListing)?;
-        let request_id = mila_model::RequestId::parse(request_id)
-            .map_err(|_| SessionError::MutationRefused)?;
+        let request_id =
+            mila_model::RequestId::parse(request_id).map_err(|_| SessionError::MutationRefused)?;
         if email.is_empty()
             || email.len() > 320
             || email

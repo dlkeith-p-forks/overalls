@@ -1,5 +1,5 @@
 ---
-digest: 68208a9b65baf4c1a005bf4c0bf879dcaa49ef21c75984c314f09fbb8b307270
+digest: fd4ee24e9f7e7713280652e72f421f08d33b9de0b1b697d71a50e55c5d9194de
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Authenticated SSH-key, sharing, and Android thread payload seams preserve typed session boundaries; tests cover malformed inputs.
+Authenticated thread actions and Apple SSH-key operations are bounded at Rust and native FFI boundaries.

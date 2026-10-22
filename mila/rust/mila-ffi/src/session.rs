@@ -269,7 +269,10 @@ pub unsafe extern "C" fn mila_session_share_mutation(
         let role = if role_len == 0 {
             None
         } else {
-            Some(std::str::from_utf8(bytes(role, role_len, 32)?).map_err(|_| SessionStatus::Invalid)?)
+            Some(
+                std::str::from_utf8(bytes(role, role_len, 32)?)
+                    .map_err(|_| SessionStatus::Invalid)?,
+            )
         };
         let request_id = std::str::from_utf8(bytes(request_id, request_id_len, 64)?)
             .map_err(|_| SessionStatus::Invalid)?;
@@ -286,59 +289,172 @@ pub unsafe extern "C" fn mila_session_share_mutation(
     })
 }
 
-pub unsafe extern "C" fn mila_session_ssh_keys(
-    handle: u64, out: *mut u8, capacity: usize, written: *mut usize,
+/// Execute a bounded authenticated thread action. `command` is one of the
+/// closed thread command names; identifiers and payloads are validated by the
+/// session before a single SSH channel is opened.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_thread_action(
+    handle: u64,
+    thread: *const u8,
+    thread_len: usize,
+    command: *const u8,
+    command_len: usize,
+    secondary: *const u8,
+    secondary_len: usize,
+    input: *const u8,
+    input_len: usize,
+    request_id: *const u8,
+    request_id_len: usize,
+    out: *mut u8,
+    capacity: usize,
+    written: *mut usize,
 ) -> SessionStatus {
     guarded(|| {
-        let runtime = runtime()?; let entry = entry(handle)?;
+        let thread = if thread_len == 0 {
+            None
+        } else {
+            Some(
+                std::str::from_utf8(bytes(thread, thread_len, 128)?)
+                    .map_err(|_| SessionStatus::Invalid)?,
+            )
+        };
+        let command = std::str::from_utf8(bytes(command, command_len, 64)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let secondary = if secondary_len == 0 {
+            None
+        } else {
+            Some(
+                std::str::from_utf8(bytes(secondary, secondary_len, 128)?)
+                    .map_err(|_| SessionStatus::Invalid)?,
+            )
+        };
+        let input = if input_len == 0 {
+            None
+        } else {
+            Some(
+                std::str::from_utf8(bytes(input, input_len, 64 * 1024)?)
+                    .map_err(|_| SessionStatus::Invalid)?,
+            )
+        };
+        let request = if request_id_len == 0 {
+            None
+        } else {
+            Some(
+                std::str::from_utf8(bytes(request_id, request_id_len, 64)?)
+                    .map_err(|_| SessionStatus::Invalid)?,
+            )
+        };
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
         let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
         let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
-        let data = runtime.block_on(session.ssh_keys()).map_err(|e| match e { mila_session::SessionError::Transport(_) => SessionStatus::Transport, _ => SessionStatus::Invalid })?;
+        let data = runtime
+            .block_on(session.thread_action(thread, command, secondary, input, request))
+            .map_err(|e| match e {
+                mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+                _ => SessionStatus::Invalid,
+            })?;
+        output(&data, out, capacity, written)
+    })
+}
+
+pub unsafe extern "C" fn mila_session_ssh_keys(
+    handle: u64,
+    out: *mut u8,
+    capacity: usize,
+    written: *mut usize,
+) -> SessionStatus {
+    guarded(|| {
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        let data = runtime.block_on(session.ssh_keys()).map_err(|e| match e {
+            mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+            _ => SessionStatus::Invalid,
+        })?;
         output(&data, out, capacity, written)
     })
 }
 
 pub unsafe extern "C" fn mila_session_ssh_key_revoke(
-    handle: u64, key: *const u8, key_len: usize, request: *const u8, request_len: usize,
+    handle: u64,
+    key: *const u8,
+    key_len: usize,
+    request: *const u8,
+    request_len: usize,
 ) -> SessionStatus {
     guarded(|| {
-        let key = std::str::from_utf8(bytes(key, key_len, 128)?).map_err(|_| SessionStatus::Invalid)?;
-        let request = std::str::from_utf8(bytes(request, request_len, 64)?).map_err(|_| SessionStatus::Invalid)?;
-        let runtime = runtime()?; let entry = entry(handle)?;
-        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
-        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
-        runtime.block_on(session.ssh_key_revoke(key, request)).map_err(|e| match e { mila_session::SessionError::Transport(_) => SessionStatus::Transport, _ => SessionStatus::Invalid })
-    })
-}
-
-pub unsafe extern "C" fn mila_session_web_show(
-    handle: u64, machine: *const u8, machine_len: usize, out: *mut u8,
-    capacity: usize, written: *mut usize,
-) -> SessionStatus {
-    guarded(|| {
-        let machine = std::str::from_utf8(bytes(machine, machine_len, 128)?).map_err(|_| SessionStatus::Invalid)?;
+        let key =
+            std::str::from_utf8(bytes(key, key_len, 128)?).map_err(|_| SessionStatus::Invalid)?;
+        let request = std::str::from_utf8(bytes(request, request_len, 64)?)
+            .map_err(|_| SessionStatus::Invalid)?;
         let runtime = runtime()?;
         let entry = entry(handle)?;
         let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
         let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
-        let data = runtime.block_on(session.web_show(machine)).map_err(|e| match e { mila_session::SessionError::Transport(_) => SessionStatus::Transport, _ => SessionStatus::Invalid })?;
+        runtime
+            .block_on(session.ssh_key_revoke(key, request))
+            .map_err(|e| match e {
+                mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+                _ => SessionStatus::Invalid,
+            })
+    })
+}
+
+pub unsafe extern "C" fn mila_session_web_show(
+    handle: u64,
+    machine: *const u8,
+    machine_len: usize,
+    out: *mut u8,
+    capacity: usize,
+    written: *mut usize,
+) -> SessionStatus {
+    guarded(|| {
+        let machine = std::str::from_utf8(bytes(machine, machine_len, 128)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        let data = runtime
+            .block_on(session.web_show(machine))
+            .map_err(|e| match e {
+                mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+                _ => SessionStatus::Invalid,
+            })?;
         output(&data, out, capacity, written)
     })
 }
 
 pub unsafe extern "C" fn mila_session_web_set(
-    handle: u64, machine: *const u8, machine_len: usize, port: u16, public: u8,
-    revision: u64, request_id: *const u8, request_id_len: usize,
+    handle: u64,
+    machine: *const u8,
+    machine_len: usize,
+    port: u16,
+    public: u8,
+    revision: u64,
+    request_id: *const u8,
+    request_id_len: usize,
 ) -> SessionStatus {
     guarded(|| {
-        if public > 1 { return Err(SessionStatus::Invalid); }
-        let machine = std::str::from_utf8(bytes(machine, machine_len, 128)?).map_err(|_| SessionStatus::Invalid)?;
-        let request_id = std::str::from_utf8(bytes(request_id, request_id_len, 64)?).map_err(|_| SessionStatus::Invalid)?;
+        if public > 1 {
+            return Err(SessionStatus::Invalid);
+        }
+        let machine = std::str::from_utf8(bytes(machine, machine_len, 128)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let request_id = std::str::from_utf8(bytes(request_id, request_id_len, 64)?)
+            .map_err(|_| SessionStatus::Invalid)?;
         let runtime = runtime()?;
         let entry = entry(handle)?;
         let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
         let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
-        runtime.block_on(session.web_set(machine, port, public == 1, revision, request_id)).map_err(|e| match e { mila_session::SessionError::Transport(_) => SessionStatus::Transport, _ => SessionStatus::Invalid })
+        runtime
+            .block_on(session.web_set(machine, port, public == 1, revision, request_id))
+            .map_err(|e| match e {
+                mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+                _ => SessionStatus::Invalid,
+            })
     })
 }
 /// Copy validated display JSON: {"machines":[snapshot rows],"has_more":bool}.

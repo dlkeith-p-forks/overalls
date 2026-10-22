@@ -88,6 +88,11 @@ int32_t mila_session_share_mutation(uint64_t handle, const uint8_t *machine,
     size_t machine_len, const uint8_t *email, size_t email_len,
     const uint8_t *role, size_t role_len, uint8_t add,
     const uint8_t *request_id, size_t request_id_len);
+int32_t mila_session_thread_action(uint64_t handle, const uint8_t *thread,
+    size_t thread_len, const uint8_t *command, size_t command_len,
+    const uint8_t *secondary, size_t secondary_len, const uint8_t *input,
+    size_t input_len, const uint8_t *request_id, size_t request_id_len,
+    uint8_t *output, size_t capacity, size_t *written);
 /* Copy operations never issue a command. Null output/zero capacity queries size.
  * JSON is UTF-8 without NUL termination; written receives the required length.
  * Listing is {machines:[validated snapshot rows],has_more:boolean}.
