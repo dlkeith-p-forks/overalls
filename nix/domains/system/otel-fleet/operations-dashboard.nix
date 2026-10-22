@@ -7,6 +7,10 @@ let
     targets = [{ refId = "A"; inherit expr; }];
     fieldConfig.defaults = { inherit unit; };
   };
+  # Per-view LiveView refresh totals divided by that view's refresh count for
+  # the same reporting interval; views without refreshes stay absent.
+  live = measure:
+    ''label_replace({__name__=~"overalls_gauge_live_.+_${measure}"}, "view", "$1", "__name__", "overalls_gauge_live_(.+)_${measure}") / on(host_name,unit,view) (label_replace({__name__=~"overalls_gauge_live_.+_count"}, "view", "$1", "__name__", "overalls_gauge_live_(.+)_count") > 0)'';
   table = id: title: y: expr: {
     inherit id title;
     type = "table"; datasource = prometheus;
@@ -49,5 +53,13 @@ in {
       ''overalls_gauge_beam_run_queue and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds >= 0) and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds < 90)'' "short")
     (timeseries 16 "Stuck agent turns" 100
       ''overalls_gauge_agent_stuck_turns'' "short")
+    (timeseries 17 "Marshall page refresh · mean duration by view" 108
+      (live "duration_ms") "ms")
+    (timeseries 18 "Marshall page refresh · mean database queries by view" 108
+      (live "queries") "short")
+    (timeseries 19 "Marshall database · mean query time" 116
+      ''overalls_gauge_database_duration_ms / on(host_name,unit) (overalls_gauge_database_count > 0)'' "ms")
+    (timeseries 20 "Marshall database · mean connection pool wait" 116
+      ''overalls_gauge_database_queue_duration_ms / on(host_name,unit) (overalls_gauge_database_queue_count > 0)'' "ms")
   ];
 }

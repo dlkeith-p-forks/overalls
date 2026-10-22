@@ -22,6 +22,14 @@ defmodule Marshall.Compute.VirtualMachine do
 
     custom_indexes do
       index [:current_placement_id, :desired_state, :id]
+      # Keyset machine lists by owner and team (ADR-0256).
+      index [:owner_id, :id],
+        where: "archived_at IS NULL",
+        name: "compute_virtual_machines_owner_index"
+
+      index [:team_id, :id],
+        where: "archived_at IS NULL",
+        name: "compute_virtual_machines_team_index"
     end
   end
 
@@ -98,6 +106,9 @@ defmodule Marshall.Compute.VirtualMachine do
     end
 
     action :pinned_for_user, :map do
+      # Views are built only for the first `limit` readable pins; `ids` still
+      # lists every readable pin so callers can exclude them from keyset pages.
+      argument :limit, :integer, allow_nil?: false, default: 20, constraints: [min: 1, max: 20]
       run {Marshall.Compute.Views, operation: :pinned}
     end
 

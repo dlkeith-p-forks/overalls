@@ -543,6 +543,24 @@ Tested scope: Recorded native database/keyring recovery, plus generated public-r
 
 **Preferred test work:** Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.
 
+## Open the overview or machine list and see exactly the machines and controls current authority allows, without per-machine authorization latency
+
+Coverage: **partial**. Layers: identity, authorization, execution, isolation, storage, recovery.
+
+Boundary: Machine pages (overview, list, pinned section, get, resolve) read through Compute.Views in one outermost REPEATABLE READ, READ ONLY transaction. Inside it the persisted Cedar principal, owners, grant, thread and team rows, entities and projection rows are read once or in identical batches and dropped when the transaction ends; Cedar still evaluates every row. Nested in another transaction nothing is reused.
+
+Required refusal: Omit any machine a fresh per-row read decision refuses, project the same read/write/manage permissions fresh decisions return, hide a revoked machine on the next read, and never reuse a read across refreshes, requests or processes.
+
+Tested scope: Generated grant roles through the real Compute.list_vms action and Access.set_access against local PostgreSQL, fresh Access.Authorization decisions as the oracle, revocation between reads and a query budget. No native journey.
+
+- **property, recorded**: [batched pages make the same decisions as fresh per-row checks](repo:marshall/test/marshall/compute/views_batched_reads_test.exs) — Generated viewer, operator, manager and revoked roles for one member over four owned machines against local PostgreSQL in the SQL sandbox (memoization active, isolation level not changeable there); [execution record](repo:docs/architecture/reviews/2026-10-22-liveview-load-performance.md).
+- **unit, recorded**: [a revoked grant disappears on the next page read](repo:marshall/test/marshall/compute/views_batched_reads_test.exs) — Manager grant listed, revoked between two list reads, omitted on the second read; no batch remains active between reads; [execution record](repo:docs/architecture/reviews/2026-10-22-liveview-load-performance.md).
+- **unit, recorded**: [page queries grow by at most one per additional machine](repo:marshall/test/marshall/compute/views_batched_reads_test.exs) — Owner list query count with four and twelve machines in the SQL sandbox; [execution record](repo:docs/architecture/reviews/2026-10-22-liveview-load-performance.md).
+
+**Gaps:** The repeatable-read, read-only isolation of the outermost batch was verified once against a real connection, not by an automated test, because the SQL sandbox owns the outer transaction. Concurrent revocation during a refresh is argued from snapshot semantics, not observed. The list query plan has no EXPLAIN evidence on fleet-sized data. No native browser journey measures page latency.
+
+**Preferred test work:** Add an integration test that runs Compute.Views outside the SQL sandbox and asserts the batch isolation level, and a NixOS machine test that loads /machines with many shared machines and checks the marshall.live.refresh query_count.
+
 ## Fetch through filtered web egress without stale attribution
 
 Coverage: **partial**. Layers: isolation, transport, execution.

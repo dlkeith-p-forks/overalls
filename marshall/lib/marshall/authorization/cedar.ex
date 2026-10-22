@@ -157,8 +157,20 @@ defmodule Marshall.Authorization.Cedar do
   # @cc [owner:ghuntley,label:security] cedar-current-administrator
   # User administrator authority MUST come from the persisted account on each
   # decision, never the caller's struct, session claims or a permission cache.
-  # Missing users MUST deny; the system principal remains a separate entity type.
+  # Within one DecisionSnapshot batch the persisted principal MAY be read once
+  # and reused, because every read in that snapshot returns the same rows; it
+  # MUST NOT outlive the batch. Missing users MUST deny; the system principal
+  # remains a separate entity type.
   defp principal_entity(%User{id: id} = actor, principal) do
+    Marshall.Authorization.DecisionSnapshot.fetch(
+      {:cedar_principal, id, Marshall.Accounts.Security.jti(actor)},
+      fn -> persisted_principal(actor, principal) end
+    )
+  end
+
+  defp principal_entity(%SystemActor{}, principal), do: {:ok, %Entity{uid: principal}}
+
+  defp persisted_principal(%User{id: id} = actor, principal) do
     query =
       User
       |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
@@ -186,6 +198,5 @@ defmodule Marshall.Authorization.Cedar do
     end
   end
 
-  defp principal_entity(%SystemActor{}, principal), do: {:ok, %Entity{uid: principal}}
   defp uid(type, id), do: EntityUid.new("Marshall::" <> type, id)
 end

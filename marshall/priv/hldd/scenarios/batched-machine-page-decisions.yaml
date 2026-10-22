@@ -1,0 +1,53 @@
+boundary: Machine pages (overview, list, pinned section, get, resolve) read through Compute.Views in one
+  outermost REPEATABLE READ, READ ONLY transaction. Inside it the persisted Cedar principal, owners, grant,
+  thread and team rows, entities and projection rows are read once or in identical batches and dropped
+  when the transaction ends; Cedar still evaluates every row. Nested in another transaction nothing is
+  reused.
+denial: Omit any machine a fresh per-row read decision refuses, project the same read/write/manage
+  permissions fresh decisions return, hide a revoked machine on the next read, and never reuse a read
+  across refreshes, requests or processes.
+evidence:
+- assertion: batched pages make the same decisions as fresh per-row checks
+  execution: recorded
+  kind: property
+  path: marshall/test/marshall/compute/views_batched_reads_test.exs
+  record: docs/architecture/reviews/2026-10-22-liveview-load-performance.md
+  record_assertion: passed 4 tests
+  scope: Generated viewer, operator, manager and revoked roles for one member over four owned machines
+    against local PostgreSQL in the SQL sandbox (memoization active, isolation level not changeable there)
+- assertion: a revoked grant disappears on the next page read
+  execution: recorded
+  kind: unit
+  path: marshall/test/marshall/compute/views_batched_reads_test.exs
+  record: docs/architecture/reviews/2026-10-22-liveview-load-performance.md
+  record_assertion: passed 4 tests
+  scope: Manager grant listed, revoked between two list reads, omitted on the second read; no batch remains
+    active between reads
+- assertion: page queries grow by at most one per additional machine
+  execution: recorded
+  kind: unit
+  path: marshall/test/marshall/compute/views_batched_reads_test.exs
+  record: docs/architecture/reviews/2026-10-22-liveview-load-performance.md
+  record_assertion: passed 4 tests
+  scope: Owner list query count with four and twelve machines in the SQL sandbox
+gaps: The repeatable-read, read-only isolation of the outermost batch was verified once against a real
+  connection, not by an automated test, because the SQL sandbox owns the outer transaction. Concurrent
+  revocation during a refresh is argued from snapshot semantics, not observed. The list query plan has
+  no EXPLAIN evidence on fleet-sized data. No native browser journey measures page latency.
+id: batched-machine-page-decisions
+journey: Open the overview or machine list and see exactly the machines and controls current authority allows,
+  without per-machine authorization latency
+layers:
+- identity
+- authorization
+- execution
+- isolation
+- storage
+- recovery
+preferred_gap: Add an integration test that runs Compute.Views outside the SQL sandbox and asserts the batch
+  isolation level, and a NixOS machine test that loads /machines with many shared machines and checks the
+  marshall.live.refresh query_count.
+scope: Generated grant roles through the real Compute.list_vms action and Access.set_access against local
+  PostgreSQL, fresh Access.Authorization decisions as the oracle, revocation between reads and a query
+  budget. No native journey.
+status: partial

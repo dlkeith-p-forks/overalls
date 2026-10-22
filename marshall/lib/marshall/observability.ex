@@ -15,11 +15,18 @@ defmodule Marshall.Observability do
     {[:oban, :job, :exception], :job_failures, :duration, :exception}
   ]
 
+  @live_views [:overview, :machines, :machine_new, :machine]
+  @live_keys Enum.map(@live_views, &:"live_#{&1}")
+
   @metric_names Enum.uniq(
                   for {_, key, _, _} <- @events,
                       suffix <- ~w(count duration_ms errors),
                       do: "#{key}_#{suffix}"
                 ) ++
+                  Enum.flat_map(
+                    @live_keys,
+                    &["#{&1}_count", "#{&1}_duration_ms", "#{&1}_queries"]
+                  ) ++
                   ~w(beam_memory_bytes beam_processes beam_atoms beam_run_queue terminal_host_streams terminal_viewer_sockets terminal_peer_sockets)
 
   # @cc [owner:ghuntley,label:security] metric-summary-numeric-allowlist
@@ -45,7 +52,7 @@ defmodule Marshall.Observability do
     :ok =
       :telemetry.attach_many(
         __MODULE__,
-        Enum.uniq(Enum.map(@events, &elem(&1, 0))),
+        Enum.uniq([[:marshall, :live, :refresh] | Enum.map(@events, &elem(&1, 0))]),
         &__MODULE__.observe/4,
         nil
       )
@@ -58,7 +65,31 @@ defmodule Marshall.Observability do
   # The handler MUST retain only fixed event keys and numeric counts/durations.
   # Request, user, VM, query, job arguments and terminal data MUST NOT enter its table.
   @spec observe([atom()], map(), map(), term()) :: :ok
+  def observe([:marshall, :live, :refresh], measurements, %{view: view}, _config)
+      when view in @live_views do
+    with %{duration: duration, queries: queries}
+         when is_integer(duration) and duration >= 0 and is_integer(queries) and queries >= 0 <-
+           measurements do
+      key = :"live_#{view}"
+
+      :ets.update_counter(
+        __MODULE__,
+        key,
+        [{2, 1}, {3, System.convert_time_unit(duration, :native, :microsecond)}, {4, queries}],
+        {key, 0, 0, 0}
+      )
+    end
+
+    :ok
+  rescue
+    ArgumentError -> :ok
+  end
+
+  def observe([:marshall, :live, :refresh], _measurements, _metadata, _config), do: :ok
+
   def observe(event, measurements, metadata, _config) do
+    if event == [:marshall, :repo, :query], do: count_query()
+
     for {^event, key, measurement, classifier} <- @events do
       value = Map.get(measurements, measurement, 0)
 
@@ -120,6 +151,23 @@ defmodule Marshall.Observability do
         end
       end)
 
+    metrics =
+      Enum.reduce(@live_keys, metrics, fn key, acc ->
+        case if(mode == :interval,
+               do: :ets.take(__MODULE__, key),
+               else: :ets.lookup(__MODULE__, key)
+             ) do
+          [{^key, count, duration, queries}] ->
+            acc
+            |> Map.put("#{key}_count", count)
+            |> Map.put("#{key}_duration_ms", duration / 1000)
+            |> Map.put("#{key}_queries", queries)
+
+          [] ->
+            acc
+        end
+      end)
+
     Map.merge(metrics, %{
       "beam_memory_bytes" => :erlang.memory(:total),
       "beam_processes" => :erlang.system_info(:process_count),
@@ -167,10 +215,22 @@ defmodule Marshall.Observability do
       beam_processes: metric_value(metrics, "beam_processes", 1),
       beam_atoms: metric_value(metrics, "beam_atoms", 1),
       beam_run_queue: metric_value(metrics, "beam_run_queue", 1),
-      agent_stuck_turns: metric_value(metrics, "agent_stuck_turns", 0),
+      agent_stuck_turns: metric_value(metrics, "agent_stuck_turns", 1),
       terminal_host_streams: metric_value(metrics, "terminal_host_streams", 1),
       terminal_viewer_sockets: metric_value(metrics, "terminal_viewer_sockets", 1),
-      terminal_peer_sockets: metric_value(metrics, "terminal_peer_sockets", 1)
+      terminal_peer_sockets: metric_value(metrics, "terminal_peer_sockets", 1),
+      live_overview_count: metric_value(metrics, "live_overview_count", 1),
+      live_overview_duration_us: metric_value(metrics, "live_overview_duration_ms", 1000),
+      live_overview_queries: metric_value(metrics, "live_overview_queries", 1),
+      live_machines_count: metric_value(metrics, "live_machines_count", 1),
+      live_machines_duration_us: metric_value(metrics, "live_machines_duration_ms", 1000),
+      live_machines_queries: metric_value(metrics, "live_machines_queries", 1),
+      live_machine_new_count: metric_value(metrics, "live_machine_new_count", 1),
+      live_machine_new_duration_us: metric_value(metrics, "live_machine_new_duration_ms", 1000),
+      live_machine_new_queries: metric_value(metrics, "live_machine_new_queries", 1),
+      live_machine_count: metric_value(metrics, "live_machine_count", 1),
+      live_machine_duration_us: metric_value(metrics, "live_machine_duration_ms", 1000),
+      live_machine_queries: metric_value(metrics, "live_machine_queries", 1)
     )
 
     Process.send_after(self(), :report, 60_000)
@@ -190,6 +250,62 @@ defmodule Marshall.Observability do
     end
   rescue
     _ -> 0
+  end
+
+  @query_count {__MODULE__, :query_count}
+
+  # @cc [owner:ghuntley,label:observability;security] live-refresh-measurement
+  # A measured LiveView refresh MUST run its callback exactly once inside one
+  # reviewed span, returning its exact result. It MUST record only the closed
+  # view label, its duration and the number of database queries its own process
+  # issued; query text, parameters, users and machines MUST NOT be recorded.
+  @doc "Run a LiveView refresh in a reviewed span and record its duration and query count."
+  @spec measure_refresh(:overview | :machines | :machine_new | :machine, (-> result)) :: result
+        when result: term()
+  def measure_refresh(view, fun) when view in @live_views and is_function(fun, 0) do
+    Overalls.Diagnostics.Tracing.with_span("marshall.live.refresh", [view: view], fn ->
+      started = System.monotonic_time()
+      {result, queries} = count_queries(fun)
+
+      :ok = Overalls.Diagnostics.Tracing.annotate(query_count: queries)
+
+      _ =
+        Overalls.Diagnostics.Metrics.record(
+          [:marshall, :live, :refresh],
+          %{duration: System.monotonic_time() - started, queries: queries},
+          %{view: view}
+        )
+
+      result
+    end)
+  end
+
+  @doc "Run `fun` and return its result with the database queries this process issued meanwhile."
+  @spec count_queries((-> result)) :: {result, non_neg_integer()} when result: term()
+  def count_queries(fun) when is_function(fun, 0) do
+    outer = Process.get(@query_count)
+    Process.put(@query_count, 0)
+
+    try do
+      result = fun.()
+      {result, Process.get(@query_count, 0)}
+    after
+      inner = Process.get(@query_count, 0)
+
+      if outer,
+        do: Process.put(@query_count, outer + inner),
+        else: Process.delete(@query_count)
+    end
+  end
+
+  @spec count_query() :: :ok
+  defp count_query do
+    case Process.get(@query_count) do
+      count when is_integer(count) -> Process.put(@query_count, count + 1)
+      _ -> nil
+    end
+
+    :ok
   end
 
   @impl true

@@ -1,5 +1,5 @@
 ---
-digest: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
+digest: 0cb3df7d454cd48dcb9c1ddea347951c2eb63843284bbc76dc24f01e680faad9
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed the storage quota property test; 17-reference, 19-coverage and the artifacts scenario now cite it as passing evidence.
+Machine pages read through DecisionSnapshot batches with memoized principal, owner, grant, thread, team and projection reads, batched prefetch and catalog reads, user-leading indexes, refresh-after-completion and connected-only overview loading, per-view refresh telemetry and a fixed agent_stuck_turns multiplier; the access chapter, regenerated coverage and the batched-machine-page-decisions scenario describe them.

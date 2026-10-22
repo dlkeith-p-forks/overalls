@@ -337,7 +337,7 @@ in {
             static_configs = [{ targets = [ "127.0.0.1:${toString config.services.overallsLogging.sdkMetricsPort}" ]; }];
             metric_relabel_configs = [{
               source_labels = [ "__name__" ];
-              regex = "overalls_gauge_(trace_(available|pending|queue_dropped|export_failed|observed_at_seconds)|runtime_observed_at_seconds|beam_(memory_bytes|processes|atoms|run_queue)|terminal_(host_streams|viewer_sockets|peer_sockets|authority_(count|duration_ms|errors)|input_(count|duration_ms|errors)))";
+              regex = "overalls_gauge_(trace_(available|pending|queue_dropped|export_failed|observed_at_seconds)|runtime_observed_at_seconds|beam_(memory_bytes|processes|atoms|run_queue)|terminal_(host_streams|viewer_sockets|peer_sockets|authority_(count|duration_ms|errors)|input_(count|duration_ms|errors))|database(_queue)?_(count|duration_ms|errors)|live_(overview|machines|machine_new|machine)_(count|duration_ms|queries))";
               action = "keep";
             }];
           }];

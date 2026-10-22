@@ -1080,3 +1080,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0253](0253-artifacts-domain.md) | accepted | partial | Artifacts domain for agent-published pages |
 | [ADR-0254](0254-isolated-artifact-content-origin.md) | accepted | partial | Isolated artifact content origin |
 | [ADR-0255](0255-thread-lifecycle-and-server-tool-dispatch.md) | accepted | partial | Thread lifecycle state machine and Oban server-tool dispatch |
+| [ADR-0256](0256-batched-page-authorization-snapshots.md) | accepted | partial | Batched page authorization over one read-only snapshot |

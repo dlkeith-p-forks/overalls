@@ -48,6 +48,10 @@ defmodule Overalls.Diagnostics.Metrics do
       measurements: [bytes: :integer, refused: :binary_flag],
       metadata: [namespace: :atom]
     },
+    [:marshall, :live, :refresh] => %{
+      measurements: [duration: :integer, queries: :integer],
+      metadata: [view: :atom]
+    },
     [:marshall, :repo, :query] => %{
       measurements: [total_time: :integer, queue_time: :integer],
       metadata: []

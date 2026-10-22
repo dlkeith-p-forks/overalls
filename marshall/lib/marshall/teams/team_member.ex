@@ -21,6 +21,11 @@ defmodule Marshall.Teams.TeamMember do
     # scim_match only names the current_member fields for SCIM relationship
     # matching; the partial current_member index enforces uniqueness.
     skip_unique_indexes [:scim_match]
+
+    custom_indexes do
+      # Machine lists start from the caller's current memberships (ADR-0256).
+      index [:user_id, :team_id], where: "archived_at IS NULL", name: "team_members_user_index"
+    end
   end
 
   archive do

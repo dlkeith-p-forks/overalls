@@ -1,0 +1,93 @@
+# 2026-10-22: LiveView load performance and batched authorization
+
+## Scope
+
+This review covers the slow `/overview`, `/machines` and `/machines/new` page
+loads and the change recorded in
+[ADR-0256](../decisions/0256-batched-page-authorization-snapshots.md):
+
+- batched authorization over one read-only snapshot;
+- batched projection and catalog reads;
+- LiveView refresh scheduling;
+- list and catalog indexes;
+- `overalls_diagnostics` spans and metrics, with operations dashboard panels.
+
+Dimensions reviewed: access and data (Cedar inputs, revocation), coordination
+(transaction boundaries, isolation), capacity (catalog headroom), operation
+(observability) and verification.
+
+## Findings
+
+1. **High. Authorization was the cost, not missing indexes.**
+   - Per machine, `Views` made six Cedar decisions.
+   - Each decision re-read the actor's user row, login token, elevation proof,
+     the owner, and the grant, thread and team rows.
+   - Measured before: about 30 queries per machine, 724 queries and 758 ms for
+     24 machines.
+   - Resolution: decisions are batched over one `REPEATABLE READ, READ ONLY`
+     snapshot. Cedar still evaluates every decision; only the persisted inputs
+     are shared within the snapshot.
+2. **High. Refreshes could run back to back.** `/machines` queued its next 1 s
+   refresh before running the current one. Resolution: the next refresh is
+   scheduled after the current one completes.
+3. **Medium. Repeated page loads.**
+   - `/overview` read all panels twice per page load.
+   - `/overview` built views for up to 20 pinned machines and displayed six.
+   - `/machines/new` reloaded the catalog and teams on every validation patch.
+
+   All three are resolved.
+4. **Medium. Catalog headroom read per host.** Reservations and pools were read
+   once per host. Resolution: two batched reads, plus a `host_id` reservation
+   index.
+5. **Medium. Telemetry could not show the problem.**
+   - LiveView work had no spans.
+   - Ecto gauges were dropped by the collector's allowlist.
+   - No panel showed request or query cost per page.
+
+   Resolution: reviewed spans and annotations, per-view refresh metrics,
+   admitted gauges and four new panels.
+6. **Low, open. List query plan.** The list filter ORs `owner_id` with three
+   correlated EXISTS clauses. User-leading indexes were added, but the plan has
+   not been checked with `EXPLAIN` on production-sized data. A `UNION` rewrite
+   stays open.
+
+## Security assessment
+
+Decisions are unchanged:
+
+- **Same snapshot, same rows.** Inside one repeatable-read snapshot, a repeated
+  read returns the row it returned the first time. The Hegel property in
+  `marshall/test/marshall/compute/views_batched_reads_test.exs` compares batched
+  pages with fresh per-row decisions across generated role assignments.
+- **No reuse across requests.** Memoized values are dropped when the
+  transaction ends, raises or rolls back. A revocation between reads hides the
+  machine on the next read; the same test file covers this.
+- **Nested batches stay fresh.** A batch nested inside another transaction never
+  memoizes. A probe against a real connection showed `read committed` and no
+  memo for the nested case, and `repeatable read` with `read only` for the
+  outermost case.
+- **One evaluation instant.** Token-expiry and elevation windows are evaluated
+  once per batch, at its first principal read. Every row of a page therefore
+  sees the same moment rather than drifting across rows.
+
+## Checks run
+
+- **Diagnostics library:** `mix test` in `elixir/diagnostics` passed 40 tests,
+  including the new annotation test. The schema was regenerated with
+  `generate_schema.exs`, and `mix schema.check` passed.
+- **New Marshall tests:**
+  `mix test test/marshall/compute/views_batched_reads_test.exs --include hegel`
+  passed 4 tests.
+- **Before and after query counts:** measured with the same probe on trunk
+  `95616c01d` and on this change, as recorded in ADR-0256.
+- **Pre-existing failures:** six `/machines/new` provisioning tests in
+  `test/marshall_web/machines_live_test.exs` fail identically on unchanged
+  trunk.
+
+## Follow-up
+
+- Run `EXPLAIN (ANALYZE, BUFFERS)` for the list query on fleet data, then decide
+  on the `UNION` rewrite.
+- Batch the relocation status read.
+- Consider PubSub-driven refresh for `/machines`.
+- Watch the new panels with live fleet data.

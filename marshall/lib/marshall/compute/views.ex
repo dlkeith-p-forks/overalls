@@ -1,8 +1,8 @@
 defmodule Marshall.Compute.Views do
   @moduledoc "Bounded user-facing VM views. Resource mutation remains in the trusted coordinators."
   use Ash.Resource.Actions.Implementation
-  alias Marshall.Access.{Authorization, Pins}
-  alias Marshall.Authorization.SystemActor
+  alias Marshall.Access.{Authorization, Pin, Pins}
+  alias Marshall.Authorization.{DecisionSnapshot, SystemActor}
   alias Marshall.Compute.{Budget, Host, Image, Ledger, Reservation, StoragePool, VirtualMachine}
   require Ash.Query
 
@@ -26,8 +26,30 @@ defmodule Marshall.Compute.Views do
 
   @impl true
   def run(input, options, context) do
+    Overalls.Diagnostics.Tracing.with_span(
+      "marshall.views.read",
+      [operation: options[:operation]],
+      fn ->
+        {result, queries} =
+          Marshall.Observability.count_queries(fn -> read(input, options, context) end)
+
+        :ok =
+          Overalls.Diagnostics.Tracing.annotate(query_count: queries, row_count: rows(result))
+
+        result
+      end
+    )
+  end
+
+  @spec rows(term()) :: non_neg_integer()
+  defp rows({:ok, %{items: items}}) when is_list(items), do: length(items)
+  defp rows({:ok, %{images: images}}) when is_list(images), do: length(images)
+  defp rows({:ok, %{}}), do: 1
+  defp rows(_), do: 0
+
+  defp read(input, options, context) do
     result =
-      Ledger.transaction(fn ->
+      DecisionSnapshot.transaction(fn ->
         case options[:operation] do
           :get ->
             input.arguments.vm_id
@@ -38,7 +60,7 @@ defmodule Marshall.Compute.Views do
             list(input.arguments, context.actor)
 
           :pinned ->
-            pinned(context.actor)
+            pinned(context.actor, Map.get(input.arguments, :limit, 20))
 
           :resolve ->
             resolve(input.arguments.reference, context.actor)
@@ -145,10 +167,11 @@ defmodule Marshall.Compute.Views do
     query = if exclude == [], do: query, else: Ash.Query.filter(query, id not in ^exclude)
 
     rows = Ash.read!(query, actor: SystemActor.compute())
+    page = Enum.take(rows, request.limit)
+    prefetch(page, actor)
 
     items =
-      rows
-      |> Enum.take(request.limit)
+      page
       |> Enum.filter(&Authorization.allowed?(&1, actor, "read"))
       |> Enum.map(&view(&1, actor))
 
@@ -163,8 +186,9 @@ defmodule Marshall.Compute.Views do
   # most the pin limit), ordered newest pin first, restricted to unarchived VMs
   # that pass the same fresh per-row Cedar read decision and projected through
   # the same view as the keyset page. A pin on a VM the caller can no longer
-  # read MUST be omitted, not fail the whole section.
-  defp pinned(actor) do
+  # read MUST be omitted, not fail the whole section. Only the first `limit`
+  # readable pins are projected; `ids` lists every readable pin, in order.
+  defp pinned(actor, limit) do
     ids = Pins.pinned_vm_ids(actor)
 
     rows =
@@ -177,13 +201,88 @@ defmodule Marshall.Compute.Views do
         |> Map.new(&{&1.id, &1})
       end
 
-    items =
-      ids
-      |> Enum.flat_map(&List.wrap(rows[&1]))
-      |> Enum.filter(&Authorization.allowed?(&1, actor, "read"))
-      |> Enum.map(&view(&1, actor))
+    candidates = Enum.flat_map(ids, &List.wrap(rows[&1]))
+    prefetch(candidates, actor)
+    readable = Enum.filter(candidates, &Authorization.allowed?(&1, actor, "read"))
 
-    %{items: items}
+    %{
+      items: readable |> Enum.take(limit) |> Enum.map(&view(&1, actor)),
+      ids: Enum.map(readable, & &1.id)
+    }
+  end
+
+  # @cc [owner:ghuntley,label:security;observability] views-batched-reads
+  # Page projections MAY batch the reads a later per-row projection or decision
+  # would make, but only into the current DecisionSnapshot batch, keyed exactly
+  # as the per-row read, and with identical filters. Outside a batch nothing is
+  # primed and every row reads fresh. Batching MUST NOT change any decision or
+  # projected field.
+  @spec prefetch([VirtualMachine.t()], map()) :: :ok
+  defp prefetch(vms, actor) do
+    if DecisionSnapshot.active?() and vms != [] do
+      Authorization.prefetch(vms, actor)
+      ids = Enum.map(vms, & &1.id)
+      image_ids = vms |> Enum.map(& &1.image_id) |> Enum.reject(&is_nil/1) |> Enum.uniq()
+      host_ids = vms |> Enum.map(& &1.host_id) |> Enum.reject(&is_nil/1) |> Enum.uniq()
+      owner_ids = vms |> Enum.map(& &1.owner_id) |> Enum.uniq()
+
+      images = by(Image, :id, image_ids)
+      hosts = by(Host, :id, host_ids)
+      endpoints = by(Marshall.Ingress.Endpoint, :vm_id, ids)
+
+      pins =
+        Pin
+        |> Ash.Query.filter(vm_id in ^ids and user_id == ^actor.id and state == :pinned)
+        |> Ash.read!(actor: SystemActor.compute())
+        |> MapSet.new(& &1.vm_id)
+
+      owners =
+        Marshall.Accounts.User
+        |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
+        |> Ash.Query.filter(id in ^owner_ids)
+        |> Ash.read!()
+        |> Map.new(&{&1.id, &1})
+
+      # read_one! raises on duplicate active requests; leave those rows to the
+      # per-row read so the failure is unchanged.
+      resizes =
+        Marshall.Compute.ResizeRequest
+        |> Ash.Query.filter(vm_id in ^ids and is_nil(finished_at))
+        |> Ash.read!(actor: SystemActor.compute())
+        |> Enum.group_by(& &1.vm_id)
+
+      DecisionSnapshot.prime(
+        ids
+        |> Enum.flat_map(fn id ->
+          case Map.get(resizes, id, []) do
+            [] -> [{{:active_resize, id}, nil}]
+            [request] -> [{{:active_resize, id}, request}]
+            _ -> []
+          end
+        end)
+        |> Map.new()
+      )
+
+      DecisionSnapshot.prime(
+        Map.new(image_ids, &{{:image, &1}, Map.get(images, &1, [])})
+        |> Map.merge(Map.new(host_ids, &{{:host, &1}, Map.get(hosts, &1, [])}))
+        |> Map.merge(Map.new(ids, &{{:endpoint, &1}, Map.get(endpoints, &1, [])}))
+        |> Map.merge(Map.new(ids, &{{:pinned, &1, actor.id}, MapSet.member?(pins, &1)}))
+        |> Map.merge(Map.new(owner_ids, &{{:user, &1}, Map.get(owners, &1)}))
+      )
+    end
+
+    :ok
+  end
+
+  @spec by(module(), atom(), [term()]) :: %{term() => [Ash.Resource.Record.t()]}
+  defp by(_resource, _field, []), do: %{}
+
+  defp by(resource, field, values) do
+    resource
+    |> Ash.Query.filter(^[{field, [in: values]}])
+    |> Ash.read!(actor: SystemActor.compute())
+    |> Enum.group_by(&Map.fetch!(&1, field))
   end
 
   # @cc [owner:ghuntley,label:product;security] views-reflection-metadata
@@ -193,7 +292,18 @@ defmodule Marshall.Compute.Views do
   # MUST NOT grant permission to change it.
   @spec view(VirtualMachine.t(), map()) :: map()
   defp view(vm, actor) do
-    image = List.first(Ledger.read!(Image, id: vm.image_id))
+    image =
+      List.first(
+        DecisionSnapshot.fetch({:image, vm.image_id}, fn ->
+          Ledger.read!(Image, id: vm.image_id)
+        end)
+      )
+
+    permissions =
+      Map.new(
+        [:read, :write, :manage],
+        &{&1, Authorization.allowed?(vm, actor, Atom.to_string(&1))}
+      )
 
     Map.merge(Map.take(vm, @fields), %{
       image_name: image_name(image),
@@ -202,18 +312,12 @@ defmodule Marshall.Compute.Views do
       ssh_host: ssh_host_name(vm),
       editor_image_status: editor_image_status(image),
       guest_capabilities: Image.guest_capabilities(image),
-      pinned: Pins.pinned?(vm, actor),
-      resize: resize_view(vm, actor),
-      relocation:
-        if(Authorization.allowed?(vm, actor, "manage"),
-          do: Marshall.Compute.RelocationStatus.latest(vm.id)
-        ),
+      pinned:
+        DecisionSnapshot.fetch({:pinned, vm.id, actor.id}, fn -> Pins.pinned?(vm, actor) end),
+      resize: resize_view(vm, permissions.manage),
+      relocation: if(permissions.manage, do: Marshall.Compute.RelocationStatus.latest(vm.id)),
       owner: vm.owner_id == actor.id,
-      permissions:
-        Map.new(
-          [:read, :write, :manage],
-          &{&1, Authorization.allowed?(vm, actor, Atom.to_string(&1))}
-        )
+      permissions: permissions
     })
     |> Map.merge(owner_view(vm, actor))
   end
@@ -232,10 +336,9 @@ defmodule Marshall.Compute.Views do
 
   defp owner_view(vm, _actor) do
     owner =
-      Marshall.Accounts.User
-      |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
-      |> Ash.Query.filter(id == ^vm.owner_id)
-      |> Ash.read_one!()
+      DecisionSnapshot.fetch({:user, vm.owner_id}, fn ->
+        Marshall.Accounts.Security.current(vm.owner_id)
+      end)
 
     %{
       owner_email: owner && to_string(owner.email),
@@ -282,7 +385,7 @@ defmodule Marshall.Compute.Views do
   end
 
   defp host_name(vm) do
-    case Ledger.read!(Host, id: vm.host_id) do
+    case DecisionSnapshot.fetch({:host, vm.host_id}, fn -> Ledger.read!(Host, id: vm.host_id) end) do
       [%{name: name}] when is_binary(name) -> name
       _ -> nil
     end
@@ -296,7 +399,9 @@ defmodule Marshall.Compute.Views do
   @spec ssh_host_name(Marshall.Compute.VirtualMachine.t()) :: String.t() | nil
   def ssh_host_name(vm) do
     case {Application.get_env(:marshall, :ingress_zone),
-          Ledger.read!(Marshall.Ingress.Endpoint, vm_id: vm.id)} do
+          DecisionSnapshot.fetch({:endpoint, vm.id}, fn ->
+            Ledger.read!(Marshall.Ingress.Endpoint, vm_id: vm.id)
+          end)} do
       {zone, [%{label: label}]}
       when is_binary(zone) and is_binary(label) and byte_size(label) + byte_size(zone) < 253 ->
         label <> "." <> zone
@@ -306,9 +411,11 @@ defmodule Marshall.Compute.Views do
     end
   end
 
-  defp resize_view(vm, actor) do
-    if Authorization.allowed?(vm, actor, "manage") do
-      case Marshall.Compute.Resize.active(vm.id) do
+  defp resize_view(vm, manage?) do
+    if manage? do
+      case DecisionSnapshot.fetch({:active_resize, vm.id}, fn ->
+             Marshall.Compute.Resize.active(vm.id)
+           end) do
         nil ->
           nil
 
@@ -341,14 +448,19 @@ defmodule Marshall.Compute.Views do
             &1.capacity != nil)
       )
 
+    host_ids = Enum.map(hosts, & &1.id)
+    reservations_by_host = by(Reservation, :host_id, host_ids)
+    pools_by_host = by(StoragePool, :host_id, host_ids)
+
     {available, ids, known} =
       Enum.reduce(hosts, {%{vcpu: 0, memory_bytes: 0, disk_bytes: 0}, [], false}, fn host,
                                                                                      {sum, ids,
                                                                                       known} ->
-        reservations = Ledger.read!(Reservation, host_id: host.id)
+        reservations = Map.get(reservations_by_host, host.id, [])
 
         pools =
-          Ledger.read!(StoragePool, host_id: host.id)
+          pools_by_host
+          |> Map.get(host.id, [])
           |> Enum.filter(&Marshall.Compute.HostLiveness.capacity_fresh?(&1.reported_at, now))
 
         budgets = Enum.map(pools, &Budget.available(host, &1, reservations))

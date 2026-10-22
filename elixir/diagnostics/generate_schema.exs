@@ -1,10 +1,10 @@
 defmodule Overalls.Diagnostics.GenerateSchema do
   @moduledoc "Derive a finite vocabulary from repository-owned production source literals."
   @services ~w(marshall lilly audi brady porsche ziggy enrico galileo susan peach)
-  @operations ~w(lilly.host.utility lilly.transfer.stream enrico.git.utility marshall.http marshall.agent.server_tool marshall.artifact.publish marshall.artifact.content marshall.cedar.authorize audi.http brady.http galileo.http ziggy.http porsche.ssh.dispatch peach.http enrico.http)
+  @operations ~w(lilly.host.utility lilly.transfer.stream enrico.git.utility marshall.http marshall.agent.server_tool marshall.artifact.publish marshall.artifact.content marshall.cedar.authorize marshall.live.refresh marshall.views.read audi.http brady.http galileo.http ziggy.http porsche.ssh.dispatch peach.http enrico.http)
   @uuid ~w(event_id resource_id request_id host_id vm_id placement_id session_id user_id team_id operation_id execution_id workflow_id backup_id image_id account_id clone_id transfer_id source_id destination_id pool_id)
-  @enums ~w(resource_type action previous_state next_state reason outcome state stage effect utility method mode source status operation kind phase tool namespace via)
-  @numbers ~w(revision version file_count sequence duration duration_ms duration_us generation execution_epoch bytes byte_count count status_code http_status attempt tokens cached_tokens input_tokens output_tokens request_bytes response_bytes status occurred_at)
+  @enums ~w(resource_type action previous_state next_state reason outcome state stage effect utility method mode source status operation kind phase tool namespace via view)
+  @numbers ~w(revision version file_count sequence duration duration_ms duration_us generation execution_epoch bytes byte_count count status_code http_status attempt tokens cached_tokens input_tokens output_tokens request_bytes response_bytes status occurred_at query_count row_count)
 
   # @cc [owner:ghuntley,label:verification] trace-schema-deterministic-serialization
   # Identical production vocabulary MUST serialize to identical bytes across

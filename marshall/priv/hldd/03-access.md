@@ -562,6 +562,52 @@ Evidence: [current read-access decision](repo:docs/architecture/decisions/0119-a
 [Cedar policy](repo:marshall/priv/cedar/compute.cedar),
 [guest account design](repo:docs/architecture/decisions/0158-durable-guest-identities.md).
 
+## Batched machine-page decisions
+
+Machine pages decide access for many machines at once. `/overview`,
+`/machines`, `get`, `resolve` and the catalog read through
+`Marshall.Compute.Views`, which runs each read as one decision batch under
+[ADR-0256](repo:docs/architecture/decisions/0256-batched-page-authorization-snapshots.md).
+
+- **One snapshot.**
+  [`DecisionSnapshot`](repo:marshall/lib/marshall/authorization/decision_snapshot.ex)
+  opens the outermost transaction as `REPEATABLE READ, READ ONLY`, so every
+  statement sees one PostgreSQL snapshot.
+- **Reused reads.** Inside that snapshot, the batch reuses reads that can only
+  return the same row: the actor's user, stored-login and elevation state, each
+  machine owner, current access/thread/team grant rows and the machine entity
+  built from them.
+- **Batched preloads.** The page reads these rows in batches with filters
+  identical to the per-row reads.
+- **Fresh Cedar.** Cedar still evaluates every read, write and manage decision.
+- **No reuse outside the batch.**
+  - The reused rows exist only in the requesting process and disappear when
+    the transaction commits, raises or rolls back.
+  - A batch nested inside another transaction reuses nothing.
+  - Revocation, retirement, logout and demotion take effect on the next refresh,
+    event or request, as before.
+
+Token expiry and the elevation window are evaluated once per batch, at its first
+principal read. Every row on a page therefore reflects the same moment.
+
+| Case | Result |
+| --- | --- |
+| Grant changed between two refreshes | Next refresh lists the current decision |
+| Grant revoked while a refresh runs | That refresh uses its snapshot; the next refresh hides the machine |
+| Batch nested in a caller's transaction | No reuse; every read runs fresh |
+| Duplicate active resize rows | Batched read skips them; the per-row read fails as before |
+
+Evidence:
+
+- A [Hegel equivalence property](repo:marshall/test/marshall/compute/views_batched_reads_test.exs)
+  compares batched pages with fresh per-row decisions over generated grant
+  roles. The same file covers revocation between reads and the per-machine query
+  budget.
+- The SQL sandbox cannot change isolation, so tests exercise the reuse without
+  `REPEATABLE READ` (`decision_snapshot_isolation: false`).
+- The isolation level was verified once against a real connection. No
+  automated test covers it.
+
 ## Creation preference authority
 
 The fifth account section saves three independent machine creation presets on

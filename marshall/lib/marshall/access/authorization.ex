@@ -1,7 +1,10 @@
 defmodule Marshall.Access.Authorization do
-  @moduledoc "Fresh persisted membership mapped into the real Cedar VM policy. No permission cache."
+  @moduledoc """
+  Fresh persisted membership mapped into the real Cedar VM policy. No permission
+  cache: persisted inputs are reused only within one DecisionSnapshot batch.
+  """
   alias Marshall.Access.Grant
-  alias Marshall.Authorization.{Cedar, SystemActor}
+  alias Marshall.Authorization.{Cedar, DecisionSnapshot, SystemActor}
   alias Marshall.Compute.{Ledger, VirtualMachine}
   require Ash.Query
 
@@ -17,7 +20,9 @@ defmodule Marshall.Access.Authorization do
       (action != "web" or OverallsProtocol.ProfilePolicy.allows?(vm.profile, :web)) and
       match?(
         %Marshall.Accounts.User{deleted_at: nil, active: true},
-        Marshall.Accounts.Security.current(vm.owner_id)
+        DecisionSnapshot.fetch({:user, vm.owner_id}, fn ->
+          Marshall.Accounts.Security.current(vm.owner_id)
+        end)
       ) and
       Cedar.allowed?(actor, action, entity(vm, actor))
   end
@@ -30,12 +35,56 @@ defmodule Marshall.Access.Authorization do
   # only when the profile permits sharing, and the actor's current team
   # memberships when the machine belongs to a team. These sources are additive;
   # reducing one source MUST NOT erase independent authority from another. Customer
-  # grants MUST confer no authority. Caller-supplied roles or stale entity
-  # caches MUST NOT contribute membership to a new authorization decision.
+  # grants MUST confer no authority. Caller-supplied roles or entities cached
+  # outside the current DecisionSnapshot batch MUST NOT contribute membership to
+  # a new authorization decision.
   @spec entity(VirtualMachine.t(), Marshall.Accounts.User.t()) :: ExCedar.Entity.t()
   def entity(vm, %Marshall.Accounts.User{id: id} = actor) do
+    DecisionSnapshot.fetch({:vm_entity, vm.id, id}, fn -> fresh_entity(vm, actor) end)
+  end
+
+  @doc "Batch the actor's machine grant and team membership reads for a page of VMs."
+  @spec prefetch([VirtualMachine.t()], Marshall.Accounts.User.t()) :: :ok
+  def prefetch(vms, %Marshall.Accounts.User{id: id} = actor) do
+    if DecisionSnapshot.active?() and vms != [] do
+      vm_ids = Enum.map(vms, & &1.id)
+      team_ids = vms |> Enum.map(& &1.team_id) |> Enum.reject(&is_nil/1) |> Enum.uniq()
+
+      grants =
+        Grant
+        |> Ash.Query.filter(vm_id in ^vm_ids and user_id == ^id)
+        |> Ash.read!(actor: SystemActor.compute())
+        |> Enum.group_by(& &1.vm_id)
+
+      memberships =
+        if team_ids == [] do
+          %{}
+        else
+          Marshall.Teams.TeamMember
+          |> Ash.Query.filter(team_id in ^team_ids and user_id == ^id)
+          |> Ash.read!(actor: SystemActor.compute())
+          |> Enum.group_by(& &1.team_id)
+        end
+
+      DecisionSnapshot.prime(
+        Map.merge(
+          Map.new(vm_ids, &{{:vm_grants, &1, id}, Map.get(grants, &1, [])}),
+          Map.new(team_ids, &{{:team_membership, &1, id}, Map.get(memberships, &1, [])})
+        )
+      )
+
+      Marshall.Threads.Authorization.prefetch(vms, actor)
+    end
+
+    :ok
+  end
+
+  defp fresh_entity(vm, %Marshall.Accounts.User{id: id} = actor) do
     grants =
-      for grant <- Ledger.read!(Grant, vm_id: vm.id, user_id: id),
+      for grant <-
+            DecisionSnapshot.fetch({:vm_grants, vm.id, id}, fn ->
+              Ledger.read!(Grant, vm_id: vm.id, user_id: id)
+            end),
           OverallsProtocol.ProfilePolicy.allows?(vm.profile, :sharing),
           into: %{},
           do: {grant.role, [id]}
@@ -55,7 +104,9 @@ defmodule Marshall.Access.Authorization do
   defp team_grants(%VirtualMachine{team_id: nil}, _id), do: %{}
 
   defp team_grants(%VirtualMachine{team_id: team_id}, id) do
-    case Ledger.read!(Marshall.Teams.TeamMember, team_id: team_id, user_id: id) do
+    case DecisionSnapshot.fetch({:team_membership, team_id, id}, fn ->
+           Ledger.read!(Marshall.Teams.TeamMember, team_id: team_id, user_id: id)
+         end) do
       [membership] ->
         admins = if membership.role in [:owner, :admin], do: [id], else: []
         %{team_admins: admins, team_members: [id]}

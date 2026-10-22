@@ -367,14 +367,56 @@ the transaction, but absence of one does not authorize a replacement mutation.
 
 Grafana adds operations and log dashboards alongside the existing baseline.
 Operations show numeric resource/state observations and independent queue health.
-The operations dashboard provisions fifteen stable panels covering fleet and
+The operations dashboard provisions twenty stable panels covering fleet and
 backup/updater measurements, log queues/retries/refusals, trace custody,
-SDK availability/age/refusals/export failures and fresh BEAM memory/run queues.
+SDK availability/age/refusals/export failures, fresh BEAM memory/run queues,
+stuck agent turns, Marshall page refresh duration and query count by view, and
+mean database query and connection-pool wait time.
 Logs select explicit application/platform sources and expose trace correlation.
 Grafana access and reader credential custody remain independent of Marshall
 sessions. Optional burn delivery uses private runtime webhook/credential files,
 HTTPS-only startup validation and notification health; delivery failure does not
 change objective arithmetic. Receiver receipt still requires separate evidence.
+
+## Page load diagnostics
+
+Marshall measures LiveView page refreshes through the shared diagnostics library
+([ADR-0256](repo:docs/architecture/decisions/0256-batched-page-authorization-snapshots.md)).
+`Marshall.Observability.measure_refresh/2` wraps each refresh of
+`/overview`, `/machines`, `/machines/new` and the machine detail pages. It:
+
+- runs the refresh once inside the reviewed `marshall.live.refresh` span with a
+  closed `view` label;
+- counts the database queries that process issued and annotates the span with
+  `query_count`;
+- records the `[:marshall, :live, :refresh]` metric.
+
+`Compute.Views` actions run inside `marshall.views.read`, labelled by
+`operation`, and annotate `query_count` and `row_count` at the end.
+`Tracing.annotate/1` adds only reviewed schema attributes, does nothing without a
+recording span, and never raises.
+
+| Signal | Kind | Labels and values |
+| --- | --- | --- |
+| `marshall.live.refresh` | internal span | `view`; end attribute `query_count` |
+| `marshall.views.read` | internal span | `operation`; end attributes `query_count`, `row_count` |
+| `marshall.live.refresh` | metric | duration, queries; view |
+| `live_<view>_count`, `_duration_us`, `_queries` | `marshall.runtime_metrics` fields | per-minute totals for `overview`, `machines`, `machine_new`, `machine` |
+| `overalls_gauge_live_<view>_*`, `overalls_gauge_database_*` | Prometheus gauges | admitted by the SDK health scrape allowlist |
+
+The operations dashboard divides each per-view total by that view's refresh
+count, giving mean refresh duration and queries per refresh. Database query time
+and pool wait are divided by query count in the same way. Views with no refresh
+in an interval stay absent rather than showing zero.
+
+To find a slow page:
+
+1. Open the duration panel and identify the view.
+2. Open a `marshall.live.refresh` span for that view in Tempo.
+3. Compare `query_count` on its `marshall.views.read` children.
+
+Query text, parameters, users and machines are never recorded. The panels have
+not yet been observed with live fleet data.
 
 ## Artifact and server-tool diagnostics
 

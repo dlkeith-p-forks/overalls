@@ -17,6 +17,8 @@ defmodule Overalls.Diagnostics.Tracing do
     marshall.artifact.publish
     marshall.artifact.content
     marshall.cedar.authorize
+    marshall.live.refresh
+    marshall.views.read
   )
 
   @type metadata :: Overalls.Diagnostics.metadata()
@@ -27,6 +29,25 @@ defmodule Overalls.Diagnostics.Tracing do
     if Overalls.Diagnostics.Configuration.configured?(),
       do: observe(name, metadata, fun),
       else: fun.()
+  end
+
+  # @cc [owner:ghuntley,label:observability;security] trace-annotate-reviewed-attributes
+  # Annotation MUST add only reviewed schema attributes to the current span,
+  # MUST be a no-op without a recording span or configuration, and MUST NOT
+  # raise into the application or change its result.
+  @doc "Adds reviewed attributes, such as counts known only at the end, to the current span."
+  @spec annotate(metadata()) :: :ok
+  def annotate(metadata) do
+    if Overalls.Diagnostics.Configuration.configured?() do
+      attributes = Overalls.Diagnostics.Context.attributes(metadata)
+
+      if attributes != %{},
+        do: _ = :otel_span.set_attributes(:otel_tracer.current_span_ctx(), attributes)
+    end
+
+    :ok
+  catch
+    _, _ -> :ok
   end
 
   @doc false

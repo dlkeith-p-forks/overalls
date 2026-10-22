@@ -1,7 +1,7 @@
 defmodule Marshall.Threads.Authorization do
   @moduledoc "Fresh thread ACLs and their inherited authority on the current work machine."
   alias Marshall.Accounts.{Security, User}
-  alias Marshall.Authorization.{Cedar, SystemActor}
+  alias Marshall.Authorization.{Cedar, DecisionSnapshot, SystemActor}
   alias Marshall.Compute.{Ledger, VirtualMachine}
   alias Marshall.Threads.{Grant, Thread}
   require Ash.Query
@@ -85,26 +85,86 @@ defmodule Marshall.Threads.Authorization do
     end
   end
 
+  @bound_statuses [:pending, :provisioning, :ready, :failed, :deleting]
+
   @spec machine_thread(VirtualMachine.t()) :: Thread.t() | nil
   defp machine_thread(vm) do
-    if OverallsProtocol.ProfilePolicy.allows?(vm.profile, :sharing) and is_nil(vm.archived_at) do
-      Thread
-      |> Ash.Query.filter(
-        machine_id == ^vm.id and creator_id == ^vm.owner_id and
-          status in [:pending, :provisioning, :ready, :failed, :deleting]
-      )
-      |> Ash.Query.limit(2)
-      |> Ash.read!(actor: SystemActor.compute())
-      |> case do
-        [thread] -> if shareable?(thread), do: thread
-        _ -> nil
-      end
+    if inherits?(vm) do
+      DecisionSnapshot.fetch({:machine_thread, vm.id}, fn ->
+        Thread
+        |> Ash.Query.filter(
+          machine_id == ^vm.id and creator_id == ^vm.owner_id and status in ^@bound_statuses
+        )
+        |> Ash.Query.limit(2)
+        |> Ash.read!(actor: SystemActor.compute())
+        |> current_binding()
+      end)
     end
+  end
+
+  defp inherits?(vm),
+    do: OverallsProtocol.ProfilePolicy.allows?(vm.profile, :sharing) and is_nil(vm.archived_at)
+
+  defp current_binding([thread]), do: if(shareable?(thread), do: thread)
+  defp current_binding(_), do: nil
+
+  @doc "Batch current machine thread bindings and the actor's thread grants for a page of VMs."
+  @spec prefetch([VirtualMachine.t()], User.t()) :: :ok
+  def prefetch(vms, %User{id: user_id}) do
+    vms = Enum.filter(vms, &inherits?/1)
+
+    if DecisionSnapshot.active?() and vms != [] do
+      vm_ids = Enum.map(vms, & &1.id)
+      owner_ids = vms |> Enum.map(& &1.owner_id) |> Enum.uniq()
+
+      candidates =
+        Thread
+        |> Ash.Query.filter(
+          machine_id in ^vm_ids and creator_id in ^owner_ids and status in ^@bound_statuses
+        )
+        |> Ash.read!(actor: SystemActor.compute())
+        |> Enum.group_by(& &1.machine_id)
+
+      threads =
+        Map.new(vms, fn vm ->
+          bound =
+            candidates
+            |> Map.get(vm.id, [])
+            |> Enum.filter(&(&1.creator_id == vm.owner_id))
+            |> current_binding()
+
+          {vm.id, bound}
+        end)
+
+      thread_ids = for {_, %Thread{id: id}} <- threads, do: id
+
+      grants =
+        if thread_ids == [] do
+          %{}
+        else
+          Grant
+          |> Ash.Query.filter(thread_id in ^thread_ids and user_id == ^user_id)
+          |> Ash.read!(actor: SystemActor.compute())
+          |> Enum.group_by(& &1.thread_id)
+        end
+
+      DecisionSnapshot.prime(
+        Map.merge(
+          Map.new(threads, fn {vm_id, thread} -> {{:machine_thread, vm_id}, thread} end),
+          Map.new(thread_ids, &{{:thread_grants, &1, user_id}, Map.get(grants, &1, [])})
+        )
+      )
+    end
+
+    :ok
   end
 
   @spec grants_for(String.t(), String.t()) :: grants()
   defp grants_for(thread_id, user_id) do
-    for grant <- Ledger.read!(Grant, thread_id: thread_id, user_id: user_id),
+    for grant <-
+          DecisionSnapshot.fetch({:thread_grants, thread_id, user_id}, fn ->
+            Ledger.read!(Grant, thread_id: thread_id, user_id: user_id)
+          end),
         into: %{},
         do: {grant.role, [user_id]}
   end

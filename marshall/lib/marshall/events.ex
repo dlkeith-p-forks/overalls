@@ -1394,7 +1394,19 @@ defmodule Marshall.Events do
       agent_stuck_turns: {:int64, :optional},
       terminal_host_streams: {:int64, :optional},
       terminal_viewer_sockets: {:int64, :optional},
-      terminal_peer_sockets: {:int64, :optional}
+      terminal_peer_sockets: {:int64, :optional},
+      live_overview_count: {:int64, :optional},
+      live_overview_duration_us: {:int64, :optional},
+      live_overview_queries: {:int64, :optional},
+      live_machines_count: {:int64, :optional},
+      live_machines_duration_us: {:int64, :optional},
+      live_machines_queries: {:int64, :optional},
+      live_machine_new_count: {:int64, :optional},
+      live_machine_new_duration_us: {:int64, :optional},
+      live_machine_new_queries: {:int64, :optional},
+      live_machine_count: {:int64, :optional},
+      live_machine_duration_us: {:int64, :optional},
+      live_machine_queries: {:int64, :optional}
     ]
   )
 

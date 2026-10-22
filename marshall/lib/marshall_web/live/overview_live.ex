@@ -26,7 +26,7 @@ defmodule MarshallWeb.OverviewLive do
        newsletter_status: nil
      )
      |> assign(newsletter_form: to_form(%{"email" => ""}, as: :newsletter))
-     |> refresh()}
+     |> initial()}
   end
 
   @impl true
@@ -67,8 +67,29 @@ defmodule MarshallWeb.OverviewLive do
     {:noreply, if(socket.assigns.visible, do: refresh(socket), else: socket)}
   end
 
+  # @cc [owner:ghuntley,label:product;observability] overview-connected-load
+  # The disconnected render MUST NOT read machine or catalog data; it shows the
+  # panels as loading, and the connected mount performs the single initial read.
+  @spec initial(socket()) :: socket()
+  defp initial(socket) do
+    if connected?(socket) do
+      refresh(socket)
+    else
+      assign(socket,
+        machines: :loading,
+        catalog: :loading,
+        newsletter_dismissed: true,
+        updated_at: nil
+      )
+    end
+  end
+
   @spec refresh(socket()) :: socket()
-  defp refresh(socket) do
+  defp refresh(socket),
+    do: Marshall.Observability.measure_refresh(:overview, fn -> load(socket) end)
+
+  @spec load(socket()) :: socket()
+  defp load(socket) do
     actor = socket.assigns.current_user
     machines = read(fn -> preview(actor) end)
     catalog = read(fn -> Compute.catalog(%{}, actor: actor) end)
@@ -87,26 +108,33 @@ defmodule MarshallWeb.OverviewLive do
     Map.get(current || actor, :newsletter_dismissed, false)
   end
 
-  # Pinned machines take the first slots; the keyset page fills the rest. When
-  # every slot is pinned, one excluded row only tells whether more exist.
+  # Pinned machines take the first slots; the keyset page fills the rest.
   @spec preview(Marshall.Accounts.User.t()) :: {:ok, preview()} | {:error, term()}
   defp preview(actor) do
-    with {:ok, %{items: pinned}} <- Compute.pinned_vms(%{}, actor: actor),
-         shown = Enum.take(pinned, @preview),
-         {:ok, page} <-
-           Compute.list_vms(
-             %{limit: max(@preview - length(shown), 1), exclude: Enum.map(pinned, & &1.id)},
-             actor: actor
-           ) do
-      full? = length(shown) == @preview
-
+    with {:ok, %{items: shown, ids: pinned_ids}} <-
+           Compute.pinned_vms(%{limit: @preview}, actor: actor),
+         full? = length(shown) == @preview,
+         {:ok, page} <- page(actor, full?, length(shown), pinned_ids) do
       {:ok,
        %{
-         items: shown ++ if(full?, do: [], else: page.items),
-         more:
-           length(pinned) > @preview or page.next_cursor != nil or (full? and page.items != [])
+         items: shown ++ page.items,
+         more: length(pinned_ids) > @preview or page.more
        }}
     end
+  end
+
+  # When every slot is pinned, one excluded row only tells whether more exist.
+  @spec page(Marshall.Accounts.User.t(), boolean(), non_neg_integer(), [String.t()]) ::
+          {:ok, %{items: [map()], more: boolean()}} | {:error, term()}
+  defp page(actor, true, _shown, pinned_ids) do
+    with {:ok, page} <- Compute.list_vms(%{limit: 1, exclude: pinned_ids}, actor: actor),
+         do: {:ok, %{items: [], more: page.next_cursor != nil or page.items != []}}
+  end
+
+  defp page(actor, false, shown, pinned_ids) do
+    with {:ok, page} <-
+           Compute.list_vms(%{limit: @preview - shown, exclude: pinned_ids}, actor: actor),
+         do: {:ok, %{items: page.items, more: page.next_cursor != nil}}
   end
 
   @spec read((-> {:ok, map()} | {:error, term()})) :: {:ok, map()} | :unavailable
@@ -230,6 +258,8 @@ defmodule MarshallWeb.OverviewLive do
                     ~p"/machines"
                   }>{dgettext("machines", "Machines")}</.link>.
                 </p>
+              <% :loading -> %>
+                <div id="overview-machines-loading" aria-busy="true"></div>
               <% :unavailable -> %>
                 <p id="overview-machines-unavailable" role="status">
                   {dgettext("machines", "Machines couldn’t be loaded. Refresh to try again.")}
@@ -331,6 +361,8 @@ defmodule MarshallWeb.OverviewLive do
                   <p class="muted">
                     {dgettext("machines", "Capacity is checked again when you create a machine.")}
                   </p>
+                <% :loading -> %>
+                  <div id="overview-capacity-loading" aria-busy="true"></div>
                 <% _ -> %>
                   <p id="overview-capacity-unavailable" class="muted">
                     {dgettext("machines", "Headroom is temporarily unavailable.")}

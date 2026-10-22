@@ -1,6 +1,6 @@
 ---
-digest: 1f73e5733076af3b63636dd981c156f006a01d7a769afa8bd9adac9f09780047
-disposition: no-impact
+digest: 652b0cdb58ac6a8d551bde9382bb4d2841fb81a80838b4cf49887af507d28cac
+disposition: updated
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
 path: nix/domains/system/logging/default.nix
@@ -9,16 +9,16 @@ reviewed_chapters:
   marshall/priv/hldd/12-configuration.md: 5318d494cf8479636aa2e2c3c61cb5505cb4cb8386e39b935cf62c62b997169f
   marshall/priv/hldd/13-deployment.md: 0bc4fe19bb9cdf60d5edc24c3777c7f54b170426d9ae5d1f611a2240053c3350
   marshall/priv/hldd/14-operations.md: 68c72d0e6fde22edd5d892f824dedd44f1843d68ece6c96ff5b3e2c1e50051c9
-  marshall/priv/hldd/15-monitoring.md: db740282f22afc4c76be24d9db3f9ef4f10bf2745089a754647c6cf7e8fdfeef
+  marshall/priv/hldd/15-monitoring.md: 37f859a5a9ae74a8e7f39aa537f68287f5df97bcde5537669bbf53418c2064f9
   marshall/priv/hldd/16-recovery.md: 194fe77196ac4a25ab764d5cf4aee7558da547cd7b59726f32a302019b26136c
   marshall/priv/hldd/17-reference.md: 7d88fca8dbe56f67c71ea207b0ed860f4cfc005f7cb9f6ccde4ffe4bc718cda5
-  marshall/priv/hldd/18-options.md: 508dafafd8772a8b99e5277fdce56bda9b27566145979975ae96a11109e4a954
-  marshall/priv/hldd/19-coverage.md: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
-  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/18-options.md: 56d6ff5dfa49ede786cba440d57100c75b721b23b1e0616e79d3df8205e5ac11
+  marshall/priv/hldd/19-coverage.md: 0cb3df7d454cd48dcb9c1ddea347951c2eb63843284bbc76dc24f01e680faad9
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Release build correction does not change documented deployment behavior; fleet verification remains the existing scenario.
+Fluent Bit maps live_<view> count, duration and query gauges; the collector admits database and live page gauges; the operations dashboard gains page refresh and database panels 17-20 checked by the log-store machine test; the monitoring chapter lists twenty panels and page load diagnostics.

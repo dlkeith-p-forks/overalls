@@ -258,6 +258,46 @@ defmodule Overalls.Diagnostics.SDKTest do
     for span <- spans, do: assert(span.status.code == :STATUS_CODE_ERROR)
   end
 
+  test "annotation adds only reviewed end-of-span attributes and never raises", %{
+    socket: socket
+  } do
+    assert :ok = Overalls.Diagnostics.Tracing.annotate(query_count: 3)
+    _ = Overalls.Diagnostics.Processor.force_flush(%{})
+    {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {:local, socket}])
+    on_exit(fn -> :gen_tcp.close(listener) end)
+    exporter = Task.async(fn -> serve(listener, 200, "") end)
+
+    assert :done =
+             Overalls.Diagnostics.Tracing.with_span("marshall.views.read", [operation: :list], fn ->
+               :ok =
+                 Overalls.Diagnostics.Tracing.annotate(
+                   query_count: 7,
+                   row_count: 2,
+                   email: "private@example.test",
+                   status: "private-text"
+                 )
+
+               :done
+             end)
+
+    assert :ok = Overalls.Diagnostics.Processor.force_flush(%{})
+    body = Task.await(exporter, 5000)
+    refute body =~ "private"
+
+    request =
+      :opentelemetry_exporter_trace_service_pb.decode_msg(body, :export_trace_service_request)
+
+    assert %{resource_spans: [%{scope_spans: [%{spans: [span]}]}]} = request
+    assert span.name == "marshall.views.read"
+
+    attributes = Map.new(span.attributes, &{&1.key, &1.value.value})
+    assert attributes["query_count"] == {:int_value, 7}
+    assert attributes["row_count"] == {:int_value, 2}
+    assert attributes["operation"] == {:string_value, "list"}
+    refute Map.has_key?(attributes, "email")
+    refute Map.has_key?(attributes, "status")
+  end
+
   test "deferred events retain their parent span without copying baggage", %{socket: socket} do
     _ = Overalls.Diagnostics.Processor.force_flush(%{})
     {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {:local, socket}])

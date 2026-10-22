@@ -15,6 +15,11 @@ defmodule Marshall.Threads.Grant do
     repo Marshall.Repo
     identity_wheres_to_sql current_member: "archived_at IS NULL"
 
+    custom_indexes do
+      # Machine lists start from the caller's current thread grants (ADR-0256).
+      index [:user_id, :thread_id], where: "archived_at IS NULL", name: "thread_grants_user_index"
+    end
+
     check_constraints do
       check_constraint :role, "valid_thread_access_role",
         check: "role IN ('viewer', 'operator', 'manager')"

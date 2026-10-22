@@ -165,6 +165,35 @@ argument. Expected refusals: `machine_pinned` on delete, `pin_limit` on the 21st
 pin, `vm_deleted` when pinning a deleting machine, `forbidden` for a reader
 without access or an unpin without a live row.
 
+## Batched machine-page decision layers
+
+[ADR-0256](repo:docs/architecture/decisions/0256-batched-page-authorization-snapshots.md)
+lets one machine-page read share persisted authorization inputs across its rows.
+This changes no decision. Cedar still evaluates every row. Only rows that
+PostgreSQL guarantees to be identical within one snapshot are read once. Evidence
+is BEAM-level: a generated equivalence property, a revocation example and a
+query-budget test. No native journey has run.
+
+| Layer | Authority and required refusal |
+| --- | --- |
+| Identity | The principal (user row, stored-login presence, elevation proof) is read at most once per batch, keyed by user and login JTI, and dropped when the batch ends. A logout, token expiry or retirement committed before a later refresh refuses on that refresh. |
+| Authorization | Every row still receives fresh Cedar read/write/manage decisions over current owner state, access grants, bound thread grants and team membership. Batched preloads use filters identical to the per-row reads. A machine that a fresh per-row read decision would refuse is not listed. |
+| Transport | Unchanged: LiveView sessions recheck the stored login on mount, events and refresh. Nothing from the batch is sent to the browser beyond the existing view allowlist. |
+| Execution | Reuse requires the outermost transaction, set to `REPEATABLE READ, READ ONLY`. A batch nested inside another transaction reuses nothing, and a read-only batch cannot write. Expiry and elevation windows are evaluated once, at the batch's first principal read. |
+| Isolation | The reused rows live in the requesting process only and are never shared between processes, users or requests. |
+| Storage | Read-only. New partial indexes on current grants and memberships, and owner/team keyset indexes on machines, change plans only. |
+| Recovery | A raise or rollback drops the reused rows. The next refresh starts a new snapshot and observes every committed revocation. |
+
+Untested boundaries:
+
+- There is no automated repeatable-read test outside the SQL sandbox. The level
+  was verified once against a real connection.
+- Concurrent revocation during a refresh is covered by argument only. The refresh
+  uses its snapshot and the next refresh refuses.
+
+Expected refusals are unchanged: an ungranted or revoked machine is omitted from
+the page, and `forbidden` is returned for direct `get` or `resolve`.
+
 ## Time zone preference disclosure layers
 
 [ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md) stores one

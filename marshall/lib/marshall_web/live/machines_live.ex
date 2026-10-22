@@ -50,9 +50,21 @@ defmodule MarshallWeb.MachinesLive do
     {:noreply, push_navigate(socket, to: ~p"/machines/#{id}/settings")}
   end
 
+  # @cc [owner:ghuntley,label:product;observability] machines-params-refresh-on-view-change
+  # A params change MUST refresh when it changes the view (action, machine or
+  # cursor). A patch that only changes form params (creation validation and
+  # request-key seeding) MUST NOT reload the page data; the timer still
+  # refreshes it, so revoked access is removed on the next tick.
   def handle_params(params, _uri, socket) do
     cursor = valid_cursor(params["after"])
-    socket = socket |> assign(vm_id: params["id"], cursor: cursor) |> refresh()
+    view = {socket.assigns.live_action, params["id"], cursor}
+
+    socket =
+      if socket.assigns[:loaded_view] == view do
+        socket
+      else
+        socket |> assign(vm_id: params["id"], cursor: cursor, loaded_view: view) |> refresh()
+      end
 
     socket =
       if socket.assigns.live_action == :settings do
@@ -112,9 +124,13 @@ defmodule MarshallWeb.MachinesLive do
   end
 
   @impl true
+  # @cc [owner:ghuntley,label:observability] machines-refresh-after-completion
+  # The next refresh MUST be scheduled only after the current one finishes, so
+  # a slow refresh delays the next tick instead of queueing refreshes back to back.
   def handle_info(:refresh, socket) do
+    socket = refresh(socket)
     Process.send_after(self(), :refresh, 1000)
-    {:noreply, refresh(socket)}
+    {:noreply, socket}
   end
 
   # @cc [owner:ghuntley,label:security;durability] provision-through-thread
@@ -426,7 +442,19 @@ defmodule MarshallWeb.MachinesLive do
 
   defp creation_params(_), do: %{}
 
-  defp refresh(%{assigns: %{live_action: :new}} = socket) do
+  @spec refresh(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp refresh(socket) do
+    view =
+      case socket.assigns.live_action do
+        :index -> :machines
+        :new -> :machine_new
+        _ -> :machine
+      end
+
+    Marshall.Observability.measure_refresh(view, fn -> load(socket) end)
+  end
+
+  defp load(%{assigns: %{live_action: :new}} = socket) do
     actor = socket.assigns.current_user
 
     case {Compute.catalog(%{}, actor: actor), Teams.list_teams(%{limit: 100}, actor: actor)} do
@@ -444,13 +472,13 @@ defmodule MarshallWeb.MachinesLive do
   # ids from every keyset page, so a pinned machine appears once, before the
   # unpinned rows, and only on the first page. Later pages MUST keep the same
   # exclusion so paging neither repeats nor skips a machine.
-  defp refresh(%{assigns: %{live_action: :index}} = socket) do
+  defp load(%{assigns: %{live_action: :index}} = socket) do
     actor = socket.assigns.current_user
 
-    with {:ok, %{items: pinned}} <- Compute.pinned_vms(%{}, actor: actor),
+    with {:ok, %{items: pinned, ids: pinned_ids}} <- Compute.pinned_vms(%{}, actor: actor),
          {:ok, page} <-
            Compute.list_vms(
-             %{after: socket.assigns.cursor, exclude: Enum.map(pinned, & &1.id)},
+             %{after: socket.assigns.cursor, exclude: pinned_ids},
              actor: actor
            ),
          {:ok, catalog} <- Compute.catalog(%{}, actor: actor) do
@@ -476,7 +504,7 @@ defmodule MarshallWeb.MachinesLive do
   # Detail refresh MUST refetch current VM access and redirect when it fails.
   # Grant details MUST be cleared when management permission disappears, the VM
   # is deleted, or the authorized grant query fails.
-  defp refresh(socket) do
+  defp load(socket) do
     case Compute.get_vm(%{vm_id: socket.assigns.vm_id}, actor: socket.assigns.current_user) do
       {:ok, vm} ->
         socket = MachineWorkspace.put_vm(socket, vm)
@@ -554,7 +582,8 @@ defmodule MarshallWeb.MachinesLive do
       "" ->
         "No initial setup requested. Do not make changes to this machine; report that no setup was requested."
 
-      value -> value
+      value ->
+        value
     end
   end
 

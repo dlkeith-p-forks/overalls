@@ -19,6 +19,11 @@ defmodule Marshall.Compute.Reservation do
     table "compute_reservations"
     repo Marshall.Repo
 
+    custom_indexes do
+      # Catalog headroom reads every reservation for the eligible hosts at once.
+      index [:host_id], name: "compute_reservations_host_index"
+    end
+
     references do
       reference :placement, match_with: [vm_id: :vm_id, host_id: :host_id, pool_id: :pool_id]
     end

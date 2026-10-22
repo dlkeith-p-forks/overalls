@@ -2,6 +2,9 @@ import Config
 config :marshall, Oban, testing: :manual
 config :marshall, ingress_zone: "apps.example.test"
 config :marshall, agent_loop_enabled: false
+# The SQL sandbox already owns the outer transaction, so batches cannot set
+# their isolation level; memoization still runs inside the sandbox transaction.
+config :marshall, decision_snapshot_isolation: false
 config :marshall, token_signing_secret: "FWwv4aGprYO94yAJrGNixx/NGJNKpmpq"
 config :bcrypt_elixir, log_rounds: 1
 config :ash, policies: [show_policy_breakdowns?: true], disable_async?: true
