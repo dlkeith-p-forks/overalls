@@ -4,28 +4,47 @@ using System.Text;
 namespace Mila.Windows.Interop;
 
 internal enum MilaRouteKind { Machines, Machine, Threads, Thread, Settings }
-internal readonly record struct MilaRoute(MilaRouteKind Kind, Guid? Id = null);
+internal readonly record struct MilaRoute(MilaRouteKind Kind, string Host, Guid? Id = null)
+{
+    internal string Path => Kind switch
+    {
+        MilaRouteKind.Machines => "/machines",
+        MilaRouteKind.Machine => $"/machines/{Id:D}",
+        MilaRouteKind.Threads => "/threads",
+        MilaRouteKind.Thread => $"/threads/{Id:D}",
+        MilaRouteKind.Settings => "/settings",
+        _ => throw new InvalidOperationException("Unknown route kind")
+    };
+}
 
 internal static class MilaRouteParser
 {
     internal static MilaRoute? Parse(string value)
     {
-        if (!Uri.TryCreate(value, UriKind.Absolute, out Uri? uri) ||
-            uri.Scheme != "overalls" || !string.IsNullOrEmpty(uri.Query) || !string.IsNullOrEmpty(uri.Fragment) ||
-            !string.IsNullOrEmpty(uri.UserInfo)) return null;
+        if (value.Length is 0 or > 4096 || value.Any(char.IsControl) || value.Contains(' ') ||
+            !value.StartsWith("overalls://", StringComparison.Ordinal) ||
+            !Uri.TryCreate(value, UriKind.Absolute, out Uri? uri) || uri.Scheme != "overalls" ||
+            !string.IsNullOrEmpty(uri.Query) || !string.IsNullOrEmpty(uri.Fragment) ||
+            !string.IsNullOrEmpty(uri.UserInfo) || uri.Port != -1) return null;
+        string authority = value["overalls://".Length..].Split('/', 2)[0];
+        string host = uri.Host;
+        if (host.Length == 0 || host != host.ToLowerInvariant() || host.Contains('%')) return null;
+        if (authority != host) return null;
         string[] parts = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length == 0) return uri.Host.ToLowerInvariant() switch
+        if (parts.Length != 1 && parts.Length != 2) return null;
+        if (parts.Length == 1) return parts[0] switch
         {
-            "machines" => new(MilaRouteKind.Machines),
-            "threads" => new(MilaRouteKind.Threads),
-            "settings" => new(MilaRouteKind.Settings),
+            "machines" => new(MilaRouteKind.Machines, host),
+            "threads" => new(MilaRouteKind.Threads, host),
+            "settings" => new(MilaRouteKind.Settings, host),
             _ => null,
         };
-        if (parts.Length != 1 || !Guid.TryParseExact(parts[0], "D", out Guid id)) return null;
-        return uri.Host.ToLowerInvariant() switch
+        if (parts[1].Length == 0 ||
+            !Guid.TryParseExact(parts[1], "D", out Guid id) || parts[1] != id.ToString("D")) return null;
+        return parts[0] switch
         {
-            "machines" => new(MilaRouteKind.Machine, id),
-            "threads" => new(MilaRouteKind.Thread, id),
+            "machines" => new(MilaRouteKind.Machine, host, id),
+            "threads" => new(MilaRouteKind.Thread, host, id),
             _ => null,
         };
     }

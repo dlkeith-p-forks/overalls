@@ -1,5 +1,5 @@
 ---
-digest: d4d4717258d3346f6d0afd6fd8f35e04ef33eea538ca10400535827d41113680
+digest: 00307b01b99f051d612eecc788f78bd69e04cd788ca305215776076a777b8c0b
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android notification OS adapter and Windows mutation controller preserve typed native boundaries.
+Windows activation arguments are parsed through the typed route boundary and invalid links are refused.
