@@ -59,6 +59,9 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     val scope = rememberCoroutineScope()
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
+    val deployment = remember { MilaDeploymentSelection(listOf(MilaDeployment("mila.example"))) }
+    val signIn = remember { MilaSignInController(adapter) }
+    var signInState by remember { mutableStateOf<MilaSignInState>(MilaSignInState.SignedOut) }
     fun refresh() { scope.launch {
         connection = MilaSessionConnection.Refreshing
         connection = MilaSessionRefresher.refresh(adapter)
@@ -73,12 +76,15 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(MilaStrings.text(MilaMessage.AppName), style = MaterialTheme.typography.headlineSmall)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Deployment: ${deployment.selected?.label ?: "none"}")
+            Button({ scope.launch { signIn.signIn(deployment.selected!!); signInState = signIn.state } }) { Text("Sign in") }
             Button({ route = MilaRoute.Machines }) { Text(MilaStrings.text(MilaMessage.Machines)) }
             Button({ route = MilaRoute.Threads }) { Text(MilaStrings.text(MilaMessage.Threads)) }
             Button({ route = MilaRoute.Settings }) { Text(MilaStrings.text(MilaMessage.Settings)) }
             Button(::refresh) { Text(MilaStrings.text(MilaMessage.Refresh)) }
         }
         Text(status, style = MaterialTheme.typography.labelSmall)
+        if (signInState is MilaSignInState.SignedIn) Text("Signed in", style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
             MilaRoute.Machines -> MachineList(adapter, status, listing)
             is MilaRoute.Machine -> Detail("Machine", selected.id.toString())
