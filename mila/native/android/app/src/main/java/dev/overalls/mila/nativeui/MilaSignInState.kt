@@ -114,6 +114,15 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
   signIn(deployment)
   return state is MilaSignInState.SignedIn
  }
+
+ /** Reconnects through the certificate-authenticated Rust session when the caller supplies
+  * the same deployment material and non-exportable signer. The legacy bootstrap path is not
+  * used for a packaged reconnect. */
+ suspend fun reconnect(config: MilaSessionConnectConfig, signer: MilaDeviceKey): Boolean {
+  val deployment = store?.read() ?: return false
+  signIn(deployment, config, signer)
+  return state is MilaSignInState.SignedIn
+ }
  fun setApproval(state: MilaApprovalState) {
   val signedIn = this.state as? MilaSignInState.SignedIn ?: return
   store?.writeApproval(state)

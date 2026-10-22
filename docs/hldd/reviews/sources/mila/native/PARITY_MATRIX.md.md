@@ -1,6 +1,6 @@
 ---
-digest: 8829b0efdbe3546464f4646c50aaa078cb26b16f100aa99c4f08341d309382a7
-disposition: updated
+digest: 95eee2ab2bae5869438b67437d8082d57701d6c3c6c9a768505bbdf70a1f4f39
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Added the Linux SignInCoordinator trust reconciliation and endpoint validation evidence; parity now records the Rust planning seam and remaining host adapter gap.
+Android packaged reconnect now exposes typed authenticated Rust session overload; no architecture boundary change
