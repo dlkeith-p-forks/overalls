@@ -1,5 +1,5 @@
 ---
-digest: 95eee2ab2bae5869438b67437d8082d57701d6c3c6c9a768505bbdf70a1f4f39
+digest: 8336c285d0938cf2302fbae4526f89a50b8ea036f914d95f033677fb98a3cb5e
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android packaged reconnect now exposes typed authenticated Rust session overload; no architecture boundary change
+Android deep-link target controller adds typed lifecycle-fenced route projection; no architecture boundary change
