@@ -1,4 +1,5 @@
 mod common;
+use sha2::{Digest, Sha256};
 use std::env;
 use std::fs;
 use std::io::{Read, Write};
@@ -162,6 +163,9 @@ fn main() -> std::io::Result<()> {
                 }
                 append_cgroup_events(&mut output, "vm", &vm, "/sys/fs/cgroup/lilly.slice");
             }
+        }
+        for (link, metric, value) in vm_network_metrics(&descriptor) {
+            output.push_str(&format!("overalls_fleet_counter{{kind=\"interface\",entity=\"{link}\",measure=\"{metric}\"}} {value}\n"));
         }
         output
     })
@@ -743,4 +747,54 @@ fn vm_units() -> Option<Vec<String>> {
             .take(2048)
             .collect(),
     )
+}
+
+fn vm_network_metrics(descriptor: &str) -> Vec<(String, String, u64)> {
+    let host_id = match descriptor
+        .split("\"lilly_host_id\"")
+        .nth(1)
+        .and_then(|v| v.split(':').nth(1))
+        .and_then(|v| v.split('"').nth(1))
+    {
+        Some(value) if value.len() == 36 => value,
+        _ => return Vec::new(),
+    };
+    if !host_id.bytes().all(|b| b.is_ascii_hexdigit() || b == b'-') {
+        return Vec::new();
+    }
+    let mut digest = Sha256::new();
+    digest.update(host_id.as_bytes());
+    let hash = format!("{:x}", digest.finalize());
+    let namespace = format!("lilly-{}", &hash[..12]);
+    if fs::metadata(format!("/run/netns/{namespace}")).is_err() {
+        return Vec::new();
+    }
+    let ip = descriptor_command(descriptor, "ip").unwrap_or_else(|| "ip".to_owned());
+    let output = match Command::new(ip)
+        .args(["-n", &namespace, "-j", "-s", "link", "show"])
+        .output()
+    {
+        Ok(value) if value.status.success() && value.stdout.len() <= 1_048_576 => value,
+        _ => return Vec::new(),
+    };
+    let text = match String::from_utf8(output.stdout) {
+        Ok(value) => value,
+        Err(_) => return Vec::new(),
+    };
+    let mut result = Vec::new();
+    for line in text.lines().take(4096) {
+        for metric in ["bytes", "packets", "errors", "dropped"] {
+            if let Some(value) = line
+                .split(&format!("\"{metric}\""))
+                .nth(1)
+                .and_then(|v| v.split(':').nth(1))
+                .and_then(|v| v.split(|c: char| !c.is_ascii_digit()).next())
+                .and_then(|v| v.parse().ok())
+            {
+                result.push((namespace.clone(), metric.to_owned(), value));
+            }
+        }
+    }
+    result.truncate(256);
+    result
 }

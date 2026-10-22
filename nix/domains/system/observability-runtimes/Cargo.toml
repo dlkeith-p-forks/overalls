@@ -10,3 +10,6 @@ path = "src/logging_health.rs"
 [[bin]]
 name = "overalls-fleet-exporter"
 path = "src/fleet_exporter.rs"
+
+[dependencies]
+sha2 = "0.10"

@@ -1,5 +1,5 @@
 ---
-digest: 6a68fcf50069d48988a42a56c3213dc6489cbf45b8ee91ff0c441401df30a5a4
+digest: 5168bed45d7570ab1ca0ea6a6599c164dc4170d8ea8b9a751f61144069ecbee1
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now reads a bounded Brady snapshot and projects only the fixed cache aggregate gauge allowlist.
+Fleet exporter adds SHA-256-bound read-only VM network namespace inspection using bounded ip JSON output and allowlisted link counters.
