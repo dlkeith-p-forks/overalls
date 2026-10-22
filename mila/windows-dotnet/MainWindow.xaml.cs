@@ -4,6 +4,7 @@ using Mila.Windows.Interop;
 namespace Mila.Windows;
 public sealed partial class MainWindow : Window
 {
+    private string? _activeHost;
     public MainWindow()
     {
         InitializeComponent();
@@ -55,9 +56,17 @@ public sealed partial class MainWindow : Window
     {
         await Task.Delay(150);
         MilaNativeVersionResult result = RustNative.TryGetVersion();
-        StatusText.Text = result.Status == MilaNativeStatus.Ok
-            ? S("signInApprove", "Approve this device in your browser, then return here.")
-            : S("signInFailedUnreachable", "Unable to connect to deployment.");
+        if (result.Status == MilaNativeStatus.Ok)
+        {
+            _activeHost = host;
+            StatusText.Text = S("signInApprove", "Approve this device in your browser, then return here.");
+            RefreshMachines();
+        }
+        else
+        {
+            _activeHost = null;
+            StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
+        }
         ConnectDeployment.IsEnabled = true;
     }
     private void LockApp(object sender, RoutedEventArgs args)
@@ -94,7 +103,18 @@ public sealed partial class MainWindow : Window
         StatusText.Text = result.Status == MilaNativeStatus.Ok
             ? MilaStrings.Text("connected", MilaStrings.Connected)
             : MilaStrings.Text("runtimeUnavailable", MilaStrings.RuntimeUnavailable);
+        RefreshMachines();
+    }
+
+    private void RefreshMachines()
+    {
         MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
+        if (_activeHost is { } host)
+        {
+            string savedAt = S("machinesSavedAt", "Machines for");
+            string empty = S("machinesEmpty", "No machines");
+            StatusText.Text = $"{savedAt} {host}: {empty}";
+        }
     }
 
     private void ClassifyThreadList(object sender, RoutedEventArgs args) => ClassifyThread("thread ls");

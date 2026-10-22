@@ -1,5 +1,5 @@
 ---
-digest: e86007ad4e5acc610dd6f590b343d0890d1be21cc30839dfeb633174ac3fd91c
+digest: 966c1385b4367ec3db8e47d9c3cea10e0eb69b5756135319e657ad3f11f892b4
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux GTK shell exposes centralized app-lock capability state; no architecture boundary change.
+Deployment selection and native session refresh remain UI wiring over existing Rust route and bridge contracts.

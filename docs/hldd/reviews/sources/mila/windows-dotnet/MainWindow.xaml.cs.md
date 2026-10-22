@@ -1,5 +1,5 @@
 ---
-digest: 1306b3c32612d1d33d8874e66c70e01b25916f8645c4f76fef3a342ab45d77cc
+digest: 74c55d09af5070497aa519a9bdfa6661ca0e558699542e5cf072a0cef8704ea7
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows deployment entrypoint remains a UI wrapper over the existing Rust native boundary; no new domain or protocol.
+Deployment selection and native session refresh remain UI wiring over existing Rust route and bridge contracts.

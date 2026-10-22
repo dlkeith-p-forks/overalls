@@ -56,6 +56,25 @@ impl NativeState {
         }
         root.append(&nav);
 
+        let deployment = Entry::builder()
+            .placeholder_text("Deployment host (example: overalls.example:443)")
+            .hexpand(true)
+            .build();
+        let select = Button::with_label("Select deployment");
+        let deployment_status = content.clone();
+        let deployment_input = deployment.clone();
+        select.connect_clicked(move |_| {
+            let host = deployment_input.text().trim().to_owned();
+            let route = format!("overalls://{host}/machines");
+            match ActivationRoute::parse(&route) {
+                Ok(parsed) => deployment_status
+                    .set_label(&format!("Deployment selected\n{}", parsed.canonical())),
+                Err(_) => deployment_status.set_label("Deployment host rejected by Rust policy."),
+            }
+        });
+        root.append(&deployment);
+        root.append(&select);
+
         // Linux intentionally reports lock capability explicitly. The shared Flutter
         // policy marks Linux as unavailable; keeping this state visible prevents
         // presenting a control that cannot be honored by the native platform.
