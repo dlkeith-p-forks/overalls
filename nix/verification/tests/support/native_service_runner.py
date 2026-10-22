@@ -657,16 +657,23 @@ def observe_group(
         "if kill -0 -- \"-$parent\" 2>/dev/null; then printf 'group-present\\n'; "
         "else printf 'group-absent\\n'; fi"
     )
-    result = ssh(
-        context.fixture,
-        context.work / "known_hosts",
-        f"{context.platform.sudo} -n {context.platform.bash} -c " + shlex.quote(command),
-        network=context.network,
-        # SSHD/PAM login receipt processing on Illumos can exceed two seconds;
-        # retain a bounded observation while leaving the fifteen-second fence
-        # budget to the caller.
-        timeout=min(5.0, remaining),
-    )
+    try:
+        result = ssh(
+            context.fixture,
+            context.work / "known_hosts",
+            f"{context.platform.sudo} -n {context.platform.bash} -c " + shlex.quote(command),
+            network=context.network,
+            # SSHD/PAM login receipt processing on Illumos can exceed two seconds;
+            # retain a bounded observation while leaving the fifteen-second fence
+            # budget to the caller.
+            timeout=min(5.0, remaining),
+        )
+    except subprocess.TimeoutExpired:
+        # A slow login is no observation of the group; callers retry inside
+        # the same fence deadline, and a late probe still fails below.
+        if time.monotonic() >= deadline:
+            raise RuntimeError("native lease process observation was late") from None
+        return None
     if time.monotonic() >= deadline:
         raise RuntimeError("native lease process observation was late")
     if result.returncode == 1 and not result.stdout and not result.stderr:
