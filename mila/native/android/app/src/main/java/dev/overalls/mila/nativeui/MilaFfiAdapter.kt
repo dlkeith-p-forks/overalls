@@ -426,9 +426,12 @@ class LinkedMilaFfiAdapter(
             ?: throw IllegalArgumentException("unknown machine command")
     }
 
-    override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = status(bindings.terminalAttach(from, columns, rows, readWrite))
-    override fun terminalInput(length: Int, readWrite: Boolean): Result<Unit> = status(bindings.terminalInput(length, readWrite))
-    override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = status(bindings.terminalResize(columns, rows, readWrite))
+    override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { status(bindings.terminalAttach(from, columns, rows, readWrite)) }
+    override fun terminalInput(length: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { status(bindings.terminalInput(length, readWrite)) }
+    override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { status(bindings.terminalResize(columns, rows, readWrite)) }
+
+    private fun authenticatedTerminal(operation: () -> Result<Unit>): Result<Unit> =
+        if (authenticatedSession == null) Result.failure(IllegalStateException("authenticated session unavailable")) else operation()
 
     private fun status(value: Int): Result<Unit> = if (value == 0) Result.success(Unit) else Result.failure(IllegalArgumentException("terminal operation rejected"))
 }

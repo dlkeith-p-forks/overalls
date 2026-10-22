@@ -1,6 +1,6 @@
 ---
-digest: 833f6686ee3a512aeb27d4f2f3cf5a721fe03537d1edaf118169cd99e9737f46
-disposition: updated
+digest: 5f857caadde83b57d59b4574506229d92a60c96eebcee9e5c033cc9bec7baae8
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Add Linux authenticated notification device list, removal and preference projections, bounded command formatting, FFI/session wrappers, parity status and handbook evidence.
+Android terminal operations now require an authenticated session binding before native transport calls
