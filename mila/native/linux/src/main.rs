@@ -6,7 +6,7 @@ use mila_native_linux::adapter::{
     format_thread_turns, format_web_command, TerminalStream,
 };
 use mila_native_linux::notifications::NotificationState;
-use mila_native_linux::route::{parse_activation_uris, ActivationRoute};
+use mila_native_linux::route::{ActivationBatch, ActivationRoute};
 use mila_native_linux::session::{
     ApprovalInfo, SessionBinding, SignInEvent, SignInFlow, SignInPhase, WhoamiOutcome,
 };
@@ -616,13 +616,9 @@ impl NativeState {
     fn open(&self, app: &adw::Application, files: &[gio::File]) {
         let window = self.ensure_window(app);
         let uris = files.iter().map(|file| file.uri()).collect::<Vec<_>>();
-        let results = parse_activation_uris(uris.iter().map(|uri| uri.as_str()));
-        let accepted = results
-            .iter()
-            .filter_map(|result| result.as_ref().ok())
-            .map(|route| route.canonical())
-            .collect::<Vec<_>>();
-        let rejected = results.len().saturating_sub(accepted.len());
+        let batch = ActivationBatch::parse(uris.iter().map(|uri| uri.as_str()));
+        let accepted = batch.canonical_routes();
+        let rejected = batch.rejected();
         if accepted.is_empty() {
             self.set_status("Mila\nNo supported link could be opened.");
         } else if rejected == 0 {

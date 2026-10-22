@@ -1,6 +1,6 @@
 ---
-digest: a6b74c15bcfe84cf21cf7e5115d399b76338bc301c892b351d2f7082e8e80e4d
-disposition: updated
+digest: 8d35aa10876839b77839f238b5aacaf8bd5af25c532c62f862249aa720711422
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows machine lists now flow from bounded authenticated Rust session bytes into typed rows and selection/detail UI, with mutation controls remaining session-gated; live backend execution remains open.
+The bounded activation batch refines the existing Linux navigation-only open integration and preserves the documented partial deep-link boundary.

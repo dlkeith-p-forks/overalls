@@ -69,6 +69,48 @@ pub fn parse_activation_uris<'a>(
     uris.into_iter().map(ActivationRoute::parse).collect()
 }
 
+const MAX_OPEN_ROUTES: usize = 64;
+
+/// The bounded result of one desktop open activation. Rejected values are
+/// represented only by a count so malformed URI text cannot reach the UI.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ActivationBatch {
+    routes: Vec<ActivationRoute>,
+    rejected: usize,
+}
+
+impl ActivationBatch {
+    /// @cc [owner:ghuntley,label=security;navigation] linux-open-activation-batch
+    /// Desktop activation MUST retain only bounded typed routes; malformed and
+    /// excess values become a count and never reach UI text or persistence.
+    pub fn parse<'a>(uris: impl IntoIterator<Item = &'a str>) -> Self {
+        let mut routes = Vec::new();
+        let mut rejected = 0;
+        for result in uris.into_iter().map(ActivationRoute::parse) {
+            if routes.len() >= MAX_OPEN_ROUTES {
+                rejected += 1;
+            } else if let Ok(route) = result {
+                routes.push(route);
+            } else {
+                rejected += 1;
+            }
+        }
+        Self { routes, rejected }
+    }
+
+    pub fn routes(&self) -> &[ActivationRoute] {
+        &self.routes
+    }
+
+    pub const fn rejected(&self) -> usize {
+        self.rejected
+    }
+
+    pub fn canonical_routes(&self) -> Vec<String> {
+        self.routes.iter().map(ActivationRoute::canonical).collect()
+    }
+}
+
 impl FromStr for ActivationRoute {
     type Err = RouteError;
 
@@ -354,7 +396,7 @@ impl std::error::Error for RouteError {}
 
 #[cfg(test)]
 mod tests {
-    use super::{parse_activation_uris, ActivationRoute, MachinePage, Target};
+    use super::{parse_activation_uris, ActivationBatch, ActivationRoute, MachinePage, Target};
 
     const HOST: &str = "overalls://fleet.example";
     const ID: &str = "01234567-89ab-cdef-0123-456789abcdef";
@@ -412,5 +454,25 @@ mod tests {
         assert!(results[0].is_ok());
         assert!(results[1].is_ok());
         assert!(results[2].is_err());
+    }
+
+    #[test]
+    fn activation_batch_keeps_only_typed_routes_and_bounds_open_count() {
+        let mut values = vec![
+            "overalls://fleet.example/machines",
+            "https://fleet.example/machines",
+        ];
+        values.extend(std::iter::repeat("overalls://fleet.example/settings").take(65));
+        let batch = ActivationBatch::parse(values);
+        assert_eq!(batch.routes().len(), 64);
+        assert_eq!(batch.rejected(), 3);
+        assert_eq!(
+            batch.canonical_routes()[0],
+            "overalls://fleet.example/machines"
+        );
+        assert_eq!(
+            batch.canonical_routes()[1],
+            "overalls://fleet.example/settings"
+        );
     }
 }

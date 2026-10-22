@@ -19,3 +19,8 @@ be logged by the scaffold.
 The Linux terminal renderer MUST accept only decoded display text, reject unsupported control
 characters and oversized chunks, and retain at most its configured viewport; terminal bytes MUST
 remain owned by the authenticated transport and MUST NOT be logged or exposed to GTK state.
+
+
+@cc [owner:ghuntley,label=security;navigation] linux-open-activation-batch
+A desktop open activation MUST retain only the bounded set of parsed navigation routes; malformed
+or excess URIs MUST become a count and MUST NOT be echoed, executed, or persisted.
