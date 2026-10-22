@@ -1,11 +1,11 @@
 ---
-digest: 5ffadc9af36f7bd429cd444cf68ddfb1f7c5152aa6d3dada3c339b751fd31043
+digest: cb4c30d50ed6fdffc8d84c1764ea3f5998cc555f949399f81b0490ed1a28485e
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 1e15789debde415e96cc1de2cbb136beb77a332330001bf8ae9c134a4c8238b3
+  marshall/priv/hldd/08-interactive.md: 255f7a92266fa04c63b8daf4db87bab572c0bce08d9f7945b9b5e2f4ea3aefbd
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android terminal renderer now accepts only lifecycle-valid bounded receive data alongside authenticated transport gating
+Reviewed Linux owner-only signer and native session integration; no new domain or topology impact.

@@ -1,11 +1,11 @@
 ---
-digest: d8ea077ea37a825cd86b3ab34e409c85e70138125bfece27dbcdc9819d514949
-disposition: updated
+digest: 19eafce32f0279a4126e4de37c163a2fc0a998d9e15bd6eacfa9da4b8d8c4bf2
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/session.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 7c6b8b5ae82f8ce18d880f2eec44fee08ac72e91d7686cda80d0af3f4b010fc4
+  marshall/priv/hldd/08-interactive.md: 255f7a92266fa04c63b8daf4db87bab572c0bce08d9f7945b9b5e2f4ea3aefbd
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Add Linux authenticated notification device list, removal and preference projections, bounded command formatting, FFI/session wrappers, parity status and handbook evidence.
+Reviewed Linux owner-only signer and native session integration; no new domain or topology impact.

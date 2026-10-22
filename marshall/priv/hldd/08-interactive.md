@@ -1396,6 +1396,12 @@ backend. Its tests cover decoded output projection, input/resize/kill lifecycle,
 and second-channel refusal. Porsche SSH/PTY backend wiring and GTK stream
 attachment remain open.
 
+Linux sign-in also provides a [`FileDeviceSigner`](repo:mila/native/linux/src/session.rs)
+for owner-only development and release key files. It rejects symlinks and
+group/world permission bits before loading raw P-256 material, and its test
+verifies signatures without exposing private bytes. Hardware-backed signer
+integration and the live HTTPS approval transport remain open.
+
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command

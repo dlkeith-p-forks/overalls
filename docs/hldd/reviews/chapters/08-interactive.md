@@ -1,5 +1,5 @@
 ---
-digest: 1e15789debde415e96cc1de2cbb136beb77a332330001bf8ae9c134a4c8238b3
+digest: 255f7a92266fa04c63b8daf4db87bab572c0bce08d9f7945b9b5e2f4ea3aefbd
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document the Linux HostPtyTransport generation binding, stale-operation refusal and remaining Porsche SSH/PTY backend and GTK wiring gaps.
+Document Linux FileDeviceSigner owner-only key custody, signature verification evidence, and remaining hardware-backed and HTTPS approval gaps.

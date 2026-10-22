@@ -6,6 +6,7 @@
 
 use crate::adapter::RuntimeError;
 use mila_ffi::{MilaFfiStatus, MilaRouteOutput};
+use p256::ecdsa::{signature::Signer, Signature, SigningKey};
 
 const MAX_TRUST_BYTES: usize = 8192;
 const MAX_LISTING_BYTES: usize = 1 << 20;
@@ -14,6 +15,56 @@ const MAX_LISTING_BYTES: usize = 1 << 20;
 pub trait DeviceSigner: Send + Sync {
     fn public_key(&self) -> &str;
     fn sign(&self, message: &[u8]) -> Result<[u8; 64], RuntimeError>;
+}
+
+/// A Linux software signer backed by an owner-only raw P-256 key file.
+/// Hardware-backed desktop signers can implement [`DeviceSigner`] directly;
+/// this adapter exists for the Linux development and release bundle where the
+/// key is provisioned outside the GTK process.
+/// @cc [owner:ghuntley,label=security] linux-file-signer-custody
+/// A file-backed Linux signer MUST reject symlinks and any group/world
+/// permission bits before reading key material, and MUST expose only signatures
+/// and the configured public key to the session boundary.
+pub struct FileDeviceSigner {
+    key: SigningKey,
+    public_key: String,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SignerError {
+    Unavailable,
+    InsecurePermissions,
+    InvalidKey,
+}
+
+impl FileDeviceSigner {
+    /// Loads exactly 32 raw key bytes and refuses symlinks or group/world access.
+    pub fn load(path: &std::path::Path, public_key: String) -> Result<Self, SignerError> {
+        use std::{fs, os::unix::fs::PermissionsExt};
+        let metadata = fs::symlink_metadata(path).map_err(|_| SignerError::Unavailable)?;
+        if !metadata.file_type().is_file() || metadata.permissions().mode() & 0o077 != 0 {
+            return Err(SignerError::InsecurePermissions);
+        }
+        if public_key.is_empty() || public_key.len() > 1024 {
+            return Err(SignerError::InvalidKey);
+        }
+        let bytes = fs::read(path).map_err(|_| SignerError::Unavailable)?;
+        let key = SigningKey::from_slice(&bytes).map_err(|_| SignerError::InvalidKey)?;
+        Ok(Self { key, public_key })
+    }
+}
+
+impl DeviceSigner for FileDeviceSigner {
+    fn public_key(&self) -> &str {
+        &self.public_key
+    }
+
+    fn sign(&self, message: &[u8]) -> Result<[u8; 64], RuntimeError> {
+        let signature: Signature = self.key.sign(message);
+        let mut output = [0_u8; 64];
+        output.copy_from_slice(&signature.to_bytes());
+        Ok(output)
+    }
 }
 
 unsafe extern "C" fn sign_trampoline<S: DeviceSigner>(
@@ -652,9 +703,11 @@ impl SignInFlow {
 mod tests {
     use super::*;
     use std::cell::RefCell;
+    use std::fs;
     use std::rc::Rc;
     use std::sync::atomic::{AtomicUsize, Ordering};
     use std::sync::Arc;
+    use std::time::{SystemTime, UNIX_EPOCH};
 
     struct MemoryStore {
         pinned: Option<Vec<u8>>,
@@ -688,6 +741,34 @@ mod tests {
 
     struct CountingSigner {
         calls: Arc<AtomicUsize>,
+    }
+
+    #[test]
+    fn file_signer_requires_owner_only_key_and_verifies_signature() {
+        use p256::ecdsa::signature::Verifier;
+        use std::os::unix::fs::PermissionsExt;
+
+        let path = std::env::temp_dir().join(format!(
+            "mila-signer-{}-{}",
+            std::process::id(),
+            SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .expect("clock")
+                .as_nanos()
+        ));
+        fs::write(&path, [7_u8; 32]).expect("key");
+        fs::set_permissions(&path, fs::Permissions::from_mode(0o600)).expect("permissions");
+        let signer = FileDeviceSigner::load(&path, "ssh-test-public-key".to_owned()).unwrap();
+        let message = b"certificate challenge";
+        let signature = signer.sign(message).unwrap();
+        let parsed = Signature::from_slice(&signature).unwrap();
+        signer.key.verifying_key().verify(message, &parsed).unwrap();
+        fs::set_permissions(&path, fs::Permissions::from_mode(0o644)).expect("permissions");
+        assert!(matches!(
+            FileDeviceSigner::load(&path, "ssh-test-public-key".to_owned()),
+            Err(SignerError::InsecurePermissions)
+        ));
+        fs::remove_file(path).expect("cleanup");
     }
 
     impl DeviceSigner for CountingSigner {

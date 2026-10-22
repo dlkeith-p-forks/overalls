@@ -1528,6 +1528,7 @@ dependencies = [
  "mila-protocol",
  "mila-runtime",
  "mila-session",
+ "p256 0.13.2",
  "serde",
  "serde_json",
 ]
