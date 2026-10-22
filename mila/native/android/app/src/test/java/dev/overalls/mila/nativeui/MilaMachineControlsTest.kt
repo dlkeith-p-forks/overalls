@@ -1,0 +1,5 @@
+package dev.overalls.mila.nativeui
+import org.junit.Assert.*
+import org.junit.Test
+private class ControlsAdapter: MilaFfiAdapter { override suspend fun call(r:MilaFfiRequest)=MilaFfiResult.Failure(MilaFfiError.Unavailable); override fun machineCommandKind(v:String)=if(v=="start") Result.success(MilaMachineCommand.Start) else Result.failure(Exception()); override fun terminalAttach(f:Long,c:Int,r:Int,w:Boolean)=Result.success(Unit); override fun terminalResize(c:Int,r:Int,w:Boolean)=Result.success(Unit) }
+class MilaMachineControlsTest { @Test fun actionsUseClosedCatalog(){ val c=MilaMachineActionController(ControlsAdapter()); c.select("start"); assertEquals(MilaMachineActionState.Selected(MilaMachineCommand.Start),c.state); c.select("bogus"); assertTrue(c.state is MilaMachineActionState.Rejected) } @Test fun terminalBoundsAndPhases(){ val t=MilaTerminalController(ControlsAdapter()); assertTrue(t.attach(false)); assertEquals(MilaTerminalPhase.ReadOnly,t.state.phase); assertFalse(t.resize(0,24)); assertTrue(t.resize(100,30)); assertEquals(100,t.state.columns) } }
