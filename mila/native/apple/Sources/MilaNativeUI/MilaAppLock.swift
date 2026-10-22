@@ -14,14 +14,16 @@ public protocol MilaBiometricEvaluator: Sendable {
     func authenticate(reason: String) async -> Bool
 }
 
-private struct LocalAuthenticationEvaluator: MilaBiometricEvaluator {
-    func availability() -> Bool {
+public struct LocalAuthenticationEvaluator: MilaBiometricEvaluator {
+    public init() {}
+
+    public func availability() -> Bool {
         let context = LAContext()
         var error: NSError?
         return context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
     }
 
-    func authenticate(reason: String) async -> Bool {
+    public func authenticate(reason: String) async -> Bool {
         let context = LAContext()
         var error: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else { return false }
