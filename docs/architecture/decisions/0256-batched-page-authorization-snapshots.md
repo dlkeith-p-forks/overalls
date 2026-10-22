@@ -83,6 +83,13 @@ next refresh exactly as before.
 - Owner and team keyset indexes on machines.
 - A `host_id` index on reservations.
 
+**List candidates.** `/machines` ANDs its exact authorization filter with a
+superset of candidates: the actor's own machines, machines of the actor's
+current teams, and machines named by the actor's current machine or thread
+grants. The candidates come from indexed reads. They never admit a row on their
+own, so the result is unchanged, but PostgreSQL can combine the owner, team and
+primary-key indexes instead of walking every machine.
+
 **Instrumentation** goes through `overalls_diagnostics`:
 
 - Reviewed spans `marshall.live.refresh` (view label) and `marshall.views.read`
@@ -95,7 +102,11 @@ next refresh exactly as before.
   dashboard panels.
 
 **Authorization source:** the user approved the implementation plan in this
-session, with the constraint that security must not be weakened.
+session, with the constraint that security must not be weakened. The user later
+approved two deviations from that plan:
+- rejecting the catalog cache;
+- keeping the fresh-read fallback for nested batches, instead of the planned
+  `Cedar.with_principal` refusal.
 
 ## Alternatives
 
@@ -110,9 +121,9 @@ session, with the constraint that security must not be weakened.
   costs a constant handful of reads, so a cache would save little. It would also
   show capacity older than the host freshness window (ADR-0023) and add a
   process to own the cache.
-- **Rewrite the list query as a `UNION` of grant sources.** Deferred until
-  `EXPLAIN` evidence from production-sized data shows the OR-of-EXISTS plan is
-  still costly with the new indexes.
+- **Rewrite the list query as a `UNION` of grant sources.** Rejected in favour
+  of the candidate restriction. A `UNION` would restate the authorization
+  predicates in a second form that could drift from the exact filter.
 
 ## Consequences
 
@@ -122,6 +133,22 @@ session, with the constraint that security must not be weakened.
   724 → 37 at 24 (758 ms → 73 ms).
 - **Shared member list:** a constant 13 queries, down from 700 at 24 machines.
 - **Catalog:** a constant 8 queries, down from 2H + 6.
+
+**Plan on fleet-sized data.** A rolled-back sandbox probe used 2,012 users,
+40,002 machines and 19,961 grants, with `ANALYZE` and
+`EXPLAIN (ANALYZE, BUFFERS)` on the exact SQL `list_vms` sends:
+
+| List query | Member, 1 grant | Owner of 20 |
+|---|---|---|
+| OR-of-EXISTS only (primary-key walk, 40,001 rows filtered) | 21.4 ms | 17.2 ms |
+| Same, without the six new indexes | 18.5 ms | 23.0 ms |
+| With candidates (BitmapOr of owner, team and primary-key indexes) | 0.065 ms | 0.084 ms |
+| With candidates, without the six new indexes (walk returns) | 14.9 ms | 16.0 ms |
+
+The grant index alone cut the grant subplan from 1.4 ms to 0.01 ms but left the
+walk. The owner and team indexes matter only together with the candidates. The
+candidates add three small indexed reads, 17 queries per page in all, still
+constant in machine count.
 
 Relocation status is read per row only for machines that have a relocation.
 Machines without one are primed as `nil` from a single batched read.
@@ -186,15 +213,15 @@ Machines without one are primed as `nil` from a single batched read.
 
 Remaining gaps:
 
-- The list query's plan has not been checked with `EXPLAIN` on production-sized
-  data.
+- The plan was measured on synthetic fleet-sized data (cloned rows, empty
+  thread and team tables), not on production data.
+- An owner of very many machines sorts all of them before the limit. That is
+  cheaper than the old walk, but not keyset-bounded.
 - Relocation status is still read per row for machines that have a relocation.
 - The dashboard panels have not been observed with live fleet data.
 
 ## Open questions
 
-- Should the list query become a `UNION` of owner, grant, thread-grant and team
-  sources? Decide after `EXPLAIN (ANALYZE, BUFFERS)` on fleet data.
 - Should `/machines` move from 1 s polling to PubSub-driven refresh?
 
 ## Related decisions

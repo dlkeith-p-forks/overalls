@@ -580,6 +580,13 @@ Machine pages decide access for many machines at once. `/overview`,
 - **Batched preloads.** The page reads these rows in batches with filters
   identical to the per-row reads.
 - **Fresh Cedar.** Cedar still evaluates every read, write and manage decision.
+- **Indexed candidates.** The `/machines` query ANDs its exact authorization
+  filter with a superset of candidate machines: the actor's own machines, the
+  machines of the actor's current teams, and machines named by the actor's
+  current grants. Candidates never admit a row on their own. They let
+  PostgreSQL use the owner, team and primary-key indexes instead of scanning
+  every machine. On 40,000 synthetic machines this cut the query from about
+  20 ms to under 0.1 ms.
 - **No reuse outside the batch.**
   - The reused rows exist only in the requesting process and disappear when
     the transaction commits, raises or rolls back.

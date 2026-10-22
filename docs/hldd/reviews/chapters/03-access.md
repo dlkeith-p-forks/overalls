@@ -1,5 +1,5 @@
 ---
-digest: 099d8cf171d090815d489c6f7bd5ba3084fec95db9d1b9c5d9de5facdfcc7c29
+digest: dcba620820216dd96aa41af97c0c9efb71b42980ef971b8450c38ccb780d74c4
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Relocation status primed nil for unrelocated machines; real-connection isolation, catalog budget, relocation equivalence and /machines/new form-edit tests added; 03-access evidence and the batched-machine-page-decisions scenario updated (ADR-0256).
+List query ANDs its exact filter with an indexed candidate superset (owner, current teams, grants, thread grants); 03-access documents it and the scenario records synthetic fleet-sized EXPLAIN evidence (ADR-0256).

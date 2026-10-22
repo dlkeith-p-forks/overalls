@@ -140,6 +140,7 @@ defmodule Marshall.Compute.Views do
   # image manifests and other users' pins stay private.
   defp list(request, actor) do
     exclude = Map.get(request, :exclude, [])
+    {team_ids, shared_ids} = list_candidates(actor)
 
     query =
       VirtualMachine
@@ -158,6 +159,7 @@ defmodule Marshall.Compute.Views do
                     role in [:viewer, :operator, :manager]
                 )))
       )
+      |> Ash.Query.filter(owner_id == ^actor.id or team_id in ^team_ids or id in ^shared_ids)
       |> Ash.Query.sort(:id)
       |> Ash.Query.limit(request.limit + 1)
 
@@ -179,6 +181,44 @@ defmodule Marshall.Compute.Views do
       items: items,
       next_cursor: if(length(rows) > request.limit, do: Enum.at(rows, request.limit - 1).id)
     }
+  end
+
+  # @cc [owner:ghuntley,label:security;performance] views-list-candidates-superset
+  # The candidate team and machine ids MUST include every machine the exact list
+  # filter could admit through a team membership, machine grant or thread grant
+  # of the actor, so ANDing them with that filter changes no result. They come
+  # from the actor's unarchived rows only and never admit a row by themselves.
+  @spec list_candidates(map()) :: {[Ash.UUID.t()], [Ash.UUID.t()]}
+  defp list_candidates(actor) do
+    team_ids =
+      Marshall.Teams.TeamMember
+      |> Ash.Query.filter(user_id == ^actor.id and is_nil(archived_at))
+      |> Ash.read!(actor: SystemActor.compute())
+      |> Enum.map(& &1.team_id)
+
+    granted =
+      Marshall.Access.Grant
+      |> Ash.Query.filter(user_id == ^actor.id and is_nil(archived_at))
+      |> Ash.read!(actor: SystemActor.compute())
+      |> Enum.map(& &1.vm_id)
+
+    thread_ids =
+      Marshall.Threads.Grant
+      |> Ash.Query.filter(user_id == ^actor.id and is_nil(archived_at))
+      |> Ash.read!(actor: SystemActor.compute())
+      |> Enum.map(& &1.thread_id)
+
+    machines =
+      if thread_ids == [] do
+        []
+      else
+        Marshall.Threads.Thread
+        |> Ash.Query.filter(id in ^thread_ids and not is_nil(machine_id))
+        |> Ash.read!(actor: SystemActor.compute())
+        |> Enum.map(& &1.machine_id)
+      end
+
+    {Enum.uniq(team_ids), Enum.uniq(granted ++ machines)}
   end
 
   # @cc [owner:ghuntley,label:security;product] views-pinned-section-bounded

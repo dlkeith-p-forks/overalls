@@ -53,8 +53,8 @@ evidence:
   record_assertion: form-edit refresh test passed
   scope: Three validate edits on /machines/new emit no page refresh; one tick emits exactly one
 gaps: Concurrent
-  revocation during a refresh is argued from snapshot semantics, not observed. The list query plan has
-  no EXPLAIN evidence on fleet-sized data. No native browser journey measures page latency.
+  revocation during a refresh is argued from snapshot semantics, not observed. The list query plan was
+  measured on synthetic fleet-sized data, not production data. No native browser journey measures page latency.
 id: batched-machine-page-decisions
 journey: Open the overview or machine list and see exactly the machines and controls current authority allows,
   without per-machine authorization latency

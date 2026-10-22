@@ -560,7 +560,7 @@ Tested scope: Generated grant roles through the real Compute.list_vms action and
 - **unit, recorded**: [outermost batches are repeatable-read and read-only; nested batches do not memoize](repo:marshall/test/marshall/authorization/decision_snapshot_isolation_test.exs) — Unboxed local PostgreSQL connection reports repeatable read and read-only, refuses an UPDATE, and a batch nested in a read-committed transaction does not memoize; [execution record](repo:docs/architecture/reviews/2026-10-22-liveview-load-performance.md).
 - **unit, recorded**: [creation form edits do not reload page data but a tick does](repo:marshall/test/marshall_web/machines_live_test.exs) — Three validate edits on /machines/new emit no page refresh; one tick emits exactly one; [execution record](repo:docs/architecture/reviews/2026-10-22-liveview-load-performance.md).
 
-**Gaps:** Concurrent revocation during a refresh is argued from snapshot semantics, not observed. The list query plan has no EXPLAIN evidence on fleet-sized data. No native browser journey measures page latency.
+**Gaps:** Concurrent revocation during a refresh is argued from snapshot semantics, not observed. The list query plan was measured on synthetic fleet-sized data, not production data. No native browser journey measures page latency.
 
 **Preferred test work:** Add a NixOS machine test that loads /machines with many shared machines and checks the marshall.live.refresh query_count.
 

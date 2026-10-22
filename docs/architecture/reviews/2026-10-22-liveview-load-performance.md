@@ -110,7 +110,24 @@ verification list.
   - A new test compares listed relocation status with a fresh per-row read.
 - **Catalog budget:** a new test asserts equal catalog query counts for two and
   six hosts. A per-host read mutant fails it with 10 versus 14 queries.
-- **Catalog TTL cache:** rejected; see ADR-0256 Alternatives.
+- **Catalog TTL cache:** rejected, with user approval; see ADR-0256
+  Alternatives. The user also approved keeping the nested fresh-read fallback
+  instead of the planned refusal.
+- **Unattributed failures:** sharing surfaces, lifecycle history, suspension,
+  clone history and relocation sources also fail on `95616c01d`, the commit
+  before this change. Suspension outcomes vary between runs.
+- **Fleet-sized `EXPLAIN`:**
+  - **Setup.** A rolled-back probe used 40,002 machines, 2,012 users and
+    19,961 grants.
+  - **Before.** The OR-of-EXISTS list query walked the primary key and
+    filtered 40,001 rows, taking 17–23 ms with or without the new indexes.
+  - **Change.** Adding an indexed candidate superset produced a BitmapOr plan
+    of 0.065–0.084 ms, which needs the owner and team indexes.
+  - **Equivalence.** Equivalence, revocation, budget and relocation checks
+    pass: `views_batched_reads_test.exs` passed 7 tests.
+  - **Related tests.** `threads_machine_access_test.exs` passes.
+  - **Pre-existing failure.** A `teams_resource_history_test.exs` timeout in
+    `host_fixture` also fails with trunk's `views.ex`.
 - **Results:** `views_batched_reads_test.exs` passed 7 tests together with the
   relocation settings LiveView test. The machines LiveView file still has only
   the six provisioning failures above. They fail identically on `95616c01d`,
@@ -118,7 +135,6 @@ verification list.
 
 ## Follow-up
 
-- Run `EXPLAIN (ANALYZE, BUFFERS)` for the list query on fleet data, then decide
-  on the `UNION` rewrite.
+- Repeat the `EXPLAIN` on production data.
 - Consider PubSub-driven refresh for `/machines`.
 - Watch the new panels with live fleet data.
