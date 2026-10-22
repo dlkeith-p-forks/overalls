@@ -74,6 +74,9 @@ MilaFfiStatus mila_watch_event_kind(const uint8_t *line, size_t length,
                                     MilaWatchEventKind *out_kind);
 MilaFfiStatus mila_push_poke_validate(const uint8_t *envelope, size_t length,
                                       uint64_t now);
+MilaFfiStatus mila_push_registration_validate(uint8_t provider, uint8_t environment,
+                                              const char *token, const char *app_id,
+                                              const char *deployment, const char *endpoint);
 
 #ifdef __cplusplus
 }
