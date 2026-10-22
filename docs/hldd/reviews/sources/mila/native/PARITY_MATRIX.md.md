@@ -1,5 +1,5 @@
 ---
-digest: ce560e2939cc8834ec9971e7b14cd4eef4e92e0654b1958373d48b07981be928
+digest: 941244cb8cf19b64e1bc8f2bdb1d42fe3112102008e6cd608ab541df02928bd3
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent native platform change; domain and topology boundaries remain unchanged.
+Android web controls now require loaded machine-bound optimistic revision before authenticated set

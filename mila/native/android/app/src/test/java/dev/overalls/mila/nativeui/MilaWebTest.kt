@@ -26,4 +26,18 @@ class MilaWebTest {
   assertFalse(controller.show(java.util.UUID.fromString("00000000-0000-0000-0000-000000000001")))
   assertNull(controller.endpoint)
  }
+ @Test fun setRequiresLoadedRevisionAndUsesIt() = kotlinx.coroutines.runBlocking {
+  val id = java.util.UUID.fromString("00000000-0000-0000-0000-000000000001")
+  var revision = -1L
+  val adapter = object : MilaFfiAdapter {
+   override suspend fun call(request: MilaFfiRequest) = MilaFfiResult.Failure(MilaFfiError.Unavailable)
+   override suspend fun webShow(machineId: java.util.UUID) = Result.success("{\"machine_id\":\"$id\",\"port\":8080,\"visibility\":\"public\",\"policy_revision\":7}")
+   override suspend fun webSet(machineId: java.util.UUID, port: Int, public: Boolean, requestRevision: Long) { revision = requestRevision; }
+  }
+  val controller = MilaWebController(adapter)
+  assertFalse(controller.set(id, 8081, false))
+  assertTrue(controller.show(id))
+  assertTrue(controller.set(id, 8081, false))
+  assertEquals(7L, revision)
+ }
 }

@@ -47,7 +47,9 @@ class MilaWebController(private val adapter: MilaFfiAdapter) {
     }.onFailure { error = it.message ?: "web endpoint unavailable" }.isSuccess
     suspend fun set(machine: UUID, port: Int, public: Boolean): Boolean = runCatching {
         require(port in 1..65535)
-        adapter.webSet(machine, port, public, endpoint?.revision ?: 1L).getOrThrow()
+        val current = endpoint?.also { require(it.machineId == machine) }
+            ?: error("load endpoint before changing it")
+        adapter.webSet(machine, port, public, current.revision).getOrThrow()
         show(machine)
     }.onFailure { error = it.message ?: "web endpoint rejected" }.isSuccess
 }
@@ -82,6 +84,7 @@ fun MilaWebControls(adapter: MilaFfiAdapter, machine: MilaMachineRow) {
         OutlinedTextField(port, { port = it }, label = { Text(MilaStrings.text(MilaMessage.WebPort)) })
         controller.endpoint?.let { endpoint ->
             Text(if (endpoint.public) MilaStrings.text(MilaMessage.WebPublic) else MilaStrings.text(MilaMessage.WebPrivate))
+            Text("Revision ${endpoint.revision}")
             endpoint.url?.let { MilaWebView(it, Modifier) }
         }
         controller.error?.let { Text(it) }
