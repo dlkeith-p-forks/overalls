@@ -377,6 +377,27 @@ pub unsafe extern "C" fn mila_session_ssh_keys(
     })
 }
 
+/// Return the bounded `whoami --json` envelope, including approval-required
+/// replies whose command exit status is non-zero.
+pub unsafe extern "C" fn mila_session_whoami(
+    handle: u64,
+    out: *mut u8,
+    capacity: usize,
+    written: *mut usize,
+) -> SessionStatus {
+    guarded(|| {
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        let data = runtime.block_on(session.whoami()).map_err(|e| match e {
+            mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+            _ => SessionStatus::Invalid,
+        })?;
+        output(&data, out, capacity, written)
+    })
+}
+
 pub unsafe extern "C" fn mila_session_ssh_key_revoke(
     handle: u64,
     key: *const u8,

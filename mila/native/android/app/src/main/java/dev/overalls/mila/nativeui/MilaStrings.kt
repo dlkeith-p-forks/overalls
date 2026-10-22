@@ -9,7 +9,7 @@ internal enum class MilaMessage(val catalogId: String) {
     AppName("appTitle"), Machines("machinesTitle"), Threads("tabThreads"), Settings("settingsTitle"),
     Ready("ready"), Refresh("refresh"), Connecting("signInConnecting"), Connected("connected"),
     Deployments("deploymentsTitle"), DeploymentHost("deploymentHostLabel"), DeploymentHostHint("deploymentHostHint"),
-    AddDeployment("addDeployment"), InvalidHost("invalidHost"), SignIn("signInTitle"),
+    AddDeployment("addDeployment"), InvalidHost("invalidHost"), SignIn("signInTitle"), ApprovalPending("signInApprove"), OpenApproval("signInOpenBrowser"), ApprovalFingerprint("signInFingerprint"),
     LockTitle("lockTitle"), LockExplain("lockExplain"), LockUnlock("lockUnlock"), LockFailed("lockFailed"),
     SshKeysTitle("sshKeysTitle"), SshKeysExplain("sshKeysExplain"), SshKeysEmpty("sshKeysEmpty"),
     SshKeyRevoke("sshKeyRevoke"), SshKeyAlgorithm("sshKeyAlgorithm"), SshKeyThisDevice("sshKeyThisDevice"),
@@ -21,7 +21,7 @@ internal object MilaStrings {
     private val english = mapOf(
         MilaMessage.AppName to "Mila", MilaMessage.Machines to "Machines", MilaMessage.Threads to "Threads",
         MilaMessage.Settings to "Settings", MilaMessage.Ready to "Ready", MilaMessage.Refresh to "Refresh",
-        MilaMessage.Deployments to "Deployments", MilaMessage.DeploymentHost to "Deployment host", MilaMessage.DeploymentHostHint to "overalls.example", MilaMessage.AddDeployment to "Add deployment", MilaMessage.InvalidHost to "Enter a host name such as overalls.example.", MilaMessage.SignIn to "Sign in",
+        MilaMessage.Deployments to "Deployments", MilaMessage.DeploymentHost to "Deployment host", MilaMessage.DeploymentHostHint to "overalls.example", MilaMessage.AddDeployment to "Add deployment", MilaMessage.InvalidHost to "Enter a host name such as overalls.example.", MilaMessage.SignIn to "Sign in", MilaMessage.ApprovalPending to "Approve this device in your browser, then return here.", MilaMessage.OpenApproval to "Open approval page", MilaMessage.ApprovalFingerprint to "Key fingerprint",
         MilaMessage.LockTitle to "App lock", MilaMessage.LockExplain to "Authenticate to continue.", MilaMessage.LockUnlock to "Unlock", MilaMessage.LockFailed to "Authentication failed.",
         MilaMessage.SshKeysTitle to "SSH keys", MilaMessage.SshKeysExplain to "Keys approved to sign in to your account on this deployment. A revoked key must be approved again before it can sign in.", MilaMessage.SshKeysEmpty to "No approved keys.", MilaMessage.SshKeyRevoke to "Revoke", MilaMessage.SshKeyAlgorithm to "Type", MilaMessage.SshKeyThisDevice to "This device",
         MilaMessage.Connecting to "Connecting…", MilaMessage.Connected to "Connected",

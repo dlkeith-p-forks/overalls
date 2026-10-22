@@ -223,6 +223,29 @@ impl ApplicationSession {
         Ok(output.stdout)
     }
 
+    /// Execute the bounded identity check used by browser approval. Porsche returns
+    /// an `approval_required` JSON envelope with a link while the device key is
+    /// pending; callers must be able to inspect that envelope even on a non-zero
+    /// command exit status.
+    pub async fn whoami(&self) -> Result<Vec<u8>, SessionError> {
+        let output = self.ssh.exec("whoami --json", &[]).await?;
+        if output.stdout.len() > 64 * 1024 {
+            return Err(SessionError::Bounds);
+        }
+        let value: serde_json::Value =
+            serde_json::from_slice(&output.stdout).map_err(|_| SessionError::Refused)?;
+        if !value.is_object()
+            || value.get("version").and_then(serde_json::Value::as_u64) != Some(1)
+            || value
+                .get("status")
+                .and_then(serde_json::Value::as_str)
+                .is_none()
+        {
+            return Err(SessionError::Refused);
+        }
+        Ok(output.stdout)
+    }
+
     /// Revoke one opaque approved-key identity with an at-most-once request id.
     pub async fn ssh_key_revoke(
         &mut self,

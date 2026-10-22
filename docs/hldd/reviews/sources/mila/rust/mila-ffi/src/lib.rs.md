@@ -1,5 +1,5 @@
 ---
-digest: 67b1c1e996ddadfedda91a46a8154c118d2e01c0f215907dc0c886b3734f588a
+digest: 660f41a099ebb6f3dc9d27d78f7f6f53d3edbd169c30ad91cc510647d17f16ea
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Use the workspace-local transport fixture so Nix source packaging includes Rust FFI tests.
+Reviewed shared Rust approval/session ABI updates.

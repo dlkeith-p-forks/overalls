@@ -167,6 +167,8 @@ interface MilaRustBindings {
     /** Returns the closed machine-action bit mask, or null for invalid input. */
     fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int?
     fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle?
+    /** Returns the bounded `whoami --json` envelope, including pending approval links. */
+    fun sessionWhoami(handle: Long): ByteArray? = null
     /** Returns the canonical Rust-selected trust document, or null on refusal. */
     fun reconcileTrust(pinned: ByteArray?, fetched: ByteArray?, host: String, now: Long): ByteArray? = null
     fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = -12
@@ -214,6 +216,7 @@ internal object MilaRustFfi : MilaRustBindings {
         check(loaded) { "mila_ffi is unavailable" }
         return nativeSessionConnect(trust, host, publicKey, port, timeoutMs, signer)?.let(::MilaSessionHandle)
     }
+    override fun sessionWhoami(handle: Long): ByteArray? = nativeSessionWhoami(handle)
     override fun reconcileTrust(pinned: ByteArray?, fetched: ByteArray?, host: String, now: Long): ByteArray? {
         check(loaded) { "mila_ffi is unavailable" }
         return nativeTrustDocumentReconcile(pinned, fetched, host, now)
@@ -257,6 +260,7 @@ internal object MilaRustFfi : MilaRustBindings {
     external fun nativeTrustDocumentReconcile(pinned: ByteArray?, fetched: ByteArray?, host: String, now: Long): ByteArray?
     @JvmStatic
     external fun nativeSessionRead(handle: Long, more: Boolean): Int
+    @JvmStatic external fun nativeSessionWhoami(handle: Long): ByteArray?
     @JvmStatic external fun nativeSessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int
     @JvmStatic external fun nativeSessionWebShow(handle: Long, machine: String): ByteArray?
     @JvmStatic external fun nativeSessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int
@@ -287,6 +291,10 @@ class MilaSessionHandle internal constructor(
     private var closed = false
     @Synchronized fun readMachines(more: Boolean = false): Int { check(!closed); return MilaRustFfi.nativeSessionRead(nativeHandle, more) }
     @Synchronized fun listing(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionListing(nativeHandle) ?: error("listing unavailable") }
+    @Synchronized fun whoami(): ByteArray {
+        check(!closed)
+        return bindings.sessionWhoami(nativeHandle) ?: error("whoami unavailable")
+    }
     @Synchronized fun snapshot(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionSnapshot(nativeHandle) ?: error("snapshot unavailable") }
     @Synchronized fun machineAction(machine: UUID, command: MilaMachineCommand, requestId: String): Result<Unit> = runCatching {
         check(!closed)

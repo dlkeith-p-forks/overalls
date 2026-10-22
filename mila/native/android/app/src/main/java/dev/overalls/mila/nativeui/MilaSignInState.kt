@@ -4,12 +4,14 @@ package dev.overalls.mila.nativeui
 sealed interface MilaSignInState {
  data object SignedOut : MilaSignInState
  data class Connecting(val deployment: MilaDeployment) : MilaSignInState
+ data class AwaitingApproval(val deployment: MilaDeployment, val approval: MilaApprovalInfo) : MilaSignInState
  data class SignedIn(val deployment: MilaDeployment, val listing: MilaSessionListing, val approval: MilaApprovalState = MilaApprovalState.NotRequired) : MilaSignInState
  data class Failed(val deployment: MilaDeployment, val error: MilaFfiError) : MilaSignInState
 }
 
 class MilaSignInController(private val adapter: MilaFfiAdapter, private val store: MilaDeploymentStore? = null) : AutoCloseable {
  var state: MilaSignInState = MilaSignInState.SignedOut; private set
+ private var pendingSession: MilaSessionHandle? = null
 
  /**
   * Establishes the real certificate-authenticated Rust session. Trust bytes and the signer
@@ -30,6 +32,21 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
    state = MilaSignInState.Failed(deployment, MilaFfiError.Unavailable)
    return
   }
+  when (val whoami = runCatching { MilaApprovalInfo.decode(session.whoami()) }.getOrDefault(MilaWhoami.Invalid)) {
+   is MilaWhoami.Pending -> {
+    pendingSession = session
+    connector?.bindSession(session)
+    store?.writeApproval(MilaApprovalState.Pending)
+    state = MilaSignInState.AwaitingApproval(deployment, whoami.approval)
+    return
+   }
+   MilaWhoami.Invalid, MilaWhoami.Refused -> {
+    session.close()
+    state = MilaSignInState.Failed(deployment, MilaFfiError.Unavailable)
+    return
+   }
+   MilaWhoami.Approved -> Unit
+  }
   val listing = runCatching {
    session.readMachines()
    MilaSessionListing.decode(session.listing())
@@ -38,8 +55,40 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
    session.close()
    state = MilaSignInState.Failed(deployment, MilaFfiError.Unavailable)
   } else {
+   pendingSession = null
    connector?.bindSession(session)
    state = MilaSignInState.SignedIn(deployment, listing, store?.readApproval() ?: MilaApprovalState.NotRequired)
+  }
+ }
+ /** Re-checks the same SSH connection after browser approval; no new key or session is created. */
+ suspend fun pollApproval(): Boolean {
+  val awaiting = state as? MilaSignInState.AwaitingApproval ?: return state is MilaSignInState.SignedIn
+  val session = pendingSession ?: return false.also { state = MilaSignInState.Failed(awaiting.deployment, MilaFfiError.Unavailable) }
+  return when (MilaApprovalInfo.decode(runCatching { session.whoami() }.getOrElse { return false })) {
+   MilaWhoami.Approved -> {
+    val listing = runCatching {
+     session.readMachines()
+     MilaSessionListing.decode(session.listing())
+    }.getOrNull()
+    if (listing == null) {
+     session.close()
+     pendingSession = null
+     state = MilaSignInState.Failed(awaiting.deployment, MilaFfiError.Unavailable)
+     false
+    } else {
+     store?.writeApproval(MilaApprovalState.Approved)
+     pendingSession = null
+     state = MilaSignInState.SignedIn(awaiting.deployment, listing, MilaApprovalState.Approved)
+     true
+    }
+   }
+   is MilaWhoami.Pending -> true
+   MilaWhoami.Refused, MilaWhoami.Invalid -> {
+    session.close()
+    pendingSession = null
+    state = MilaSignInState.Failed(awaiting.deployment, MilaFfiError.Unavailable)
+    false
+   }
   }
  }
  suspend fun signIn(deployment: MilaDeployment) {
@@ -69,6 +118,8 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
   * retaining credentials in UI state.
   */
  fun signOut() {
+  pendingSession?.close()
+  pendingSession = null
   (adapter as? MilaSessionConnector)?.bindSession(null)
   state = MilaSignInState.SignedOut
  }

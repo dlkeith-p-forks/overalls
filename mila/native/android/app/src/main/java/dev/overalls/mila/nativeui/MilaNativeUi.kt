@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 internal data class MachineCommandChoice(val label: String, val command: String)
 
@@ -77,6 +78,7 @@ fun MilaNativeRoot(
     val sessionMaterialProvider = remember(materialProvider, context) {
         materialProvider ?: AndroidMilaSessionMaterialProvider(context)
     }
+    val approvalBrowser = remember(context) { AndroidMilaApprovalBrowser(context) }
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
     val localContext = LocalContext.current
@@ -162,6 +164,14 @@ fun MilaNativeRoot(
             Button(::refresh) { Text(MilaStrings.text(MilaMessage.Refresh)) }
         }
         Text(status, style = MaterialTheme.typography.labelSmall)
+        if (signInState is MilaSignInState.AwaitingApproval) {
+            val awaiting = signInState as MilaSignInState.AwaitingApproval
+            Text(MilaStrings.text(MilaMessage.ApprovalPending), style = MaterialTheme.typography.bodyMedium)
+            Text("${MilaStrings.text(MilaMessage.ApprovalFingerprint)}: ${awaiting.approval.fingerprint}", style = MaterialTheme.typography.labelSmall)
+            Button({ approvalBrowser.open(awaiting.approval) }) {
+                Text(MilaStrings.text(MilaMessage.OpenApproval))
+            }
+        }
         if (signInState is MilaSignInState.SignedIn) Text(MilaStrings.text(MilaMessage.Connected), style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
             MilaRoute.Machines -> MachineList(sessionAdapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
@@ -179,6 +189,13 @@ fun MilaNativeRoot(
                 signIn.signIn(saved, material.config, material.signer)
                 signInState = signIn.state
             }
+        }
+    }
+    LaunchedEffect(signInState) {
+        while (signInState is MilaSignInState.AwaitingApproval) {
+            delay(2_000)
+            signIn.pollApproval()
+            signInState = signIn.state
         }
     }
 }
