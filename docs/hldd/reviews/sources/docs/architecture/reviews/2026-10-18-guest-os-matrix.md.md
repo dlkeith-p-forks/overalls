@@ -1,5 +1,5 @@
 ---
-digest: e1a517a9006c602898854131cb52c083ddec5adb7323ff17547eacb25513038b
+digest: 5d664a94ce9028e29a34892335e9ad909880aff3337204bab240d0f79ab9e402
 disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-Reviewed ADR-0243 evidence and the guest OS matrix review section recording the 2026-10-22 FreeBSD regression repair, the OmniOS drive correction and the intermittent OmniOS executor-withdrawal timeout; HLDD chapters' documented behaviour is unchanged.
+Reviewed the guest OS matrix review update: the intermittent OmniOS executor-withdrawal timeout is explained (illumos SSH login outlasting the five-second probe) and recorded as fixed with repeated passing runs; HLDD documented behaviour is unchanged.

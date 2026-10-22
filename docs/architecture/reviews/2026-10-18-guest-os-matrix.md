@@ -2027,8 +2027,12 @@ All twelve then passed under nested KVM with Firecracker 1.16.1 on 2026-10-22:
 `native-omnios-services` also passed with the final drive policy. Fix commits:
 d731eb6bd, c70940b99 and the OmniOS drive correction.
 
-Known OmniOS gap, not caused by these changes: the executor-withdrawal stage
-intermittently ends in a subprocess timeout. `native-omnios-reset` failed this
-way on 1539706d3, before any drive change, and again on the current tree.
-`native-omnios-transport` passed once and failed this way once. The cause is
-not established.
+The OmniOS executor-withdrawal stage also failed intermittently with a
+subprocess timeout. `native-omnios-reset` failed this way on 1539706d3 and on
+the current tree, and `native-omnios-transport` failed once. Each group
+observation is an SSH probe capped at five seconds inside the fifteen-second
+fence, and an illumos SSHD/PAM login can outlast that cap. A timed-out probe
+now counts as no observation and is retried under the same deadline; a late
+probe still fails. After 5aadeae9a, `native-omnios-reset` and
+`native-omnios-transport` each passed twice, and `native-freebsd-services`
+passed again.
