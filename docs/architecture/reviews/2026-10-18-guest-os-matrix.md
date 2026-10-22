@@ -2060,6 +2060,27 @@ retry), so this is an intermittent illumos boot stall, not a regression.
 Illumos guests stalled at boot in three of seven OmniOS runs that day; no run
 captured the guest console, so the stall is not yet diagnosed.
 
+A later capture of the guest console diagnosed it. The service manager placed
+`svc:/site/overalls-native-growth:default` in maintenance ("a method is failing
+in a retryable manner but too often"), so bootstrap never started and the boot
+deadline expired. The promoted image's ZFS label records the assembly path
+`/mnt/overalls-native-assembly/devices/scratch`. At boot the kernel opens the
+root through an alternate `/devices` path and keeps that vdev path, so the
+growth helper's cache-free `zdb -e -p /dev/dsk` discovery can only resolve the
+canonical `c…t…d…s1` vdev through `/dev/dsk` links. On a first boot at a new
+device path, devfsadm may not have created those links yet; the helper then
+refuses, as its contract requires. The slower Writeback drives over
+dm-log-writes in `native-omnios-power-loss` lose this race most often.
+
+The [growth helper](../../../lyra/src/native_growth.rs) now runs
+`devfsadm -c disk` synchronously before label discovery. Every existing gate is
+unchanged: assembly pool GUID, one canonical whole-disk vdev, raw-device custody
+and no persisted pool cache. `power-loss` passed three of three runs against the
+rebuilt Nix candidate image through a temporary check, with first-boot phases of
+77–79 seconds, and `native-omnios-transport` passed on the same candidate. The
+promoted `45983bb7` image that the other OmniOS checks use is unchanged, so its
+first boots keep the race until a new promotion.
+
 ### Retained GitHub tools on illumos (`github-tools-illumos-retained`)
 
 This check fails on trunk and on e799ff9b9, before the day's changes. The

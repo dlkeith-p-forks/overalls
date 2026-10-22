@@ -446,7 +446,8 @@ fn disk(path: &str) -> io::Result<File> {
 /// precede native mutation. FreeBSD MUST preserve the root UUID/start and every
 /// nonroot entry; OmniOS MUST additionally match the assembly pool GUID and a
 /// single whole-disk ZFS vdev, preserving loader and reserved-tail identity.
-/// OmniOS pool discovery MUST NOT depend on a persisted zpool cache.
+/// OmniOS pool discovery MUST NOT depend on a persisted zpool cache, and MUST
+/// create disk links before label discovery on a first boot at a new path.
 /// Failure MUST withhold a success receipt and MUST NOT emit native output.
 pub fn run(os: Os) -> io::Result<()> {
     // SAFETY: geteuid reads the process credential without modifying state.
@@ -494,6 +495,11 @@ pub fn run(os: Os) -> io::Result<()> {
                 )?,
                 &actual,
             )?;
+            // The kernel keeps the assembly vdev path after opening the root
+            // through an alternate /devices path, so label discovery resolves
+            // the vdev only through /dev/dsk. On a first boot at a new device
+            // path those links can still be missing; create them synchronously.
+            command("/usr/sbin/devfsadm", &["-c", "disk"], false)?;
             // Early boot may not have a persisted pool cache. zdb has its own
             // read-only userland namespace: exclude cached pools before label
             // discovery so an existing cached entry cannot collide with -e.

@@ -1331,7 +1331,10 @@ identities and actual capacity before native resize commands, then requires a
 fresh volatile success receipt. OmniOS read-only pool discovery searches fixed
 device labels with its userland cache disabled; no persisted early-boot cache is
 required. Assembly pool GUID, one canonical whole-disk vdev and raw-device
-custody remain mandatory. A disposable missing-cache diagnostic passed the
+custody remain mandatory. Because the kernel keeps the assembly vdev path, the
+helper first creates disk links (`devfsadm -c disk`) so discovery on a first
+boot at a new device path cannot race link creation; the candidate image carries
+this fix and the promoted image does not. A disposable missing-cache diagnostic passed the
 revised helper's preflight, expansion, post-GPT preservation and success receipt
 where the old query refused. This same-boot fault case is separate from new-image
 growth/recovery qualification. Twelve pure checks and three native FreeBSD
