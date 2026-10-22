@@ -94,11 +94,11 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
 @Composable private fun TerminalControls(adapter: MilaFfiAdapter) {
     var result by remember { mutableStateOf("Terminal idle") }
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text("Terminal", style = MaterialTheme.typography.titleMedium)
+        Text(MilaStrings.text(MilaMessage.Terminal), style = MaterialTheme.typography.titleMedium)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button({ result = if (adapter.terminalAttach(0, 80, 24, true).isSuccess) "Attached" else "Attach rejected" }) { Text("Attach") }
-            Button({ result = if (adapter.terminalInput(0, true).isSuccess) "Input ready" else "Input rejected" }) { Text("Input") }
-            Button({ result = if (adapter.terminalResize(80, 24, true).isSuccess) "Resized" else "Resize rejected" }) { Text("Resize") }
+            Button({ result = if (adapter.terminalAttach(0, 80, 24, true).isSuccess) "Attached" else "Attach rejected" }) { Text(MilaStrings.text(MilaMessage.Attach)) }
+            Button({ result = if (adapter.terminalInput(0, true).isSuccess) "Input ready" else "Input rejected" }) { Text(MilaStrings.text(MilaMessage.Input)) }
+            Button({ result = if (adapter.terminalResize(80, 24, true).isSuccess) "Resized" else "Resize rejected" }) { Text(MilaStrings.text(MilaMessage.Resize)) }
         }
         Text(result, style = MaterialTheme.typography.labelSmall)
     }
@@ -109,7 +109,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(status, style = MaterialTheme.typography.bodyMedium)
         listing?.machines?.forEach { machine -> Text("${machine.name} · ${machine.status}", style = MaterialTheme.typography.bodyMedium) }
-        Text("Machine actions", style = MaterialTheme.typography.titleMedium)
+        Text(MilaStrings.text(MilaMessage.MachineActions), style = MaterialTheme.typography.titleMedium)
         machineCommandChoices.chunked(3).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 row.forEach { choice ->
@@ -125,7 +125,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
 @Composable private fun ThreadList(adapter: MilaFfiAdapter) {
     var classified by remember { mutableStateOf<MilaThreadCommand?>(null) }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Thread commands", style = MaterialTheme.typography.titleLarge)
+        Text(MilaStrings.text(MilaMessage.ThreadCommands), style = MaterialTheme.typography.titleLarge)
         Text("Commands are classified by Rust before execution.", style = MaterialTheme.typography.bodyMedium)
         threadCommandChoices.chunked(3).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -136,7 +136,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
                 }
             }
         }
-        Text(classified?.name ?: "No command selected", style = MaterialTheme.typography.bodyMedium)
+        Text(classified?.name ?: MilaStrings.text(MilaMessage.NoCommand), style = MaterialTheme.typography.bodyMedium)
     }
 }
 @Composable private fun Detail(title: String, value: String) { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) { Text(title, style = MaterialTheme.typography.titleLarge); Text(value, style = MaterialTheme.typography.bodyMedium) } }

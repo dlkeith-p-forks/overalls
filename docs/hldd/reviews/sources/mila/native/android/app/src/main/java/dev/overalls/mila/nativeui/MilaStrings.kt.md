@@ -1,5 +1,5 @@
 ---
-digest: 82f6caa55d9fe861066535423214857eb27a40210ee8ceb4fa783c81d557c1d1
+digest: 933f525e5616c027a2e1867e554fecfd771d2af771c7b2c2926dabc5d8a6da6e
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android now loads the generated locale bundle from APK assets with locale and English fallback; this preserves the native boundary.
+Android native labels now resolve through centralized generated locale catalog; no domain or protocol impact.
