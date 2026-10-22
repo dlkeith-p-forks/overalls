@@ -116,6 +116,11 @@ internal readonly record struct MilaNativeActionsResult(
 internal readonly record struct MilaNativeCommandResult(
     MilaNativeStatus Status, string? Command);
 
+internal readonly record struct MilaNativeSessionActionResult(MilaNativeStatus Status)
+{
+    internal bool Succeeded => Status == MilaNativeStatus.Ok;
+}
+
 internal enum MilaThreadCommandKind : int
 {
     Unknown = 0, List = 1, Show = 2, Turns = 3, Prompt = 4, Answer = 5,
@@ -312,6 +317,29 @@ internal static partial class RustNative
         }
     }
 
+    /// <summary>Dispatches one authenticated mutation through an existing Rust session.</summary>
+    internal static MilaNativeSessionActionResult TrySessionMachineAction(
+        ulong handle, Guid machineId, string action, string requestId)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(action);
+        ArgumentException.ThrowIfNullOrEmpty(requestId);
+        if (handle == 0 || action.Any(char.IsWhiteSpace) || action.Length > 32 ||
+            requestId.Length > 64 || action.Contains('\0') || requestId.Contains('\0'))
+            return new(MilaNativeStatus.InvalidRequest);
+        IntPtr machine = Marshal.StringToCoTaskMemUTF8(machineId.ToString("D"));
+        IntPtr operation = Marshal.StringToCoTaskMemUTF8(action);
+        IntPtr request = Marshal.StringToCoTaskMemUTF8(requestId);
+        try
+        {
+            return new((MilaNativeStatus)SessionMachineActionNative(handle, machine, 36, operation,
+                (nuint)Encoding.UTF8.GetByteCount(action), request, (nuint)Encoding.UTF8.GetByteCount(requestId)));
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable); }
+        finally { Marshal.FreeCoTaskMem(machine); Marshal.FreeCoTaskMem(operation); Marshal.FreeCoTaskMem(request); }
+    }
+
     /// <summary>Projects only the closed Rust thread-command catalogue.</summary>
     internal static MilaNativeThreadCommandResult TryClassifyThreadCommand(string line)
     {
@@ -377,6 +405,10 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_command_format")]
     private static partial MilaNativeStatus MachineCommandNative(
         IntPtr action, IntPtr machineId, IntPtr requestId, MilaRouteOutput output);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_action")]
+    private static partial int SessionMachineActionNative(ulong handle, IntPtr machine, nuint machineLength,
+        IntPtr action, nuint actionLength, IntPtr requestId, nuint requestIdLength);
 
     private const int RouteOutputCapacity = 4096;
 

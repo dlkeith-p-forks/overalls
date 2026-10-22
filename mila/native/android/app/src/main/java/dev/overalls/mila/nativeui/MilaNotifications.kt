@@ -1,13 +1,55 @@
 package dev.overalls.mila.nativeui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+
+/** Provider-issued registration identifier. The value is opaque and never persisted as a token. */
+@JvmInline
+value class MilaNotificationProviderId private constructor(val value: String) {
+    companion object {
+        fun parse(value: String): MilaNotificationProviderId? =
+            value.takeIf { it.length in 1..512 && it.all { character -> character.code in 0x21..0x7e } }
+                ?.let(::MilaNotificationProviderId)
+    }
+}
+
+/** Boundary implemented by FCM (or another provider) without making the UI depend on it. */
+interface MilaNotificationProvider {
+    fun registrationId(): MilaNotificationProviderId?
+}
+
+interface MilaNotificationOs {
+    fun notificationsEnabled(): Boolean
+    fun ensureChannel(channelId: String, name: String)
+    fun removeChannel(channelId: String)
+}
+
+/** Android NotificationManager adapter. Provider tokens remain owned by the provider. */
+class MilaAndroidNotificationOs(context: Context) : MilaNotificationOs {
+    private val manager = context.getSystemService(NotificationManager::class.java)
+    override fun notificationsEnabled(): Boolean = Build.VERSION.SDK_INT < 24 || manager.areNotificationsEnabled()
+    override fun ensureChannel(channelId: String, name: String) {
+        if (Build.VERSION.SDK_INT >= 26) manager.createNotificationChannel(
+            NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_DEFAULT),
+        )
+    }
+    override fun removeChannel(channelId: String) {
+        if (Build.VERSION.SDK_INT >= 26) manager.deleteNotificationChannel(channelId)
+    }
+}
 
 data class MilaNotificationDevice(val id: String, val enabled: Boolean)
 interface MilaNotificationStore { fun list(): List<MilaNotificationDevice>; fun setEnabled(id: String, enabled: Boolean): Boolean; fun remove(id: String): Boolean }
+interface MilaNotificationRegistrationStore : MilaNotificationStore {
+    fun register(id: String, enabled: Boolean = true): Boolean
+}
 
 /** Durable device registration projection. Tokens are owned by the OS push provider and are
  * deliberately never persisted here; only the provider registration id and user toggle remain. */
-class MilaPreferencesNotificationStore(private val preferences: SharedPreferences) : MilaNotificationStore {
+class MilaPreferencesNotificationStore(private val preferences: SharedPreferences) : MilaNotificationRegistrationStore {
     private val key = "registered_devices"
     override fun list(): List<MilaNotificationDevice> = preferences.getStringSet(key, emptySet()).orEmpty()
         .mapNotNull { encoded ->
@@ -21,7 +63,7 @@ class MilaPreferencesNotificationStore(private val preferences: SharedPreference
         persist(next); return true
     }
 
-    fun register(id: String, enabled: Boolean = true): Boolean {
+    override fun register(id: String, enabled: Boolean): Boolean {
         if (!validId(id)) return false
         val next = list().filterNot { it.id == id } + MilaNotificationDevice(id, enabled)
         persist(next); return true
@@ -44,4 +86,12 @@ class MilaNotificationController(private val store: MilaNotificationStore) {
  fun refresh() { devices = store.list().filter { it.id.isNotBlank() } }
  fun setEnabled(id: String, enabled: Boolean): Boolean = store.setEnabled(id, enabled).also { if (it) refresh() }
  fun remove(id: String): Boolean = store.remove(id).also { if (it) refresh() }
+
+ /** Registers the provider-issued identifier after the OS has granted notifications. */
+ fun register(provider: MilaNotificationProvider, os: MilaNotificationOs): Boolean {
+  if (!os.notificationsEnabled()) return false
+  val id = provider.registrationId() ?: return false
+  val register = store as? MilaNotificationRegistrationStore ?: return false
+  return register.register(id.value).also { if (it) refresh() }
+ }
 }
