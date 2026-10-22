@@ -179,9 +179,9 @@ impl NativeState {
             .build();
         let web_actions = Box::new(Orientation::Horizontal, 8);
         for (label_text, operation, public) in [
-            ("Web show", "show", false),
-            ("Web set public", "set", true),
-            ("Web set private", "set", false),
+            (strings::text(strings::Message::WebShow), "show", false),
+            (strings::text(strings::Message::WebPublic), "set", true),
+            (strings::text(strings::Message::WebPrivate), "set", false),
         ] {
             let button = Button::with_label(label_text);
             let machine = machine_id.clone();

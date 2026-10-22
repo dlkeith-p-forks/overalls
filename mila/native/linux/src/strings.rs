@@ -20,6 +20,9 @@ pub(crate) enum Message {
     MachineUuid,
     ThreadId,
     RevokeKey,
+    WebShow,
+    WebPublic,
+    WebPrivate,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -39,6 +42,9 @@ pub(crate) fn text(message: Message) -> String {
         Message::MachineUuid => "machineIdLabel",
         Message::ThreadId => "threadIdLabel",
         Message::RevokeKey => "sshRevoke",
+        Message::WebShow => "webOpen",
+        Message::WebPublic => "webPublic",
+        Message::WebPrivate => "webPrivate",
     };
     catalog()
         .get(id)
@@ -64,6 +70,9 @@ fn fallback(message: Message) -> &'static str {
         Message::MachineUuid => "Machine UUID",
         Message::ThreadId => "Thread ID",
         Message::RevokeKey => "Revoke SSH key",
+        Message::WebShow => "Web show",
+        Message::WebPublic => "Web set public",
+        Message::WebPrivate => "Web set private",
     }
 }
 
