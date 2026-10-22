@@ -1,5 +1,5 @@
 ---
-digest: 7be593c425a5a7e0c4797e5d233c40b3d562478633eb0cc419549e2aa4d96977
+digest: 171d1df7d3ffd8aad7b6172f9dfefd4b950d3b57542eee00b7d2cd6f9d6bedf2
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple SSH key state and Windows authenticated mutation state remain native UI over typed Rust validation boundaries.
+Windows deployment persistence remains native UI storage over existing boundary.

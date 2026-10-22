@@ -10,6 +10,7 @@ public sealed partial class MainWindow : Window
     {
         InitializeComponent();
         ApplyStrings();
+        if (MilaDeploymentStore.Load() is { } deployment) { DeploymentHost.Text = deployment.Host; _activeHost = deployment.Host; }
         Navigation.SelectedItem = Navigation.MenuItems[0];
     }
     private static string S(string id, string fallback) => MilaStrings.Text(id, fallback);
@@ -128,6 +129,7 @@ public sealed partial class MainWindow : Window
         if (result.Status == MilaNativeStatus.Ok)
         {
             _activeHost = host;
+            MilaDeploymentStore.Save(new MilaDeployment(host));
             StatusText.Text = S("signInApprove", "Approve this device in your browser, then return here.");
             RefreshMachines();
         }
