@@ -4,13 +4,42 @@ using Mila.Windows.Interop;
 namespace Mila.Windows;
 public sealed partial class MainWindow : Window
 {
-    public MainWindow() { InitializeComponent(); Navigation.SelectedItem = Navigation.MenuItems[0]; }
+    public MainWindow()
+    {
+        InitializeComponent();
+        ApplyStrings();
+        Navigation.SelectedItem = Navigation.MenuItems[0];
+    }
+    private static string S(string id, string fallback) => MilaStrings.Text(id, fallback);
+    private void ApplyStrings()
+    {
+        ((NavigationViewItem)Navigation.MenuItems[0]).Content = S("machinesTitle", "Machines");
+        ((NavigationViewItem)Navigation.MenuItems[1]).Content = S("tabThreads", "Threads");
+        ((NavigationViewItem)Navigation.MenuItems[2]).Content = S("settingsTitle", "Settings");
+        PageTitle.Text = S("machinesTitle", "Machines");
+        PageBody.Text = S("machinesEmpty", "Select a machine to view its status.");
+        StatusText.Text = S("ready", "Ready");
+        MachineCommandsTitle.Text = S("machineMore", "Machine commands");
+        MachineCommandsHelp.Text = S("machineAccess", "Commands are classified by the Rust core before execution.");
+        MachineList.Content = S("tabInfo", "List"); MachineShow.Content = S("machineLoading", "Show");
+        MachineNew.Content = S("actionNew", "New"); MachineResize.Content = S("actionResize", "Resize");
+        MachineStart.Content = S("actionStart", "Start"); MachineStop.Content = S("actionStop", "Stop");
+        MachinePause.Content = S("actionPause", "Pause"); MachineResume.Content = S("actionResume", "Resume");
+        MachineDelete.Content = S("actionDelete", "Delete"); MachineShareAdd.Content = S("sharingAdd", "Share add");
+        MachineShareRemove.Content = S("sharingRemove", "Share remove"); MachineWebShow.Content = S("webOpen", "Web show");
+        MachineWebSet.Content = S("webSave", "Web set");
+        ThreadCommandsTitle.Text = S("tabThreads", "Thread commands");
+        ThreadCommandsHelp.Text = S("threadWorking", "Commands are validated by the Rust core before execution.");
+        ThreadList.Content = S("tabInfo", "List"); ThreadShow.Content = S("machineLoading", "Show");
+        ThreadTurns.Content = S("threadEventTurnStarted", "Turns"); ThreadRead.Content = S("threadEventOther", "Read");
+        Refresh.Content = S("refresh", "Refresh");
+    }
     private void OnNavigationChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         if (args.SelectedItem is NavigationViewItem item) {
             string tag = item.Tag?.ToString() ?? "machines";
             PageTitle.Text = item.Content?.ToString() ?? "Mila";
-            PageBody.Text = tag switch { "threads" => "Recent conversations appear here.", "settings" => "Runtime settings are managed by the core library.", _ => "Select a machine to view its status." };
+            PageBody.Text = tag switch { "threads" => S("threadsRecentTitle", "Recent conversations appear here."), "settings" => S("settingsOffline", "Runtime settings are managed by the core library."), _ => S("machinesEmpty", "Select a machine to view its status.") };
             ThreadPanel.Visibility = tag == "threads" ? Visibility.Visible : Visibility.Collapsed;
             MachineRows.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
             MachinePanel.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
