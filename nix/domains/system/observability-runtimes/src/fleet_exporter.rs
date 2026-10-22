@@ -87,6 +87,9 @@ fn main() -> std::io::Result<()> {
                 output.push_str(&format!("overalls_fleet_counter{{kind=\"cpu\",entity=\"all\",measure=\"{name}_ticks\"}} {value}\n"));
             }
         }
+        for (name, value) in vmstat_counters() {
+            output.push_str(&format!("overalls_fleet_counter{{kind=\"host\",entity=\"all\",measure=\"{name}\"}} {value}\n"));
+        }
         for interface in descriptor_interfaces(&descriptor) {
             if let Some((rx, tx)) = interface_bytes(&interface) {
                 output.push_str(&format!("overalls_fleet_counter{{kind=\"network\",entity=\"{interface}\",measure=\"receive_bytes\"}} {rx}\n"));
@@ -200,6 +203,31 @@ fn disk_stats() -> Vec<(String, u64, u64, u64, u64)> {
             ))
         })
         .take(4096)
+        .collect()
+}
+
+fn vmstat_counters() -> Vec<(String, u64)> {
+    let text = match fs::read_to_string("/proc/vmstat") {
+        Ok(value) if value.len() <= 262_144 => value,
+        _ => return Vec::new(),
+    };
+    let allowed = [
+        "oom_kill",
+        "pswpin",
+        "pswpout",
+        "pgfault",
+        "pgmajfault",
+        "pgpgin",
+        "pgpgout",
+    ];
+    text.lines()
+        .take(4096)
+        .filter_map(|line| {
+            let mut fields = line.split_whitespace();
+            let name = fields.next()?;
+            let value = fields.next()?.parse().ok()?;
+            allowed.contains(&name).then_some((name.to_owned(), value))
+        })
         .collect()
 }
 

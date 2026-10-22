@@ -1,5 +1,5 @@
 ---
-digest: 1fa6f5a2aa6145c556d877b7d8d7b05b83a10f358d0f28cf74fde6db8dc9b08b
+digest: 20340375047faf42169d05e927332fb393edb2aee8b27dcca1bfde29773c9b24
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now projects bounded validated disk read/write operation and sector counters from procfs.
+Fleet exporter now projects bounded host OOM, paging and page-fault counters from procfs vmstat.
