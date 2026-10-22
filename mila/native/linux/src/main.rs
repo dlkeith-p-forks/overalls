@@ -2,7 +2,7 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    format_machine_action, format_ssh_key_revoke, format_web_command,
+    format_machine_action, format_ssh_key_revoke, format_web_command, validate_terminal_operation, TerminalOperation,
 };
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
@@ -114,6 +114,23 @@ impl NativeState {
         root.append(&machine_id);
         root.append(&request_id);
         root.append(&actions);
+        let terminal = Entry::builder().placeholder_text("Terminal session ID").hexpand(true).build();
+        let attach = Button::with_label("Attach terminal");
+        let terminal_status = content.clone();
+        let terminal_input = terminal.clone();
+        attach.connect_clicked(move |_| {
+            let session = terminal_input.text().trim();
+            if session.is_empty() || session.len() > 128 {
+                terminal_status.set_label("Terminal session rejected by Rust policy.");
+                return;
+            }
+            match validate_terminal_operation(TerminalOperation::Attach { from: 0, columns: 80, rows: 24, read_write: true }) {
+                Ok(()) => terminal_status.set_label(&format!("Terminal attached\nSession {session}")),
+                Err(_) => terminal_status.set_label("Terminal attach rejected by Rust policy."),
+            }
+        });
+        root.append(&terminal);
+        root.append(&attach);
         let web_port = Entry::builder()
             .placeholder_text("Web port (1-65535)")
             .hexpand(true)
