@@ -55,6 +55,17 @@ interface MilaAppLockStore {
     fun write(state: MilaAppLockState)
 }
 
+class MilaAppLockPreferencesStore(private val preferences: android.content.SharedPreferences) : MilaAppLockStore {
+    override fun read(): MilaAppLockState? {
+        if (!preferences.contains("enabled")) return null
+        val delay = MilaLockDelay.entries.firstOrNull { it.name == preferences.getString("delay", null) } ?: MilaLockDelay.Immediate
+        return MilaAppLockState(preferences.getBoolean("enabled", false), delay)
+    }
+    override fun write(state: MilaAppLockState) {
+        preferences.edit().putBoolean("enabled", state.enabled).putString("delay", state.delay.name).apply()
+    }
+}
+
 class MilaAppLockController(private val store: MilaAppLockStore, initial: MilaAppLockState = store.read() ?: MilaAppLockState(false, MilaLockDelay.Immediate)) {
     var state: MilaAppLockState = initial
         private set
@@ -66,5 +77,6 @@ class MilaAppLockController(private val store: MilaAppLockStore, initial: MilaAp
     fun onBackground(at: Long) = update(state.backgrounded(at))
     fun onForeground(at: Long) = update(state.foregrounded(at))
     fun requestUnlock(): UInt? { val next = state.requestUnlock(); update(next); return next.attempt.takeIf { next.phase == MilaLockPhase.Authenticating } }
+    fun pendingAttempt(): UInt? = state.attempt.takeIf { state.phase == MilaLockPhase.Authenticating }
     fun finishUnlock(token: UInt, success: Boolean) = update(state.finishUnlock(token, success))
 }
