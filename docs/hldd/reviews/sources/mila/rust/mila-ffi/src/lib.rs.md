@@ -1,5 +1,5 @@
 ---
-digest: c4c6c483b77f2f436da67601a853161805c43e4fd94db38a6fdb356e980bec42
+digest: c26d8c44b2dcf91957ce544f6dcbfc086521e577c7f6833d921b21f98c22cdda
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Rust JNI/FFI exports for authenticated thread and SSH-key operations remain typed.
+JNI thread-action export is bounded and delegates to Rust session validation.
