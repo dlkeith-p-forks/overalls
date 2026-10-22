@@ -100,6 +100,9 @@ fn main() -> std::io::Result<()> {
                 output.push_str(&format!("overalls_fleet_gauge{{kind=\"integration\",entity=\"{role}\",measure=\"{name}\"}} {value}\n"));
             }
         }
+        for (name, value) in brady_metrics() {
+            output.push_str(&format!("overalls_fleet_gauge{{kind=\"brady\",entity=\"brady\",measure=\"{name}\"}} {value}\n"));
+        }
         append_host_pressure(&mut output);
         for interface in descriptor_interfaces(&descriptor) {
             if let Some(values) = interface_stats(&interface) {
@@ -377,6 +380,36 @@ fn integration_metrics(path: &str, role: &str) -> Vec<(String, u64)> {
                 .then_some((metric.to_owned(), value))
         })
         .take(32)
+        .collect()
+}
+
+fn brady_metrics() -> Vec<(String, u64)> {
+    let text = match fs::read_to_string("/run/brady/metrics.json") {
+        Ok(value) if value.len() <= 16_384 => value,
+        _ => return Vec::new(),
+    };
+    let allowed = [
+        "cache_used_bytes",
+        "cache_pending_bytes",
+        "cache_objects",
+        "cache_writers",
+        "cache_readers",
+        "cache_writable",
+    ];
+    allowed
+        .iter()
+        .filter_map(|name| {
+            let value = text
+                .split(&format!("\"{name}\""))
+                .nth(1)?
+                .split(':')
+                .nth(1)?
+                .split(|c: char| !c.is_ascii_digit())
+                .next()?
+                .parse()
+                .ok()?;
+            Some(((*name).to_owned(), value))
+        })
         .collect()
 }
 
