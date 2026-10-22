@@ -1,5 +1,5 @@
 ---
-digest: 60a04f443a251390744d68fc9807f4d83e957ffb51ed60c36b65a8a4609b5663
+digest: 4d78b75b2fe3f5df79c9b9b6dbb69404767a6f86a8326f5baecc137ff500ce2e
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -12,7 +12,7 @@ reviewed_chapters:
   marshall/priv/hldd/15-monitoring.md: db740282f22afc4c76be24d9db3f9ef4f10bf2745089a754647c6cf7e8fdfeef
   marshall/priv/hldd/16-recovery.md: 194fe77196ac4a25ab764d5cf4aee7558da547cd7b59726f32a302019b26136c
   marshall/priv/hldd/17-reference.md: 7d88fca8dbe56f67c71ea207b0ed860f4cfc005f7cb9f6ccde4ffe4bc718cda5
-  marshall/priv/hldd/18-options.md: 508dafafd8772a8b99e5277fdce56bda9b27566145979975ae96a11109e4a954
+  marshall/priv/hldd/18-options.md: 56d6ff5dfa49ede786cba440d57100c75b721b23b1e0616e79d3df8205e5ac11
   marshall/priv/hldd/19-coverage.md: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
   marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Logging health now reads bounded, regular, permission-safe trace snapshots and emits only the closed allowlisted spool metrics.
+Logging health descriptor loading now uses typed serde maps for queue budgets and trace snapshot paths with explicit bounds and allowlists.
