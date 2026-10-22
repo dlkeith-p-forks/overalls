@@ -1,5 +1,5 @@
 ---
-digest: 5679b11e512a9e32ef98c816e1a13e78f3c0284eb1a62fe3395b7653452a89a5
+digest: d1210da76cefdad36e8e57ad8dcc19cb557d8ca390979c2efcdb7075b02d60b7
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Add bounded Android terminal renderer and typed reconnect/input lifecycle while documenting live PTY and device gaps.
+Documented the Linux Rust sign-in coordinator trust/session planning seam and its remaining host integration gap.

@@ -47,18 +47,24 @@ pub struct SessionConnectConfig {
 
 impl SessionConnectConfig {
     pub fn validate(&self) -> Result<(), RuntimeError> {
-        if self.trust_document.is_empty()
-            || self.trust_document.len() > MAX_TRUST_BYTES
-            || self.host.is_empty()
-            || self.host.len() > 180
-            || self.host.bytes().any(|b| b.is_ascii_control() || b == b' ')
-            || self.port == 0
-            || !(1..=120_000).contains(&self.timeout_ms)
-        {
+        if self.trust_document.is_empty() || self.trust_document.len() > MAX_TRUST_BYTES {
             return Err(RuntimeError::InvalidInput);
         }
+        validate_session_endpoint(&self.host, self.port, self.timeout_ms)?;
         Ok(())
     }
+}
+
+fn validate_session_endpoint(host: &str, port: u16, timeout_ms: u32) -> Result<(), RuntimeError> {
+    if host.is_empty()
+        || host.len() > 180
+        || host.bytes().any(|b| b.is_ascii_control() || b == b' ')
+        || port == 0
+        || !(1..=120_000).contains(&timeout_ms)
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok(())
 }
 
 /// Stable errors for the GTK host; no remote response or credential is exposed.
@@ -279,6 +285,62 @@ impl<S: TrustStore, F: TrustFetcher> TrustEnrollment<S, F> {
     }
 }
 
+/// Rust-owned sign-in planning and connection orchestration for the Linux host.
+/// The host supplies only the signer and I/O traits; trust selection and the
+/// session configuration remain inside this module.
+pub struct SignInCoordinator<S, T, F> {
+    signer: S,
+    enrollment: TrustEnrollment<T, F>,
+}
+
+impl<S: DeviceSigner, T: TrustStore, F: TrustFetcher> SignInCoordinator<S, T, F> {
+    pub fn new(signer: S, store: T, fetcher: F) -> Self {
+        Self {
+            signer,
+            enrollment: TrustEnrollment { store, fetcher },
+        }
+    }
+
+    /// @cc [owner:ghuntley,label:security] linux-signin-coordinator-order
+    /// Sign-in MUST validate the endpoint before invoking host storage or HTTPS,
+    /// reconcile trust entirely in Rust, and pass only the selected trust bytes
+    /// to session connection. A failed plan MUST NOT invoke the device signer.
+    pub fn prepare_connect(
+        &self,
+        host: &str,
+        port: u16,
+        timeout_ms: u32,
+        now: u64,
+    ) -> Result<SessionConnectConfig, RuntimeError> {
+        validate_session_endpoint(host, port, timeout_ms)?;
+        let trust_document = self.enrollment.resolve(host, now)?;
+        let config = SessionConnectConfig {
+            trust_document,
+            host: host.to_owned(),
+            port,
+            timeout_ms,
+        };
+        config.validate()?;
+        Ok(config)
+    }
+
+    pub fn connect(
+        &self,
+        host: &str,
+        port: u16,
+        timeout_ms: u32,
+        now: u64,
+    ) -> Result<LiveSession, SessionError> {
+        let config =
+            self.prepare_connect(host, port, timeout_ms, now)
+                .map_err(|error| match error {
+                    RuntimeError::InvalidInput => SessionError::InvalidInput,
+                    RuntimeError::Unavailable => SessionError::Transport,
+                })?;
+        LiveSession::connect(&config, &self.signer)
+    }
+}
+
 /// Browser approval state retained without persisting URLs, tokens or fingerprints.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub enum ApprovalState {
@@ -473,6 +535,180 @@ impl SignInFlow {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::cell::RefCell;
+    use std::rc::Rc;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::Arc;
+
+    struct MemoryStore {
+        pinned: Option<Vec<u8>>,
+        reads: Rc<RefCell<usize>>,
+        writes: Rc<RefCell<Vec<Vec<u8>>>>,
+    }
+
+    impl TrustStore for MemoryStore {
+        fn read(&self, _host: &str) -> Result<Option<Vec<u8>>, RuntimeError> {
+            *self.reads.borrow_mut() += 1;
+            Ok(self.pinned.clone())
+        }
+
+        fn write(&self, _host: &str, document: &[u8]) -> Result<(), RuntimeError> {
+            self.writes.borrow_mut().push(document.to_vec());
+            Ok(())
+        }
+    }
+
+    struct StaticFetcher {
+        response: Result<Vec<u8>, RuntimeError>,
+        calls: Rc<RefCell<usize>>,
+    }
+
+    impl TrustFetcher for StaticFetcher {
+        fn fetch(&self, _host: &str) -> Result<Vec<u8>, RuntimeError> {
+            *self.calls.borrow_mut() += 1;
+            self.response.clone()
+        }
+    }
+
+    struct CountingSigner {
+        calls: Arc<AtomicUsize>,
+    }
+
+    impl DeviceSigner for CountingSigner {
+        fn public_key(&self) -> &str {
+            "ssh-test-public-key"
+        }
+
+        fn sign(&self, _message: &[u8]) -> Result<[u8; 64], RuntimeError> {
+            self.calls.fetch_add(1, Ordering::SeqCst);
+            Ok([0; 64])
+        }
+    }
+
+    fn ca(index: usize) -> String {
+        let fixture: serde_json::Value = serde_json::from_str(include_str!(
+            "../../../rust/mila-transport/tests/fixtures/ssh_host_certificates.json"
+        ))
+        .expect("certificate fixture");
+        fixture["certificates"][index]["ca"]
+            .as_str()
+            .expect("certificate CA")
+            .to_owned()
+    }
+
+    fn trust(ca: &str, retirement: u64) -> Vec<u8> {
+        serde_json::to_vec(&serde_json::json!({
+            "version": 1,
+            "ca": ca,
+            "management_host": "overalls.example",
+            "zone": "apps.overalls.example",
+            "retirement": retirement,
+        }))
+        .expect("trust document")
+    }
+
+    fn coordinator(
+        pinned: Option<Vec<u8>>,
+        response: Result<Vec<u8>, RuntimeError>,
+    ) -> (
+        SignInCoordinator<CountingSigner, MemoryStore, StaticFetcher>,
+        Rc<RefCell<usize>>,
+        Rc<RefCell<Vec<Vec<u8>>>>,
+        Arc<AtomicUsize>,
+    ) {
+        let reads = Rc::new(RefCell::new(0));
+        let writes = Rc::new(RefCell::new(Vec::new()));
+        let calls = Rc::new(RefCell::new(0));
+        let signer_calls = Arc::new(AtomicUsize::new(0));
+        (
+            SignInCoordinator::new(
+                CountingSigner {
+                    calls: signer_calls.clone(),
+                },
+                MemoryStore {
+                    pinned,
+                    reads,
+                    writes: writes.clone(),
+                },
+                StaticFetcher {
+                    response,
+                    calls: calls.clone(),
+                },
+            ),
+            calls,
+            writes,
+            signer_calls,
+        )
+    }
+
+    #[test]
+    fn coordinator_reconciles_fetched_trust_and_persists_canonical_bytes() {
+        let pinned = trust(&ca(0), 2_000);
+        let fetched = trust(&ca(0), 3_000);
+        let (coordinator, fetch_calls, writes, _) = coordinator(Some(pinned), Ok(fetched));
+        let config = coordinator
+            .prepare_connect("overalls.example", 443, 30_000, 1_000)
+            .expect("trust should reconcile");
+        let selected: serde_json::Value =
+            serde_json::from_slice(&config.trust_document).expect("canonical trust");
+        assert_eq!(selected["retirement"], 3_000);
+        assert_eq!(*fetch_calls.borrow(), 1);
+        assert_eq!(writes.borrow().len(), 1);
+        assert_eq!(writes.borrow()[0], config.trust_document);
+    }
+
+    #[test]
+    fn coordinator_uses_a_current_pin_when_fetch_is_unavailable() {
+        let pinned = trust(&ca(0), 2_000);
+        let (coordinator, fetch_calls, writes, _) =
+            coordinator(Some(pinned.clone()), Err(RuntimeError::Unavailable));
+        let config = coordinator
+            .prepare_connect("overalls.example", 443, 30_000, 1_000)
+            .expect("current pin should be usable");
+        let selected: serde_json::Value =
+            serde_json::from_slice(&config.trust_document).expect("canonical trust");
+        assert_eq!(selected["retirement"], 2_000);
+        assert_eq!(
+            selected["ca"],
+            serde_json::from_slice::<serde_json::Value>(&pinned).unwrap()["ca"]
+        );
+        assert_eq!(*fetch_calls.borrow(), 1);
+        assert_eq!(writes.borrow().len(), 1);
+        assert_eq!(writes.borrow()[0], config.trust_document);
+    }
+
+    #[test]
+    fn coordinator_refuses_malformed_or_conflicting_fetched_trust() {
+        let malformed = coordinator(None, Ok(br#"{"version":1,"ca":"bad"}"#.to_vec())).0;
+        assert_eq!(
+            malformed
+                .prepare_connect("overalls.example", 443, 30_000, 1_000)
+                .unwrap_err(),
+            RuntimeError::InvalidInput
+        );
+
+        let conflicting = coordinator(Some(trust(&ca(0), 2_000)), Ok(trust(&ca(5), 3_000))).0;
+        assert_eq!(
+            conflicting
+                .prepare_connect("overalls.example", 443, 30_000, 1_000)
+                .unwrap_err(),
+            RuntimeError::InvalidInput
+        );
+    }
+
+    #[test]
+    fn invalid_endpoint_is_rejected_before_storage_fetch_or_signer() {
+        let (coordinator, fetch_calls, writes, signer_calls) =
+            coordinator(None, Err(RuntimeError::Unavailable));
+        assert!(matches!(
+            coordinator.connect("bad host", 443, 30_000, 1_000),
+            Err(SessionError::InvalidInput)
+        ));
+        assert_eq!(*fetch_calls.borrow(), 0);
+        assert!(writes.borrow().is_empty());
+        assert_eq!(signer_calls.load(Ordering::SeqCst), 0);
+    }
+
     #[test]
     fn approval_is_generation_bound_and_expires() {
         let flow = SignInFlow::default().apply(SignInEvent::Start);

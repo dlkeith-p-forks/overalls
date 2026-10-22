@@ -1250,12 +1250,19 @@ example a host serving no `/bin/ssh-trust.json`) is reported as unreachable
 rather than untrusted or as an expired approval link. Mila stores no terminal bytes,
 tokens or reply bodies; it logs nothing about keys or commands.
 
+The Linux native seam now keeps endpoint validation, HTTPS trust reconciliation,
+canonical pin persistence and session planning in Rust. Its host-provided signer
+and HTTPS implementation remain integration boundaries, so GTK does not claim a
+live production sign-in journey until those adapters and approval polling are
+wired.
+
 Evidence: [transport](repo:mila/packages/mila_transport/lib/src/ssh_porsche.dart)
 and its [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart),
 [host certificates](repo:mila/packages/mila_core/lib/src/host_trust.dart),
 [sign-in machine](repo:mila/packages/mila_core/lib/src/sign_in.dart),
 [device keys](repo:mila/packages/mila_transport/lib/src/device_key.dart),
 [dartssh2 patch](repo:nix/platform/patches/dartssh2-host-certificates.patch),
+[Linux session coordinator and trust tests](repo:mila/native/linux/src/session.rs),
 [real-Porsche machine test](repo:nix/verification/tests/machines/mila-porsche/default.nix)
 (passed against the real Porsche release), the [desktop journey](repo:nix/verification/tests/machines/mila-desktop/default.nix)
 (browser approval, machine list and forwarded links through the Linux bundle) and the [M1 review](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
