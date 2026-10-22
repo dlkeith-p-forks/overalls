@@ -1,5 +1,5 @@
 ---
-digest: 57316ac301be1198b5b2cbb9c8c9ccb67c182a0538e956652d28cf11e116e618
+digest: c1e0a6b9b32c2bb9c62076a62e5634afa5957f1e019f5f2806c3714764d1e289
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Parity matrix records authenticated sharing, SSH-key, and thread payload evidence.
+Parity matrix records authenticated thread and Apple SSH-key evidence.
