@@ -166,6 +166,7 @@ fun MilaNativeRoot(
         Text(status, style = MaterialTheme.typography.labelSmall)
         if (signInState is MilaSignInState.AwaitingApproval) {
             val awaiting = signInState as MilaSignInState.AwaitingApproval
+            LaunchedEffect(awaiting.approval.url) { approvalBrowser.open(awaiting.approval) }
             Text(MilaStrings.text(MilaMessage.ApprovalPending), style = MaterialTheme.typography.bodyMedium)
             Text("${MilaStrings.text(MilaMessage.ApprovalFingerprint)}: ${awaiting.approval.fingerprint}", style = MaterialTheme.typography.labelSmall)
             Button({ approvalBrowser.open(awaiting.approval) }) {
@@ -328,7 +329,7 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
 
 @Composable private fun MachineDetail(controller: MilaMachineDetailController, id: java.util.UUID, adapter: MilaFfiAdapter) {
     val scope = rememberCoroutineScope()
-    val state = controller.state
+    var state by remember { mutableStateOf(controller.state) }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(MilaStrings.text(MilaMessage.MachineActions), style = MaterialTheme.typography.titleLarge)
         Text(id.toString(), style = MaterialTheme.typography.labelSmall)
@@ -345,7 +346,7 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
                 row.forEach { choice ->
                     Button({
                         controller.select(id)
-                        controllerSelect(controller, choice.command, scope)
+                        controllerSelect(controller, choice.command, scope) { state = controller.state }
                     }) { Text(choice.label) }
                 }
             }
@@ -384,11 +385,11 @@ private fun MachineSharingControls(adapter: MilaFfiAdapter, machine: MilaMachine
     }
 }
 
-private fun controllerSelect(controller: MilaMachineDetailController, command: String, scope: kotlinx.coroutines.CoroutineScope) {
+private fun controllerSelect(controller: MilaMachineDetailController, command: String, scope: kotlinx.coroutines.CoroutineScope, onComplete: () -> Unit) {
     val value = MilaMachineCommand.entries.firstOrNull { it.name.equals(command, ignoreCase = true) }
         ?: when (command) { "rm" -> MilaMachineCommand.Delete; else -> null }
         ?: return
-    scope.launch { controller.submit(value) }
+    scope.launch { controller.submit(value); onComplete() }
 }
 
 @Composable private fun ThreadDetail(controller: MilaThreadDetailController, id: java.util.UUID) {

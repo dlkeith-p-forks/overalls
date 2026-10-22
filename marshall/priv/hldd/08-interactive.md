@@ -1813,3 +1813,10 @@ publishing the machine listing. Closing, reconnecting or a failed refresh closes
 the pending handle and leaves only the validated deployment selection persisted.
 The Android unit tests cover malformed and foreign approval URLs; a packaged
 device browser journey remains unverified.
+
+The Android machine list and detail route consume only the listing published
+after that authenticated session reaches `SignedIn`. Detail mutations carry
+closed `MilaMachineCommand` values through the same bound Rust session and
+render their submitting/applied/refused state after the suspend call returns;
+there is no UI-only command submission path. Compose release and live-device
+execution of these controls remain unverified.

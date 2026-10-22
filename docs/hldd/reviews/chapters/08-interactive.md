@@ -1,5 +1,5 @@
 ---
-digest: 89941cf1d313291a803dd9fc1155e152fc105fc6682f7e60b44f266289b9b342
+digest: 43e1b55308537ab39797562f4a6bd5f935d8b4178f3fc149d20309636dca4f31
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document Android approval URL validation, browser navigation, same-session polling, persistence boundary and remaining device evidence gap.
+Bind Android machine detail mutation rendering to the authenticated Rust session and record the remaining packaged-device evidence gap.
