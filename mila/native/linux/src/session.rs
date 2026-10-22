@@ -241,6 +241,49 @@ impl LiveSession {
             .ok_or_else(|| status.into())
     }
 
+    /// Execute an authenticated sharing add/remove mutation with typed role and
+    /// request-id validation before crossing the native boundary.
+    pub fn share_mutation(
+        &mut self,
+        machine_id: &str,
+        email: &str,
+        role: Option<&str>,
+        add: bool,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
+        validate_session_identifier(machine_id)?;
+        if email.is_empty()
+            || email.len() > 320
+            || email.bytes().any(|byte| byte.is_ascii_control() || byte.is_ascii_whitespace())
+            || (add && !matches!(role, Some("viewer" | "operator" | "manager")))
+            || (!add && role.is_some())
+            || request_id.len() != 40
+            || !request_id.starts_with("porsche-")
+            || !request_id[8..].bytes().all(|byte| byte.is_ascii_hexdigit())
+        {
+            return Err(SessionError::InvalidInput);
+        }
+        let handle = self.handle()?;
+        let role_bytes = role.map(str::as_bytes).unwrap_or_default();
+        let status = unsafe {
+            mila_ffi::session::mila_session_share_mutation(
+                handle,
+                machine_id.as_bytes().as_ptr(),
+                machine_id.len(),
+                email.as_bytes().as_ptr(),
+                email.len(),
+                role_bytes.as_ptr(),
+                role_bytes.len(),
+                u8::from(add),
+                request_id.as_bytes().as_ptr(),
+                request_id.len(),
+            )
+        };
+        (status == mila_ffi::session::SessionStatus::Ok)
+            .then_some(())
+            .ok_or_else(|| status.into())
+    }
+
     /// Read a machine-bound web endpoint through the authenticated session.
     /// The response remains bounded and owned by the Rust adapter.
     pub fn web_show(&mut self, machine_id: &str) -> Result<Vec<u8>, SessionError> {
@@ -1007,6 +1050,32 @@ mod tests {
                 "01234567-89ab-cdef-0123-456789abcdef",
                 "shell",
                 "porsche-00000000000000000000000000000000"
+            ),
+            Err(SessionError::InvalidInput)
+        );
+    }
+
+    #[test]
+    fn sharing_requires_authenticated_session_and_typed_role() {
+        let mut session = LiveSession { handle: None };
+        let request = "porsche-00000000000000000000000000000000";
+        assert_eq!(
+            session.share_mutation(
+                "01234567-89ab-cdef-0123-456789abcdef",
+                "user@example.com",
+                Some("viewer"),
+                true,
+                request,
+            ),
+            Err(SessionError::StaleHandle)
+        );
+        assert_eq!(
+            session.share_mutation(
+                "01234567-89ab-cdef-0123-456789abcdef",
+                "user@example.com",
+                Some("owner"),
+                true,
+                request,
             ),
             Err(SessionError::InvalidInput)
         );

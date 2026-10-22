@@ -384,7 +384,10 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
     public func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws {
         guard machine.actions.values.contains(action) else { throw MilaFFIError.actionNotAllowed }
         _ = try formatMachineAction(action, machineID: machine.id, requestID: requestID)
-        throw MilaFFIError.unavailable
+        guard let liveSession else { throw MilaFFIError.unavailable }
+        do {
+            try liveSession.machineAction(machine: machine.id, action: action.token, requestID: requestID)
+        } catch { throw MilaFFIError.unavailable }
     }
 
     public func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws {

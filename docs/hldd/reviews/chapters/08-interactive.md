@@ -1,5 +1,5 @@
 ---
-digest: 01be516d36830c11a7acf3770e09cbdc2ae174486403741317e9ca7bbc1accb7
+digest: e7b706e452da35e58bf74f2c096a09b58db56e863504c13e910e8e5888fa7a89
 disposition: no-impact
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux machine mutation documentation update; no Marshall domain impact.
+Reviewed concurrent native machine mutation documentation; no Marshall domain impact.

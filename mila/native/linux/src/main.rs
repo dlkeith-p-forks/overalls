@@ -3,7 +3,7 @@ use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
     decode_listing, decode_notification_devices, decode_web_endpoint, format_machine_action,
-    format_share_command, format_ssh_key_revoke, format_thread_command, format_thread_turns,
+    format_ssh_key_revoke, format_thread_command, format_thread_turns,
     format_web_command, TerminalStream,
 };
 use mila_native_linux::machine_view::{project_detail, project_listing};
@@ -490,18 +490,26 @@ impl NativeState {
             let email = share_email.clone();
             let role = share_role.clone();
             let status = content.clone();
+            let session = self.session.clone();
+            let request_id = request_id.clone();
             button.connect_clicked(move |_| {
-                let request = "porsche-0000000000000000000000000000000000000000";
+                let request = request_id.text().trim().to_owned();
                 let selected_role =
                     (!role.text().trim().is_empty()).then(|| role.text().trim().to_owned());
-                match format_share_command(
-                    operation,
+                let add = operation == "add";
+                let mut binding = session.borrow_mut();
+                let Some(live) = binding.session_mut() else {
+                    status.set_label("Sharing mutations require sign-in.");
+                    return;
+                };
+                match live.share_mutation(
                     machine.text().trim(),
                     email.text().trim(),
                     selected_role.as_deref(),
-                    request,
+                    add,
+                    &request,
                 ) {
-                    Ok(command) => status.set_label(&format!("Sharing command\n{command}")),
+                    Ok(()) => status.set_label("Sharing mutation accepted."),
                     Err(_) => status.set_label("Sharing request rejected by Rust policy."),
                 }
             });

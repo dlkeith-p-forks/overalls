@@ -1424,6 +1424,11 @@ authenticated session handle. Rust validates the machine UUID, closed action
 vocabulary and one-time request ID before opening Porsche; unsigned-in windows
 are refused. Create, resize and live deployment transport remain open.
 
+Sharing add/remove controls likewise require the authenticated session. Rust
+validates the machine UUID, email, role vocabulary and request ID before the
+Porsche mutation; remove requests cannot carry a role. The GTK shell has no
+live deployment receipt yet.
+
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command
