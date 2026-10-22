@@ -1,5 +1,5 @@
 ---
-digest: 49503fe1a0a212e106fbb797fe315a3f6e4a01c2c73d262d831bc69879f3aecb
+digest: 31d8d2bd5ceb71df9cc2e859eecb106469b74a2bd845a51bb37dbdc6142f25ea
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows activation arguments are parsed through the typed route boundary and invalid links are refused.
+Authenticated session binding remains within native UI wrappers and existing Rust session boundary.

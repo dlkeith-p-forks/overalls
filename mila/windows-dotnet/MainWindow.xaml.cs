@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.Security.Cryptography;
 using Mila.Windows.Interop;
 namespace Mila.Windows;
 public sealed partial class MainWindow : Window
@@ -13,9 +14,12 @@ public sealed partial class MainWindow : Window
     private readonly MilaMachineMutationController _machineMutation = new();
     private MilaMachineRow? _selectedMachine;
     private readonly MilaAppLockController _appLock = new(new MilaWindowsHelloBroker());
+    private readonly MilaSessionConnection _session = new();
+    private DeviceKey? _deviceKey;
     public MainWindow(string? activation = null)
     {
         InitializeComponent();
+        Closed += (_, _) => { _session.Dispose(); _deviceKey?.Dispose(); };
         ApplyStrings();
         if (MilaDeploymentStore.Load() is { } deployment) { DeploymentHost.Text = deployment.Host; _activeHost = deployment.Host; }
         Navigation.SelectedItem = Navigation.MenuItems[0];
@@ -162,25 +166,61 @@ public sealed partial class MainWindow : Window
         // mutation controls explicitly signed out until the session broker
         // supplies its non-zero handle.
         _machineMutation.SetSession(false);
+        _session.SignOut();
         _ = ConnectDeploymentAsync(host);
     }
     private async Task ConnectDeploymentAsync(string host)
     {
-        await Task.Delay(150);
-        MilaNativeVersionResult result = RustNative.TryGetVersion();
-        if (result.Status == MilaNativeStatus.Ok)
+        try
         {
+            // A session can only be established with a previously pinned trust
+            // document.  Browser approval does not manufacture trust material.
+            byte[]? trust = MilaTrustStore.Load(host);
+            if (trust is null)
+            {
+                _activeHost = null;
+                _session.SignOut();
+                StatusText.Text = S("signInApprove", "Approve this device in your browser, then return here.");
+                return;
+            }
+
+            DeviceKey deviceKey = DeviceKey.OpenOrCreate(host);
+            byte[] publicKey = deviceKey.PublicPoint();
+            bool connected = await Task.Run(() => _session.Connect(
+                trust, host, publicKey, 443, 30_000, bytes => deviceKey.Sign(bytes)));
+            if (!connected || _session.Handle is not { } handle)
+            {
+                deviceKey.Dispose();
+                _activeHost = null;
+                _machineMutation.SetSession(false);
+                StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
+                return;
+            }
+
+            _deviceKey?.Dispose();
+            _deviceKey = deviceKey;
             _activeHost = host;
             MilaDeploymentStore.Save(new MilaDeployment(host));
-            StatusText.Text = S("signInApprove", "Approve this device in your browser, then return here.");
+            _machineMutation.SetSession(true, handle);
+            StatusText.Text = S("connected", MilaStrings.Connected);
             RefreshMachines();
         }
-        else
+        catch (ArgumentException)
         {
             _activeHost = null;
+            _session.SignOut();
+            StatusText.Text = S("invalidHost", "Enter a valid deployment host.");
+        }
+        catch (CryptographicException)
+        {
+            _activeHost = null;
+            _session.SignOut();
             StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
         }
-        ConnectDeployment.IsEnabled = true;
+        finally
+        {
+            ConnectDeployment.IsEnabled = true;
+        }
     }
     private async Task RefreshLockAvailabilityAsync()
     {
@@ -238,7 +278,7 @@ public sealed partial class MainWindow : Window
     private void RefreshMachines()
     {
         _selectedMachine = null;
-        _machineMutation.SetSession(false);
+        _machineMutation.SetSession(_session.Handle is { } handle, _session.Handle ?? 0);
         MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
         if (_activeHost is { } host)
         {

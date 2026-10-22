@@ -57,8 +57,15 @@ internal val threadCommandChoices = listOf(
 )
 
 @Composable
-fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
+fun MilaNativeRoot(
+    adapter: MilaFfiAdapter = LinkedMilaFfiAdapter(),
+    materialProvider: MilaSessionMaterialProvider? = null,
+) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val sessionMaterialProvider = remember(materialProvider, context) {
+        materialProvider ?: AndroidMilaSessionMaterialProvider(context)
+    }
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
     val deploymentStore = remember { MilaSharedPreferencesDeploymentStore(LocalContext.current.getSharedPreferences("mila.deployment", 0)) }
@@ -85,7 +92,22 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         Text(MilaStrings.text(MilaMessage.AppName), style = MaterialTheme.typography.headlineSmall)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("Deployment: ${deployment.selected?.label ?: "none"}")
-            Button({ scope.launch { signIn.signIn(deployment.selected!!); signInState = signIn.state } }) { Text("Sign in") }
+            Button({
+                deployment.selected?.let { selected ->
+                    scope.launch {
+                        signInState = MilaSignInState.Connecting(selected)
+                        sessionMaterialProvider.resolve(selected).fold(
+                            onSuccess = { material ->
+                                signIn.signIn(selected, material.config, material.signer)
+                                signInState = signIn.state
+                            },
+                            onFailure = {
+                                signInState = MilaSignInState.Failed(selected, MilaFfiError.Unavailable)
+                            },
+                        )
+                    }
+                }
+            }) { Text("Sign in") }
             Button({ route = MilaRoute.Machines }) { Text(MilaStrings.text(MilaMessage.Machines)) }
             Button({ route = MilaRoute.Threads }) { Text(MilaStrings.text(MilaMessage.Threads)) }
             Button({ route = MilaRoute.Settings }) { Text(MilaStrings.text(MilaMessage.Settings)) }
@@ -102,7 +124,16 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         }
         if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(adapter)
     }
-    LaunchedEffect(Unit) { signIn.reconnect(); signInState = signIn.state; refresh() }
+    LaunchedEffect(Unit) {
+        val saved = deploymentStore.read()
+        if (saved != null) {
+            sessionMaterialProvider.resolve(saved).onSuccess { material ->
+                signIn.signIn(saved, material.config, material.signer)
+                signInState = signIn.state
+            }
+        }
+        refresh()
+    }
 }
 
 @Composable

@@ -1,5 +1,5 @@
 ---
-digest: eabbf70705a0204da60c87180429768098570fc81c06408da42420fccc557c09
+digest: 219cfaea872ffdd753115894f2c2d10931f9ad9419dbbeb0442154c093d7e7d2
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Authenticated SSH-key, sharing, and Android thread payload seams preserve typed session boundaries; tests cover malformed inputs.
+Android sign-in now resolves pinned per-deployment trust assets and non-exportable device keys through a typed provider before invoking Rust; missing assets fail closed.
