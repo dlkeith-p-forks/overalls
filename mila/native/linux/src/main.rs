@@ -149,7 +149,12 @@ impl NativeState {
             .build();
         let thread_actions = Box::new(Orientation::Horizontal, 8);
         for operation in ["ls", "show"] {
-            let button = Button::with_label(&format!("Thread {operation}"));
+            let label = if operation == "ls" {
+                strings::text(strings::Message::ThreadList)
+            } else {
+                strings::text(strings::Message::ThreadShow)
+            };
+            let button = Button::with_label(&label);
             let input = thread_id.clone();
             let status = content.clone();
             let operation = operation.to_owned();

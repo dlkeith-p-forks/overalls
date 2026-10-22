@@ -12,6 +12,9 @@ pub(crate) enum Message {
     LockTitle,
     LockUnavailable,
     LockExplain,
+    DeploymentSelect,
+    ThreadList,
+    ThreadShow,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -23,6 +26,9 @@ pub(crate) fn text(message: Message) -> String {
         Message::LockTitle => "lockTitle",
         Message::LockUnavailable => "lockUnavailable",
         Message::LockExplain => "lockExplain",
+        Message::DeploymentSelect => "deploymentHostLabel",
+        Message::ThreadList => "tabThreads",
+        Message::ThreadShow => "threadTitle",
     };
     catalog()
         .get(id)
@@ -40,6 +46,9 @@ fn fallback(message: Message) -> &'static str {
         Message::LockTitle => "App lock",
         Message::LockUnavailable => "App lock is unavailable on Linux.",
         Message::LockExplain => "This device does not provide a native app-lock authenticator.",
+        Message::DeploymentSelect => "Deployment host",
+        Message::ThreadList => "Threads",
+        Message::ThreadShow => "Show thread",
     }
 }
 
