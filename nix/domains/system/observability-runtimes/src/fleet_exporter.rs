@@ -108,6 +108,10 @@ fn main() -> std::io::Result<()> {
                 output.push_str(&format!(
                     "overalls_fleet_info{{kind=\"vm\",entity=\"{vm}\"}} 1\n"
                 ));
+                if let Some((memory, cpu)) = cgroup_usage_at("/sys/fs/cgroup/lilly.slice", &vm) {
+                    output.push_str(&format!("overalls_fleet_gauge{{kind=\"vm\",entity=\"{vm}\",measure=\"memory_bytes\"}} {memory}\n"));
+                    output.push_str(&format!("overalls_fleet_counter{{kind=\"vm\",entity=\"{vm}\",measure=\"cpu_usage_usec\"}} {cpu}\n"));
+                }
             }
         }
         output
@@ -320,7 +324,11 @@ fn unit_state(unit: &str) -> Option<(String, String)> {
 }
 
 fn cgroup_usage(unit: &str) -> Option<(u64, u64)> {
-    let base = format!("/sys/fs/cgroup/system.slice/{unit}");
+    cgroup_usage_at("/sys/fs/cgroup/system.slice", unit)
+}
+
+fn cgroup_usage_at(parent: &str, unit: &str) -> Option<(u64, u64)> {
+    let base = format!("{parent}/{unit}");
     let memory = fs::read_to_string(format!("{base}/memory.current"))
         .ok()?
         .trim()

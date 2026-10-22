@@ -1,5 +1,5 @@
 ---
-digest: cd2d6e7bfa3a1f9369696f5029c22a4de6a2bb0a1eb79ffdf9fccd5dfcb73136
+digest: 470ccfe72ecfbd4b7e5afccfc6558923199271f1d3648a3314ffb6bc11f727b4
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now discovers bounded lilly VM service units through systemd listing, retaining the existing unit-name allowlist and no process metadata exposure.
+Fleet exporter now applies the same bounded cgroup usage projection to discovered Lilly VM units under the dedicated lilly.slice boundary.
