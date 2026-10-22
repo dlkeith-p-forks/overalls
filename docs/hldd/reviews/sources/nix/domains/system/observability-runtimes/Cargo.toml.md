@@ -1,5 +1,5 @@
 ---
-digest: 602062d1c91545c6b17889cc884db24ff4e2f5cfc9a3c80262c6465a33cfa396
+digest: 06739e0b17e3070cbd9feaca4614f34d8a13cbe5fc101f3a44c09d3ba199f518
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter descriptor loading now uses typed serde validation with explicit collection bounds before any projection.
+Rust property coverage preserves existing deployment contracts

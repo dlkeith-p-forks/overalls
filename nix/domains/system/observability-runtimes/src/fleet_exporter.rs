@@ -815,3 +815,33 @@ fn vm_network_metrics(descriptor: &str) -> Vec<(String, String, u64)> {
     result.truncate(256);
     result
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use proptest::prelude::*;
+
+    #[test]
+    fn descriptor_rejects_invalid_service_shape() {
+        assert!(serde_json::from_str::<Descriptor>(r#"{"services": 1}"#).is_err());
+    }
+
+    #[test]
+    fn disk_stats_parser_allowlist_is_bounded() {
+        let values = disk_stats();
+        assert!(values.len() <= 4096);
+        assert!(values
+            .iter()
+            .all(|(name, _, _, _, _)| !name.is_empty() && name.len() <= 128));
+    }
+
+    proptest! {
+        #[test]
+        fn arbitrary_json_never_bypasses_descriptor_bounds(value in any::<String>()) {
+            let document = serde_json::json!({"services": vec![value.clone(); 129]});
+            let encoded = serde_json::to_string(&document).unwrap();
+            let parsed = serde_json::from_str::<Descriptor>(&encoded).unwrap();
+            prop_assert!(parsed.services.len() == 129);
+        }
+    }
+}
