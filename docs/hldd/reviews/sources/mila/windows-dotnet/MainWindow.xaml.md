@@ -1,5 +1,5 @@
 ---
-digest: ef0c54c24c6cc7af4188179a0ad76be56e18184b51c77dd546807db00ea988f7
+digest: 0398d7f208b40e018b9d7547c765e05de6810fe963a47451c7a8e58873d3a77b
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native SSH key refresh and GTK label borrow fix preserve existing Rust boundaries.
+Apple machine mutation workflow and Windows typed thread listing/actions remain native UI over Rust classification and session boundaries.

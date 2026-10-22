@@ -1,5 +1,5 @@
 ---
-digest: 171d1df7d3ffd8aad7b6172f9dfefd4b950d3b57542eee00b7d2cd6f9d6bedf2
+digest: 9e4965ae1779c0c40fee953ff189e6a7c0375a21c4d1e4b604a700fe5a8ef45e
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows deployment persistence remains native UI storage over existing boundary.
+Apple machine mutation workflow and Windows typed thread listing/actions remain native UI over Rust classification and session boundaries.

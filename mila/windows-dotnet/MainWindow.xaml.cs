@@ -6,6 +6,7 @@ public sealed partial class MainWindow : Window
 {
     private string? _activeHost;
     private bool _notificationsEnabled;
+    private readonly MilaThreadController _threadController = new();
     public MainWindow()
     {
         InitializeComponent();
@@ -44,6 +45,8 @@ public sealed partial class MainWindow : Window
         ThreadCommandsHelp.Text = S("threadWorking", "Commands are validated by the Rust core before execution.");
         ThreadList.Content = S("tabInfo", "List"); ThreadShow.Content = S("machineLoading", "Show");
         ThreadTurns.Content = S("threadEventTurnStarted", "Turns"); ThreadRead.Content = S("threadEventOther", "Read");
+        ThreadPrompt.Content = S("threadPrompt", "Prompt"); ThreadAnswer.Content = S("threadAnswer", "Answer");
+        ThreadApprove.Content = S("threadPlanApprove", "Approve plan"); ThreadRevise.Content = S("threadPlanRevise", "Revise plan");
         Refresh.Content = S("refresh", "Refresh");
         LockButton.Content = S("lockTitle", "Lock app");
         LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
@@ -164,6 +167,7 @@ public sealed partial class MainWindow : Window
             PageTitle.Text = item.Content?.ToString() ?? "Mila";
             PageBody.Text = tag switch { "threads" => S("threadsRecentTitle", "Recent conversations appear here."), "settings" => S("settingsOffline", "Runtime settings are managed by the core library."), _ => S("machinesEmpty", "Select a machine to view its status.") };
             ThreadPanel.Visibility = tag == "threads" ? Visibility.Visible : Visibility.Collapsed;
+            if (tag == "threads") RefreshThreads();
             MachineRows.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
             MachinePanel.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -192,6 +196,39 @@ public sealed partial class MainWindow : Window
         if (MachineRows.SelectedItem is not MilaMachineRow machine) return;
         string access = machine.CanManage ? S("machineAccessOwner", "Manage") : machine.CanWrite ? S("machineAccessShared", "Write") : S("terminalReadOnly", "Read only");
         MachineCommandStatus.Text = $"{machine.Name} ({machine.DesiredState}) — {access}";
+    }
+
+    private void RefreshThreads()
+    {
+        if (_activeHost is null)
+        {
+            _threadController.SetSession(false, null);
+            ThreadRows.ItemsSource = Array.Empty<MilaThreadRow>();
+            ThreadDetail.Text = S("signInFirst", "Sign in first");
+            return;
+        }
+        // The Rust session supplies this bounded envelope when connected. Keep an empty
+        // typed listing until that envelope arrives; no unvalidated JSON enters the UI.
+        MilaThreadListing listing = new(Array.Empty<MilaThreadRow>(), false);
+        _threadController.SetSession(true, listing);
+        ThreadRows.ItemsSource = listing.Threads;
+        ThreadDetail.Text = S("threadsEmpty", "No threads");
+    }
+
+    private void OnThreadSelected(object sender, SelectionChangedEventArgs args)
+    {
+        if (ThreadRows.SelectedItem is not MilaThreadRow thread || !_threadController.Select(thread.Id)) return;
+        ThreadDetail.Text = $"{thread.Title} ({thread.State})";
+        ThreadCommandStatus.Text = S("threadReady", "Thread selected");
+    }
+    private void SubmitThreadPrompt(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.Prompt);
+    private void SubmitThreadAnswer(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.Answer);
+    private void SubmitThreadApprove(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.PlanApprove);
+    private void SubmitThreadRevise(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.PlanRevise);
+    private void SubmitThread(MilaThreadAction action)
+    {
+        bool applied = _threadController.Submit(action);
+        ThreadCommandStatus.Text = applied ? S("requestSucceeded", "Request submitted") : S("requestFailed", "Request refused");
     }
 
     private void ClassifyThreadList(object sender, RoutedEventArgs args) => ClassifyThread("thread ls");

@@ -1,5 +1,5 @@
 ---
-digest: f95a17b00335b6c811fb3d1d78d777976a615f0abded0f1c9f63f6d362087981
+digest: 3ca137f9465c28b039ada48d741c9cc544f84838c33b49dafa7d07f1081ec668
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple SSH key state and Windows authenticated mutation state remain native UI over typed Rust validation boundaries.
+Apple machine mutation workflow and Windows typed thread listing/actions remain native UI over Rust classification and session boundaries.

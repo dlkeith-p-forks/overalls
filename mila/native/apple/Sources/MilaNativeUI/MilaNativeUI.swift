@@ -58,9 +58,14 @@ private struct MachinesView: View {
 private struct MachineDetailView: View {
     let machine: MilaMachinePresentation?
     let adapter: any MilaFFIAdapter
-    @State private var status = ""
+    @StateObject private var workflow: MilaMachineWorkflow
     @State private var classified = ""
     @State private var showTerminal = false
+    init(machine: MilaMachinePresentation?, adapter: any MilaFFIAdapter) {
+        self.machine = machine
+        self.adapter = adapter
+        _workflow = StateObject(wrappedValue: MilaMachineWorkflow(adapter: adapter))
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let machine {
@@ -70,13 +75,9 @@ private struct MachineDetailView: View {
                 Button(MilaStrings.text(.openTerminal)) { showTerminal = true }.disabled(!machine.machine.write)
                 ForEach(machine.actions.values, id: \.self) { action in
                     Button(action.title) {
-                        Task {
-                            do {
-                                try await adapter.submit(action, machine: machine, requestID: UUID())
-                                status = MilaStrings.text(.actionSubmitted)
-                            } catch { status = MilaStrings.text(.actionNotSubmitted) }
-                        }
+                        workflow.submit(action, machine: machine)
                     }
+                    .disabled(!isIdle)
                 }
                 HStack {
                     ForEach(["show", "resize", "share show", "web show"], id: \.self) { command in
@@ -87,9 +88,23 @@ private struct MachineDetailView: View {
                     }
                 }
                 Text(classified).font(.caption).foregroundStyle(.secondary)
-                Text(status).font(.caption).foregroundStyle(.secondary)
+                Text(mutationStatus).font(.caption).foregroundStyle(.secondary)
             } else { ContentUnavailableView(MilaStrings.text(.machineUnavailable), systemImage: "questionmark") }
         }.padding().sheet(isPresented: $showTerminal) { MilaTerminalView() }
+    }
+
+    private var isIdle: Bool {
+        if case .idle = workflow.state { return true }
+        return false
+    }
+
+    private var mutationStatus: String {
+        switch workflow.state {
+        case .idle: return MilaStrings.text(.ready)
+        case .submitting: return MilaStrings.text(.connecting)
+        case .applied: return MilaStrings.text(.actionSubmitted)
+        case .failed: return MilaStrings.text(.actionNotSubmitted)
+        }
     }
 
 }
