@@ -15,6 +15,10 @@ pub(crate) enum Message {
     DeploymentSelect,
     ThreadList,
     ThreadShow,
+    SelectDeployment,
+    AttachTerminal,
+    MachineUuid,
+    ThreadId,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -29,6 +33,10 @@ pub(crate) fn text(message: Message) -> String {
         Message::DeploymentSelect => "deploymentHostLabel",
         Message::ThreadList => "tabThreads",
         Message::ThreadShow => "threadTitle",
+        Message::SelectDeployment => "deploymentAdd",
+        Message::AttachTerminal => "terminalAttach",
+        Message::MachineUuid => "machineIdLabel",
+        Message::ThreadId => "threadIdLabel",
     };
     catalog()
         .get(id)
@@ -49,6 +57,10 @@ fn fallback(message: Message) -> &'static str {
         Message::DeploymentSelect => "Deployment host",
         Message::ThreadList => "Threads",
         Message::ThreadShow => "Show thread",
+        Message::SelectDeployment => "Select deployment",
+        Message::AttachTerminal => "Attach terminal",
+        Message::MachineUuid => "Machine UUID",
+        Message::ThreadId => "Thread ID",
     }
 }
 

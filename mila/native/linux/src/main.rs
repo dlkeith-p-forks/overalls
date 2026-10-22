@@ -61,7 +61,7 @@ impl NativeState {
             .placeholder_text("Deployment host (example: overalls.example:443)")
             .hexpand(true)
             .build();
-        let select = Button::with_label("Select deployment");
+        let select = Button::with_label(&strings::text(strings::Message::SelectDeployment));
         let deployment_status = content.clone();
         let deployment_input = deployment.clone();
         select.connect_clicked(move |_| {
@@ -89,7 +89,7 @@ impl NativeState {
         });
         root.append(&lock_button);
         let machine_id = Entry::builder()
-            .placeholder_text("Machine UUID")
+            .placeholder_text(&strings::text(strings::Message::MachineUuid))
             .hexpand(true)
             .build();
         let request_id = Entry::builder()
@@ -119,7 +119,7 @@ impl NativeState {
             .placeholder_text("Terminal session ID")
             .hexpand(true)
             .build();
-        let attach = Button::with_label("Attach terminal");
+        let attach = Button::with_label(&strings::text(strings::Message::AttachTerminal));
         let terminal_status = content.clone();
         let terminal_input = terminal.clone();
         attach.connect_clicked(move |_| {
@@ -144,7 +144,7 @@ impl NativeState {
         root.append(&terminal);
         root.append(&attach);
         let thread_id = Entry::builder()
-            .placeholder_text("Thread ID (optional for list)")
+            .placeholder_text(&strings::text(strings::Message::ThreadId))
             .hexpand(true)
             .build();
         let thread_actions = Box::new(Orientation::Horizontal, 8);
