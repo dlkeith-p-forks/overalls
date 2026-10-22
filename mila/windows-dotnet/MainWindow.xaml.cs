@@ -5,6 +5,7 @@ namespace Mila.Windows;
 public sealed partial class MainWindow : Window
 {
     private string? _activeHost;
+    private bool _notificationsEnabled;
     public MainWindow()
     {
         InitializeComponent();
@@ -43,6 +44,17 @@ public sealed partial class MainWindow : Window
         TerminalAttach.Content = S("terminalAttach", "Attach");
         TerminalResize.Content = S("terminalModeControl", "Resize");
         TerminalInput.Content = S("terminalPaste", "Send input");
+        NotificationsButton.Content = S("notificationsTurnOn", "Turn notifications on");
+        NotificationsStatus.Text = S("pushStateOff", "Notifications off");
+    }
+    private void ToggleNotifications(object sender, RoutedEventArgs args)
+    {
+        _notificationsEnabled = !_notificationsEnabled;
+        MilaNativePokeResult result = RustNative.TryValidatePushPoke(ReadOnlySpan<byte>.Empty, (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+        NotificationsStatus.Text = result.IsValid
+            ? (_notificationsEnabled ? S("pushStateOn", "Notifications on") : S("pushStateOff", "Notifications off"))
+            : S("pushUnsupported", "Notifications unavailable");
+        NotificationsButton.Content = _notificationsEnabled ? S("notificationsTurnOff", "Turn notifications off") : S("notificationsTurnOn", "Turn notifications on");
     }
     private void ValidateTerminalAttach(object sender, RoutedEventArgs args)
     {

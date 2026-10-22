@@ -19,6 +19,7 @@ pub(crate) enum Message {
     AttachTerminal,
     MachineUuid,
     ThreadId,
+    RevokeKey,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -37,6 +38,7 @@ pub(crate) fn text(message: Message) -> String {
         Message::AttachTerminal => "terminalAttach",
         Message::MachineUuid => "machineIdLabel",
         Message::ThreadId => "threadIdLabel",
+        Message::RevokeKey => "sshRevoke",
     };
     catalog()
         .get(id)
@@ -61,6 +63,7 @@ fn fallback(message: Message) -> &'static str {
         Message::AttachTerminal => "Attach terminal",
         Message::MachineUuid => "Machine UUID",
         Message::ThreadId => "Thread ID",
+        Message::RevokeKey => "Revoke SSH key",
     }
 }
 

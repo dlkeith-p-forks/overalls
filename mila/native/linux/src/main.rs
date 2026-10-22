@@ -217,7 +217,7 @@ impl NativeState {
             .placeholder_text("Request UUID (porsche-…)")
             .hexpand(true)
             .build();
-        let revoke = Button::with_label("Revoke SSH key");
+        let revoke = Button::with_label(&strings::text(strings::Message::RevokeKey));
         let key_id_for_action = key_id.clone();
         let key_request_for_action = key_request.clone();
         let label_for_action = content.clone();
