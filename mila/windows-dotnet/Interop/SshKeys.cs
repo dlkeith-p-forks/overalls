@@ -12,6 +12,7 @@ internal sealed class MilaSshKeysController
     private readonly Func<CancellationToken, Task<IReadOnlyList<MilaSshKey>>> loader;
     private readonly Func<Guid, CancellationToken, Task> revoker;
     private long loadGeneration;
+    private int signedIn;
     internal MilaSshKeysStatus Status { get; private set; } = MilaSshKeysStatus.SignedOut;
     internal IReadOnlyList<MilaSshKey> Keys { get; private set; } = Array.Empty<MilaSshKey>();
 
@@ -23,9 +24,15 @@ internal sealed class MilaSshKeysController
     /// A listing response may update the view only while its session generation is
     /// current; a signed-out or superseded request MUST NOT restore stale keys.
     /// </summary>
-    internal async Task LoadAsync(bool signedIn, CancellationToken cancellationToken = default)
+    internal Task LoadAsync(bool signedIn, CancellationToken cancellationToken = default) =>
+        LoadAsync(signedIn, cancellationToken, null);
+
+    private async Task LoadAsync(bool signedIn, CancellationToken cancellationToken, long? expectedGeneration)
     {
+        if (expectedGeneration is { } expected &&
+            (expected != Volatile.Read(ref loadGeneration) || Volatile.Read(ref this.signedIn) == 0)) return;
         long generation = Interlocked.Increment(ref loadGeneration);
+        Volatile.Write(ref this.signedIn, signedIn ? 1 : 0);
         if (!signedIn) { Status = MilaSshKeysStatus.SignedOut; Keys = Array.Empty<MilaSshKey>(); return; }
         Status = MilaSshKeysStatus.Loading;
         try
@@ -47,8 +54,18 @@ internal sealed class MilaSshKeysController
     internal async Task RevokeAsync(MilaSshKey key, CancellationToken cancellationToken = default)
     {
         if (Status != MilaSshKeysStatus.Loaded || key.IsCurrentDevice) return;
-        try { await revoker(key.Id, cancellationToken); await LoadAsync(true, cancellationToken); }
-        catch { Status = MilaSshKeysStatus.Failed; }
+        long generation = Volatile.Read(ref loadGeneration);
+        try
+        {
+            await revoker(key.Id, cancellationToken);
+            if (generation != Volatile.Read(ref loadGeneration) || Volatile.Read(ref signedIn) == 0) return;
+            await LoadAsync(true, cancellationToken, generation);
+        }
+        catch
+        {
+            if (generation == Volatile.Read(ref loadGeneration) && Volatile.Read(ref signedIn) != 0)
+                Status = MilaSshKeysStatus.Failed;
+        }
     }
 
     internal static IReadOnlyList<MilaSshKey> DecodeListing(ReadOnlySpan<byte> bytes)

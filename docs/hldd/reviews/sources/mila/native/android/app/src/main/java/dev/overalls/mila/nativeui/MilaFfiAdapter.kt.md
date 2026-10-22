@@ -1,11 +1,11 @@
 ---
-digest: d900b7c1d20cff33d4cb33fb7bc270b68c7b9f7a764e960b892adaf33fec88b0
+digest: 6e5e47da5d7e872adec8d4b7f232d90fc3203e28e3c6c6bd6d325d820a7a82d1
 disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaFfiAdapter.kt
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: daaa675a7cabe9b41b299492d28aac06f376c580d43e62d03488aa5310a73b04
+  marshall/priv/hldd/08-interactive.md: 5a12016279aa9cabbc8387b02b24cc3aef172e874141f34cc6081993ff71ea00
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: fd659078e07c2d30e9db9e2b7e43f4102776e8077419b567879074d28281384c
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android authenticated SSH key listing and revocation now use the Rust session C ABI/JNI handle, with bounded decoding, current-device refusal, Settings presentation and focused tests.
+Android derives the current device SSH fingerprint from the non-exported public key before permitting approved-key revocation.

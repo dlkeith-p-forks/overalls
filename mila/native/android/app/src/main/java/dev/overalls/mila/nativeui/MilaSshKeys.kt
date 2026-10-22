@@ -1,6 +1,8 @@
 package dev.overalls.mila.nativeui
 
 import org.json.JSONObject
+import java.security.MessageDigest
+import java.util.Base64
 import java.util.UUID
 
 /** A validated row from Porsche's `ssh-key list --json` response. */
@@ -109,3 +111,11 @@ class MilaSessionSshKeyStore(
         }
     }
 }
+
+/** Computes the OpenSSH SHA-256 fingerprint without retaining public-key material. */
+internal fun milaSshFingerprint(publicKey: String): String? = runCatching {
+    val fields = publicKey.trim().split(Regex("[ \\t]+"))
+    require(fields.size >= 2)
+    val blob = Base64.getDecoder().decode(fields[1])
+    "SHA256:" + Base64.getEncoder().withoutPadding().encodeToString(MessageDigest.getInstance("SHA-256").digest(blob))
+}.getOrNull()

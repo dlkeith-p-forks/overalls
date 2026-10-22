@@ -5,6 +5,7 @@ import android.os.SystemClock
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
 import androidx.core.content.ContextCompat
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +14,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     private val nativeAdapter: MilaFfiAdapter by lazy { LinkedMilaFfiAdapter() }
     private lateinit var lockController: MilaAppLockController
     private var lockState = mutableStateOf<MilaAppLockState?>(null)

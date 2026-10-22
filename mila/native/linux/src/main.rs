@@ -5,6 +5,7 @@ use mila_native_linux::adapter::{
     format_machine_action, format_share_command, format_ssh_key_revoke, format_thread_command,
     format_thread_turns, format_web_command, TerminalStream,
 };
+use mila_native_linux::notifications::NotificationState;
 use mila_native_linux::route::{parse_activation_uris, ActivationRoute};
 use mila_native_linux::session::{
     ApprovalInfo, SessionBinding, SignInEvent, SignInFlow, SignInPhase, WhoamiOutcome,
@@ -268,6 +269,23 @@ impl NativeState {
             lock_status.set_label(&format!("{unavailable}\n{explanation}"));
         });
         root.append(&lock_button);
+        let notification_state = Rc::new(RefCell::new(NotificationState::linux()));
+        let notification_button =
+            Button::with_label(&strings::text(strings::Message::NotificationsTitle));
+        let notification_status = content.clone();
+        let notification_state_for_action = notification_state.clone();
+        notification_button.connect_clicked(move |_| {
+            let mut state = notification_state_for_action.borrow_mut();
+            match state.enable() {
+                Ok(()) => notification_status.set_label("Notifications enabled."),
+                Err(_) => notification_status.set_label(&format!(
+                    "{}\n{}",
+                    strings::text(strings::Message::PushUnsupported),
+                    strings::text(strings::Message::NotificationsExplain)
+                )),
+            }
+        });
+        root.append(&notification_button);
         let machine_id = Entry::builder()
             .placeholder_text(&strings::text(strings::Message::MachineUuid))
             .hexpand(true)

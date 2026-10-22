@@ -1,5 +1,5 @@
 ---
-digest: daaa675a7cabe9b41b299492d28aac06f376c580d43e62d03488aa5310a73b04
+digest: 5a12016279aa9cabbc8387b02b24cc3aef172e874141f34cc6081993ff71ea00
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Android authenticated SSH key listing and revocation now use the Rust session C ABI/JNI handle, with bounded decoding, current-device refusal, Settings presentation and focused tests.
+Android derives the current device SSH fingerprint from the non-exported public key before permitting approved-key revocation.

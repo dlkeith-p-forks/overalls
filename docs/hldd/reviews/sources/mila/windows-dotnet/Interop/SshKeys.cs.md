@@ -1,11 +1,11 @@
 ---
-digest: 3d5232965e98a2711bf97043e6ca1dee915616e43b15e3eb008c2e86272348cf
-disposition: updated
+digest: 13ff5149950b0edff2139e7671f54920f57c972d80f4524bc964b73ec8f1e83d
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/windows-dotnet/Interop/SshKeys.cs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: daaa675a7cabe9b41b299492d28aac06f376c580d43e62d03488aa5310a73b04
+  marshall/priv/hldd/08-interactive.md: 5a12016279aa9cabbc8387b02b24cc3aef172e874141f34cc6081993ff71ea00
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: fd659078e07c2d30e9db9e2b7e43f4102776e8077419b567879074d28281384c
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows Mila authenticated SSH key list/revoke now uses typed Rust FFI wrappers, generation fencing and smoke evidence.
+The Windows controller fence preserves the documented authenticated key-management boundary and does not change handbook scope.

@@ -7,7 +7,7 @@ data class MilaSharePrincipal private constructor(val value: String) {
     companion object {
         fun parse(raw: String): Result<MilaSharePrincipal> {
             val value = raw.trim()
-            if (value.length !in 3..256 || value.any { it.is ISOControl() }) {
+            if (value.length !in 3..256 || value.any { it.isISOControl() }) {
                 return Result.failure(IllegalArgumentException("invalid share principal"))
             }
             return Result.success(MilaSharePrincipal(value))

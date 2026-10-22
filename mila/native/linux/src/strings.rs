@@ -39,6 +39,9 @@ pub(crate) enum Message {
     SignInOpenBrowser,
     SignInSignOut,
     SignInReconnect,
+    NotificationsTitle,
+    NotificationsExplain,
+    PushUnsupported,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -77,6 +80,9 @@ pub(crate) fn text(message: Message) -> String {
         Message::SignInOpenBrowser => "signInOpenBrowser",
         Message::SignInSignOut => "signInSignOut",
         Message::SignInReconnect => "signInReconnect",
+        Message::NotificationsTitle => "notificationsTitle",
+        Message::NotificationsExplain => "notificationsExplain",
+        Message::PushUnsupported => "pushUnsupported",
     };
     catalog()
         .get(id)
@@ -121,6 +127,9 @@ fn fallback(message: Message) -> &'static str {
         Message::SignInOpenBrowser => "Open approval page",
         Message::SignInSignOut => "Sign out",
         Message::SignInReconnect => "Reconnect",
+        Message::NotificationsTitle => "Notifications",
+        Message::NotificationsExplain => "Notifications are unavailable on Linux.",
+        Message::PushUnsupported => "Notifications are not available on this platform.",
     }
 }
 

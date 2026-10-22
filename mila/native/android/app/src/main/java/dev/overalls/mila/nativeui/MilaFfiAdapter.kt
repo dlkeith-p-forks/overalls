@@ -331,16 +331,18 @@ class LinkedMilaFfiAdapter(
     private val bindings: MilaRustBindings = MilaRustFfi,
 ) : MilaFfiAdapter, MilaSessionConnector {
     @Volatile private var authenticatedSession: MilaSessionHandle? = null
+    @Volatile private var authenticatedFingerprint: String? = null
 
     /** Binds the adapter to the already certificate-authenticated session. */
     override fun bindSession(session: MilaSessionHandle?) {
         authenticatedSession?.close()
         authenticatedSession = session
+        if (session == null) authenticatedFingerprint = null
     }
 
     override fun connect(deployment: MilaDeployment, config: MilaSessionConnectConfig, signer: MilaDeviceKey): MilaSessionHandle? =
         bindings.sessionConnect(config.trustDocument.copyOf(), deployment.host, config.publicKey,
-            deployment.port, config.timeoutMs, signer)
+            deployment.port, config.timeoutMs, signer)?.also { authenticatedFingerprint = milaSshFingerprint(config.publicKey) }
 
     override suspend fun machineAction(machineId: UUID, command: MilaMachineCommand): Result<Unit> {
         val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
@@ -361,7 +363,9 @@ class LinkedMilaFfiAdapter(
         return payload.map { Unit }
     }
 
-    override fun sshKeyStore(): MilaSshKeyStore? = authenticatedSession?.let(::MilaSessionSshKeyStore)
+    override fun sshKeyStore(): MilaSshKeyStore? = authenticatedSession?.let {
+        MilaSessionSshKeyStore(it, authenticatedFingerprint)
+    }
 
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {
         return try {

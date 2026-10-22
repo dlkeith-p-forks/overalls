@@ -48,7 +48,7 @@ class MilaWebController(private val adapter: MilaFfiAdapter) {
     suspend fun set(machine: UUID, port: Int, public: Boolean): Boolean = runCatching {
         require(port in 1..65535)
         adapter.webSet(machine, port, public, endpoint?.revision ?: 1L).getOrThrow()
-        show(machine).getOrThrow()
+        show(machine)
     }.onFailure { error = it.message ?: "web endpoint rejected" }.isSuccess
 }
 
