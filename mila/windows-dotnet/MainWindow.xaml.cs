@@ -103,6 +103,7 @@ public sealed partial class MainWindow : Window
         NotificationsStatus.Text = S("pushStateOff", "Notifications off");
         WebOpen.Content = S("webOpen", "Open web");
         WebCopy.Content = S("webCopy", "Copy address");
+        WebSet.Content = S("webSave", "Save web settings");
         WebStatus.Text = S("webNoAddress", "No web address");
     }
     private async void RefreshSshKeysClicked(object sender, RoutedEventArgs args) => await RefreshSshKeyListAsync();
@@ -185,6 +186,30 @@ public sealed partial class MainWindow : Window
             : S("webFailed", "Web control unavailable");
     }
     private async void CopyWebAddress(object sender, RoutedEventArgs args) => OpenWebControl(sender, args);
+    private async void SetWebControl(object sender, RoutedEventArgs args)
+    {
+        if (_selectedMachine is not { } machine || _session.Handle is not { } handle)
+        {
+            WebStatus.Text = S("signInFirst", "Sign in first");
+            return;
+        }
+        if (!ushort.TryParse(WebPort.Text.Trim(), out ushort port) || port is 0 or > 65_535)
+        {
+            WebStatus.Text = S("webInvalidPort", "Enter a valid web port.");
+            return;
+        }
+        WebSet.IsEnabled = false;
+        try
+        {
+            MilaNativeSessionActionResult result = await Task.Run(() => RustNative.TrySessionWebSet(
+                handle, machine.Id, port, WebPublic.IsChecked == true, 0,
+                "porsche-" + Guid.NewGuid().ToString("N")));
+            WebStatus.Text = result.Succeeded
+                ? S("webSaved", "Web settings saved")
+                : S("webFailed", "Web control unavailable");
+        }
+        finally { WebSet.IsEnabled = true; }
+    }
     private void ToggleNotifications(object sender, RoutedEventArgs args)
     {
         _notificationsEnabled = !_notificationsEnabled;

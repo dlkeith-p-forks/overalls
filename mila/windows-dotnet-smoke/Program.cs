@@ -62,6 +62,9 @@ internal static class Program
         Require(invalidResize.Status == MilaNativeStatus.InvalidRequest, "missing authenticated resize refusal");
         MilaNativeSessionBytesResult invalidWeb = RustNative.TrySessionWebShow(0, machineId);
         Require(invalidWeb.Status == MilaNativeStatus.InvalidRequest && invalidWeb.Data is null, "missing authenticated web listing refusal");
+        MilaNativeSessionActionResult invalidWebSet = RustNative.TrySessionWebSet(
+            0, machineId, 8080, false, 0, "porsche-0123456789abcdef0123456789abcdef");
+        Require(invalidWebSet.Status == MilaNativeStatus.InvalidRequest, "missing authenticated web mutation refusal");
         MilaNativeSessionBytesResult invalidKeys = RustNative.TrySessionSshKeys(0);
         Require(invalidKeys.Status == MilaNativeStatus.InvalidRequest && invalidKeys.Data is null, "missing authenticated SSH key listing refusal");
         MilaNativeSessionBytesResult invalidListing = RustNative.TrySessionListing(0);
