@@ -58,6 +58,12 @@ fn main() -> std::io::Result<()> {
         if let Some(value) = memory {
             output.push_str(&format!("overalls_fleet_gauge{{kind=\"host\",entity=\"all\",measure=\"memory_available_bytes\"}} {}\n", value.saturating_mul(1024)));
         }
+        for interface in descriptor_interfaces(&descriptor) {
+            if let Some((rx, tx)) = interface_bytes(&interface) {
+                output.push_str(&format!("overalls_fleet_counter{{kind=\"network\",entity=\"{interface}\",measure=\"receive_bytes\"}} {rx}\n"));
+                output.push_str(&format!("overalls_fleet_counter{{kind=\"network\",entity=\"{interface}\",measure=\"transmit_bytes\"}} {tx}\n"));
+            }
+        }
         if let Some(status) = updater_status() {
             if let Some(phase) = status.phase {
                 output.push_str(&format!(
@@ -141,6 +147,49 @@ fn descriptor_services(descriptor: &str) -> Vec<String> {
         })
         .take(128)
         .collect()
+}
+
+fn descriptor_interfaces(descriptor: &str) -> Vec<String> {
+    let section = descriptor
+        .split("\"external_interfaces\"")
+        .nth(1)
+        .and_then(|v| v.split_once('[').map(|(_, r)| r))
+        .unwrap_or("");
+    section
+        .split(']')
+        .next()
+        .unwrap_or("")
+        .split(',')
+        .filter_map(|v| {
+            let name = v.trim().trim_matches('"');
+            (name.len() <= 15
+                && !name.is_empty()
+                && name
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b == b'_' || b == b'.' || b == b'-'))
+            .then_some(name.to_owned())
+        })
+        .take(128)
+        .collect()
+}
+
+fn interface_bytes(interface: &str) -> Option<(u64, u64)> {
+    let text = fs::read_to_string("/proc/net/dev").ok()?;
+    for line in text.lines().skip(2) {
+        let (raw_name, values) = line.split_once(':')?;
+        if raw_name.trim() != interface {
+            continue;
+        }
+        let fields: Vec<u64> = values
+            .split_whitespace()
+            .take(9)
+            .filter_map(|v| v.parse().ok())
+            .collect();
+        if fields.len() >= 9 {
+            return Some((fields[0], fields[8]));
+        }
+    }
+    None
 }
 
 fn unit_state(unit: &str) -> Option<(String, String)> {

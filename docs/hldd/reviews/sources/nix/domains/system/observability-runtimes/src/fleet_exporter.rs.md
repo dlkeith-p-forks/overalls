@@ -1,5 +1,5 @@
 ---
-digest: 9f9a68c72dc47db14bc70bd2ec52d1d6d12ea08f55f1d68137613ed28e5be973
+digest: 45010af70f5e95d225516e9efbf044c8f8909f54021451995c07d711a415fa54
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now performs bounded systemd state reads only for descriptor-allowlisted service units and emits sanitized state labels.
+Fleet exporter now projects receive and transmit byte counters only for configured bounded external interfaces from procfs.
