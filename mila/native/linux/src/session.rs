@@ -254,7 +254,9 @@ impl LiveSession {
         validate_session_identifier(machine_id)?;
         if email.is_empty()
             || email.len() > 320
-            || email.bytes().any(|byte| byte.is_ascii_control() || byte.is_ascii_whitespace())
+            || email
+                .bytes()
+                .any(|byte| byte.is_ascii_control() || byte.is_ascii_whitespace())
             || (add && !matches!(role, Some("viewer" | "operator" | "manager")))
             || (!add && role.is_some())
             || request_id.len() != 40
@@ -282,6 +284,67 @@ impl LiveSession {
         (status == mila_ffi::session::SessionStatus::Ok)
             .then_some(())
             .ok_or_else(|| status.into())
+    }
+
+    /// Read or mutate a thread through the authenticated, closed command set.
+    /// Response bytes remain bounded inside the Rust session boundary.
+    pub fn thread_action(
+        &mut self,
+        thread: Option<&str>,
+        command: &str,
+        secondary: Option<&str>,
+        input: Option<&str>,
+        request_id: Option<&str>,
+    ) -> Result<Vec<u8>, SessionError> {
+        if command.is_empty() || command.len() > 64 {
+            return Err(SessionError::InvalidInput);
+        }
+        for value in [thread, secondary] {
+            if let Some(value) = value {
+                validate_session_identifier(value)?;
+            }
+        }
+        if let Some(input) = input {
+            if input.len() > 64 * 1024 || input.bytes().any(|byte| byte == 0) {
+                return Err(SessionError::InvalidInput);
+            }
+        }
+        if let Some(request_id) = request_id {
+            if request_id.len() != 40
+                || !request_id.starts_with("porsche-")
+                || !request_id[8..].bytes().all(|byte| byte.is_ascii_hexdigit())
+            {
+                return Err(SessionError::InvalidInput);
+            }
+        }
+        let handle = self.handle()?;
+        let empty = std::ptr::null();
+        let (thread_ptr, thread_len) =
+            thread.map_or((empty, 0), |value| (value.as_bytes().as_ptr(), value.len()));
+        let (secondary_ptr, secondary_len) =
+            secondary.map_or((empty, 0), |value| (value.as_bytes().as_ptr(), value.len()));
+        let (input_ptr, input_len) =
+            input.map_or((empty, 0), |value| (value.as_bytes().as_ptr(), value.len()));
+        let (request_ptr, request_len) =
+            request_id.map_or((empty, 0), |value| (value.as_bytes().as_ptr(), value.len()));
+        copy_output(|out, capacity, written| unsafe {
+            mila_ffi::session::mila_session_thread_action(
+                handle,
+                thread_ptr,
+                thread_len,
+                command.as_bytes().as_ptr(),
+                command.len(),
+                secondary_ptr,
+                secondary_len,
+                input_ptr,
+                input_len,
+                request_ptr,
+                request_len,
+                out,
+                capacity,
+                written,
+            )
+        })
     }
 
     /// Read a machine-bound web endpoint through the authenticated session.
@@ -1076,6 +1139,25 @@ mod tests {
                 Some("owner"),
                 true,
                 request,
+            ),
+            Err(SessionError::InvalidInput)
+        );
+    }
+
+    #[test]
+    fn thread_actions_require_authenticated_session_and_bounded_input() {
+        let mut session = LiveSession { handle: None };
+        assert_eq!(
+            session.thread_action(None, "thread ls", None, None, None),
+            Err(SessionError::StaleHandle)
+        );
+        assert_eq!(
+            session.thread_action(
+                None,
+                "thread ls",
+                None,
+                Some(&"x".repeat(64 * 1024 + 1)),
+                None
             ),
             Err(SessionError::InvalidInput)
         );

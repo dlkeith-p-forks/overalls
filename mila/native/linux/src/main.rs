@@ -3,8 +3,7 @@ use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
     decode_listing, decode_notification_devices, decode_web_endpoint, format_machine_action,
-    format_ssh_key_revoke, format_thread_command, format_thread_turns,
-    format_web_command, TerminalStream,
+    format_ssh_key_revoke, format_web_command, TerminalStream,
 };
 use mila_native_linux::machine_view::{project_detail, project_listing};
 use mila_native_linux::notifications::NotificationState;
@@ -682,11 +681,22 @@ impl NativeState {
             let button = Button::with_label(&label);
             let input = thread_id.clone();
             let status = content.clone();
+            let session = self.session.clone();
             let operation = operation.to_owned();
             button.connect_clicked(move |_| {
                 let id = (!input.text().is_empty()).then(|| input.text().to_string());
-                match format_thread_command(&operation, id.as_deref()) {
-                    Ok(command) => status.set_label(&format!("Thread command\n{command}")),
+                let mut binding = session.borrow_mut();
+                let Some(live) = binding.session_mut() else {
+                    status.set_label("Thread controls require sign-in.");
+                    return;
+                };
+                let command = if operation == "ls" {
+                    "thread ls"
+                } else {
+                    "thread show"
+                };
+                match live.thread_action(id.as_deref(), command, None, None, None) {
+                    Ok(_) => status.set_label("Thread request accepted."),
                     Err(_) => status.set_label("Thread command rejected by Rust policy."),
                 }
             });
@@ -695,9 +705,21 @@ impl NativeState {
         let turns = Button::with_label("Thread turns");
         let turns_input = thread_id.clone();
         let turns_status = content.clone();
+        let turns_session = self.session.clone();
         turns.connect_clicked(move |_| {
-            match format_thread_turns(turns_input.text().trim(), None) {
-                Ok(command) => turns_status.set_label(&format!("Thread turns\n{command}")),
+            let mut binding = turns_session.borrow_mut();
+            let Some(live) = binding.session_mut() else {
+                turns_status.set_label("Thread controls require sign-in.");
+                return;
+            };
+            match live.thread_action(
+                Some(turns_input.text().trim()),
+                "thread turns",
+                None,
+                None,
+                None,
+            ) {
+                Ok(_) => turns_status.set_label("Thread turns request accepted."),
                 Err(_) => turns_status.set_label("Thread turns rejected by Rust policy."),
             }
         });

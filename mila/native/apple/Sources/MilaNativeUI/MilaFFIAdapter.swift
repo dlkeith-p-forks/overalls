@@ -392,12 +392,9 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
 
     public func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws {
         guard machine.machine.write else { throw MilaMachineSharingError.unavailable }
-        let operation = remove ? "remove" : "add"
-        let line = "share \(operation) \(machine.id.uuidString.lowercased()) \(principal.value) viewer"
-        guard try classifyMachineCommand(line) == (remove ? .shareRemove : .shareAdd) else { throw MilaMachineSharingError.unavailable }
-        _ = requestID
-        _ = remove
-        throw MilaMachineSharingError.unavailable
+        guard let liveSession else { throw MilaMachineSharingError.unavailable }
+        do { try liveSession.shareMutation(machine: machine.id, email: principal.value, role: remove ? nil : "viewer", add: !remove, requestID: requestID) }
+        catch { throw MilaMachineSharingError.unavailable }
     }
 
     private func abiCompatible() -> Bool {

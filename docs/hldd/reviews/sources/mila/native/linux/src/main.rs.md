@@ -1,5 +1,5 @@
 ---
-digest: 28f47d2325de914bd0241b6f11f95d7b3e827d6a71bf92e6f2a07b3913416fba
+digest: e4daf7ea749047fbab738a2dd4a79293e97de8370cfac16c174851fd4bca1c65
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent Linux machine mutation update; no new domain or topology impact.
+Reviewed concurrent Linux machine mutation changes; no new domain or topology impact.
