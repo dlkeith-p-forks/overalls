@@ -93,6 +93,10 @@ in
   ] ++ lib.optionals isLinux [
     hostLock
     vmm
+    # Mila's native GTK4/libadwaita client and its Rust pkg-config probes.
+    pkgs.gtk4
+    pkgs.libadwaita
+    pkgs.pkg-config
     pkgs.iproute2
     pkgs.nftables
     pkgs.chromium
