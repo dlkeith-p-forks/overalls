@@ -1,6 +1,6 @@
 ---
-digest: fe167b1f0935133b9c79d85b03af37283b4a66db862cfd96d403bfe2086f2399
-disposition: updated
+digest: 01be516d36830c11a7acf3770e09cbdc2ae174486403741317e9ca7bbc1accb7
+disposition: no-impact
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/08-interactive.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document Linux GTK authenticated notification device controls and refusal before backend calls, with provider delivery still open.
+Reviewed Linux machine mutation documentation update; no Marshall domain impact.

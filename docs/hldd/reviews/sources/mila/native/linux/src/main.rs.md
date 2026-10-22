@@ -1,5 +1,5 @@
 ---
-digest: 9089386ca54879157ccc657c687f65affb17ded557285e7437ba257fb1fb44dd
+digest: 075c44b9637f1b26886c473e49a76e488ee73ab5d65fe9452cc2c18a89e71174
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux notification device GTK controls; no new domain or topology impact.
+Reviewed Linux authenticated machine mutation UI and session boundary; no new domain or topology impact.

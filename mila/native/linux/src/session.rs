@@ -208,6 +208,39 @@ impl LiveSession {
         self.listing()
     }
 
+    /// Execute one authenticated machine mutation through Porsche's closed
+    /// command vocabulary. The request id is validated before crossing FFI.
+    pub fn machine_action(
+        &mut self,
+        machine_id: &str,
+        action: &str,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
+        validate_session_identifier(machine_id)?;
+        if !matches!(action, "start" | "stop" | "pause" | "resume" | "rm")
+            || request_id.len() != 40
+            || !request_id.starts_with("porsche-")
+            || !request_id[8..].bytes().all(|byte| byte.is_ascii_hexdigit())
+        {
+            return Err(SessionError::InvalidInput);
+        }
+        let handle = self.handle()?;
+        let status = unsafe {
+            mila_ffi::session::mila_session_machine_action(
+                handle,
+                machine_id.as_bytes().as_ptr(),
+                machine_id.len(),
+                action.as_bytes().as_ptr(),
+                action.len(),
+                request_id.as_bytes().as_ptr(),
+                request_id.len(),
+            )
+        };
+        (status == mila_ffi::session::SessionStatus::Ok)
+            .then_some(())
+            .ok_or_else(|| status.into())
+    }
+
     /// Read a machine-bound web endpoint through the authenticated session.
     /// The response remains bounded and owned by the Rust adapter.
     pub fn web_show(&mut self, machine_id: &str) -> Result<Vec<u8>, SessionError> {
@@ -955,6 +988,27 @@ mod tests {
         assert_eq!(
             session.device_preference("device-id", false),
             Err(SessionError::StaleHandle)
+        );
+    }
+
+    #[test]
+    fn machine_actions_require_authenticated_session_and_canonical_request() {
+        let mut session = LiveSession { handle: None };
+        assert_eq!(
+            session.machine_action(
+                "01234567-89ab-cdef-0123-456789abcdef",
+                "start",
+                "porsche-00000000000000000000000000000000"
+            ),
+            Err(SessionError::StaleHandle)
+        );
+        assert_eq!(
+            session.machine_action(
+                "01234567-89ab-cdef-0123-456789abcdef",
+                "shell",
+                "porsche-00000000000000000000000000000000"
+            ),
+            Err(SessionError::InvalidInput)
         );
     }
 

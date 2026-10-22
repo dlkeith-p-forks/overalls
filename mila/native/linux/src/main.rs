@@ -442,12 +442,29 @@ impl NativeState {
             let machine = machine_id.clone();
             let request = request_id.clone();
             let label = content.clone();
+            let session = self.session.clone();
             let action = action.to_owned();
             button.connect_clicked(move |_| {
-                let request = (!request.text().is_empty()).then(|| request.text().to_string());
-                match format_machine_action(&action, machine.text().as_str(), request.as_deref()) {
-                    Ok(command) => label.set_label(&format!("Machine command\n{command}")),
-                    Err(_) => label.set_label("Machine command rejected by Rust policy."),
+                if action == "show" {
+                    let request = (!request.text().is_empty()).then(|| request.text().to_string());
+                    match format_machine_action(
+                        &action,
+                        machine.text().as_str(),
+                        request.as_deref(),
+                    ) {
+                        Ok(command) => label.set_label(&format!("Machine command\n{command}")),
+                        Err(_) => label.set_label("Machine command rejected by Rust policy."),
+                    }
+                    return;
+                }
+                let mut binding = session.borrow_mut();
+                let Some(live) = binding.session_mut() else {
+                    label.set_label("Machine mutations require sign-in.");
+                    return;
+                };
+                match live.machine_action(machine.text().trim(), &action, request.text().trim()) {
+                    Ok(()) => label.set_label("Machine mutation accepted."),
+                    Err(_) => label.set_label("Machine mutation rejected by Rust policy."),
                 }
             });
             actions.append(&button);

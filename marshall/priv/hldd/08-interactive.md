@@ -1418,6 +1418,12 @@ notification devices. Each action uses the authenticated session handle and
 bounded device projection; an unsigned-in window refuses before any backend
 call. Linux still has no provider registration or push delivery path.
 
+Machine mutation buttons in the Linux window now keep `show` as a local
+bounded projection and route start, stop, pause and resume through the
+authenticated session handle. Rust validates the machine UUID, closed action
+vocabulary and one-time request ID before opening Porsche; unsigned-in windows
+are refused. Create, resize and live deployment transport remain open.
+
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command

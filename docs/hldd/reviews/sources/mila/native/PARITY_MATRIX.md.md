@@ -1,11 +1,11 @@
 ---
-digest: 271a1cd22511daf43e619f2b6f47d9734e25562c2b37a0d4b60088988ec6dc5e
+digest: d192be039c50118cbce77f99e6ea394037064ad9bc96352b1a77eb71ec0e8e41
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: fe167b1f0935133b9c79d85b03af37283b4a66db862cfd96d403bfe2086f2399
+  marshall/priv/hldd/08-interactive.md: 01be516d36830c11a7acf3770e09cbdc2ae174486403741317e9ca7bbc1accb7
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android root now accepts validated initial deep-link route for Compose navigation
+Reviewed Linux machine mutation parity update; no new domain or topology impact.
