@@ -1,5 +1,5 @@
 ---
-digest: e1444820ab83a1a76acc7520388e503cd91314022fd94359f7283d90ade59850
+digest: 2f938444a4e198f6bea0366c6d5f4f299dc8d5ec1e8a7883f232075ee82353b5
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows route parser rejects encoded, duplicate, and trailing path forms at activation boundary.
+Windows authenticated session connection owns Rust handle lifecycle and signer callback boundary.

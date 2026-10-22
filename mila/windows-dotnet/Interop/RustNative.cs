@@ -64,6 +64,11 @@ internal enum MilaNativeStatus : int
     InvalidRoute = -2,
     OutputTooSmall = -3,
     InvalidRequest = -4,
+    InvalidHandle = -10,
+    Transport = -11,
+    NotLoaded = -12,
+    Busy = -13,
+    Internal = -14,
     Unavailable = -127,
 }
 
@@ -143,6 +148,10 @@ internal readonly record struct MilaNativeSessionActionResult(MilaNativeStatus S
 {
     internal bool Succeeded => Status == MilaNativeStatus.Ok;
 }
+internal readonly record struct MilaNativeSessionConnectResult(MilaNativeStatus Status, ulong? Handle)
+{
+    internal bool Succeeded => Status == MilaNativeStatus.Ok && Handle is > 0;
+}
 
 internal enum MilaThreadCommandKind : int
 {
@@ -173,6 +182,50 @@ internal readonly record struct MilaNativePokeResult(MilaNativeStatus Status)
 /// </summary>
 internal static partial class RustNative
 {
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate int MilaSignCallback(nuint context, IntPtr message, nuint messageLength, IntPtr signature);
+
+    /// Establishes an authenticated Rust session. The signer callback is retained only
+    /// for the duration of the synchronous native connect call.
+    internal static MilaNativeSessionConnectResult TrySessionConnect(
+        ReadOnlySpan<byte> trust, string host, ReadOnlySpan<byte> publicKey, ushort port,
+        uint timeoutMs, Func<byte[], byte[]> signer)
+    {
+        ArgumentNullException.ThrowIfNull(host);
+        ArgumentNullException.ThrowIfNull(signer);
+        if (host.Any(char.IsControl) || host.Contains('\0') || port == 0 || timeoutMs is < 1 or > 120_000)
+            return new(MilaNativeStatus.InvalidRequest, null);
+        GCHandle holder = GCHandle.Alloc(signer);
+        MilaSignCallback callback = (context, message, length, output) =>
+        {
+            try
+            {
+                byte[] input = new byte[checked((int)length)];
+                Marshal.Copy(message, input, 0, input.Length);
+                byte[] signature = ((Func<byte[], byte[]>)GCHandle.FromIntPtr((IntPtr)context).Target!)(input);
+                if (signature.Length != 64) return -1;
+                Marshal.Copy(signature, 0, output, signature.Length);
+                return 0;
+            }
+            catch { return -1; }
+        };
+        try
+        {
+            ulong handle = 0;
+            GCHandle trustPin = GCHandle.Alloc(trust.ToArray(), GCHandleType.Pinned);
+            GCHandle publicPin = GCHandle.Alloc(publicKey.ToArray(), GCHandleType.Pinned);
+            MilaNativeStatus status;
+            try { status = SessionConnectNative(trustPin.AddrOfPinnedObject(), (nuint)trust.Length,
+                host, (nuint)Encoding.UTF8.GetByteCount(host), publicPin.AddrOfPinnedObject(), (nuint)publicKey.Length,
+                port, timeoutMs, callback, (nuint)GCHandle.ToIntPtr(holder), out handle);
+            } finally { trustPin.Free(); publicPin.Free(); }
+            return status == MilaNativeStatus.Ok ? new(status, handle) : new(status, null);
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+        finally { holder.Free(); }
+    }
     /// <summary>Decodes a bounded listing copied from the live Rust session.</summary>
     internal static MilaSessionListing DecodeSessionListing(ReadOnlySpan<byte> bytes) => MilaSessionListing.Decode(bytes);
     private const string LibraryName = "mila_native";
@@ -363,6 +416,15 @@ internal static partial class RustNative
         finally { Marshal.FreeCoTaskMem(machine); Marshal.FreeCoTaskMem(operation); Marshal.FreeCoTaskMem(request); }
     }
 
+    internal static MilaNativeStatus TrySessionClose(ulong handle)
+    {
+        if (handle == 0) return MilaNativeStatus.InvalidRequest;
+        try { return (MilaNativeStatus)SessionCloseNative(handle); }
+        catch (DllNotFoundException) { return MilaNativeStatus.Unavailable; }
+        catch (EntryPointNotFoundException) { return MilaNativeStatus.Unavailable; }
+        catch (BadImageFormatException) { return MilaNativeStatus.Unavailable; }
+    }
+
     /// <summary>Projects only the closed Rust thread-command catalogue.</summary>
     internal static MilaNativeThreadCommandResult TryClassifyThreadCommand(string line)
     {
@@ -432,6 +494,15 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_action")]
     private static partial int SessionMachineActionNative(ulong handle, IntPtr machine, nuint machineLength,
         IntPtr action, nuint actionLength, IntPtr requestId, nuint requestIdLength);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_close")]
+    private static partial int SessionCloseNative(ulong handle);
+
+    [DllImport(LibraryName, EntryPoint = "mila_session_connect", CallingConvention = CallingConvention.Cdecl)]
+    private static extern MilaNativeStatus SessionConnectNative(
+        IntPtr trust, nuint trustLength, [MarshalAs(UnmanagedType.LPUTF8Str)] string host,
+        nuint hostLength, IntPtr publicKey, nuint publicKeyLength, ushort port, uint timeoutMs,
+        MilaSignCallback callback, nuint context, out ulong handle);
 
     private const int RouteOutputCapacity = 4096;
 

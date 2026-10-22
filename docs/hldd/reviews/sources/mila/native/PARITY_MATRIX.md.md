@@ -1,5 +1,5 @@
 ---
-digest: 23ae6a1801b129456418eec3edbb06cee95a19538ff42e2d1a6f4d5a0620d39d
+digest: 587a560cf8577146dcc55c74a07550aa14be705e77a054965c6be253007441db
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Parity matrix records Apple lock and Linux PTY UI evidence conservatively.
+Parity matrix records Android authenticated sign-in binding evidence.
