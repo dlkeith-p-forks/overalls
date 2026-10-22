@@ -80,7 +80,17 @@ internal sealed class DeviceKey : IDisposable
         point[0] = 4;
         x.CopyTo(point, 1);
         y.CopyTo(point, 33);
-        return point;
+        static void Field(Stream stream, byte[] value)
+        {
+            Span<byte> length = stackalloc byte[4];
+            System.Buffers.Binary.BinaryPrimitives.WriteUInt32BigEndian(length, (uint)value.Length);
+            stream.Write(length); stream.Write(value);
+        }
+        using var encoded = new MemoryStream();
+        byte[] algorithm = System.Text.Encoding.ASCII.GetBytes("ecdsa-sha2-nistp256");
+        byte[] curve = System.Text.Encoding.ASCII.GetBytes("nistp256");
+        Field(encoded, algorithm); Field(encoded, curve); Field(encoded, point);
+        return System.Text.Encoding.ASCII.GetBytes("ecdsa-sha2-nistp256 " + Convert.ToBase64String(encoded.ToArray()));
     }
 
     /// <summary>SHA-256 ECDSA signature in Rust's fixed-width r || s format.</summary>

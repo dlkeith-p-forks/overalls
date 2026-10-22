@@ -24,11 +24,17 @@ internal static class MilaTrustStore
         try
         {
             string path = PathName(host);
-            FileInfo info = new(path);
-            if (!info.Exists || info.Length is <= 0 or > MaximumDocumentBytes) return null;
-            return File.ReadAllBytes(path);
+            using FileStream stream = File.OpenRead(path);
+            return ReadBounded(stream);
         }
         catch (IOException) { return null; }
         catch (UnauthorizedAccessException) { return null; }
+    }
+
+    internal static byte[]? ReadBounded(Stream stream)
+    {
+        byte[] buffer = new byte[MaximumDocumentBytes + 1];
+        int length = stream.ReadAtLeast(buffer, buffer.Length, throwOnEndOfStream: false);
+        return length is > 0 and <= MaximumDocumentBytes ? buffer[..length] : null;
     }
 }

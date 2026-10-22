@@ -15,6 +15,7 @@ internal static class Program
 
     private static void Main()
     {
+        SessionLifecycleSmoke.Run();
         MilaNativeVersionResult version = RustNative.TryGetVersion();
         Require(version.Status == MilaNativeStatus.Ok && version.Version is { Major: 1, Minor: 0 }, "ABI version 1.0");
         const string route = "overalls://mgmt.example.test:8443/machines/0d9cc041-9db2-4e4c-b28b-1e41d7f472c1";

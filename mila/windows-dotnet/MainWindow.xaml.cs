@@ -15,13 +15,13 @@ public sealed partial class MainWindow : Window
     private MilaMachineRow? _selectedMachine;
     private readonly MilaAppLockController _appLock = new(new MilaWindowsHelloBroker());
     private readonly MilaSessionConnection _session = new();
-    private DeviceKey? _deviceKey;
+    private bool _closed;
     public MainWindow(string? activation = null)
     {
         InitializeComponent();
-        Closed += (_, _) => { _session.Dispose(); _deviceKey?.Dispose(); };
+        Closed += (_, _) => { _closed = true; _session.Dispose(); };
         ApplyStrings();
-        if (MilaDeploymentStore.Load() is { } deployment) { DeploymentHost.Text = deployment.Host; _activeHost = deployment.Host; }
+        if (MilaDeploymentStore.Load() is { } deployment) { DeploymentHost.Text = deployment.Host; }
         Navigation.SelectedItem = Navigation.MenuItems[0];
         if (!string.IsNullOrWhiteSpace(activation)) ApplyActivation(activation);
     }
@@ -165,6 +165,10 @@ public sealed partial class MainWindow : Window
         // A browser connection is not an authenticated Rust session yet. Keep
         // mutation controls explicitly signed out until the session broker
         // supplies its non-zero handle.
+        _activeHost = null;
+        _selectedMachine = null;
+        MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
+        _threadController.SetSession(false, null);
         _machineMutation.SetSession(false);
         _session.SignOut();
         _ = ConnectDeploymentAsync(host);
@@ -184,21 +188,21 @@ public sealed partial class MainWindow : Window
                 return;
             }
 
-            DeviceKey deviceKey = DeviceKey.OpenOrCreate(host);
+            using DeviceKey deviceKey = DeviceKey.OpenOrCreate(host);
             byte[] publicKey = deviceKey.PublicPoint();
+            byte[] trustBytes = trust;
+            byte[] publicKeyBytes = publicKey;
             bool connected = await Task.Run(() => _session.Connect(
-                trust, host, publicKey, 443, 30_000, bytes => deviceKey.Sign(bytes)));
+                trustBytes, host, publicKeyBytes, 443, 30_000, bytes => deviceKey.Sign(bytes)));
+            if (_closed) return;
             if (!connected || _session.Handle is not { } handle)
             {
-                deviceKey.Dispose();
                 _activeHost = null;
                 _machineMutation.SetSession(false);
                 StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
                 return;
             }
 
-            _deviceKey?.Dispose();
-            _deviceKey = deviceKey;
             _activeHost = host;
             MilaDeploymentStore.Save(new MilaDeployment(host));
             _machineMutation.SetSession(true, handle);
@@ -209,17 +213,18 @@ public sealed partial class MainWindow : Window
         {
             _activeHost = null;
             _session.SignOut();
-            StatusText.Text = S("invalidHost", "Enter a valid deployment host.");
+            if (!_closed) StatusText.Text = S("invalidHost", "Enter a valid deployment host.");
         }
-        catch (CryptographicException)
+        catch (Exception error) when (error is CryptographicException or IOException or UnauthorizedAccessException)
         {
             _activeHost = null;
             _session.SignOut();
-            StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
+            _machineMutation.SetSession(false);
+            if (!_closed) StatusText.Text = S("signInFailedUnreachable", "Unable to connect to deployment.");
         }
         finally
         {
-            ConnectDeployment.IsEnabled = true;
+            if (!_closed) ConnectDeployment.IsEnabled = true;
         }
     }
     private async Task RefreshLockAvailabilityAsync()

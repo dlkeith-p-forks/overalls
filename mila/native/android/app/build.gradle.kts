@@ -61,7 +61,8 @@ val generateMilaLocalization = tasks.register<Exec>("generateMilaLocalization") 
     commandLine("python3", rootProject.file("../../localization/generate_catalogs.py").absolutePath,
         "--source", localizationSource.absolutePath, "--output", localizationOutput.get().asFile.absolutePath)
 }
-android.sourceSets.getByName("main").assets.srcDir(localizationOutput)
+android.sourceSets.getByName("main").assets.srcDir(localizationOutput.get().asFile)
+tasks.named("preBuild").configure { dependsOn(generateMilaLocalization) }
 val rustJniOutput = layout.buildDirectory.dir("rust-jni")
 val rustAbis = listOf("arm64-v8a", "armeabi-v7a", "x86_64")
 android {
