@@ -9,9 +9,9 @@ internal readonly record struct MilaRoute(MilaRouteKind Kind, string Host, Guid?
     internal string Path => Kind switch
     {
         MilaRouteKind.Machines => "/machines",
-        MilaRouteKind.Machine => $"/machines/{Id:D}",
+        MilaRouteKind.Machine => $"/machines/{Id?.ToString("D")}",
         MilaRouteKind.Threads => "/threads",
-        MilaRouteKind.Thread => $"/threads/{Id:D}",
+        MilaRouteKind.Thread => $"/threads/{Id?.ToString("D")}",
         MilaRouteKind.Settings => "/settings",
         _ => throw new InvalidOperationException("Unknown route kind")
     };
@@ -30,6 +30,10 @@ internal static class MilaRouteParser
         string host = uri.Host;
         if (host.Length == 0 || host != host.ToLowerInvariant() || host.Contains('%')) return null;
         if (authority != host) return null;
+        string remainder = value["overalls://".Length..];
+        int slash = remainder.IndexOf('/');
+        string rawPath = slash < 0 ? string.Empty : remainder[slash..].Split('?', 2)[0];
+        if (rawPath.Length == 0 || rawPath.Contains("//", StringComparison.Ordinal) || rawPath.EndsWith('/') || rawPath.Contains('%')) return null;
         string[] parts = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length != 1 && parts.Length != 2) return null;
         if (parts.Length == 1) return parts[0] switch

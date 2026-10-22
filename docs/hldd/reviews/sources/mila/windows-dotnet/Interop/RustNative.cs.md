@@ -1,5 +1,5 @@
 ---
-digest: 00307b01b99f051d612eecc788f78bd69e04cd788ca305215776076a777b8c0b
+digest: e1444820ab83a1a76acc7520388e503cd91314022fd94359f7283d90ade59850
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows activation arguments are parsed through the typed route boundary and invalid links are refused.
+Windows route parser rejects encoded, duplicate, and trailing path forms at activation boundary.
