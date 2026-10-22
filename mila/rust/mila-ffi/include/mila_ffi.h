@@ -87,6 +87,11 @@ int32_t mila_session_machine_action(uint64_t handle, const uint8_t *machine,
 int32_t mila_session_machine_resize(uint64_t handle, const uint8_t *machine,
     size_t machine_len, uint32_t cpu, uint64_t memory, uint64_t disk,
     const uint8_t *request_id, size_t request_id_len);
+int32_t mila_session_web_show(uint64_t handle, const uint8_t *machine,
+    size_t machine_len, uint8_t *output, size_t capacity, size_t *written);
+int32_t mila_session_web_set(uint64_t handle, const uint8_t *machine,
+    size_t machine_len, uint16_t port, uint8_t is_public, uint64_t revision,
+    const uint8_t *request_id, size_t request_id_len);
 /* Execute authenticated share add/remove. For add, role is viewer/operator/
  * manager; for remove role must be null/zero length. */
 int32_t mila_session_share_mutation(uint64_t handle, const uint8_t *machine,

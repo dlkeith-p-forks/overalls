@@ -478,6 +478,33 @@ internal static partial class RustNative
         finally { Marshal.FreeCoTaskMem(machinePtr); Marshal.FreeCoTaskMem(requestPtr); }
     }
 
+    internal static MilaNativeSessionBytesResult TrySessionWebShow(ulong handle, Guid machineId)
+    {
+        if (handle == 0) return new(MilaNativeStatus.InvalidRequest, null);
+        string machine = machineId.ToString("D");
+        IntPtr machinePtr = Marshal.StringToCoTaskMemUTF8(machine);
+        try { return TrySessionBytes((bytes, capacity, written) => SessionWebShowNative(handle, machinePtr, 36, bytes, capacity, written)); }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+        finally { Marshal.FreeCoTaskMem(machinePtr); }
+    }
+
+    internal static MilaNativeSessionActionResult TrySessionWebSet(
+        ulong handle, Guid machineId, ushort port, bool isPublic, ulong revision, string requestId)
+    {
+        if (handle == 0 || port == 0 || !IsCanonicalRequestId(requestId))
+            return new(MilaNativeStatus.InvalidRequest);
+        string machine = machineId.ToString("D");
+        IntPtr machinePtr = Marshal.StringToCoTaskMemUTF8(machine);
+        IntPtr requestPtr = Marshal.StringToCoTaskMemUTF8(requestId);
+        try { return new((MilaNativeStatus)SessionWebSetNative(handle, machinePtr, 36, port, isPublic ? (byte)1 : (byte)0, revision, requestPtr, (nuint)Encoding.UTF8.GetByteCount(requestId))); }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable); }
+        finally { Marshal.FreeCoTaskMem(machinePtr); Marshal.FreeCoTaskMem(requestPtr); }
+    }
+
     /// <summary>
     /// Copies the bounded approved-key listing from an authenticated Rust session.
     /// Managed callers receive only owned UTF-8 bytes; the native session remains
@@ -661,6 +688,14 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_resize")]
     private static partial int SessionMachineResizeNative(ulong handle, IntPtr machine, nuint machineLength,
         uint cpu, ulong memory, ulong disk, IntPtr requestId, nuint requestIdLength);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_web_show")]
+    private static partial MilaNativeStatus SessionWebShowNative(ulong handle, IntPtr machine, nuint machineLength,
+        IntPtr output, nuint capacity, IntPtr written);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_web_set")]
+    private static partial int SessionWebSetNative(ulong handle, IntPtr machine, nuint machineLength,
+        ushort port, byte isPublic, ulong revision, IntPtr requestId, nuint requestIdLength);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_session_ssh_keys")]
     private static partial MilaNativeStatus SessionSshKeysNative(

@@ -172,20 +172,19 @@ public sealed partial class MainWindow : Window
             ? S("requestWaiting", "Create request validated by Rust")
             : S("requestRefused", "Create request refused");
     }
-    private void OpenWebControl(object sender, RoutedEventArgs args)
+    private async void OpenWebControl(object sender, RoutedEventArgs args)
     {
-        MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand($"web show {SampleMachine}");
-        WebStatus.Text = kind == MilaMachineCommandKind.WebShow
+        if (_selectedMachine is not { } machine || _session.Handle is not { } handle)
+        {
+            WebStatus.Text = S("signInFirst", "Sign in first");
+            return;
+        }
+        MilaNativeSessionBytesResult result = await Task.Run(() => RustNative.TrySessionWebShow(handle, machine.Id));
+        WebStatus.Text = result.Succeeded
             ? S("webVisibility", "Web control validated")
             : S("webFailed", "Web control unavailable");
     }
-    private void CopyWebAddress(object sender, RoutedEventArgs args)
-    {
-        MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand($"web show {SampleMachine}");
-        WebStatus.Text = kind == MilaMachineCommandKind.WebShow
-            ? S("webCopied", "Web address copied")
-            : S("webFailed", "Web control unavailable");
-    }
+    private async void CopyWebAddress(object sender, RoutedEventArgs args) => OpenWebControl(sender, args);
     private void ToggleNotifications(object sender, RoutedEventArgs args)
     {
         _notificationsEnabled = !_notificationsEnabled;
