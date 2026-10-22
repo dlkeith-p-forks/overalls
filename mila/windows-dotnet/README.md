@@ -38,3 +38,12 @@ The development host is Linux, so the Windows SDK and .NET SDK are not
 available here. The project files are checked for contract and XML syntax;
 `dotnet restore` and a Windows build must run in the Windows CI job described by
 ADR-0235.
+
+## Windows Hello app lock
+
+`Interop/MilaWindowsHelloBroker` is the only adapter that calls
+`UserConsentVerifier`. `MilaAppLockController` exposes typed availability,
+locked/unlocked state, and verification outcomes to the UI; biometric data,
+passcodes, and Windows API objects never cross that boundary. The app disables
+navigation while locked and requires a successful Windows Hello verification to
+unlock.

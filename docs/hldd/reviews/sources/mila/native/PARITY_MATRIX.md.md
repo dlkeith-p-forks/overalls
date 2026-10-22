@@ -1,5 +1,5 @@
 ---
-digest: 1fd9c4ad43b1abb33731b051bf10924ac77f9d03082a4fa8b36cf6ced7dfc5aa
+digest: 67d973db472f8fdb0edef438759dfbe94ab1798ad14b72c314012385fb55ab32
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Parity matrix records Apple sharing and Android authenticated mutation evidence conservatively.
+Parity matrix records Android WebView and Windows Hello evidence.

@@ -72,8 +72,22 @@ internal static class Program
         Require(revoked && keys.Status == MilaSshKeysStatus.Loaded, "SSH key revoke workflow");
         bool malformed = false; try { _ = MilaSshKeysController.DecodeListing(Encoding.UTF8.GetBytes("{\"keys\":[{\"id\":\"bad\"}]}")); } catch (InvalidDataException) { malformed = true; }
         Require(malformed, "invalid SSH key listing refusal");
+        var hello = new FakeHello(MilaWindowsHelloAvailability.Available, MilaWindowsHelloVerification.Verified);
+        var lockController = new MilaAppLockController(hello);
+        Require(lockController.RefreshAvailabilityAsync().GetAwaiter().GetResult() == MilaAppLockState.Unlocked, "Hello availability");
+        lockController.Lock(); Require(lockController.IsLocked, "app lock state");
+        Require(lockController.UnlockAsync().GetAwaiter().GetResult() && !lockController.IsLocked && hello.LastMessage == "Unlock Mila", "Hello unlock");
+        var unavailable = new MilaAppLockController(new FakeHello(MilaWindowsHelloAvailability.Unavailable, MilaWindowsHelloVerification.Verified));
+        Require(unavailable.RefreshAvailabilityAsync().GetAwaiter().GetResult() == MilaAppLockState.Unavailable, "Hello unavailable state");
         RustNative.CheckOutputBounds(route);
         Console.WriteLine("Windows Rust FFI smoke passed.");
+    }
+
+    private sealed class FakeHello(MilaWindowsHelloAvailability availability, MilaWindowsHelloVerification result) : IMilaWindowsHelloVerifier
+    {
+        internal string? LastMessage { get; private set; }
+        public Task<MilaWindowsHelloAvailability> CheckAvailabilityAsync(CancellationToken cancellationToken = default) => Task.FromResult(availability);
+        public Task<MilaWindowsHelloVerification> VerifyAsync(string message, CancellationToken cancellationToken = default) { LastMessage = message; return Task.FromResult(result); }
     }
 
     private static void RefusesSnapshot(byte[] snapshot, string host, ushort port)

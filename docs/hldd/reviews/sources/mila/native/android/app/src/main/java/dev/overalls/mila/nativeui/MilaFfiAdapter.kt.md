@@ -1,5 +1,5 @@
 ---
-digest: bafb3f3b6496ae4a68c08c2fb60a302a287fc5ec41b1bf4141d3423a6f9f662a
+digest: 949908d5ffe8e1c8d8e3c9126a638511139944242e2c4b956b2a892410753010
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android authenticated machine mutation dispatch through Rust session FFI; no new domain or deployment boundary
+Android WebView controls and Windows Hello broker remain within typed native security and web boundaries.

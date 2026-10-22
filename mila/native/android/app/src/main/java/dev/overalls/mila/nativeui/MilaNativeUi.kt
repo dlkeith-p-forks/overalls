@@ -178,6 +178,7 @@ private fun MilaSettingsScreen() {
             }
         }
         MachineSharingControls(adapter, machine)
+        if (machine != null) MilaWebControls(adapter, machine)
         Text(
             when (val current = controller.state) {
                 MilaMachineMutationState.SignedOut -> MilaStrings.text(MilaMessage.RuntimeUnavailable)

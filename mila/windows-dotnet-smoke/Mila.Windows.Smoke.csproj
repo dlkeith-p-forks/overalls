@@ -8,6 +8,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../windows-dotnet/Interop/WindowsHello.cs" Link="Interop/WindowsHello.cs" />
     <Compile Include="../windows-dotnet/Interop/RustNative.cs" Link="Interop/RustNative.cs" />
     <Compile Include="../windows-dotnet/Interop/DeviceKey.cs" Link="Interop/DeviceKey.cs" />
     <Compile Include="../windows-dotnet/Interop/SessionListing.cs" Link="Interop/SessionListing.cs" />

@@ -1,5 +1,5 @@
 ---
-digest: 4927fec7a93e195803b902831730794e3254fa24423938311a0d23fdaaa42e85
+digest: 1fbc59c5db9b9372e1a261a730cd6ed95574cfe86dd85e48a01c3b6381e309ec
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows SSH key controller adds bounded typed listing and revocation UI state; no domain or protocol change.
+Android WebView controls and Windows Hello broker remain within typed native security and web boundaries.

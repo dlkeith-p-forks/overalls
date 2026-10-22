@@ -10,6 +10,7 @@ public sealed partial class MainWindow : Window
         _ => Task.FromResult<IReadOnlyList<MilaSshKey>>(Array.Empty<MilaSshKey>()),
         (_, _) => Task.CompletedTask);
     private readonly MilaThreadController _threadController = new();
+    private readonly MilaAppLockController _appLock = new(new MilaWindowsHelloBroker());
     public MainWindow()
     {
         InitializeComponent();
@@ -53,6 +54,7 @@ public sealed partial class MainWindow : Window
         Refresh.Content = S("refresh", "Refresh");
         LockButton.Content = S("lockTitle", "Lock app");
         LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+        _ = RefreshLockAvailabilityAsync();
         TerminalTitle.Text = S("tabTerminals", "Terminal");
         TerminalAttach.Content = S("terminalAttach", "Attach");
         TerminalResize.Content = S("terminalModeControl", "Resize");
@@ -150,20 +152,35 @@ public sealed partial class MainWindow : Window
         }
         ConnectDeployment.IsEnabled = true;
     }
+    private async Task RefreshLockAvailabilityAsync()
+    {
+        await _appLock.RefreshAvailabilityAsync();
+        if (_appLock.State == MilaAppLockState.Unavailable)
+            LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+    }
     private void LockApp(object sender, RoutedEventArgs args)
     {
-        // Keep the lock boundary explicit until a Windows Hello broker is wired in.
+        _appLock.Lock();
+        if (!_appLock.IsLocked) return;
         Navigation.IsHitTestVisible = false;
         LockButton.Content = S("unlock", "Unlock");
         LockStatus.Text = S("lockedTitle", "Mila is locked") + " — " + S("lockReason", "Unlock Mila");
         LockButton.Click -= LockApp;
         LockButton.Click += UnlockApp;
     }
-    private void UnlockApp(object sender, RoutedEventArgs args)
+    private async void UnlockApp(object sender, RoutedEventArgs args)
     {
+        LockButton.IsEnabled = false;
+        bool unlocked = await _appLock.UnlockAsync();
+        LockButton.IsEnabled = true;
+        if (!unlocked)
+        {
+            LockStatus.Text = S("lockReason", "Unlock Mila");
+            return;
+        }
         Navigation.IsHitTestVisible = true;
         LockButton.Content = S("lockTitle", "Lock app");
-        LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+        LockStatus.Text = S("ready", "Ready");
         LockButton.Click -= UnlockApp;
         LockButton.Click += LockApp;
     }

@@ -85,6 +85,9 @@ interface MilaFfiAdapter {
             is MilaFfiResult.Success -> Result.success(Unit)
             is MilaFfiResult.Failure -> Result.failure(IllegalStateException("machine action unavailable"))
         }
+    suspend fun webShow(machineId: UUID): Result<String> = Result.failure(IllegalStateException("web endpoint unavailable"))
+    suspend fun webSet(machineId: UUID, port: Int, public: Boolean, revision: Long): Result<Unit> = Result.failure(IllegalStateException("web endpoint unavailable"))
+
     suspend fun threadAction(threadId: UUID, command: MilaThreadCommand): Result<Unit> =
         when (call(MilaFfiRequest(MilaFfiOperation.ThreadAction, MilaFfiPayload(
             "{\"thread_id\":\"$threadId\",\"command\":${command.tag}}".toByteArray(Charsets.UTF_8)

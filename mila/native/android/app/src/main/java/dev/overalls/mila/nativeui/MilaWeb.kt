@@ -1,0 +1,88 @@
+package dev.overalls.mila.nativeui
+
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.unit.dp
+import org.json.JSONObject
+import java.net.URI
+import java.util.UUID
+import kotlinx.coroutines.launch
+
+/** Validated endpoint returned by the Rust web command. */
+data class MilaWebEndpoint(val machineId: UUID, val port: Int, val public: Boolean, val revision: Long, val url: String?)
+
+fun parseMilaWebEndpoint(json: String): Result<MilaWebEndpoint> = runCatching {
+    val o = JSONObject(json)
+    val id = UUID.fromString(o.getString("machine_id"))
+    val port = o.getInt("port").also { require(it in 1..65535) }
+    val visibility = o.getString("visibility").also { require(it == "public" || it == "private") }
+    val revision = o.getLong("policy_revision").also { require(it > 0) }
+    val url = if (o.isNull("url")) null else o.getString("url").also(::validateHttps)
+    MilaWebEndpoint(id, port, visibility == "public", revision, url)
+}
+
+private fun validateHttps(value: String) {
+    require(value.length <= 2048)
+    val uri = URI(value)
+    require(uri.scheme == "https" && uri.userInfo == null && uri.fragment == null)
+    require(uri.host != null && uri.host.matches(Regex("^[A-Za-z0-9.-]+$")))
+}
+
+class MilaWebController(private val adapter: MilaFfiAdapter) {
+    var endpoint by mutableStateOf<MilaWebEndpoint?>(null); private set
+    var error by mutableStateOf<String?>(null); private set
+    suspend fun show(machine: UUID): Boolean = runCatching {
+        val result = adapter.webShow(machine).getOrThrow()
+        endpoint = parseMilaWebEndpoint(result).getOrThrow()
+        error = null
+    }.onFailure { error = it.message ?: "web endpoint unavailable" }.isSuccess
+    suspend fun set(machine: UUID, port: Int, public: Boolean): Boolean = runCatching {
+        require(port in 1..65535)
+        adapter.webSet(machine, port, public, endpoint?.revision ?: 1L).getOrThrow()
+        show(machine).getOrThrow()
+    }.onFailure { error = it.message ?: "web endpoint rejected" }.isSuccess
+}
+
+@Composable
+fun MilaWebView(url: String, modifier: Modifier = Modifier) {
+    AndroidView(modifier = modifier, factory = { context ->
+        WebView(context).apply {
+            settings.javaScriptEnabled = true
+            webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(view: WebView, target: String): Boolean =
+                    runCatching { URI(target).scheme == "https" }.getOrDefault(false).not()
+            }
+            loadUrl(url)
+        }
+    }, update = { it.loadUrl(url) })
+}
+
+@Composable
+fun MilaWebControls(adapter: MilaFfiAdapter, machine: MilaMachineRow) {
+    val controller = remember { MilaWebController(adapter) }
+    val scope = rememberCoroutineScope()
+    var port by remember { mutableStateOf("") }
+    var public by remember { mutableStateOf(true) }
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(MilaStrings.text(MilaMessage.WebEndpoint))
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Button({ scope.launch { controller.show(machine.id) } }) { Text(MilaStrings.text(MilaMessage.WebShow)) }
+            Button({ scope.launch { port.toIntOrNull()?.let { controller.set(machine.id, it, public) } } }) { Text(MilaStrings.text(MilaMessage.WebSave)) }
+        }
+        OutlinedTextField(port, { port = it }, label = { Text(MilaStrings.text(MilaMessage.WebPort)) })
+        controller.endpoint?.let { endpoint ->
+            Text(if (endpoint.public) MilaStrings.text(MilaMessage.WebPublic) else MilaStrings.text(MilaMessage.WebPrivate))
+            endpoint.url?.let { MilaWebView(it, Modifier) }
+        }
+        controller.error?.let { Text(it) }
+    }
+}
