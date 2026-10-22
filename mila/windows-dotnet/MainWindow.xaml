@@ -15,7 +15,7 @@
           <TextBox x:Name="DeploymentHost" PlaceholderText="overalls.example" />
           <Button x:Name="ConnectDeployment" Click="ConnectToDeployment" HorizontalAlignment="Left" />
         </StackPanel>
-        <ListView x:Name="MachineRows" DisplayMemberPath="Name" MinHeight="120" />
+        <ListView x:Name="MachineRows" DisplayMemberPath="Name" MinHeight="120" SelectionChanged="OnMachineSelected" />
         <StackPanel x:Name="MachinePanel" Spacing="8">
           <TextBlock x:Name="MachineCommandsTitle" FontSize="18" />
           <TextBlock x:Name="MachineCommandsHelp" TextWrapping="Wrap" Opacity="0.7" />

@@ -1,5 +1,5 @@
 ---
-digest: a68d6c84c97a221ae86021a450620bc56791c3d3a7ab83880c32f0a6efc5ddf3
+digest: 6049ac87dc7194aa0e219c174e780dc804796735089cd2d467807b8ba5150456
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows deployment entrypoint remains a UI wrapper over the existing Rust native boundary; no new domain or protocol.
+Windows machine selection projects the existing Rust session listing and access policy into native UI.

@@ -116,6 +116,12 @@ public sealed partial class MainWindow : Window
             StatusText.Text = $"{savedAt} {host}: {empty}";
         }
     }
+    private void OnMachineSelected(object sender, SelectionChangedEventArgs args)
+    {
+        if (MachineRows.SelectedItem is not MilaMachineRow machine) return;
+        string access = machine.CanManage ? S("machineAccessOwner", "Manage") : machine.CanWrite ? S("machineAccessShared", "Write") : S("terminalReadOnly", "Read only");
+        MachineCommandStatus.Text = $"{machine.Name} ({machine.DesiredState}) — {access}";
+    }
 
     private void ClassifyThreadList(object sender, RoutedEventArgs args) => ClassifyThread("thread ls");
     private void ClassifyThreadShow(object sender, RoutedEventArgs args) => ClassifyThread("thread show");

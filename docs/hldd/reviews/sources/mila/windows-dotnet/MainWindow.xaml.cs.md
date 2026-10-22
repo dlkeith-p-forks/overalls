@@ -1,5 +1,5 @@
 ---
-digest: 74c55d09af5070497aa519a9bdfa6661ca0e558699542e5cf072a0cef8704ea7
+digest: f93f92886325f8e8fcdf5998f22bc86a80233248a056c035169de34f2886150a
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Deployment selection and native session refresh remain UI wiring over existing Rust route and bridge contracts.
+Windows machine selection projects the existing Rust session listing and access policy into native UI.
