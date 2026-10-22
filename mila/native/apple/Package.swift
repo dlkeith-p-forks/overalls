@@ -26,7 +26,6 @@ let package = Package(
             name: "MilaNativeUI",
             dependencies: ["MilaFFIShim"],
             path: "Sources/MilaNativeUI",
-            resources: [.process("Resources")],
             linkerSettings: [.unsafeFlags([rustLibDir + "/libmila_ffi.a"])]
         ),
         .testTarget(
