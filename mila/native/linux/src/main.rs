@@ -58,6 +58,70 @@ impl NativeState {
         }
         root.append(&nav);
 
+        let settings = persistence::load_settings().unwrap_or_default();
+        let appearance_label = Label::new(Some(&strings::text(strings::Message::Appearance)));
+        appearance_label.set_halign(Align::Start);
+        root.append(&appearance_label);
+        let settings_actions = Box::new(Orientation::Horizontal, 8);
+        for (label, appearance) in [
+            (
+                strings::text(strings::Message::AppearanceSystem),
+                persistence::Appearance::System,
+            ),
+            (
+                strings::text(strings::Message::AppearanceLight),
+                persistence::Appearance::Light,
+            ),
+            (
+                strings::text(strings::Message::AppearanceDark),
+                persistence::Appearance::Dark,
+            ),
+        ] {
+            let button = Button::with_label(&label);
+            let status = content.clone();
+            let locale = settings.locale.clone();
+            button.connect_clicked(move |_| {
+                let value = persistence::Settings {
+                    appearance,
+                    locale: locale.clone(),
+                };
+                match persistence::save_settings(&value) {
+                    Ok(()) => status.set_label(&format!(
+                        "{}: {:?}",
+                        strings::text(strings::Message::Appearance),
+                        appearance
+                    )),
+                    Err(_) => status.set_label("Settings could not be saved."),
+                }
+            });
+            settings_actions.append(&button);
+        }
+        root.append(&settings_actions);
+        let locale = Entry::builder()
+            .placeholder_text(&strings::text(strings::Message::Locale))
+            .text(&settings.locale)
+            .hexpand(true)
+            .build();
+        let save_settings = Button::with_label(&strings::text(strings::Message::SaveSettings));
+        let locale_input = locale.clone();
+        let settings_status = content.clone();
+        let saved_appearance = settings.appearance;
+        save_settings.connect_clicked(move |_| {
+            match persistence::Settings::validate(
+                saved_appearance,
+                locale_input.text().as_str(),
+            )
+            .and_then(|value| persistence::save_settings(&value).map(|_| value))
+            {
+                Ok(value) => {
+                    settings_status.set_label(&format!("Settings saved: {}", value.locale))
+                }
+                Err(_) => settings_status.set_label("Settings locale rejected by Rust policy."),
+            }
+        });
+        root.append(&locale);
+        root.append(&save_settings);
+
         let deployment = Entry::builder()
             .placeholder_text(&strings::text(strings::Message::DeploymentSelect))
             .hexpand(true)

@@ -61,8 +61,11 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     val scope = rememberCoroutineScope()
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
-    val deployment = remember { MilaDeploymentSelection(listOf(MilaDeployment("mila.example"))) }
-    val signIn = remember { MilaSignInController(adapter) }
+    val deploymentStore = remember { MilaSharedPreferencesDeploymentStore(LocalContext.current.getSharedPreferences("mila.deployment", 0)) }
+    val deployment = remember {
+        MilaDeploymentSelection(listOfNotNull(deploymentStore.read(), MilaDeployment("mila.example")))
+    }
+    val signIn = remember { MilaSignInController(adapter, deploymentStore) }
     val machineDetail = remember { MilaMachineDetailController(adapter) }
     val threadDetail = remember { MilaThreadDetailController(adapter) }
     var signInState by remember { mutableStateOf<MilaSignInState>(MilaSignInState.SignedOut) }
@@ -99,7 +102,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         }
         if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(adapter)
     }
-    LaunchedEffect(Unit) { refresh() }
+    LaunchedEffect(Unit) { signIn.reconnect(); signInState = signIn.state; refresh() }
 }
 
 @Composable

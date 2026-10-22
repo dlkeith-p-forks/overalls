@@ -28,6 +28,12 @@ pub(crate) enum Message {
     ShareAdd,
     ShareRemove,
     ShareLoad,
+    Appearance,
+    AppearanceSystem,
+    AppearanceLight,
+    AppearanceDark,
+    Locale,
+    SaveSettings,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -55,6 +61,12 @@ pub(crate) fn text(message: Message) -> String {
         Message::ShareAdd => "sharingAdd",
         Message::ShareRemove => "sharingRemove",
         Message::ShareLoad => "sharingLoad",
+        Message::Appearance => "appearance",
+        Message::AppearanceSystem => "appearanceSystem",
+        Message::AppearanceLight => "appearanceLight",
+        Message::AppearanceDark => "appearanceDark",
+        Message::Locale => "locale",
+        Message::SaveSettings => "settingsSave",
     };
     catalog()
         .get(id)
@@ -88,6 +100,12 @@ fn fallback(message: Message) -> &'static str {
         Message::ShareAdd => "Share machine",
         Message::ShareRemove => "Remove share",
         Message::ShareLoad => "Load sharing",
+        Message::Appearance => "Appearance",
+        Message::AppearanceSystem => "System",
+        Message::AppearanceLight => "Light",
+        Message::AppearanceDark => "Dark",
+        Message::Locale => "Locale",
+        Message::SaveSettings => "Save settings",
     }
 }
 

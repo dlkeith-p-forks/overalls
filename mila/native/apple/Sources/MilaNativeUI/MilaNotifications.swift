@@ -1,47 +1,83 @@
 import Foundation
+import Combine
+#if canImport(UserNotifications)
+import UserNotifications
+#if os(iOS)
+import UIKit
+#endif
+#endif
 
 /// Registration state for the current Apple device and deployment.
-public enum MilaNotificationState: Equatable, Sendable {
-    case off
-    case registering
-    case on
-    case failed
+public enum MilaNotificationState: Equatable, Sendable { case off, registering, on, failed }
+
+/// Public device projection. Push tokens are deliberately excluded.
+public struct MilaNotificationDevice: Codable, Equatable, Sendable, Identifiable {
+    public let id: String
+    public let deployment: String
+    public var enabled: Bool
+    public init(id: String, deployment: String, enabled: Bool) { self.id = id; self.deployment = deployment; self.enabled = enabled }
 }
 
-/// Owns notification registration without retaining or logging the device token.
-@MainActor
-public final class MilaNotificationController: ObservableObject {
-    @Published public private(set) var state: MilaNotificationState = .off
+public protocol MilaNotificationDeviceStore: AnyObject {
+    func list() -> [MilaNotificationDevice]
+    @discardableResult func upsert(_ device: MilaNotificationDevice) -> Bool
+    @discardableResult func remove(id: String) -> Bool
+}
 
+/// UserDefaults-backed metadata store. Tokens remain owned by the OS and are never persisted.
+public final class MilaUserDefaultsNotificationStore: MilaNotificationDeviceStore {
+    private let defaults: UserDefaults
+    private let key = "mila.notification.devices"
+    public init(defaults: UserDefaults = .standard) { self.defaults = defaults }
+    public func list() -> [MilaNotificationDevice] {
+        guard let data = defaults.data(forKey: key), let values = try? JSONDecoder().decode([MilaNotificationDevice].self, from: data) else { return [] }
+        return values.filter { !$0.id.isEmpty && !$0.deployment.isEmpty }
+    }
+    @discardableResult public func upsert(_ device: MilaNotificationDevice) -> Bool {
+        guard !device.id.isEmpty, !device.deployment.isEmpty else { return false }
+        var values = list().filter { $0.id != device.id }
+        values.append(device)
+        guard let data = try? JSONEncoder().encode(values) else { return false }
+        defaults.set(data, forKey: key); return true
+    }
+    @discardableResult public func remove(id: String) -> Bool {
+        let values = list(); let next = values.filter { $0.id != id }
+        guard next.count != values.count, let data = try? JSONEncoder().encode(next) else { return false }
+        defaults.set(data, forKey: key); return true
+    }
+}
+
+#if canImport(UserNotifications)
+/// Thin platform bridge. The app delegate supplies the APNs token to `register`.
+public final class MilaAppleNotificationService: NSObject {
+    public func requestAuthorization() async throws -> Bool {
+        try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+    }
+    #if os(iOS)
+    public func registerForRemoteNotifications() {
+        DispatchQueue.main.async { UIApplication.shared.registerForRemoteNotifications() }
+    }
+    #endif
+}
+#endif
+
+/// Owns notification registration without retaining or logging the device token.
+@MainActor public final class MilaNotificationController: ObservableObject {
+    @Published public private(set) var state: MilaNotificationState = .off
+    @Published public private(set) var devices: [MilaNotificationDevice]
     private let adapter: any MilaFFIAdapter
     private let appID: String
     private let deployment: String
-
-    public init(adapter: any MilaFFIAdapter, appID: String, deployment: String) {
-        self.adapter = adapter
-        self.appID = appID
-        self.deployment = deployment
+    private let store: MilaNotificationDeviceStore
+    public init(adapter: any MilaFFIAdapter, appID: String, deployment: String, store: MilaNotificationDeviceStore = MilaUserDefaultsNotificationStore()) {
+        self.adapter = adapter; self.appID = appID; self.deployment = deployment; self.store = store; self.devices = store.list()
     }
-
+    public func refreshDevices() { devices = store.list() }
+    @discardableResult public func removeDevice(id: String) -> Bool { let ok = store.remove(id: id); refreshDevices(); return ok }
     /// @cc [owner:ghuntley,label:security] mila-apple-push-token-boundary
-    /// Device tokens are borrowed by Rust validation and never retained, displayed, or logged.
     public func register(token: String, endpoint: String, environment: MilaPushEnvironment = .production) {
-        guard !token.isEmpty else { state = .failed; return }
-        state = .registering
-        do {
-            try adapter.validatePushRegistration(
-                provider: MilaPushProvider.apple.rawValue,
-                environment: environment.rawValue,
-                token: token,
-                appID: appID,
-                deployment: deployment,
-                endpoint: endpoint
-            )
-            state = .on
-        } catch {
-            state = .failed
-        }
+        guard !token.isEmpty else { state = .failed; return }; state = .registering
+        do { try adapter.validatePushRegistration(provider: MilaPushProvider.apple.rawValue, environment: environment.rawValue, token: token, appID: appID, deployment: deployment, endpoint: endpoint); _ = store.upsert(MilaNotificationDevice(id: appID, deployment: deployment, enabled: true)); refreshDevices(); state = .on } catch { state = .failed }
     }
-
-    public func disable() { state = .off }
+    public func disable() { _ = store.upsert(MilaNotificationDevice(id: appID, deployment: deployment, enabled: false)); refreshDevices(); state = .off }
 }
