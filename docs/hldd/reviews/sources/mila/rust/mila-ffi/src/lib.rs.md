@@ -1,5 +1,5 @@
 ---
-digest: 35c8e91aa7c8e0fcaad9cb5a1bab2f59151dfbbcb2ac5186e554f94cbbbe6cce
+digest: ba4e8c0609b9aa4e20f08410850f771ee0c2164201bda1bf25b39e040b1acddb
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Rust-owned trust enrollment validates and reconciles HTTPS trust before Android atomic persistence; platform headers expose the ABI for native clients.
+Rust trust reconciliation formatting preserves the reviewed ABI and property tests.

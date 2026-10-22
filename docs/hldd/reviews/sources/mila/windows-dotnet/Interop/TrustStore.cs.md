@@ -1,5 +1,5 @@
 ---
-digest: 5b4d7972d47f69b396882c6f38af21a4cac12eb5edd3455dd06f4aea630909cb
+digest: 67a55c2d14d11429da974034aff9c80815d67296ff4dad31a79aabc0df30d4ce
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Android and Windows clients now fetch bounded HTTPS trust documents, reconcile authority in Rust, and atomically persist only canonical trust selections before session connection.
+Rust trust reconciliation formatting preserves the reviewed ABI and property tests.

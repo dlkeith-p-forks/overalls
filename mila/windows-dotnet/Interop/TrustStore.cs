@@ -3,7 +3,7 @@ namespace Mila.Windows.Interop;
 internal delegate Task<byte[]> MilaTrustFetch(CancellationToken cancellationToken);
 internal delegate MilaNativeTrustResult MilaTrustReconcile(byte[]? pinned, byte[]? fetched, string host, ulong now);
 
-/// <summary>Loads the operator-approved trust document for a deployment.</summary>
+/// <summary>Loads and atomically stores the Rust-selected trust pin for a deployment.</summary>
 internal static class MilaTrustStore
 {
     private const int MaximumDocumentBytes = 8192;
@@ -14,11 +14,10 @@ internal static class MilaTrustStore
 
     /// <summary>
     /// Returns only an existing, bounded pinned document. Missing or malformed
-    /// local state leaves the client signed out; it is never replaced silently.
+    /// local state leaves the client signed out until HTTPS enrollment succeeds.
     /// @cc [owner:ghuntley,label:security] mila-windows-trust-store-pinned
-    /// The managed client MUST load only a bounded operator-pinned trust document;
-    /// it MUST NOT accept a replacement document from the sign-in flow.
-    /// Rust performs the authoritative document and certificate validation.
+    /// The managed client MUST load only bounded persisted bytes and MUST persist
+    /// only the canonical document returned by Rust reconciliation.
     /// </summary>
     internal static byte[]? Load(string host)
     {
@@ -40,6 +39,8 @@ internal static class MilaTrustStore
         int length = stream.ReadAtLeast(buffer, buffer.Length, throwOnEndOfStream: false);
         return length is > 0 and <= MaximumDocumentBytes ? buffer[..length] : null;
     }
+
+    internal static MilaTrustFetch HttpsFetch(string host) => MilaTrustEnrollment.HttpsFetch(host);
 
     /// <summary>Atomically persists Rust's canonical trust selection.</summary>
     internal static void Save(string host, ReadOnlySpan<byte> document)

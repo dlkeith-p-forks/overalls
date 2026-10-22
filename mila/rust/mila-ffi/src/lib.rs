@@ -867,7 +867,11 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTrustDo
             fetched.as_ref().map_or(0, Vec::len),
             host.as_ptr(),
             now as u64,
-            MilaRouteOutput { bytes: output.as_mut_ptr(), capacity: output.len(), written: &mut written },
+            MilaRouteOutput {
+                bytes: output.as_mut_ptr(),
+                capacity: output.len(),
+                written: &mut written,
+            },
         )
     };
     if status != MilaFfiStatus::Ok || written == 0 || written > output.len() {
@@ -1332,11 +1336,11 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeMachine
 mod tests {
     use super::{
         mila_ffi_get_version, mila_ffi_version, mila_machine_command_kind,
-        mila_trust_document_reconcile,
         mila_terminal_attach_validate, mila_terminal_input_validate, mila_terminal_resize_validate,
-        mila_terminal_validate, mila_thread_command_kind, mila_watch_event_kind,
-        mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus, MilaMachineCommandKind,
-        MilaRouteOutput, MilaSnapshotSummary, MilaThreadCommandKind, MilaWatchEventKind,
+        mila_terminal_validate, mila_thread_command_kind, mila_trust_document_reconcile,
+        mila_watch_event_kind, mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus,
+        MilaMachineCommandKind, MilaRouteOutput, MilaSnapshotSummary, MilaThreadCommandKind,
+        MilaWatchEventKind,
     };
     use mila_runtime::MachineSnapshot;
 
@@ -1554,12 +1558,17 @@ mod tests {
                 fetched.len(),
                 host.as_ptr(),
                 1_000,
-                MilaRouteOutput { bytes: output.as_mut_ptr(), capacity: output.len(), written: &mut written },
+                MilaRouteOutput {
+                    bytes: output.as_mut_ptr(),
+                    capacity: output.len(),
+                    written: &mut written,
+                },
             )
         };
         assert_eq!(status, MilaFfiStatus::Ok);
         assert_eq!(
-            serde_json::from_slice::<serde_json::Value>(&output[..written]).expect("canonical trust")["retirement"],
+            serde_json::from_slice::<serde_json::Value>(&output[..written])
+                .expect("canonical trust")["retirement"],
             2_000
         );
     }
@@ -1577,15 +1586,33 @@ mod tests {
         let host = std::ffi::CString::new("overalls.example").unwrap();
         let status = unsafe {
             mila_trust_document_reconcile(
-                pinned.as_ptr(), pinned.len(), fetched.as_ptr(), fetched.len(), host.as_ptr(), 1_000,
-                MilaRouteOutput { bytes: output.as_mut_ptr(), capacity: output.len(), written: &mut written },
+                pinned.as_ptr(),
+                pinned.len(),
+                fetched.as_ptr(),
+                fetched.len(),
+                host.as_ptr(),
+                1_000,
+                MilaRouteOutput {
+                    bytes: output.as_mut_ptr(),
+                    capacity: output.len(),
+                    written: &mut written,
+                },
             )
         };
         assert_eq!(status, MilaFfiStatus::InvalidRequest);
         let status = unsafe {
             mila_trust_document_reconcile(
-                pinned.as_ptr(), pinned.len(), std::ptr::null(), 0, host.as_ptr(), 2_001,
-                MilaRouteOutput { bytes: output.as_mut_ptr(), capacity: output.len(), written: &mut written },
+                pinned.as_ptr(),
+                pinned.len(),
+                std::ptr::null(),
+                0,
+                host.as_ptr(),
+                2_001,
+                MilaRouteOutput {
+                    bytes: output.as_mut_ptr(),
+                    capacity: output.len(),
+                    written: &mut written,
+                },
             )
         };
         assert_eq!(status, MilaFfiStatus::InvalidRequest);
