@@ -1,5 +1,5 @@
 ---
-digest: 54a65b494697838048c6e30074d098c3ca512453fd42c36ec127cdd13fb69a72
+digest: 00907e9ad4e74ac114ab4ecbc30960d9e87035ce7d013b19d61540be7dd1568d
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native SSH key refresh and GTK label borrow fix preserve existing Rust boundaries.
+Linux deployment selection persistence is a local typed UI preference; it does not change domain ownership, protocol contracts, or deployment topology.

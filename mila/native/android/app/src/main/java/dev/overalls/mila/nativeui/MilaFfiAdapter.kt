@@ -40,6 +40,7 @@ value class MilaFfiOperation private constructor(val value: String) {
     companion object {
         val Bootstrap: MilaFfiOperation = MilaFfiOperation("bootstrap")
         val Refresh: MilaFfiOperation = MilaFfiOperation("refresh")
+        val MachineAction: MilaFfiOperation = MilaFfiOperation("machine_action")
     }
 }
 
@@ -75,6 +76,15 @@ sealed interface MilaFfiResult {
  */
 interface MilaFfiAdapter {
     suspend fun call(request: MilaFfiRequest): MilaFfiResult
+    /** Executes a Rust-classified action for an authenticated machine session. */
+    suspend fun machineAction(machineId: UUID, command: MilaMachineCommand): Result<Unit> =
+        when (call(MilaFfiRequest(MilaFfiOperation.MachineAction, MilaFfiPayload(
+            "{\"machine_id\":\"$machineId\",\"command\":${command.tag}}".toByteArray(Charsets.UTF_8)
+        )))) {
+            is MilaFfiResult.Success -> Result.success(Unit)
+            is MilaFfiResult.Failure -> Result.failure(IllegalStateException("machine action unavailable"))
+        }
+
     fun threadCommandKind(value: String): Result<MilaThreadCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun machineCommandKind(value: String): Result<MilaMachineCommand> = Result.failure(IllegalStateException("native runtime unavailable"))
     fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = Result.failure(IllegalStateException("native runtime unavailable"))

@@ -7,6 +7,7 @@ use mila_native_linux::adapter::{
 };
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
+mod persistence;
 mod strings;
 const APPLICATION_ID: &str = "dev.overalls.Mila.Linux";
 #[derive(Clone)]
@@ -58,18 +59,25 @@ impl NativeState {
         root.append(&nav);
 
         let deployment = Entry::builder()
-            .placeholder_text("Deployment host (example: overalls.example:443)")
+            .placeholder_text(&strings::text(strings::Message::DeploymentSelect))
             .hexpand(true)
             .build();
+        if let Ok(Some(selection)) = persistence::load() {
+            deployment.set_text(&selection.host);
+        }
         let select = Button::with_label(&strings::text(strings::Message::SelectDeployment));
         let deployment_status = content.clone();
         let deployment_input = deployment.clone();
         select.connect_clicked(move |_| {
             let host = deployment_input.text().trim().to_owned();
-            let route = format!("overalls://{host}/machines");
-            match ActivationRoute::parse(&route) {
-                Ok(parsed) => deployment_status
-                    .set_label(&format!("Deployment selected\n{}", parsed.canonical())),
+            match persistence::DeploymentSelection::validate(&host) {
+                Ok(selection) => {
+                    let route = selection.route();
+                    let _ = persistence::save(&selection);
+                    let parsed = ActivationRoute::parse(&route).expect("validated route");
+                    deployment_status
+                        .set_label(&format!("Deployment selected\n{}", parsed.canonical()))
+                }
                 Err(_) => deployment_status.set_label("Deployment host rejected by Rust policy."),
             }
         });
