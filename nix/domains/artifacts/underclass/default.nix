@@ -11,6 +11,9 @@ rustPlatform.buildRustPackage rec {
   };
 
   cargoHash = "sha256-trXMnTioYNjr74HjFcDjMvJ8GYUG0UTiPVi68PNBzEk=";
+  # Name the vendored crates without the version: the fixed-output path then
+  # survives pin bumps that keep Cargo.lock, instead of refetching ~300 crates.
+  cargoDepsName = pname;
   # @cc [owner:ghuntley,label:durability;build] underclass-fixed-slo-journal
   # The pinned proxy MUST compile the reviewed Rust journal and admission/body
   # patch from this source tree without adding dependencies or provider replay.

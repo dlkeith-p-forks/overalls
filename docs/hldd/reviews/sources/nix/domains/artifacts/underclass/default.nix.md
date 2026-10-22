@@ -1,6 +1,6 @@
 ---
-digest: 13e6a2f0e545154f20fad3768641aac647b0b34ef8861879ab2fdd17dd1ca6b6
-disposition: updated
+digest: a6c59d7bf96f62922749cfd0dc298ddbe7276c2c5bc390477104f1c9b013ec7a
+disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
 path: nix/domains/artifacts/underclass/default.nix
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Underclass pin bumped 39f5766 -> c58a972 (free-plan gate, Claude usage-percent and refresh-scope fixes); source hash refreshed, cargoHash and instrumentation patch unchanged; chapter 18 regenerated for the new derivation name and chapter 10 records the revision. No topology, option or recovery change.
+Build-only: underclass cargoDepsName fixed to pname so the fixed-output crate vendor path is reused across pin bumps with an unchanged Cargo.lock (one bump spent 25 of 27 updater minutes refetching 312 crates). Same cargoHash, package output, options, units and topology; no handbook-described behavior changes.
