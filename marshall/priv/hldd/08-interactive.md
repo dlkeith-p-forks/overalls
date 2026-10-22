@@ -1429,6 +1429,10 @@ validates the machine UUID, email, role vocabulary and request ID before the
 Porsche mutation; remove requests cannot carry a role. The GTK shell has no
 live deployment receipt yet.
 
+Linux thread list, show and turns controls now call the authenticated session
+and keep bounded response bytes inside Rust. Unsigned-in windows refuse before
+the backend; prompt, answer and plan mutations remain open in the GTK shell.
+
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command
