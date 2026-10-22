@@ -1,5 +1,5 @@
 ---
-digest: fa714b5fd8137445087db7b2844b4e21029d93a19858f22d894290fc18a6b57b
+digest: ca7873aeac4ab63e52ff5d4ae838287ccf64e50dc9b9e70e9afe50fe36e381c8
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Validated Android deployment selection and Windows Porsche port persistence keep native session boundaries typed and fail closed.
+Startup no longer invokes the echo-only refresh before authenticated session binding; refresh remains an explicit user action.

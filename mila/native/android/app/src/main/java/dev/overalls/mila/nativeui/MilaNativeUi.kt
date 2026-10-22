@@ -110,6 +110,7 @@ fun MilaNativeRoot(
             },
             onSelect = { selected ->
                 deployment.select(selected.host, selected.port)
+                deploymentStore.write(selected)
                 selectedDeployment = selected
                 hostInput = selected.host
                 hostInvalid = false
@@ -170,7 +171,6 @@ fun MilaNativeRoot(
                 signInState = signIn.state
             }
         }
-        refresh()
     }
 }
 
@@ -187,7 +187,7 @@ private fun MilaDeploymentPicker(
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(MilaStrings.text(MilaMessage.Deployments), style = MaterialTheme.typography.titleMedium)
         deployments.forEach { deployment ->
-            Button({ onSelect(deployment) }) {
+            Button({ onSelect(deployment) }, enabled = deployment != selected) {
                 Text(deployment.label, style = MaterialTheme.typography.bodyMedium)
             }
         }
