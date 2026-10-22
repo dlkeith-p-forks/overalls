@@ -152,6 +152,11 @@ internal readonly record struct MilaNativeSessionActionResult(MilaNativeStatus S
 {
     internal bool Succeeded => Status == MilaNativeStatus.Ok;
 }
+internal readonly record struct MilaNativeSessionBytesResult(
+    MilaNativeStatus Status, byte[]? Data)
+{
+    internal bool Succeeded => Status == MilaNativeStatus.Ok && Data is not null;
+}
 internal readonly record struct MilaNativeSessionConnectResult(MilaNativeStatus Status, ulong? Handle)
 {
     internal bool Succeeded => Status == MilaNativeStatus.Ok && Handle is > 0;
@@ -452,6 +457,73 @@ internal static partial class RustNative
         finally { Marshal.FreeCoTaskMem(machine); Marshal.FreeCoTaskMem(operation); Marshal.FreeCoTaskMem(request); }
     }
 
+    /// <summary>
+    /// Copies the bounded approved-key listing from an authenticated Rust session.
+    /// Managed callers receive only owned UTF-8 bytes; the native session remains
+    /// the authority for authentication and authorization.
+    /// </summary>
+    internal static MilaNativeSessionBytesResult TrySessionSshKeys(ulong handle)
+    {
+        if (handle == 0) return new(MilaNativeStatus.InvalidRequest, null);
+        return TrySessionBytes((bytes, capacity, written) =>
+            SessionSshKeysNative(handle, bytes, capacity, written));
+    }
+
+    /// <summary>Revokes one canonical approved-key identity through the Rust session.</summary>
+    internal static MilaNativeSessionActionResult TrySessionSshKeyRevoke(
+        ulong handle, Guid keyId, string requestId)
+    {
+        if (handle == 0 || !IsCanonicalRequestId(requestId))
+            return new(MilaNativeStatus.InvalidRequest);
+        string key = keyId.ToString("D");
+        IntPtr keyPtr = Marshal.StringToCoTaskMemUTF8(key);
+        IntPtr requestPtr = Marshal.StringToCoTaskMemUTF8(requestId);
+        try
+        {
+            return new((MilaNativeStatus)SessionSshKeyRevokeNative(
+                handle, keyPtr, (nuint)Encoding.UTF8.GetByteCount(key), requestPtr,
+                (nuint)Encoding.UTF8.GetByteCount(requestId)));
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable); }
+        finally { Marshal.FreeCoTaskMem(keyPtr); Marshal.FreeCoTaskMem(requestPtr); }
+    }
+
+    private static bool IsCanonicalRequestId(string? value) =>
+        value is { Length: 40 } && value.StartsWith("porsche-", StringComparison.Ordinal) &&
+        value[8..].All(character => character is >= '0' and <= '9' or >= 'a' and <= 'f');
+
+    private static MilaNativeSessionBytesResult TrySessionBytes(
+        Func<IntPtr, nuint, IntPtr, MilaNativeStatus> call)
+    {
+        IntPtr written = Marshal.AllocHGlobal(nuint.Size);
+        try
+        {
+            Marshal.WriteIntPtr(written, IntPtr.Zero);
+            MilaNativeStatus status = call(IntPtr.Zero, 0, written);
+            nuint size = (nuint)Marshal.ReadIntPtr(written);
+            if (status != MilaNativeStatus.OutputTooSmall || size == 0 || size > 256 * 1024)
+                return new(status, null);
+            IntPtr output = Marshal.AllocHGlobal(checked((int)size));
+            try
+            {
+                status = call(output, size, written);
+                nuint writtenSize = (nuint)Marshal.ReadIntPtr(written);
+                if (status != MilaNativeStatus.Ok || writtenSize > size)
+                    return new(status, null);
+                byte[] bytes = new byte[checked((int)writtenSize)];
+                Marshal.Copy(output, bytes, 0, bytes.Length);
+                return new(status, bytes);
+            }
+            finally { Marshal.FreeHGlobal(output); }
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+        finally { Marshal.FreeHGlobal(written); }
+    }
+
     internal static MilaNativeStatus TrySessionClose(ulong handle)
     {
         if (handle == 0) return MilaNativeStatus.InvalidRequest;
@@ -530,6 +602,14 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_action")]
     private static partial int SessionMachineActionNative(ulong handle, IntPtr machine, nuint machineLength,
         IntPtr action, nuint actionLength, IntPtr requestId, nuint requestIdLength);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_ssh_keys")]
+    private static partial MilaNativeStatus SessionSshKeysNative(
+        ulong handle, IntPtr output, nuint capacity, IntPtr written);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_ssh_key_revoke")]
+    private static partial MilaNativeStatus SessionSshKeyRevokeNative(
+        ulong handle, IntPtr key, nuint keyLength, IntPtr request, nuint requestLength);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_session_close")]
     private static partial int SessionCloseNative(ulong handle);

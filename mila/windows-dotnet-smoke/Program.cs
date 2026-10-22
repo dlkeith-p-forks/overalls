@@ -52,8 +52,16 @@ internal static class Program
             Require(RustNative.TryFormatMachineCommand(action, machineId, "porsche-0123456789abcdef0123456789abcdef").Command is null, "action injection refusal");
         Require(RustNative.TryFormatMachineCommand("stop", machineId, null).Command is null, "mutation request required");
         Require(RustNative.TryFormatMachineCommand("stop", machineId, "id\0suffix").Command is null, "request truncation refusal");
+        Guid keyId = Guid.NewGuid();
         MilaNativeSessionActionResult invalidSession = RustNative.TrySessionMachineAction(0, machineId, "stop", "porsche-0123456789abcdef0123456789abcdef");
         Require(invalidSession.Status == MilaNativeStatus.InvalidRequest, "missing authenticated session refusal");
+        MilaNativeSessionBytesResult invalidKeys = RustNative.TrySessionSshKeys(0);
+        Require(invalidKeys.Status == MilaNativeStatus.InvalidRequest && invalidKeys.Data is null, "missing authenticated SSH key listing refusal");
+        MilaNativeSessionActionResult invalidRevoke = RustNative.TrySessionSshKeyRevoke(
+            0, keyId, "porsche-0123456789abcdef0123456789abcdef");
+        Require(invalidRevoke.Status == MilaNativeStatus.InvalidRequest, "missing authenticated SSH key revoke refusal");
+        Require(RustNative.TrySessionSshKeyRevoke(1, keyId, "bad-request").Status == MilaNativeStatus.InvalidRequest,
+            "SSH key revoke request-id validation");
         MilaNativeThreadCommandResult thread = RustNative.TryClassifyThreadCommand("thread ls");
         Require(thread.Status == MilaNativeStatus.Ok && thread.Kind == MilaThreadCommandKind.List, "thread command projection");
         Require(RustNative.TryClassifyThreadCommand("thread delete abc").Kind is null, "unknown thread command refusal");
@@ -68,7 +76,6 @@ internal static class Program
         bool refused = false;
         try { RustNative.DecodeSessionListing(Encoding.UTF8.GetBytes("{\"machines\":[{\"id\":\"bad\"}]}")); } catch (InvalidDataException) { refused = true; }
         Require(refused, "invalid listing refusal");
-        Guid keyId = Guid.NewGuid();
         MilaSshKey key = MilaSshKeysController.DecodeListing(Encoding.UTF8.GetBytes($"{{\"keys\":[{{\"id\":\"{keyId:D}\",\"fingerprint\":\"SHA256:test\",\"algorithm\":\"ed25519\",\"current_device\":false}}]}}"))[0];
         Require(key.Id == keyId && key.Algorithm == "ed25519", "SSH key listing projection");
         bool revoked = false;

@@ -5,6 +5,13 @@ denial: A release build that carries the software-keys define refuses to start; 
   is inherited, unprotected or grants any other SID is refused rather than read; a POSIX file other users
   can read is refused.
 evidence:
+- assertion: SSH key revoke request-id validation
+  execution: present
+  kind: unit
+  path: mila/windows-dotnet-smoke/Program.cs
+  scope: The production Windows interop invokes the Rust list/revoke ABI through owned buffers,
+    rejects missing sessions and malformed request ids, and exercises the bounded controller projection;
+    no live Windows host or Porsche journey is claimed.
 - assertion: an allow entry for any other SID is refused
   execution: present
   kind: property
@@ -15,8 +22,8 @@ evidence:
   kind: unit
   path: mila/packages/mila_transport/test/owner_only_test.dart
   scope: Windows-only icacls grant to Everyone after a protected write.
-gaps: No signed macOS build, no Windows native key channel and no Windows CI host; Secure Enclave and
-  TPM custody are unverified on desktop.
+gaps: No signed macOS build or Windows CI host; Secure Enclave and TPM custody and a live Windows
+  Porsche key-management journey are unverified on desktop.
 id: mila-desktop-custody
 journey: A user installs Mila on macOS or Windows, signs in to a deployment and keeps its device key,
   pins and offline list on that machine
@@ -27,7 +34,7 @@ layers:
 preferred_gap: Add Windows and macOS CI jobs that run the transport suite natively, plus an XCTest and
   CTest for the native key channels; no NixOS machine test can host macOS or Windows clients.
 scope: Dart unit and Hegel property tests over the SDDL builder and checker on every host, an icacls round
-  trip that runs only on Windows, and macOS unsigned dev builds launched locally with 0700/0600 data files
-  observed. The Windows CNG/TPM channel and Secure Enclave on a signed macOS build are not implemented
-  or not exercised.
+  trip that runs only on Windows, the typed Windows Rust FFI SSH key list/revoke smoke projection, and
+  macOS unsigned dev builds launched locally with 0700/0600 data files observed. The Windows CNG/TPM
+  custody channel, live Porsche key journey and Secure Enclave on a signed macOS build are not exercised.
 status: partial

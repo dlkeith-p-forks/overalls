@@ -1,5 +1,7 @@
 # Architecture reviews
 
+- [Mila Windows authenticated SSH keys (2026-10-22)](2026-10-22-mila-windows-ssh-keys.md): typed Rust FFI list/revoke wiring and stale-response fencing in the WinUI client; live Windows/Porsche execution remains open.
+
 - [Mila native Apple custody](2026-10-21-mila-apple-custody.md): deployment-scoped Secure Enclave adapter; signed hardware evidence remains open.
 
 - [Mila native Rust session (2026-10-21)](2026-10-21-mila-native-session.md): actual certificate-pinned SSH machine pagination and atomic refresh, with local scripted-server and Hegel evidence; native adapters and real Porsche journeys remain open.

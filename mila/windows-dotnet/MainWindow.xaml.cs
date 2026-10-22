@@ -6,11 +6,10 @@ namespace Mila.Windows;
 public sealed partial class MainWindow : Window
 {
     private string? _activeHost;
+    private string? _deviceFingerprint;
     private ushort _deploymentPort = MilaDeployment.DefaultPort;
     private bool _notificationsEnabled;
-    private readonly MilaSshKeysController _sshKeys = new(
-        _ => Task.FromResult<IReadOnlyList<MilaSshKey>>(Array.Empty<MilaSshKey>()),
-        (_, _) => Task.CompletedTask);
+    private readonly MilaSshKeysController _sshKeys;
     private readonly MilaThreadController _threadController = new();
     private readonly MilaMachineMutationController _machineMutation = new();
     private MilaMachineRow? _selectedMachine;
@@ -20,6 +19,7 @@ public sealed partial class MainWindow : Window
     public MainWindow(string? activation = null)
     {
         InitializeComponent();
+        _sshKeys = new MilaSshKeysController(LoadSshKeysAsync, RevokeSshKeyAsync);
         Closed += (_, _) => { _closed = true; _session.Dispose(); };
         ApplyStrings();
         if (MilaDeploymentStore.Load() is { } deployment)
@@ -80,6 +80,7 @@ public sealed partial class MainWindow : Window
         SshKeysTitle.Text = S("sshKeysTitle", "SSH keys");
         SshKeysStatus.Text = S("sshKeysSignInFirst", "Sign in to manage SSH keys.");
         RefreshSshKeys.Content = S("refresh", "Refresh");
+        RevokeSshKey.Content = S("sshKeyRevoke", "Revoke");
         ThreadCommandsTitle.Text = S("tabThreads", "Thread commands");
         ThreadCommandsHelp.Text = S("threadWorking", "Commands are validated by the Rust core before execution.");
         ThreadList.Content = S("tabInfo", "List"); ThreadShow.Content = S("machineLoading", "Show");
@@ -100,7 +101,9 @@ public sealed partial class MainWindow : Window
         WebCopy.Content = S("webCopy", "Copy address");
         WebStatus.Text = S("webNoAddress", "No web address");
     }
-    private async void RefreshSshKeys(object sender, RoutedEventArgs args)
+    private async void RefreshSshKeysClicked(object sender, RoutedEventArgs args) => await RefreshSshKeyListAsync();
+
+    private async Task RefreshSshKeyListAsync(CancellationToken cancellationToken = default)
     {
         await _sshKeys.LoadAsync(_activeHost is not null);
         SshKeyRows.ItemsSource = _sshKeys.Keys;
@@ -109,6 +112,52 @@ public sealed partial class MainWindow : Window
             : _sshKeys.Status == MilaSshKeysStatus.Failed
                 ? S("sshKeysFailed", "Unable to load SSH keys.")
                 : string.Format(S("sshKeysLoaded", "{0} approved keys."), _sshKeys.Keys.Count);
+    }
+
+    private async Task<IReadOnlyList<MilaSshKey>> LoadSshKeysAsync(CancellationToken cancellationToken)
+    {
+        if (_session.Handle is not { } handle) throw new InvalidOperationException("SSH session is unavailable");
+        MilaNativeSessionBytesResult result = await Task.Run(() =>
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return RustNative.TrySessionSshKeys(handle);
+        }, cancellationToken);
+        if (!result.Succeeded || result.Data is not { } bytes)
+            throw new IOException($"SSH key listing failed: {result.Status}");
+        string? currentFingerprint = _deviceFingerprint;
+        return MilaSshKeysController.DecodeListing(bytes)
+            .Select(key => key with { IsCurrentDevice = key.Fingerprint == currentFingerprint })
+            .ToArray();
+    }
+
+    private async Task RevokeSshKeyAsync(Guid keyId, CancellationToken cancellationToken)
+    {
+        if (_session.Handle is not { } handle) throw new InvalidOperationException("SSH session is unavailable");
+        string requestId = "porsche-" + Guid.NewGuid().ToString("N");
+        MilaNativeSessionActionResult result = await Task.Run(() =>
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return RustNative.TrySessionSshKeyRevoke(handle, keyId, requestId);
+        }, cancellationToken);
+        if (!result.Succeeded) throw new IOException($"SSH key revocation failed: {result.Status}");
+    }
+
+    private void OnSshKeySelected(object sender, SelectionChangedEventArgs args)
+    {
+        RevokeSshKey.IsEnabled = SshKeyRows.SelectedItem is MilaSshKey key && !key.IsCurrentDevice &&
+            _sshKeys.Status == MilaSshKeysStatus.Loaded;
+    }
+
+    private async void RevokeSelectedSshKey(object sender, RoutedEventArgs args)
+    {
+        if (SshKeyRows.SelectedItem is not MilaSshKey key || key.IsCurrentDevice) return;
+        RevokeSshKey.IsEnabled = false;
+        await _sshKeys.RevokeAsync(key);
+        SshKeyRows.ItemsSource = _sshKeys.Keys;
+        SshKeysStatus.Text = _sshKeys.Status == MilaSshKeysStatus.Failed
+            ? S("sshKeysFailed", "Unable to load SSH keys.")
+            : string.Format(S("sshKeysLoaded", "{0} approved keys."), _sshKeys.Keys.Count);
+        RevokeSshKey.IsEnabled = false;
     }
     private void ShareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share add {SampleMachine} user viewer");
     private void UnshareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");
@@ -171,11 +220,13 @@ public sealed partial class MainWindow : Window
         // mutation controls explicitly signed out until the session broker
         // supplies its non-zero handle.
         _activeHost = null;
+        _deviceFingerprint = null;
         _selectedMachine = null;
         MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
         _threadController.SetSession(false, null);
         _machineMutation.SetSession(false);
         _session.SignOut();
+        _ = RefreshSshKeyListAsync();
         _ = ConnectDeploymentAsync(host);
     }
     private async Task ConnectDeploymentAsync(string host)
@@ -195,6 +246,7 @@ public sealed partial class MainWindow : Window
 
             using DeviceKey deviceKey = DeviceKey.OpenOrCreate(host);
             byte[] publicKey = deviceKey.PublicPoint();
+            _deviceFingerprint = MilaSshKeysController.Fingerprint(System.Text.Encoding.UTF8.GetString(publicKey));
             byte[] trustBytes = trust;
             byte[] publicKeyBytes = publicKey;
             bool connected = await Task.Run(() => _session.Connect(
@@ -212,6 +264,7 @@ public sealed partial class MainWindow : Window
             MilaDeploymentStore.Save(new MilaDeployment(host, _deploymentPort));
             _machineMutation.SetSession(true, handle);
             StatusText.Text = S("connected", MilaStrings.Connected);
+            await RefreshSshKeyListAsync();
             RefreshMachines();
         }
         catch (ArgumentException)

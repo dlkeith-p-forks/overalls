@@ -2711,12 +2711,13 @@ Boundary: The platform profile selects hardware custody (Secure Enclave on signe
 
 Required refusal: A release build that carries the software-keys define refuses to start; a Windows file whose DACL is inherited, unprotected or grants any other SID is refused rather than read; a POSIX file other users can read is refused.
 
-Tested scope: Dart unit and Hegel property tests over the SDDL builder and checker on every host, an icacls round trip that runs only on Windows, and macOS unsigned dev builds launched locally with 0700/0600 data files observed. The Windows CNG/TPM channel and Secure Enclave on a signed macOS build are not implemented or not exercised.
+Tested scope: Dart unit and Hegel property tests over the SDDL builder and checker on every host, an icacls round trip that runs only on Windows, the typed Windows Rust FFI SSH key list/revoke smoke projection, and macOS unsigned dev builds launched locally with 0700/0600 data files observed. The Windows CNG/TPM custody channel, live Porsche key journey and Secure Enclave on a signed macOS build are not exercised.
 
+- **unit, present**: [SSH key revoke request-id validation](repo:mila/windows-dotnet-smoke/Program.cs) — The production Windows interop invokes the Rust list/revoke ABI through owned buffers, rejects missing sessions and malformed request ids, and exercises the bounded controller projection; no live Windows host or Porsche journey is claimed..
 - **property, present**: [an allow entry for any other SID is refused](repo:mila/packages/mila_transport/test/owner_only_test.dart) — Hegel over generated SIDs and access masks against the SDDL checker; host-independent..
 - **unit, present**: [a written file is owner-only and refused once shared](repo:mila/packages/mila_transport/test/owner_only_test.dart) — Windows-only icacls grant to Everyone after a protected write..
 
-**Gaps:** No signed macOS build, no Windows native key channel and no Windows CI host; Secure Enclave and TPM custody are unverified on desktop.
+**Gaps:** No signed macOS build or Windows CI host; Secure Enclave and TPM custody and a live Windows Porsche key-management journey are unverified on desktop.
 
 **Preferred test work:** Add Windows and macOS CI jobs that run the transport suite natively, plus an XCTest and CTest for the native key channels; no NixOS machine test can host macOS or Windows clients.
 

@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace Mila.Windows.Interop;
@@ -9,19 +11,37 @@ internal sealed class MilaSshKeysController
 {
     private readonly Func<CancellationToken, Task<IReadOnlyList<MilaSshKey>>> loader;
     private readonly Func<Guid, CancellationToken, Task> revoker;
+    private long loadGeneration;
     internal MilaSshKeysStatus Status { get; private set; } = MilaSshKeysStatus.SignedOut;
     internal IReadOnlyList<MilaSshKey> Keys { get; private set; } = Array.Empty<MilaSshKey>();
 
     internal MilaSshKeysController(Func<CancellationToken, Task<IReadOnlyList<MilaSshKey>>> loader, Func<Guid, CancellationToken, Task> revoker)
     { this.loader = loader; this.revoker = revoker; }
 
+    /// <summary>
+    /// @cc [owner:ghuntley,label:reliability;security] mila-windows-ssh-key-load-generation
+    /// A listing response may update the view only while its session generation is
+    /// current; a signed-out or superseded request MUST NOT restore stale keys.
+    /// </summary>
     internal async Task LoadAsync(bool signedIn, CancellationToken cancellationToken = default)
     {
+        long generation = Interlocked.Increment(ref loadGeneration);
         if (!signedIn) { Status = MilaSshKeysStatus.SignedOut; Keys = Array.Empty<MilaSshKey>(); return; }
         Status = MilaSshKeysStatus.Loading;
-        try { Keys = await loader(cancellationToken); Status = MilaSshKeysStatus.Loaded; }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { Status = MilaSshKeysStatus.Loaded; }
-        catch { Status = MilaSshKeysStatus.Failed; }
+        try
+        {
+            IReadOnlyList<MilaSshKey> keys = await loader(cancellationToken);
+            if (generation != Volatile.Read(ref loadGeneration)) return;
+            Keys = keys; Status = MilaSshKeysStatus.Loaded;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            if (generation == Volatile.Read(ref loadGeneration)) Status = MilaSshKeysStatus.Loaded;
+        }
+        catch
+        {
+            if (generation == Volatile.Read(ref loadGeneration)) Status = MilaSshKeysStatus.Failed;
+        }
     }
 
     internal async Task RevokeAsync(MilaSshKey key, CancellationToken cancellationToken = default)
@@ -49,5 +69,19 @@ internal sealed class MilaSshKeysController
             result.Add(new(id, fingerprint, algorithm, label, current));
         }
         return result;
+    }
+
+    /// <summary>Computes the OpenSSH SHA-256 fingerprint without retaining key material.</summary>
+    internal static string? Fingerprint(string publicKey)
+    {
+        string[] parts = publicKey.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 2) return null;
+        try
+        {
+            byte[] blob = Convert.FromBase64String(parts[1]);
+            byte[] digest = SHA256.HashData(blob);
+            return "SHA256:" + Convert.ToBase64String(digest).TrimEnd('=');
+        }
+        catch (FormatException) { return null; }
     }
 }

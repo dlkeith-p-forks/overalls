@@ -1,5 +1,5 @@
 ---
-digest: 9685b62803a944d62c80bdf31782307c869d1234b55ba701efe43464c2765282
+digest: fd659078e07c2d30e9db9e2b7e43f4102776e8077419b567879074d28281384c
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Clone cancellation of a still-queued request now also closes its cleanup obligation (Cloning.cancel!/1), matching a refused queued head; previously such a request stayed cleanup-pending so every advance and the minute reconcile trigger raised while recording a prune effect for an absent host. Found by the queue-history property after its timeout tag moved its derandomized seed; a deterministic regression test pins the minimal history. 06-workflows documents the rule; the clone scenario and regenerated coverage chapter cite the regression test.
+Mila Windows SSH key scenario records typed FFI smoke evidence and retains the live Windows/Porsche gap.
