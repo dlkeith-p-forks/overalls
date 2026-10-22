@@ -99,6 +99,17 @@ fn main() -> std::io::Result<()> {
                 output.push_str(&format!("overalls_fleet_counter{{kind=\"service\",entity=\"{unit}\",measure=\"cpu_usage_usec\"}} {cpu}\n"));
             }
         }
+        if let Some(vms) = vm_units() {
+            output.push_str(&format!(
+                "overalls_fleet_gauge{{kind=\"vm\",entity=\"all\",measure=\"count\"}} {}\n",
+                vms.len()
+            ));
+            for vm in vms {
+                output.push_str(&format!(
+                    "overalls_fleet_info{{kind=\"vm\",entity=\"{vm}\"}} 1\n"
+                ));
+            }
+        }
         output
     })
 }
@@ -323,4 +334,37 @@ fn cgroup_usage(unit: &str) -> Option<(u64, u64)> {
             .flatten()
     })?;
     Some((memory, usage))
+}
+
+fn vm_units() -> Option<Vec<String>> {
+    let output = Command::new("systemctl")
+        .args([
+            "list-units",
+            "--type=service",
+            "--all",
+            "--no-legend",
+            "--no-pager",
+        ])
+        .output()
+        .ok()?;
+    if !output.status.success() || output.stdout.len() > 1_048_576 {
+        return None;
+    }
+    Some(
+        String::from_utf8(output.stdout)
+            .ok()?
+            .lines()
+            .filter_map(|line| {
+                let unit = line.split_whitespace().next()?;
+                (unit.starts_with("lilly-vm-")
+                    && unit.ends_with(".service")
+                    && unit.len() <= 128
+                    && unit
+                        .bytes()
+                        .all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'.'))
+                .then_some(unit.to_owned())
+            })
+            .take(2048)
+            .collect(),
+    )
 }

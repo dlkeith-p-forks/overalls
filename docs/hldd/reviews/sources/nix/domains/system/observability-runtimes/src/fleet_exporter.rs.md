@@ -1,5 +1,5 @@
 ---
-digest: b569792112c10cc9d1e59553e69e5a168ddbc645de44a29c61dfc6e8d01962e0
+digest: cd2d6e7bfa3a1f9369696f5029c22a4de6a2bb0a1eb79ffdf9fccd5dfcb73136
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now reads only bounded memory.current and cpu.stat values from descriptor-allowlisted service cgroups, preserving unit identity and failure isolation.
+Fleet exporter now discovers bounded lilly VM service units through systemd listing, retaining the existing unit-name allowlist and no process metadata exposure.
