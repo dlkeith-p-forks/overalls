@@ -34,6 +34,8 @@ public sealed partial class MainWindow : Window
         MachineShareRemove.Content = S("sharingRemove", "Share remove"); MachineWebShow.Content = S("webOpen", "Web show");
         MachineWebSet.Content = S("webSave", "Web set");
         CreateMachine.Content = S("actionCreate", "Create machine");
+        ShareAdd.Content = S("sharingAdd", "Share add");
+        ShareRemove.Content = S("sharingRemove", "Share remove");
         ThreadCommandsTitle.Text = S("tabThreads", "Thread commands");
         ThreadCommandsHelp.Text = S("threadWorking", "Commands are validated by the Rust core before execution.");
         ThreadList.Content = S("tabInfo", "List"); ThreadShow.Content = S("machineLoading", "Show");
@@ -51,6 +53,8 @@ public sealed partial class MainWindow : Window
         WebCopy.Content = S("webCopy", "Copy address");
         WebStatus.Text = S("webNoAddress", "No web address");
     }
+    private void ShareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share add {SampleMachine} user viewer");
+    private void UnshareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");
     private void CreateMachine(object sender, RoutedEventArgs args)
     {
         MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand("new");

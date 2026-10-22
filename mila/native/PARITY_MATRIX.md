@@ -1,0 +1,66 @@
+# Mila native parity matrix
+
+This matrix is the migration gate for ADR-0249. It compares the behavior in
+the retained Flutter client with the native shells. A row is **implemented**
+only when the native UI, its Rust adapter, and a platform test or build
+receipt cover the behavior. A controller, command classifier, or localized
+label by itself is **partial** evidence; it does not prove an end-to-end
+workflow.
+
+## Status legend
+
+- **partial**: native code or a focused test exists, but an end-to-end user
+  workflow, persistence, OS integration, or release evidence is missing.
+- **open**: no native implementation has been found for the Flutter behavior.
+- **implemented**: native workflow and platform verification cover the listed
+  behavior. No row currently meets this bar for every platform.
+
+## Feature matrix
+
+| Flutter behavior (source of truth) | Rust/core evidence | Apple (SwiftUI) | Android (Compose) | Linux (GTK4/libadwaita) | Windows (WinUI/.NET 10) |
+| --- | --- | --- | --- | --- | --- |
+| Deployment list, add, forget, select (`features/deployments_screen.dart`, `forget_deployment.dart`) | Route and host validation; device-key policy | partial: `MilaNativeUI.swift` host/route surface; no durable deployment store or sign-in journey | partial: `MilaDeployments.kt`, `MilaSignInState.kt`, unit tests; no complete UI persistence flow | partial: host entry and route validation in `src/main.rs`; no durable store | partial: host entry and connect state in `MainWindow.xaml(.cs)`; no durable store |
+| Sign-in, approval, reconnect (`sign_in_screen.dart`, `session.dart`) | `mila-session` SSH listing and certificate checks; approval/browser orchestration remains open | partial: FFI/session scaffolding; approval and lifecycle not wired | partial: typed sign-in states and session listing tests; approval/reconnect not wired | open: route validation only | partial: connection status and session listing projection; approval/reconnect not wired |
+| Machine list/detail/snapshot (`machines_screen.dart`, `machine_screen.dart`) | bounded machine snapshot/list projection | partial: shell only; no complete list/detail | partial: session listing projected in Compose; no complete detail/snapshot UI | partial: shell controls; no list/detail | partial: list projection and selection in `SessionListing.cs`; no complete detail |
+| Machine create/resize/start/stop/pause/resume/delete (`machine_form.dart`, `machine_actions.dart`) | command parsing/classification and policy | partial: no mutation dispatch | partial: `MilaMachineControls.kt` classifiers/tests; no authenticated mutation dispatch | partial: classifier buttons only | partial: classifier buttons plus create entrypoint; no mutation dispatch |
+| Machine sharing (`sharing_controller.dart`) | authorization policy primitives | open | open | open | partial: share command classification only |
+| Threads, turns, prompts, answers, plan approval (`threads/*`) | route and command validation; turn/session models remain incomplete | partial: route/shell references only | open: no native thread UI/controller | partial: thread command validation only | partial: list/show/turn/read classifier controls only |
+| Terminal attach/stream/input/resize/reconnect/kill (`terminal/*`) | bounded terminal reducer, permission and dimension validation; native PTY renderer remains open | partial: `MilaTerminal.swift` and live-session adapter; no verified PTY stream | partial: attach/resize state and tests; no verified PTY stream/input renderer | partial: attach validation in `src/main.rs`; no PTY stream/renderer | partial: attach/resize/input validation; no PTY stream/renderer |
+| Web controls/webview (`web/*`) | web command classification and route validation | open | open | partial: web command validation only | partial: web show/set controls; no embedded webview |
+| SSH keys (`ssh_keys/*`) | key policy and device signer boundaries | partial: device signer only; no key list/revoke screen | partial: `MilaSshKeys.kt` controller/tests; no authenticated list/revoke | partial: revoke command validation only | open |
+| Push notifications/devices (`notifications/*`) | push registration/poke validation | partial: platform notification service remains Flutter-era | partial: `MilaNotifications.kt` state/tests; OS registration and device CRUD not wired | open | partial: local toggle only; no OS registration/device CRUD |
+| App lock (`lock/*`) | lock/device-key persistence boundaries | partial: design/settings surface; authenticator lifecycle unverified | partial: lifecycle and stale-auth tests; biometric UI integration incomplete | partial: explicit unavailable capability state | partial: lock/unlock boundary; Windows Hello broker not wired |
+| Settings, appearance, locale (`settings_screen.dart`, `preferences.dart`) | locale policy and generated catalogs | partial: design tokens and catalog loader; settings persistence incomplete | partial: design tokens and catalog loader; settings persistence incomplete | partial: catalog loader and shell; settings persistence incomplete | partial: catalog loader and shell; settings persistence incomplete |
+| Deep links and share/open actions (`routes.dart`, web/share providers) | canonical route parser in Rust/Linux adapter | partial: route tests, app integration open | partial: route parser instrumentation only | partial: `route.rs` parser/tests and desktop activation | open |
+
+The matrix deliberately records gaps even where a native button calls a Rust
+classifier. ADR-0249 requires the Rust core to authorize real mutations and
+the native layer to verify lifecycle, secure storage, and release behavior.
+
+## Verification commands
+
+Run from the repository root inside `devenv shell` where the platform toolchain
+is available:
+
+```sh
+cargo test --manifest-path mila/rust/Cargo.toml --workspace
+cargo test --manifest-path mila/native/linux/Cargo.toml --locked
+./gradlew -p mila/native/android test
+swift test --package-path mila/native/apple
+dotnet test mila/windows-dotnet/Mila.Windows.csproj
+```
+
+The first two commands provide current Rust/core and Linux evidence. Android,
+Apple, and Windows commands require their respective SDKs and are expected to
+be run by native CI; a successful compile alone does not change a row to
+implemented. Before Flutter removal, each row must have a native end-to-end
+receipt on all applicable platforms and the Flutter source/build references
+must be absent.
+
+## Review record
+
+This is a migration review artifact for ADR-0249, not a claim of completion.
+It has no server schema or protocol impact. The current repository lacks the
+Elixir runtime needed to run `scripts/check_hldd.exs`; the parent change must
+run the mandatory HLDD status/record/check commands and attach receipts for
+this path before merging.

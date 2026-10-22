@@ -26,7 +26,7 @@ public struct MilaNativeRootView: View {
                 case .machine(let id): MachineDetailView(machine: machines.first { $0.id == id }, adapter: adapter)
                 case .threads: ThreadsView(adapter: adapter, select: { selection = .thread(id: $0) })
                 case .thread(let id): ThreadDetailView(id: id)
-                case .settings: SettingsView()
+                case .settings: SettingsView(adapter: adapter)
                 }
             }
             .toolbar { ToolbarItem { Button(MilaStrings.text(.refresh)) { Task { await refresh() } } } }
@@ -114,8 +114,13 @@ private struct ThreadsView: View {
 }
 private struct ThreadDetailView: View { let id: UUID; var body: some View { Text("\(MilaStrings.text(.threads)) \(id.uuidString)").padding() } }
 private struct SettingsView: View {
+    let adapter: any MilaFFIAdapter
     @AppStorage("mila.appearance") private var appearance = "system"
     @AppStorage("mila.appLockEnabled") private var appLockEnabled = false
+    @State private var notificationToken = ""
+    @State private var notificationEndpoint = ""
+    @State private var notificationStatus = ""
+    @State private var notificationsEnabled = false
     var body: some View {
         Form {
             Section(MilaStrings.text(.appearance)) {
@@ -130,6 +135,31 @@ private struct SettingsView: View {
                 Toggle(MilaStrings.text(.lockTitle), isOn: $appLockEnabled)
                     .disabled(true)
                 Text(MilaStrings.text(.lockUnavailable)).font(.caption).foregroundStyle(.secondary)
+            }
+            Section(MilaStrings.text(.notificationsTitle)) {
+                Text(MilaStrings.text(.notificationsExplain)).font(.caption)
+                SecureField("Device token", text: $notificationToken)
+                    .textContentType(.oneTimeCode)
+                TextField("https://deployment.example/push", text: $notificationEndpoint)
+                    .textContentType(.URL)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
+                HStack {
+                    Button(notificationsEnabled ? MilaStrings.text(.notificationsTurnOff) : MilaStrings.text(.notificationsTurnOn)) {
+                        if notificationsEnabled {
+                            notificationsEnabled = false
+                            notificationStatus = MilaStrings.text(.notificationsTurnOff)
+                        } else {
+                            let controller = MilaNotificationController(adapter: adapter, appID: "com.overalls.mila", deployment: "current")
+                            controller.register(token: notificationToken, endpoint: notificationEndpoint)
+                            notificationsEnabled = controller.state == .on
+                            notificationStatus = notificationsEnabled ? MilaStrings.text(.notificationsTurnOn) : MilaStrings.text(.runtimeUnavailable)
+                            notificationToken = ""
+                        }
+                    }
+                    Text(notificationsEnabled ? "[on]" : "[off]").font(.caption)
+                }
+                Text(notificationStatus).font(.caption).foregroundStyle(.secondary)
             }
             Text(MilaStrings.text(.runtimeUnavailable)).foregroundStyle(.secondary)
         }.navigationTitle(MilaStrings.text(.settings))

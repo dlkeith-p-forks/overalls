@@ -1,5 +1,5 @@
 ---
-digest: baa8febbba6ae9020fcb341b62b46b0de35363c9f227a999c64489defd1c0a4a
+digest: cd0008b44dbb106c1f7bd4f73d808d46ca786374a93e7d1bee90a43db6f5b130
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple SwiftUI presentation tokens and tests preserve existing native UI boundaries and do not alter domains, protocols, deployment, or security behavior.
+Apple notification state UI is a native presentation layer over existing typed push policy.
