@@ -13,6 +13,7 @@ fn main() -> std::io::Result<()> {
         std::process::exit(64);
     }
     let descriptor = fs::read_to_string(&args[1]).unwrap_or_default();
+    let budgets = parse_budgets(&descriptor);
     let address = args[2].clone();
     let port: u16 = args[3]
         .parse()
@@ -57,9 +58,44 @@ fn main() -> std::io::Result<()> {
                 out.push('\n');
             }
         }
-        let _ = &descriptor;
+        for (name, budget) in &budgets {
+            out.push_str(&format!(
+                "overalls_logging_output_budget_bytes{{output=\"{name}\"}} {budget}\n"
+            ));
+            out.push_str(&format!(
+                "overalls_logging_output_counters_valid{{output=\"{name}\"}} 0\n"
+            ));
+        }
         out
     })
+}
+
+fn parse_budgets(descriptor: &str) -> Vec<(String, u64)> {
+    let section = descriptor
+        .split("\"queueBudgets\"")
+        .nth(1)
+        .and_then(|value| value.split_once('{').map(|(_, rest)| rest))
+        .unwrap_or("");
+    section
+        .split('}')
+        .next()
+        .unwrap_or("")
+        .split(',')
+        .filter_map(|entry| {
+            let (raw_name, raw_value) = entry.split_once(':')?;
+            let name = raw_name.trim().trim_matches('"');
+            if name.is_empty()
+                || !name
+                    .chars()
+                    .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')
+            {
+                return None;
+            }
+            let value = raw_value.trim().parse::<u64>().ok()?;
+            (value > 0).then(|| (name.to_owned(), value))
+        })
+        .take(128)
+        .collect()
 }
 
 fn scrape(port: u16) -> Option<String> {
