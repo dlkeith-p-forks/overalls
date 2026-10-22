@@ -1,5 +1,5 @@
 ---
-digest: 7877900694511943de5579901806d994595a6c9dfb8984ee213c3ba26aa744e3
+digest: a35e65ecd261dc9b90b6e2f36346a67b33394b862f81494f66a886202b8d9160
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-CI-driven Swift concurrency/localization typing and WinUI resource ordering fixes restore native compilation without changing product behavior.
+Apple localization candidate typing and removal of the empty resource placeholder restore Swift package compilation; Linux GTK sign-in controls expose only validated approval/session reducer state until a signer is supplied.
