@@ -52,6 +52,15 @@ android {
 
 // Generated libraries stay under build/ and enter APKs through the JNI source set.
 val rustRoot = rootProject.file("../../rust")
+val localizationSource = rootProject.file("../../app/lib/l10n")
+val localizationOutput = layout.buildDirectory.dir("generated/mila-locales")
+val generateMilaLocalization = tasks.register<Exec>("generateMilaLocalization") {
+    inputs.dir(localizationSource)
+    outputs.dir(localizationOutput)
+    commandLine("python3", rootProject.file("../../localization/generate_catalogs.py").absolutePath,
+        "--source", localizationSource.absolutePath, "--output", localizationOutput.get().asFile.absolutePath)
+}
+android.sourceSets.getByName("main").assets.srcDir(localizationOutput)
 val rustJniOutput = layout.buildDirectory.dir("rust-jni")
 val rustAbis = listOf("arm64-v8a", "armeabi-v7a", "x86_64")
 android {
@@ -78,4 +87,4 @@ val buildRustJni = tasks.register<Exec>("buildRustJni") {
                 "build", "--locked", "--release", "-p", "mila-ffi")
     )
 }
-tasks.named("preBuild") { dependsOn(buildRustJni) }
+tasks.named("preBuild") { dependsOn(buildRustJni, generateMilaLocalization) }

@@ -14,6 +14,11 @@ packaged it. Replace the unavailable UI adapter with `LinkedMilaFfiAdapter` once
 credentials, key material, authentication tokens, and terminal bytes out of this adapter's logs and
 UI state.
 
+The `preBuild` task also runs the shared catalog generator against
+`mila/app/lib/l10n` and packages the deterministic 28-locale JSON bundles as
+APK assets. Native message identities use English only as a safe fallback when
+a translated resource is unavailable.
+
 ## Static validation
 
 On a machine with Android SDK API 36, JDK 17, and Gradle 9:
