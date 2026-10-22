@@ -1,13 +1,13 @@
 ---
-digest: 1dcb7328133c9cce38f084522d11880a458a838a9b5123ac16cb07d137b98f21
-disposition: no-impact
+digest: ac4352ceb105ba01e1c015f69b82240532dde00adb47e55cd9cace8eb414fc80
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaWeb.kt
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 5a12016279aa9cabbc8387b02b24cc3aef172e874141f34cc6081993ff71ea00
+  marshall/priv/hldd/08-interactive.md: fd81d780fad0a9ee1c0d15047d640367c23b5243da47fb06283eaf5d9c716160
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: fd659078e07c2d30e9db9e2b7e43f4102776e8077419b567879074d28281384c
+  marshall/priv/hldd/19-coverage.md: 8c8d408d0f46b9cb2a99bd41ff000a80758fc42eb93274f41fc7d487af3ade38
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed typed native UI compile and web control changes.
+Bind Android web show/set controls to the authenticated session, require machine-bound HTTPS endpoints and document remaining packaged evidence.

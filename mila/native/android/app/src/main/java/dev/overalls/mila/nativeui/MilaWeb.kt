@@ -42,7 +42,7 @@ class MilaWebController(private val adapter: MilaFfiAdapter) {
     var error by mutableStateOf<String?>(null); private set
     suspend fun show(machine: UUID): Boolean = runCatching {
         val result = adapter.webShow(machine).getOrThrow()
-        endpoint = parseMilaWebEndpoint(result).getOrThrow()
+        endpoint = parseMilaWebEndpoint(result).getOrThrow().also { require(it.machineId == machine) { "web endpoint machine mismatch" } }
         error = null
     }.onFailure { error = it.message ?: "web endpoint unavailable" }.isSuccess
     suspend fun set(machine: UUID, port: Int, public: Boolean): Boolean = runCatching {
@@ -70,6 +70,7 @@ fun MilaWebView(url: String, modifier: Modifier = Modifier) {
 fun MilaWebControls(adapter: MilaFfiAdapter, machine: MilaMachineRow) {
     val controller = remember { MilaWebController(adapter) }
     val scope = rememberCoroutineScope()
+    LaunchedEffect(machine.id) { controller.show(machine.id) }
     var port by remember { mutableStateOf("") }
     var public by remember { mutableStateOf(true) }
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {

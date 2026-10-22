@@ -16,4 +16,14 @@ class MilaWebTest {
   val result = parseMilaWebEndpoint("{\"machine_id\":\"00000000-0000-0000-0000-000000000001\",\"port\":0,\"visibility\":\"public\",\"policy_revision\":2}")
   assertTrue(result.isFailure)
  }
+ @Test fun controllerRejectsEndpointForAnotherMachine() = kotlinx.coroutines.runBlocking {
+  val foreign = java.util.UUID.fromString("00000000-0000-0000-0000-000000000002")
+  val adapter = object : MilaFfiAdapter {
+   override suspend fun call(request: MilaFfiRequest) = MilaFfiResult.Failure(MilaFfiError.Unavailable)
+   override suspend fun webShow(machineId: java.util.UUID) = Result.success("{\"machine_id\":\"$foreign\",\"port\":8080,\"visibility\":\"public\",\"policy_revision\":2}")
+  }
+  val controller = MilaWebController(adapter)
+  assertFalse(controller.show(java.util.UUID.fromString("00000000-0000-0000-0000-000000000001")))
+  assertNull(controller.endpoint)
+ }
 }

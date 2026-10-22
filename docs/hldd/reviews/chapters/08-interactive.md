@@ -1,6 +1,6 @@
 ---
-digest: 77cdf7d6a5e6e45f437b59dcf9c2865a8ea664f07f5f12320cff67c98b9aff1a
-disposition: no-impact
+digest: fd81d780fad0a9ee1c0d15047d640367c23b5243da47fb06283eaf5d9c716160
+disposition: updated
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/08-interactive.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Refreshed Android thread and Linux activation parity evidence.
+Bind Android web show/set controls to the authenticated session, require machine-bound HTTPS endpoints and document remaining packaged evidence.

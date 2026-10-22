@@ -1827,3 +1827,10 @@ prompt, answer and plan actions accept only bounded text and closed command tags
 then render the typed submitting/applied/refused result from the Rust session.
 No thread bytes or credentials enter deployment preferences. Packaged Android
 thread acceptance and server-side authorization remain unverified.
+
+Android web controls call `web show` and `web set` through the bound Rust
+session. The endpoint decoder bounds the response, requires the requested
+machine UUID and accepts only HTTPS URLs without user-info or fragments before
+loading the WebView. Updates use the returned policy revision and refresh the
+endpoint after the mutation; packaged WebView and live authorization evidence
+remain unverified.
