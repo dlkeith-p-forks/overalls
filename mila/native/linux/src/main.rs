@@ -264,6 +264,13 @@ impl NativeState {
 }
 fn main() -> glib::ExitCode {
     adw::init().expect("GTK/libadwaita initialization failed");
+    let css = gtk::CssProvider::new();
+    css.load_from_data("* { font-family: JetBrains Mono, monospace; font-size: 14px; } window, box { background: #fff; color: #000; } button, entry { border: 2px solid #000; border-radius: 0; background: #eee; color: #000; } button:hover { background: #000; color: #fff; } @media (prefers-color-scheme: dark) { window, box { background: #000; color: #fff; } button, entry { border-color: #fff; background: #111; color: #fff; } button:hover { background: #fff; color: #000; } } ");
+    gtk::style_context_add_provider_for_display(
+        &gtk::gdk::Display::default().expect("display"),
+        &css,
+        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+    );
     let application = Application::builder()
         .application_id(APPLICATION_ID)
         .flags(gio::ApplicationFlags::HANDLES_OPEN)
