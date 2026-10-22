@@ -1,5 +1,5 @@
 ---
-digest: 1d1619c1faac929475983e4e2598f9140172811c6ab8060e1b0cb60caf5ebdd8
+digest: d8568e8d1fd6159fc2f55a149005934f81527f2f1388a1fa5af83af651a215d2
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows create-machine entrypoint only classifies the request through existing Rust policy.
+Windows machine sharing controls only classify typed share operations through Rust policy.
