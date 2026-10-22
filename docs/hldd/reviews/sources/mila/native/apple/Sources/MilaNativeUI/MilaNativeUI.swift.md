@@ -1,5 +1,5 @@
 ---
-digest: 17e7411a11c7590fa443729f3694d495bb9a42d94e554be5545079c928a942c2
+digest: 75420a83c21a031ac92b2c76bf0ddb318548d00255cd54cec2b37f851ab49845
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Authenticated SSH-key, sharing, and Android thread payload seams preserve typed session boundaries; tests cover malformed inputs.
+Added Apple LocalAuthentication app-lock controller and lock gate; native UI behavior remains within existing Mila client boundary.

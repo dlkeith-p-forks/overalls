@@ -3,7 +3,7 @@ use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
     format_machine_action, format_share_command, format_ssh_key_revoke, format_thread_command,
-    format_thread_turns, format_web_command, validate_terminal_operation, TerminalOperation,
+    format_thread_turns, format_web_command, TerminalStream,
 };
 use mila_native_linux::route::{parse_activation_uris, ActivationRoute};
 use std::{cell::RefCell, rc::Rc};
@@ -107,11 +107,8 @@ impl NativeState {
         let settings_status = content.clone();
         let saved_appearance = settings.appearance;
         save_settings.connect_clicked(move |_| {
-            match persistence::Settings::validate(
-                saved_appearance,
-                locale_input.text().as_str(),
-            )
-            .and_then(|value| persistence::save_settings(&value).map(|_| value))
+            match persistence::Settings::validate(saved_appearance, locale_input.text().as_str())
+                .and_then(|value| persistence::save_settings(&value).map(|_| value))
             {
                 Ok(value) => {
                     settings_status.set_label(&format!("Settings saved: {}", value.locale))
@@ -243,34 +240,138 @@ impl NativeState {
         );
         root.append(&share_response);
         root.append(&share_load);
+        // Terminal controls keep only typed lifecycle state. PTY bytes remain in
+        // the transport and never enter GTK labels or application state.
         let terminal = Entry::builder()
             .placeholder_text("Terminal session ID")
             .hexpand(true)
             .build();
-        let attach = Button::with_label(&strings::text(strings::Message::AttachTerminal));
+        let terminal_input = Entry::builder()
+            .placeholder_text("Input length (bytes)")
+            .hexpand(true)
+            .build();
+        let terminal_columns = Entry::builder()
+            .placeholder_text("Columns")
+            .text("80")
+            .hexpand(true)
+            .build();
+        let terminal_rows = Entry::builder()
+            .placeholder_text("Rows")
+            .text("24")
+            .hexpand(true)
+            .build();
+        let terminal_actions = Box::new(Orientation::Horizontal, 8);
+        let terminal_stream = Rc::new(RefCell::new(TerminalStream::new()));
         let terminal_status = content.clone();
-        let terminal_input = terminal.clone();
+        let stream = terminal_stream.clone();
+        let session_input = terminal.clone();
+        let attach = Button::with_label(&strings::text(strings::Message::AttachTerminal));
         attach.connect_clicked(move |_| {
-            let session_value = terminal_input.text();
-            let session = session_value.trim();
+            let session = session_input.text().trim().to_owned();
             if session.is_empty() || session.len() > 128 {
                 terminal_status.set_label("Terminal session rejected by Rust policy.");
                 return;
             }
-            match validate_terminal_operation(TerminalOperation::Attach {
-                from: 0,
-                columns: 80,
-                rows: 24,
-                read_write: true,
-            }) {
-                Ok(()) => {
-                    terminal_status.set_label(&format!("Terminal attached\nSession {session}"))
-                }
-                Err(_) => terminal_status.set_label("Terminal attach rejected by Rust policy."),
+            let mut stream = stream.borrow_mut();
+            match stream.attach() {
+                Ok(generation) => terminal_status.set_label(&format!(
+                    "Terminal attaching\nSession {session}\nGeneration {generation}"
+                )),
+                Err(_) => terminal_status.set_label("Terminal attach unavailable."),
             }
         });
+        terminal_actions.append(&attach);
+
+        let terminal_status = content.clone();
+        let stream = terminal_stream.clone();
+        let connect = Button::with_label("Connect");
+        connect.connect_clicked(move |_| {
+            let mut stream = stream.borrow_mut();
+            let generation = stream.state().generation();
+            let cursor = stream.state().resume_cursor().unwrap_or(0);
+            match stream.connected(generation, cursor, true) {
+                Ok(()) => terminal_status.set_label(&format!(
+                    "Terminal attached\nGeneration {generation}\nRead-write"
+                )),
+                Err(_) => terminal_status.set_label("Terminal connection rejected."),
+            }
+        });
+        terminal_actions.append(&connect);
+
+        let terminal_status = content.clone();
+        let stream = terminal_stream.clone();
+        let reconnect = Button::with_label("Reconnect");
+        reconnect.connect_clicked(move |_| {
+            let mut stream = stream.borrow_mut();
+            match stream.reconnect() {
+                Ok(generation) => terminal_status
+                    .set_label(&format!("Terminal reconnecting\nGeneration {generation}")),
+                Err(_) => terminal_status.set_label("Terminal reconnect unavailable."),
+            }
+        });
+        terminal_actions.append(&reconnect);
+
+        let terminal_status = content.clone();
+        let stream = terminal_stream.clone();
+        let input = terminal_input.clone();
+        let input_button = Button::with_label("Send input");
+        input_button.connect_clicked(move |_| {
+            let length = input.text().trim().parse::<usize>().ok();
+            let Some(length) = length else {
+                terminal_status.set_label("Terminal input length rejected.");
+                return;
+            };
+            match stream.borrow().validate_input(length) {
+                Ok(()) => {
+                    terminal_status.set_label(&format!("Terminal input accepted ({length} bytes)"))
+                }
+                Err(_) => terminal_status.set_label("Terminal input rejected by Rust policy."),
+            }
+        });
+        terminal_actions.append(&input_button);
+
+        let terminal_status = content.clone();
+        let stream = terminal_stream.clone();
+        let columns = terminal_columns.clone();
+        let rows = terminal_rows.clone();
+        let resize = Button::with_label("Resize");
+        resize.connect_clicked(move |_| {
+            let parsed = columns
+                .text()
+                .trim()
+                .parse::<u16>()
+                .ok()
+                .zip(rows.text().trim().parse::<u16>().ok());
+            let Some((columns, rows)) = parsed else {
+                terminal_status.set_label("Terminal size rejected.");
+                return;
+            };
+            match stream.borrow().validate_resize(columns, rows) {
+                Ok(()) => terminal_status
+                    .set_label(&format!("Terminal resize accepted ({columns}x{rows})")),
+                Err(_) => terminal_status.set_label("Terminal resize rejected by Rust policy."),
+            }
+        });
+        terminal_actions.append(&resize);
+
+        let terminal_status = content.clone();
+        let stream = terminal_stream.clone();
+        let kill = Button::with_label("Kill");
+        kill.connect_clicked(move |_| {
+            let generation = stream.borrow().state().generation();
+            match stream.borrow_mut().kill(generation) {
+                Ok(()) => {
+                    terminal_status.set_label(&format!("Terminal ended\nGeneration {generation}"))
+                }
+                Err(_) => terminal_status.set_label("Terminal kill rejected."),
+            }
+        });
+        terminal_actions.append(&kill);
         root.append(&terminal);
-        root.append(&attach);
+        root.append(&terminal_input);
+        root.append(&terminal_columns);
+        root.append(&terminal_rows);
+        root.append(&terminal_actions);
         let thread_id = Entry::builder()
             .placeholder_text(&strings::text(strings::Message::ThreadId))
             .hexpand(true)
