@@ -5,7 +5,7 @@ public struct MilaSharePrincipal: Equatable, Sendable {
     public let value: String
     public init(_ raw: String) throws {
         let value = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard (3...256).contains(value.utf8.count), !value.unicodeScalars.contains(where: { $0.properties.isControl }) else {
+        guard (3...256).contains(value.utf8.count), !value.unicodeScalars.contains(where: { $0.value < 0x20 || $0.value == 0x7f }) else {
             throw MilaMachineSharingError.invalidPrincipal
         }
         self.value = value

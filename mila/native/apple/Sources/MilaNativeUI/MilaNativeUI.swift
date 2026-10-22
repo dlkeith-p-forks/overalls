@@ -88,7 +88,7 @@ private struct MachineDetailView: View {
                 Button(MilaStrings.text(.openTerminal)) { showTerminal = true }.disabled(!machine.machine.write)
                 HStack {
                     TextField(MilaStrings.text(.sharePrincipal), text: $sharePrincipal)
-                        .textInputAutocapitalization(.never).autocorrectionDisabled()
+                        .autocorrectionDisabled()
                     Button(MilaStrings.text(.shareAdd)) { sharing.submit(principal: sharePrincipal) }
                         .disabled(!machine.machine.write || sharePrincipal.isEmpty)
                     Button(MilaStrings.text(.shareRemove)) { sharing.submit(principal: sharePrincipal, remove: true) }
@@ -96,7 +96,7 @@ private struct MachineDetailView: View {
                 }
                 Text(shareStatus).font(.caption).foregroundStyle(.secondary)
                 HStack {
-                    TextField(MilaStrings.text(.webPlaceholder), text: $webURL).textContentType(.URL).autocorrectionDisabled().textInputAutocapitalization(.never)
+                    TextField(MilaStrings.text(.webPlaceholder), text: $webURL).textContentType(.URL).autocorrectionDisabled()
                     Button(MilaStrings.text(.webOpen)) { showWeb = webControls.set(webURL) }.disabled(webURL.isEmpty)
                 }
                 if webControls.error != nil { Text(MilaStrings.text(.webInvalid)).font(.caption).foregroundStyle(.secondary) }
@@ -203,7 +203,6 @@ private struct SettingsView: View {
                 TextField("https://deployment.example/push", text: $notificationEndpoint)
                     .textContentType(.URL)
                     .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
                 HStack {
                     Button(notificationsEnabled ? MilaStrings.text(.notificationsTurnOff) : MilaStrings.text(.notificationsTurnOn)) {
                         if notificationsEnabled {
