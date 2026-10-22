@@ -1,6 +1,6 @@
 ---
-digest: 1808024591b23b47c1ac33aefd2058cc2965c72f9eabfb3bf362ee747bdfbb7b
-disposition: updated
+digest: 4ba08ce4ef892158a40be3373507d46dd50afd1d8b6628b39ac9c183a8edb22b
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Add bounded Android terminal renderer and typed reconnect/input lifecycle while documenting live PTY and device gaps.
+Updated Android SSH key parity evidence for authenticated-session list/revoke; no architecture boundary change
