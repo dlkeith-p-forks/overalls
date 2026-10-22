@@ -1834,3 +1834,10 @@ machine UUID and accepts only HTTPS URLs without user-info or fragments before
 loading the WebView. Updates use the returned policy revision and refresh the
 endpoint after the mutation; packaged WebView and live authorization evidence
 remain unverified.
+
+Android's terminal controller keeps attach mode, dimensions, reconnect and
+close as typed state and accepts input only while attached read-write. Its text
+renderer strips control bytes, caps each line at 4 KiB and retains 200 lines;
+the native seam validates attach, input and resize against the authenticated
+session boundary. A live PTY stream, kill authority and packaged-device
+execution remain unverified.

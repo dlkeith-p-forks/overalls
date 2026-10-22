@@ -1,18 +1,18 @@
 ---
-digest: e7dc745f20455338dc3ce4407e6e24c7192dcdd5cc1255a86c7cbbb1d547c0dc
-disposition: no-impact
+digest: a51f784744cdd06d9b8fb22fe19ff67379b7608f02b7e4e2519a8ab4e041c9d3
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/test/java/dev/overalls/mila/nativeui/MilaMachineControlsTest.kt
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
+  marshall/priv/hldd/08-interactive.md: 5679b11e512a9e32ef98c816e1a13e78f3c0284eb1a62fe3395b7653452a89a5
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
-  marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
+  marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Android machine action and terminal controllers expose only typed Rust-classified operations with bounded dimensions; no protocol impact.
+Add bounded Android terminal renderer and typed reconnect/input lifecycle while documenting live PTY and device gaps.

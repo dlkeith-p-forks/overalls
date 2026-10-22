@@ -1,5 +1,5 @@
 ---
-digest: fd81d780fad0a9ee1c0d15047d640367c23b5243da47fb06283eaf5d9c716160
+digest: 5679b11e512a9e32ef98c816e1a13e78f3c0284eb1a62fe3395b7653452a89a5
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Bind Android web show/set controls to the authenticated session, require machine-bound HTTPS endpoints and document remaining packaged evidence.
+Add bounded Android terminal renderer and typed reconnect/input lifecycle while documenting live PTY and device gaps.
