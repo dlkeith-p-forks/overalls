@@ -1,9 +1,26 @@
 package dev.overalls.mila.nativeui
 
 import java.util.UUID
+import org.json.JSONObject
 
 data class MilaThreadRow(val id: UUID, val title: String, val status: String)
-data class MilaThreadListing(val threads: List<MilaThreadRow>, val hasMore: Boolean)
+data class MilaThreadListing(val threads: List<MilaThreadRow>, val hasMore: Boolean) {
+ companion object {
+  fun decode(bytes: ByteArray): MilaThreadListing {
+    require(bytes.size <= 256 * 1024)
+    val result = JSONObject(bytes.toString(Charsets.UTF_8)).optJSONObject("result") ?: JSONObject()
+    val rows = result.optJSONArray("threads") ?: result.optJSONArray("items") ?: error("threads missing")
+    require(rows.length() <= 500)
+    val threads = buildList {
+        for (index in 0 until rows.length()) {
+            val row = rows.getJSONObject(index)
+            add(MilaThreadRow(UUID.fromString(row.getString("id")), row.optString("title"), row.optString("status")))
+        }
+    }
+    return MilaThreadListing(threads, result.optBoolean("has_more", false))
+  }
+ }
+}
 
 sealed interface MilaThreadActionState {
     data object SignedOut : MilaThreadActionState

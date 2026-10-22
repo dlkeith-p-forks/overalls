@@ -1820,3 +1820,10 @@ closed `MilaMachineCommand` values through the same bound Rust session and
 render their submitting/applied/refused state after the suspend call returns;
 there is no UI-only command submission path. Compose release and live-device
 execution of these controls remain unverified.
+
+Android Threads follows the same authenticated-session boundary. `thread ls`
+returns a bounded, UUID-validated listing before Compose offers a detail route;
+prompt, answer and plan actions accept only bounded text and closed command tags,
+then render the typed submitting/applied/refused result from the Rust session.
+No thread bytes or credentials enter deployment preferences. Packaged Android
+thread acceptance and server-side authorization remain unverified.

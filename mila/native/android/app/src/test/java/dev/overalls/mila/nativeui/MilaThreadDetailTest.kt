@@ -12,6 +12,12 @@ private class ThreadAdapter(private val accepted: Boolean = true) : MilaFfiAdapt
 }
 
 class MilaThreadDetailTest {
+    @Test fun decodesBoundedThreadListing() {
+        val id = "00000000-0000-0000-0000-000000000001"
+        val listing = MilaThreadListing.decode("""{"result":{"threads":[{"id":"$id","title":"Build","status":"open"}],"has_more":false}}""".toByteArray())
+        assertEquals(1, listing.threads.size)
+        assertEquals("Build", listing.threads.single().title)
+    }
     private val id = UUID.fromString("00000000-0000-0000-0000-000000000002")
     private val listing = MilaThreadListing(listOf(MilaThreadRow(id, "deploy", "active")), false)
 

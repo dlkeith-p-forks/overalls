@@ -114,6 +114,7 @@ interface MilaFfiAdapter {
             is MilaFfiResult.Failure -> Result.failure(IllegalStateException("thread action unavailable"))
         }
     }
+    suspend fun threadListing(): Result<MilaThreadListing> = Result.failure(IllegalStateException("thread listing unavailable"))
 
     private fun String.jsonEscaped(): String = buildString(length) {
         for (character in this@jsonEscaped) when (character) {
@@ -326,6 +327,11 @@ class MilaSessionHandle internal constructor(
         MilaRustFfi.nativeSessionThreadAction(nativeHandle, thread.toString(), wire, secondary?.toString(), input, requestId)
             ?: error("thread action rejected")
     }
+    @Synchronized fun threadListing(): Result<ByteArray> = runCatching {
+        check(!closed)
+        MilaRustFfi.nativeSessionThreadAction(nativeHandle, "", "thread ls", null, null, null)
+            ?: error("thread listing unavailable")
+    }
     /** Reads keys through the same authenticated, certificate-pinned session handle. */
     @Synchronized fun sshKeys(): Result<ByteArray> = runCatching {
         check(!closed)
@@ -376,6 +382,10 @@ class LinkedMilaFfiAdapter(
         val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
         val payload = session.threadAction(threadId, command, input = input, requestId = if (command == MilaThreadCommand.Prompt || command == MilaThreadCommand.Answer || command == MilaThreadCommand.PlanApprove || command == MilaThreadCommand.PlanRevise) "porsche-" + UUID.randomUUID().toString().replace("-", "") else null)
         return payload.map { Unit }
+    }
+    override suspend fun threadListing(): Result<MilaThreadListing> {
+        val session = authenticatedSession ?: return Result.failure(IllegalStateException("session unavailable"))
+        return session.threadListing().map { MilaThreadListing.decode(it) }
     }
 
     override fun sshKeyStore(): MilaSshKeyStore? = authenticatedSession?.let {

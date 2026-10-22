@@ -1,6 +1,6 @@
 ---
-digest: 43e1b55308537ab39797562f4a6bd5f935d8b4178f3fc149d20309636dca4f31
-disposition: updated
+digest: 77cdf7d6a5e6e45f437b59dcf9c2865a8ea664f07f5f12320cff67c98b9aff1a
+disposition: no-impact
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/08-interactive.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Bind Android machine detail mutation rendering to the authenticated Rust session and record the remaining packaged-device evidence gap.
+Refreshed Android thread and Linux activation parity evidence.
