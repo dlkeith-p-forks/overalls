@@ -1,5 +1,5 @@
 ---
-digest: 3ca137f9465c28b039ada48d741c9cc544f84838c33b49dafa7d07f1081ec668
+digest: 454c4c2d78e71b0b3f56f2313a1d6ae9932034ce141cba5be557b24f42bd9a24
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple machine mutation workflow and Windows typed thread listing/actions remain native UI over Rust classification and session boundaries.
+Apple native web controls remain within existing UI and HTTPS validation boundaries.

@@ -1,5 +1,5 @@
 ---
-digest: ee40fcba769b5f9dbe3b59564ae4fd5ea35b7098207d926eb5d3c57e3b595b23
+digest: c7adc3dc9ee4802d7d1a895c46b38eba409adc7fbd4c01f0d597c3e1a2c0c3a4
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple SSH key state and Windows authenticated mutation state remain native UI over typed Rust validation boundaries.
+Apple native web controls remain within existing UI and HTTPS validation boundaries.
