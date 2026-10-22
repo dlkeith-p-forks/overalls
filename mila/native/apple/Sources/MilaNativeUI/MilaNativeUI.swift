@@ -31,7 +31,7 @@ public struct MilaNativeRootView: View {
             }
             .toolbar { ToolbarItem { Button(MilaStrings.text(.refresh)) { Task { await refresh() } } } }
             .safeAreaInset(edge: .bottom) { Text(status).font(.caption).foregroundStyle(.secondary).padding(4) }
-        }.task { await refresh() }
+        }.milaDesignSystem().task { await refresh() }
     }
 
     private func refresh() async {

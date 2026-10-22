@@ -1,0 +1,19 @@
+import SwiftUI
+import XCTest
+@testable import MilaNativeUI
+
+final class MilaDesignSystemTests: XCTestCase {
+    func testLightThemeUsesFourMonochromeTokens() {
+        XCTAssertEqual(MilaMonoTokens.light.text, .black)
+        XCTAssertEqual(MilaMonoTokens.light.textAlt, Color(red: 0.4, green: 0.4, blue: 0.4))
+        XCTAssertEqual(MilaMonoTokens.light.background, .white)
+        XCTAssertEqual(MilaMonoTokens.light.backgroundAlt, Color(red: 0.933333, green: 0.933333, blue: 0.933333))
+    }
+
+    func testDarkThemeUsesFourMonochromeTokens() {
+        XCTAssertEqual(MilaMonoTokens.dark.text, .white)
+        XCTAssertEqual(MilaMonoTokens.dark.textAlt, Color(red: 0.666667, green: 0.666667, blue: 0.666667))
+        XCTAssertEqual(MilaMonoTokens.dark.background, .black)
+        XCTAssertEqual(MilaMonoTokens.dark.backgroundAlt, Color(red: 0.066667, green: 0.066667, blue: 0.066667))
+    }
+}
