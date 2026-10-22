@@ -243,6 +243,37 @@ pub unsafe extern "C" fn mila_session_machine_action(
     })
 }
 
+/// Execute a bounded authenticated machine resize.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_machine_resize(
+    handle: u64,
+    machine: *const u8,
+    machine_len: usize,
+    cpu: u32,
+    memory: u64,
+    disk: u64,
+    request_id: *const u8,
+    request_id_len: usize,
+) -> SessionStatus {
+    guarded(|| {
+        let machine = std::str::from_utf8(bytes(machine, machine_len, 128)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let request_id = std::str::from_utf8(bytes(request_id, request_id_len, 64)?)
+            .map_err(|_| SessionStatus::Invalid)?;
+        let runtime = runtime()?;
+        let entry = entry(handle)?;
+        let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        runtime
+            .block_on(session.machine_resize(machine, cpu, memory, disk, request_id))
+            .map_err(|error| match error {
+                mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+                mila_session::SessionError::MutationRefused => SessionStatus::Invalid,
+                _ => SessionStatus::Invalid,
+            })
+    })
+}
+
 /// Execute an authenticated sharing mutation. `add` selects add/remove; role is
 /// required for add and must be null for remove. All strings are bounded UTF-8.
 #[no_mangle]

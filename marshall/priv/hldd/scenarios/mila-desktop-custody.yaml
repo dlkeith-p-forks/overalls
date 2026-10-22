@@ -18,6 +18,12 @@ evidence:
   path: mila/windows-dotnet-smoke/Program.cs
   scope: The Windows shell copies only bounded machine-list bytes from an authenticated Rust handle,
     decodes typed rows for selection/detail and refuses a missing handle; no live Windows journey is claimed.
+- assertion: missing authenticated resize refusal
+  execution: present
+  kind: unit
+  path: mila/windows-dotnet-smoke/Program.cs
+  scope: Start/stop/delete and bounded resize dispatches use canonical Porsche request ids and an
+    authenticated Rust handle; missing handles refuse without mutation, and no live Windows backend is claimed.
 - assertion: reconnect starts fresh generation
   execution: present
   kind: unit

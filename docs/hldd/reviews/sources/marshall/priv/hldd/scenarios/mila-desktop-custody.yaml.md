@@ -1,6 +1,6 @@
 ---
-digest: 4b0eef1139ef0e1f32515b23477181bf7799ba4cac9803a18cf01d02b08665cd
-disposition: updated
+digest: 38cfc75fb435f57ab75aba0279e0e5b786c0efb8af540a3acbc52d26b607ea29
+disposition: no-impact
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
 path: marshall/priv/hldd/scenarios/mila-desktop-custody.yaml
@@ -9,7 +9,7 @@ reviewed_chapters:
   marshall/priv/hldd/03-access.md: 5e197b8346180c9f65c712048048da17934c117a500fe63cfca781cd8933dae6
   marshall/priv/hldd/04-lifecycle.md: f3c40798f402b553640bb25852bcb205c327c87d7ad6735b4f1b243c5616b4a2
   marshall/priv/hldd/06-workflows.md: ad304114da706e2daaf6296aac5c058376e50742cc378ad4fc2a9d475d485124
-  marshall/priv/hldd/08-interactive.md: 43e1b55308537ab39797562f4a6bd5f935d8b4178f3fc149d20309636dca4f31
+  marshall/priv/hldd/08-interactive.md: 77cdf7d6a5e6e45f437b59dcf9c2865a8ea664f07f5f12320cff67c98b9aff1a
   marshall/priv/hldd/11-agents.md: 7d24214acefb26fbd3b08ce582578fd007e6ffa4bd55d986293050de8605356d
   marshall/priv/hldd/15-monitoring.md: 185a956b7033aebff87a54c5b275b8368bd130205d7bb6a8cccb2ebdd4507c7a
   marshall/priv/hldd/17-reference.md: 9b7c3c0ba2c93d62cda3b8c5b3914af2ebbab0f7f9c1e6345bdb926d15c8e8cb
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Windows machine listing and detail projection is now covered by bounded authenticated-session evidence while the live backend journey remains open.
+Reviewed authenticated machine mutation ABI and smoke coverage.

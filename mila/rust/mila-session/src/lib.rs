@@ -213,6 +213,35 @@ impl ApplicationSession {
         }
     }
 
+    /// Execute an authenticated machine resize with bounded resource values.
+    pub async fn machine_resize(
+        &mut self,
+        machine: &str,
+        cpu: u32,
+        memory: u64,
+        disk: u64,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
+        let machine = Identifier::parse(machine).map_err(|_| SessionError::InvalidListing)?;
+        let request_id =
+            mila_model::RequestId::parse(request_id).map_err(|_| SessionError::MutationRefused)?;
+        if !(1..=256).contains(&cpu)
+            || !(256..=4_194_304).contains(&memory)
+            || !(1..=16_777_216).contains(&disk)
+        {
+            return Err(SessionError::MutationRefused);
+        }
+        let line = format!(
+            "resize {machine} --cpu={cpu} --memory={memory} --disk={disk} --json --request-id={request_id}"
+        );
+        let output = self.ssh.exec(&line, &[]).await?;
+        if output.exit_status == 0 {
+            Ok(())
+        } else {
+            Err(SessionError::MutationRefused)
+        }
+    }
+
     /// Execute authenticated approved-key listing and return bounded validated JSON.
     pub async fn ssh_keys(&mut self) -> Result<Vec<u8>, SessionError> {
         let output = self.ssh.exec("ssh-key list --json", &[]).await?;

@@ -57,6 +57,9 @@ internal static class Program
         Guid keyId = Guid.NewGuid();
         MilaNativeSessionActionResult invalidSession = RustNative.TrySessionMachineAction(0, machineId, "stop", "porsche-0123456789abcdef0123456789abcdef");
         Require(invalidSession.Status == MilaNativeStatus.InvalidRequest, "missing authenticated session refusal");
+        MilaNativeSessionActionResult invalidResize = RustNative.TrySessionMachineResize(
+            0, machineId, 2, 2048, 20_480, "porsche-0123456789abcdef0123456789abcdef");
+        Require(invalidResize.Status == MilaNativeStatus.InvalidRequest, "missing authenticated resize refusal");
         MilaNativeSessionBytesResult invalidKeys = RustNative.TrySessionSshKeys(0);
         Require(invalidKeys.Status == MilaNativeStatus.InvalidRequest && invalidKeys.Data is null, "missing authenticated SSH key listing refusal");
         MilaNativeSessionBytesResult invalidListing = RustNative.TrySessionListing(0);

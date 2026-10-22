@@ -1,5 +1,5 @@
 ---
-digest: e602637358be185a2c40af73caf21ad4aefc7f252dfbaee2f5c64fe26945f5eb
+digest: 8c8d408d0f46b9cb2a99bd41ff000a80758fc42eb93274f41fc7d487af3ade38
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Windows machine listing and detail projection is now covered by bounded authenticated-session evidence while the live backend journey remains open.
+Windows machine mutation dispatch is covered by typed authenticated-session smoke evidence while live Porsche execution remains open.

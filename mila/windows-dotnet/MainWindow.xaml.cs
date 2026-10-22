@@ -446,7 +446,19 @@ public sealed partial class MainWindow : Window
     private const string SampleMachine = "00000000-0000-0000-0000-000000000000";
     private void ClassifyMachineShow(object sender, RoutedEventArgs args) => ClassifyMachine("show demo");
     private void ClassifyMachineNew(object sender, RoutedEventArgs args) => ClassifyMachine("new");
-    private void ClassifyMachineResize(object sender, RoutedEventArgs args) => ClassifyMachine($"resize {SampleMachine}");
+    private void ClassifyMachineResize(object sender, RoutedEventArgs args)
+    {
+        if (_selectedMachine is not { } machine)
+        {
+            MachineCommandStatus.Text = S("machineNotSelected", "Select a machine first.");
+            return;
+        }
+        bool applied = _machineMutation.Resize(machine.Id, 2, 2048, 20_480,
+            "porsche-" + Guid.NewGuid().ToString("N"));
+        MachineCommandStatus.Text = applied
+            ? S("requestSucceeded", "Request submitted")
+            : S("requestFailed", "Request refused");
+    }
     private void ClassifyMachineStart(object sender, RoutedEventArgs args) => SubmitMachineMutation("start");
     private void ClassifyMachineStop(object sender, RoutedEventArgs args) => SubmitMachineMutation("stop");
     private void ClassifyMachinePause(object sender, RoutedEventArgs args) => SubmitMachineMutation("pause");
@@ -486,7 +498,7 @@ public sealed partial class MainWindow : Window
         bool applied = _machineMutation.Submit(
             _selectedMachine.Id,
             action,
-            Guid.NewGuid().ToString("D"));
+            "porsche-" + Guid.NewGuid().ToString("N"));
         MachineCommandStatus.Text = applied
             ? S("requestSucceeded", "Request submitted")
             : _machineMutation.State.Kind == MilaMachineMutationStateKind.SignedOut

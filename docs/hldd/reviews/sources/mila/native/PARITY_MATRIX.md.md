@@ -1,5 +1,5 @@
 ---
-digest: fb20c49bce0a32ff2765a81c43537b9d1d4d1e4428738c6b598e30d6a22f942a
+digest: 322add303e7d47d5309f11e5b456402cef9921efe06fb23ddabafa347f122dfb
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux now projects authenticated machine listings into bounded GTK list/detail rows while retaining the existing partial deployment journey and transport limits.
+Reviewed authenticated machine mutation ABI and smoke coverage.

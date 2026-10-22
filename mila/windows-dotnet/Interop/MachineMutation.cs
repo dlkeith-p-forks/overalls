@@ -27,4 +27,19 @@ internal sealed class MilaMachineMutationController
             : new(MilaMachineMutationStateKind.Failed, machineId, action, result.Status.ToString());
         return result.Succeeded;
     }
+
+    internal bool Resize(Guid machineId, uint cpu, ulong memory, ulong disk, string requestId)
+    {
+        if (!_authenticated)
+        {
+            State = new(MilaMachineMutationStateKind.SignedOut, machineId, "resize", null);
+            return false;
+        }
+        MilaNativeSessionActionResult result = RustNative.TrySessionMachineResize(
+            _handle, machineId, cpu, memory, disk, requestId);
+        State = result.Succeeded
+            ? new(MilaMachineMutationStateKind.Applied, machineId, "resize", null)
+            : new(MilaMachineMutationStateKind.Failed, machineId, "resize", result.Status.ToString());
+        return result.Succeeded;
+    }
 }

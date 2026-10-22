@@ -457,6 +457,27 @@ internal static partial class RustNative
         finally { Marshal.FreeCoTaskMem(machine); Marshal.FreeCoTaskMem(operation); Marshal.FreeCoTaskMem(request); }
     }
 
+    internal static MilaNativeSessionActionResult TrySessionMachineResize(
+        ulong handle, Guid machineId, uint cpu, ulong memory, ulong disk, string requestId)
+    {
+        if (handle == 0 || cpu is < 1 or > 256 || memory is < 256 or > 4_194_304 ||
+            disk is < 1 or > 16_777_216 || !IsCanonicalRequestId(requestId))
+            return new(MilaNativeStatus.InvalidRequest);
+        string machine = machineId.ToString("D");
+        IntPtr machinePtr = Marshal.StringToCoTaskMemUTF8(machine);
+        IntPtr requestPtr = Marshal.StringToCoTaskMemUTF8(requestId);
+        try
+        {
+            return new((MilaNativeStatus)SessionMachineResizeNative(handle, machinePtr,
+                (nuint)Encoding.UTF8.GetByteCount(machine), cpu, memory, disk, requestPtr,
+                (nuint)Encoding.UTF8.GetByteCount(requestId)));
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable); }
+        finally { Marshal.FreeCoTaskMem(machinePtr); Marshal.FreeCoTaskMem(requestPtr); }
+    }
+
     /// <summary>
     /// Copies the bounded approved-key listing from an authenticated Rust session.
     /// Managed callers receive only owned UTF-8 bytes; the native session remains
@@ -636,6 +657,10 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_action")]
     private static partial int SessionMachineActionNative(ulong handle, IntPtr machine, nuint machineLength,
         IntPtr action, nuint actionLength, IntPtr requestId, nuint requestIdLength);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_resize")]
+    private static partial int SessionMachineResizeNative(ulong handle, IntPtr machine, nuint machineLength,
+        uint cpu, ulong memory, ulong disk, IntPtr requestId, nuint requestIdLength);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_session_ssh_keys")]
     private static partial MilaNativeStatus SessionSshKeysNative(
