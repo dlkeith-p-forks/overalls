@@ -393,6 +393,7 @@ class LinkedMilaFfiAdapter(
     }
 
     override fun validatePushRegistration(token: String, appId: String, deployment: String, endpoint: String?): Result<Unit> = runCatching {
+        check(authenticatedSession != null) { "authenticated session unavailable" }
         require(token.isNotBlank() && appId.isNotBlank() && deployment.isNotBlank())
         check(bindings.pushRegistrationValidate(1, 1, token, appId, deployment, endpoint) == 0)
     }
