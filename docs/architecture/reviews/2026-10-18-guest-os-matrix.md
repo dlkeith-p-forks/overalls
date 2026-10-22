@@ -2036,3 +2036,73 @@ now counts as no observation and is retried under the same deadline; a late
 probe still fails. After 5aadeae9a, `native-omnios-reset` and
 `native-omnios-transport` each passed twice, and `native-freebsd-services`
 passed again.
+
+## 2026-10-22: OmniOS native sweep
+
+Every OmniOS native check was then run on trunk under nested KVM with
+Firecracker 1.16.1. These passed:
+
+- `native-omnios-{services,crash-recovery,growth,interrupted-growth}`
+- `native-omnios-{isolation,recovery,relocation,reset,transport}`
+
+Two did not pass reliably.
+
+### Intermittent first boot (`native-omnios-power-loss`)
+
+`native-omnios-power-loss` failed twice on trunk because the first
+`power-loss-before` boot exceeded the 240-second kernel-boot deadline. A third
+run on the same tree passed, and so did a run of e799ff9b9, where the
+`power-loss-before` phase took 78 seconds including boot. The guest image is
+identical at both revisions. The built durability tools differ only in code
+that runs after boot (the fixture capability list and `Connection` header, the
+FreeBSD fsck poll, the FreeBSD-only drive policy and the executor-observation
+retry), so this is an intermittent illumos boot stall, not a regression.
+Illumos guests stalled at boot in three of seven OmniOS runs that day; no run
+captured the guest console, so the stall is not yet diagnosed.
+
+### Retained GitHub tools on illumos (`github-tools-illumos-retained`)
+
+This check fails on trunk and on e799ff9b9, before the day's changes. The
+guest stops receiving any network traffic while one of its sockets stops
+reading:
+
+- The retained bootstrap downloads the 41 MB `gh` artifact and pauses reading
+  the stream about every two seconds to renew its lease over a new TLS
+  connection. Every download was cut off after 18–22 MiB, 3–4 seconds in;
+  the bootstrap then exited 92 (renewal `Send`/`TimedOut`) and was re-run more
+  than 40 times.
+- Host socket sampling during a stream showed the renewal connection stuck in
+  `SYN-RECV`: the guest never acknowledged the host's SYN-ACK. The stalled
+  stream's unacknowledged segments froze while the host retransmitted with
+  backoff, and the guest sent no further acknowledgements although its
+  advertised window never shrank. Reception resumed only when the stream
+  closed.
+- Firecracker's network counters set the illumos run against a passing
+  `github-tools-freebsd-retained` run:
+
+  | Counter | FreeBSD | illumos |
+  |---|---|---|
+  | Bytes received | 58.7 MB | 809 MB |
+  | Packets received | 3,906 | 533,988 |
+  | `no_rx_avail_buffer` | 28 | 589,547 |
+  | `no_tx_avail_buffer` | 0 | 84,718 |
+
+  FreeBSD receives large coalesced segments. Illumos `vioif` receives
+  MTU-sized packets and repeatedly leaves the device without a posted receive
+  buffer.
+
+The fault is in the illumos guest's virtio-net receive path (`vioif` from the
+pinned illumos source with the `0002-modern-virtio.patch` changes, under
+Firecracker), not in Lyra or the fixtures. Its effect reaches past this test:
+an illumos workload that stops reading one socket can stall all inbound
+traffic for the VM. A temporary change that let the executor's renewal use its
+whole request deadline to connect only moved the failure to the pinned
+image's `agentd`, whose own renewal then timed out, so it was not kept.
+
+A fix belongs in the guest kernel and needs a new OmniOS candidate,
+qualification and promotion under ADR-0190. The pinned driver lends at most
+half its receive buffers upstream and refills the ring after each receive
+interrupt, so simple loan exhaustion does not explain the stall; the remaining
+suspects are refill notification under the modern virtio transport and the
+absence of receive offload. Until then this check is a known failure, and
+retained GitHub tools on illumos are not qualified.
