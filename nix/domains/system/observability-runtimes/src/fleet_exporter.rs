@@ -95,6 +95,11 @@ fn main() -> std::io::Result<()> {
         for (name, value) in terminal_metrics() {
             output.push_str(&format!("overalls_fleet_gauge{{kind=\"terminal\",entity=\"host\",measure=\"{name}\"}} {value}\n"));
         }
+        for (role, socket) in integration_sockets(&descriptor) {
+            for (name, value) in integration_metrics(&socket, &role) {
+                output.push_str(&format!("overalls_fleet_gauge{{kind=\"integration\",entity=\"{role}\",measure=\"{name}\"}} {value}\n"));
+            }
+        }
         append_host_pressure(&mut output);
         for interface in descriptor_interfaces(&descriptor) {
             if let Some(values) = interface_stats(&interface) {
@@ -302,6 +307,76 @@ fn terminal_metrics() -> Vec<(String, u64)> {
                 .ok()?;
             Some(((*name).to_owned(), value))
         })
+        .collect()
+}
+
+fn integration_sockets(descriptor: &str) -> Vec<(String, String)> {
+    ["ziggy", "galileo"]
+        .into_iter()
+        .filter_map(|role| {
+            let section = descriptor.split(&format!("\"{role}\"")).nth(1)?;
+            let socket = section
+                .split("\"socket\"")
+                .nth(1)?
+                .split(':')
+                .nth(1)?
+                .split('"')
+                .nth(1)?;
+            socket
+                .starts_with('/')
+                .then_some((role.to_owned(), socket.to_owned()))
+        })
+        .collect()
+}
+
+fn integration_metrics(path: &str, role: &str) -> Vec<(String, u64)> {
+    let mut stream = match UnixStream::connect(path) {
+        Ok(value) => value,
+        Err(_) => return Vec::new(),
+    };
+    stream
+        .set_read_timeout(Some(std::time::Duration::from_secs(1)))
+        .ok();
+    if stream
+        .write_all(b"GET /metrics HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n")
+        .is_err()
+    {
+        return Vec::new();
+    }
+    let mut body = Vec::new();
+    if stream.take(65_537).read_to_end(&mut body).is_err() || body.len() > 65_536 {
+        return Vec::new();
+    }
+    let text = match String::from_utf8(body) {
+        Ok(value) => value,
+        Err(_) => return Vec::new(),
+    };
+    let allowed: &[&str] = if role == "ziggy" {
+        &[
+            "active_requests",
+            "pending_receipts",
+            "spool_capacity",
+            "spool_available",
+            "models_openai",
+            "models_anthropic",
+            "catalog_ready",
+        ]
+    } else {
+        &["active_requests", "total_requests"]
+    };
+    text.split("\r\n\r\n")
+        .nth(1)
+        .unwrap_or("")
+        .lines()
+        .filter_map(|line| {
+            let mut fields = line.split_whitespace();
+            let metric = fields.next()?.strip_prefix(role)?.strip_prefix('_')?;
+            let value = fields.next()?.parse().ok()?;
+            allowed
+                .contains(&metric)
+                .then_some((metric.to_owned(), value))
+        })
+        .take(32)
         .collect()
 }
 

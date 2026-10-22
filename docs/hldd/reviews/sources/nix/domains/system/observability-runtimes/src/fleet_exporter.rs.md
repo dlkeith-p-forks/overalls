@@ -1,5 +1,5 @@
 ---
-digest: 3f2cce0aa39039d3de53a20a8d2fdaa33bf3b54381a5613708c245dd54083370
+digest: 9b3e06f8be1f1726391c5152bca6bf409fb60ea9778ba4e2525cedfc0be4f4e7
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now performs a bounded passive terminal metrics socket read with a closed numeric metric allowlist and no guest control operations.
+Fleet exporter now scrapes only explicitly configured Ziggy and Galileo Unix proxy sockets with bounded HTTP responses and role-specific metric allowlists.
