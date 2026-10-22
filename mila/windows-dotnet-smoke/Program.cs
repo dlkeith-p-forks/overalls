@@ -49,6 +49,8 @@ internal static class Program
             Require(RustNative.TryFormatMachineCommand(action, machineId, "porsche-0123456789abcdef0123456789abcdef").Command is null, "action injection refusal");
         Require(RustNative.TryFormatMachineCommand("stop", machineId, null).Command is null, "mutation request required");
         Require(RustNative.TryFormatMachineCommand("stop", machineId, "id\0suffix").Command is null, "request truncation refusal");
+        MilaNativeSessionActionResult invalidSession = RustNative.TrySessionMachineAction(0, machineId, "stop", "porsche-0123456789abcdef0123456789abcdef");
+        Require(invalidSession.Status == MilaNativeStatus.InvalidRequest, "missing authenticated session refusal");
         MilaNativeThreadCommandResult thread = RustNative.TryClassifyThreadCommand("thread ls");
         Require(thread.Status == MilaNativeStatus.Ok && thread.Kind == MilaThreadCommandKind.List, "thread command projection");
         Require(RustNative.TryClassifyThreadCommand("thread delete abc").Kind is null, "unknown thread command refusal");
@@ -72,8 +74,33 @@ internal static class Program
         Require(revoked && keys.Status == MilaSshKeysStatus.Loaded, "SSH key revoke workflow");
         bool malformed = false; try { _ = MilaSshKeysController.DecodeListing(Encoding.UTF8.GetBytes("{\"keys\":[{\"id\":\"bad\"}]}")); } catch (InvalidDataException) { malformed = true; }
         Require(malformed, "invalid SSH key listing refusal");
+        var hello = new FakeHello(MilaWindowsHelloAvailability.Available, MilaWindowsHelloVerification.Verified);
+        var lockController = new MilaAppLockController(hello);
+        Require(lockController.RefreshAvailabilityAsync().GetAwaiter().GetResult() == MilaAppLockState.Unlocked, "Hello availability");
+        lockController.Lock(); Require(lockController.IsLocked, "app lock state");
+        Require(lockController.UnlockAsync().GetAwaiter().GetResult() && !lockController.IsLocked && hello.LastMessage == "Unlock Mila", "Hello unlock");
+        var unavailable = new MilaAppLockController(new FakeHello(MilaWindowsHelloAvailability.Unavailable, MilaWindowsHelloVerification.Verified));
+        Require(unavailable.RefreshAvailabilityAsync().GetAwaiter().GetResult() == MilaAppLockState.Unavailable, "Hello unavailable state");
         RustNative.CheckOutputBounds(route);
+        AssertRoutes();
         Console.WriteLine("Windows Rust FFI smoke passed.");
+    }
+
+    private static void AssertRoutes()
+    {
+        MilaRoute? machines = MilaRouteParser.Parse("overalls://mgmt.example.test/machines");
+        Require(machines is { Kind: MilaRouteKind.Machines, Host: "mgmt.example.test" }, "machines activation route");
+        MilaRoute? machine = MilaRouteParser.Parse("overalls://mgmt.example.test/machines/0d9cc041-9db2-4e4c-b28b-1e41d7f472c1");
+        Require(machine is { Kind: MilaRouteKind.Machine } && machine.Value.Id.HasValue, "machine activation route");
+        foreach (string invalid in new[] { "https://mgmt.example.test/machines", "overalls://MGMT.example.test/machines", "overalls://mgmt.example.test/machines?x=1", "overalls://mgmt.example.test/unknown", "overalls://mgmt.example.test/machines/new" })
+            Require(MilaRouteParser.Parse(invalid) is null, "invalid activation route refusal");
+    }
+
+    private sealed class FakeHello(MilaWindowsHelloAvailability availability, MilaWindowsHelloVerification result) : IMilaWindowsHelloVerifier
+    {
+        internal string? LastMessage { get; private set; }
+        public Task<MilaWindowsHelloAvailability> CheckAvailabilityAsync(CancellationToken cancellationToken = default) => Task.FromResult(availability);
+        public Task<MilaWindowsHelloVerification> VerifyAsync(string message, CancellationToken cancellationToken = default) { LastMessage = message; return Task.FromResult(result); }
     }
 
     private static void RefusesSnapshot(byte[] snapshot, string host, ushort port)

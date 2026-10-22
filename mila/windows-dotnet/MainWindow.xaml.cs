@@ -10,12 +10,39 @@ public sealed partial class MainWindow : Window
         _ => Task.FromResult<IReadOnlyList<MilaSshKey>>(Array.Empty<MilaSshKey>()),
         (_, _) => Task.CompletedTask);
     private readonly MilaThreadController _threadController = new();
-    public MainWindow()
+    private readonly MilaMachineMutationController _machineMutation = new();
+    private MilaMachineRow? _selectedMachine;
+    private readonly MilaAppLockController _appLock = new(new MilaWindowsHelloBroker());
+    public MainWindow(string? activation = null)
     {
         InitializeComponent();
         ApplyStrings();
         if (MilaDeploymentStore.Load() is { } deployment) { DeploymentHost.Text = deployment.Host; _activeHost = deployment.Host; }
         Navigation.SelectedItem = Navigation.MenuItems[0];
+        if (!string.IsNullOrWhiteSpace(activation)) ApplyActivation(activation);
+    }
+    private void ApplyActivation(string activation)
+    {
+        MilaRoute? route = MilaRouteParser.Parse(activation.Trim().Trim('"'));
+        if (route is null)
+        {
+            StatusText.Text = S("invalidRoute", "This link is not a valid Mila route.");
+            return;
+        }
+        _activeHost = route.Value.Host;
+        DeploymentHost.Text = route.Value.Host;
+        Navigation.SelectedItem = route.Value.Kind switch
+        {
+            MilaRouteKind.Thread or MilaRouteKind.Threads => Navigation.MenuItems[1],
+            MilaRouteKind.Settings => Navigation.MenuItems[2],
+            _ => Navigation.MenuItems[0]
+        };
+        StatusText.Text = route.Value.Kind switch
+        {
+            MilaRouteKind.Machine => $"{S("routeMachine", "Machine")}: {route.Value.Id?.ToString("D")}",
+            MilaRouteKind.Thread => $"{S("routeThread", "Thread")}: {route.Value.Id?.ToString("D")}",
+            _ => $"{S("routeOpened", "Opened")}: {route.Value.Path}"
+        };
     }
     private static string S(string id, string fallback) => MilaStrings.Text(id, fallback);
     private void ApplyStrings()
@@ -53,6 +80,7 @@ public sealed partial class MainWindow : Window
         Refresh.Content = S("refresh", "Refresh");
         LockButton.Content = S("lockTitle", "Lock app");
         LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+        _ = RefreshLockAvailabilityAsync();
         TerminalTitle.Text = S("tabTerminals", "Terminal");
         TerminalAttach.Content = S("terminalAttach", "Attach");
         TerminalResize.Content = S("terminalModeControl", "Resize");
@@ -130,6 +158,10 @@ public sealed partial class MainWindow : Window
         }
         StatusText.Text = S("signInConnecting", "Connecting to deployment…").Replace("{host}", host, StringComparison.Ordinal);
         ConnectDeployment.IsEnabled = false;
+        // A browser connection is not an authenticated Rust session yet. Keep
+        // mutation controls explicitly signed out until the session broker
+        // supplies its non-zero handle.
+        _machineMutation.SetSession(false);
         _ = ConnectDeploymentAsync(host);
     }
     private async Task ConnectDeploymentAsync(string host)
@@ -150,20 +182,35 @@ public sealed partial class MainWindow : Window
         }
         ConnectDeployment.IsEnabled = true;
     }
+    private async Task RefreshLockAvailabilityAsync()
+    {
+        await _appLock.RefreshAvailabilityAsync();
+        if (_appLock.State == MilaAppLockState.Unavailable)
+            LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+    }
     private void LockApp(object sender, RoutedEventArgs args)
     {
-        // Keep the lock boundary explicit until a Windows Hello broker is wired in.
+        _appLock.Lock();
+        if (!_appLock.IsLocked) return;
         Navigation.IsHitTestVisible = false;
         LockButton.Content = S("unlock", "Unlock");
         LockStatus.Text = S("lockedTitle", "Mila is locked") + " — " + S("lockReason", "Unlock Mila");
         LockButton.Click -= LockApp;
         LockButton.Click += UnlockApp;
     }
-    private void UnlockApp(object sender, RoutedEventArgs args)
+    private async void UnlockApp(object sender, RoutedEventArgs args)
     {
+        LockButton.IsEnabled = false;
+        bool unlocked = await _appLock.UnlockAsync();
+        LockButton.IsEnabled = true;
+        if (!unlocked)
+        {
+            LockStatus.Text = S("lockReason", "Unlock Mila");
+            return;
+        }
         Navigation.IsHitTestVisible = true;
         LockButton.Content = S("lockTitle", "Lock app");
-        LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+        LockStatus.Text = S("ready", "Ready");
         LockButton.Click -= UnlockApp;
         LockButton.Click += LockApp;
     }
@@ -190,6 +237,8 @@ public sealed partial class MainWindow : Window
 
     private void RefreshMachines()
     {
+        _selectedMachine = null;
+        _machineMutation.SetSession(false);
         MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
         if (_activeHost is { } host)
         {
@@ -201,6 +250,7 @@ public sealed partial class MainWindow : Window
     private void OnMachineSelected(object sender, SelectionChangedEventArgs args)
     {
         if (MachineRows.SelectedItem is not MilaMachineRow machine) return;
+        _selectedMachine = machine;
         string access = machine.CanManage ? S("machineAccessOwner", "Manage") : machine.CanWrite ? S("machineAccessShared", "Write") : S("terminalReadOnly", "Read only");
         MachineCommandStatus.Text = $"{machine.Name} ({machine.DesiredState}) — {access}";
     }
@@ -256,11 +306,11 @@ public sealed partial class MainWindow : Window
     private void ClassifyMachineShow(object sender, RoutedEventArgs args) => ClassifyMachine("show demo");
     private void ClassifyMachineNew(object sender, RoutedEventArgs args) => ClassifyMachine("new");
     private void ClassifyMachineResize(object sender, RoutedEventArgs args) => ClassifyMachine($"resize {SampleMachine}");
-    private void ClassifyMachineStart(object sender, RoutedEventArgs args) => ClassifyMachine($"start {SampleMachine}");
-    private void ClassifyMachineStop(object sender, RoutedEventArgs args) => ClassifyMachine($"stop {SampleMachine}");
-    private void ClassifyMachinePause(object sender, RoutedEventArgs args) => ClassifyMachine($"pause {SampleMachine}");
-    private void ClassifyMachineResume(object sender, RoutedEventArgs args) => ClassifyMachine($"resume {SampleMachine}");
-    private void ClassifyMachineDelete(object sender, RoutedEventArgs args) => ClassifyMachine($"rm {SampleMachine}");
+    private void ClassifyMachineStart(object sender, RoutedEventArgs args) => SubmitMachineMutation("start");
+    private void ClassifyMachineStop(object sender, RoutedEventArgs args) => SubmitMachineMutation("stop");
+    private void ClassifyMachinePause(object sender, RoutedEventArgs args) => SubmitMachineMutation("pause");
+    private void ClassifyMachineResume(object sender, RoutedEventArgs args) => SubmitMachineMutation("resume");
+    private void ClassifyMachineDelete(object sender, RoutedEventArgs args) => SubmitMachineMutation("rm");
     private void ClassifyMachineShareAdd(object sender, RoutedEventArgs args) => ClassifyMachine($"share add {SampleMachine} user viewer");
     private void ClassifyMachineShareRemove(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");
     private void ClassifyMachineWebShow(object sender, RoutedEventArgs args) => ClassifyMachine($"web show {SampleMachine}");
@@ -283,5 +333,23 @@ public sealed partial class MainWindow : Window
         MachineCommandStatus.Text = formatted.Status == MilaNativeStatus.Ok
             ? $"{command}: {value} — {S("requestWaiting", "Request formatted by Rust")}" 
             : $"{command}: {S("requestRefused", "Request refused")}";
+    }
+
+    private void SubmitMachineMutation(string action)
+    {
+        if (_selectedMachine is null)
+        {
+            MachineCommandStatus.Text = S("machineNotSelected", "Select a machine first.");
+            return;
+        }
+        bool applied = _machineMutation.Submit(
+            _selectedMachine.Id,
+            action,
+            Guid.NewGuid().ToString("D"));
+        MachineCommandStatus.Text = applied
+            ? S("requestSucceeded", "Request submitted")
+            : _machineMutation.State.Kind == MilaMachineMutationStateKind.SignedOut
+                ? S("signInFirst", "Sign in first")
+                : S("requestFailed", "Request refused");
     }
 }

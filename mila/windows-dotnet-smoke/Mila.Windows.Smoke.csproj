@@ -8,10 +8,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../windows-dotnet/Interop/WindowsHello.cs" Link="Interop/WindowsHello.cs" />
     <Compile Include="../windows-dotnet/Interop/RustNative.cs" Link="Interop/RustNative.cs" />
     <Compile Include="../windows-dotnet/Interop/DeviceKey.cs" Link="Interop/DeviceKey.cs" />
     <Compile Include="../windows-dotnet/Interop/SessionListing.cs" Link="Interop/SessionListing.cs" />
     <Compile Include="../windows-dotnet/Interop/SshKeys.cs" Link="Interop/SshKeys.cs" />
+    <Compile Include="../windows-dotnet/Interop/MachineMutation.cs" Link="Interop/MachineMutation.cs" />
   </ItemGroup>
   <Target Name="StageMilaNative" AfterTargets="Build">
     <Error Condition="'$(MilaNativeDll)' == '' Or !Exists('$(MilaNativeDll)')" Text="Supply MilaNativeDll pointing to the staged production mila_native.dll." />

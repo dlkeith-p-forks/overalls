@@ -1,5 +1,5 @@
 ---
-digest: ed305e637ed01bce7c6ab6d3b5b960b53b8fde49b9c1856d38b8229c703563c8
+digest: 897012284f3f7dc411c3513e1195f3978666b7609cc78934791ebf7faa357ea6
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android biometric app lock and Linux desktop activation parsing preserve existing lock and route boundaries.
+Android WebView controls and Windows Hello broker remain within typed native security and web boundaries.

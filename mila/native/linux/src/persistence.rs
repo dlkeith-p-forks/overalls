@@ -8,10 +8,54 @@ use serde::{Deserialize, Serialize};
 use std::{fs, io, path::PathBuf};
 
 const FILE_NAME: &str = "deployment.json";
+const SETTINGS_FILE_NAME: &str = "settings.json";
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub(crate) struct DeploymentSelection {
     pub(crate) host: String,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub(crate) enum Appearance {
+    System,
+    Light,
+    Dark,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub(crate) struct Settings {
+    pub(crate) appearance: Appearance,
+    pub(crate) locale: String,
+}
+
+impl Default for Settings {
+    fn default() -> Self {
+        Self {
+            appearance: Appearance::System,
+            locale: "en".to_owned(),
+        }
+    }
+}
+
+impl Settings {
+    pub(crate) fn validate(appearance: Appearance, locale: &str) -> Result<Self, PersistenceError> {
+        let locale = locale.trim().replace('_', "-");
+        let valid = locale.len() >= 2
+            && locale.len() <= 35
+            && locale.split('-').all(|part| {
+                !part.is_empty()
+                    && part.len() <= 8
+                    && part.bytes().all(|b| b.is_ascii_alphanumeric())
+            })
+            && locale
+                .chars()
+                .next()
+                .is_some_and(|c| c.is_ascii_alphabetic());
+        if !valid {
+            return Err(PersistenceError::InvalidLocale);
+        }
+        Ok(Self { appearance, locale })
+    }
 }
 
 impl DeploymentSelection {
@@ -42,6 +86,7 @@ pub(crate) enum PersistenceError {
     InvalidHost,
     Io(io::Error),
     InvalidData,
+    InvalidLocale,
 }
 
 impl From<io::Error> for PersistenceError {
@@ -58,6 +103,16 @@ fn path() -> Option<PathBuf> {
         .map(PathBuf::from)
         .or_else(|| std::env::var_os("HOME").map(|home| PathBuf::from(home).join(".config")))?;
     Some(root.join("mila").join(FILE_NAME))
+}
+
+fn settings_path() -> Option<PathBuf> {
+    if let Some(path) = std::env::var_os("MILA_SETTINGS_PATH") {
+        return Some(PathBuf::from(path));
+    }
+    let root = std::env::var_os("XDG_CONFIG_HOME")
+        .map(PathBuf::from)
+        .or_else(|| std::env::var_os("HOME").map(|home| PathBuf::from(home).join(".config")))?;
+    Some(root.join("mila").join(SETTINGS_FILE_NAME))
 }
 
 pub(crate) fn load() -> Result<Option<DeploymentSelection>, PersistenceError> {
@@ -91,6 +146,41 @@ pub(crate) fn save(selection: &DeploymentSelection) -> Result<(), PersistenceErr
     Ok(())
 }
 
+pub(crate) fn load_settings() -> Result<Settings, PersistenceError> {
+    let Some(path) = settings_path() else {
+        return Ok(Settings::default());
+    };
+    let bytes = match fs::read(path) {
+        Ok(bytes) => bytes,
+        Err(error) if error.kind() == io::ErrorKind::NotFound => return Ok(Settings::default()),
+        Err(error) => return Err(error.into()),
+    };
+    let settings: Settings =
+        serde_json::from_slice(&bytes).map_err(|_| PersistenceError::InvalidData)?;
+    Settings::validate(settings.appearance, &settings.locale)
+}
+
+pub(crate) fn save_settings(settings: &Settings) -> Result<(), PersistenceError> {
+    let settings = Settings::validate(settings.appearance, &settings.locale)?;
+    let Some(path) = settings_path() else {
+        return Err(PersistenceError::Io(io::Error::new(
+            io::ErrorKind::NotFound,
+            "configuration directory unavailable",
+        )));
+    };
+    let parent = path
+        .parent()
+        .ok_or_else(|| io::Error::new(io::ErrorKind::InvalidInput, "invalid configuration path"))?;
+    fs::create_dir_all(parent)?;
+    let temporary = path.with_extension("json.tmp");
+    fs::write(
+        &temporary,
+        serde_json::to_vec(&settings).map_err(|_| PersistenceError::InvalidData)?,
+    )?;
+    fs::rename(temporary, path)?;
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -112,5 +202,14 @@ mod tests {
     fn route_is_navigation_only() {
         let selection = DeploymentSelection::validate("example.com:443").unwrap();
         assert_eq!(selection.route(), "overalls://example.com:443/machines");
+    }
+
+    #[test]
+    fn settings_validate_and_normalize_locale() {
+        let settings = Settings::validate(Appearance::Dark, "fr_FR").unwrap();
+        assert_eq!(settings.locale, "fr-FR");
+        assert_eq!(settings.appearance, Appearance::Dark);
+        assert!(Settings::validate(Appearance::System, "not a locale").is_err());
+        assert!(Settings::validate(Appearance::System, "").is_err());
     }
 }

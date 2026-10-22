@@ -14,17 +14,30 @@ final class MilaNotificationsTests: XCTestCase {
         }
     }
 
+    private final class Store: MilaNotificationDeviceStore {
+        var values: [MilaNotificationDevice] = []
+        func list() -> [MilaNotificationDevice] { values }
+        func upsert(_ device: MilaNotificationDevice) -> Bool { values.removeAll { $0.id == device.id }; values.append(device); return true }
+        func remove(id: String) -> Bool { let old = values.count; values.removeAll { $0.id == id }; return values.count != old }
+    }
+
     func testRegistrationUsesRustBoundaryAndDoesNotRetainTokenInControllerState() {
         let adapter = Adapter()
-        let controller = MilaNotificationController(adapter: adapter, appID: "com.example.mila", deployment: "mila.example.test")
+        let store = Store()
+        let controller = MilaNotificationController(adapter: adapter, appID: "com.example.mila", deployment: "mila.example.test", store: store)
         let token = String(repeating: "a", count: 64)
         controller.register(token: token, endpoint: "https://mila.example.test/push", environment: .sandbox)
         XCTAssertEqual(controller.state, .on)
         XCTAssertEqual(adapter.calls.count, 1)
         XCTAssertEqual(adapter.calls[0].0, MilaPushProvider.apple.rawValue)
         XCTAssertEqual(adapter.calls[0].1, MilaPushEnvironment.sandbox.rawValue)
+        XCTAssertEqual(controller.devices.count, 1)
+        XCTAssertEqual(controller.devices[0].enabled, true)
         controller.disable()
         XCTAssertEqual(controller.state, .off)
+        XCTAssertEqual(controller.devices[0].enabled, false)
+        XCTAssertTrue(controller.removeDevice(id: "com.example.mila"))
+        XCTAssertTrue(controller.devices.isEmpty)
     }
 
     func testEmptyTokenFailsBeforeCrossingBoundary() {
