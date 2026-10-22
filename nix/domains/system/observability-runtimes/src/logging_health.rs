@@ -3,6 +3,7 @@ use std::env;
 use std::fs;
 use std::io::{Read, Write};
 use std::net::TcpStream;
+use std::os::unix::fs::PermissionsExt;
 use std::path::Path;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -58,6 +59,24 @@ fn main() -> std::io::Result<()> {
                 out.push('\n');
             }
         }
+        for (producer, path) in parse_traces(&descriptor) {
+            let label = producer.replace('"', "");
+            match trace_snapshot(&path) {
+                Some(values) => {
+                    out.push_str(&format!(
+                        "overalls_trace_spool_snapshot_valid{{producer=\"{label}\"}} 1\n"
+                    ));
+                    for (name, value) in values {
+                        out.push_str(&format!(
+                            "overalls_trace_spool_{name}{{producer=\"{label}\"}} {value}\n"
+                        ));
+                    }
+                }
+                None => out.push_str(&format!(
+                    "overalls_trace_spool_snapshot_valid{{producer=\"{label}\"}} 0\n"
+                )),
+            }
+        }
         for (name, budget) in &budgets {
             out.push_str(&format!(
                 "overalls_logging_output_budget_bytes{{output=\"{name}\"}} {budget}\n"
@@ -96,6 +115,68 @@ fn parse_budgets(descriptor: &str) -> Vec<(String, u64)> {
         })
         .take(128)
         .collect()
+}
+
+fn parse_traces(descriptor: &str) -> Vec<(String, String)> {
+    let section = descriptor
+        .split("\"traceSnapshots\"")
+        .nth(1)
+        .and_then(|v| v.split_once('{').map(|(_, r)| r))
+        .unwrap_or("");
+    section
+        .split('}')
+        .next()
+        .unwrap_or("")
+        .split(',')
+        .filter_map(|entry| {
+            let (key, value) = entry.split_once(':')?;
+            let key = key.trim().trim_matches('"').to_owned();
+            let value = value.trim().trim_matches('"').to_owned();
+            (key.len() <= 128 && value.starts_with('/')).then_some((key, value))
+        })
+        .take(128)
+        .collect()
+}
+
+fn trace_snapshot(path: &str) -> Option<Vec<(String, u64)>> {
+    let metadata = fs::symlink_metadata(path).ok()?;
+    if !metadata.file_type().is_file()
+        || metadata.len() > 8192
+        || metadata.permissions().mode() & 0o7 != 0
+    {
+        return None;
+    }
+    let content = fs::read_to_string(path).ok()?;
+    let allowed = [
+        "accepted_total",
+        "refused_total",
+        "storage_failures_total",
+        "export_failed_total",
+        "exported_total",
+        "pending_batches",
+        "pending_bytes",
+        "oldest_pending_seconds",
+        "retained_batches",
+        "retained_bytes",
+        "quota_bytes",
+        "pending_quota_bytes",
+        "poisoned",
+        "sample_time",
+    ];
+    let mut values = Vec::new();
+    for line in content.lines() {
+        let mut fields = line.split_whitespace();
+        let name = fields.next()?.strip_prefix("overalls_trace_spool_")?;
+        let value = fields.next()?.parse::<u64>().ok()?;
+        if !allowed.contains(&name)
+            || value >= u64::MAX
+            || values.iter().any(|(seen, _)| seen == name)
+        {
+            return None;
+        }
+        values.push((name.to_owned(), value));
+    }
+    (values.len() == allowed.len()).then_some(values)
 }
 
 fn scrape(port: u16) -> Option<String> {

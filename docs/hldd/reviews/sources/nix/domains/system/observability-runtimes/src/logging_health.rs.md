@@ -1,5 +1,5 @@
 ---
-digest: 88fe55cbc7b3a0f058d07f7f6af3ab1b562c793abcfe07072cda6943c3eae72b
+digest: 60a04f443a251390744d68fc9807f4d83e957ffb51ed60c36b65a8a4609b5663
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Logging health now projects configured queue budgets with bounded allowlisted output labels while retaining fail-closed collector validity.
+Logging health now reads bounded, regular, permission-safe trace snapshots and emits only the closed allowlisted spool metrics.
