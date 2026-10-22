@@ -7,7 +7,7 @@ use mila_native_linux::adapter::{
 };
 use mila_native_linux::machine_view::{project_detail, project_listing};
 use mila_native_linux::notifications::NotificationState;
-use mila_native_linux::route::{ActivationBatch, ActivationRoute};
+use mila_native_linux::route::{ActivationBatch, ActivationRoute, NavigationDecision};
 use mila_native_linux::session::{
     ApprovalInfo, SessionBinding, SignInEvent, SignInFlow, SignInPhase, WhoamiOutcome,
 };
@@ -691,16 +691,38 @@ impl NativeState {
         let window = self.ensure_window(app);
         let uris = files.iter().map(|file| file.uri()).collect::<Vec<_>>();
         let batch = ActivationBatch::parse(uris.iter().map(|uri| uri.as_str()));
-        let accepted = batch.canonical_routes();
+        let selected_authority = persistence::load()
+            .ok()
+            .flatten()
+            .map(|selection| selection.host);
+        let authenticated = self.sign_in.borrow().phase == SignInPhase::SignedIn
+            && self.session.borrow().is_authenticated();
+        let decisions = batch
+            .routes()
+            .iter()
+            .map(|route| route.navigation(selected_authority.as_deref(), authenticated))
+            .collect::<Vec<_>>();
         let rejected = batch.rejected();
-        if accepted.is_empty() {
+        if decisions.is_empty() {
             self.set_status("Mila\nNo supported link could be opened.");
-        } else if rejected == 0 {
-            self.set_status(&format!("Mila\nRoutes:\n{}", accepted.join("\n")));
         } else {
+            let routes = decisions
+                .iter()
+                .map(|decision| match decision {
+                    NavigationDecision::UnknownDeployment { .. } => {
+                        format!("Add deployment before opening {}", decision.canonical())
+                    }
+                    NavigationDecision::SignInRequired { .. } => {
+                        format!("Sign in before opening {}", decision.canonical())
+                    }
+                    NavigationDecision::Open { .. } => {
+                        format!("Open {}", decision.canonical())
+                    }
+                })
+                .collect::<Vec<_>>();
             self.set_status(&format!(
                 "Mila\nRoutes:\n{}\nRejected links: {rejected}",
-                accepted.join("\n")
+                routes.join("\n")
             ));
         }
         window.present();

@@ -1290,7 +1290,7 @@ id and the key expiry.
 | App lock | Optional, with biometrics or the device passcode (`local_auth`). It locks immediately or after 1 or 5 minutes in the background. A saved lock covers Mila from the first frame. Locked content is not painted and not in the accessibility tree. Linux has no lock, and the setting says so. |
 | Desktop push | macOS uses the same notification-extension path as iOS, from code shared in `mila/app/darwin/Shared`. An unsigned macOS dev build has no push entitlement and offers no notifications. Windows push needs Susan's WNS provider (ADR-0236), whose deployed configuration is not yet enabled; the Windows native channel and poke opener are not yet implemented. |
 | Offline list | The last complete machine listing per deployment is saved as an owner-only `0600` file holding machine rows only, at most 500. While offline, the saved list is shown with its save time and its actions are disabled. |
-| Linux desktop | One window. A second `mila overalls://…` hands its link to the running window, which only navigates. |
+| Linux desktop | One window. A second `mila overalls://…` hands its link to the running window, which only navigates. Rust classifies each bounded route as an unknown deployment, sign-in-required target or authenticated target; unknown and signed-out links do not reach a target screen. |
 
 ```mermaid
 sequenceDiagram

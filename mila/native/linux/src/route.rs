@@ -56,6 +56,25 @@ impl ActivationRoute {
     pub const fn target(&self) -> &Target {
         &self.target
     }
+
+    /// Classifies a route against the selected deployment and current session.
+    /// Classification only chooses a navigation destination; it never performs
+    /// a command or changes deployment/session state.
+    pub fn navigation(
+        &self,
+        selected_authority: Option<&str>,
+        authenticated: bool,
+    ) -> NavigationDecision {
+        let authority = self.authority.to_string();
+        let target = self.target.clone();
+        if selected_authority != Some(authority.as_str()) {
+            NavigationDecision::UnknownDeployment { authority, target }
+        } else if authenticated {
+            NavigationDecision::Open { authority, target }
+        } else {
+            NavigationDecision::SignInRequired { authority, target }
+        }
+    }
 }
 
 /// Parses all URI values delivered by a desktop open activation.
@@ -77,6 +96,26 @@ const MAX_OPEN_ROUTES: usize = 64;
 pub struct ActivationBatch {
     routes: Vec<ActivationRoute>,
     rejected: usize,
+}
+
+/// The safe result of resolving a deep link against local deployment/session
+/// state. An unknown or signed-out deployment never reaches a target screen.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum NavigationDecision {
+    UnknownDeployment { authority: String, target: Target },
+    SignInRequired { authority: String, target: Target },
+    Open { authority: String, target: Target },
+}
+
+impl NavigationDecision {
+    pub fn canonical(&self) -> String {
+        let (authority, target) = match self {
+            Self::UnknownDeployment { authority, target }
+            | Self::SignInRequired { authority, target }
+            | Self::Open { authority, target } => (authority, target),
+        };
+        format!("overalls://{authority}{}", target.path())
+    }
 }
 
 impl ActivationBatch {
@@ -396,7 +435,10 @@ impl std::error::Error for RouteError {}
 
 #[cfg(test)]
 mod tests {
-    use super::{parse_activation_uris, ActivationBatch, ActivationRoute, MachinePage, Target};
+    use super::{
+        parse_activation_uris, ActivationBatch, ActivationRoute, MachinePage, NavigationDecision,
+        Target,
+    };
 
     const HOST: &str = "overalls://fleet.example";
     const ID: &str = "01234567-89ab-cdef-0123-456789abcdef";
@@ -474,5 +516,21 @@ mod tests {
             batch.canonical_routes()[1],
             "overalls://fleet.example/settings"
         );
+    }
+
+    #[test]
+    fn navigation_requires_the_selected_authenticated_deployment() {
+        let route = ActivationRoute::parse(&format!("{HOST}/machines/{ID}/info")).expect("route");
+        assert!(matches!(
+            route.navigation(None, true),
+            NavigationDecision::UnknownDeployment { .. }
+        ));
+        assert!(matches!(
+            route.navigation(Some("fleet.example"), false),
+            NavigationDecision::SignInRequired { .. }
+        ));
+        let decision = route.navigation(Some("fleet.example"), true);
+        assert!(matches!(decision, NavigationDecision::Open { .. }));
+        assert_eq!(decision.canonical(), format!("{HOST}/machines/{ID}/info"));
     }
 }

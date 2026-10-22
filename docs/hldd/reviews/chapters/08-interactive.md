@@ -1,5 +1,5 @@
 ---
-digest: d1210da76cefdad36e8e57ad8dcc19cb557d8ca390979c2efcdb7075b02d60b7
+digest: 5cd1ebbcc7a0aec75a8a6e1611fd4296e9c81b4fc19787930e559f74f384ebc8
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Documented the Linux Rust sign-in coordinator trust/session planning seam and its remaining host integration gap.
+Documented Linux deep-link classification for unknown, signed-out and authenticated deployment targets.
