@@ -1,5 +1,5 @@
 ---
-digest: 0a05ca49c341bb73a3e2fbf38f9589806ef577224608cb8b44178b8bebb548cd
+digest: 5b1a1ae9b02051f135d5f8c57d97e1aa4b91e08861018fc741c10c5729c28b11
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now projects bounded cgroup memory event counters and CPU quota gauges for service and Lilly VM records.
+Fleet exporter now projects bounded cgroup memory working-set and CPU, memory and IO pressure metrics with finite numeric validation.

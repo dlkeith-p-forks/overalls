@@ -373,6 +373,41 @@ fn append_cgroup_events(output: &mut String, kind: &str, entity: &str, parent: &
             }
         }
     }
+    if let Ok(text) = fs::read_to_string(format!("{base}/memory.stat")) {
+        for line in text.lines().take(64) {
+            let mut fields = line.split_whitespace();
+            let Some(name @ ("anon" | "file" | "kernel" | "slab")) = fields.next() else {
+                continue;
+            };
+            let Some(value) = fields.next().and_then(|v| v.parse::<u64>().ok()) else {
+                continue;
+            };
+            output.push_str(&format!("overalls_fleet_gauge{{kind=\"{kind}\",entity=\"{entity}\",measure=\"memory_{name}_bytes\"}} {value}\n"));
+        }
+    }
+    for pressure in ["cpu", "memory", "io"] {
+        if let Ok(text) = fs::read_to_string(format!("{base}/{pressure}.pressure")) {
+            for line in text.lines().take(4) {
+                let mut fields = line.split_whitespace();
+                let Some(class) = fields.next() else { continue };
+                if !matches!(class, "some" | "full") {
+                    continue;
+                }
+                for field in fields {
+                    let Some((name, value)) = field.split_once('=') else {
+                        continue;
+                    };
+                    if matches!(name, "avg10" | "avg60" | "avg300" | "total") {
+                        if let Ok(value) = value.parse::<f64>() {
+                            if value.is_finite() {
+                                output.push_str(&format!("overalls_fleet_gauge{{kind=\"{kind}\",entity=\"{entity}\",measure=\"pressure_{pressure}_{class}_{name}\"}} {value}\n"));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 fn vm_units() -> Option<Vec<String>> {
