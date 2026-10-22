@@ -1,5 +1,5 @@
 ---
-digest: c62f6790aed46bc1df97279732ba1c40f6a5f76875bd9ec023f84f0f98995be8
+digest: a8578fe8830458fbd6208869c03ca1945ddfebec426f6a2202110b0e4aac4e29
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple localization candidate typing and removal of the empty resource placeholder restore Swift package compilation; Linux GTK sign-in controls expose only validated approval/session reducer state until a signer is supplied.
+Linux sign-in controls now use the centralized localization catalog for all visible labels.

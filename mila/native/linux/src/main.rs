@@ -159,7 +159,7 @@ impl NativeState {
         let sign_in_controls = Box::new(Orientation::Horizontal, 8);
         let sign_in = self.sign_in.clone();
         let sign_in_status = content.clone();
-        let sign_in_button = Button::with_label("Sign in");
+        let sign_in_button = Button::with_label(&strings::text(strings::Message::SignInStart));
         sign_in_button.connect_clicked(move |_| {
             let mut flow = sign_in.borrow_mut();
             *flow = flow.clone().apply(SignInEvent::Start);
@@ -180,7 +180,7 @@ impl NativeState {
         let sign_in_status = content.clone();
         let url = approval_url.clone();
         let fingerprint = approval_fingerprint.clone();
-        let approval_button = Button::with_label("Await approval");
+        let approval_button = Button::with_label(&strings::text(strings::Message::SignInApprove));
         approval_button.connect_clicked(move |_| {
             let mut flow = sign_in.borrow_mut();
             let generation = flow.generation;
@@ -203,7 +203,7 @@ impl NativeState {
 
         let sign_in = self.sign_in.clone();
         let sign_in_status = content.clone();
-        let open_approval = Button::with_label("Open browser");
+        let open_approval = Button::with_label(&strings::text(strings::Message::SignInOpenBrowser));
         open_approval.connect_clicked(move |_| {
             let flow = sign_in.borrow();
             let Some(approval) = flow.approval.as_ref() else {
@@ -229,7 +229,7 @@ impl NativeState {
         let sign_in = self.sign_in.clone();
         let sign_in_status = content.clone();
         let session = self.session.clone();
-        let sign_out_button = Button::with_label("Sign out");
+        let sign_out_button = Button::with_label(&strings::text(strings::Message::SignInSignOut));
         sign_out_button.connect_clicked(move |_| {
             session.borrow_mut().clear();
             let mut flow = sign_in.borrow_mut();
@@ -243,7 +243,7 @@ impl NativeState {
 
         let sign_in = self.sign_in.clone();
         let sign_in_status = content.clone();
-        let reconnect = Button::with_label("Reconnect");
+        let reconnect = Button::with_label(&strings::text(strings::Message::SignInReconnect));
         reconnect.connect_clicked(move |_| {
             let mut flow = sign_in.borrow_mut();
             let previous = flow.phase;
