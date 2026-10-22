@@ -62,6 +62,12 @@ fn main() -> std::io::Result<()> {
             output.push_str(&format!("overalls_fleet_gauge{{kind=\"host\",entity=\"all\",measure=\"memory_total_bytes\"}} {total}\n"));
             output.push_str(&format!("overalls_fleet_gauge{{kind=\"host\",entity=\"all\",measure=\"memory_used_bytes\"}} {}\n", total.saturating_sub(available)));
         }
+        for (device, read_ops, read_sectors, write_ops, write_sectors) in disk_stats() {
+            output.push_str(&format!("overalls_fleet_counter{{kind=\"disk\",entity=\"{device}\",measure=\"read_ops\"}} {read_ops}\n"));
+            output.push_str(&format!("overalls_fleet_counter{{kind=\"disk\",entity=\"{device}\",measure=\"read_sectors\"}} {read_sectors}\n"));
+            output.push_str(&format!("overalls_fleet_counter{{kind=\"disk\",entity=\"{device}\",measure=\"write_ops\"}} {write_ops}\n"));
+            output.push_str(&format!("overalls_fleet_counter{{kind=\"disk\",entity=\"{device}\",measure=\"write_sectors\"}} {write_sectors}\n"));
+        }
         if let Some(cpu) = fs::read_to_string("/proc/stat")
             .ok()
             .and_then(|v| v.lines().find(|l| l.starts_with("cpu ")).map(str::to_owned))
@@ -162,6 +168,39 @@ fn memory_totals() -> Option<(u64, u64)> {
         }
     }
     Some((total?, available?))
+}
+
+fn disk_stats() -> Vec<(String, u64, u64, u64, u64)> {
+    let text = match fs::read_to_string("/proc/diskstats") {
+        Ok(value) if value.len() <= 1_048_576 => value,
+        _ => return Vec::new(),
+    };
+    text.lines()
+        .take(4096)
+        .filter_map(|line| {
+            let fields: Vec<&str> = line.split_whitespace().collect();
+            if fields.len() < 11 {
+                return None;
+            }
+            let name = fields[2];
+            if name.is_empty()
+                || name.len() > 128
+                || !name.bytes().all(|b| {
+                    b.is_ascii_alphanumeric() || b == b'_' || b == b'.' || b == b'!' || b == b'-'
+                })
+            {
+                return None;
+            }
+            Some((
+                name.to_owned(),
+                fields[3].parse().ok()?,
+                fields[5].parse().ok()?,
+                fields[7].parse().ok()?,
+                fields[9].parse().ok()?,
+            ))
+        })
+        .take(4096)
+        .collect()
 }
 
 struct UpdaterStatus {
