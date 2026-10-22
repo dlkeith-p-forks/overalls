@@ -29,12 +29,14 @@ impl NativeState {
         root.set_margin_bottom(24);
         root.set_margin_start(24);
         root.set_margin_end(24);
-        let title = Label::new(Some(strings::text(strings::Message::AppName)));
+        let title_text = strings::text(strings::Message::AppName);
+        let title = Label::new(Some(&title_text));
         title.set_halign(Align::Start);
         title.add_css_class("title-1");
         root.append(&title);
         let nav = Box::new(Orientation::Horizontal, 8);
-        let content = Label::new(Some(strings::text(strings::Message::Ready)));
+        let ready_text = strings::text(strings::Message::Ready);
+        let content = Label::new(Some(&ready_text));
         content.set_wrap(true);
         content.set_halign(Align::Start);
         *self.status.borrow_mut() = Some(content.clone());

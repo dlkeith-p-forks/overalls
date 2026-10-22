@@ -1,5 +1,5 @@
 ---
-digest: 11d19e05df0f53d9ae883ef957af7043680931ecd5e57def450dfd54792bb95f
+digest: b0022f3acd28afa6db04a6794d0c3c5c15a1f0787637b8b321d38a42eef7c867
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native build targets now generate the shared locale bundles during platform builds; no domain or deployment behavior changes.
+Linux localization build/runtime wiring preserves existing native UI architecture and adds generated catalog loading.

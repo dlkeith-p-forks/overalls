@@ -14,6 +14,7 @@ fn main() {
         .status()
         .expect("run Mila localization generator");
     assert!(status.success(), "Mila localization generation failed");
+    println!("cargo:rustc-env=MILA_BUILT_LOCALE_DIR={}", output.display());
     println!("cargo:rerun-if-changed=../../localization/generate_catalogs.py");
     println!("cargo:rerun-if-changed=../../app/lib/l10n");
 }
