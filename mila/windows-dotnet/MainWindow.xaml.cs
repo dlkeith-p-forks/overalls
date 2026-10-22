@@ -170,6 +170,11 @@ public sealed partial class MainWindow : Window
     private void UnshareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");
     private void CreateMachine(object sender, RoutedEventArgs args)
     {
+        if (_session.Handle is not { } handle || handle == 0)
+        {
+            MachineCommandStatus.Text = S("signInFirst", "Sign in first");
+            return;
+        }
         MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand("new");
         MachineCommandStatus.Text = kind == MilaMachineCommandKind.New
             ? S("requestWaiting", "Create request validated by Rust")
