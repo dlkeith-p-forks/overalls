@@ -58,6 +58,11 @@
           <Button x:Name="Refresh" Click="CheckNativeBridge" />
           <Button x:Name="LockButton" Click="LockApp" />
         </StackPanel>
+        <StackPanel Spacing="6">
+          <TextBlock x:Name="SshKeysTitle" />
+          <TextBlock x:Name="SshKeysStatus" TextWrapping="Wrap" Opacity="0.7" />
+          <Button x:Name="RefreshSshKeys" Click="RefreshSshKeys" HorizontalAlignment="Left" />
+        </StackPanel>
         <TextBlock x:Name="LockStatus" Opacity="0.7" TextWrapping="Wrap" />
         <StackPanel Spacing="6">
           <TextBlock x:Name="TerminalTitle" />

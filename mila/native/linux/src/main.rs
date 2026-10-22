@@ -183,7 +183,7 @@ impl NativeState {
             (strings::text(strings::Message::WebPublic), "set", true),
             (strings::text(strings::Message::WebPrivate), "set", false),
         ] {
-            let button = Button::with_label(label_text);
+            let button = Button::with_label(&label_text);
             let machine = machine_id.clone();
             let port = web_port.clone();
             let request = web_request.clone();

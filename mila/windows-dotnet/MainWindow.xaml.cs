@@ -36,6 +36,9 @@ public sealed partial class MainWindow : Window
         CreateMachine.Content = S("actionCreate", "Create machine");
         ShareAdd.Content = S("sharingAdd", "Share add");
         ShareRemove.Content = S("sharingRemove", "Share remove");
+        SshKeysTitle.Text = S("sshKeysTitle", "SSH keys");
+        SshKeysStatus.Text = S("sshKeysSignInFirst", "Sign in to manage SSH keys.");
+        RefreshSshKeys.Content = S("refresh", "Refresh");
         ThreadCommandsTitle.Text = S("tabThreads", "Thread commands");
         ThreadCommandsHelp.Text = S("threadWorking", "Commands are validated by the Rust core before execution.");
         ThreadList.Content = S("tabInfo", "List"); ThreadShow.Content = S("machineLoading", "Show");
@@ -52,6 +55,12 @@ public sealed partial class MainWindow : Window
         WebOpen.Content = S("webOpen", "Open web");
         WebCopy.Content = S("webCopy", "Copy address");
         WebStatus.Text = S("webNoAddress", "No web address");
+    }
+    private void RefreshSshKeys(object sender, RoutedEventArgs args)
+    {
+        SshKeysStatus.Text = _activeHost is null
+            ? S("sshKeysSignInFirst", "Sign in to manage SSH keys.")
+            : S("sshKeysLoading", "Loading SSH keys…");
     }
     private void ShareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share add {SampleMachine} user viewer");
     private void UnshareMachine(object sender, RoutedEventArgs args) => ClassifyMachine($"share remove {SampleMachine} user");
