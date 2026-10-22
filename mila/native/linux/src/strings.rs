@@ -34,6 +34,11 @@ pub(crate) enum Message {
     AppearanceDark,
     Locale,
     SaveSettings,
+    SignInStart,
+    SignInApprove,
+    SignInOpenBrowser,
+    SignInSignOut,
+    SignInReconnect,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -67,6 +72,11 @@ pub(crate) fn text(message: Message) -> String {
         Message::AppearanceDark => "appearanceDark",
         Message::Locale => "locale",
         Message::SaveSettings => "settingsSave",
+        Message::SignInStart => "signInStart",
+        Message::SignInApprove => "signInApprove",
+        Message::SignInOpenBrowser => "signInOpenBrowser",
+        Message::SignInSignOut => "signInSignOut",
+        Message::SignInReconnect => "signInReconnect",
     };
     catalog()
         .get(id)
@@ -106,6 +116,11 @@ fn fallback(message: Message) -> &'static str {
         Message::AppearanceDark => "Dark",
         Message::Locale => "Locale",
         Message::SaveSettings => "Save settings",
+        Message::SignInStart => "Sign in with browser",
+        Message::SignInApprove => "Await approval",
+        Message::SignInOpenBrowser => "Open approval page",
+        Message::SignInSignOut => "Sign out",
+        Message::SignInReconnect => "Reconnect",
     }
 }
 

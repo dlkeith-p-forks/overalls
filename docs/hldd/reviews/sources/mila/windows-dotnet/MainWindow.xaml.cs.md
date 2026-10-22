@@ -1,5 +1,5 @@
 ---
-digest: 13268fcde16abf1cf84a45974c098957ba4ac70358d01c2e8fb9f548176adc53
+digest: a8de1a3078eaa83a9b34f565f373ccaea94c8181b8861031f330558eba346736
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Bounded native trust loading and session lifecycle cleanup preserve existing native wrapper behavior; smoke coverage added.
+Native Android and Windows clients now fetch bounded HTTPS trust documents, reconcile authority in Rust, and atomically persist only canonical trust selections before session connection.

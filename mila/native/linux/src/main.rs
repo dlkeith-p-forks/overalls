@@ -6,6 +6,9 @@ use mila_native_linux::adapter::{
     format_thread_turns, format_web_command, TerminalStream,
 };
 use mila_native_linux::route::{parse_activation_uris, ActivationRoute};
+use mila_native_linux::session::{
+    ApprovalInfo, SessionBinding, SignInEvent, SignInFlow, SignInPhase, WhoamiOutcome,
+};
 use std::{cell::RefCell, rc::Rc};
 mod persistence;
 mod strings;
@@ -13,11 +16,15 @@ const APPLICATION_ID: &str = "dev.overalls.Mila.Linux";
 #[derive(Clone)]
 struct NativeState {
     status: Rc<RefCell<Option<Label>>>,
+    sign_in: Rc<RefCell<SignInFlow>>,
+    session: Rc<RefCell<SessionBinding>>,
 }
 impl NativeState {
     fn new() -> Self {
         Self {
             status: Rc::new(RefCell::new(None)),
+            sign_in: Rc::new(RefCell::new(SignInFlow::default())),
+            session: Rc::new(RefCell::new(SessionBinding::default())),
         }
     }
     fn ensure_window(&self, app: &adw::Application) -> ApplicationWindow {
@@ -144,6 +151,110 @@ impl NativeState {
         });
         root.append(&deployment);
         root.append(&select);
+
+        // The lifecycle controls are deliberately state-only until the host
+        // supplies its owner-only Linux device signer and HTTPS trust fetcher.
+        // They still exercise the same generation/approval/reconnect reducer as
+        // the connected path and never claim authenticated authority locally.
+        let sign_in_controls = Box::new(Orientation::Horizontal, 8);
+        let sign_in = self.sign_in.clone();
+        let sign_in_status = content.clone();
+        let sign_in_button = Button::with_label(&strings::text(strings::Message::SignInStart));
+        sign_in_button.connect_clicked(move |_| {
+            let mut flow = sign_in.borrow_mut();
+            *flow = flow.clone().apply(SignInEvent::Start);
+            sign_in_status
+                .set_label("Sign-in connecting; certificate session is pending native signer.");
+        });
+        sign_in_controls.append(&sign_in_button);
+
+        let approval_url = Entry::builder()
+            .placeholder_text("Browser approval URL (HTTPS)")
+            .hexpand(true)
+            .build();
+        let approval_fingerprint = Entry::builder()
+            .placeholder_text("Approval fingerprint")
+            .hexpand(true)
+            .build();
+        let sign_in = self.sign_in.clone();
+        let sign_in_status = content.clone();
+        let url = approval_url.clone();
+        let fingerprint = approval_fingerprint.clone();
+        let approval_button = Button::with_label(&strings::text(strings::Message::SignInApprove));
+        approval_button.connect_clicked(move |_| {
+            let mut flow = sign_in.borrow_mut();
+            let generation = flow.generation;
+            let outcome = WhoamiOutcome::Approval {
+                url: url.text().trim().to_owned(),
+                fingerprint: fingerprint.text().trim().to_owned(),
+            };
+            *flow = flow.clone().apply(SignInEvent::Whoami {
+                generation,
+                outcome,
+                at: 0,
+            });
+            sign_in_status.set_label(if flow.phase == SignInPhase::AwaitingApproval {
+                "Approval pending; open the HTTPS link in your browser."
+            } else {
+                "Approval URL rejected by Rust policy."
+            });
+        });
+        sign_in_controls.append(&approval_button);
+
+        let sign_in = self.sign_in.clone();
+        let sign_in_status = content.clone();
+        let open_approval = Button::with_label(&strings::text(strings::Message::SignInOpenBrowser));
+        open_approval.connect_clicked(move |_| {
+            let flow = sign_in.borrow();
+            let Some(approval) = flow.approval.as_ref() else {
+                sign_in_status.set_label("No live approval link is available.");
+                return;
+            };
+            if ApprovalInfo::validate(&approval.url, &approval.fingerprint, approval.issued_at)
+                .is_err()
+            {
+                sign_in_status.set_label("Approval URL rejected by Rust policy.");
+                return;
+            }
+            match gio::AppInfo::launch_default_for_uri(
+                &approval.url,
+                None::<&gio::AppLaunchContext>,
+            ) {
+                Ok(()) => sign_in_status.set_label("Approval opened in the browser."),
+                Err(_) => sign_in_status.set_label("The browser could not open approval."),
+            }
+        });
+        sign_in_controls.append(&open_approval);
+
+        let sign_in = self.sign_in.clone();
+        let sign_in_status = content.clone();
+        let session = self.session.clone();
+        let sign_out_button = Button::with_label(&strings::text(strings::Message::SignInSignOut));
+        sign_out_button.connect_clicked(move |_| {
+            session.borrow_mut().clear();
+            let mut flow = sign_in.borrow_mut();
+            *flow = flow.clone().apply(SignInEvent::SignOut);
+            sign_in_status.set_label("Signed out; deployment trust and approval remain pinned.");
+        });
+        sign_in_controls.append(&sign_out_button);
+        root.append(&sign_in_controls);
+        root.append(&approval_url);
+        root.append(&approval_fingerprint);
+
+        let sign_in = self.sign_in.clone();
+        let sign_in_status = content.clone();
+        let reconnect = Button::with_label(&strings::text(strings::Message::SignInReconnect));
+        reconnect.connect_clicked(move |_| {
+            let mut flow = sign_in.borrow_mut();
+            let previous = flow.phase;
+            *flow = flow.clone().apply(SignInEvent::Start);
+            sign_in_status.set_label(if previous == SignInPhase::Disconnected {
+                "Reconnect started; a fresh generation must reauthenticate."
+            } else {
+                "Reconnect requires a disconnected authenticated session."
+            });
+        });
+        root.append(&reconnect);
 
         // Linux intentionally reports lock capability explicitly. The shared Flutter
         // policy marks Linux as unavailable; keeping this state visible prevents

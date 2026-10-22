@@ -20,7 +20,7 @@ public enum MilaWebEndpointError: Error, Equatable, Sendable { case invalid }
     public init() {}
     @discardableResult public func set(_ value: String) -> Bool {
         do { endpoint = try MilaWebEndpoint(value); error = nil; return true }
-        catch { endpoint = nil; error = .invalid; return false }
+        catch { endpoint = nil; self.error = MilaWebEndpointError.invalid; return false }
     }
     public func clear() { endpoint = nil; error = nil }
 }

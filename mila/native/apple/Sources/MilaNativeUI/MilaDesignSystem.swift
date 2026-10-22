@@ -2,7 +2,7 @@ import SwiftUI
 
 /// The four Monospace Web colour tokens used by every native Apple surface.
 /// Keep presentation colours inside this type so light/dark contrast remains auditable.
-public struct MilaMonoTokens: Equatable {
+public struct MilaMonoTokens: Equatable, @unchecked Sendable {
     public let text: Color
     public let textAlt: Color
     public let background: Color

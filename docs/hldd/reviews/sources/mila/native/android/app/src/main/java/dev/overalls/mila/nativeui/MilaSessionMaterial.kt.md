@@ -1,5 +1,5 @@
 ---
-digest: 27ad30c94a7eb625e41a06503e7ab3ab8f28cd815fd0adbf0347f7a70c951c85
+digest: 7667e9be679df1c8f612514c046a2550c831335cc06b4d0157092d15a77cb87b
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Android trust reader correction: fixed 8193-byte buffer rejects assets exceeding the existing 8192-byte limit before key access; cancellation propagates. Preserves documented strict trust policy and existing native verification gaps; no new deployment or authority behavior.
+Android enrollment distinguishes transport IO failures from malformed trust responses; malformed data now fails closed instead of falling back to a pin.

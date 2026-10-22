@@ -46,6 +46,12 @@ MilaFfiStatus mila_route_format(const char *input, MilaRouteOutput output);
 /* Validates a bounded trust document against its expected management host. */
 MilaFfiStatus mila_trust_document_validate(const uint8_t *document, size_t length,
                                            const char *origin_host, uint64_t now);
+/* Validates fetched trust, reconciles an optional pin, and writes canonical
+ * JSON selected by Rust. A zero fetched length selects an unretired pin. */
+MilaFfiStatus mila_trust_document_reconcile(const uint8_t *pinned, size_t pinned_length,
+                                            const uint8_t *fetched, size_t fetched_length,
+                                            const char *origin_host, uint64_t now,
+                                            MilaRouteOutput output);
 /* Validates push registration metadata; token bytes are never returned. */
 MilaFfiStatus mila_push_registration_validate(uint8_t provider, uint8_t environment,
                                               const char *token, const char *app_id,

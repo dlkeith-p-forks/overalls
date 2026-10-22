@@ -1,5 +1,5 @@
 ---
-digest: aacc5ea7054996766494b5f87784579553bed5ca91613843d75c07177ec7e60b
+digest: 67a55c2d14d11429da974034aff9c80815d67296ff4dad31a79aabc0df30d4ce
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Bounded native trust loading and session lifecycle cleanup preserve existing native wrapper behavior; smoke coverage added.
+Rust trust reconciliation formatting preserves the reviewed ABI and property tests.

@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -56,29 +57,44 @@ internal val threadCommandChoices = listOf(
     "Read" to "thread read",
 )
 
+/**
+ * @cc [owner:ghuntley,label:security] android-native-deployment-selection
+ * The Android shell MUST offer only persisted or user-validated deployments. It MUST NOT invent a
+ * host, call the session-material provider without a selected deployment, or pass a different host
+ * to that provider than the one selected by the user.
+ */
 @Composable
 fun MilaNativeRoot(
-    adapter: MilaFfiAdapter = LinkedMilaFfiAdapter(),
+    adapter: MilaFfiAdapter? = null,
     materialProvider: MilaSessionMaterialProvider? = null,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    // Keep the default native adapter across recompositions. A live Rust session is
+    // owned by this adapter and must not be replaced by a recomposition.
+    val sessionAdapter = remember(adapter) { adapter ?: LinkedMilaFfiAdapter() }
     val sessionMaterialProvider = remember(materialProvider, context) {
         materialProvider ?: AndroidMilaSessionMaterialProvider(context)
     }
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
     val deploymentStore = remember { MilaSharedPreferencesDeploymentStore(LocalContext.current.getSharedPreferences("mila.deployment", 0)) }
-    val deployment = remember {
-        MilaDeploymentSelection(listOfNotNull(deploymentStore.read(), MilaDeployment("mila.example")))
-    }
-    val signIn = remember { MilaSignInController(adapter, deploymentStore) }
-    val machineDetail = remember { MilaMachineDetailController(adapter) }
-    val threadDetail = remember { MilaThreadDetailController(adapter) }
+    val savedDeployment = remember { deploymentStore.read() }
+    val deployment = remember { MilaDeploymentSelection(listOfNotNull(savedDeployment)) }
+    var selectedDeployment by remember { mutableStateOf(deployment.selected) }
+    var deploymentEntries by remember { mutableStateOf(deployment.deployments) }
+    var hostInput by remember { mutableStateOf(selectedDeployment?.host.orEmpty()) }
+    var hostInvalid by remember { mutableStateOf(false) }
+    val signIn = remember(sessionAdapter) { MilaSignInController(sessionAdapter, deploymentStore) }
+    val machineDetail = remember(sessionAdapter) { MilaMachineDetailController(sessionAdapter) }
+    val threadDetail = remember(sessionAdapter) { MilaThreadDetailController(sessionAdapter) }
     var signInState by remember { mutableStateOf<MilaSignInState>(MilaSignInState.SignedOut) }
+    DisposableEffect(signIn) {
+        onDispose { signIn.close() }
+    }
     fun refresh() { scope.launch {
         connection = MilaSessionConnection.Refreshing
-        connection = MilaSessionRefresher.refresh(adapter)
+        connection = MilaSessionRefresher.refresh(sessionAdapter)
     } }
     val status = when (connection) {
         MilaSessionConnection.Idle -> MilaStrings.text(MilaMessage.Ready)
@@ -90,10 +106,40 @@ fun MilaNativeRoot(
     machineDetail.setSession(signInState is MilaSignInState.SignedIn, listing)
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(MilaStrings.text(MilaMessage.AppName), style = MaterialTheme.typography.headlineSmall)
+        MilaDeploymentPicker(
+            deployments = deploymentEntries,
+            selected = selectedDeployment,
+            host = hostInput,
+            invalidHost = hostInvalid,
+            onHostChanged = {
+                hostInput = it
+                hostInvalid = false
+            },
+            onSelect = { selected ->
+                deployment.select(selected.host, selected.port)
+                deploymentStore.write(selected)
+                selectedDeployment = selected
+                hostInput = selected.label
+                hostInvalid = false
+            },
+            onAdd = {
+                parseMilaDeploymentHost(hostInput).fold(
+                    onSuccess = { added ->
+                        deployment.add(added)
+                        deployment.select(added.host, added.port)
+                        deploymentStore.write(added)
+                        deploymentEntries = deployment.deployments
+                        selectedDeployment = added
+                        hostInput = added.label
+                        hostInvalid = false
+                    },
+                    onFailure = { hostInvalid = true },
+                )
+            },
+        )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Deployment: ${deployment.selected?.label ?: "none"}")
             Button({
-                deployment.selected?.let { selected ->
+                selectedDeployment?.let { selected ->
                     scope.launch {
                         signInState = MilaSignInState.Connecting(selected)
                         sessionMaterialProvider.resolve(selected).fold(
@@ -107,32 +153,65 @@ fun MilaNativeRoot(
                         )
                     }
                 }
-            }) { Text("Sign in") }
+            }, enabled = selectedDeployment != null) { Text(MilaStrings.text(MilaMessage.SignIn)) }
             Button({ route = MilaRoute.Machines }) { Text(MilaStrings.text(MilaMessage.Machines)) }
             Button({ route = MilaRoute.Threads }) { Text(MilaStrings.text(MilaMessage.Threads)) }
             Button({ route = MilaRoute.Settings }) { Text(MilaStrings.text(MilaMessage.Settings)) }
             Button(::refresh) { Text(MilaStrings.text(MilaMessage.Refresh)) }
         }
         Text(status, style = MaterialTheme.typography.labelSmall)
-        if (signInState is MilaSignInState.SignedIn) Text("Signed in", style = MaterialTheme.typography.labelSmall)
+        if (signInState is MilaSignInState.SignedIn) Text(MilaStrings.text(MilaMessage.Connected), style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
-            MilaRoute.Machines -> MachineList(adapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
-            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, adapter)
-            MilaRoute.Threads -> ThreadList(adapter)
+            MilaRoute.Machines -> MachineList(sessionAdapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
+            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, sessionAdapter)
+            MilaRoute.Threads -> ThreadList(sessionAdapter)
             is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
             MilaRoute.Settings -> MilaSettingsScreen()
         }
-        if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(adapter)
+        if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(sessionAdapter)
     }
-    LaunchedEffect(Unit) {
-        val saved = deploymentStore.read()
+    LaunchedEffect(signIn) {
+        val saved = selectedDeployment
         if (saved != null) {
             sessionMaterialProvider.resolve(saved).onSuccess { material ->
                 signIn.signIn(saved, material.config, material.signer)
                 signInState = signIn.state
             }
         }
-        refresh()
+    }
+}
+
+@Composable
+private fun MilaDeploymentPicker(
+    deployments: List<MilaDeployment>,
+    selected: MilaDeployment?,
+    host: String,
+    invalidHost: Boolean,
+    onHostChanged: (String) -> Unit,
+    onSelect: (MilaDeployment) -> Unit,
+    onAdd: () -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(MilaStrings.text(MilaMessage.Deployments), style = MaterialTheme.typography.titleMedium)
+        deployments.forEach { deployment ->
+            Button({ onSelect(deployment) }, enabled = deployment != selected) {
+                Text(deployment.label, style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+        OutlinedTextField(
+            value = host,
+            onValueChange = onHostChanged,
+            label = { Text(MilaStrings.text(MilaMessage.DeploymentHost)) },
+            placeholder = { Text(MilaStrings.text(MilaMessage.DeploymentHostHint)) },
+            isError = invalidHost,
+            singleLine = true,
+        )
+        if (invalidHost) {
+            Text(MilaStrings.text(MilaMessage.InvalidHost), style = MaterialTheme.typography.labelSmall)
+        }
+        Button({ onAdd() }, enabled = host.isNotBlank()) {
+            Text(MilaStrings.text(MilaMessage.AddDeployment))
+        }
     }
 }
 

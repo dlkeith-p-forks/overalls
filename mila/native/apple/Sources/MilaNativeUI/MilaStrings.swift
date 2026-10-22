@@ -11,7 +11,12 @@ public enum MilaStrings {
     ]
 
     public static func text(_ message: MilaMessage, locale: Locale = .current) -> String {
-        for candidate in [locale.identifier.replacingOccurrences(of: "_", with: "-"), locale.language.languageCode ?? "en", "en"] {
+        let candidates: [String] = [
+            locale.identifier.replacingOccurrences(of: "_", with: "-"),
+            locale.language.languageCode?.identifier ?? "en",
+            "en",
+        ]
+        for candidate in candidates {
             if let value = resourceValue(message, locale: candidate) { return value }
         }
         switch message {
@@ -29,7 +34,8 @@ public enum MilaStrings {
               let mila = domains["mila"] as? [String: Any],
               let messages = mila["messages"] as? [[String: Any]] else { return nil }
         guard let entry = messages.first(where: { $0["id"] as? String == ids[message] }),
-              let forms = entry["forms"] as? [String] else { return nil }
-        return forms.first
+              let forms = entry["forms"] as? [Any],
+              let first = forms.first as? String else { return nil }
+        return first
     }
 }

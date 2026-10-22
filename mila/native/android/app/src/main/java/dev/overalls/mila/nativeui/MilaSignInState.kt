@@ -8,7 +8,7 @@ sealed interface MilaSignInState {
  data class Failed(val deployment: MilaDeployment, val error: MilaFfiError) : MilaSignInState
 }
 
-class MilaSignInController(private val adapter: MilaFfiAdapter, private val store: MilaDeploymentStore? = null) {
+class MilaSignInController(private val adapter: MilaFfiAdapter, private val store: MilaDeploymentStore? = null) : AutoCloseable {
  var state: MilaSignInState = MilaSignInState.SignedOut; private set
 
  /**
@@ -17,6 +17,9 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
   */
  suspend fun signIn(deployment: MilaDeployment, config: MilaSessionConnectConfig, signer: MilaDeviceKey) {
   store?.write(deployment)
+  // A new attempt owns the adapter's session. Release a previous attempt before
+  // connecting so a refused reconnect cannot leave the old authenticated channel live.
+  (adapter as? MilaSessionConnector)?.bindSession(null)
   state = MilaSignInState.Connecting(deployment)
   val connector = adapter as? MilaSessionConnector
   val session = runCatching {
@@ -41,6 +44,7 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
  }
  suspend fun signIn(deployment: MilaDeployment) {
   store?.write(deployment)
+  (adapter as? MilaSessionConnector)?.bindSession(null)
   state = MilaSignInState.Connecting(deployment)
   state = when (val result = adapter.call(MilaFfiRequest(MilaFfiOperation.Bootstrap))) {
    is MilaFfiResult.Failure -> MilaSignInState.Failed(deployment, result.error)
@@ -58,8 +62,16 @@ class MilaSignInController(private val adapter: MilaFfiAdapter, private val stor
   store?.writeApproval(state)
   this.state = signedIn.copy(approval = state)
  }
+ /**
+  * @cc [owner:ghuntley,label:security] mila-android-session-close
+  * Closing an Android sign-in controller MUST release its adapter-owned authenticated session and
+  * MUST retain the validated deployment selection so a later controller can reconnect without
+  * retaining credentials in UI state.
+  */
  fun signOut() {
   (adapter as? MilaSessionConnector)?.bindSession(null)
   state = MilaSignInState.SignedOut
  }
+
+ override fun close() = signOut()
 }

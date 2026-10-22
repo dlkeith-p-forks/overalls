@@ -1,5 +1,5 @@
 ---
-digest: a81832bd737e87041679e8e26ed402adffa6eec8b7e55ad06e396b947d9d4c74
+digest: 33f944f1607325d03895c7d6066d466b0ca96f79ca38b33edda845cb3a3372b1
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Bounded native trust loading and session lifecycle cleanup preserve existing native wrapper behavior; smoke coverage added.
+Windows deployment persistence now defaults legacy host-only records to documented Porsche management port 22; no new topology or authority boundary

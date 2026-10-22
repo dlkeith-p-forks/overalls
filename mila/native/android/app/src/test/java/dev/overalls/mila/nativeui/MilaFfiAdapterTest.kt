@@ -1,6 +1,7 @@
 package dev.overalls.mila.nativeui
 
 import kotlinx.coroutines.runBlocking
+import java.io.IOException
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -64,7 +65,7 @@ class MilaSessionRefresherTest {
     }
 }
 
-private class FakeRustBindings(
+private open class FakeRustBindings(
     private val version: Int = 1,
     private val route: String? = "overalls://machines",
     private val actions: Int? = 5,
@@ -78,6 +79,27 @@ private class FakeRustBindings(
     override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Int = 0
     override fun terminalInput(length: Int, readWrite: Boolean): Int = 0
     override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Int = 0
+}
+
+private class TrustBindings : FakeRustBindings() {
+    var seenPinned: ByteArray? = null
+    var seenFetched: ByteArray? = null
+    override fun reconcileTrust(pinned: ByteArray?, fetched: ByteArray?, host: String, now: Long): ByteArray? {
+        seenPinned = pinned?.copyOf()
+        seenFetched = fetched?.copyOf()
+        return when {
+            fetched?.contentEquals(byteArrayOf(9)) == true -> null
+            fetched != null -> byteArrayOf(7, 7)
+            pinned != null -> pinned.copyOf()
+            else -> null
+        }
+    }
+}
+
+private class MemoryTrustStore(var value: ByteArray? = null) : MilaTrustStore {
+    var writes = 0
+    override fun read(host: String): ByteArray? = value?.copyOf()
+    override fun write(host: String, document: ByteArray) { value = document.copyOf(); writes++ }
 }
 
 class MilaLinkedFfiAdapterTest {
@@ -154,6 +176,52 @@ class MilaLinkedFfiAdapterTest {
             threadCommandChoices.map { it.second },
         )
         assertEquals(MilaThreadCommand.entries.size, threadCommandChoices.size)
+    }
+}
+
+class MilaTrustEnrollmentTest {
+    @Test
+    fun fetchedTrustIsRustSelectedAndPersisted() = runBlocking {
+        val bindings = TrustBindings()
+        val store = MemoryTrustStore()
+        val result = MilaTrustEnrollment(bindings, store, MilaTrustFetcher { byteArrayOf(1) })
+            .resolve("mila.example")
+        assertArrayEquals(byteArrayOf(7, 7), result.getOrThrow())
+        assertEquals(1, store.writes)
+        assertArrayEquals(byteArrayOf(1), bindings.seenFetched)
+    }
+
+    @Test
+    fun transportFailureUsesPinnedTrustWithoutReplacingIt() = runBlocking {
+        val bindings = TrustBindings()
+        val store = MemoryTrustStore(byteArrayOf(4))
+        val result = MilaTrustEnrollment(bindings, store, MilaTrustFetcher { throw IOException("offline") })
+            .resolve("mila.example")
+        assertArrayEquals(byteArrayOf(4), result.getOrThrow())
+        assertEquals(0, store.writes)
+        assertEquals(null, bindings.seenFetched)
+    }
+
+    @Test
+    fun conflictingFetchedTrustFailsClosedAndDoesNotPersist() = runBlocking {
+        val bindings = TrustBindings()
+        val store = MemoryTrustStore(byteArrayOf(4))
+        val result = MilaTrustEnrollment(bindings, store, MilaTrustFetcher { byteArrayOf(9) })
+            .resolve("mila.example")
+        assertTrue(result.isFailure)
+        assertEquals(0, store.writes)
+    }
+
+    @Test
+    fun malformedFetchedTrustDoesNotFallBackToPinnedTrust() = runBlocking {
+        val bindings = TrustBindings()
+        val store = MemoryTrustStore(byteArrayOf(4))
+        val result = MilaTrustEnrollment(bindings, store, MilaTrustFetcher {
+            throw IllegalArgumentException("malformed trust response")
+        }).resolve("mila.example")
+        assertTrue(result.isFailure)
+        assertEquals(0, store.writes)
+        assertEquals(null, bindings.seenFetched)
     }
 }
 
