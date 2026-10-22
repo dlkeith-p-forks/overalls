@@ -1,5 +1,5 @@
 ---
-digest: 20340375047faf42169d05e927332fb393edb2aee8b27dcca1bfde29773c9b24
+digest: 0c48e24c4a803dce93934a8710298413ea287fb70e153b1122ea1000827de96c
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now projects bounded host OOM, paging and page-fault counters from procfs vmstat.
+Fleet exporter now projects packet, error and drop counters alongside bytes for configured interfaces, matching the bounded network counter surface.

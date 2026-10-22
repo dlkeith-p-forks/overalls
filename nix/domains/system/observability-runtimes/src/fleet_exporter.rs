@@ -91,9 +91,10 @@ fn main() -> std::io::Result<()> {
             output.push_str(&format!("overalls_fleet_counter{{kind=\"host\",entity=\"all\",measure=\"{name}\"}} {value}\n"));
         }
         for interface in descriptor_interfaces(&descriptor) {
-            if let Some((rx, tx)) = interface_bytes(&interface) {
-                output.push_str(&format!("overalls_fleet_counter{{kind=\"network\",entity=\"{interface}\",measure=\"receive_bytes\"}} {rx}\n"));
-                output.push_str(&format!("overalls_fleet_counter{{kind=\"network\",entity=\"{interface}\",measure=\"transmit_bytes\"}} {tx}\n"));
+            if let Some(values) = interface_stats(&interface) {
+                for (measure, value) in values {
+                    output.push_str(&format!("overalls_fleet_counter{{kind=\"network\",entity=\"{interface}\",measure=\"{measure}\"}} {value}\n"));
+                }
             }
         }
         if let Some(zpool) = descriptor_command(&descriptor, "zpool") {
@@ -319,7 +320,7 @@ fn descriptor_interfaces(descriptor: &str) -> Vec<String> {
         .collect()
 }
 
-fn interface_bytes(interface: &str) -> Option<(u64, u64)> {
+fn interface_stats(interface: &str) -> Option<Vec<(String, u64)>> {
     let text = fs::read_to_string("/proc/net/dev").ok()?;
     for line in text.lines().skip(2) {
         let (raw_name, values) = line.split_once(':')?;
@@ -328,11 +329,20 @@ fn interface_bytes(interface: &str) -> Option<(u64, u64)> {
         }
         let fields: Vec<u64> = values
             .split_whitespace()
-            .take(9)
+            .take(16)
             .filter_map(|v| v.parse().ok())
             .collect();
-        if fields.len() >= 9 {
-            return Some((fields[0], fields[8]));
+        if fields.len() == 16 {
+            return Some(vec![
+                ("receive_bytes".into(), fields[0]),
+                ("receive_packets".into(), fields[1]),
+                ("receive_errors".into(), fields[2]),
+                ("receive_drops".into(), fields[3]),
+                ("transmit_bytes".into(), fields[8]),
+                ("transmit_packets".into(), fields[9]),
+                ("transmit_errors".into(), fields[10]),
+                ("transmit_drops".into(), fields[11]),
+            ]);
         }
     }
     None
