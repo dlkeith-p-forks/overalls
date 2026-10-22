@@ -1,5 +1,5 @@
 ---
-digest: ab74259dc4658778816ebeed652835cac691f78d2cd6a098e56c1c04f18ee1b7
+digest: 4d6124a3a25cbf17d6977c7cf25511457db94e6e41a5d2320a1c743e90006c65
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Parity matrix records Android authenticated WebView backend evidence.
+Apple WKWebView endpoint validation and wrapper are now evidenced conservatively.
