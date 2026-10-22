@@ -1,5 +1,5 @@
 ---
-digest: 027a07c4be26ffb10455b4d9736ecd18fc555c5595773ddaceae84185a994ea0
+digest: 8728371d7d3d458cf040ff3567c7406ec290bf4bb8f68fd672513f0aa0bc9cbe
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-15-monitoring documents the marshall_live recorder source, suffixed recorder configuration, latency objective kind, 24-objective/48-burn roster and the Marshall pages dashboard; 19-coverage regenerated with the marshall-page-service-levels scenario (ADR-0258).
+Relocation status primed nil for unrelocated machines; real-connection isolation, catalog budget, relocation equivalence and /machines/new form-edit tests added; 03-access evidence and the batched-machine-page-decisions scenario updated (ADR-0256).

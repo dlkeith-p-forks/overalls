@@ -256,6 +256,43 @@ defmodule MarshallWeb.MachinesLiveTest do
     refute has_element?(view, "#profile-help-inception")
   end
 
+  # @cc [owner:ghuntley,label:verification;observability] creation-form-edits-skip-refresh
+  # Editing the creation form MUST NOT reload page data; a refresh tick MUST
+  # reload it exactly once.
+  test "creation form edits do not reload page data but a tick does", %{
+    conn: conn,
+    owner: owner
+  } do
+    test = self()
+    handler = {__MODULE__, make_ref()}
+
+    :ok =
+      :telemetry.attach(
+        handler,
+        [:marshall, :live, :refresh],
+        fn _event, _measurements, metadata, _ -> send(test, {:page_refresh, metadata.view}) end,
+        nil
+      )
+
+    on_exit(fn -> :telemetry.detach(handler) end)
+
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+    _ = render(view)
+    drain_page_refreshes()
+
+    for name <- ["draft-a", "draft-ab", "draft-abc"] do
+      view |> element("#provision-form") |> render_change(%{"machine" => %{"name" => name}})
+    end
+
+    _ = render(view)
+    refute_received {:page_refresh, _}
+
+    send(view.pid, :refresh)
+    _ = render(view)
+    assert_received {:page_refresh, :machine_new}
+    refute_received {:page_refresh, _}
+  end
+
   test "clone form queues additional copies and retains duplicate submission identity", %{
     conn: conn,
     owner: owner
@@ -994,6 +1031,15 @@ defmodule MarshallWeb.MachinesLiveTest do
     send(view.pid, :refresh)
     refute has_element?(view, "#relocation-controls")
     assert {:ok, %{relocation: nil}} = Compute.get_vm(%{vm_id: vm.id}, actor: manager)
+  end
+
+  @spec drain_page_refreshes() :: :ok
+  defp drain_page_refreshes do
+    receive do
+      {:page_refresh, _} -> drain_page_refreshes()
+    after
+      0 -> :ok
+    end
   end
 
   defp signed_in(conn, user) do

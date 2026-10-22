@@ -251,6 +251,21 @@ defmodule Marshall.Compute.Views do
         |> Ash.read!(actor: SystemActor.compute())
         |> Enum.group_by(& &1.vm_id)
 
+      # Only machines without any relocation are primed (as nil, which is what
+      # the per-row latest read returns); relocated rows keep the per-row read.
+      relocated =
+        Marshall.Compute.Relocation
+        |> Ash.Query.filter(vm_id in ^ids)
+        |> Ash.Query.select([:id, :vm_id])
+        |> Ash.read!(actor: SystemActor.compute())
+        |> MapSet.new(& &1.vm_id)
+
+      DecisionSnapshot.prime(
+        ids
+        |> Enum.reject(&MapSet.member?(relocated, &1))
+        |> Map.new(&{{:latest_relocation, &1}, nil})
+      )
+
       DecisionSnapshot.prime(
         ids
         |> Enum.flat_map(fn id ->
@@ -315,7 +330,13 @@ defmodule Marshall.Compute.Views do
       pinned:
         DecisionSnapshot.fetch({:pinned, vm.id, actor.id}, fn -> Pins.pinned?(vm, actor) end),
       resize: resize_view(vm, permissions.manage),
-      relocation: if(permissions.manage, do: Marshall.Compute.RelocationStatus.latest(vm.id)),
+      relocation:
+        if(permissions.manage,
+          do:
+            DecisionSnapshot.fetch({:latest_relocation, vm.id}, fn ->
+              Marshall.Compute.RelocationStatus.latest(vm.id)
+            end)
+        ),
       owner: vm.owner_id == actor.id,
       permissions: permissions
     })

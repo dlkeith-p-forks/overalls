@@ -84,10 +84,41 @@ Decisions are unchanged:
   `test/marshall_web/machines_live_test.exs` fail identically on unchanged
   trunk.
 
+## Plan completion follow-up
+
+These were added after the first commit to close items from the plan's
+verification list.
+
+- **Real-connection isolation:**
+  `test/marshall/authorization/decision_snapshot_isolation_test.exs` runs on an
+  unboxed connection.
+  - It asserts that the outermost batch reports repeatable read and read-only
+    and refuses an UPDATE.
+  - It asserts that a batch nested in a read-committed transaction does not
+    memoize.
+  - The real-connection isolation test passed.
+  - Replacing the `SET TRANSACTION` with `READ COMMITTED` makes it fail.
+- **Form edits:** editing the `/machines/new` form does not refresh page data,
+  but a tick refreshes it exactly once. The form-edit refresh test passed.
+  Forcing a reload on every patch makes it fail on `refute_received`.
+- **Relocation reads:**
+  - Relocation status is now primed as `nil` for machines without any
+    relocation, from one batched read.
+  - Relocated machines keep the unchanged per-row read.
+  - The owner-list budget now asserts equal query counts for four and twelve
+    machines.
+  - A new test compares listed relocation status with a fresh per-row read.
+- **Catalog budget:** a new test asserts equal catalog query counts for two and
+  six hosts. A per-host read mutant fails it with 10 versus 14 queries.
+- **Catalog TTL cache:** rejected; see ADR-0256 Alternatives.
+- **Results:** `views_batched_reads_test.exs` passed 7 tests together with the
+  relocation settings LiveView test. The machines LiveView file still has only
+  the six provisioning failures above. They fail identically on `95616c01d`,
+  the commit before this change.
+
 ## Follow-up
 
 - Run `EXPLAIN (ANALYZE, BUFFERS)` for the list query on fleet data, then decide
   on the `UNION` rewrite.
-- Batch the relocation status read.
 - Consider PubSub-driven refresh for `/machines`.
 - Watch the new panels with live fleet data.

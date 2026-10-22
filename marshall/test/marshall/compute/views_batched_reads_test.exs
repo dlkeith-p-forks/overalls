@@ -98,9 +98,9 @@ defmodule Marshall.Compute.ViewsBatchedReadsTest do
   end
 
   # @cc [owner:ghuntley,label:verification;observability] views-query-budget
-  # A machine page MUST NOT issue a constant number of extra queries per row for
-  # authorization or projection; growth is bounded by the per-row relocation status read.
-  test "page queries grow by at most one per additional machine", context do
+  # A machine page without relocations MUST read the same number of queries
+  # regardless of how many machines it projects.
+  test "page queries do not grow with additional machines", context do
     small = queries(fn -> Compute.list_vms(%{limit: 50}, actor: context.owner) end)
 
     for _ <- 1..4, do: host_fixture()
@@ -111,7 +111,37 @@ defmodule Marshall.Compute.ViewsBatchedReadsTest do
     end
 
     large = queries(fn -> Compute.list_vms(%{limit: 50}, actor: context.owner) end)
-    assert large - small <= 8, "#{small} queries for #{@machines}, #{large} for #{@machines + 8}"
+    assert large == small, "#{small} queries for #{@machines}, #{large} for #{@machines + 8}"
+  end
+
+  # @cc [owner:ghuntley,label:verification;observability] views-batched-relocation-status
+  # A batched page MUST project the same relocation status as a fresh per-row
+  # read. Relocated machines keep the per-row read; the settings LiveView test
+  # covers one through the batched path.
+  test "listed relocation status matches the per-row read", context do
+    {:ok, page} = Compute.list_vms(%{limit: 50}, actor: context.owner)
+    assert length(page.items) == @machines
+
+    for item <- page.items do
+      assert item.permissions.manage
+      assert item.relocation == Marshall.Compute.RelocationStatus.latest(item.id)
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;capacity] catalog-query-budget
+  # The creation catalog MUST read hosts, reservations, pools and images in a
+  # number of queries independent of the number of eligible hosts.
+  test "catalog queries do not grow with eligible hosts", context do
+    small = queries(fn -> Compute.catalog(%{}, actor: context.owner) end)
+    for _ <- 1..4, do: host_fixture()
+
+    {{:ok, catalog}, large} =
+      Marshall.Observability.count_queries(fn ->
+        Compute.catalog(%{}, actor: context.owner)
+      end)
+
+    assert catalog.capacity_known
+    assert large == small, "#{small} queries for 2 hosts, #{large} for 6"
   end
 
   @spec queries((-> {:ok, map()})) :: non_neg_integer()

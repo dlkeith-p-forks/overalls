@@ -596,17 +596,27 @@ principal read. Every row on a page therefore reflects the same moment.
 | Grant revoked while a refresh runs | That refresh uses its snapshot; the next refresh hides the machine |
 | Batch nested in a caller's transaction | No reuse; every read runs fresh |
 | Duplicate active resize rows | Batched read skips them; the per-row read fails as before |
+| Machine with a relocation | Batched read skips it; the per-row status read runs as before |
 
 Evidence:
 
 - A [Hegel equivalence property](repo:marshall/test/marshall/compute/views_batched_reads_test.exs)
   compares batched pages with fresh per-row decisions over generated grant
-  roles. The same file covers revocation between reads and the per-machine query
-  budget.
-- The SQL sandbox cannot change isolation, so tests exercise the reuse without
-  `REPEATABLE READ` (`decision_snapshot_isolation: false`).
-- The isolation level was verified once against a real connection. No
-  automated test covers it.
+  roles. The same file covers:
+  - revocation between reads;
+  - constant page queries as unrelocated machines are added;
+  - constant catalog queries as hosts are added;
+  - listed relocation status matching a fresh per-row read.
+- The SQL sandbox cannot change isolation, so most tests exercise the reuse
+  without `REPEATABLE READ` (`decision_snapshot_isolation: false`).
+- An [unboxed real-connection test](repo:marshall/test/marshall/authorization/decision_snapshot_isolation_test.exs)
+  asserts that the outermost batch is repeatable-read and read-only and refuses
+  an UPDATE. It also asserts that a nested batch keeps its caller's isolation
+  without reuse.
+
+Relocation status is not authorization input. Machines without any relocation
+are primed as `nil` from one batched read, and relocated machines keep their
+per-row read.
 
 ## Creation preference authority
 

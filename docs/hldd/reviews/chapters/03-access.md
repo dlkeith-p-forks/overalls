@@ -1,5 +1,5 @@
 ---
-digest: 3f9fae617239f90a3b94a44aa662f107c43be08ac7a196f1ee952deb54343acd
+digest: 099d8cf171d090815d489c6f7bd5ba3084fec95db9d1b9c5d9de5facdfcc7c29
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Machine pages read through DecisionSnapshot batches with memoized principal, owner, grant, thread, team and projection reads, batched prefetch and catalog reads, user-leading indexes, refresh-after-completion and connected-only overview loading, per-view refresh telemetry and a fixed agent_stuck_turns multiplier; the access chapter, regenerated coverage and the batched-machine-page-decisions scenario describe them.
+Relocation status primed nil for unrelocated machines; real-connection isolation, catalog budget, relocation equivalence and /machines/new form-edit tests added; 03-access evidence and the batched-machine-page-decisions scenario updated (ADR-0256).

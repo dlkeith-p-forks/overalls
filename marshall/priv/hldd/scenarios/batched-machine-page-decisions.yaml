@@ -23,15 +23,36 @@ evidence:
   record_assertion: passed 4 tests
   scope: Manager grant listed, revoked between two list reads, omitted on the second read; no batch remains
     active between reads
-- assertion: page queries grow by at most one per additional machine
+- assertion: page queries do not grow with additional machines
   execution: recorded
   kind: unit
   path: marshall/test/marshall/compute/views_batched_reads_test.exs
   record: docs/architecture/reviews/2026-10-22-liveview-load-performance.md
-  record_assertion: passed 4 tests
-  scope: Owner list query count with four and twelve machines in the SQL sandbox
-gaps: The repeatable-read, read-only isolation of the outermost batch was verified once against a real
-  connection, not by an automated test, because the SQL sandbox owns the outer transaction. Concurrent
+  record_assertion: passed 7 tests
+  scope: Owner list query count with four and twelve unrelocated machines in the SQL sandbox
+- assertion: catalog queries do not grow with eligible hosts
+  execution: recorded
+  kind: unit
+  path: marshall/test/marshall/compute/views_batched_reads_test.exs
+  record: docs/architecture/reviews/2026-10-22-liveview-load-performance.md
+  record_assertion: passed 7 tests
+  scope: Catalog query count with two and six fresh hosts in the SQL sandbox
+- assertion: outermost batches are repeatable-read and read-only; nested batches do not memoize
+  execution: recorded
+  kind: unit
+  path: marshall/test/marshall/authorization/decision_snapshot_isolation_test.exs
+  record: docs/architecture/reviews/2026-10-22-liveview-load-performance.md
+  record_assertion: real-connection isolation test passed
+  scope: Unboxed local PostgreSQL connection reports repeatable read and read-only, refuses an UPDATE, and a
+    batch nested in a read-committed transaction does not memoize
+- assertion: creation form edits do not reload page data but a tick does
+  execution: recorded
+  kind: unit
+  path: marshall/test/marshall_web/machines_live_test.exs
+  record: docs/architecture/reviews/2026-10-22-liveview-load-performance.md
+  record_assertion: form-edit refresh test passed
+  scope: Three validate edits on /machines/new emit no page refresh; one tick emits exactly one
+gaps: Concurrent
   revocation during a refresh is argued from snapshot semantics, not observed. The list query plan has
   no EXPLAIN evidence on fleet-sized data. No native browser journey measures page latency.
 id: batched-machine-page-decisions
@@ -44,8 +65,7 @@ layers:
 - isolation
 - storage
 - recovery
-preferred_gap: Add an integration test that runs Compute.Views outside the SQL sandbox and asserts the batch
-  isolation level, and a NixOS machine test that loads /machines with many shared machines and checks the
+preferred_gap: Add a NixOS machine test that loads /machines with many shared machines and checks the
   marshall.live.refresh query_count.
 scope: Generated grant roles through the real Compute.list_vms action and Access.set_access against local
   PostgreSQL, fresh Access.Authorization decisions as the oracle, revocation between reads and a query

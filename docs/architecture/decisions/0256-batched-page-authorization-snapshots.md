@@ -106,6 +106,10 @@ session, with the constraint that security must not be weakened.
 - **Memoize under the default READ COMMITTED isolation.** Rejected: rows read
   later in the batch could legitimately differ from the memoized ones, so
   memoization would change decisions.
+- **Cache the catalog for a few seconds.** Rejected: the batched catalog now
+  costs a constant handful of reads, so a cache would save little. It would also
+  show capacity older than the host freshness window (ADR-0023) and add a
+  process to own the cache.
 - **Rewrite the list query as a `UNION` of grant sources.** Deferred until
   `EXPLAIN` evidence from production-sized data shows the OR-of-EXISTS plan is
   still costly with the new indexes.
@@ -119,8 +123,8 @@ session, with the constraint that security must not be weakened.
 - **Shared member list:** a constant 13 queries, down from 700 at 24 machines.
 - **Catalog:** a constant 8 queries, down from 2H + 6.
 
-The remaining per-row read is relocation status, which runs only for machines
-the caller manages.
+Relocation status is read per row only for machines that have a relocation.
+Machines without one are primed as `nil` from a single batched read.
 
 **Costs and risks:**
 
@@ -149,12 +153,18 @@ the caller manages.
 - **No reuse across reads.** A revocation between two page reads hides the
   machine on the next read. Memoized values never survive their batch. The
   same file covers both.
-- **Query budget.** Page queries grow by at most one per additional machine.
-  The same file asserts this.
-- **Isolation.** The outermost batch is repeatable-read and read-only, and a
-  nested batch does not memoize. A probe against the test database's real
-  connection verified this. No automated test covers it yet, because the SQL
-  sandbox owns the outer transaction.
+- **Query budget.** Page queries do not grow with machines that have no
+  relocation, and catalog queries do not grow with eligible hosts. The same
+  file asserts both, and that listed relocation status equals a fresh per-row
+  read.
+- **Isolation.** The outermost batch is repeatable-read and read-only, refuses
+  writes, and a nested batch keeps its transaction's isolation without
+  memoizing.
+  [`decision_snapshot_isolation_test.exs`](../../../marshall/test/marshall/authorization/decision_snapshot_isolation_test.exs)
+  checks this on an unboxed real connection.
+- **Form edits.** Editing the `/machines/new` form does not reload page data;
+  a refresh tick reloads it once.
+  [`machines_live_test.exs`](../../../marshall/test/marshall_web/machines_live_test.exs).
 - **Bounded telemetry.** Annotation adds only reviewed schema attributes and
   never raises. `elixir/diagnostics/test/sdk_test.exs` checks this.
 
@@ -178,8 +188,7 @@ Remaining gaps:
 
 - The list query's plan has not been checked with `EXPLAIN` on production-sized
   data.
-- Relocation status is still read per managed row.
-- No automated repeatable-read test exists outside the sandbox.
+- Relocation status is still read per row for machines that have a relocation.
 - The dashboard panels have not been observed with live fleet data.
 
 ## Open questions
