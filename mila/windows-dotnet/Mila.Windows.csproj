@@ -27,6 +27,14 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260921001" />
   </ItemGroup>
 
+  <Target Name="GenerateMilaLocalization" BeforeTargets="Build">
+    <Exec Command="python &quot;$(MSBuildProjectDirectory)\..\localization\generate_catalogs.py&quot; --source &quot;$(MSBuildProjectDirectory)\..\app\lib\l10n&quot; --output &quot;$(IntermediateOutputPath)mila-locales&quot;" />
+    <ItemGroup>
+      <MilaLocaleFiles Include="$(IntermediateOutputPath)mila-locales\**\*.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(MilaLocaleFiles)" DestinationFolder="$(TargetDir)Resources\locales\%(RecursiveDir)" />
+  </Target>
+
   <Target Name="StageMilaNative" AfterTargets="Build" Condition="'$(MilaNativeDll)' != ''">
     <Error Condition="!Exists('$(MilaNativeDll)')" Text="MilaNativeDll does not exist: $(MilaNativeDll)" />
     <Copy SourceFiles="$(MilaNativeDll)" DestinationFiles="$(TargetDir)mila_native.dll" />

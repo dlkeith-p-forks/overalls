@@ -6,6 +6,7 @@ rust-version = "1.82"
 license = "MIT"
 description = "Isolated GTK4/libadwaita native presentation seam for Mila"
 publish = false
+build = "build.rs"
 
 # This crate is deliberately standalone. It is not a member of mila/rust's workspace
 # until the generated runtime binding is ready to be integrated by a host build.
