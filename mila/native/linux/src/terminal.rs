@@ -150,3 +150,200 @@ mod tests {
         assert!(TerminalRenderer::new(0, 24).is_err());
     }
 }
+
+/// A transport request bound to one authenticated session authority.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PtyAttachRequest {
+    pub session_id: String,
+    pub from: u64,
+    pub columns: u16,
+    pub rows: u16,
+    pub read_write: bool,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PtyError {
+    Unauthenticated,
+    InvalidRequest,
+    Transport,
+    Render,
+}
+
+/// Host transport implemented by the authenticated runtime adapter.
+/// Output is already decoded display text; PTY bytes never cross this seam.
+/// @cc [owner:ghuntley,label=security;terminal] linux-terminal-transport-authenticated
+/// Attach and every subsequent operation MUST be bound to an authenticated
+/// session generation; PTY bytes stay inside the host transport.
+pub trait PtyTransport {
+    fn attach(&mut self, request: &PtyAttachRequest) -> Result<(), PtyError>;
+    fn read_output(&mut self, generation: u64) -> Result<String, PtyError>;
+    fn send_input(&mut self, generation: u64, length: usize) -> Result<(), PtyError>;
+    fn resize(&mut self, generation: u64, columns: u16, rows: u16) -> Result<(), PtyError>;
+    fn kill(&mut self, generation: u64) -> Result<(), PtyError>;
+}
+
+pub trait SessionAuthority {
+    fn is_authenticated(&self) -> bool;
+}
+
+impl SessionAuthority for crate::session::SessionBinding {
+    fn is_authenticated(&self) -> bool {
+        self.is_authenticated()
+    }
+}
+
+/// Couples the reducer and renderer to a current authenticated session.
+pub struct AuthenticatedPty<'a, A: SessionAuthority, T: PtyTransport> {
+    authority: &'a A,
+    transport: T,
+    stream: crate::adapter::TerminalStream,
+    renderer: TerminalRenderer,
+}
+
+impl<'a, A: SessionAuthority, T: PtyTransport> AuthenticatedPty<'a, A, T> {
+    pub fn new(
+        authority: &'a A,
+        transport: T,
+        columns: u16,
+        rows: u16,
+    ) -> Result<Self, RenderError> {
+        Ok(Self {
+            authority,
+            transport,
+            stream: crate::adapter::TerminalStream::new(),
+            renderer: TerminalRenderer::new(columns, rows)?,
+        })
+    }
+
+    pub fn attach(&mut self, request: PtyAttachRequest) -> Result<u64, PtyError> {
+        if !self.authority.is_authenticated()
+            || request.session_id.is_empty()
+            || request.session_id.len() > 128
+            || request
+                .session_id
+                .bytes()
+                .any(|byte| byte.is_ascii_whitespace() || byte == 0)
+        {
+            return Err(PtyError::Unauthenticated);
+        }
+        crate::adapter::validate_terminal_operation(crate::adapter::TerminalOperation::Attach {
+            from: request.from,
+            columns: request.columns,
+            rows: request.rows,
+            read_write: request.read_write,
+        })
+        .map_err(|_| PtyError::InvalidRequest)?;
+        let generation = self.stream.attach().map_err(|_| PtyError::InvalidRequest)?;
+        self.transport.attach(&request)?;
+        self.stream
+            .connected(generation, request.from, request.read_write)
+            .map_err(|_| PtyError::InvalidRequest)?;
+        Ok(generation)
+    }
+
+    pub fn read_output(&mut self, generation: u64) -> Result<String, PtyError> {
+        let text = self.transport.read_output(generation)?;
+        if !text.is_empty() {
+            self.stream
+                .output(generation, text.chars().count())
+                .map_err(|_| PtyError::InvalidRequest)?;
+            self.renderer
+                .append_text(&text)
+                .map_err(|_| PtyError::Render)?;
+        }
+        Ok(text)
+    }
+
+    pub fn send_input(&mut self, generation: u64, length: usize) -> Result<(), PtyError> {
+        self.stream
+            .validate_input(length)
+            .map_err(|_| PtyError::InvalidRequest)?;
+        self.transport.send_input(generation, length)
+    }
+
+    pub fn resize(&mut self, generation: u64, columns: u16, rows: u16) -> Result<(), PtyError> {
+        self.stream
+            .validate_resize(columns, rows)
+            .map_err(|_| PtyError::InvalidRequest)?;
+        self.transport.resize(generation, columns, rows)
+    }
+
+    pub fn kill(&mut self, generation: u64) -> Result<(), PtyError> {
+        self.transport.kill(generation)?;
+        self.stream
+            .kill(generation)
+            .map_err(|_| PtyError::InvalidRequest)
+    }
+
+    pub fn renderer(&self) -> &TerminalRenderer {
+        &self.renderer
+    }
+}
+
+#[cfg(test)]
+mod transport_tests {
+    use super::{AuthenticatedPty, PtyAttachRequest, PtyError, PtyTransport, SessionAuthority};
+
+    struct Authority(bool);
+    impl SessionAuthority for Authority {
+        fn is_authenticated(&self) -> bool {
+            self.0
+        }
+    }
+
+    #[derive(Default)]
+    struct FakeTransport {
+        attached: bool,
+        input: usize,
+        killed: bool,
+    }
+    impl PtyTransport for FakeTransport {
+        fn attach(&mut self, _: &PtyAttachRequest) -> Result<(), PtyError> {
+            self.attached = true;
+            Ok(())
+        }
+        fn read_output(&mut self, _: u64) -> Result<String, PtyError> {
+            Ok("ready".to_owned())
+        }
+        fn send_input(&mut self, _: u64, length: usize) -> Result<(), PtyError> {
+            self.input = length;
+            Ok(())
+        }
+        fn resize(&mut self, _: u64, _: u16, _: u16) -> Result<(), PtyError> {
+            Ok(())
+        }
+        fn kill(&mut self, _: u64) -> Result<(), PtyError> {
+            self.killed = true;
+            Ok(())
+        }
+    }
+
+    fn request() -> PtyAttachRequest {
+        PtyAttachRequest {
+            session_id: "terminal-1".to_owned(),
+            from: 0,
+            columns: 80,
+            rows: 24,
+            read_write: true,
+        }
+    }
+
+    #[test]
+    fn authenticated_transport_binds_lifecycle_and_renderer() {
+        let authority = Authority(true);
+        let mut pty = AuthenticatedPty::new(&authority, FakeTransport::default(), 80, 24).unwrap();
+        let generation = pty.attach(request()).unwrap();
+        assert_eq!(pty.read_output(generation).unwrap(), "ready");
+        pty.send_input(generation, 4).unwrap();
+        pty.resize(generation, 100, 30).unwrap();
+        pty.kill(generation).unwrap();
+        assert_eq!(pty.renderer().lines()[0], "ready");
+    }
+
+    #[test]
+    fn unauthenticated_attach_never_calls_transport() {
+        let authority = Authority(false);
+        let mut pty = AuthenticatedPty::new(&authority, FakeTransport::default(), 80, 24).unwrap();
+        assert_eq!(pty.attach(request()), Err(PtyError::Unauthenticated));
+    }
+}

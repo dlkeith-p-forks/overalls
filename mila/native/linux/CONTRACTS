@@ -29,3 +29,8 @@ or excess URIs MUST become a count and MUST NOT be echoed, executed, or persiste
 @cc [owner:ghuntley,label=security;desktop] linux-machine-view-bounded
 Machine list and detail labels MUST be derived from the validated authenticated listing, reject
 control characters before GTK display, and expose permissions only as presentation hints.
+
+
+@cc [owner:ghuntley,label=security;terminal] linux-terminal-transport-authenticated
+The Linux PTY seam MUST require an authenticated session before attach, bind all operations to the
+current generation, validate input and resize permissions, and keep PTY bytes outside GTK state.
