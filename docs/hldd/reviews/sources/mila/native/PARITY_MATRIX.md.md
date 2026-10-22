@@ -1,5 +1,5 @@
 ---
-digest: dcee2151d437740df1b056e513deb2993a2cbaef03a30a0839a4b68b8b1bf179
+digest: e40f7d0c0a7cdbbeff128e9db0c9bcf708db46f81a196c84cb2dfe8b04333132
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android and Linux thread evidence now includes typed detail/action and bounded turns controls.
+Parity matrix updated with verified Apple machine and Windows thread workflow evidence.
