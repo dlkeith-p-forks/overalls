@@ -6,6 +6,7 @@ namespace Mila.Windows;
 public sealed partial class MainWindow : Window
 {
     private string? _activeHost;
+    private ushort _deploymentPort = MilaDeployment.DefaultPort;
     private bool _notificationsEnabled;
     private readonly MilaSshKeysController _sshKeys = new(
         _ => Task.FromResult<IReadOnlyList<MilaSshKey>>(Array.Empty<MilaSshKey>()),
@@ -21,7 +22,11 @@ public sealed partial class MainWindow : Window
         InitializeComponent();
         Closed += (_, _) => { _closed = true; _session.Dispose(); };
         ApplyStrings();
-        if (MilaDeploymentStore.Load() is { } deployment) { DeploymentHost.Text = deployment.Host; }
+        if (MilaDeploymentStore.Load() is { } deployment)
+        {
+            DeploymentHost.Text = deployment.Host;
+            _deploymentPort = deployment.Port;
+        }
         Navigation.SelectedItem = Navigation.MenuItems[0];
         if (!string.IsNullOrWhiteSpace(activation)) ApplyActivation(activation);
     }
@@ -193,7 +198,7 @@ public sealed partial class MainWindow : Window
             byte[] trustBytes = trust;
             byte[] publicKeyBytes = publicKey;
             bool connected = await Task.Run(() => _session.Connect(
-                trustBytes, host, publicKeyBytes, 443, 30_000, bytes => deviceKey.Sign(bytes)));
+                trustBytes, host, publicKeyBytes, _deploymentPort, 30_000, bytes => deviceKey.Sign(bytes)));
             if (_closed) return;
             if (!connected || _session.Handle is not { } handle)
             {
@@ -204,7 +209,7 @@ public sealed partial class MainWindow : Window
             }
 
             _activeHost = host;
-            MilaDeploymentStore.Save(new MilaDeployment(host));
+            MilaDeploymentStore.Save(new MilaDeployment(host, _deploymentPort));
             _machineMutation.SetSession(true, handle);
             StatusText.Text = S("connected", MilaStrings.Connected);
             RefreshMachines();

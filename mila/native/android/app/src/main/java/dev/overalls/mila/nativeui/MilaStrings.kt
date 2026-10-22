@@ -8,6 +8,8 @@ import org.json.JSONObject
 internal enum class MilaMessage(val catalogId: String) {
     AppName("appTitle"), Machines("machinesTitle"), Threads("tabThreads"), Settings("settingsTitle"),
     Ready("ready"), Refresh("refresh"), Connecting("signInConnecting"), Connected("connected"),
+    Deployments("deploymentsTitle"), DeploymentHost("deploymentHostLabel"), DeploymentHostHint("deploymentHostHint"),
+    AddDeployment("addDeployment"), InvalidHost("invalidHost"), SignIn("signInTitle"),
     LockTitle("lockTitle"), LockExplain("lockExplain"), LockUnlock("lockUnlock"), LockFailed("lockFailed"),
     RuntimeUnavailable("runtimeUnavailable"), NoAction("noAction"), Terminal("tabTerminals"), Attach("terminalAttach"), Input("terminalAttach"), Resize("actionResize"), MachineActions("machineMore"), SharePrincipal("sharePrincipal"), ShareAdd("shareAdd"), ShareRemove("shareRemove"), ShareRejected("shareRejected"), ShareAdded("shareAdded"), ShareRemoved("shareRemoved"), Appearance("appearance"), Locale("locale"), ThreadCommands("tabThreads"), NoCommand("noAction"), WebEndpoint("webEndpoint"), WebShow("webOpen"), WebSave("webSave"), WebPort("webPort"), WebPublic("webPublic"), WebPrivate("webPrivate")
 }
@@ -17,6 +19,7 @@ internal object MilaStrings {
     private val english = mapOf(
         MilaMessage.AppName to "Mila", MilaMessage.Machines to "Machines", MilaMessage.Threads to "Threads",
         MilaMessage.Settings to "Settings", MilaMessage.Ready to "Ready", MilaMessage.Refresh to "Refresh",
+        MilaMessage.Deployments to "Deployments", MilaMessage.DeploymentHost to "Deployment host", MilaMessage.DeploymentHostHint to "overalls.example", MilaMessage.AddDeployment to "Add deployment", MilaMessage.InvalidHost to "Enter a host name such as overalls.example.", MilaMessage.SignIn to "Sign in",
         MilaMessage.LockTitle to "App lock", MilaMessage.LockExplain to "Authenticate to continue.", MilaMessage.LockUnlock to "Unlock", MilaMessage.LockFailed to "Authentication failed.",
         MilaMessage.Connecting to "Connecting…", MilaMessage.Connected to "Connected",
         MilaMessage.RuntimeUnavailable to "Native runtime unavailable", MilaMessage.NoAction to "No action selected", MilaMessage.Terminal to "Terminals", MilaMessage.Attach to "Attach", MilaMessage.Input to "Input", MilaMessage.Resize to "Resize", MilaMessage.MachineActions to "Machine actions", MilaMessage.SharePrincipal to "Share principal", MilaMessage.ShareAdd to "Share add", MilaMessage.ShareRemove to "Share remove", MilaMessage.ShareRejected to "Share rejected", MilaMessage.ShareAdded to "Share added", MilaMessage.ShareRemoved to "Share removed", MilaMessage.Appearance to "Appearance", MilaMessage.Locale to "Locale", MilaMessage.ThreadCommands to "Thread commands", MilaMessage.NoCommand to "No command selected", MilaMessage.WebEndpoint to "Web endpoint", MilaMessage.WebShow to "Show", MilaMessage.WebSave to "Save", MilaMessage.WebPort to "Port", MilaMessage.WebPublic to "Public", MilaMessage.WebPrivate to "Private",

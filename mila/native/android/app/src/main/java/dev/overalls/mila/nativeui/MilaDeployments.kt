@@ -1,9 +1,32 @@
 package dev.overalls.mila.nativeui
 
+import java.util.Locale
+
 /** Validated deployment entry shown by the native sign-in selector. */
 data class MilaDeployment(val host: String, val port: Int = 22, val label: String = host) {
     init { require(host.matches(HOST)) { "invalid deployment host" }; require(port in 1..65535) }
     companion object { private val HOST = Regex("^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$") }
+}
+
+/**
+ * Parses the host field at the UI boundary. Host names are canonicalized before validation so
+ * selecting a deployment is stable across case and surrounding whitespace. Invalid input returns
+ * a failure and never reaches the trust or device-key providers.
+ *
+ * @cc [owner:ghuntley,label:security] android-deployment-input-validated
+ * Every deployment created from user input MUST be canonicalized and pass [MilaDeployment]'s
+ * bounded DNS and port validation before it is added to the selection model or persisted.
+ */
+internal fun parseMilaDeploymentHost(input: String): Result<MilaDeployment> {
+    val value = input.trim().lowercase(Locale.ROOT)
+    val separator = value.lastIndexOf(':')
+    if (separator < 0) return runCatching { MilaDeployment(value) }
+    val host = value.substring(0, separator)
+    val port = value.substring(separator + 1).toIntOrNull()
+    return runCatching {
+        require(port != null) { "invalid deployment port" }
+        MilaDeployment(host, port)
+    }
 }
 
 /** Deterministic, duplicate-free deployment selection model. */

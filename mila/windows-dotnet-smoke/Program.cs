@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json;
 using Mila.Windows.Interop;
 
 /// <summary>
@@ -16,6 +17,7 @@ internal static class Program
     private static void Main()
     {
         SessionLifecycleSmoke.Run();
+        AssertDeploymentPorts();
         MilaNativeVersionResult version = RustNative.TryGetVersion();
         Require(version.Status == MilaNativeStatus.Ok && version.Version is { Major: 1, Minor: 0 }, "ABI version 1.0");
         const string route = "overalls://mgmt.example.test:8443/machines/0d9cc041-9db2-4e4c-b28b-1e41d7f472c1";
@@ -95,6 +97,15 @@ internal static class Program
         Require(machine is { Kind: MilaRouteKind.Machine } && machine.Value.Id.HasValue, "machine activation route");
         foreach (string invalid in new[] { "https://mgmt.example.test/machines", "overalls://MGMT.example.test/machines", "overalls://mgmt.example.test/machines?x=1", "overalls://mgmt.example.test/unknown", "overalls://mgmt.example.test/machines/new" })
             Require(MilaRouteParser.Parse(invalid) is null, "invalid activation route refusal");
+    }
+
+    private static void AssertDeploymentPorts()
+    {
+        MilaDeployment? legacy = JsonSerializer.Deserialize<MilaDeployment>("{\"Host\":\"mgmt.example.test\"}")?.Normalize();
+        Require(legacy is { Host: "mgmt.example.test", Port: MilaDeployment.DefaultPort }, "legacy deployment defaults to Porsche port 22");
+        MilaDeployment explicitPort = new("mgmt.example.test", 2222);
+        MilaDeployment? roundTrip = JsonSerializer.Deserialize<MilaDeployment>(JsonSerializer.Serialize(explicitPort));
+        Require(roundTrip is { Host: "mgmt.example.test", Port: 2222 }, "deployment port persists as typed value");
     }
 
     private sealed class FakeHello(MilaWindowsHelloAvailability availability, MilaWindowsHelloVerification result) : IMilaWindowsHelloVerifier
