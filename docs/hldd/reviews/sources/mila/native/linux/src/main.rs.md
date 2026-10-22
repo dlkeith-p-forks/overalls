@@ -1,11 +1,11 @@
 ---
-digest: 0119df864158c33ebbf7f4c96d6db2a88ba149d2228b3010edf277f657daf40d
+digest: 87d06e34c45a3546cc32f8b353808c79de057d3a37fe36dae19eccabe46a728d
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/main.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 43e1b55308537ab39797562f4a6bd5f935d8b4178f3fc149d20309636dca4f31
+  marshall/priv/hldd/08-interactive.md: 77cdf7d6a5e6e45f437b59dcf9c2865a8ea664f07f5f12320cff67c98b9aff1a
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: e602637358be185a2c40af73caf21ad4aefc7f252dfbaee2f5c64fe26945f5eb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-The bounded activation batch refines the existing Linux navigation-only open integration and preserves the documented partial deep-link boundary.
+Linux now projects authenticated machine listings into bounded GTK list/detail rows while retaining the existing partial deployment journey and transport limits.

@@ -24,3 +24,8 @@ remain owned by the authenticated transport and MUST NOT be logged or exposed to
 @cc [owner:ghuntley,label=security;navigation] linux-open-activation-batch
 A desktop open activation MUST retain only the bounded set of parsed navigation routes; malformed
 or excess URIs MUST become a count and MUST NOT be echoed, executed, or persisted.
+
+
+@cc [owner:ghuntley,label=security;desktop] linux-machine-view-bounded
+Machine list and detail labels MUST be derived from the validated authenticated listing, reject
+control characters before GTK display, and expose permissions only as presentation hints.

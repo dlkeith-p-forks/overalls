@@ -2,9 +2,10 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    format_machine_action, format_share_command, format_ssh_key_revoke, format_thread_command,
-    format_thread_turns, format_web_command, TerminalStream,
+    decode_listing, format_machine_action, format_share_command, format_ssh_key_revoke,
+    format_thread_command, format_thread_turns, format_web_command, TerminalStream,
 };
+use mila_native_linux::machine_view::{project_detail, project_listing};
 use mila_native_linux::notifications::NotificationState;
 use mila_native_linux::route::{ActivationBatch, ActivationRoute};
 use mila_native_linux::session::{
@@ -19,6 +20,7 @@ struct NativeState {
     status: Rc<RefCell<Option<Label>>>,
     sign_in: Rc<RefCell<SignInFlow>>,
     session: Rc<RefCell<SessionBinding>>,
+    machine_listing: Rc<RefCell<Option<mila_session::MachineListing>>>,
 }
 impl NativeState {
     fn new() -> Self {
@@ -26,6 +28,7 @@ impl NativeState {
             status: Rc::new(RefCell::new(None)),
             sign_in: Rc::new(RefCell::new(SignInFlow::default())),
             session: Rc::new(RefCell::new(SessionBinding::default())),
+            machine_listing: Rc::new(RefCell::new(None)),
         }
     }
     fn ensure_window(&self, app: &adw::Application) -> ApplicationWindow {
@@ -152,6 +155,77 @@ impl NativeState {
         });
         root.append(&deployment);
         root.append(&select);
+
+        let machine_detail_id = Entry::builder()
+            .placeholder_text("Machine UUID for detail")
+            .hexpand(true)
+            .build();
+        let machine_status = content.clone();
+        let machine_session = self.session.clone();
+        let machine_listing = self.machine_listing.clone();
+        let refresh_machines = Button::with_label("Refresh machines");
+        refresh_machines.connect_clicked(move |_| {
+            let binding = machine_session.borrow();
+            let Some(live) = binding.session() else {
+                machine_status.set_label("Machine list unavailable until sign-in.");
+                return;
+            };
+            match live
+                .listing()
+                .and_then(|bytes| {
+                    decode_listing(&bytes)
+                        .map_err(|_| mila_native_linux::session::SessionError::InvalidInput)
+                })
+                .and_then(|listing| {
+                    let rows = project_listing(&listing)
+                        .map_err(|_| mila_native_linux::session::SessionError::InvalidInput)?;
+                    *machine_listing.borrow_mut() = Some(listing);
+                    let summary = rows
+                        .iter()
+                        .map(|row| {
+                            format!(
+                                "{}{} — {}",
+                                if row.pinned { "★ " } else { "" },
+                                row.name,
+                                row.observed_state.as_deref().unwrap_or("unavailable")
+                            )
+                        })
+                        .collect::<Vec<_>>();
+                    Ok(summary.join("\n"))
+                }) {
+                Ok(summary) if summary.is_empty() => {
+                    machine_status.set_label("No machines returned.")
+                }
+                Ok(summary) => machine_status.set_label(&format!("Machines\n{summary}")),
+                Err(_) => machine_status.set_label("Machine list rejected by Rust policy."),
+            }
+        });
+        let detail_status = content.clone();
+        let detail_listing = self.machine_listing.clone();
+        let detail_id = machine_detail_id.clone();
+        let show_machine = Button::with_label("Show machine detail");
+        show_machine.connect_clicked(move |_| {
+            let id = detail_id.text().trim().to_owned();
+            let Some(listing) = detail_listing.borrow().as_ref().cloned() else {
+                detail_status.set_label("Refresh machines before opening detail.");
+                return;
+            };
+            match project_detail(&listing, &id) {
+                Ok(row) => detail_status.set_label(&format!(
+                    "Machine {}\nDesired: {}\nObserved: {}\nRead: {}  Write: {}  Manage: {}",
+                    row.name,
+                    row.desired_state,
+                    row.observed_state.as_deref().unwrap_or("unavailable"),
+                    row.can_read,
+                    row.can_write,
+                    row.can_manage
+                )),
+                Err(_) => detail_status.set_label("Machine detail unavailable."),
+            }
+        });
+        root.append(&machine_detail_id);
+        root.append(&refresh_machines);
+        root.append(&show_machine);
 
         // The lifecycle controls are deliberately state-only until the host
         // supplies its owner-only Linux device signer and HTTPS trust fetcher.

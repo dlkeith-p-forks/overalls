@@ -1,6 +1,6 @@
 ---
-digest: 61a6e82dfc1508babe2dbe482bbca619124730bea59ea06303b65b7ab4733bcd
-disposition: updated
+digest: fb20c49bce0a32ff2765a81c43537b9d1d4d1e4428738c6b598e30d6a22f942a
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Add Android authenticated thread listing/detail actions with bounded decoding and typed input state; retain packaged-device gap.
+Linux now projects authenticated machine listings into bounded GTK list/detail rows while retaining the existing partial deployment journey and transport limits.
