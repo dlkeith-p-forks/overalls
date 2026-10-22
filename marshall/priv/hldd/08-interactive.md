@@ -1747,6 +1747,14 @@ machine nor another preset. New launch visits use current preferences; an admitt
 visit reuses its original persisted request before ordinary Compute admission,
 even after preference changes or loss of live image availability.
 
+Submitting `/machines/new` first checks the requested memory and disk against the
+selected enabled image's catalog minima with the rule Compute admission enforces
+([`Image.requirements_met?/2`](repo:marshall/lib/marshall/compute/image.ex)). A
+smaller size, or an image that is no longer enabled, shows the localized refusal on
+the retained form and creates no setup thread or machine. Passing this check grants
+nothing: the setup thread's `ProvisionWorker` still performs transactional admission
+and marks a thread failed when an undersized request arrives by another path.
+
 The [preset decision](repo:docs/architecture/decisions/0240-account-machine-creation-presets.md)
 and [focused tests](repo:marshall/test/marshall_web/machine_defaults_test.exs)
 distinguish application behavior from native execution and rollout acceptance.

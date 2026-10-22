@@ -1,6 +1,6 @@
 ---
-digest: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
-disposition: no-impact
+digest: b913c892ca2cf07c4c54a9a981d18bdbf5302bccebd118551ce45304ea1a2b1f
+disposition: updated
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/08-interactive.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Concurrent native-session integration changed shared handbook receipts only; documented behavior and architecture remain covered by existing interactive-session evidence.
+Browser machine creation now refuses a size below the selected enabled image catalog minima before any setup thread exists, using the single Image.requirements_met?/2 rule that Compute admission now also calls (via Images.check_requirements/2). The form renders the existing localized machines-domain refusal and keeps the draft; ProvisionWorker keeps its transactional refusal. 08-interactive documents the pre-admission check, the default-OSS-creation scenario records the undersized test, and the coverage chapter is regenerated.

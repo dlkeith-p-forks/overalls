@@ -173,7 +173,11 @@ A queued head refused because the host's slot is busy or the previous copy's
 snapshot is still held is deferred with that reason and re-scheduled when the
 condition clears; other refusals fail with their real reason, and a refusal in
 an active phase is recorded on the request. Finishing or settling a request
-schedules the next queued request of the source immediately. A source stop
+schedules the next queued request of the source immediately. Cancelling a request
+that is still queued finishes it with its cleanup already complete, like a refused
+queued head: it never held a placement, snapshot or endpoint, so later advances
+and the reconcile trigger find nothing to settle. Cancelling an inactive request
+in any other phase keeps its outstanding cleanup obligation. A source stop
 that completes in another state or is cancelled records `source_stop_failed`;
 retry issues one new stop while the source generation is unchanged, and
 cancellation hands the source back to its ordinary lifecycle. Lilly waits up to

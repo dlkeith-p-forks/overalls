@@ -34,7 +34,8 @@ defmodule MarshallWeb.MachinesLive do
        },
        relocation_key: Ash.UUID.generate(),
        relocation_retry_key: Ash.UUID.generate(),
-       lifecycle_key: Ash.UUID.generate()
+       lifecycle_key: Ash.UUID.generate(),
+       provision_error: nil
      )
      |> assign(metadata_form: to_form(%{"labels" => "", "comment" => ""}, as: :metadata))
      |> new_form()
@@ -139,14 +140,24 @@ defmodule MarshallWeb.MachinesLive do
   # specification to Threads.create_thread. Thread provisioning owns machine
   # admission and initial agent execution; displayed capacity and HTML limits
   # MUST NOT replace transactional domain admission.
+
+  # @cc [owner:ghuntley,label:product;capacity] provision-form-image-minimum-refusal
+  # Before any setup thread exists, a submitted size MUST be checked against the
+  # selected image's durable catalog minima with Images.check_requirements/2, the
+  # rule admission enforces. An unavailable image or a size below its minima MUST
+  # create no thread and no machine and MUST render the predefined localized
+  # reason on the form with the draft retained. Passing this check grants no
+  # admission: the worker's transactional refusal remains authoritative.
   @impl true
   def handle_event("provision", %{"machine" => %{} = params}, socket) do
     params = MachineDefaults.creation_defaults(params, socket.assigns.catalog.images)
-    socket = assign(socket, form: to_form(params, as: :machine))
+    socket = assign(socket, form: to_form(params, as: :machine), provision_error: nil)
 
     with {memory, ""} <- integer(params["memory_mib"]),
          {disk, ""} <- integer(params["disk_gib"]),
          {vcpu, ""} <- integer(params["vcpu"]),
+         :ok <-
+           image_requirements(params["image_id"], memory * 1_048_576, disk * 1_073_741_824),
          {:ok, thread} <-
            Threads.create_thread(
              %{
@@ -171,6 +182,9 @@ defmodule MarshallWeb.MachinesLive do
        |> put_flash(:info, dgettext("machines", "Machine and setup thread requested."))
        |> push_navigate(to: ~p"/machines/provisioning/#{thread.id}")}
     else
+      {:refused, reason} ->
+        {:noreply, assign(socket, provision_error: image_refusal_message(reason))}
+
       {:error, error} ->
         {:noreply, put_flash(socket, :error, error_message(error))}
 
@@ -192,6 +206,7 @@ defmodule MarshallWeb.MachinesLive do
   # explicit image change resets the size defaults to that image's minima;
   # subsequent size edits MUST remain intact.
   def handle_event("validate", %{"machine" => params}, socket) do
+    socket = assign(socket, provision_error: nil)
     previous = socket.assigns.form.params
     values = Map.merge(previous, creation_params(params))
 
@@ -731,6 +746,27 @@ defmodule MarshallWeb.MachinesLive do
 
   defp state(vm), do: MarshallWeb.WorkspaceComponents.machine_state(vm)
 
+  @spec image_requirements(term(), pos_integer(), pos_integer()) ::
+          :ok | {:refused, :image_unavailable | :image_requirements_not_met}
+  defp image_requirements(image_id, memory_bytes, disk_bytes) do
+    case Marshall.Compute.Images.check_requirements(image_id, %{
+           architecture: :x86_64,
+           memory_bytes: memory_bytes,
+           disk_bytes: disk_bytes
+         }) do
+      :ok -> :ok
+      {:error, reason} -> {:refused, reason}
+    end
+  end
+
+  @spec image_refusal_message(:image_unavailable | :image_requirements_not_met) :: String.t()
+  defp image_refusal_message(:image_unavailable),
+    do:
+      dgettext("machines", "This image is no longer available. Refresh and choose another image.")
+
+  defp image_refusal_message(:image_requirements_not_met),
+    do: dgettext("machines", "The selected image needs more memory or disk space.")
+
   # @cc [owner:ghuntley,label:security] fixed-machine-error-messages
   # error_message/1 MUST return only predefined public messages; raw exceptions,
   # SQL details, credential data and arbitrary error payloads MUST NOT be shown.
@@ -1102,6 +1138,9 @@ defmodule MarshallWeb.MachinesLive do
                 {dgettext("machines", "Your disk stays with you when the machine is stopped.")}
               </p>
             </div>
+            <p :if={@provision_error} id="provision-error" role="alert" class="console-notice">
+              {@provision_error}
+            </p>
             <div class="row actions">
               <Layouts.action
                 tone="primary"

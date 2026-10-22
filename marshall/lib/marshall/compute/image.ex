@@ -209,6 +209,34 @@ defmodule Marshall.Compute.Image do
 
   def workspace_source_capable?(_), do: false
 
+  @type size_request :: %{
+          required(:architecture) => atom(),
+          required(:memory_bytes) => pos_integer(),
+          required(:disk_bytes) => pos_integer(),
+          optional(atom()) => term()
+        }
+
+  # @cc [owner:ghuntley,label:product;capacity] image-size-requirements-single-rule
+  # requirements_met?/2 is the one image sizing rule: a request MUST match the
+  # image architecture and carry at least the image's minimum memory and disk
+  # bytes. Transactional admission and every pre-admission form check MUST use
+  # this predicate rather than restating thresholds; a pre-admission check never
+  # replaces the transactional refusal.
+  @spec requirements_met?(
+          %{
+            required(:architecture) => atom(),
+            required(:minimum_memory_bytes) => pos_integer(),
+            required(:minimum_disk_bytes) => pos_integer(),
+            optional(atom()) => term()
+          },
+          size_request()
+        ) :: boolean()
+  def requirements_met?(image, request) do
+    image.architecture == request.architecture and
+      request.memory_bytes >= image.minimum_memory_bytes and
+      request.disk_bytes >= image.minimum_disk_bytes
+  end
+
   # @cc [owner:ghuntley,label:capacity] image-default-shape-rounding
   # For image minima within execution limits, omitted defaults MUST meet those
   # minima through whole MiB memory and whole GiB disk rounding. Minima above the

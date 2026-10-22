@@ -140,12 +140,24 @@ defmodule Marshall.Compute.Cloning do
   defp cancel!(%{published_at: published}) when not is_nil(published),
     do: Ledger.rollback(:clone_already_published)
 
+  # @cc [owner:ghuntley,label:recovery;concurrency] clone-queued-cancel-closes-cleanup
+  # Cancelling an inactive queued request MUST also close its cleanup obligation,
+  # as a queued failure does: it never held a placement, snapshot or endpoint, so
+  # no prune or settlement can follow, and leaving cleanup open would make every
+  # later advance or reconcile try to settle effects for absent hosts. An
+  # already-recorded completion is kept, and inactive requests in any other phase
+  # retain their outstanding cleanup obligation unchanged.
   defp cancel!(%{active: false} = request) do
     now = Ledger.now()
 
     Ledger.update!(request, :cancel, %{
       finished_at: now,
-      name_released_at: now
+      name_released_at: now,
+      cleanup_completed_at:
+        if(request.phase == :queued,
+          do: request.cleanup_completed_at || now,
+          else: request.cleanup_completed_at
+        )
     })
   end
 

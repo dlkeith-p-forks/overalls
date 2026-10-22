@@ -30,6 +30,11 @@ defmodule Marshall.Access.SharingSurfacesTest do
   # renewals MUST extend the same live lease; denied renewals MUST be closed
   # explicitly by the fixture and MUST never revive; fresh admission after
   # re-sharing MUST yield a new lease identity, never a recycled one.
+
+  # Budget: all 100 generated cases (about 0.6-2 s each, mostly SQL, Ash policy and
+  # Cedar authorization) took 238.7 s for this file on 2026-10-22 (180.2 s at
+  # 6fad4d347, which raised test_cases to 100). Sized at about 2.5x that measurement.
+  @tag timeout: 600_000
   @tag :hegel_case_sandbox
   property "one generated role history drives terminal, SSH and web entry and renewals",
     test_cases: 100 do

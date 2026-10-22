@@ -39,6 +39,10 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # model MUST retain every accepted identity across failed retries, cancellation,
   # name release and authorization changes, and compare durable side effects.
   # Operation inventories MUST compare complete rows without relying on query order.
+
+  # Budget: all 100 generated cases took 44.8 s on 2026-10-22 (43.8 s at 6fad4d347),
+  # too close to the 60 s default. Sized at about 4x that measurement.
+  @tag timeout: 180_000
   @tag :hegel_case_sandbox
   property "queue histories retain identities while authority and retry eligibility change",
     test_cases: 100 do
@@ -84,6 +88,32 @@ defmodule Marshall.Compute.CloneHistoryTest do
     assert Ledger.read!(Reservation, vm_id: vm.id) == holds
     assert Ledger.read!(VirtualMachine, owner_id: manager.id) == []
     assert Ledger.read!(TransferSlot, host_id: fixture.host.id) == []
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] clone-queued-cancel-advance-regression
+  # The minimal history the queue property found MUST stay closed: a request
+  # cancelled while still queued is finished with its cleanup complete, so a
+  # later advance or reconcile neither raises nor records endpoint effects.
+  test "a request cancelled while queued advances without cleanup effects" do
+    host_fixture()
+    owner = user()
+    manager = user()
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    context = %{owner: owner, actor: manager, vm: vm, prefix: Ash.UUID.generate()}
+    grant(context, :manager)
+    model = %{authorized: true, requests: %{}, queue: []}
+
+    final =
+      Enum.reduce([{:submit, 2}, {:cancel, 2}, {:advance, 2}], model, &step(&1, &2, context))
+
+    assert %{2 => %{phase: :cancelled, id: id}} = final.requests
+
+    assert [%{finished_at: finished, cleanup_completed_at: cleaned}] =
+             Ledger.read!(Compute.CloneRequest, id: id)
+
+    assert finished != nil and cleaned != nil
+    assert {:ok, _} = Compute.CloneCoordinator.advance(id)
+    assert Ledger.read!(CloneEffect, clone_request_id: id) == []
   end
 
   @spec step(command(), model(), context()) :: model()
@@ -274,6 +304,10 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # publishing or fabricating a snapshot. Only an intent-bound successful receipt
   # may clear the diagnostic and allow the coordinator to record that snapshot.
   # Operation inventories MUST compare complete rows without relying on query order.
+
+  # Budget: all 100 generated cases took 42.4 s on 2026-10-22, close to the 60 s
+  # default. Sized at about 4x that measurement.
+  @tag timeout: 180_000
   @tag :hegel_case_sandbox
   property "unconfirmed capture retries the same effect until a bound receipt clears progress",
     test_cases: 100 do
@@ -378,11 +412,15 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # receipts. Matching success MUST clear its label; duplicate success and late
   # uncertainty MUST NOT erase completion or recreate progress failure.
   # Operation inventories MUST compare complete rows without relying on query order.
-  @tag :hegel_case_sandbox
-  property "forward and cleanup uncertainty await the same bound effect without releasing holds",
-    test_cases: 100 do
-    Marshall.DataCase.isolate_property_case()
 
+  # The only generated input was `attempts` in 1..3, so this is the exhaustive
+  # ordinary test over that whole domain rather than a 100-case property.
+  test "forward and cleanup uncertainty await the same bound effect without releasing holds" do
+    for attempts <- 1..3, do: uncertainty_journey(attempts)
+  end
+
+  @spec uncertainty_journey(1..3) :: :ok
+  defp uncertainty_journey(attempts) do
     cases = [
       {:prepare, :destination},
       {:probe, :source},
@@ -394,8 +432,6 @@ defmodule Marshall.Compute.CloneHistoryTest do
       {:discard, :destination},
       {:prune, :source}
     ]
-
-    attempts = draw("attempts", integer(1..3))
 
     for {kind, endpoint} <- cases do
       fixture = host_fixture()
@@ -489,6 +525,8 @@ defmodule Marshall.Compute.CloneHistoryTest do
       assert Ledger.read!(TransferSlot, clone_request_id: clone.id) == slots
       Fixture.cleanup(fixture.host.id, owner.id)
     end
+
+    :ok
   end
 
   @spec reach_effect(String.t(), Fixture.effect_kind(), Marshall.Accounts.User.t()) :: :ok
@@ -558,6 +596,10 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # Cancellation histories MUST retain source/destination holds until both native
   # endpoints, destination discard, snapshot prune and source restoration have
   # supplied evidence. Revoked user actions MUST fail while admitted recovery runs.
+
+  # Budget: all 100 generated cases took 73.8 s on 2026-10-22 (65.1 s at 6fad4d347,
+  # which raised test_cases to 100). Sized at about 3x that measurement.
+  @tag timeout: 240_000
   @tag :hegel_case_sandbox
   property "cancellation retains obligations through reordered evidence and revoked requester",
     test_cases: 100 do
@@ -778,6 +820,10 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # destination row and offered workload descriptor against the source row
   # captured at activation. Catalog disable or rotation MUST refuse fresh
   # admission while leaving queued identity, replay and completion untouched.
+
+  # Budget: all 100 generated cases took 45.4 s on 2026-10-22, close to the 60 s
+  # default. Sized at about 4x that measurement.
+  @tag timeout: 180_000
   @tag :hegel_case_sandbox
   property "generated profile and shape histories retain the captured source row through churn",
     test_cases: 100 do

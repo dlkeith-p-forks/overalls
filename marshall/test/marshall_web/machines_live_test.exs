@@ -603,6 +603,11 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert has_element?(view, "#machine_profile option[selected][value='standard']")
   end
 
+  # @cc [owner:ghuntley,label:verification;product] provision-form-image-minimum-refusal-evidence
+  # A submitted size below the selected image's minima MUST render the localized
+  # refusal on the retained form and create no thread and no machine; the same
+  # form with sizes at the minima MUST still provision through the setup thread,
+  # and the worker MUST still refuse an undersized thread created directly.
   test "explicit undersized drafts remain unchanged and Ash rejects admission", %{
     conn: conn,
     owner: owner,
@@ -613,11 +618,58 @@ defmodule MarshallWeb.MachinesLiveTest do
     {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new?#{%{machine: draft}}")
     assert has_element?(view, "#machine_memory_mib[value='512']")
     assert has_element?(view, "#machine_disk_gib[value='2']")
-    thread = submit_provisioning(view, %{})
-    assert %{"memory_bytes" => 536_870_912, "disk_bytes" => 2_147_483_648} = thread.machine_spec
-    assert {:error, _} = admit(thread)
+    view |> form("#provision-form", machine: %{}) |> render_submit()
+
+    assert has_element?(
+             view,
+             "#provision-form #provision-error[role=alert]",
+             "The selected image needs more memory or disk space."
+           )
+
+    assert has_element?(view, "#machine_memory_mib[value='512']")
+    assert has_element?(view, "#machine_disk_gib[value='2']")
+    assert Ledger.read!(Thread, creator_id: owner.id) == []
     assert Ledger.read!(VirtualMachine, owner_id: owner.id) == []
-    assert [%{status: :failed, machine_id: nil}] = Ledger.read!(Thread, id: thread.id)
+
+    # Editing the draft clears the refusal; sizes at the image minima provision.
+    view
+    |> form("#provision-form", machine: %{memory_mib: "769", disk_gib: "3"})
+    |> render_change()
+
+    assert_patch(view)
+    refute has_element?(view, "#provision-error")
+    thread = submit_provisioning(view, %{})
+    assert {:snooze, _} = admit(thread)
+
+    assert [%{image_id: id, memory_bytes: 806_354_944, disk_bytes: 3_221_225_472}] =
+             Ledger.read!(VirtualMachine, owner_id: owner.id)
+
+    assert id == image.id
+
+    # The worker keeps its transactional refusal for a thread that bypasses the form.
+    {:ok, bypass} =
+      Marshall.Threads.create_thread(
+        %{
+          objective: "Check the undersized refusal",
+          mode: :medium,
+          collaboration_mode: :work,
+          idempotency_key: Ash.UUID.generate(),
+          machine_spec: %{
+            architecture: :x86_64,
+            image_id: image.id,
+            profile: "standard",
+            team_id: nil,
+            vcpu: 1,
+            memory_bytes: 536_870_912,
+            disk_bytes: 2_147_483_648
+          }
+        },
+        actor: owner
+      )
+
+    assert {:error, _} = admit(bypass)
+    assert [%{status: :failed, machine_id: nil}] = Ledger.read!(Thread, id: bypass.id)
+    assert [%{image_id: ^id}] = Ledger.read!(VirtualMachine, owner_id: owner.id)
   end
 
   test "machine routes require sign in", %{conn: conn} do

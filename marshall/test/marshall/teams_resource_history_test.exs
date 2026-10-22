@@ -15,6 +15,10 @@ defmodule Marshall.TeamsResourceHistoryTest do
   # independently expect member VM use, admin management, removed/foreign refusal
   # and Customer owner-only access. Synthetic host outcomes establish control
   # admission only; native guest SSH remains a separate acceptance boundary.
+
+  # Budget: all 100 generated cases took 147.1 s on 2026-10-22 (125.2 s at 6fad4d347,
+  # which raised test_cases to 100). Sized at about 3x that measurement.
+  @tag timeout: 450_000
   @tag :hegel_case_sandbox
   property "current team membership admits guest use without granting member management",
     test_cases: 100 do
@@ -163,6 +167,10 @@ defmodule Marshall.TeamsResourceHistoryTest do
   # including removal and re-addition, without explicit attachments. Customer
   # access always refuses. Configuration rights remain with team owner/admin;
   # member and removed actor attempts MUST leave integration and audit state intact.
+
+  # Budget: all 100 generated cases took 58.7 s on 2026-10-22, at the 60 s default.
+  # Sized at about 4x that measurement.
+  @tag timeout: 240_000
   @tag :hegel_case_sandbox
   property "team integration access follows membership histories without attachments",
     test_cases: 100 do

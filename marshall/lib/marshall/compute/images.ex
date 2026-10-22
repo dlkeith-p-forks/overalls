@@ -43,6 +43,27 @@ defmodule Marshall.Compute.Images do
     end
   end
 
+  # @cc [owner:ghuntley,label:product;capacity] images-pre-admission-size-check
+  # check_requirements/2 MUST evaluate a requested size against the durable
+  # enabled catalog entry with Image.requirements_met?/2, the same rule admission
+  # enforces. Unknown or disabled images are unavailable. It is an early refusal
+  # only: admission MUST still enforce the rule transactionally.
+  @spec check_requirements(term(), Image.size_request()) ::
+          :ok | {:error, :image_unavailable | :image_requirements_not_met}
+  def check_requirements(id, request) when is_binary(id) do
+    case Ledger.read!(Image, id: id, enabled: true) do
+      [image] ->
+        if Image.requirements_met?(image, request),
+          do: :ok,
+          else: {:error, :image_requirements_not_met}
+
+      [] ->
+        {:error, :image_unavailable}
+    end
+  end
+
+  def check_requirements(_, _), do: {:error, :image_unavailable}
+
   # @cc [owner:ghuntley,label:security] images-guest-capabilities-by-id
   # guest_capabilities/1 MUST derive the capabilities from the durable catalog
   # row's validated manifest and MUST return all-false for an unknown ID, so every

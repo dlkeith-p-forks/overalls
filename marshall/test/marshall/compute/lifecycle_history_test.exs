@@ -151,6 +151,11 @@ defmodule Marshall.Compute.LifecycleHistoryTest do
   # before each command executes. Crash-recovery assertions MUST establish only
   # safe restart bounds; the dead-restart limit (three per ten minutes) is
   # crossed deterministically in the fixed arc before the generated middle.
+
+  # Budget: all 100 committed histories took 106-108 s on 2026-10-22 (97.8 s at
+  # 6fad4d347, which raised test_cases to 100). Sized at about 2.8x that measurement;
+  # a forced exit still runs the per-case committed-fixture cleanup.
+  @tag timeout: 300_000
   property "generated lifecycle histories preserve the durable transition model",
     test_cases: 100 do
     middle = draw("middle", list_of(commands(), min_length: 6, max_length: 24))

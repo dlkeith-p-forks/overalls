@@ -185,10 +185,8 @@ defmodule Marshall.Compute.Admission do
     source_image_admissible!(request, image)
     Marshall.Compute.GitIdentity.require_image!(image.id)
 
-    unless image.architecture == request.architecture and
-             request.memory_bytes >= image.minimum_memory_bytes and
-             request.disk_bytes >= image.minimum_disk_bytes,
-           do: Ledger.rollback(:image_requirements_not_met)
+    unless Image.requirements_met?(image, request),
+      do: Ledger.rollback(:image_requirements_not_met)
 
     slot = AddressAllocation.next_slot!(request.profile)
 

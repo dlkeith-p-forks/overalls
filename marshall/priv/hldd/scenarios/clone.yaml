@@ -184,8 +184,22 @@ evidence:
   path: marshall/test/marshall/compute/clone_history_test.exs
   record: docs/architecture/reviews/2026-09-25-clone-cancellation-verification.md
   record_assertion: 'All-effect retry histories passed: 4 properties'
-  scope: Authenticated exchange for all non-capture effect kinds and both revoke endpoints; retained effect/intent,
-    phase, snapshot, exact commitments, success clearing and duplicate/late receipts. Synthetic host outcomes.
+  scope: 'Historical property baseline: Authenticated exchange for all non-capture effect kinds and both revoke
+    endpoints; retained effect/intent, phase, snapshot, exact commitments, success clearing and duplicate/late
+    receipts. Synthetic host outcomes.'
+- assertion: a request cancelled while queued advances without cleanup effects
+  execution: present
+  kind: unit
+  path: marshall/test/marshall/compute/clone_history_test.exs
+  scope: Deterministic regression for the minimal history the queue property found on 2026-10-22; a
+    request cancelled while still queued is finished with cleanup complete, and a later advance succeeds
+    without recording endpoint effects. SQL sandbox only.
+- assertion: forward and cleanup uncertainty await the same bound effect without releasing holds
+  execution: present
+  kind: unit
+  path: marshall/test/marshall/compute/clone_history_test.exs
+  scope: The same journey is now an ordinary test run exhaustively over its only input, one to three uncertain
+    receipts per effect, for all non-capture effect kinds and both revoke endpoints. Synthetic host outcomes.
 - assertion: cleanup preserves unrelated detached agent history sharing the requester
   execution: recorded
   kind: unit
