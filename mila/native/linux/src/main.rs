@@ -2,8 +2,8 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    format_machine_action, format_ssh_key_revoke, format_thread_command, format_thread_turns,
-    format_web_command, validate_terminal_operation, TerminalOperation,
+    format_machine_action, format_share_command, format_ssh_key_revoke, format_thread_command,
+    format_thread_turns, format_web_command, validate_terminal_operation, TerminalOperation,
 };
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
@@ -123,6 +123,59 @@ impl NativeState {
         root.append(&machine_id);
         root.append(&request_id);
         root.append(&actions);
+        let share_email = Entry::builder()
+            .placeholder_text("Share email")
+            .hexpand(true)
+            .build();
+        let share_role = Entry::builder()
+            .placeholder_text("Role: viewer, operator, or manager")
+            .hexpand(true)
+            .build();
+        let share_actions = Box::new(Orientation::Horizontal, 8);
+        for (label_text, operation) in [("Share machine", "add"), ("Remove share", "remove")] {
+            let button = Button::with_label(label_text);
+            let machine = machine_id.clone();
+            let email = share_email.clone();
+            let role = share_role.clone();
+            let status = content.clone();
+            button.connect_clicked(move |_| {
+                let request = "porsche-0000000000000000000000000000000000000000";
+                let selected_role =
+                    (!role.text().trim().is_empty()).then(|| role.text().trim().to_owned());
+                match format_share_command(
+                    operation,
+                    machine.text().trim(),
+                    email.text().trim(),
+                    selected_role.as_deref(),
+                    request,
+                ) {
+                    Ok(command) => status.set_label(&format!("Sharing command\n{command}")),
+                    Err(_) => status.set_label("Sharing request rejected by Rust policy."),
+                }
+            });
+            share_actions.append(&button);
+        }
+        root.append(&share_email);
+        root.append(&share_role);
+        root.append(&share_actions);
+        let share_response = Entry::builder()
+            .placeholder_text("share show JSON (paste response)")
+            .hexpand(true)
+            .build();
+        let share_load = Button::with_label("Load sharing");
+        let share_status = content.clone();
+        let response_input = share_response.clone();
+        share_load.connect_clicked(
+            move |_| match mila_native_linux::adapter::decode_share_listing(
+                response_input.text().as_bytes(),
+            ) {
+                Ok((owner, grants)) => share_status
+                    .set_label(&format!("Owner: {owner}\n{} share grants", grants.len())),
+                Err(_) => share_status.set_label("Sharing listing rejected by Rust policy."),
+            },
+        );
+        root.append(&share_response);
+        root.append(&share_load);
         let terminal = Entry::builder()
             .placeholder_text("Terminal session ID")
             .hexpand(true)

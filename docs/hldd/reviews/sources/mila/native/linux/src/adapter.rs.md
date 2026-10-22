@@ -1,5 +1,5 @@
 ---
-digest: be773ab8dea28904346d7e2c21babe3fee66f5134455085df6ad8b26afe7fc9e
+digest: 9d1b930e0b3ea14e0c4595b9982dfa5a389420a7a93b2c5fa4da7b6441f13381
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android thread detail actions and Linux thread adapter changes remain typed UI over Rust command policy.
+Concurrent Linux native adapter and shell changes preserve documented Mila boundaries; no handbook behavior change.

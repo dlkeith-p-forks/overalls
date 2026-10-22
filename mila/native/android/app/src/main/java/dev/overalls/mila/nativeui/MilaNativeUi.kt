@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -90,7 +91,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
         if (signInState is MilaSignInState.SignedIn) Text("Signed in", style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
             MilaRoute.Machines -> MachineList(adapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
-            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id)
+            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, adapter)
             MilaRoute.Threads -> ThreadList(adapter)
             is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
             MilaRoute.Settings -> Detail("Settings", "Runtime settings are managed by the core library.")
@@ -134,7 +135,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     }
 }
 
-@Composable private fun MachineDetail(controller: MilaMachineDetailController, id: java.util.UUID) {
+@Composable private fun MachineDetail(controller: MilaMachineDetailController, id: java.util.UUID, adapter: MilaFfiAdapter) {
     val scope = rememberCoroutineScope()
     val state = controller.state
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -158,6 +159,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
                 }
             }
         }
+        MachineSharingControls(adapter, machine)
         Text(
             when (val current = controller.state) {
                 MilaMachineMutationState.SignedOut -> MilaStrings.text(MilaMessage.RuntimeUnavailable)
@@ -169,6 +171,24 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
             },
             style = MaterialTheme.typography.labelSmall,
         )
+    }
+}
+
+@Composable
+private fun MachineSharingControls(adapter: MilaFfiAdapter, machine: MilaMachineRow?) {
+    var principal by remember { mutableStateOf("") }
+    var result by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
+    // Sharing commands are classified and submitted by the typed controller.
+    val controller = remember { MilaMachineSharingController(adapter) }
+    if (machine != null) { controller.setSession(true, MilaSessionListing(listOf(machine), false)); controller.setMachine(machine) }
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        OutlinedTextField(value = principal, onValueChange = { principal = it }, label = { Text("Share principal") })
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button({ scope.launch { result = if (controller.submit(principal)) "Share added" else "Share rejected" } }) { Text("Share add") }
+            Button({ scope.launch { result = if (controller.submit(principal, remove = true)) "Share removed" else "Share rejected" } }) { Text("Share remove") }
+        }
+        if (result.isNotEmpty()) Text(result, style = MaterialTheme.typography.labelSmall)
     }
 }
 

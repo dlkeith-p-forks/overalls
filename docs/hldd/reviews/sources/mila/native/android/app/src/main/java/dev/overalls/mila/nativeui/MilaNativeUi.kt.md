@@ -1,5 +1,5 @@
 ---
-digest: 8f8319843b1328e281733ccb43d4ca52d1675d3d4cb236efdffc6bbf49a6fbbd
+digest: e8370657e250857569ec3d1376be433828dbbdeb241019c96832a31cefb5e408
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android thread detail controller preserves existing Rust command boundary.
+Native Android sharing UI and tests preserve documented Mila domain boundaries; no handbook behavior change.
