@@ -1,5 +1,5 @@
 ---
-digest: 684ff696d5fb303902966c2ad074e8ef2a7e736372fa0a671907c30848510aae
+digest: dcee2151d437740df1b056e513deb2993a2cbaef03a30a0839a4b68b8b1bf179
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Parity matrix updated from verified Android machine detail and Linux/Windows deployment persistence evidence.
+Android and Linux thread evidence now includes typed detail/action and bounded turns controls.
