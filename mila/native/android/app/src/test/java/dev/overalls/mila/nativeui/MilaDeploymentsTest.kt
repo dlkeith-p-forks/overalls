@@ -8,6 +8,7 @@ class MilaDeploymentsTest {
   val deployment = parseMilaDeploymentHost("  Overalls.Example:8443 ").getOrThrow()
   assertEquals("overalls.example", deployment.host)
   assertEquals(8443, deployment.port)
+  assertEquals("overalls.example:8443", deployment.label)
  }
  @Test fun malformedUserHostNeverCreatesDeployment(){
   assertTrue(parseMilaDeploymentHost("localhost").isFailure)

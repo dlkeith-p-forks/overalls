@@ -112,7 +112,7 @@ fun MilaNativeRoot(
                 deployment.select(selected.host, selected.port)
                 deploymentStore.write(selected)
                 selectedDeployment = selected
-                hostInput = selected.host
+                hostInput = selected.label
                 hostInvalid = false
             },
             onAdd = {
@@ -123,7 +123,7 @@ fun MilaNativeRoot(
                         deploymentStore.write(added)
                         deploymentEntries = deployment.deployments
                         selectedDeployment = added
-                        hostInput = added.host
+                        hostInput = added.label
                         hostInvalid = false
                     },
                     onFailure = { hostInvalid = true },

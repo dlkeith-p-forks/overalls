@@ -1,5 +1,5 @@
 ---
-digest: 3eadae35fa8a62e4373f3b59e66c6897884eef9f933322fcf11b715a3eca6151
+digest: 360f994c3800d51fca59c89010c055ebdd872155fc73c35667d1c5ed451b62fb
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Added property-style boundary examples for Android deployment host and port validation; no handbook behavior change.
+Canonical custom-port deployment labels are preserved in Android picker field and persisted selection.

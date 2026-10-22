@@ -25,7 +25,7 @@ internal fun parseMilaDeploymentHost(input: String): Result<MilaDeployment> {
     val port = value.substring(separator + 1).toIntOrNull()
     return runCatching {
         require(port != null) { "invalid deployment port" }
-        MilaDeployment(host, port)
+        MilaDeployment(host, port, "$host:$port")
     }
 }
 

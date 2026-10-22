@@ -1,5 +1,5 @@
 ---
-digest: 36fc456d8ed36e337baa7068a31107c36291f309d6e133d36801c6749c1e7217
+digest: 1a1193e3fcf1de5e6de493dcf3a38d93b0aae9cd77a710254b16abc4f2a1d0d4
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Validated Android deployment selection and Windows Porsche port persistence keep native session boundaries typed and fail closed.
+Canonical custom-port deployment labels are preserved in Android picker field and persisted selection.

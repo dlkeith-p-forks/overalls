@@ -1,5 +1,5 @@
 ---
-digest: ca7873aeac4ab63e52ff5d4ae838287ccf64e50dc9b9e70e9afe50fe36e381c8
+digest: acd1a3ee606944ad0ec0fb50425fb10c1933cc17d0ea3ab0131389028724fc6c
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Startup no longer invokes the echo-only refresh before authenticated session binding; refresh remains an explicit user action.
+Canonical custom-port deployment labels are preserved in Android picker field and persisted selection.
