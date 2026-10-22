@@ -1413,6 +1413,11 @@ same canonical host validator used by persistence, then saves that selection
 before entering the generation-scoped flow. Native transport, approval polling
 and a multi-deployment list remain separate gaps.
 
+After sign-in, Linux exposes list, remove and enable/disable controls for
+notification devices. Each action uses the authenticated session handle and
+bounded device projection; an unsigned-in window refuses before any backend
+call. Linux still has no provider registration or push delivery path.
+
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command

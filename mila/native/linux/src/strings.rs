@@ -47,6 +47,15 @@ pub(crate) enum Message {
     NotificationsTitle,
     NotificationsExplain,
     PushUnsupported,
+    NotificationDevices,
+    NotificationDeviceId,
+    NotificationRefresh,
+    NotificationRemove,
+    NotificationEnable,
+    NotificationDisable,
+    NotificationRequireSignIn,
+    NotificationAccepted,
+    NotificationRejected,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -93,6 +102,15 @@ pub(crate) fn text(message: Message) -> String {
         Message::NotificationsTitle => "notificationsTitle",
         Message::NotificationsExplain => "notificationsExplain",
         Message::PushUnsupported => "pushUnsupported",
+        Message::NotificationDevices => "notificationDevices",
+        Message::NotificationDeviceId => "notificationDeviceId",
+        Message::NotificationRefresh => "notificationRefresh",
+        Message::NotificationRemove => "notificationRemove",
+        Message::NotificationEnable => "notificationEnable",
+        Message::NotificationDisable => "notificationDisable",
+        Message::NotificationRequireSignIn => "notificationRequireSignIn",
+        Message::NotificationAccepted => "notificationAccepted",
+        Message::NotificationRejected => "notificationRejected",
     };
     catalog()
         .get(id)
@@ -147,6 +165,15 @@ fn fallback(message: Message) -> &'static str {
         Message::NotificationsTitle => "Notifications",
         Message::NotificationsExplain => "Notifications are unavailable on Linux.",
         Message::PushUnsupported => "Notifications are not available on this platform.",
+        Message::NotificationDevices => "Notification devices",
+        Message::NotificationDeviceId => "Device ID",
+        Message::NotificationRefresh => "Refresh devices",
+        Message::NotificationRemove => "Remove device",
+        Message::NotificationEnable => "Enable device",
+        Message::NotificationDisable => "Disable device",
+        Message::NotificationRequireSignIn => "Notification device controls require sign-in.",
+        Message::NotificationAccepted => "Notification device request accepted.",
+        Message::NotificationRejected => "Notification device request rejected.",
     }
 }
 

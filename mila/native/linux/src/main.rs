@@ -2,9 +2,9 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    decode_listing, decode_web_endpoint, format_machine_action, format_share_command,
-    format_ssh_key_revoke, format_thread_command, format_thread_turns, format_web_command,
-    TerminalStream,
+    decode_listing, decode_notification_devices, decode_web_endpoint, format_machine_action,
+    format_share_command, format_ssh_key_revoke, format_thread_command, format_thread_turns,
+    format_web_command, TerminalStream,
 };
 use mila_native_linux::machine_view::{project_detail, project_listing};
 use mila_native_linux::notifications::NotificationState;
@@ -379,6 +379,55 @@ impl NativeState {
             }
         });
         root.append(&notification_button);
+        let notification_id = Entry::builder()
+            .placeholder_text(&strings::text(strings::Message::NotificationDeviceId))
+            .hexpand(true)
+            .build();
+        let notification_actions = Box::new(Orientation::Horizontal, 8);
+        for (message, operation) in [
+            (strings::Message::NotificationRefresh, "list"),
+            (strings::Message::NotificationRemove, "remove"),
+            (strings::Message::NotificationEnable, "enable"),
+            (strings::Message::NotificationDisable, "disable"),
+        ] {
+            let button = Button::with_label(&strings::text(message));
+            let status = content.clone();
+            let session = self.session.clone();
+            let device_id = notification_id.clone();
+            button.connect_clicked(move |_| {
+                let mut binding = session.borrow_mut();
+                let Some(live) = binding.session_mut() else {
+                    status.set_label(&strings::text(strings::Message::NotificationRequireSignIn));
+                    return;
+                };
+                let result = match operation {
+                    "list" => live.device_list().and_then(|bytes| {
+                        decode_notification_devices(&bytes)
+                            .map(|items| format!("{} notification devices", items.len()))
+                            .map_err(|_| mila_native_linux::session::SessionError::InvalidInput)
+                    }),
+                    "remove" => live
+                        .device_remove(device_id.text().trim())
+                        .map(|()| String::new()),
+                    "enable" => live
+                        .device_preference(device_id.text().trim(), true)
+                        .map(|()| String::new()),
+                    "disable" => live
+                        .device_preference(device_id.text().trim(), false)
+                        .map(|()| String::new()),
+                    _ => Err(mila_native_linux::session::SessionError::InvalidInput),
+                };
+                let message = if result.is_ok() {
+                    strings::text(strings::Message::NotificationAccepted)
+                } else {
+                    strings::text(strings::Message::NotificationRejected)
+                };
+                status.set_label(&message);
+            });
+            notification_actions.append(&button);
+        }
+        root.append(&notification_id);
+        root.append(&notification_actions);
         let machine_id = Entry::builder()
             .placeholder_text(&strings::text(strings::Message::MachineUuid))
             .hexpand(true)

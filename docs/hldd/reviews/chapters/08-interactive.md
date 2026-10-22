@@ -1,6 +1,6 @@
 ---
-digest: c5cdac1b6e915b75cf6dac8e401c78ee0c504776a1b81c7c95072c1be5eb3a5f
-disposition: no-impact
+digest: fe167b1f0935133b9c79d85b03af37283b4a66db862cfd96d403bfe2086f2399
+disposition: updated
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/08-interactive.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux sign-in deployment selection UI; no new domain or topology impact.
+Document Linux GTK authenticated notification device controls and refusal before backend calls, with provider delivery still open.
