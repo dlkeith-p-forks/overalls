@@ -14,7 +14,9 @@ let
     ++ lib.concatMap (prefix: map (suffix: "${prefix}_${suffix}") [ "count" "duration_ms" "errors" ])
       [ "http" "control" "ssh" "terminal_authority" "terminal_input" "database" "database_queue" "jobs" "job_failures" "control_fenced" "control_errors" ]
     ++ lib.concatMap (view: map (suffix: "live_${view}_${suffix}") [ "count" "duration_ms" "queries" ])
-      [ "overview" "machines" "machine_new" "machine" ];
+      [ "overview" "machines" "machine_new" "machine" ]
+    ++ lib.concatMap (phase: map (suffix: "liveview_${phase}_${suffix}") [ "count" "duration_ms" "queries" ])
+      [ "mount" "params" "event" "info" ];
   metricProcessors = map (metric: {
     name = "log_to_metrics"; tag = "metrics.${metric}"; emitter_name = "metric_${metric}"; match = "raw.journal.*";
     metric_mode = "gauge"; metric_name = metric;

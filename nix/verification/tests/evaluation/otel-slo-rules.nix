@@ -430,6 +430,10 @@ let
           { series = ''overalls_outer_marshall_web_requests_total{overalls_telemetry_origin="application",service_name="marshall_web",host_name="overalls",service_instance_id="overalls"}''; values = "0+10x20"; }
           { series = ''overalls_outer_marshall_web_source_start_time{overalls_telemetry_origin="application",service_name="marshall_web",host_name="overalls",service_instance_id="overalls"}''; values = "1+0x20"; }
           { series = ''overalls_outer_marshall_web_successes_total{overalls_telemetry_origin="application",service_name="marshall_web",host_name="overalls",service_instance_id="overalls"}''; values = "0+7x20"; }
+          { series = ''overalls_outer_marshall_live_requests_total{overalls_telemetry_origin="application",service_name="marshall_live",host_name="overalls",service_instance_id="overalls"}''; values = "0+8x20"; }
+          { series = ''overalls_outer_marshall_live_source_start_time{overalls_telemetry_origin="application",service_name="marshall_live",host_name="overalls",service_instance_id="overalls"}''; values = "1+0x20"; }
+          { series = ''overalls_outer_marshall_live_successes_total{overalls_telemetry_origin="application",service_name="marshall_live",host_name="overalls",service_instance_id="overalls"}''; values = "0+6x20"; }
+          { series = ''overalls_outer_marshall_live_duration_seconds_bucket{overalls_telemetry_origin="application",service_name="marshall_live",host_name="overalls",service_instance_id="overalls",le="1.0"}''; values = "0+4x20"; }
           { series = ''overalls_outer_audi_ssh_requests_total{overalls_telemetry_origin="application",service_name="audi_ssh",host_name="overalls"}''; values = "0+10x20"; }
           { series = ''overalls_outer_audi_ssh_source_start_time{overalls_telemetry_origin="application",service_name="audi_ssh",host_name="overalls"}''; values = "1+0x20"; }
           { series = ''overalls_outer_audi_ssh_successes_total{overalls_telemetry_origin="application",service_name="audi_ssh",host_name="overalls"}''; values = "0+5x20"; }
@@ -479,6 +483,14 @@ let
           { expr = "overalls:audi_ssh_candidate_establishment:ratio5m";
             eval_time = "10m";
             exp_samples = [{ labels = "overalls:audi_ssh_candidate_establishment:ratio5m"; value = 0.5; }]; }
+          { expr = "overalls:marshall_live_candidate_completion:ratio5m";
+            eval_time = "10m";
+            exp_samples = [{ labels = "overalls:marshall_live_candidate_completion:ratio5m"; value = 0.75; }]; }
+          # Callbacks without a duration sample count as slower than the bound.
+          { expr = "overalls:marshall_live_latency:ratio5m";
+            eval_time = "10m";
+            exp_samples = [{ labels = "overalls:marshall_live_latency:ratio5m"; value = 0.5; }]; }
+          { expr = "overalls:slo_marshall_live_latency:ratio7d"; eval_time = "10m"; exp_samples = []; }
         ];
       }
       {
@@ -499,6 +511,8 @@ let
           { expr = "overalls:audi_dns_candidate_completion:ratio5m"; eval_time = "10m"; exp_samples = []; }
           { expr = "overalls:marshall_web_candidate_completion:ratio5m"; eval_time = "10m"; exp_samples = []; }
           { expr = "overalls:audi_ssh_candidate_establishment:ratio5m"; eval_time = "10m"; exp_samples = []; }
+          { expr = "overalls:marshall_live_candidate_completion:ratio5m"; eval_time = "10m"; exp_samples = []; }
+          { expr = "overalls:marshall_live_latency:ratio5m"; eval_time = "10m"; exp_samples = []; }
         ];
       }
       {

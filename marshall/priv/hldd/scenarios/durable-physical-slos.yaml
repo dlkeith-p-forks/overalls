@@ -137,22 +137,20 @@ evidence:
   scope: Sandbox Ash resources retain prior failures, sequence fences and per-receipt admission windows.
     Includes explicit cancellation exclusion and synchronous cancellation command accounting. No native
     guest or crash acceptance.
-- assertion: length == 40
-  execution: recorded
+- assertion: length == 48
+  execution: present
   kind: machine
   path: nix/verification/tests/machines/otel-marshall/default.nix
-  record: docs/architecture/reviews/2026-10-02-durable-physical-slos.md
-  record_assertion: extended packaged `otel-marshall` check passed in **458 seconds**
   scope: Extended packaged Marshall migration, seven private snapshot/exporter sources and collector provenance,
-    all forty healthy inactive burn evaluators. Browser checks four workflow cards, provisional 99% targets,
+    all forty-eight healthy inactive burn evaluators. The last recorded run (2026-10-02, 458 seconds) asserted
+    forty; the roster has since grown and this count has not been rerun. Browser checks four workflow cards, provisional 99% targets,
     unknown seven-day history and revocation refusal. No real guest workflow or notification delivery.
-- assertion: length == 64
-  execution: recorded
+- assertion: length == 67
+  execution: present
   kind: machine
   path: nix/verification/tests/machines/otel-fleet/default.nix
-  record: docs/architecture/reviews/2026-10-11-legacy-compatibility-removal.md
-  record_assertion: otel-fleet native check passed on 2026-10-11 with
-  scope: Two NixOS VMs exercise authenticated collector transport, 64-panel provisioning, application
+  scope: Two NixOS VMs exercise authenticated collector transport, 67-panel provisioning (64 at the
+    2026-10-11 recorded run; not rerun since the marshall_live objectives), application
     and guest provenance, intake limits, collector/ingress failure recovery and durable trace replay;
     no physical guest workflow or seven-day production history claim.
 - assertion: historical retry measurements retain both proof windows through repeated scans

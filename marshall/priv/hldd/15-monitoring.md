@@ -103,8 +103,8 @@ custody commands had reset every other socket directory and silently cut off
 application exporters until 2026-10-13. The browser histogram uses
 0.1, 0.5, 1, 5, 10, 30 and 60 second bounds; existing source bounds remain unchanged.
 
-The current declared roster has twenty-two provisional seven-day objectives and
-forty-four burn evaluators. Both browser objectives are 99%, with the existing
+The current declared roster has twenty-four provisional seven-day objectives and
+forty-eight burn evaluators. Both browser objectives are 99%, with the existing
 minimum-request, warmup, exact-host, fresh-collector and coverage guards. Missing
 fixture credentials, recorder or collector coverage yields unknown, not healthy.
 Independent Prometheus recordings expose closed fixed-window diagnostics: at least three failures
@@ -304,7 +304,7 @@ history withholds the objective and its burn state.
 
 The [source roster](repo:nix/domains/system/otel-fleet/objectives.nix) binds each source
 to all enrolled hosts. Source placement changes must update that roster. The
-baseline retains twenty objective definitions and forty burn evaluators. Fast
+baseline retains twenty-four objective definitions and forty-eight burn evaluators. Fast
 five-minute/one-hour burns consume two percent of a seven-day budget; slow
 thirty-minute/six-hour burns consume five percent. Both windows, current coverage
 and a fresh objective recording are required. No eligible objective means no
@@ -365,13 +365,14 @@ remain separate from diagnostic traces. Use the canonical receipt and committed
 operation state to reconcile an uncertain reply. A diagnostic event may help find
 the transaction, but absence of one does not authorize a replacement mutation.
 
-Grafana adds operations and log dashboards alongside the existing baseline.
+Grafana adds operations, log and Marshall pages dashboards alongside the existing baseline.
 Operations show numeric resource/state observations and independent queue health.
-The operations dashboard provisions twenty stable panels covering fleet and
+The operations dashboard provisions twenty-two stable panels covering fleet and
 backup/updater measurements, log queues/retries/refusals, trace custody,
 SDK availability/age/refusals/export failures, fresh BEAM memory/run queues,
-stuck agent turns, Marshall page refresh duration and query count by view, and
-mean database query and connection-pool wait time.
+stuck agent turns, Marshall page refresh duration and query count by view,
+mean database query and connection-pool wait time, and LiveView callback
+duration and query count by phase.
 Logs select explicit application/platform sources and expose trace correlation.
 Grafana access and reader credential custody remain independent of Marshall
 sessions. Optional burn delivery uses private runtime webhook/credential files,
@@ -391,6 +392,60 @@ Marshall measures LiveView page refreshes through the shared diagnostics library
   `query_count`;
 - records the `[:marshall, :live, :refresh]` metric.
 
+Every Marshall LiveView callback is also traced by
+`MarshallWeb.LiveObservability`. Phoenix's mount, `handle_params` and
+`handle_event` Telemetry spans, which include `on_mount` and attached hooks such
+as session revalidation, and a `handle_info` span added by
+`use MarshallWeb, :live_view`, each become one `marshall.live.callback` span and
+one `[:marshall, :live, :callback]` measurement. Labels are only the view's
+registered `live_view` label and the `phase`; event names, params, session, URI,
+messages and assigns are never recorded. A registry test fails when a LiveView
+lacks a label. A handler failure cannot raise into the view or detach the
+handler; spans start and finish through the library's fail-open
+`Tracing.start/2` and `Tracing.finish/3`.
+
+### Page service levels
+
+The same callbacks are the `marshall_live` service-level source
+([ADR-0258](repo:docs/architecture/decisions/0258-marshall-page-service-levels.md)).
+Each callback follows this lifecycle:
+
+- it is admitted to `Marshall.LiveRecorder`, a second independent Rust request
+  recorder, before it runs;
+- it settles once: success on return, failure on raise, throw or exit;
+- the recorder settles a callback whose process dies, or that passes the
+  60-second deadline, as a failure.
+
+The recorder is isolated from `marshall_web`:
+
+- its socket and marker variables carry the validated `_MARSHALL_LIVE` suffix,
+  and evaluation refuses a duplicate unit and suffix pair;
+- its exporter writes only to the `overalls-otel-marshall-live` collector socket,
+  where the collector sets `service.name="marshall_live"`.
+
+An unavailable recorder leaves callbacks unrecorded; it never changes a result or
+manufactures success.
+
+Two provisional seven-day objectives read only this source:
+
+- **Callback completion:** 99%.
+- **Callbacks within 1 s:** 99%, using the `latency` objective kind. It divides
+  the `le="1"` duration bucket by requests, under the usual minimum-request,
+  warmup, host, freshness and coverage guards. A missing duration series yields
+  no value.
+
+The **Marshall pages** dashboard (`/d/overalls-marshall-pages`) shows:
+
+- the two objectives;
+- the five-minute completion and within-1 s SLIs, the p95 observed duration and
+  the admitted rate;
+- burn alerts and objective status.
+
+Separately titled diagnostic panels show per-view refresh and per-phase callback
+gauges, and a Tempo table of `marshall.live.callback` spans slower than 500 ms.
+p95 is a dashboard indicator, not an objective. Periodic `handle_info` ticks count
+as interactions.
+
 `Compute.Views` actions run inside `marshall.views.read`, labelled by
 `operation`, and annotate `query_count` and `row_count` at the end.
 `Tracing.annotate/1` adds only reviewed schema attributes, does nothing without a
@@ -402,7 +457,10 @@ recording span, and never raises.
 | `marshall.views.read` | internal span | `operation`; end attributes `query_count`, `row_count` |
 | `marshall.live.refresh` | metric | duration, queries; view |
 | `live_<view>_count`, `_duration_us`, `_queries` | `marshall.runtime_metrics` fields | per-minute totals for `overview`, `machines`, `machine_new`, `machine` |
-| `overalls_gauge_live_<view>_*`, `overalls_gauge_database_*` | Prometheus gauges | admitted by the SDK health scrape allowlist |
+| `marshall.live.callback` | internal span | `live_view`, `phase`; end attribute `query_count`; error status on exception |
+| `marshall.live.callback` | metric | duration, queries; live_view, phase |
+| `liveview_<phase>_count`, `_duration_us`, `_queries` | `marshall.runtime_metrics` fields | per-minute totals across views for `mount`, `params`, `event`, `info` |
+| `overalls_gauge_live_<view>_*`, `overalls_gauge_liveview_<phase>_*`, `overalls_gauge_database_*` | Prometheus gauges | admitted by the SDK health scrape allowlist |
 
 The operations dashboard divides each per-view total by that view's refresh
 count, giving mean refresh duration and queries per refresh. Database query time

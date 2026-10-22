@@ -55,6 +55,7 @@ defmodule MarshallWeb do
   def live_view do
     quote do
       use Phoenix.LiveView
+      @before_compile MarshallWeb.LiveObservability
 
       unquote(html_helpers())
     end

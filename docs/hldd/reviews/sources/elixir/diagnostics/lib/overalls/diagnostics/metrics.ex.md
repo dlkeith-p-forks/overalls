@@ -1,5 +1,5 @@
 ---
-digest: 58213693011e4fceb238577e2ce4d58e0111c2ae31c545be2a6ff1a662fd89ff
+digest: fab958a0550ab45cd3a50453ad9ce82cd5fa496dde2b762962e48ed09f961cd9
 disposition: no-impact
 kind: source
 mapping_digest: 2272062390f820f27790d68b944163b5a8c4aa097bb58fe18257524d8b10bbd0
@@ -13,4 +13,4 @@ state: present
 version: 2
 ---
 
-The library gains two reviewed span names, an annotate helper and one registered metric inside the existing closed allowlists; transport, collector topology, domain views and verification records in system chapters are unchanged, and the new spans are documented in the monitoring chapter.
+The library adds one reviewed span name, fail-open start and finish helpers and one registered metric inside the closed allowlists; system chapters cover transport, topology and domain views, which are unchanged, and the spans are documented in the monitoring chapter.

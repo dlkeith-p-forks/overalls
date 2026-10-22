@@ -1,5 +1,5 @@
 ---
-digest: 7d88fca8dbe56f67c71ea207b0ed860f4cfc005f7cb9f6ccde4ffe4bc718cda5
+digest: 9b7c3c0ba2c93d62cda3b8c5b3914af2ebbab0f7f9c1e6345bdb926d15c8e8cb
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed the storage quota property test; 17-reference, 19-coverage and the artifacts scenario now cite it as passing evidence.
+request_accounting from_environment/children accept a validated suffix so one unit hosts two recorders; 17-reference documents it (ADR-0258).

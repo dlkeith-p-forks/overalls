@@ -300,7 +300,7 @@ mod tests {
 
         #[test]
         fn browser_bounds_preserve_every_old_source(duration in 0u64..80_000_000) {
-            for old in [Source::MarshallWeb, Source::Galileo, Source::Enrico, Source::Brady,
+            for old in [Source::MarshallWeb, Source::MarshallLive, Source::Galileo, Source::Enrico, Source::Brady,
                 Source::Porsche, Source::AudiPrivate, Source::AudiDns, Source::AudiSsh] {
                 prop_assert_eq!(old.bounds_us(), crate::durable_slo::BOUNDS_US);
             }

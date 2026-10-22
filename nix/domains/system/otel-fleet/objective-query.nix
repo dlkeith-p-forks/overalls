@@ -17,6 +17,7 @@ source: ''
   and on() (time() - timestamp(overalls:slo_${source.id}:ratio7d) < 360)
   and on() (${collectorFresh})
   ${if source.kind == "candidate" then "and on() (${sourceReady source.id}) and on() (${coverageReady source.id 604800})"
+    else if source.kind == "latency" then "and on() (${sourceReady source.service}) and on() (${coverageReady source.service 604800})"
     else if source.kind == "monitor" then "and on() (${underclassReady})"
     else if source.kind == "ingress" then ''and on() (${ingressReady}) and on() (min(up{job="overalls-otel",overalls_telemetry_origin=""}) == 1)''
     else ""}

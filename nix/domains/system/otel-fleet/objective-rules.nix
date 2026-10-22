@@ -26,7 +26,7 @@ let
   collectors = toString (builtins.length hosts);
   query = source:
     let
-      service = source.id;
+      service = source.service or source.id;
       metric = "overalls_outer_${service}";
       labels = ''overalls_telemetry_origin="application",service_name="${service}"'';
       requests = "${metric}_requests_total";
@@ -43,6 +43,15 @@ let
         and on() (sum(increase(haproxy_frontend_http_requests_total{proxy="marshall_public"}[7d])) >= ${toString source.minRequests})
         and on() (${collectorCoverage})
         and on() (${ingressReady})
+        and on() (min(up{job="overalls-otel",overalls_telemetry_origin=""}) == 1)
+      '' else if source.kind == "latency" then ''
+        (sum(increase(${metric}_duration_seconds_bucket{${labels},le="${source.bound}"}[7d])) / ${requestCount})
+        and on() (${requestCount} >= ${toString source.minRequests})
+        and on() (${exactRoster requests labels source.hosts})
+        and on() (max(${metric}_source_start_time{${labels}}) < time() - 604800)
+        and on() (${sourceReady service})
+        and on() (${coverageReady service 604800})
+        and on() (${collectorCoverage})
         and on() (min(up{job="overalls-otel",overalls_telemetry_origin=""}) == 1)
       '' else if source.kind == "monitor" then ''
         avg(avg_over_time(overalls_underclass_monitor_ready{overalls_telemetry_origin="application",service_name="underclass_monitor"}[7d]))
@@ -67,7 +76,7 @@ let
   };
   windowRatio = source: window:
     let
-      service = source.id;
+      service = source.service or source.id;
       labels = ''overalls_telemetry_origin="application",service_name="${service}"'';
     in if source.kind == "collector" then
       ''min(avg_over_time(up{job="overalls-otel",overalls_telemetry_origin=""}[${window}]))''
@@ -77,6 +86,10 @@ let
       (sum(increase(haproxy_frontend_http_responses_total{proxy="marshall_public",code=~"2xx|3xx|4xx"}[${window}]))
         / sum(increase(haproxy_frontend_http_requests_total{proxy="marshall_public"}[${window}])))
       and on() (sum(increase(haproxy_frontend_http_requests_total{proxy="marshall_public"}[${window}])) >= 20)
+    '' else if source.kind == "latency" then ''
+      (sum(increase(overalls_outer_${service}_duration_seconds_bucket{${labels},le="${source.bound}"}[${window}]))
+        / sum(increase(overalls_outer_${service}_requests_total{${labels}}[${window}])))
+      and on() (sum(increase(overalls_outer_${service}_requests_total{${labels}}[${window}])) >= 20)
     '' else ''
       (sum(increase(overalls_outer_${service}_successes_total{${labels}}[${window}]))
         / sum(increase(overalls_outer_${service}_requests_total{${labels}}[${window}])))
@@ -89,6 +102,7 @@ let
       and on() ((1 - (${windowRatio source long})) > ${toString multiplier} * (1 - ${toString source.target}))
       and on() (time() - timestamp(overalls:slo_${source.id}:ratio7d) < 360)
       ${if source.kind == "candidate" then "and on() (${sourceReady source.id}) and on() (${coverageReady source.id 604800})"
+        else if source.kind == "latency" then "and on() (${sourceReady source.service}) and on() (${coverageReady source.service 604800})"
         else if source.kind == "monitor" then "and on() (${underclassReady})"
         else if source.kind == "ingress" then ''and on() (${ingressReady}) and on() (min(up{job="overalls-otel",overalls_telemetry_origin=""}) == 1)''
         else ''and on() (count(up{job="overalls-otel",overalls_telemetry_origin=""}) == ${collectors})''}
@@ -104,6 +118,11 @@ in
 # Guest claims MUST NOT enter an outer-fleet objective.
 # Burn thresholds MUST derive from fractions of the seven-day budget:
 # two percent in one hour and five percent in six hours.
+
+# @cc [owner:ghuntley,label:reliability] latency-objective-missing-duration-fails
+# A latency objective MUST divide requests whose duration sample lies within
+# its fixed bucket bound by every admitted request of its source, so a request
+# without a duration sample never counts as fast.
 {
   groups = [{
     name = "overalls-otel-seven-day-objectives";

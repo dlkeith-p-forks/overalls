@@ -11,6 +11,10 @@ let
   # the same reporting interval; views without refreshes stay absent.
   live = measure:
     ''label_replace({__name__=~"overalls_gauge_live_.+_${measure}"}, "view", "$1", "__name__", "overalls_gauge_live_(.+)_${measure}") / on(host_name,unit,view) (label_replace({__name__=~"overalls_gauge_live_.+_count"}, "view", "$1", "__name__", "overalls_gauge_live_(.+)_count") > 0)'';
+  # Per-phase LiveView callback totals across every view, divided by that
+  # phase's callback count; per-view detail lives in marshall.live.callback spans.
+  liveview = measure:
+    ''label_replace({__name__=~"overalls_gauge_liveview_.+_${measure}"}, "phase", "$1", "__name__", "overalls_gauge_liveview_(.+)_${measure}") / on(host_name,unit,phase) (label_replace({__name__=~"overalls_gauge_liveview_.+_count"}, "phase", "$1", "__name__", "overalls_gauge_liveview_(.+)_count") > 0)'';
   table = id: title: y: expr: {
     inherit id title;
     type = "table"; datasource = prometheus;
@@ -61,5 +65,9 @@ in {
       ''overalls_gauge_database_duration_ms / on(host_name,unit) (overalls_gauge_database_count > 0)'' "ms")
     (timeseries 20 "Marshall database · mean connection pool wait" 116
       ''overalls_gauge_database_queue_duration_ms / on(host_name,unit) (overalls_gauge_database_queue_count > 0)'' "ms")
+    (timeseries 21 "Marshall LiveView callbacks · mean duration by phase" 124
+      (liveview "duration_ms") "ms")
+    (timeseries 22 "Marshall LiveView callbacks · mean database queries by phase" 124
+      (liveview "queries") "short")
   ];
 }

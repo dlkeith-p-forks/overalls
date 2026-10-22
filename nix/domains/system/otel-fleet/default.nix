@@ -293,6 +293,11 @@ in {
             transport = "unix";
             max_request_body_size = 4096;
           };
+          "otlp/application-marshall-live".protocols.http = {
+            endpoint = "/run/overalls-otel-marshall-live/collector.sock";
+            transport = "unix";
+            max_request_body_size = 4096;
+          };
           "otlp/application-audi-ssh".protocols.http = {
             endpoint = "/run/overalls-otel-audi-ssh/collector.sock";
             transport = "unix";
@@ -337,7 +342,7 @@ in {
             static_configs = [{ targets = [ "127.0.0.1:${toString config.services.overallsLogging.sdkMetricsPort}" ]; }];
             metric_relabel_configs = [{
               source_labels = [ "__name__" ];
-              regex = "overalls_gauge_(trace_(available|pending|queue_dropped|export_failed|observed_at_seconds)|runtime_observed_at_seconds|beam_(memory_bytes|processes|atoms|run_queue)|terminal_(host_streams|viewer_sockets|peer_sockets|authority_(count|duration_ms|errors)|input_(count|duration_ms|errors))|database(_queue)?_(count|duration_ms|errors)|live_(overview|machines|machine_new|machine)_(count|duration_ms|queries))";
+              regex = "overalls_gauge_(trace_(available|pending|queue_dropped|export_failed|observed_at_seconds)|runtime_observed_at_seconds|beam_(memory_bytes|processes|atoms|run_queue)|terminal_(host_streams|viewer_sockets|peer_sockets|authority_(count|duration_ms|errors)|input_(count|duration_ms|errors))|database(_queue)?_(count|duration_ms|errors)|live_(overview|machines|machine_new|machine)_(count|duration_ms|queries)|liveview_(mount|params|event|info)_(count|duration_ms|queries))";
               action = "keep";
             }];
           }];
@@ -397,6 +402,11 @@ in {
           ];
           "resource/application-marshall".attributes = [
             { key = "service.name"; value = "marshall_web"; action = "upsert"; }
+            { key = "overalls.telemetry.origin"; value = "application"; action = "upsert"; }
+            { key = "host.name"; value = config.networking.hostName; action = "upsert"; }
+          ];
+          "resource/application-marshall-live".attributes = [
+            { key = "service.name"; value = "marshall_live"; action = "upsert"; }
             { key = "overalls.telemetry.origin"; value = "application"; action = "upsert"; }
             { key = "host.name"; value = config.networking.hostName; action = "upsert"; }
           ];
@@ -497,6 +507,11 @@ in {
               processors = [ "memory_limiter" "resource/application-marshall" "batch" ];
               exporters = [ "prometheus" ];
             };
+            "metrics/application-marshall-live" = {
+              receivers = [ "otlp/application-marshall-live" ];
+              processors = [ "memory_limiter" "resource/application-marshall-live" "batch" ];
+              exporters = [ "prometheus" ];
+            };
             "metrics/application-audi-ssh" = {
               receivers = [ "otlp/application-audi-ssh" ];
               processors = [ "memory_limiter" "resource/application-audi-ssh" "batch" ];
@@ -541,6 +556,7 @@ in {
     users.groups.overalls-otel-audi-private = {};
     users.groups.overalls-otel-audi-dns = {};
     users.groups.overalls-otel-marshall = {};
+    users.groups.overalls-otel-marshall-live = {};
     users.groups.overalls-otel-marshall-source = {};
     users.groups.overalls-otel-audi-ssh = {};
     users.groups.overalls-otel-underclass = {};
@@ -558,8 +574,8 @@ in {
       requires = [ "wireguard-fleet0.service" ];
       serviceConfig = {
         Group = "overalls-otel-app";
-        SupplementaryGroups = [ "overalls-otel-traces" "overalls-otel-galileo" "overalls-otel-enrico" "overalls-otel-porsche" "overalls-otel-ziggy" "overalls-otel-audi-private" "overalls-otel-audi-dns" "overalls-otel-marshall" "overalls-otel-audi-ssh" "overalls-otel-underclass" "overalls-otel-underclass-proxy" ];
-        RuntimeDirectory = [ "overalls-otel-traces" "overalls-otel-app" "overalls-otel-galileo" "overalls-otel-enrico" "overalls-otel-porsche" "overalls-otel-ziggy" "overalls-otel-audi-private" "overalls-otel-audi-dns" "overalls-otel-marshall" "overalls-otel-audi-ssh" "overalls-otel-underclass" "overalls-otel-underclass-proxy" ];
+        SupplementaryGroups = [ "overalls-otel-traces" "overalls-otel-galileo" "overalls-otel-enrico" "overalls-otel-porsche" "overalls-otel-ziggy" "overalls-otel-audi-private" "overalls-otel-audi-dns" "overalls-otel-marshall" "overalls-otel-marshall-live" "overalls-otel-audi-ssh" "overalls-otel-underclass" "overalls-otel-underclass-proxy" ];
+        RuntimeDirectory = [ "overalls-otel-traces" "overalls-otel-app" "overalls-otel-galileo" "overalls-otel-enrico" "overalls-otel-porsche" "overalls-otel-ziggy" "overalls-otel-audi-private" "overalls-otel-audi-dns" "overalls-otel-marshall" "overalls-otel-marshall-live" "overalls-otel-audi-ssh" "overalls-otel-underclass" "overalls-otel-underclass-proxy" ];
         RuntimeDirectoryMode = "0750";
         StateDirectoryMode = "0700";
         UMask = "0007";
@@ -569,7 +585,7 @@ in {
       };
       postStart = ''
         for attempt in $(${pkgs.coreutils}/bin/seq 1 100); do
-          if test -S /run/overalls-otel-traces/collector.sock && test -S /run/overalls-otel-galileo/collector.sock && test -S /run/overalls-otel-enrico/collector.sock && test -S /run/overalls-otel-porsche/collector.sock && test -S /run/overalls-otel-ziggy/collector.sock && test -S /run/overalls-otel-audi-private/collector.sock && test -S /run/overalls-otel-audi-dns/collector.sock && test -S /run/overalls-otel-marshall/collector.sock && test -S /run/overalls-otel-audi-ssh/collector.sock && test -S /run/overalls-otel-underclass/collector.sock && test -S /run/overalls-otel-underclass-proxy/collector.sock; then
+          if test -S /run/overalls-otel-traces/collector.sock && test -S /run/overalls-otel-galileo/collector.sock && test -S /run/overalls-otel-enrico/collector.sock && test -S /run/overalls-otel-porsche/collector.sock && test -S /run/overalls-otel-ziggy/collector.sock && test -S /run/overalls-otel-audi-private/collector.sock && test -S /run/overalls-otel-audi-dns/collector.sock && test -S /run/overalls-otel-marshall/collector.sock && test -S /run/overalls-otel-marshall-live/collector.sock && test -S /run/overalls-otel-audi-ssh/collector.sock && test -S /run/overalls-otel-underclass/collector.sock && test -S /run/overalls-otel-underclass-proxy/collector.sock; then
             ${pkgs.coreutils}/bin/chgrp overalls-otel-traces /run/overalls-otel-traces /run/overalls-otel-traces/collector.sock
             ${pkgs.coreutils}/bin/chmod 0750 /run/overalls-otel-traces
             ${pkgs.coreutils}/bin/chmod 0660 /run/overalls-otel-traces/collector.sock
@@ -594,6 +610,9 @@ in {
             ${pkgs.coreutils}/bin/chgrp overalls-otel-marshall /run/overalls-otel-marshall /run/overalls-otel-marshall/collector.sock
             ${pkgs.coreutils}/bin/chmod 0750 /run/overalls-otel-marshall
             ${pkgs.coreutils}/bin/chmod 0660 /run/overalls-otel-marshall/collector.sock
+            ${pkgs.coreutils}/bin/chgrp overalls-otel-marshall-live /run/overalls-otel-marshall-live /run/overalls-otel-marshall-live/collector.sock
+            ${pkgs.coreutils}/bin/chmod 0750 /run/overalls-otel-marshall-live
+            ${pkgs.coreutils}/bin/chmod 0660 /run/overalls-otel-marshall-live/collector.sock
             ${pkgs.coreutils}/bin/chgrp overalls-otel-audi-ssh /run/overalls-otel-audi-ssh /run/overalls-otel-audi-ssh/collector.sock
             ${pkgs.coreutils}/bin/chmod 0750 /run/overalls-otel-audi-ssh
             ${pkgs.coreutils}/bin/chmod 0660 /run/overalls-otel-audi-ssh/collector.sock
@@ -728,6 +747,7 @@ in {
         options.path = pkgs.linkFarm "overalls-grafana-dashboards" ([
           { name = "baseline.json"; path = dashboard; }
           { name = "operations.json"; path = pkgs.writeText "overalls-operations.json" (builtins.toJSON (import ./operations-dashboard.nix)); }
+          { name = "marshall-pages.json"; path = pkgs.writeText "overalls-marshall-pages.json" (builtins.toJSON (import ./marshall-pages-dashboard.nix { inherit hosts; })); }
         ] ++ lib.optional logsEnabled {
           name = "logs.json"; path = pkgs.writeText "overalls-logs.json" (builtins.toJSON (import ./logs-dashboard.nix));
         });

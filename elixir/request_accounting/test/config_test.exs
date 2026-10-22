@@ -7,7 +7,9 @@ defmodule Overalls.RequestAccounting.ConfigTest do
     previous =
       for key <- [
             "OVERALLS_REQUEST_ACCOUNTING_SOCKET",
-            "OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY"
+            "OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY",
+            "OVERALLS_REQUEST_ACCOUNTING_SOCKET_SECOND",
+            "OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY_SECOND"
           ],
           into: %{} do
         {key, System.get_env(key)}
@@ -21,7 +23,36 @@ defmodule Overalls.RequestAccounting.ConfigTest do
 
     System.delete_env("OVERALLS_REQUEST_ACCOUNTING_SOCKET")
     System.delete_env("OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY")
+    System.delete_env("OVERALLS_REQUEST_ACCOUNTING_SOCKET_SECOND")
+    System.delete_env("OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY_SECOND")
     :ok
+  end
+
+  test "suffixed sources read only their own variables" do
+    System.put_env("OVERALLS_REQUEST_ACCOUNTING_SOCKET", "/run/first/recorder.sock")
+    System.put_env("OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY", "/var/lib/first/marker")
+    assert Config.from_environment(SecondProducer, "_SECOND") == :ignore
+
+    System.put_env("OVERALLS_REQUEST_ACCOUNTING_SOCKET_SECOND", "/run/second/recorder.sock")
+
+    assert {:error, :invalid_measurement_configuration} =
+             Config.from_environment(SecondProducer, "_SECOND")
+
+    System.put_env(
+      "OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY_SECOND",
+      "/var/lib/second/marker"
+    )
+
+    assert {:ok,
+            %Config{socket: "/run/second/recorder.sock", directory: "/var/lib/second/marker"}} =
+             Config.from_environment(SecondProducer, "_SECOND")
+
+    assert {:ok, %Config{socket: "/run/first/recorder.sock"}} =
+             Config.from_environment(FirstProducer)
+
+    for suffix <- ["SECOND", "_second", "_A B", "_"] do
+      assert_raise ArgumentError, fn -> Config.from_environment(SecondProducer, suffix) end
+    end
   end
 
   test "validates explicit configuration before supervision" do

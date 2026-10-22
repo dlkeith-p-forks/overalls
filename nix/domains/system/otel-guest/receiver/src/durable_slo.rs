@@ -23,6 +23,7 @@ pub const BROWSER_BOUNDS_US: [u64; 7] = [
 #[serde(rename_all = "snake_case")]
 pub enum Source {
     MarshallWeb,
+    MarshallLive,
     Galileo,
     Enrico,
     Brady,
@@ -38,6 +39,7 @@ impl Source {
     pub fn from_name(name: &str) -> Option<Self> {
         match name {
             "marshall_web" => Some(Self::MarshallWeb),
+            "marshall_live" => Some(Self::MarshallLive),
             "galileo" => Some(Self::Galileo),
             "enrico" => Some(Self::Enrico),
             "brady" => Some(Self::Brady),
@@ -53,6 +55,7 @@ impl Source {
     pub fn name(self) -> &'static str {
         match self {
             Self::MarshallWeb => "marshall_web",
+            Self::MarshallLive => "marshall_live",
             Self::Galileo => "galileo",
             Self::Enrico => "enrico",
             Self::Brady => "brady",

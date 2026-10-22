@@ -89,7 +89,9 @@ in pkgs.testers.runNixOSTest {
   # and reach the collector through the separate Rust exporter with fixed
   # Overalls identity. The source UID MUST lack direct collector access, and the
   # exporter MUST lack source-directory write access.
-  # The actual Prometheus API MUST expose the evaluated 40-rule burn roster.
+  # The actual Prometheus API MUST expose the evaluated 48-rule burn roster.
+  # Real LiveView callbacks MUST reach the separate marshall_live recorder
+  # through Marshall's suffixed producer configuration.
   # Retired diagnostic pages MUST return 404 before and after ordinary login,
   # with no overview links. Revoked current and remembered credentials MUST
   # still refuse the retained overview.
@@ -158,10 +160,17 @@ in pkgs.testers.runNixOSTest {
     overalls.wait_until_succeeds("curl -fsS http://10.90.0.1:9464/metrics | grep -E 'overalls_outer_marshall_web_requests_total\\{[^}]*overalls_telemetry_origin=\"application\"[^}]*service_instance_id=\"overalls\"[^}]*\\} [1-9]'", timeout=90)
     overalls.wait_until_succeeds("curl -fsSG --data-urlencode 'query=overalls:telemetry_collector_up:ratio1h{overalls_telemetry_origin=\"\"}' http://127.0.0.1:9090/api/v1/query | jq -e '[.data.result[].metric.instance] | sort == [\"10.90.0.1:9464\", \"10.90.0.2:9464\"]'", timeout=90)
     overalls.wait_until_succeeds("curl -fsSG --data-urlencode 'query=overalls:telemetry_collector_up:ratio1h{overalls_telemetry_origin=\"\"}' http://127.0.0.1:9090/api/v1/query | jq -e 'any(.data.result[]; .metric.instance == \"10.90.0.2:9464\" and .value[1] == \"0\")'", timeout=90)
-    overalls.wait_until_succeeds("curl -fsS 'http://127.0.0.1:9090/api/v1/rules?type=alert' | jq -e '[.data.groups[] | select(.name == \"overalls-otel-budget-burn\") | .rules[] | select(.health == \"ok\" and .state == \"inactive\")] | length == 40'", timeout=90)
+    overalls.wait_until_succeeds("curl -fsS 'http://127.0.0.1:9090/api/v1/rules?type=alert' | jq -e '[.data.groups[] | select(.name == \"overalls-otel-budget-burn\") | .rules[] | select(.health == \"ok\" and .state == \"inactive\")] | length == 48'", timeout=90)
     overalls.succeed("systemctl start otel-slo-reader-seed.service")
     overalls.succeed("mkdir -p /root/.pki/nssdb; certutil -N --empty-password -d sql:/root/.pki/nssdb")
     overalls.succeed("certutil -A -d sql:/root/.pki/nssdb -n overalls-fixture -t C,, -i /run/overalls-test/ca.crt")
     overalls.succeed("env NODE_EXTRA_CA_CERTS=/run/overalls-test/ca.crt ${python}/bin/python ${checkedBrowser}/browser.py", timeout=120)
+    with subtest("real LiveView callbacks reach the independent marshall_live recorder"):
+        live_snapshot = "/run/overalls-request-marshall-live-overalls-source/slo.json"
+        overalls.wait_for_unit("overalls-request-marshall-live-overalls.service")
+        overalls.wait_for_unit("overalls-request-marshall-live-overalls-exporter.service")
+        overalls.succeed("systemctl show -p Environment marshall-overalls.service | grep -q 'OVERALLS_REQUEST_ACCOUNTING_SOCKET_MARSHALL_LIVE=/run/overalls-request-marshall-live-overalls/recorder.sock'")
+        overalls.wait_until_succeeds(f"test $(jq -r .requests {live_snapshot}) -gt 0", timeout=60)
+        overalls.wait_until_succeeds("curl -fsS http://10.90.0.1:9464/metrics | grep -E 'overalls_outer_marshall_live_requests_total\\{[^}]*overalls_telemetry_origin=\"application\"[^}]*service_instance_id=\"overalls\"[^}]*\\} [1-9]'", timeout=90)
   '';
 }

@@ -20,11 +20,16 @@ in {
       options = {
         enable = lib.mkEnableOption "this source recorder" // { default = true; };
         source = lib.mkOption {
-          type = lib.types.enum [ "marshall_web" "galileo" "enrico" "brady" "porsche" "audi_private" "audi_dns" "audi_ssh" "vscode_browser_nixos" "vscode_browser_ubuntu" ];
+          type = lib.types.enum [ "marshall_web" "marshall_live" "galileo" "enrico" "brady" "porsche" "audi_private" "audi_dns" "audi_ssh" "vscode_browser_nixos" "vscode_browser_ubuntu" ];
           description = "Closed trusted request-source name; physical measurements stay in PostgreSQL.";
         };
         producerUser = lib.mkOption { type = lib.types.str; description = "Expected Unix peer account, including dynamically allocated application users."; };
         producerUnit = lib.mkOption { type = lib.types.str; description = "Exact cgroup v2 systemd service allowed to admit requests."; };
+        environmentSuffix = lib.mkOption {
+          type = lib.types.strMatching "(_[A-Z0-9]+)*";
+          default = "";
+          description = "Suffix of the producer's socket and marker variables, so one unit can admit to several sources without reading another source's recorder.";
+        };
         deadlineSeconds = lib.mkOption { type = lib.types.ints.between 1 86400; description = "Immutable measurement deadline reconciled with this source's request budget."; };
         package = lib.mkOption { type = lib.types.package; default = package; description = "Pinned Rust request recorder package."; };
       };
@@ -40,6 +45,10 @@ in {
         && builtins.match "[a-zA-Z0-9_-]{1,64}" instance.producerUser != null
         && builtins.match "[a-zA-Z0-9_.@-]{1,120}\\.service" instance.producerUnit != null;
       message = "Request recorder ${name} requires a bounded instance name, account and exact .service unit.";
+    }) active ++ lib.mapAttrsToList (name: instance: {
+      assertion = builtins.length (lib.filter (other: other.producerUnit == instance.producerUnit
+        && other.environmentSuffix == instance.environmentSuffix) (builtins.attrValues active)) == 1;
+      message = "Request recorder ${name} shares ${instance.producerUnit} with another source; give each source in one unit a distinct environmentSuffix.";
     }) active;
     users.groups = lib.mkMerge (lib.mapAttrsToList (name: _: {
       ${group name} = {};
@@ -80,8 +89,8 @@ in {
         wants = [ "overalls-request-${name}.service" ];
         after = [ "overalls-request-${name}.service" ];
         environment = {
-          OVERALLS_REQUEST_ACCOUNTING_SOCKET = "/run/${runtime name}/recorder.sock";
-          OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY = "/var/lib/${runtime name}-producer/marker";
+          "OVERALLS_REQUEST_ACCOUNTING_SOCKET${instance.environmentSuffix}" = "/run/${runtime name}/recorder.sock";
+          "OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY${instance.environmentSuffix}" = "/var/lib/${runtime name}-producer/marker";
         };
         serviceConfig = {
           SupplementaryGroups = [ (group name) ];

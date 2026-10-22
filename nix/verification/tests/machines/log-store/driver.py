@@ -42,6 +42,8 @@ def check_operations_dashboard(api: str) -> None:
         (18, "Marshall page refresh · mean database queries by view", "timeseries"),
         (19, "Marshall database · mean query time", "timeseries"),
         (20, "Marshall database · mean connection pool wait", "timeseries"),
+        (21, "Marshall LiveView callbacks · mean duration by phase", "timeseries"),
+        (22, "Marshall LiveView callbacks · mean database queries by phase", "timeseries"),
     ]
     store.succeed(
         api

@@ -13,7 +13,8 @@ let
   collectorHistory = ''count(count_over_time(${collector}[7d]) >= ${toString cadence.sevenDaySamples}) == ${collectors}'';
   check = code: good: { inherit code good; };
   checks = source: window: let
-    s = source.id;
+    s = source.service or source.id;
+    sourced = builtins.elem source.kind [ "candidate" "latency" ];
     metric = "overalls_outer_${s}";
     labels = ''overalls_telemetry_origin="application",service_name="${s}"'';
     selector = suffix: ''${metric}_${suffix}{${labels}}'';
@@ -25,15 +26,16 @@ let
     lastBucket = if s == "underclass_proxy" then "86400.0" else
       if builtins.elem s [ "vscode_browser_nixos" "vscode_browser_ubuntu" ] then "60.0" else
       if builtins.elem s (import ./durable-services.nix) then "3000.0" else "10.0";
-    recording = if window == "objective" then "overalls:slo_${s}:ratio7d"
+    recording = if window == "objective" then "overalls:slo_${source.id}:ratio7d"
       else if window == "latency" then "overalls:${s}_candidate_duration:p95_5m"
       else if source.kind == "collector" then "overalls:telemetry_collector_up:ratio1h"
       else if source.kind == "ingress" then "overalls:web_ingress_completion:ratio5m"
       else if source.kind == "monitor" then "overalls:underclass_monitor_local_readiness:ratio5m"
+      else if source.kind == "latency" then "overalls:${source.id}:ratio5m"
       else "overalls:${candidate.ratio}:ratio5m";
   in [ (check 1 collectorPresent) (check 2 (collectorFresh +
     (if source.kind == "collector" then "" else " and on() min(${collector}) == 1"))) ] ++
-    (if source.kind == "candidate" then [
+    (if sourced then [
       (check 1 (roster s))
       (check 1 ''count(${selector "source_sample_time"}) == ${toString (builtins.length source.hosts)}'')
       (check 2 ''max(time() - ${selector "source_sample_time"}) < 45 and on() min(time() - ${selector "source_sample_time"}) >= -2'')
@@ -43,13 +45,13 @@ let
     ] else if source.kind == "ingress" then [ (check 2 (import ./ingress-ready.nix)) ]
     else if source.kind == "monitor" then [ (check 2 (import ./underclass-ready.nix { inherit hosts; })) ] else []) ++
     (if window == "objective" then [ (check 6 collectorHistory) ] ++
-      (if source.kind == "candidate" then [
+      (if sourced then [
         (check 6 (coverageReady s horizon))
         (check 7 ''sum(increase(${selector "requests_total"}[${range}])) >= ${toString source.minRequests}'')
       ] else if source.kind == "ingress" then [
         (check 7 ''sum(increase(haproxy_frontend_http_requests_total{proxy="marshall_public"}[7d])) >= ${toString source.minRequests}'')
       ] else [])
-    else if source.kind == "candidate" then [
+    else if sourced then [
       (check 5 ''sum(increase(${selector "requests_total"}[5m])) > 0'')
     ] else if source.kind == "ingress" then [
       (check 5 ''sum(increase(haproxy_frontend_http_requests_total{proxy="marshall_public"}[5m])) > 0'')
@@ -70,16 +72,16 @@ let
     expr = builtins.concatStringsSep " or " (failures ++ [ "(vector(0)${previous (builtins.length ordered)})" ]);
   };
   evidence = source: let
-    s = source.id;
+    s = source.service or source.id;
     requests = ''overalls_outer_${s}_requests_total{overalls_telemetry_origin="application",service_name="${s}"}'';
-    rule = kind: expr: { record = "overalls:slo_evidence"; labels = { slo = s; inherit kind; }; inherit expr; };
+    rule = kind: expr: { record = "overalls:slo_evidence"; labels = { slo = source.id; inherit kind; }; inherit expr; };
     duration = "overalls_outer_${s}_duration_seconds";
     lastBucket = if s == "underclass_proxy" then "86400.0" else
       if builtins.elem s [ "vscode_browser_nixos" "vscode_browser_ubuntu" ] then "60.0" else
       if builtins.elem s (import ./durable-services.nix) then "3000.0" else "10.0";
     labels = ''overalls_telemetry_origin="application",service_name="${s}"'';
     history = ''min(count_over_time(${collector}[90d])) / ${toString cadence.samplesPerDay}'';
-  in if source.kind != "candidate" then [
+  in if !(builtins.elem source.kind [ "candidate" "latency" ]) then [
     (rule "history_days" history)
     (rule "required_requests" "vector(${toString source.minRequests})")
   ] ++ (if source.kind == "monitor" then [

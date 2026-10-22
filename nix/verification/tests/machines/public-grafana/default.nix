@@ -73,7 +73,7 @@ in pkgs.testers.runNixOSTest {
         password: str = server.succeed("cat /var/lib/grafana/admin-password").strip()
         client.succeed("umask 077; printf '%s' 'user = \"operator:" + password + "\"' > /tmp/grafana-curl.cfg")
         client.succeed("curl --config /tmp/grafana-curl.cfg --cacert /etc/grafana-test-ca.pem -fsS https://overalls.test:3443/api/user | jq -e '.login == \"operator\"'")
-        client.succeed("curl --config /tmp/grafana-curl.cfg --cacert /etc/grafana-test-ca.pem -fsS https://overalls.test:3443/api/dashboards/uid/overalls-otel-baseline | jq -e '.dashboard.panels | length == 59'")
+        client.succeed("curl --config /tmp/grafana-curl.cfg --cacert /etc/grafana-test-ca.pem -fsS https://overalls.test:3443/api/dashboards/uid/overalls-otel-baseline | jq -e '.dashboard.panels | length == 67'")
         server.succeed("curl -fsS http://127.0.0.1:9090/api/v1/status/flags | jq -e '.data[\"storage.tsdb.retention.time\"] == \"90d\" and .data[\"storage.tsdb.retention.size\"] == \"0B\"'")
         server.succeed("curl -fsS http://127.0.0.1:9465/metrics | grep '^overalls_telemetry_root_available_bytes '")
         client.succeed("curl --config /tmp/grafana-curl.cfg --cacert /etc/grafana-test-ca.pem --http1.1 --max-time 3 -s -D /tmp/grafana-live.headers -o /dev/null -H 'Connection: Upgrade' -H 'Upgrade: websocket' -H 'Sec-WebSocket-Version: 13' -H 'Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==' -H 'Origin: https://overalls.test:3443' https://overalls.test:3443/api/live/ws || true")

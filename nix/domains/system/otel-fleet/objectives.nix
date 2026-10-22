@@ -22,7 +22,14 @@ let
     porsche_cancel = central;
     vscode_browser_nixos = central;
     vscode_browser_ubuntu = central;
+    marshall_live = central;
   };
+  # Latency objectives read a candidate source's own duration histogram. The
+  # bound MUST be one of that source's fixed bucket labels; an admitted request
+  # without a duration sample counts against the objective.
+  latency = [
+    { id = "marshall_live_latency"; service = "marshall_live"; bound = "1.0"; title = "Marshall page interactions within 1 s"; }
+  ];
 in
 # @cc [owner:ghuntley,label:reliability;deployment] provisional-objective-roster
 # A seven-day application objective MUST name every enrolled source host and
@@ -37,6 +44,11 @@ in
   kind = "candidate";
   minRequests = 100;
   hosts = serviceHosts.${source.service};
-}) candidates ++ [
+}) candidates ++ builtins.map (objective: objective // {
+  target = 0.99;
+  kind = "latency";
+  minRequests = 100;
+  hosts = serviceHosts.${objective.service};
+}) latency ++ [
   { id = "underclass_monitor"; target = 0.99; kind = "monitor"; minRequests = 0; inherit hosts; }
 ]

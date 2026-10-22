@@ -35,7 +35,12 @@ in
   recording = "overalls:${source.ratio}:ratio5m";
   query = candidateQuery source.service "overalls:${source.ratio}:ratio5m";
   kind = "candidate";
-}) sources ++ [{
+}) sources ++ builtins.map (entry: {
+  inherit (entry) id title;
+  recording = "overalls:${entry.id}:ratio5m";
+  query = candidateQuery entry.service "overalls:${entry.id}:ratio5m";
+  kind = "latency";
+}) (builtins.filter (entry: entry.kind == "latency") objectives) ++ [{
   id = "underclass_monitor";
   title = "Underclass local monitor readiness";
   recording = "overalls:underclass_monitor_local_readiness:ratio5m";

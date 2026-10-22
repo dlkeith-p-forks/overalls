@@ -8,6 +8,8 @@ defmodule MarshallWeb.Telemetry do
 
   @impl true
   def init(_arg) do
+    :ok = MarshallWeb.LiveObservability.attach()
+
     children = [
       # Telemetry poller will execute the given period measurements
       # every 10_000ms. Learn more here: https://telemetry-metrics.hexdocs.pm

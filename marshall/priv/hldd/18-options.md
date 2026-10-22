@@ -8780,6 +8780,19 @@ true
 ```
 
 
+## `services.overallsRequestRecorder.instances.<name>.environmentSuffix`
+
+Suffix of the producer's socket and marker variables, so one unit can admit to several sources without reading another source's recorder.
+
+Type: `string matching the pattern (_[A-Z0-9]+)*`.
+
+Default:
+
+```nix
+""
+```
+
+
 ## `services.overallsRequestRecorder.instances.<name>.package`
 
 Pinned Rust request recorder package.
@@ -8815,7 +8828,7 @@ Default: Required when its service or enclosing record is selected.
 
 Closed trusted request-source name; physical measurements stay in PostgreSQL.
 
-Type: `one of "marshall_web", "galileo", "enrico", "brady", "porsche", "audi_private", "audi_dns", "audi_ssh", "vscode_browser_nixos", "vscode_browser_ubuntu"`.
+Type: `one of "marshall_web", "marshall_live", "galileo", "enrico", "brady", "porsche", "audi_private", "audi_dns", "audi_ssh", "vscode_browser_nixos", "vscode_browser_ubuntu"`.
 
 Default: Required when its service or enclosing record is selected.
 

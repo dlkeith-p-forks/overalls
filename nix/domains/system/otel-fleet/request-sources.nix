@@ -9,6 +9,7 @@ let
   binding = source: producerUser: producerUnit: deadlineSeconds: collectorGroup: {
     inherit source producerUser producerUnit deadlineSeconds collectorGroup;
     instance = null;
+    environmentSuffix = "";
   };
   # Streaming transports have renewable/idle budgets, not a total execution
   # timeout. Their provisional 24-hour measurement horizon does not close work.
@@ -32,13 +33,22 @@ let
       "marshall-${name}.service" 86400 "overalls-otel-marshall") // {
         instance = name;
       })
+  ) config.services.marshall.instances)
+  # LiveView callbacks are bounded interactive work; a callback still open
+  # after sixty seconds is settled as a failure.
+  // lib.optionalAttrs (enabled "marshall") (lib.mapAttrs' (name: _:
+    lib.nameValuePair "marshall-live-${name}" ((binding "marshall_live" "marshall-${name}"
+      "marshall-${name}.service" 60 "overalls-otel-marshall-live") // {
+        instance = name;
+        environmentSuffix = "_MARSHALL_LIVE";
+      })
   ) config.services.marshall.instances);
   identities = import ./request-identities.nix;
   inherit (identities) readerGroup exporterUser;
 in {
   config = lib.mkIf config.services.overallsOtelFleet.enable {
     services.overallsRequestRecorder.instances = lib.mapAttrs (_: source: {
-      inherit (source) source producerUser producerUnit deadlineSeconds;
+      inherit (source) source producerUser producerUnit deadlineSeconds environmentSuffix;
     }) sources;
     users.users = lib.mapAttrs' (name: _: lib.nameValuePair (exporterUser name) {
       isSystemUser = true;

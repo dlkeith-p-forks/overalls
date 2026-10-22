@@ -78,6 +78,7 @@ defmodule Marshall.Application do
 
   defp serving_children do
     Overalls.RequestAccounting.Producer.children(Marshall.RequestRecorder) ++
+      Overalls.RequestAccounting.Producer.children(Marshall.LiveRecorder, "_MARSHALL_LIVE") ++
       [
         MarshallWeb.Telemetry,
         Marshall.Observability,

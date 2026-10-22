@@ -23,9 +23,9 @@ defmodule Overalls.RequestAccounting.Producer do
   end
 
   @doc "Returns the configured producer child, or an empty list when disabled."
-  @spec children(atom()) :: [{module(), Config.t()}]
-  def children(name) do
-    case Config.from_environment(name) do
+  @spec children(atom(), binary()) :: [{module(), Config.t()}]
+  def children(name, suffix \\ "") do
+    case Config.from_environment(name, suffix) do
       :ignore ->
         []
 

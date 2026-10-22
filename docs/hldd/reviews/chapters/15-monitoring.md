@@ -1,5 +1,5 @@
 ---
-digest: 37f859a5a9ae74a8e7f39aa537f68287f5df97bcde5537669bbf53418c2064f9
+digest: 185a956b7033aebff87a54c5b275b8368bd130205d7bb6a8cccb2ebdd4507c7a
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Fluent Bit maps live_<view> count, duration and query gauges; the collector admits database and live page gauges; the operations dashboard gains page refresh and database panels 17-20 checked by the log-store machine test; the monitoring chapter lists twenty panels and page load diagnostics.
+15-monitoring documents the marshall_live recorder source, suffixed recorder configuration, latency objective kind, 24-objective/48-burn roster and the Marshall pages dashboard; 19-coverage regenerated with the marshall-page-service-levels scenario (ADR-0258).

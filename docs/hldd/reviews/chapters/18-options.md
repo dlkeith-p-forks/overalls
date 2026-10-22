@@ -1,5 +1,5 @@
 ---
-digest: 56d6ff5dfa49ede786cba440d57100c75b721b23b1e0616e79d3df8205e5ac11
+digest: aa4a6b24dd1fac9b6d2eb6657444423d5a530f3bd5a8e3ef21db1e6b95671dc0
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Underclass pin bumped 39f5766 -> c58a972 (free-plan gate, Claude usage-percent and refresh-scope fixes); source hash refreshed, cargoHash and instrumentation patch unchanged; chapter 18 regenerated for the new derivation name and chapter 10 records the revision. No topology, option or recovery change.
+18-options regenerated for the request recorder environmentSuffix option and marshall_live source enum (ADR-0258).

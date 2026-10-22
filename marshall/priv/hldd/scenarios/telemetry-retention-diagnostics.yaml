@@ -57,13 +57,12 @@ evidence:
   kind: manual
   path: docs/architecture/reviews/2026-10-09-observability-decoupling.md
   scope: Reviewed historical scope at the captured baseline; no current runtime acceptance claim.
-- assertion: length == 64
-  execution: recorded
+- assertion: length == 67
+  execution: present
   kind: machine
   path: nix/verification/tests/machines/otel-fleet/default.nix
-  record: docs/architecture/reviews/2026-10-11-legacy-compatibility-removal.md
-  record_assertion: otel-fleet native check passed on 2026-10-11 with
-  scope: Two NixOS VMs exercise authenticated collector transport, 64-panel provisioning, application
+  scope: Two NixOS VMs exercise authenticated collector transport, 67-panel provisioning (64 at the
+    2026-10-11 recorded run; not rerun since the marshall_live objectives), application
     and guest provenance, intake limits, collector/ingress failure recovery and durable trace replay;
     no physical guest workflow or seven-day production history claim.
 gaps: Ninety-day observed production retention, future trace capacity and complete eligible seven-day

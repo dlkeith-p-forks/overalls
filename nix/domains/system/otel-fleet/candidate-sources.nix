@@ -22,4 +22,5 @@
   { service = "porsche_cancel"; ratio = "porsche_cancel_completion"; title = "Porsche durable cancellation completion"; }
   { service = "vscode_browser_nixos"; ratio = "vscode_browser_nixos_completion"; title = "NixOS authenticated browser editor journey"; }
   { service = "vscode_browser_ubuntu"; ratio = "vscode_browser_ubuntu_completion"; title = "Ubuntu authenticated browser editor journey"; }
+  { service = "marshall_live"; ratio = "marshall_live_candidate_completion"; title = "Marshall page interaction completion"; }
 ]

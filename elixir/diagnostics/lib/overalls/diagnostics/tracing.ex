@@ -17,11 +17,13 @@ defmodule Overalls.Diagnostics.Tracing do
     marshall.artifact.publish
     marshall.artifact.content
     marshall.cedar.authorize
+    marshall.live.callback
     marshall.live.refresh
     marshall.views.read
   )
 
   @type metadata :: Overalls.Diagnostics.metadata()
+  @opaque span :: {:opentelemetry.span_ctx(), :otel_ctx.token()} | :none
 
   @doc "Runs a reviewed operation in one span while preserving the exact callback outcome."
   @spec with_span(binary(), metadata(), (-> result)) :: result when result: term()
@@ -45,6 +47,63 @@ defmodule Overalls.Diagnostics.Tracing do
         do: _ = :otel_span.set_attributes(:otel_tracer.current_span_ctx(), attributes)
     end
 
+    :ok
+  catch
+    _, _ -> :ok
+  end
+
+  # @cc [owner:ghuntley,label:observability;recovery] trace-start-finish-paired
+  # A started span MUST become the current span until its finish, which MUST
+  # end it, restore the previous context and set only a closed status. Both
+  # MUST fail open: without configuration, or on any SDK failure, start MUST
+  # return a handle whose finish is a no-op, and neither MUST raise.
+  @doc """
+  Starts a reviewed operation for callers that observe only begin and end
+  events, such as Telemetry span handlers. Pair it with `finish/3` in the
+  same process.
+  """
+  @spec start(binary(), metadata()) :: span()
+  def start(name, metadata) when name in @operations do
+    if Overalls.Diagnostics.Configuration.configured?() do
+      span =
+        :otel_tracer.start_span(tracer(), name, %{
+          attributes: Overalls.Diagnostics.Context.attributes(metadata),
+          kind: span_kind(name)
+        })
+
+      token = :otel_ctx.attach(:otel_tracer.set_current_span(:otel_ctx.get_current(), span))
+      {span, token}
+    else
+      :none
+    end
+  catch
+    _, _ -> :none
+  end
+
+  @doc "Ends a span from `start/2` with a closed status and reviewed end attributes."
+  @spec finish(span(), :ok | :error, metadata()) :: :ok
+  def finish(span, status, metadata \\ [])
+
+  def finish({span, token}, status, metadata) when status in [:ok, :error] do
+    try do
+      attributes = Overalls.Diagnostics.Context.attributes(metadata)
+      if attributes != %{}, do: _ = :otel_span.set_attributes(span, attributes)
+      :ok = safe_status(span, status)
+      _ = :otel_span.end_span(span)
+    catch
+      _, _ -> :ok
+    after
+      detach(token)
+    end
+
+    :ok
+  end
+
+  def finish(_span, _status, _metadata), do: :ok
+
+  @spec detach(:otel_ctx.token()) :: :ok
+  defp detach(token) do
+    _ = :otel_ctx.detach(token)
     :ok
   catch
     _, _ -> :ok

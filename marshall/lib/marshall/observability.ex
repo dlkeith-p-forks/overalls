@@ -16,7 +16,13 @@ defmodule Marshall.Observability do
   ]
 
   @live_views [:overview, :machines, :machine_new, :machine]
-  @live_keys Enum.map(@live_views, &:"live_#{&1}")
+  @live_phases %{
+    mount: :liveview_mount,
+    handle_params: :liveview_params,
+    handle_event: :liveview_event,
+    handle_info: :liveview_info
+  }
+  @live_keys Enum.map(@live_views, &:"live_#{&1}") ++ Map.values(@live_phases)
 
   @metric_names Enum.uniq(
                   for {_, key, _, _} <- @events,
@@ -52,7 +58,10 @@ defmodule Marshall.Observability do
     :ok =
       :telemetry.attach_many(
         __MODULE__,
-        Enum.uniq([[:marshall, :live, :refresh] | Enum.map(@events, &elem(&1, 0))]),
+        Enum.uniq([
+          [:marshall, :live, :refresh],
+          [:marshall, :live, :callback] | Enum.map(@events, &elem(&1, 0))
+        ]),
         &__MODULE__.observe/4,
         nil
       )
@@ -66,26 +75,16 @@ defmodule Marshall.Observability do
   # Request, user, VM, query, job arguments and terminal data MUST NOT enter its table.
   @spec observe([atom()], map(), map(), term()) :: :ok
   def observe([:marshall, :live, :refresh], measurements, %{view: view}, _config)
-      when view in @live_views do
-    with %{duration: duration, queries: queries}
-         when is_integer(duration) and duration >= 0 and is_integer(queries) and queries >= 0 <-
-           measurements do
-      key = :"live_#{view}"
-
-      :ets.update_counter(
-        __MODULE__,
-        key,
-        [{2, 1}, {3, System.convert_time_unit(duration, :native, :microsecond)}, {4, queries}],
-        {key, 0, 0, 0}
-      )
-    end
-
-    :ok
-  rescue
-    ArgumentError -> :ok
-  end
+      when view in @live_views,
+      do: count_live(:"live_#{view}", measurements)
 
   def observe([:marshall, :live, :refresh], _measurements, _metadata, _config), do: :ok
+
+  def observe([:marshall, :live, :callback], measurements, %{phase: phase}, _config)
+      when is_map_key(@live_phases, phase),
+      do: count_live(Map.fetch!(@live_phases, phase), measurements)
+
+  def observe([:marshall, :live, :callback], _measurements, _metadata, _config), do: :ok
 
   def observe(event, measurements, metadata, _config) do
     if event == [:marshall, :repo, :query], do: count_query()
@@ -101,6 +100,24 @@ defmodule Marshall.Observability do
       error = error_count(classifier, metadata)
 
       :ets.update_counter(__MODULE__, key, [{2, 1}, {3, duration}, {4, error}], {key, 0, 0, 0})
+    end
+
+    :ok
+  rescue
+    ArgumentError -> :ok
+  end
+
+  @spec count_live(atom(), map()) :: :ok
+  defp count_live(key, measurements) do
+    with %{duration: duration, queries: queries}
+         when is_integer(duration) and duration >= 0 and is_integer(queries) and queries >= 0 <-
+           measurements do
+      :ets.update_counter(
+        __MODULE__,
+        key,
+        [{2, 1}, {3, System.convert_time_unit(duration, :native, :microsecond)}, {4, queries}],
+        {key, 0, 0, 0}
+      )
     end
 
     :ok
@@ -230,7 +247,19 @@ defmodule Marshall.Observability do
       live_machine_new_queries: metric_value(metrics, "live_machine_new_queries", 1),
       live_machine_count: metric_value(metrics, "live_machine_count", 1),
       live_machine_duration_us: metric_value(metrics, "live_machine_duration_ms", 1000),
-      live_machine_queries: metric_value(metrics, "live_machine_queries", 1)
+      live_machine_queries: metric_value(metrics, "live_machine_queries", 1),
+      liveview_mount_count: metric_value(metrics, "liveview_mount_count", 1),
+      liveview_mount_duration_us: metric_value(metrics, "liveview_mount_duration_ms", 1000),
+      liveview_mount_queries: metric_value(metrics, "liveview_mount_queries", 1),
+      liveview_params_count: metric_value(metrics, "liveview_params_count", 1),
+      liveview_params_duration_us: metric_value(metrics, "liveview_params_duration_ms", 1000),
+      liveview_params_queries: metric_value(metrics, "liveview_params_queries", 1),
+      liveview_event_count: metric_value(metrics, "liveview_event_count", 1),
+      liveview_event_duration_us: metric_value(metrics, "liveview_event_duration_ms", 1000),
+      liveview_event_queries: metric_value(metrics, "liveview_event_queries", 1),
+      liveview_info_count: metric_value(metrics, "liveview_info_count", 1),
+      liveview_info_duration_us: metric_value(metrics, "liveview_info_duration_ms", 1000),
+      liveview_info_queries: metric_value(metrics, "liveview_info_queries", 1)
     )
 
     Process.send_after(self(), :report, 60_000)
@@ -283,19 +312,38 @@ defmodule Marshall.Observability do
   @doc "Run `fun` and return its result with the database queries this process issued meanwhile."
   @spec count_queries((-> result)) :: {result, non_neg_integer()} when result: term()
   def count_queries(fun) when is_function(fun, 0) do
-    outer = Process.get(@query_count)
-    Process.put(@query_count, 0)
+    outer = begin_queries()
 
     try do
       result = fun.()
       {result, Process.get(@query_count, 0)}
     after
-      inner = Process.get(@query_count, 0)
-
-      if outer,
-        do: Process.put(@query_count, outer + inner),
-        else: Process.delete(@query_count)
+      end_queries(outer)
     end
+  end
+
+  # @cc [owner:ghuntley,label:observability] query-count-nesting
+  # A counting scope MUST report only queries its process issued since its
+  # begin, and MUST add them to any enclosing scope it ends, so nested scopes
+  # never lose or double the outer count.
+  @doc "Open a query-counting scope; pass the returned token to `end_queries/1`."
+  @spec begin_queries() :: non_neg_integer() | nil
+  def begin_queries do
+    outer = Process.get(@query_count)
+    Process.put(@query_count, 0)
+    outer
+  end
+
+  @doc "Close a query-counting scope and return the queries issued within it."
+  @spec end_queries(non_neg_integer() | nil) :: non_neg_integer()
+  def end_queries(outer) do
+    inner = Process.get(@query_count, 0)
+
+    if outer,
+      do: Process.put(@query_count, outer + inner),
+      else: Process.delete(@query_count)
+
+    inner
   end
 
   @spec count_query() :: :ok

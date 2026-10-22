@@ -268,17 +268,21 @@ defmodule Overalls.Diagnostics.SDKTest do
     exporter = Task.async(fn -> serve(listener, 200, "") end)
 
     assert :done =
-             Overalls.Diagnostics.Tracing.with_span("marshall.views.read", [operation: :list], fn ->
-               :ok =
-                 Overalls.Diagnostics.Tracing.annotate(
-                   query_count: 7,
-                   row_count: 2,
-                   email: "private@example.test",
-                   status: "private-text"
-                 )
+             Overalls.Diagnostics.Tracing.with_span(
+               "marshall.views.read",
+               [operation: :list],
+               fn ->
+                 :ok =
+                   Overalls.Diagnostics.Tracing.annotate(
+                     query_count: 7,
+                     row_count: 2,
+                     email: "private@example.test",
+                     status: "private-text"
+                   )
 
-               :done
-             end)
+                 :done
+               end
+             )
 
     assert :ok = Overalls.Diagnostics.Processor.force_flush(%{})
     body = Task.await(exporter, 5000)
@@ -294,6 +298,51 @@ defmodule Overalls.Diagnostics.SDKTest do
     assert attributes["query_count"] == {:int_value, 7}
     assert attributes["row_count"] == {:int_value, 2}
     assert attributes["operation"] == {:string_value, "list"}
+    refute Map.has_key?(attributes, "email")
+    refute Map.has_key?(attributes, "status")
+  end
+
+  test "started spans become current, end with closed status and restore the parent", %{
+    socket: socket
+  } do
+    assert :ok = Overalls.Diagnostics.Tracing.finish(:none, :error, query_count: 1)
+    _ = Overalls.Diagnostics.Processor.force_flush(%{})
+    {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {:local, socket}])
+    on_exit(fn -> :gen_tcp.close(listener) end)
+    exporter = Task.async(fn -> serve(listener, 200, "") end)
+    before = :otel_tracer.current_span_ctx()
+
+    span =
+      Overalls.Diagnostics.Tracing.start("marshall.live.callback",
+        live_view: :machines_live,
+        phase: :handle_event,
+        email: "private@example.test"
+      )
+
+    refute :otel_tracer.current_span_ctx() == before
+
+    assert :ok =
+             Overalls.Diagnostics.Tracing.finish(span, :error,
+               query_count: 4,
+               status: "private-text"
+             )
+
+    assert :otel_tracer.current_span_ctx() == before
+    assert :ok = Overalls.Diagnostics.Processor.force_flush(%{})
+    body = Task.await(exporter, 5000)
+    refute body =~ "private"
+
+    request =
+      :opentelemetry_exporter_trace_service_pb.decode_msg(body, :export_trace_service_request)
+
+    assert %{resource_spans: [%{scope_spans: [%{spans: [span]}]}]} = request
+    assert span.name == "marshall.live.callback"
+    assert span.status.code == :STATUS_CODE_ERROR
+
+    attributes = Map.new(span.attributes, &{&1.key, &1.value.value})
+    assert attributes["live_view"] == {:string_value, "machines_live"}
+    assert attributes["phase"] == {:string_value, "handle_event"}
+    assert attributes["query_count"] == {:int_value, 4}
     refute Map.has_key?(attributes, "email")
     refute Map.has_key?(attributes, "status")
   end

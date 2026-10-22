@@ -66,12 +66,17 @@ defmodule Overalls.RequestAccounting.Config do
   # @cc [owner:ghuntley,label:deployment] optional-producer-startup
   # Only absent socket and marker configuration MAY disable the producer.
   # A partial configuration MUST retain the explicit configured failure path.
-  @spec from_environment(atom()) :: environment_result()
-  def from_environment(name) when is_atom(name) do
+  # A non-empty suffix MUST select only that source's suffixed variables, so
+  # several sources in one unit never read one another's recorder.
+  @spec from_environment(atom(), binary()) :: environment_result()
+  def from_environment(name, suffix \\ "") when is_atom(name) and is_binary(suffix) do
+    unless Regex.match?(~r/\A(_[A-Z0-9]+)*\z/, suffix),
+      do: raise(ArgumentError, "invalid request accounting environment suffix")
+
     opts = [
       name: name,
-      socket: System.get_env("OVERALLS_REQUEST_ACCOUNTING_SOCKET"),
-      directory: System.get_env("OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY")
+      socket: System.get_env("OVERALLS_REQUEST_ACCOUNTING_SOCKET" <> suffix),
+      directory: System.get_env("OVERALLS_REQUEST_ACCOUNTING_MARKER_DIRECTORY" <> suffix)
     ]
 
     case {opts[:socket], opts[:directory]} do

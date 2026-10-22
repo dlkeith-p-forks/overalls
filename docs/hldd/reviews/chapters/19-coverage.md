@@ -1,5 +1,5 @@
 ---
-digest: 0cb3df7d454cd48dcb9c1ddea347951c2eb63843284bbc76dc24f01e680faad9
+digest: 027a07c4be26ffb10455b4d9736ecd18fc555c5595773ddaceae84185a994ea0
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Machine pages read through DecisionSnapshot batches with memoized principal, owner, grant, thread, team and projection reads, batched prefetch and catalog reads, user-leading indexes, refresh-after-completion and connected-only overview loading, per-view refresh telemetry and a fixed agent_stuck_turns multiplier; the access chapter, regenerated coverage and the batched-machine-page-decisions scenario describe them.
+15-monitoring documents the marshall_live recorder source, suffixed recorder configuration, latency objective kind, 24-objective/48-burn roster and the Marshall pages dashboard; 19-coverage regenerated with the marshall-page-service-levels scenario (ADR-0258).

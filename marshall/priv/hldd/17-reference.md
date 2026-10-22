@@ -656,6 +656,11 @@ passing result, and nested-KVM availability on the hosted runners is unverified.
 Unix RPC I/O for durable admission custody. `Aggregate` provides the immutable
 counter/histogram model and validates snapshot construction; each application
 retains eligibility, classification, concurrency, persistence and publication.
+`Config.from_environment/2` and `Producer.children/2` take an optional
+environment suffix matching `(_[A-Z0-9]+)*`, so one unit can host independent
+recorders; Marshall's `marshall_live` source reads only the `_MARSHALL_LIVE`
+socket and marker variables
+([ADR-0258](repo:docs/architecture/decisions/0258-marshall-page-service-levels.md)).
 The library remains independent of best-effort diagnostics. Protocol measurement
 types and codecs remain pure; ADR-0142 confines outbound control WebSocket I/O
 to `Control.Client` and `WebSocket.Connection`, with application-owned credentials

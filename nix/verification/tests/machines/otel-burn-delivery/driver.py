@@ -101,7 +101,7 @@ with subtest("generated routing histories preserve exact roster and label refusa
     for source in roster_value:
         assert isinstance(source, str)
         roster.append(source)
-    assert len(roster) == 20
+    assert len(roster) == 24
 
     @given(
         source=sampled_from(roster),

@@ -1,28 +1,24 @@
 ---
-digest: b0eb0b767a3512fa8f433165cb2b6a75f29659f5089ab268f5ae109ad83be8b7
-disposition: no-impact
+digest: 1218f66165e867f4c90296c8d72b85ed330c822bfa975989d5a8c093ed810d93
+disposition: updated
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
-migration:
-  deployment:
-    chapter_digest: 9a9e9255eb86fa91f3418b1c398853a745a51fd15f2f5eca5737439f6caf08c2
-    source_digest: 32939571a328dfb45510183c422eecb46bdb38fa777346f23c0fd9cc2bb9c079
 path: nix/verification/tests/machines/otel-fleet/default.nix
 reviewed_chapters:
-  marshall/priv/hldd/07-guests.md: 6a5c5b49211308c21cf0a6cc5d1f4666c7adf167e4729336e352aad4e637668f
-  marshall/priv/hldd/12-configuration.md: ff8e45aaf3daef1140ae8d0ff46e7dff0c95781487abc5511a3202ef1dfd2f15
-  marshall/priv/hldd/13-deployment.md: 2f53f560f187e1064b35d11d4b1c9c96dd4244a4f43579bc051298c147ebfb20
-  marshall/priv/hldd/14-operations.md: 4d9a416eb0df32a8281f24db06739142db91b637c4ea9416a9f23de49bf73010
-  marshall/priv/hldd/15-monitoring.md: cc17c4c6d32d94c24da6483a8164f374cad31c77d0a477850dc6684625a8cee5
-  marshall/priv/hldd/16-recovery.md: c11d719cde9562dea123b9fff7630f8750bbf758b4919880a15715b86263d3db
-  marshall/priv/hldd/17-reference.md: 5513e1fb7deb5378fef4713fb925a9d0c0f2b1bc2539548d98e72c856262e897
-  marshall/priv/hldd/18-options.md: b2a334dbac18ef6444fc33ddaba4c9384e0af4b812953bd8550ca39d16159321
-  marshall/priv/hldd/19-coverage.md: 5dc84656f2a81c5674ed8311af44a7f2e9c33262d36f624e11f8ba378a32db61
-  marshall/priv/hldd/20-security.md: ebf5f76bb3b9c45d1bd1dd0c370480f4634f4ad6df267fa706355fb48ed38537
-  marshall/priv/hldd/21-domains.md: 4dee7985b92fb3a4f0a28e9f9ca1a905dea34e9a8530fe6c069a9258b475b7c0
-  marshall/priv/hldd/22-topology.md: ac5b8ee15301fa8b20baa8916997f27b5a394695d3093b80cf9ca016e3226631
+  marshall/priv/hldd/07-guests.md: 0f73d65e0218aa15612a351af492879d87f78f6e864901c932124fc394334f4e
+  marshall/priv/hldd/12-configuration.md: 5318d494cf8479636aa2e2c3c61cb5505cb4cb8386e39b935cf62c62b997169f
+  marshall/priv/hldd/13-deployment.md: 0bc4fe19bb9cdf60d5edc24c3777c7f54b170426d9ae5d1f611a2240053c3350
+  marshall/priv/hldd/14-operations.md: 68c72d0e6fde22edd5d892f824dedd44f1843d68ece6c96ff5b3e2c1e50051c9
+  marshall/priv/hldd/15-monitoring.md: 185a956b7033aebff87a54c5b275b8368bd130205d7bb6a8cccb2ebdd4507c7a
+  marshall/priv/hldd/16-recovery.md: 194fe77196ac4a25ab764d5cf4aee7558da547cd7b59726f32a302019b26136c
+  marshall/priv/hldd/17-reference.md: 7d88fca8dbe56f67c71ea207b0ed860f4cfc005f7cb9f6ccde4ffe4bc718cda5
+  marshall/priv/hldd/18-options.md: 56d6ff5dfa49ede786cba440d57100c75b721b23b1e0616e79d3df8205e5ac11
+  marshall/priv/hldd/19-coverage.md: 027a07c4be26ffb10455b4d9736ecd18fc555c5595773ddaceae84185a994ea0
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-deployment: Reviewed the Android SDK setup correction; it only makes the native CI job install declared API 36 build inputs and does not alter deployment roles or runtime behavior.
+15-monitoring documents the marshall_live recorder source, suffixed recorder configuration, latency objective kind, 24-objective/48-burn roster and the Marshall pages dashboard; 19-coverage regenerated with the marshall-page-service-levels scenario (ADR-0258).

@@ -1406,7 +1406,19 @@ defmodule Marshall.Events do
       live_machine_new_queries: {:int64, :optional},
       live_machine_count: {:int64, :optional},
       live_machine_duration_us: {:int64, :optional},
-      live_machine_queries: {:int64, :optional}
+      live_machine_queries: {:int64, :optional},
+      liveview_mount_count: {:int64, :optional},
+      liveview_mount_duration_us: {:int64, :optional},
+      liveview_mount_queries: {:int64, :optional},
+      liveview_params_count: {:int64, :optional},
+      liveview_params_duration_us: {:int64, :optional},
+      liveview_params_queries: {:int64, :optional},
+      liveview_event_count: {:int64, :optional},
+      liveview_event_duration_us: {:int64, :optional},
+      liveview_event_queries: {:int64, :optional},
+      liveview_info_count: {:int64, :optional},
+      liveview_info_duration_us: {:int64, :optional},
+      liveview_info_queries: {:int64, :optional}
     ]
   )
 

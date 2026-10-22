@@ -469,6 +469,7 @@ pub fn run_with_custody(
                 | "audi_dns"
                 | "audi_ssh"
                 | "marshall_web"
+                | "marshall_live"
                 | "vscode_browser_nixos"
                 | "vscode_browser_ubuntu"
         ),
@@ -792,6 +793,7 @@ mod tests {
             "audi_dns",
             "audi_ssh",
             "marshall_web",
+            "marshall_live",
             "vscode_browser_nixos",
             "vscode_browser_ubuntu",
             "unknown",
