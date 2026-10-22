@@ -1,5 +1,5 @@
 ---
-digest: 285667c5f6978d7ffbc8f48478d6930e6d8f2666281c8597e20e9fc944f03347
+digest: 5ffadc9af36f7bd429cd444cf68ddfb1f7c5152aa6d3dada3c339b751fd31043
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed terminal renderer parity update; no new domain or topology impact.
+Android terminal renderer now accepts only lifecycle-valid bounded receive data alongside authenticated transport gating

@@ -33,6 +33,10 @@ class MilaTerminalController(private val adapter: MilaFfiAdapter) {
  fun attach(readWrite: Boolean): Boolean = adapter.terminalAttach(0, state.columns, state.rows, readWrite).isSuccess.also { if (it) state = state.copy(phase = if (readWrite) MilaTerminalPhase.Attached else MilaTerminalPhase.ReadOnly) }
  fun reconnect(readWrite: Boolean = state.phase == MilaTerminalPhase.Attached): Boolean { if (state.phase == MilaTerminalPhase.Closed) state = state.copy(phase = MilaTerminalPhase.Idle); return attach(readWrite) }
  fun input(length: Int): Boolean = state.phase == MilaTerminalPhase.Attached && adapter.terminalInput(length, true).isSuccess
+ fun receive(bytes: ByteArray): Boolean {
+  if (state.phase != MilaTerminalPhase.Attached && state.phase != MilaTerminalPhase.ReadOnly) return false
+  renderer.append(bytes); return true
+ }
  fun resize(columns: Int, rows: Int): Boolean { if (columns !in 1..500 || rows !in 1..500) return false; return adapter.terminalResize(columns, rows, state.phase == MilaTerminalPhase.Attached).isSuccess.also { if (it) state = state.copy(columns=columns, rows=rows) } }
  fun close() { state = state.copy(phase = MilaTerminalPhase.Closed) }
 }
