@@ -1,5 +1,5 @@
 ---
-digest: 00907e9ad4e74ac114ab4ecbc30960d9e87035ce7d013b19d61540be7dd1568d
+digest: 5ef8bcccf682378b3e6cb2c2eac3981ed4d55c56d9a8dded995e9628523d52ec
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux deployment selection persistence is a local typed UI preference; it does not change domain ownership, protocol contracts, or deployment topology.
+Android thread detail actions and Linux thread adapter changes remain typed UI over Rust command policy.

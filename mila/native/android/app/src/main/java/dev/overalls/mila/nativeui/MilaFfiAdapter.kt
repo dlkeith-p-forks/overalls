@@ -41,6 +41,7 @@ value class MilaFfiOperation private constructor(val value: String) {
         val Bootstrap: MilaFfiOperation = MilaFfiOperation("bootstrap")
         val Refresh: MilaFfiOperation = MilaFfiOperation("refresh")
         val MachineAction: MilaFfiOperation = MilaFfiOperation("machine_action")
+        val ThreadAction: MilaFfiOperation = MilaFfiOperation("thread_action")
     }
 }
 
@@ -83,6 +84,13 @@ interface MilaFfiAdapter {
         )))) {
             is MilaFfiResult.Success -> Result.success(Unit)
             is MilaFfiResult.Failure -> Result.failure(IllegalStateException("machine action unavailable"))
+        }
+    suspend fun threadAction(threadId: UUID, command: MilaThreadCommand): Result<Unit> =
+        when (call(MilaFfiRequest(MilaFfiOperation.ThreadAction, MilaFfiPayload(
+            "{\"thread_id\":\"$threadId\",\"command\":${command.tag}}".toByteArray(Charsets.UTF_8)
+        )))) {
+            is MilaFfiResult.Success -> Result.success(Unit)
+            is MilaFfiResult.Failure -> Result.failure(IllegalStateException("thread action unavailable"))
         }
 
     fun threadCommandKind(value: String): Result<MilaThreadCommand> = Result.failure(IllegalStateException("native runtime unavailable"))

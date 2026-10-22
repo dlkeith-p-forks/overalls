@@ -62,6 +62,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
     val deployment = remember { MilaDeploymentSelection(listOf(MilaDeployment("mila.example"))) }
     val signIn = remember { MilaSignInController(adapter) }
     val machineDetail = remember { MilaMachineDetailController(adapter) }
+    val threadDetail = remember { MilaThreadDetailController(adapter) }
     var signInState by remember { mutableStateOf<MilaSignInState>(MilaSignInState.SignedOut) }
     fun refresh() { scope.launch {
         connection = MilaSessionConnection.Refreshing
@@ -91,7 +92,7 @@ fun MilaNativeRoot(adapter: MilaFfiAdapter = LinkedMilaFfiAdapter()) {
             MilaRoute.Machines -> MachineList(adapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
             is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id)
             MilaRoute.Threads -> ThreadList(adapter)
-            is MilaRoute.Thread -> Detail("Thread", selected.id.toString())
+            is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
             MilaRoute.Settings -> Detail("Settings", "Runtime settings are managed by the core library.")
         }
         if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(adapter)
@@ -176,6 +177,45 @@ private fun controllerSelect(controller: MilaMachineDetailController, command: S
         ?: when (command) { "rm" -> MilaMachineCommand.Delete; else -> null }
         ?: return
     scope.launch { controller.submit(value) }
+}
+
+@Composable private fun ThreadDetail(controller: MilaThreadDetailController, id: java.util.UUID) {
+    val scope = rememberCoroutineScope()
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(MilaStrings.text(MilaMessage.ThreadCommands), style = MaterialTheme.typography.titleLarge)
+        Text(id.toString(), style = MaterialTheme.typography.labelSmall)
+        threadCommandChoices.chunked(3).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                row.forEach { (label, raw) ->
+                    Button({
+                        val command = when (raw) {
+                            "thread ls" -> MilaThreadCommand.List
+                            "thread show" -> MilaThreadCommand.Show
+                            "thread turns" -> MilaThreadCommand.Turns
+                            "thread prompt" -> MilaThreadCommand.Prompt
+                            "thread answer" -> MilaThreadCommand.Answer
+                            "thread plan approve" -> MilaThreadCommand.PlanApprove
+                            "thread plan revise" -> MilaThreadCommand.PlanRevise
+                            "thread mode" -> MilaThreadCommand.Mode
+                            "thread read" -> MilaThreadCommand.Read
+                            else -> null
+                        }
+                        if (command != null) scope.launch { controller.submit(command) }
+                    }) { Text(label) }
+                }
+            }
+        }
+        Text(
+            when (val state = controller.state) {
+                MilaThreadActionState.SignedOut -> MilaStrings.text(MilaMessage.RuntimeUnavailable)
+                MilaThreadActionState.Idle -> MilaStrings.text(MilaMessage.NoCommand)
+                is MilaThreadActionState.Ready -> "Ready"
+                is MilaThreadActionState.Submitting -> "Submitting ${state.command.name}"
+                is MilaThreadActionState.Applied -> "Applied ${state.command.name}"
+                is MilaThreadActionState.Failed -> state.reason
+            }, style = MaterialTheme.typography.labelSmall,
+        )
+    }
 }
 @Composable private fun ThreadList(adapter: MilaFfiAdapter) {
     var classified by remember { mutableStateOf<MilaThreadCommand?>(null) }

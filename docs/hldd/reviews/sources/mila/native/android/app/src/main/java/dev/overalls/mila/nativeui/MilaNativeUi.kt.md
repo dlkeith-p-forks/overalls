@@ -1,5 +1,5 @@
 ---
-digest: 1b602a821cdb62cd966874812e4e992d99fa37714f6666b8708d605afdf3d955
+digest: 8f8319843b1328e281733ccb43d4ca52d1675d3d4cb236efdffc6bbf49a6fbbd
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android machine detail mutations and Linux durable deployment selection remain typed native state over Rust policy.
+Android thread detail controller preserves existing Rust command boundary.

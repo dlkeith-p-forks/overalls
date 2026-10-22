@@ -144,6 +144,88 @@ pub fn format_thread_command(
         .map_err(|_| RuntimeError::InvalidInput)
 }
 
+/// A bounded, presentation-safe thread summary returned by the runtime.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct ThreadSummary {
+    pub id: String,
+    #[serde(default)]
+    pub title: String,
+    #[serde(default)]
+    pub state: String,
+}
+
+/// Decode `thread ls --json` without allowing unbounded server data into GTK.
+pub fn decode_thread_list(bytes: &[u8]) -> Result<Vec<ThreadSummary>, RuntimeError> {
+    if bytes.len() > 256 * 1024 {
+        return Err(RuntimeError::InvalidInput);
+    }
+    #[derive(Deserialize)]
+    struct Envelope {
+        threads: Vec<ThreadSummary>,
+    }
+    let envelope: Envelope =
+        serde_json::from_slice(bytes).map_err(|_| RuntimeError::InvalidInput)?;
+    if envelope.threads.len() > 512
+        || envelope.threads.iter().any(|thread| {
+            thread.id.is_empty()
+                || thread.id.len() > 128
+                || thread.title.len() > 512
+                || thread.state.len() > 64
+        })
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    Ok(envelope.threads)
+}
+
+/// Format the read-only turn history operation through the shared protocol parser.
+pub fn format_thread_turns(thread_id: &str, after: Option<&str>) -> Result<String, RuntimeError> {
+    if thread_id.is_empty()
+        || thread_id.len() > 128
+        || thread_id.bytes().any(|b| b.is_ascii_whitespace() || b == 0)
+    {
+        return Err(RuntimeError::InvalidInput);
+    }
+    let mut line = format!("thread turns {thread_id} --json");
+    if let Some(cursor) = after {
+        if cursor.is_empty()
+            || cursor.len() > 128
+            || cursor.bytes().any(|b| b.is_ascii_whitespace() || b == 0)
+        {
+            return Err(RuntimeError::InvalidInput);
+        }
+        line.push_str(" --after=");
+        line.push_str(cursor);
+    }
+    mila_protocol::Command::parse(&line)
+        .and_then(|c| c.format())
+        .map_err(|_| RuntimeError::InvalidInput)
+}
+
+#[cfg(test)]
+mod thread_tests {
+    use super::*;
+    #[test]
+    fn turns_are_bounded_and_protocol_checked() {
+        assert_eq!(
+            format_thread_turns("00000000-0000-4000-8000-000000000001", None).unwrap(),
+            "thread turns 00000000-0000-4000-8000-000000000001 --json"
+        );
+        assert!(format_thread_turns("bad id", None).is_err());
+        assert!(format_thread_turns("thread-1", Some("bad cursor")).is_err());
+    }
+    #[test]
+    fn list_decoder_rejects_oversized_items() {
+        let data = br#"{"threads":[{"id":"t1","title":"A","state":"open"}]}"#;
+        assert_eq!(decode_thread_list(data).unwrap()[0].id, "t1");
+        let bad = format!(
+            r#"{{"threads":[{{"id":"t1","title":"{}"}}]}}"#,
+            "x".repeat(513)
+        );
+        assert!(decode_thread_list(bad.as_bytes()).is_err());
+    }
+}
+
 /// Formats web endpoint operations through Porsche's bounded command grammar.
 /// The GTK host receives only a canonical command after Rust validates the
 /// machine identifier, port, visibility and mutation request id.

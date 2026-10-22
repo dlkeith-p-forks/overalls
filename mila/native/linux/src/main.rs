@@ -2,8 +2,8 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    format_machine_action, format_ssh_key_revoke, format_thread_command, format_web_command,
-    validate_terminal_operation, TerminalOperation,
+    format_machine_action, format_ssh_key_revoke, format_thread_command, format_thread_turns,
+    format_web_command, validate_terminal_operation, TerminalOperation,
 };
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
@@ -175,6 +175,16 @@ impl NativeState {
             });
             thread_actions.append(&button);
         }
+        let turns = Button::with_label("Thread turns");
+        let turns_input = thread_id.clone();
+        let turns_status = content.clone();
+        turns.connect_clicked(move |_| {
+            match format_thread_turns(turns_input.text().trim(), None) {
+                Ok(command) => turns_status.set_label(&format!("Thread turns\n{command}")),
+                Err(_) => turns_status.set_label("Thread turns rejected by Rust policy."),
+            }
+        });
+        thread_actions.append(&turns);
         root.append(&thread_id);
         root.append(&thread_actions);
         let web_port = Entry::builder()
