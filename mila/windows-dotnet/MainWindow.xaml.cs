@@ -33,6 +33,25 @@ public sealed partial class MainWindow : Window
         ThreadList.Content = S("tabInfo", "List"); ThreadShow.Content = S("machineLoading", "Show");
         ThreadTurns.Content = S("threadEventTurnStarted", "Turns"); ThreadRead.Content = S("threadEventOther", "Read");
         Refresh.Content = S("refresh", "Refresh");
+        LockButton.Content = S("lockTitle", "Lock app");
+        LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+    }
+    private void LockApp(object sender, RoutedEventArgs args)
+    {
+        // Keep the lock boundary explicit until a Windows Hello broker is wired in.
+        Navigation.IsHitTestVisible = false;
+        LockButton.Content = S("unlock", "Unlock");
+        LockStatus.Text = S("lockedTitle", "Mila is locked") + " — " + S("lockReason", "Unlock Mila");
+        LockButton.Click -= LockApp;
+        LockButton.Click += UnlockApp;
+    }
+    private void UnlockApp(object sender, RoutedEventArgs args)
+    {
+        Navigation.IsHitTestVisible = true;
+        LockButton.Content = S("lockTitle", "Lock app");
+        LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+        LockButton.Click -= UnlockApp;
+        LockButton.Click += LockApp;
     }
     private void OnNavigationChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {

@@ -1,5 +1,5 @@
 ---
-digest: 0eb9ec1e344553a3a156bcc6964b7c805c629cdcb6515cde97c58fefebb89dc4
+digest: 82a04a885737adfb3de5612cd49388ca329400f00e4e9c519639595ffd7e9ada
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows shell label localization preserves native UI architecture and adds no domain, protocol, or operational boundary.
+Windows app lock boundary is a UI state wrapper; authentication remains delegated to the future Windows Hello integration and does not alter domains or protocols.

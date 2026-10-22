@@ -113,7 +113,28 @@ private struct ThreadsView: View {
     }
 }
 private struct ThreadDetailView: View { let id: UUID; var body: some View { Text("\(MilaStrings.text(.threads)) \(id.uuidString)").padding() } }
-private struct SettingsView: View { var body: some View { Form { Text(MilaStrings.text(.runtimeUnavailable)).foregroundStyle(.secondary) }.navigationTitle(MilaStrings.text(.settings)) } }
+private struct SettingsView: View {
+    @AppStorage("mila.appearance") private var appearance = "system"
+    @AppStorage("mila.appLockEnabled") private var appLockEnabled = false
+    var body: some View {
+        Form {
+            Section(MilaStrings.text(.appearance)) {
+                Picker(MilaStrings.text(.appearance), selection: $appearance) {
+                    Text(MilaStrings.text(.appearanceSystem)).tag("system")
+                    Text(MilaStrings.text(.appearanceLight)).tag("light")
+                    Text(MilaStrings.text(.appearanceDark)).tag("dark")
+                }
+                .pickerStyle(.segmented)
+            }
+            Section(MilaStrings.text(.lockTitle)) {
+                Toggle(MilaStrings.text(.lockTitle), isOn: $appLockEnabled)
+                    .disabled(true)
+                Text(MilaStrings.text(.lockUnavailable)).font(.caption).foregroundStyle(.secondary)
+            }
+            Text(MilaStrings.text(.runtimeUnavailable)).foregroundStyle(.secondary)
+        }.navigationTitle(MilaStrings.text(.settings))
+    }
+}
 
 @MainActor public struct MilaNativeApp: App {
     private let adapter: any MilaFFIAdapter

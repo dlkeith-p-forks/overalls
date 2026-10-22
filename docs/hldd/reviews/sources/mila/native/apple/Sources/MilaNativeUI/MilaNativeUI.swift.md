@@ -1,5 +1,5 @@
 ---
-digest: c7dc94892082419f6e062f6c6d0a674272b04eab3d3bfe6289f185fb45dd21f9
+digest: e3e02b46611d5114e0ee0f1002bca2c8cbd02806268938faaa2b23cc2ab7682b
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple native presentation now routes visible navigation, status, terminal and thread copy through the existing typed MilaStrings adapter; documented behavior and contracts are unchanged.
+Apple settings now exposes persisted appearance selection and lock capability state using localized native controls; core contracts remain unchanged.
