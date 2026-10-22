@@ -1,6 +1,7 @@
 mod common;
 use std::env;
 use std::fs;
+use std::process::Command;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 fn main() -> std::io::Result<()> {
@@ -69,6 +70,11 @@ fn main() -> std::io::Result<()> {
                 ));
             }
         }
+        for unit in descriptor_services(&descriptor) {
+            if let Some((active, sub)) = unit_state(&unit) {
+                output.push_str(&format!("overalls_fleet_service_state{{unit=\"{}\",active=\"{active}\",sub=\"{sub}\"}} 1\n", unit.replace('"', "")));
+            }
+        }
         output
     })
 }
@@ -111,4 +117,64 @@ fn updater_status() -> Option<UpdaterStatus> {
         .filter(|v| v.len() == 40 && v.bytes().all(|b| b.is_ascii_hexdigit()))
         .map(str::to_owned);
     (phase.is_some() || revision.is_some()).then_some(UpdaterStatus { phase, revision })
+}
+
+fn descriptor_services(descriptor: &str) -> Vec<String> {
+    let section = descriptor
+        .split("\"services\"")
+        .nth(1)
+        .and_then(|v| v.split_once('[').map(|(_, r)| r))
+        .unwrap_or("");
+    section
+        .split(']')
+        .next()
+        .unwrap_or("")
+        .split(',')
+        .filter_map(|v| {
+            let unit = v.trim().trim_matches('"');
+            (unit.len() <= 128
+                && unit.ends_with(".service")
+                && unit
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b"_.@:-".contains(&b)))
+            .then_some(unit.to_owned())
+        })
+        .take(128)
+        .collect()
+}
+
+fn unit_state(unit: &str) -> Option<(String, String)> {
+    let output = Command::new("systemctl")
+        .args([
+            "show",
+            "--no-pager",
+            "--property=ActiveState,SubState",
+            unit,
+        ])
+        .output()
+        .ok()?;
+    if !output.status.success() || output.stdout.len() > 1024 {
+        return None;
+    }
+    let text = String::from_utf8(output.stdout).ok()?;
+    let mut active = None;
+    let mut sub = None;
+    for line in text.lines() {
+        if let Some(v) = line.strip_prefix("ActiveState=") {
+            active = Some(v);
+        }
+        if let Some(v) = line.strip_prefix("SubState=") {
+            sub = Some(v);
+        }
+    }
+    let valid = |v: &str| {
+        !v.is_empty()
+            && v.len() <= 32
+            && v.bytes()
+                .all(|b| b.is_ascii_alphanumeric() || b == b'_' || b == b'-')
+    };
+    Some((
+        active.filter(|v| valid(v))?.to_owned(),
+        sub.filter(|v| valid(v))?.to_owned(),
+    ))
 }

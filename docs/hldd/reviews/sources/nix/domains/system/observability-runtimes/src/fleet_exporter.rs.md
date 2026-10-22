@@ -1,5 +1,5 @@
 ---
-digest: 016b15772c4c900ea2989539cb72007d97bc87a5afe8309c9e28b7d7b8be2ac5
+digest: 9f9a68c72dc47db14bc70bd2ec52d1d6d12ea08f55f1d68137613ed28e5be973
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now emits validated updater phase and revision projections from a bounded status file, preserving the allowlisted host-only telemetry boundary.
+Fleet exporter now performs bounded systemd state reads only for descriptor-allowlisted service units and emits sanitized state labels.
