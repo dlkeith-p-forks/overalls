@@ -77,6 +77,8 @@ sealed interface MilaFfiResult {
  */
 interface MilaFfiAdapter {
     suspend fun call(request: MilaFfiRequest): MilaFfiResult
+    /** The currently authenticated session's key store, or null while signed out. */
+    fun sshKeyStore(): MilaSshKeyStore? = null
     /** Executes a Rust-classified action for an authenticated machine session. */
     suspend fun machineAction(machineId: UUID, command: MilaMachineCommand): Result<Unit> =
         when (call(MilaFfiRequest(MilaFfiOperation.MachineAction, MilaFfiPayload(
@@ -168,6 +170,11 @@ interface MilaRustBindings {
     fun sessionWebShow(handle: Long, machine: String): ByteArray? = null
     fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = -12
     fun sessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray? = null
+    /** Returns the validated `ssh-key list --json` result for an authenticated session. */
+    fun sessionSshKeys(handle: Long): ByteArray? = null
+    /** Revokes one opaque key id using a caller-supplied at-most-once request id. */
+    fun sessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int = -12
+    fun sessionClose(handle: Long): Int = -12
     /** Returns the closed Rust thread-command tag, or -1 for an unknown command. */
     fun threadCommandKind(value: String): Int
     fun machineCommandKind(value: String): Int
@@ -211,6 +218,9 @@ internal object MilaRustFfi : MilaRustBindings {
     override fun sessionWebShow(handle: Long, machine: String): ByteArray? = nativeSessionWebShow(handle, machine)
     override fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = nativeSessionWebSet(handle, machine, port, public, revision, requestId)
     override fun sessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray? = nativeSessionThreadAction(handle, thread, command, secondary, input, requestId)
+    override fun sessionSshKeys(handle: Long): ByteArray? = nativeSessionSshKeys(handle)
+    override fun sessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int = nativeSessionSshKeyRevoke(handle, key, requestId)
+    override fun sessionClose(handle: Long): Int = nativeSessionClose(handle)
 
     override fun threadCommandKind(value: String): Int {
         check(loaded) { "mila_ffi is unavailable" }
@@ -245,6 +255,8 @@ internal object MilaRustFfi : MilaRustBindings {
     @JvmStatic external fun nativeSessionWebShow(handle: Long, machine: String): ByteArray?
     @JvmStatic external fun nativeSessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int
     @JvmStatic external fun nativeSessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray?
+    @JvmStatic external fun nativeSessionSshKeys(handle: Long): ByteArray?
+    @JvmStatic external fun nativeSessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int
     @JvmStatic
     external fun nativeSessionListing(handle: Long): ByteArray?
     @JvmStatic
@@ -261,7 +273,10 @@ internal object MilaRustFfi : MilaRustBindings {
 }
 
 /** Opaque, one-shot authority for a live Rust session. */
-class MilaSessionHandle internal constructor(private val nativeHandle: Long) : AutoCloseable {
+class MilaSessionHandle internal constructor(
+    private val nativeHandle: Long,
+    private val bindings: MilaRustBindings = MilaRustFfi,
+) : AutoCloseable {
     private var closed = false
     @Synchronized fun readMachines(more: Boolean = false): Int { check(!closed); return MilaRustFfi.nativeSessionRead(nativeHandle, more) }
     @Synchronized fun listing(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionListing(nativeHandle) ?: error("listing unavailable") }
@@ -296,7 +311,19 @@ class MilaSessionHandle internal constructor(private val nativeHandle: Long) : A
         MilaRustFfi.nativeSessionThreadAction(nativeHandle, thread.toString(), wire, secondary?.toString(), input, requestId)
             ?: error("thread action rejected")
     }
-    @Synchronized override fun close() { if (!closed) { MilaRustFfi.nativeSessionClose(nativeHandle); closed = true } }
+    /** Reads keys through the same authenticated, certificate-pinned session handle. */
+    @Synchronized fun sshKeys(): Result<ByteArray> = runCatching {
+        check(!closed)
+        bindings.sessionSshKeys(nativeHandle) ?: error("SSH key listing unavailable")
+    }
+    /** Revokes one opaque key identity exactly once on this session. */
+    @Synchronized fun sshKeyRevoke(key: String, requestId: String): Result<Unit> = runCatching {
+        check(!closed)
+        require(key.isNotBlank())
+        require(requestId.matches(Regex("^porsche-[0-9a-f]{32}$")))
+        check(bindings.sessionSshKeyRevoke(nativeHandle, key, requestId) == 0)
+    }
+    @Synchronized override fun close() { if (!closed) { bindings.sessionClose(nativeHandle); closed = true } }
 }
 
 /** Typed Android adapter. Native linkage is lazy so the UI remains testable without a device. */
@@ -333,6 +360,8 @@ class LinkedMilaFfiAdapter(
         val payload = session.threadAction(threadId, command, input = input, requestId = if (command == MilaThreadCommand.Prompt || command == MilaThreadCommand.Answer || command == MilaThreadCommand.PlanApprove || command == MilaThreadCommand.PlanRevise) "porsche-" + UUID.randomUUID().toString().replace("-", "") else null)
         return payload.map { Unit }
     }
+
+    override fun sshKeyStore(): MilaSshKeyStore? = authenticatedSession?.let(::MilaSessionSshKeyStore)
 
     override suspend fun call(request: MilaFfiRequest): MilaFfiResult {
         return try {

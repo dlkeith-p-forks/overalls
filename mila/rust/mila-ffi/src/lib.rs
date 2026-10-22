@@ -1084,6 +1084,62 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSession
         .map_or(std::ptr::null_mut(), |a| a.into_raw())
 }
 
+/// Copy the bounded authenticated SSH-key listing from an existing session.
+/// The listing is validated by `mila-session` before any bytes cross JNI.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionSshKeys(
+    env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+) -> jni::sys::jbyteArray {
+    let mut size = 0usize;
+    let status = unsafe {
+        session::mila_session_ssh_keys(handle as u64, std::ptr::null_mut(), 0, &mut size)
+    };
+    if status != session::SessionStatus::SmallBuffer || size == 0 || size > 256 * 1024 {
+        return std::ptr::null_mut();
+    }
+    let mut data = vec![0_u8; size];
+    let status = unsafe {
+        session::mila_session_ssh_keys(handle as u64, data.as_mut_ptr(), size, &mut size)
+    };
+    if status != session::SessionStatus::Ok {
+        return std::ptr::null_mut();
+    }
+    env.byte_array_from_slice(&data[..size])
+        .map_or(std::ptr::null_mut(), |array| array.into_raw())
+}
+
+/// Revoke one opaque approved-key identity on the already authenticated session.
+/// Request IDs are generated and bounded by the Kotlin adapter; Rust validates both
+/// identifiers before constructing the Porsche command.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionSshKeyRevoke(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    handle: jni::sys::jlong,
+    key: jni::objects::JString<'_>,
+    request_id: jni::objects::JString<'_>,
+) -> jni::sys::jint {
+    let key = match env.get_string(&key) {
+        Ok(value) => value.to_bytes().to_vec(),
+        Err(_) => return session::SessionStatus::Invalid as jni::sys::jint,
+    };
+    let request = match env.get_string(&request_id) {
+        Ok(value) => value.to_bytes().to_vec(),
+        Err(_) => return session::SessionStatus::Invalid as jni::sys::jint,
+    };
+    unsafe {
+        session::mila_session_ssh_key_revoke(
+            handle as u64,
+            key.as_ptr(),
+            key.len(),
+            request.as_ptr(),
+            request.len(),
+        ) as jni::sys::jint
+    }
+}
+
 fn session_copy(env: &mut jni::JNIEnv<'_>, handle: u64, snapshot: bool) -> jni::sys::jbyteArray {
     let mut size = 0usize;
     let status = unsafe {

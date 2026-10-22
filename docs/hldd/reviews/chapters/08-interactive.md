@@ -1,5 +1,5 @@
 ---
-digest: b913c892ca2cf07c4c54a9a981d18bdbf5302bccebd118551ce45304ea1a2b1f
+digest: daaa675a7cabe9b41b299492d28aac06f376c580d43e62d03488aa5310a73b04
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Browser machine creation now refuses a size below the selected enabled image catalog minima before any setup thread exists, using the single Image.requirements_met?/2 rule that Compute admission now also calls (via Images.check_requirements/2). The form renders the existing localized machines-domain refusal and keeps the draft; ProvisionWorker keeps its transactional refusal. 08-interactive documents the pre-admission check, the default-OSS-creation scenario records the undersized test, and the coverage chapter is regenerated.
+Android authenticated SSH key listing and revocation now use the Rust session C ABI/JNI handle, with bounded decoding, current-device refusal, Settings presentation and focused tests.

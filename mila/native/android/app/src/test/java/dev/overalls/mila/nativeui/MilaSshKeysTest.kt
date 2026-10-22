@@ -1,5 +1,43 @@
 package dev.overalls.mila.nativeui
 import org.junit.Assert.*
 import org.junit.Test
+import java.util.UUID
 private class Keys: MilaSshKeyStore { var values=mutableListOf(MilaSshKey("fp1","phone"), MilaSshKey("","bad")); override fun list()=values; override fun revoke(f:String):Boolean { val n=values.removeIf{it.fingerprint==f}; return n } }
-class MilaSshKeysTest { @Test fun listsOnlyIdentifiedKeysAndRevokes(){ val k=Keys(); val c=MilaSshKeyController(k); assertEquals(1,c.keys.size); assertTrue(c.revoke("fp1")); assertTrue(c.keys.isEmpty()); assertFalse(c.revoke("missing")) } }
+class MilaSshKeysTest {
+ @Test fun listsOnlyIdentifiedKeysAndRevokes(){ val k=Keys(); val c=MilaSshKeyController(k); assertEquals(1,c.keys.size); assertTrue(c.revoke("fp1")); assertTrue(c.keys.isEmpty()); assertFalse(c.revoke("missing")) }
+
+ @Test fun authenticatedStoreDecodesBoundedRowsAndUsesOpaqueId() {
+  val id = UUID.fromString("00000000-0000-0000-0000-000000000001")
+  val bindings = object : AndroidKeysRustBindings() {
+   var revoked: Pair<String, String>? = null
+   override fun sessionSshKeys(handle: Long): ByteArray = "{\"keys\":[{\"id\":\"$id\",\"label\":\"phone\",\"algorithm\":\"ssh-ed25519\",\"fingerprint\":\"SHA256:test\"}]}".toByteArray()
+   override fun sessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int { revoked = key to requestId; return 0 }
+  }
+  val controller = MilaSshKeyController(MilaSessionSshKeyStore(MilaSessionHandle(7, bindings)))
+  assertEquals(id, controller.keys.single().id)
+  assertTrue(controller.revoke(controller.keys.single()))
+  assertEquals(id.toString(), bindings.revoked?.first)
+  assertTrue(bindings.revoked?.second?.matches(Regex("porsche-[0-9a-f]{32}")) == true)
+ }
+
+ @Test fun currentDeviceCannotBeRevoked() {
+  val id = UUID.fromString("00000000-0000-0000-0000-000000000002")
+  val store = object : MilaSshKeyStore {
+   override fun list() = listOf(MilaSshKey(id, "SHA256:device", "ssh-ed25519", "phone", true))
+   override fun revoke(fingerprint: String) = error("must not revoke")
+  }
+  assertFalse(MilaSshKeyController(store).revoke("SHA256:device"))
+ }
+}
+
+private open class AndroidKeysRustBindings : MilaRustBindings {
+ override fun abiVersion() = 1
+ override fun canonicalRoute(value: String): String? = value
+ override fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int? = 0
+ override fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle? = null
+ override fun threadCommandKind(value: String) = 1
+ override fun machineCommandKind(value: String) = 1
+ override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean) = 0
+ override fun terminalInput(length: Int, readWrite: Boolean) = 0
+ override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean) = 0
+}

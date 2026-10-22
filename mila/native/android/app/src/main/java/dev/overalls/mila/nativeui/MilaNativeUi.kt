@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.weight
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -78,7 +79,8 @@ fun MilaNativeRoot(
     }
     var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
-    val deploymentStore = remember { MilaSharedPreferencesDeploymentStore(LocalContext.current.getSharedPreferences("mila.deployment", 0)) }
+    val localContext = LocalContext.current
+    val deploymentStore = remember(localContext) { MilaSharedPreferencesDeploymentStore(localContext.getSharedPreferences("mila.deployment", 0)) }
     val savedDeployment = remember { deploymentStore.read() }
     val deployment = remember { MilaDeploymentSelection(listOfNotNull(savedDeployment)) }
     var selectedDeployment by remember { mutableStateOf(deployment.selected) }
@@ -166,7 +168,7 @@ fun MilaNativeRoot(
             is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, sessionAdapter)
             MilaRoute.Threads -> ThreadList(sessionAdapter)
             is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
-            MilaRoute.Settings -> MilaSettingsScreen()
+            MilaRoute.Settings -> MilaSettingsScreen(sessionAdapter, signInState is MilaSignInState.SignedIn)
         }
         if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(sessionAdapter)
     }
@@ -216,7 +218,7 @@ private fun MilaDeploymentPicker(
 }
 
 @Composable
-private fun MilaSettingsScreen() {
+private fun MilaSettingsScreen(adapter: MilaFfiAdapter, signedIn: Boolean) {
     val context = LocalContext.current
     val controller = remember { MilaSettingsController(MilaSharedPreferencesStore(context.getSharedPreferences("mila.settings", 0))) }
     var settings by remember { mutableStateOf(controller.load()) }
@@ -229,6 +231,44 @@ private fun MilaSettingsScreen() {
             }
         }
         Text("${MilaStrings.text(MilaMessage.Locale)}: ${settings.locale}")
+        MilaSshKeysPanel(adapter, signedIn)
+    }
+}
+
+@Composable
+private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
+    val store = adapter.sshKeyStore()
+    val controller = remember(store) { MilaSshKeyController(store) }
+    var keys by remember(controller) { mutableStateOf(controller.keys) }
+    LaunchedEffect(store, signedIn) {
+        controller.bindStore(if (signedIn) store else null)
+        keys = controller.keys
+    }
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(MilaStrings.text(MilaMessage.SshKeysTitle), style = MaterialTheme.typography.titleMedium)
+        Text(MilaStrings.text(MilaMessage.SshKeysExplain), style = MaterialTheme.typography.bodySmall)
+        if (!signedIn || store == null) {
+            Text(MilaStrings.text(MilaMessage.RuntimeUnavailable), style = MaterialTheme.typography.labelSmall)
+        } else if (keys.isEmpty()) {
+            Text(MilaStrings.text(MilaMessage.SshKeysEmpty), style = MaterialTheme.typography.labelSmall)
+        } else {
+            keys.forEach { key ->
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(key.label.ifBlank { key.fingerprint })
+                        Text("${MilaStrings.text(MilaMessage.SshKeyAlgorithm)}: ${key.algorithm}", style = MaterialTheme.typography.labelSmall)
+                        Text(key.fingerprint, style = MaterialTheme.typography.labelSmall)
+                    }
+                    if (key.isCurrentDevice) {
+                        Text(MilaStrings.text(MilaMessage.SshKeyThisDevice), style = MaterialTheme.typography.labelSmall)
+                    } else {
+                        Button({ if (controller.revoke(key)) keys = controller.keys }) {
+                            Text(MilaStrings.text(MilaMessage.SshKeyRevoke))
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
