@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Concurrent deployment changes are outside this fleet exporter change and do not alter its documented behavior.
+Release build correction does not change documented deployment behavior; fleet verification remains the existing scenario.

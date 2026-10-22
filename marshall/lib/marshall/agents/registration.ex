@@ -2,7 +2,6 @@ defmodule Marshall.Agents.Registration do
   @moduledoc "Register eligible VM agents in the VM admission transaction."
   alias Marshall.Agents.{AuditEvent, Root, Thread}
   alias Marshall.Compute.{Ledger, VirtualMachine}
-  require Ash.Query
 
   # @cc [owner:ghuntley,label:architecture;durability] agent-registration-atomic
   # An eligible VM and its root thread MUST commit together. Customer VMs MUST
@@ -12,23 +11,12 @@ defmodule Marshall.Agents.Registration do
       when profile in [:oss, :standard, :inception] do
     root = Ledger.create!(Root, :register, %{vm_id: vm.id, owner_id: vm.owner_id})
 
-    startup_thread =
-      Marshall.Threads.Thread
-      |> Ash.Query.filter(machine_key == ^vm.idempotency_key and objective != "")
-      |> Ash.read_one!(actor: Marshall.Authorization.SystemActor.compute())
-
     thread_attrs = %{
       root_id: root.id,
       title: "Agent",
       created_by_id: vm.owner_id,
       mode: :medium
     }
-
-    thread_attrs =
-      case startup_thread do
-        %Marshall.Threads.Thread{id: id} -> Map.put(thread_attrs, :id, id)
-        _ -> thread_attrs
-      end
 
     thread = Ledger.create!(Thread, :open, thread_attrs)
 

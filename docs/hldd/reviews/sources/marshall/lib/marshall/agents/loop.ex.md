@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Concurrent Marshall changes are outside this fleet exporter change and do not alter its documented behavior.
+Release build correction removes an invalid Ash primary-key accept; documented startup and agent behavior remains unchanged.
