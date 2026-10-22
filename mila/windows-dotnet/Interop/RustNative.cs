@@ -115,6 +115,10 @@ internal readonly record struct MilaNativeRouteResult(
     MilaNativeStatus Status,
     string? Canonical);
 
+internal readonly record struct MilaNativeTrustResult(
+    MilaNativeStatus Status,
+    byte[]? Document);
+
 [StructLayout(LayoutKind.Sequential)]
 internal readonly struct MilaSnapshotSummary
 {
@@ -255,6 +259,38 @@ internal static partial class RustNative
         {
             return new(MilaNativeStatus.Unavailable, null);
         }
+    }
+
+    /// <summary>Validates and reconciles a fetched trust document in Rust.</summary>
+    internal static unsafe MilaNativeTrustResult TryReconcileTrust(
+        byte[]? pinned, byte[]? fetched, string host, ulong now)
+    {
+        ArgumentNullException.ThrowIfNull(host);
+        if (host.Contains('\0') || pinned?.Length > 8192 || fetched?.Length > 8192)
+            return new(MilaNativeStatus.InvalidRequest, null);
+        byte[] output = new byte[8192];
+        IntPtr hostPtr = Marshal.StringToCoTaskMemUTF8(host);
+        try
+        {
+            fixed (byte* pinnedPtr = pinned)
+            fixed (byte* fetchedPtr = fetched)
+            fixed (byte* outputPtr = output)
+            {
+                nuint written = 0;
+                MilaRouteOutput target = new((IntPtr)outputPtr, (nuint)output.Length,
+                    (IntPtr)(&written));
+                MilaNativeStatus status = TrustReconcileNative(
+                    (IntPtr)pinnedPtr, (nuint)(pinned?.Length ?? 0),
+                    (IntPtr)fetchedPtr, (nuint)(fetched?.Length ?? 0), hostPtr, now, target);
+                if (status != MilaNativeStatus.Ok || written == 0 || written > (nuint)output.Length)
+                    return new(status, null);
+                return new(status, output[..checked((int)written)]);
+            }
+        }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable, null); }
+        catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable, null); }
+        finally { Marshal.FreeCoTaskMem(hostPtr); }
     }
 
     /// <summary>
@@ -514,6 +550,11 @@ internal static partial class RustNative
     private static partial MilaNativeStatus FormatRouteNative(
         IntPtr input,
         MilaRouteOutput output);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_trust_document_reconcile")]
+    private static unsafe partial MilaNativeStatus TrustReconcileNative(
+        IntPtr pinned, nuint pinnedLength, IntPtr fetched, nuint fetchedLength,
+        IntPtr host, ulong now, MilaRouteOutput output);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_thread_command_kind")]
     private static partial MilaNativeStatus ThreadCommandKindNative(

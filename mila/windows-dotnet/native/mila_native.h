@@ -44,6 +44,12 @@ uint32_t mila_ffi_version(void);
 MilaFfiStatus mila_ffi_get_version(MilaFfiAbiVersion *out_version);
 /* Canonicalizes a bounded overalls:// route into caller-owned storage. */
 MilaFfiStatus mila_route_format(const char *input, MilaRouteOutput output);
+/* Validates fetched trust, reconciles an optional pin, and writes canonical
+ * JSON selected by Rust. A zero fetched length selects an unretired pin. */
+MilaFfiStatus mila_trust_document_reconcile(const uint8_t *pinned, size_t pinned_length,
+                                            const uint8_t *fetched, size_t fetched_length,
+                                            const char *origin_host, uint64_t now,
+                                            MilaRouteOutput output);
 /* Validates PTY dimensions and read/write mode before opening a terminal. */
 MilaFfiStatus mila_terminal_validate(uint16_t columns, uint16_t rows,
                                      uint8_t read_write);

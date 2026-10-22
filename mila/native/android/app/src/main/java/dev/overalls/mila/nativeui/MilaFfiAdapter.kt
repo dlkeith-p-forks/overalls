@@ -162,6 +162,8 @@ interface MilaRustBindings {
     /** Returns the closed machine-action bit mask, or null for invalid input. */
     fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int?
     fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle?
+    /** Returns the canonical Rust-selected trust document, or null on refusal. */
+    fun reconcileTrust(pinned: ByteArray?, fetched: ByteArray?, host: String, now: Long): ByteArray? = null
     fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = -12
     fun sessionWebShow(handle: Long, machine: String): ByteArray? = null
     fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = -12
@@ -201,6 +203,10 @@ internal object MilaRustFfi : MilaRustBindings {
         check(loaded) { "mila_ffi is unavailable" }
         return nativeSessionConnect(trust, host, publicKey, port, timeoutMs, signer)?.let(::MilaSessionHandle)
     }
+    override fun reconcileTrust(pinned: ByteArray?, fetched: ByteArray?, host: String, now: Long): ByteArray? {
+        check(loaded) { "mila_ffi is unavailable" }
+        return nativeTrustDocumentReconcile(pinned, fetched, host, now)
+    }
     override fun sessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int = nativeSessionMachineAction(handle, machine, action, requestId)
     override fun sessionWebShow(handle: Long, machine: String): ByteArray? = nativeSessionWebShow(handle, machine)
     override fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = nativeSessionWebSet(handle, machine, port, public, revision, requestId)
@@ -231,6 +237,8 @@ internal object MilaRustFfi : MilaRustBindings {
 
     @JvmStatic
     external fun nativeSessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): Long?
+    @JvmStatic
+    external fun nativeTrustDocumentReconcile(pinned: ByteArray?, fetched: ByteArray?, host: String, now: Long): ByteArray?
     @JvmStatic
     external fun nativeSessionRead(handle: Long, more: Boolean): Int
     @JvmStatic external fun nativeSessionMachineAction(handle: Long, machine: String, action: String, requestId: String): Int

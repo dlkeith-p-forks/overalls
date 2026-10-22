@@ -1,5 +1,5 @@
 ---
-digest: 27ad30c94a7eb625e41a06503e7ab3ab8f28cd815fd0adbf0347f7a70c951c85
+digest: 71327ead3bc8366e5ce6a930353f45232b0f5afeaad524ffc44676d767b0a7d0
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Android trust reader correction: fixed 8193-byte buffer rejects assets exceeding the existing 8192-byte limit before key access; cancellation propagates. Preserves documented strict trust policy and existing native verification gaps; no new deployment or authority behavior.
+Rust-owned trust enrollment validates and reconciles HTTPS trust before Android atomic persistence; platform headers expose the ABI for native clients.

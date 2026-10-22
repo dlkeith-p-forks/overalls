@@ -97,6 +97,83 @@ pub unsafe extern "C" fn mila_trust_document_validate(
         .unwrap_or(MilaFfiStatus::InvalidRequest)
 }
 
+/// Validates and selects a deployment trust document for native enrollment.
+///
+/// @cc [owner:ghuntley,label:security] mila-trust-enrollment-reconciles
+/// Enrollment MUST persist only the document selected by Rust after HTTPS
+/// validation and pinned-authority reconciliation; a malformed or conflicting
+/// document MUST return no output.
+///
+/// `fetched` is the bounded HTTPS response. `pinned` is the previously persisted
+/// document, or an empty slice when no pin exists. A missing fetched document is
+/// treated as a transport failure and may use a still-current pin; a malformed
+/// fetched document is refused. The selected document is serialized into the
+/// caller-owned output buffer so Android and Windows persist exactly the bytes
+/// that Rust accepted.
+///
+/// # Safety
+/// All non-null input pointers reference their declared readable lengths,
+/// `origin_host` is NUL-terminated UTF-8, and `output` points to writable
+/// caller-owned storage for `capacity` bytes plus one `written` value.
+#[no_mangle]
+pub unsafe extern "C" fn mila_trust_document_reconcile(
+    pinned: *const u8,
+    pinned_len: usize,
+    fetched: *const u8,
+    fetched_len: usize,
+    origin_host: *const c_char,
+    now: u64,
+    output: MilaRouteOutput,
+) -> MilaFfiStatus {
+    if origin_host.is_null() || output.bytes.is_null() || output.written.is_null() {
+        return MilaFfiStatus::NullInput;
+    }
+    if (pinned_len > 0 && pinned.is_null()) || (fetched_len > 0 && fetched.is_null()) {
+        return MilaFfiStatus::NullInput;
+    }
+    if pinned_len > 8192 || fetched_len > 8192 {
+        return MilaFfiStatus::InvalidRequest;
+    }
+    let host = match CStr::from_ptr(origin_host).to_str() {
+        Ok(value) => value,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    let pinned = if pinned_len == 0 {
+        None
+    } else {
+        // A malformed local pin is discarded as unavailable. It never expands
+        // authority; a valid fetched document can establish a new first pin.
+        let bytes = std::slice::from_raw_parts(pinned, pinned_len);
+        mila_transport::decode_trust_document(bytes, host, 0).ok()
+    };
+    let fetched = if fetched_len == 0 {
+        None
+    } else {
+        let bytes = std::slice::from_raw_parts(fetched, fetched_len);
+        match mila_transport::decode_trust_document(bytes, host, now) {
+            Ok(document) => Some(document),
+            Err(_) => return MilaFfiStatus::InvalidRequest,
+        }
+    };
+    let selected = match fetched {
+        Some(document) => mila_transport::reconcile_trust(pinned.as_ref(), document).ok(),
+        None => pinned.filter(|document| document.retirement > now),
+    };
+    let Some(selected) = selected else {
+        return MilaFfiStatus::InvalidRequest;
+    };
+    let bytes = match serde_json::to_vec(&selected) {
+        Ok(bytes) => bytes,
+        Err(_) => return MilaFfiStatus::InvalidRequest,
+    };
+    *output.written = bytes.len();
+    if bytes.len() > output.capacity {
+        return MilaFfiStatus::OutputTooSmall;
+    }
+    std::ptr::copy_nonoverlapping(bytes.as_ptr(), output.bytes, bytes.len());
+    MilaFfiStatus::Ok
+}
+
 /// Validates a push registration request without carrying a platform secret
 /// across the ABI. `provider`: 0=APNs, 1=FCM, 2=WNS; `environment`: 0=dev,
 /// 1=production. WNS requires a channel endpoint; other providers reject one.
@@ -741,6 +818,65 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSession
     }
 }
 
+/// JNI trust enrollment bridge. Rust owns validation and pinned-authority
+/// reconciliation; only canonical JSON returns to the platform store.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTrustDocumentReconcile(
+    mut env: jni::JNIEnv<'_>,
+    _class: jni::objects::JClass<'_>,
+    pinned: jni::sys::jbyteArray,
+    fetched: jni::sys::jbyteArray,
+    host: jni::objects::JString<'_>,
+    now: jni::sys::jlong,
+) -> jni::sys::jbyteArray {
+    if now < 0 {
+        return std::ptr::null_mut();
+    }
+    let pinned = if pinned.is_null() {
+        None
+    } else {
+        let array = unsafe { jni::objects::JByteArray::from_raw(pinned) };
+        match env.convert_byte_array(array) {
+            Ok(bytes) => Some(bytes),
+            Err(_) => return std::ptr::null_mut(),
+        }
+    };
+    let fetched = if fetched.is_null() {
+        None
+    } else {
+        let array = unsafe { jni::objects::JByteArray::from_raw(fetched) };
+        match env.convert_byte_array(array) {
+            Ok(bytes) => Some(bytes),
+            Err(_) => return std::ptr::null_mut(),
+        }
+    };
+    let host = match env.get_string(&host) {
+        Ok(value) => match std::ffi::CString::new(value.to_bytes()) {
+            Ok(value) => value,
+            Err(_) => return std::ptr::null_mut(),
+        },
+        Err(_) => return std::ptr::null_mut(),
+    };
+    let mut output = vec![0_u8; 8192];
+    let mut written = 0_usize;
+    let status = unsafe {
+        mila_trust_document_reconcile(
+            pinned.as_ref().map_or(std::ptr::null(), Vec::as_ptr),
+            pinned.as_ref().map_or(0, Vec::len),
+            fetched.as_ref().map_or(std::ptr::null(), Vec::as_ptr),
+            fetched.as_ref().map_or(0, Vec::len),
+            host.as_ptr(),
+            now as u64,
+            MilaRouteOutput { bytes: output.as_mut_ptr(), capacity: output.len(), written: &mut written },
+        )
+    };
+    if status != MilaFfiStatus::Ok || written == 0 || written > output.len() {
+        return std::ptr::null_mut();
+    }
+    env.byte_array_from_slice(&output[..written])
+        .map_or(std::ptr::null_mut(), |array| array.into_raw())
+}
+
 #[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionRead(
     _env: jni::JNIEnv<'_>,
@@ -1196,10 +1332,11 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeMachine
 mod tests {
     use super::{
         mila_ffi_get_version, mila_ffi_version, mila_machine_command_kind,
+        mila_trust_document_reconcile,
         mila_terminal_attach_validate, mila_terminal_input_validate, mila_terminal_resize_validate,
         mila_terminal_validate, mila_thread_command_kind, mila_watch_event_kind,
         mila_watch_validate_filters, MilaFfiAbiVersion, MilaFfiStatus, MilaMachineCommandKind,
-        MilaSnapshotSummary, MilaThreadCommandKind, MilaWatchEventKind,
+        MilaRouteOutput, MilaSnapshotSummary, MilaThreadCommandKind, MilaWatchEventKind,
     };
     use mila_runtime::MachineSnapshot;
 
@@ -1387,6 +1524,71 @@ mod tests {
             unsafe { super::mila_trust_document_validate(std::ptr::null(), 0, host.as_ptr(), 0) },
             MilaFfiStatus::NullInput
         );
+    }
+
+    fn trust_document(ca: &str, retirement: u64) -> Vec<u8> {
+        serde_json::to_vec(&serde_json::json!({
+            "version": 1,
+            "ca": ca,
+            "management_host": "overalls.example",
+            "zone": "apps.overalls.example",
+            "retirement": retirement,
+        }))
+        .expect("trust document")
+    }
+
+    #[test]
+    fn reconciles_and_serializes_only_rust_selected_trust() {
+        let fixture = include_str!("../../../../protocol/test/fixtures/ssh_host_certificates.json");
+        let value: serde_json::Value = serde_json::from_str(fixture).expect("fixture");
+        let ca = value["certificates"][0]["ca"].as_str().expect("ca");
+        let fetched = trust_document(ca, 2_000);
+        let mut output = vec![0_u8; 8192];
+        let mut written = 0_usize;
+        let host = std::ffi::CString::new("overalls.example").unwrap();
+        let status = unsafe {
+            mila_trust_document_reconcile(
+                std::ptr::null(),
+                0,
+                fetched.as_ptr(),
+                fetched.len(),
+                host.as_ptr(),
+                1_000,
+                MilaRouteOutput { bytes: output.as_mut_ptr(), capacity: output.len(), written: &mut written },
+            )
+        };
+        assert_eq!(status, MilaFfiStatus::Ok);
+        assert_eq!(
+            serde_json::from_slice::<serde_json::Value>(&output[..written]).expect("canonical trust")["retirement"],
+            2_000
+        );
+    }
+
+    #[test]
+    fn reconciliation_refuses_changed_authority_and_expired_fallback() {
+        let fixture = include_str!("../../../../protocol/test/fixtures/ssh_host_certificates.json");
+        let value: serde_json::Value = serde_json::from_str(fixture).expect("fixture");
+        let ca = value["certificates"][0]["ca"].as_str().expect("ca");
+        let other_ca = value["certificates"][5]["ca"].as_str().expect("other ca");
+        let pinned = trust_document(ca, 2_000);
+        let fetched = trust_document(other_ca, 3_000);
+        let mut output = vec![0_u8; 8192];
+        let mut written = 0_usize;
+        let host = std::ffi::CString::new("overalls.example").unwrap();
+        let status = unsafe {
+            mila_trust_document_reconcile(
+                pinned.as_ptr(), pinned.len(), fetched.as_ptr(), fetched.len(), host.as_ptr(), 1_000,
+                MilaRouteOutput { bytes: output.as_mut_ptr(), capacity: output.len(), written: &mut written },
+            )
+        };
+        assert_eq!(status, MilaFfiStatus::InvalidRequest);
+        let status = unsafe {
+            mila_trust_document_reconcile(
+                pinned.as_ptr(), pinned.len(), std::ptr::null(), 0, host.as_ptr(), 2_001,
+                MilaRouteOutput { bytes: output.as_mut_ptr(), capacity: output.len(), written: &mut written },
+            )
+        };
+        assert_eq!(status, MilaFfiStatus::InvalidRequest);
     }
 
     #[test]

@@ -182,9 +182,9 @@ public sealed partial class MainWindow : Window
     {
         try
         {
-            // A session can only be established with a previously pinned trust
-            // document.  Browser approval does not manufacture trust material.
-            byte[]? trust = MilaTrustStore.Load(host);
+            byte[]? trust = await new MilaTrustEnrollment(
+                MilaTrustStore.HttpsFetch(host), RustNative.TryReconcileTrust)
+                .ResolveAsync(host);
             if (trust is null)
             {
                 _activeHost = null;

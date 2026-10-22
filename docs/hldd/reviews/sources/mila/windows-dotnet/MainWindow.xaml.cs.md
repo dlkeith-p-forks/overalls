@@ -1,5 +1,5 @@
 ---
-digest: 812c1457d0390b19ac425963c360ccc994dcdb4f5742c897006303a52207cd9b
+digest: a8de1a3078eaa83a9b34f565f373ccaea94c8181b8861031f330558eba346736
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows deployment persistence now defaults legacy host-only records to documented Porsche management port 22; no new topology or authority boundary
+Native Android and Windows clients now fetch bounded HTTPS trust documents, reconcile authority in Rust, and atomically persist only canonical trust selections before session connection.
