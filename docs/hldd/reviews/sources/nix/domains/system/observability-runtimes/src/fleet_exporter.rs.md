@@ -1,5 +1,5 @@
 ---
-digest: 45010af70f5e95d225516e9efbf044c8f8909f54021451995c07d711a415fa54
+digest: d57976e00b54ba09ddd69d7b319f69df3a5ce2b3875ea55d6507993027c36da5
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now projects receive and transmit byte counters only for configured bounded external interfaces from procfs.
+Fleet exporter adds read-only bounded ZFS pool health, size and free-space projection when configured, with strict validation and no lifecycle mutation.

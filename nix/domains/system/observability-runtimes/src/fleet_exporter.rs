@@ -64,6 +64,13 @@ fn main() -> std::io::Result<()> {
                 output.push_str(&format!("overalls_fleet_counter{{kind=\"network\",entity=\"{interface}\",measure=\"transmit_bytes\"}} {tx}\n"));
             }
         }
+        if let Some(zpool) = descriptor_command(&descriptor, "zpool") {
+            for (name, health, size, free) in zpool_metrics(&zpool) {
+                output.push_str(&format!("overalls_fleet_gauge{{kind=\"zpool\",entity=\"{name}\",measure=\"size_bytes\"}} {size}\n"));
+                output.push_str(&format!("overalls_fleet_gauge{{kind=\"zpool\",entity=\"{name}\",measure=\"free_bytes\"}} {free}\n"));
+                output.push_str(&format!("overalls_fleet_info{{kind=\"zpool\",entity=\"{name}\",health=\"{health}\"}} 1\n"));
+            }
+        }
         if let Some(status) = updater_status() {
             if let Some(phase) = status.phase {
                 output.push_str(&format!(
@@ -190,6 +197,52 @@ fn interface_bytes(interface: &str) -> Option<(u64, u64)> {
         }
     }
     None
+}
+
+fn descriptor_command(descriptor: &str, key: &str) -> Option<String> {
+    descriptor
+        .split(&format!("\"{key}\""))
+        .nth(1)?
+        .split(':')
+        .nth(1)?
+        .split('"')
+        .nth(1)
+        .filter(|v| v.starts_with('/'))
+        .map(str::to_owned)
+}
+
+fn zpool_metrics(command: &str) -> Vec<(String, String, u64, u64)> {
+    let output = Command::new(command)
+        .args(["list", "-Hp", "-o", "name,health,size,free"])
+        .output()
+        .ok();
+    let output = match output {
+        Some(value) if value.status.success() && value.stdout.len() <= 65_536 => value,
+        _ => return Vec::new(),
+    };
+    String::from_utf8_lossy(&output.stdout)
+        .lines()
+        .take(128)
+        .filter_map(|line| {
+            let fields: Vec<&str> = line.split('\t').collect();
+            if fields.len() != 4 {
+                return None;
+            }
+            let valid = |v: &str| {
+                !v.is_empty()
+                    && v.len() <= 128
+                    && v.bytes()
+                        .all(|b| b.is_ascii_alphanumeric() || b == b'_' || b == b'-' || b == b'.')
+            };
+            Some((
+                fields[0].to_owned(),
+                fields[1].to_owned(),
+                fields[2].parse().ok()?,
+                fields[3].parse().ok()?,
+            ))
+            .filter(|(name, health, _, _)| valid(name) && valid(health))
+        })
+        .collect()
 }
 
 fn unit_state(unit: &str) -> Option<(String, String)> {
