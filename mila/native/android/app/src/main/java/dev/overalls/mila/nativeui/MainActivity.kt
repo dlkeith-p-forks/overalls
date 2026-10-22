@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
+    private val nativeAdapter: MilaFfiAdapter by lazy { LinkedMilaFfiAdapter() }
     private lateinit var lockController: MilaAppLockController
     private var lockState = mutableStateOf<MilaAppLockState?>(null)
     private var prompt: BiometricPrompt? = null
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     Text(MilaStrings.text(MilaMessage.LockExplain))
                     Button(onClick = ::authenticate) { Text(MilaStrings.text(MilaMessage.LockUnlock)) }
                     if (state.lastFailed) Text(MilaStrings.text(MilaMessage.LockFailed))
-                } else MilaNativeRoot(adapter = LinkedMilaFfiAdapter())
+                } else MilaNativeRoot(adapter = nativeAdapter)
             }
         }
     }

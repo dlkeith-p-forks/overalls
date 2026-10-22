@@ -1,5 +1,5 @@
 ---
-digest: acd1a3ee606944ad0ec0fb50425fb10c1933cc17d0ea3ab0131389028724fc6c
+digest: 9ccf7a2745f7e9a8c58252b3cb79b979eed0af3422da15c1f4db7b74269bc32e
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Canonical custom-port deployment labels are preserved in Android picker field and persisted selection.
+Android activity-scoped adapter and Compose disposal now release authenticated sessions on recreation while retaining deployment selection for reconnect.

@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -64,11 +65,14 @@ internal val threadCommandChoices = listOf(
  */
 @Composable
 fun MilaNativeRoot(
-    adapter: MilaFfiAdapter = LinkedMilaFfiAdapter(),
+    adapter: MilaFfiAdapter? = null,
     materialProvider: MilaSessionMaterialProvider? = null,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    // Keep the default native adapter across recompositions. A live Rust session is
+    // owned by this adapter and must not be replaced by a recomposition.
+    val sessionAdapter = remember(adapter) { adapter ?: LinkedMilaFfiAdapter() }
     val sessionMaterialProvider = remember(materialProvider, context) {
         materialProvider ?: AndroidMilaSessionMaterialProvider(context)
     }
@@ -81,13 +85,16 @@ fun MilaNativeRoot(
     var deploymentEntries by remember { mutableStateOf(deployment.deployments) }
     var hostInput by remember { mutableStateOf(selectedDeployment?.host.orEmpty()) }
     var hostInvalid by remember { mutableStateOf(false) }
-    val signIn = remember { MilaSignInController(adapter, deploymentStore) }
-    val machineDetail = remember { MilaMachineDetailController(adapter) }
-    val threadDetail = remember { MilaThreadDetailController(adapter) }
+    val signIn = remember(sessionAdapter) { MilaSignInController(sessionAdapter, deploymentStore) }
+    val machineDetail = remember(sessionAdapter) { MilaMachineDetailController(sessionAdapter) }
+    val threadDetail = remember(sessionAdapter) { MilaThreadDetailController(sessionAdapter) }
     var signInState by remember { mutableStateOf<MilaSignInState>(MilaSignInState.SignedOut) }
+    DisposableEffect(signIn) {
+        onDispose { signIn.close() }
+    }
     fun refresh() { scope.launch {
         connection = MilaSessionConnection.Refreshing
-        connection = MilaSessionRefresher.refresh(adapter)
+        connection = MilaSessionRefresher.refresh(sessionAdapter)
     } }
     val status = when (connection) {
         MilaSessionConnection.Idle -> MilaStrings.text(MilaMessage.Ready)
@@ -155,15 +162,15 @@ fun MilaNativeRoot(
         Text(status, style = MaterialTheme.typography.labelSmall)
         if (signInState is MilaSignInState.SignedIn) Text(MilaStrings.text(MilaMessage.Connected), style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
-            MilaRoute.Machines -> MachineList(adapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
-            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, adapter)
-            MilaRoute.Threads -> ThreadList(adapter)
+            MilaRoute.Machines -> MachineList(sessionAdapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
+            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, sessionAdapter)
+            MilaRoute.Threads -> ThreadList(sessionAdapter)
             is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
             MilaRoute.Settings -> MilaSettingsScreen()
         }
-        if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(adapter)
+        if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(sessionAdapter)
     }
-    LaunchedEffect(Unit) {
+    LaunchedEffect(signIn) {
         val saved = selectedDeployment
         if (saved != null) {
             sessionMaterialProvider.resolve(saved).onSuccess { material ->
