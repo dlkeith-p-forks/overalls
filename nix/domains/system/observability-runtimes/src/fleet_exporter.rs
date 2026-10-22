@@ -94,6 +94,10 @@ fn main() -> std::io::Result<()> {
             if let Some((active, sub)) = unit_state(&unit) {
                 output.push_str(&format!("overalls_fleet_service_state{{unit=\"{}\",active=\"{active}\",sub=\"{sub}\"}} 1\n", unit.replace('"', "")));
             }
+            if let Some((memory, cpu)) = cgroup_usage(&unit) {
+                output.push_str(&format!("overalls_fleet_gauge{{kind=\"service\",entity=\"{unit}\",measure=\"memory_bytes\"}} {memory}\n"));
+                output.push_str(&format!("overalls_fleet_counter{{kind=\"service\",entity=\"{unit}\",measure=\"cpu_usage_usec\"}} {cpu}\n"));
+            }
         }
         output
     })
@@ -302,4 +306,21 @@ fn unit_state(unit: &str) -> Option<(String, String)> {
         active.filter(|v| valid(v))?.to_owned(),
         sub.filter(|v| valid(v))?.to_owned(),
     ))
+}
+
+fn cgroup_usage(unit: &str) -> Option<(u64, u64)> {
+    let base = format!("/sys/fs/cgroup/system.slice/{unit}");
+    let memory = fs::read_to_string(format!("{base}/memory.current"))
+        .ok()?
+        .trim()
+        .parse()
+        .ok()?;
+    let cpu = fs::read_to_string(format!("{base}/cpu.stat")).ok()?;
+    let usage = cpu.lines().find_map(|line| {
+        let mut fields = line.split_whitespace();
+        (fields.next()? == "usage_usec")
+            .then(|| fields.next()?.parse().ok())
+            .flatten()
+    })?;
+    Some((memory, usage))
 }

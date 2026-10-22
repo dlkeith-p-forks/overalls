@@ -1,5 +1,5 @@
 ---
-digest: f4a08a4976198ccaf0423db9882490752aa4e82cb151a49709de1ebdd7a27bb8
+digest: b569792112c10cc9d1e59553e69e5a168ddbc645de44a29c61dfc6e8d01962e0
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter adds a bounded allowlisted backup state projection only when backups are enabled in its descriptor.
+Fleet exporter now reads only bounded memory.current and cpu.stat values from descriptor-allowlisted service cgroups, preserving unit identity and failure isolation.
