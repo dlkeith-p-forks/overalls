@@ -1,5 +1,5 @@
 ---
-digest: cfeb2e6f80f2ef6b3b81ca2dd0179e0fb5b8aa3a4e670a51b3c9222a8a600442
+digest: 098ef37c538b5d1b4a901994c38619c588f81528e6d31ad425bf4d80fde84317
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Reviewed native service, transport and reset runners: their Firecracker drives now use Lilly's documented Writeback/Sync production policy (guest-flushes-reach-backing-storage), so FreeBSD flush acknowledgement can issue the device cache flush ADR-0243 requires; documented behaviour is unchanged.
+Reviewed native runner drive policy correction: only FreeBSD guests use the production Writeback/Sync drives that FreeBSD flush acknowledgement needs; OmniOS keeps the default because host fsync per ZFS flush made native-omnios-services miss deadlines, and the durability checks cover OmniOS on Writeback.

@@ -126,6 +126,14 @@ FreeBSD and OmniOS authorizes this decision.
 - The [guest OS matrix review](../reviews/2026-10-18-guest-os-matrix.md)
   ("Native durability: interrupted growth, power loss and relocation") records
   every pass, the pre-fix FreeBSD power-loss failure, and receipt digests.
+- 2026-10-22 regression repair: FreeBSD guests in the native service,
+  transport and reset runners now use the production `Writeback`/`Sync` drive
+  policy, without which `flush_disk_cache` correctly refused (`EOPNOTSUPP`).
+  OmniOS keeps the default there, because host fsync per ZFS flush made
+  `native-omnios-services` miss its deadlines; the durability checks cover OmniOS
+  on Writeback. The UFS integrity check now polls a detached snapshot fsck
+  instead of exceeding one SSH probe. All twelve FreeBSD native checks then
+  passed; the [review](../reviews/2026-10-18-guest-os-matrix.md) lists them.
 
 Remaining gaps: the method kills at one point per growth stage. Only the first
 FreeBSD stage hit a pre-resize state, and the OmniOS kills landed after the pool

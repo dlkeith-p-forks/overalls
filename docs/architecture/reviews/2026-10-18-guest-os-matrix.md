@@ -1992,3 +1992,43 @@ pass. The tool derivation gates them with pinned ruff and ty. Lyra
 - The relocated workspace is a flushed file, not a Git checkout.
 - The FreeBSD fix is not yet in a promoted image.
 - The OmniOS growth maintenance failure remains intermittent and unexplained.
+
+## 2026-10-22: FreeBSD native regression repair
+
+Every FreeBSD native check was run on trunk after the native-kernel candidate
+and ADR-0243 work. Three failed, and each was a fixture fault, not a guest fault:
+
+- `native-freebsd-services` stopped at the flush stage. The guest's
+  `flush_disk_cache` sent `DIOCGFLUSH`, and the service runner's drive used
+  Firecracker's default `Unsafe` cache. That cache does not advertise virtio
+  flush, so the guest got `EOPNOTSUPP` and correctly withheld the receipt.
+  FreeBSD guests in the service, transport and reset runners now use Lilly's
+  production `Writeback`/`Sync` drives (`guest-flushes-reach-backing-storage`).
+  Applying the same policy to OmniOS made `native-omnios-services` fail twice:
+  each ZFS flush became a host fsync, and the run missed its deadlines. It had
+  passed on 1539706d3. OmniOS keeps the default there and passes again; the
+  durability checks cover OmniOS on Writeback.
+- `native-freebsd-relocation` (which also failed on e799ff9b9) ran the
+  destination's `fsck_ufs -B -f` inside one SSH probe capped at 20 seconds. The
+  check now runs detached and polls only its closed exit status under a
+  300-second deadline.
+- `github-tools-freebsd-retained` failed at the push phase. git-lfs sends the
+  managed gitconfig's `Connection: close` beside Go's own copy, and the
+  synthetic fixture refused every repeated header. It now joins a repeated
+  `Connection` list header and still refuses other duplicates. A parser unit
+  test covers both cases.
+
+All twelve then passed under nested KVM with Firecracker 1.16.1 on 2026-10-22:
+
+- `native-freebsd-{services,isolation,growth,recovery,crash-recovery,reset}`
+- `native-freebsd-{transport,wrong-cid,interrupted-growth,relocation,power-loss}`
+- `github-tools-freebsd-retained`
+
+`native-omnios-services` also passed with the final drive policy. Fix commits:
+d731eb6bd, c70940b99 and the OmniOS drive correction.
+
+Known OmniOS gap, not caused by these changes: the executor-withdrawal stage
+intermittently ends in a subprocess timeout. `native-omnios-reset` failed this
+way on 1539706d3, before any drive change, and again on the current tree.
+`native-omnios-transport` passed once and failed this way once. The cause is
+not established.
