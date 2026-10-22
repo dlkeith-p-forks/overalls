@@ -1,5 +1,5 @@
 ---
-digest: a36e341cb3f0947bbee650d7dd6620cb22d2d71f68f18fcee00ab1354f581e49
+digest: 1306b3c32612d1d33d8874e66c70e01b25916f8645c4f76fef3a342ab45d77cc
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows app lock boundary is a UI state wrapper; authentication remains delegated to the future Windows Hello integration and does not alter domains or protocols.
+Windows deployment entrypoint remains a UI wrapper over the existing Rust native boundary; no new domain or protocol.

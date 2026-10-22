@@ -55,6 +55,19 @@ impl NativeState {
             nav.append(&button);
         }
         root.append(&nav);
+
+        // Linux intentionally reports lock capability explicitly. The shared Flutter
+        // policy marks Linux as unavailable; keeping this state visible prevents
+        // presenting a control that cannot be honored by the native platform.
+        let lock_title = strings::text(strings::Message::LockTitle);
+        let lock_button = Button::with_label(&lock_title);
+        let lock_status = content.clone();
+        lock_button.connect_clicked(move |_| {
+            let explanation = strings::text(strings::Message::LockExplain);
+            let unavailable = strings::text(strings::Message::LockUnavailable);
+            lock_status.set_label(&format!("{unavailable}\n{explanation}"));
+        });
+        root.append(&lock_button);
         let machine_id = Entry::builder()
             .placeholder_text("Machine UUID")
             .hexpand(true)
