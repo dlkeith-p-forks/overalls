@@ -8,12 +8,9 @@ pub fn serve(address: &str, port: u16, metrics: impl Fn() -> String) -> std::io:
         let mut request = [0u8; 4096];
         let size = stream.read(&mut request)?;
         let request = String::from_utf8_lossy(&request[..size]);
-        let body = if request.starts_with("GET /metrics") {
-            metrics()
-        } else {
-            String::new()
-        };
-        let status = if request.starts_with("GET /metrics") {
+        let is_metrics = request.starts_with("GET /metrics HTTP/");
+        let body = if is_metrics { metrics() } else { String::new() };
+        let status = if is_metrics {
             "200 OK"
         } else {
             "404 Not Found"
