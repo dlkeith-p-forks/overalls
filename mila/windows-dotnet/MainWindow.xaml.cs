@@ -19,7 +19,9 @@ public sealed partial class MainWindow : Window
     private void CheckNativeBridge(object sender, RoutedEventArgs args)
     {
         MilaNativeVersionResult result = RustNative.TryGetVersion();
-        StatusText.Text = result.Status == MilaNativeStatus.Ok ? MilaStrings.Connected : MilaStrings.RuntimeUnavailable;
+        StatusText.Text = result.Status == MilaNativeStatus.Ok
+            ? MilaStrings.Text("connected", MilaStrings.Connected)
+            : MilaStrings.Text("runtimeUnavailable", MilaStrings.RuntimeUnavailable);
         MachineRows.ItemsSource = Array.Empty<MilaMachineRow>();
     }
 
