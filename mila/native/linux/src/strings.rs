@@ -9,6 +9,9 @@ pub(crate) enum Message {
     Threads,
     Settings,
     Ready,
+    LockTitle,
+    LockUnavailable,
+    LockExplain,
 }
 pub(crate) fn text(message: Message) -> String {
     let id = match message {
@@ -17,6 +20,9 @@ pub(crate) fn text(message: Message) -> String {
         Message::Threads => "tabThreads",
         Message::Settings => "settingsTitle",
         Message::Ready => "ready",
+        Message::LockTitle => "lockTitle",
+        Message::LockUnavailable => "lockUnavailable",
+        Message::LockExplain => "lockExplain",
     };
     catalog()
         .get(id)
@@ -31,6 +37,9 @@ fn fallback(message: Message) -> &'static str {
         Message::Threads => "Threads",
         Message::Settings => "Settings",
         Message::Ready => "Ready",
+        Message::LockTitle => "App lock",
+        Message::LockUnavailable => "App lock is unavailable on Linux.",
+        Message::LockExplain => "This device does not provide a native app-lock authenticator.",
     }
 }
 
@@ -40,7 +49,9 @@ fn catalog() -> &'static HashMap<String, String> {
         let root = std::env::var_os("MILA_LOCALE_DIR")
             .map(std::path::PathBuf::from)
             .or_else(|| option_env!("MILA_BUILT_LOCALE_DIR").map(std::path::PathBuf::from));
-        let Some(root) = root else { return HashMap::new() };
+        let Some(root) = root else {
+            return HashMap::new();
+        };
         let locale = std::env::var("LANG")
             .unwrap_or_else(|_| "en".to_owned())
             .split('.')
@@ -85,5 +96,6 @@ mod tests {
     #[test]
     fn fallback_is_present() {
         assert_eq!(text(Message::AppName), "Mila");
+        assert!(!text(Message::LockUnavailable).is_empty());
     }
 }

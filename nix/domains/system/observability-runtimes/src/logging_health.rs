@@ -1,4 +1,5 @@
 mod common;
+use serde::Deserialize;
 use std::env;
 use std::fs;
 use std::io::{Read, Write};
@@ -14,7 +15,36 @@ fn main() -> std::io::Result<()> {
         std::process::exit(64);
     }
     let descriptor = fs::read_to_string(&args[1]).unwrap_or_default();
-    let budgets = parse_budgets(&descriptor);
+    let typed: Descriptor = serde_json::from_str(&descriptor)
+        .map_err(|_| std::io::Error::new(std::io::ErrorKind::InvalidInput, "invalid descriptor"))?;
+    if typed.queue_budgets.len() > 128 || typed.trace_snapshots.len() > 128 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "descriptor bounds",
+        ));
+    }
+    let budgets: Vec<(String, u64)> = typed
+        .queue_budgets
+        .into_iter()
+        .filter(|(name, value)| {
+            name.len() <= 128
+                && *value > 0
+                && name
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b == b'_' || b == b'-')
+        })
+        .collect();
+    let traces: Vec<(String, String)> = typed
+        .trace_snapshots
+        .into_iter()
+        .filter(|(name, path)| {
+            name.len() <= 128
+                && path.starts_with('/')
+                && name
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b == b'_' || b == b'-')
+        })
+        .collect();
     let address = args[2].clone();
     let port: u16 = args[3]
         .parse()
@@ -59,7 +89,7 @@ fn main() -> std::io::Result<()> {
                 out.push('\n');
             }
         }
-        for (producer, path) in parse_traces(&descriptor) {
+        for (producer, path) in &traces {
             let label = producer.replace('"', "");
             match trace_snapshot(&path) {
                 Some(values) => {
@@ -89,53 +119,12 @@ fn main() -> std::io::Result<()> {
     })
 }
 
-fn parse_budgets(descriptor: &str) -> Vec<(String, u64)> {
-    let section = descriptor
-        .split("\"queueBudgets\"")
-        .nth(1)
-        .and_then(|value| value.split_once('{').map(|(_, rest)| rest))
-        .unwrap_or("");
-    section
-        .split('}')
-        .next()
-        .unwrap_or("")
-        .split(',')
-        .filter_map(|entry| {
-            let (raw_name, raw_value) = entry.split_once(':')?;
-            let name = raw_name.trim().trim_matches('"');
-            if name.is_empty()
-                || !name
-                    .chars()
-                    .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')
-            {
-                return None;
-            }
-            let value = raw_value.trim().parse::<u64>().ok()?;
-            (value > 0).then(|| (name.to_owned(), value))
-        })
-        .take(128)
-        .collect()
-}
-
-fn parse_traces(descriptor: &str) -> Vec<(String, String)> {
-    let section = descriptor
-        .split("\"traceSnapshots\"")
-        .nth(1)
-        .and_then(|v| v.split_once('{').map(|(_, r)| r))
-        .unwrap_or("");
-    section
-        .split('}')
-        .next()
-        .unwrap_or("")
-        .split(',')
-        .filter_map(|entry| {
-            let (key, value) = entry.split_once(':')?;
-            let key = key.trim().trim_matches('"').to_owned();
-            let value = value.trim().trim_matches('"').to_owned();
-            (key.len() <= 128 && value.starts_with('/')).then_some((key, value))
-        })
-        .take(128)
-        .collect()
+#[derive(Deserialize)]
+struct Descriptor {
+    #[serde(rename = "queueBudgets", default)]
+    queue_budgets: std::collections::BTreeMap<String, u64>,
+    #[serde(rename = "traceSnapshots", default)]
+    trace_snapshots: std::collections::BTreeMap<String, String>,
 }
 
 fn trace_snapshot(path: &str) -> Option<Vec<(String, u64)>> {

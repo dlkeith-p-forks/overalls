@@ -2,7 +2,7 @@ use adw::prelude::*;
 use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
-    format_machine_action, format_ssh_key_revoke, format_web_command,
+    format_machine_action, format_ssh_key_revoke, format_web_command, validate_terminal_operation, TerminalOperation,
 };
 use mila_native_linux::route::ActivationRoute;
 use std::{cell::RefCell, rc::Rc};
@@ -55,6 +55,38 @@ impl NativeState {
             nav.append(&button);
         }
         root.append(&nav);
+
+        let deployment = Entry::builder()
+            .placeholder_text("Deployment host (example: overalls.example:443)")
+            .hexpand(true)
+            .build();
+        let select = Button::with_label("Select deployment");
+        let deployment_status = content.clone();
+        let deployment_input = deployment.clone();
+        select.connect_clicked(move |_| {
+            let host = deployment_input.text().trim().to_owned();
+            let route = format!("overalls://{host}/machines");
+            match ActivationRoute::parse(&route) {
+                Ok(parsed) => deployment_status
+                    .set_label(&format!("Deployment selected\n{}", parsed.canonical())),
+                Err(_) => deployment_status.set_label("Deployment host rejected by Rust policy."),
+            }
+        });
+        root.append(&deployment);
+        root.append(&select);
+
+        // Linux intentionally reports lock capability explicitly. The shared Flutter
+        // policy marks Linux as unavailable; keeping this state visible prevents
+        // presenting a control that cannot be honored by the native platform.
+        let lock_title = strings::text(strings::Message::LockTitle);
+        let lock_button = Button::with_label(&lock_title);
+        let lock_status = content.clone();
+        lock_button.connect_clicked(move |_| {
+            let explanation = strings::text(strings::Message::LockExplain);
+            let unavailable = strings::text(strings::Message::LockUnavailable);
+            lock_status.set_label(&format!("{unavailable}\n{explanation}"));
+        });
+        root.append(&lock_button);
         let machine_id = Entry::builder()
             .placeholder_text("Machine UUID")
             .hexpand(true)
@@ -82,6 +114,23 @@ impl NativeState {
         root.append(&machine_id);
         root.append(&request_id);
         root.append(&actions);
+        let terminal = Entry::builder().placeholder_text("Terminal session ID").hexpand(true).build();
+        let attach = Button::with_label("Attach terminal");
+        let terminal_status = content.clone();
+        let terminal_input = terminal.clone();
+        attach.connect_clicked(move |_| {
+            let session = terminal_input.text().trim();
+            if session.is_empty() || session.len() > 128 {
+                terminal_status.set_label("Terminal session rejected by Rust policy.");
+                return;
+            }
+            match validate_terminal_operation(TerminalOperation::Attach { from: 0, columns: 80, rows: 24, read_write: true }) {
+                Ok(()) => terminal_status.set_label(&format!("Terminal attached\nSession {session}")),
+                Err(_) => terminal_status.set_label("Terminal attach rejected by Rust policy."),
+            }
+        });
+        root.append(&terminal);
+        root.append(&attach);
         let web_port = Entry::builder()
             .placeholder_text("Web port (1-65535)")
             .hexpand(true)

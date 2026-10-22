@@ -1,5 +1,5 @@
 ---
-digest: e28fc2007d27e1d491ffa4ca78886c378b113b69fa794d1a48b37aea01bb77a3
+digest: 966c1385b4367ec3db8e47d9c3cea10e0eb69b5756135319e657ad3f11f892b4
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux localization build/runtime wiring preserves existing native UI architecture and adds generated catalog loading.
+Deployment selection and native session refresh remain UI wiring over existing Rust route and bridge contracts.

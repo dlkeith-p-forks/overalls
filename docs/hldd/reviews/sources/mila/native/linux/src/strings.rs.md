@@ -1,5 +1,5 @@
 ---
-digest: b0022f3acd28afa6db04a6794d0c3c5c15a1f0787637b8b321d38a42eef7c867
+digest: 40bb343ff5fc018694c54bf7f27bd4b4c44f2a15ddaa82a33d2132ae5a85c5d3
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Linux localization build/runtime wiring preserves existing native UI architecture and adds generated catalog loading.
+Linux GTK shell exposes centralized app-lock capability state; no architecture boundary change.
