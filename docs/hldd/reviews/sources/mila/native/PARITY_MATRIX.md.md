@@ -1,5 +1,5 @@
 ---
-digest: 04341195548de1e20aaa9bee54eaed36a1b36f4061f34e1af5ea21b6003a82f1
+digest: 271a1cd22511daf43e619f2b6f47d9734e25562c2b37a0d4b60088988ec6dc5e
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux notification UI parity update; no new domain or topology impact.
+Android root now accepts validated initial deep-link route for Compose navigation

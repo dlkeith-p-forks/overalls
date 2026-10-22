@@ -69,6 +69,7 @@ internal val threadCommandChoices = listOf(
 fun MilaNativeRoot(
     adapter: MilaFfiAdapter? = null,
     materialProvider: MilaSessionMaterialProvider? = null,
+    initialRoute: MilaRoute? = null,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -79,7 +80,8 @@ fun MilaNativeRoot(
         materialProvider ?: AndroidMilaSessionMaterialProvider(context)
     }
     val approvalBrowser = remember(context) { AndroidMilaApprovalBrowser(context) }
-    var route by remember { mutableStateOf<MilaRoute>(MilaRoute.Machines) }
+    var route by remember { mutableStateOf(initialRoute ?: MilaRoute.Machines) }
+    LaunchedEffect(initialRoute) { initialRoute?.let { route = it } }
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
     val localContext = LocalContext.current
     val deploymentStore = remember(localContext) { MilaSharedPreferencesDeploymentStore(localContext.getSharedPreferences("mila.deployment", 0)) }
