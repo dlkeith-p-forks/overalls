@@ -1,5 +1,5 @@
 ---
-digest: 5b1a1ae9b02051f135d5f8c57d97e1aa4b91e08861018fc741c10c5729c28b11
+digest: 8303113bb91b94355096e2366b2a2c9237bd14fbfdc29aa50fda49c4da021d52
 disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Fleet exporter now projects bounded cgroup memory working-set and CPU, memory and IO pressure metrics with finite numeric validation.
+Fleet exporter now projects bounded host memory totals and CPU aggregate counters from procfs with overflow-safe parsing.

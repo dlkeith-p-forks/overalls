@@ -58,6 +58,29 @@ fn main() -> std::io::Result<()> {
         if let Some(value) = memory {
             output.push_str(&format!("overalls_fleet_gauge{{kind=\"host\",entity=\"all\",measure=\"memory_available_bytes\"}} {}\n", value.saturating_mul(1024)));
         }
+        if let Some((total, available)) = memory_totals() {
+            output.push_str(&format!("overalls_fleet_gauge{{kind=\"host\",entity=\"all\",measure=\"memory_total_bytes\"}} {total}\n"));
+            output.push_str(&format!("overalls_fleet_gauge{{kind=\"host\",entity=\"all\",measure=\"memory_used_bytes\"}} {}\n", total.saturating_sub(available)));
+        }
+        if let Some(cpu) = fs::read_to_string("/proc/stat")
+            .ok()
+            .and_then(|v| v.lines().find(|l| l.starts_with("cpu ")).map(str::to_owned))
+        {
+            let fields: Vec<u64> = cpu
+                .split_whitespace()
+                .skip(1)
+                .take(10)
+                .filter_map(|v| v.parse().ok())
+                .collect();
+            for (name, value) in [
+                "user", "nice", "system", "idle", "iowait", "irq", "softirq", "steal",
+            ]
+            .into_iter()
+            .zip(fields)
+            {
+                output.push_str(&format!("overalls_fleet_counter{{kind=\"cpu\",entity=\"all\",measure=\"{name}_ticks\"}} {value}\n"));
+            }
+        }
         for interface in descriptor_interfaces(&descriptor) {
             if let Some((rx, tx)) = interface_bytes(&interface) {
                 output.push_str(&format!("overalls_fleet_counter{{kind=\"network\",entity=\"{interface}\",measure=\"receive_bytes\"}} {rx}\n"));
@@ -118,6 +141,27 @@ fn main() -> std::io::Result<()> {
         }
         output
     })
+}
+
+fn memory_totals() -> Option<(u64, u64)> {
+    let text = fs::read_to_string("/proc/meminfo").ok()?;
+    let mut total = None;
+    let mut available = None;
+    for line in text.lines() {
+        let mut fields = line.split_whitespace();
+        let Some(name) = fields.next() else { continue };
+        let Some(value) = fields.next().and_then(|v| v.parse::<u64>().ok()) else {
+            continue;
+        };
+        let value = value.saturating_mul(1024);
+        if name == "MemTotal:" {
+            total = Some(value);
+        }
+        if name == "MemAvailable:" {
+            available = Some(value);
+        }
+    }
+    Some((total?, available?))
 }
 
 struct UpdaterStatus {
