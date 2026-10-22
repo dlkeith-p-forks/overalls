@@ -38,12 +38,16 @@ def run(
     firmware = image / "firmware"
     config = {
         "boot-source": {"kernel_image_path": str(firmware.resolve())},
+        # Lilly's production drive configuration (lilly/lib/lilly/vm/jail.ex):
+        # Writeback advertises virtio flush, which native flush acknowledgement needs.
         "drives": [
             {
                 "drive_id": "rootfs",
                 "path_on_host": str(disk),
                 "is_root_device": True,
                 "is_read_only": False,
+                "cache_type": "Writeback",
+                "io_engine": "Sync",
             }
         ],
         "machine-config": {"vcpu_count": 2, "mem_size_mib": 2048},

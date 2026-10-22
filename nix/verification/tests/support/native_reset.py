@@ -152,12 +152,16 @@ def run(image: Path, vmm: Path, probe: Path, work: Path, os_name: Os) -> None:
     (work / "disk.raw").chmod(0o600)
     config = {
         "boot-source": {"kernel_image_path": str((image / "firmware").resolve())},
+        # Lilly's production drive configuration (lilly/lib/lilly/vm/jail.ex):
+        # Writeback advertises virtio flush, which native flush acknowledgement needs.
         "drives": [
             {
                 "drive_id": "rootfs",
                 "path_on_host": str(work / "disk.raw"),
                 "is_root_device": True,
                 "is_read_only": False,
+                "cache_type": "Writeback",
+                "io_engine": "Sync",
             }
         ],
         "machine-config": {"vcpu_count": 2, "mem_size_mib": 2048},
