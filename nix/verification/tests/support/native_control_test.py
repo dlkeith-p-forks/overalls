@@ -550,6 +550,15 @@ class ParserTest(unittest.TestCase):
             with self.assertRaises(control.Refused):
                 self.parse(payload)
 
+    def test_repeated_connection_list_header_is_joined(self) -> None:
+        # git-lfs sends the managed gitconfig's Connection: close beside Go's own.
+        method, host, path, body = self.parse(
+            b"GET /x HTTP/1.1\r\nHost: a\r\nConnection: close\r\nConnection: close\r\n\r\n"
+        )
+        self.assertEqual((method, host, path, body), ("GET", "a", "/x", b""))
+        with self.assertRaises(control.Refused):
+            self.parse(b"GET / HTTP/1.1\r\nHost: a\r\nAccept: x\r\nAccept: y\r\n\r\n")
+
     def test_one_absolute_deadline_applies_to_partial_header(self) -> None:
         left, right = socket.socketpair()
         with left, right, patch.object(control, "DEADLINE", 0.05):

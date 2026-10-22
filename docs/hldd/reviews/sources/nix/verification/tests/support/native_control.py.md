@@ -1,6 +1,6 @@
 ---
-digest: 6cd4ce137531be7c624a7791b83a98b4b03e4c5f26653d55235528b76219d968
-disposition: updated
+digest: df19efd6bb28465dc4fef1abaaf54effdf7b71bf3f306f26f17152f12722b97f
+disposition: no-impact
 kind: source
 mapping_digest: 05e1761038133f69f40af77d180940fa94168af5fea92478049f84f74b8e9d48
 path: nix/verification/tests/support/native_control.py
@@ -11,9 +11,9 @@ reviewed_chapters:
   marshall/priv/hldd/14-operations.md: 68c72d0e6fde22edd5d892f824dedd44f1843d68ece6c96ff5b3e2c1e50051c9
   marshall/priv/hldd/15-monitoring.md: db740282f22afc4c76be24d9db3f9ef4f10bf2745089a754647c6cf7e8fdfeef
   marshall/priv/hldd/16-recovery.md: 194fe77196ac4a25ab764d5cf4aee7558da547cd7b59726f32a302019b26136c
-  marshall/priv/hldd/17-reference.md: f1763e53aa081b752df936173e2041b4cda3351ada40a096cc2eac99b020c4da
-  marshall/priv/hldd/18-options.md: b77705d41af60b439aef285e8570cf22e86c2f3dbf252496cef9896d916751b2
-  marshall/priv/hldd/19-coverage.md: 347130fc1c617f8d232fc8b20221c6f5a2111e5e05a7fcc9b2d0f286081c4cc9
+  marshall/priv/hldd/17-reference.md: 7d88fca8dbe56f67c71ea207b0ed860f4cfc005f7cb9f6ccde4ffe4bc718cda5
+  marshall/priv/hldd/18-options.md: 508dafafd8772a8b99e5277fdce56bda9b27566145979975ae96a11109e4a954
+  marshall/priv/hldd/19-coverage.md: 70b7ad54d6d2322bb2a0038612dbd422bb0021781705c21d34949476931d88ec
   marshall/priv/hldd/20-security.md: cf1337ba6e78c460d2d00a269abbe3ad011151401179263eb51ab2d90bb4948f
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Marshall gains the artifactContentHost option and per-instance artifactPort listener; HAProxy adds a separate content-host frontend that strips Cookie, Authorization and Proxy-Authorization, deletes backend Set-Cookie, admits only GET and HEAD and answers 421 across hosts, and ACME issues and publishes the second name; release Oban queues include agent_tools and artifacts. The new artifact-origin, artifact-agent-publish and thread-tool machine tests and their fleet fixtures (server-tool operator, provider scripts, thread seeding through a genuine machine binding, current executor capability lists) are catalogued. Chapters 12-configuration, 13-deployment, 14-operations, 16-recovery, 18-options, 19-coverage, 20-security and 22-topology describe the options, rollout, jobs, recovery, proxy lockdown and recorded local machine passes.
+Reviewed native fixture repairs: the UFS snapshot fsck integrity check now runs detached and polls its closed exit status under a 300-second deadline instead of exceeding one 20-second SSH probe, and the synthetic control fixture joins a repeated Connection list header (git-lfs plus the managed gitconfig) while still refusing other duplicates; documented native evidence scope is unchanged.

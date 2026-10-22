@@ -205,6 +205,10 @@ def scrub_status(body: bytes) -> Scrub:
     raise services.ProtocolError("invalid native crash scrub status")
 
 
+UFS_STATUS = "/var/run/overalls-native-fsck.status"
+UFS_DEADLINE = 300
+
+
 def ufs_integrity_status(body: bytes) -> int:
     """Parse only the bounded decimal fsck exit status, never arbitrary output."""
     if re.fullmatch(rb"0|[1-9][0-9]{0,2}", body) is None or int(body) > 255:
@@ -219,12 +223,35 @@ def integrity(context: runner.BootContext) -> Integrity:
         # Pinned fsck_ufs -B creates a snapshot for a supported active-filesystem
         # check; -f prevents the clean-superblock shortcut. Never run live -n.
         print("native crash phase=ufs-integrity-command", flush=True)
-        body = command(
+        # A full snapshot check of the pinned root can outlast one bounded SSH
+        # probe under nested KVM, so it runs detached and only its closed exit
+        # status is polled, like the ZFS scrub below.
+        started = command(
             context,
-            "if /sbin/fsck_ufs -B -f /dev/gpt/rootfs >/dev/null 2>&1; "
-            'then printf 0; else status=$?; printf "%s" "$status"; fi',
+            f"rm -f {UFS_STATUS} {UFS_STATUS}.tmp; "
+            "nohup /bin/sh -c "
+            + shlex.quote(
+                "/sbin/fsck_ufs -B -f /dev/gpt/rootfs >/dev/null 2>&1; "
+                f'printf "%s" "$?" > {UFS_STATUS}.tmp && mv {UFS_STATUS}.tmp {UFS_STATUS}'
+            )
+            + " </dev/null >/dev/null 2>&1 & printf native-ufs-fsck-started",
             root=True,
         )
+        if started != b"native-ufs-fsck-started":
+            raise services.ProtocolError("native crash UFS integrity check did not start")
+        deadline = time.monotonic() + UFS_DEADLINE
+        while True:
+            runner.alive(context.process)
+            body = command(
+                context,
+                f"if [ -f {UFS_STATUS} ]; then cat {UFS_STATUS}; else printf running; fi",
+                root=True,
+            )
+            if body != b"running":
+                break
+            if time.monotonic() >= deadline:
+                raise services.ProtocolError("native crash UFS integrity deadline exceeded")
+            time.sleep(1)
         status = ufs_integrity_status(body)
         print(f"native crash ufs-fsck-exit={status}", flush=True)
         if status != 0:

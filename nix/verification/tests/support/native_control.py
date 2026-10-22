@@ -689,14 +689,18 @@ def request(stream: socket.socket) -> tuple[str, str, str, bytes]:
     for line in lines[1:]:
         name, separator, value = line.partition(":")
         name = name.lower()
+        # Connection is a list header: git-lfs repeats the managed gitconfig's
+        # `Connection: close` alongside Go's own, and repeated lines mean the
+        # comma-joined value. Every other repeated header stays refused.
+        repeated = name in headers and name != "connection"
         if (
             not separator
             or re.fullmatch(r"[a-z0-9-]+", name) is None
-            or name in headers
+            or repeated
             or any(ord(character) < 32 for character in value)
         ):
             raise Refused("invalid fixture headers")
-        headers[name] = value.strip()
+        headers[name] = ", ".join(filter(None, (headers.get(name), value.strip())))
     size = headers.get("content-length", "0")
     if (
         "transfer-encoding" in headers
