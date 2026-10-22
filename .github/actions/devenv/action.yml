@@ -39,7 +39,12 @@ runs:
       run: |
         {
           echo "targets<<EOF"
-          git ls-files -z -- '*Cargo.toml' ':!:**/vendor/**' | xargs -0 -n1 dirname | sort -u | sed 's#$#/target#'
+          # Nix-domain helper crates are built in isolated stores and their
+          # checkout target parents are not writable on Namespace cache mounts.
+          # Keep ordinary Cargo targets on the cache volume while leaving Nix
+          # artifacts to Cachix/Nix store caching.
+          git ls-files -z -- '*Cargo.toml' ':!:**/vendor/**' | xargs -0 -n1 dirname | sort -u |
+            grep -v '^nix/domains/system/' | sed 's#$#/target#'
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
 
