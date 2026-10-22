@@ -1,6 +1,6 @@
 ---
-digest: 98f55bdde5fcca6bdc5ec72144368e4516963fb91a16db3c1203648218aff172
-disposition: updated
+digest: b72917e28d615ef5556735d28df6f6a6a44c969cb10a03ace03efb30f88f38c2
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/session.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Added the Linux SignInCoordinator trust reconciliation and endpoint validation evidence; parity now records the Rust planning seam and remaining host adapter gap.
+Tightened malformed HTTPS fetch handling to preserve the documented fail-closed trust behavior; no new reader-visible scope.

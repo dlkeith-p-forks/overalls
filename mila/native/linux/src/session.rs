@@ -252,10 +252,16 @@ impl<S: TrustStore, F: TrustFetcher> TrustEnrollment<S, F> {
     /// @cc [owner:ghuntley,label:security] linux-trust-enrollment-order
     /// Enrollment MUST reconcile fetched and pinned documents in Rust and persist
     /// only the canonical result. A failed fetch may use a current pin; malformed
-    /// or conflicting fetched bytes MUST fail closed.
+    /// or conflicting fetched bytes MUST fail closed. Only an unavailable HTTPS
+    /// transport may fall back to a current pin; fetch validation errors MUST
+    /// be returned.
     pub fn resolve(&self, host: &str, now: u64) -> Result<Vec<u8>, RuntimeError> {
         let pinned = self.store.read(host)?;
-        let fetched = self.fetcher.fetch(host).ok();
+        let fetched = match self.fetcher.fetch(host) {
+            Ok(document) => Some(document),
+            Err(RuntimeError::Unavailable) => None,
+            Err(RuntimeError::InvalidInput) => return Err(RuntimeError::InvalidInput),
+        };
         let mut output = vec![0_u8; MAX_TRUST_BYTES];
         let mut written = 0_usize;
         let origin = std::ffi::CString::new(host).map_err(|_| RuntimeError::InvalidInput)?;
@@ -690,6 +696,15 @@ mod tests {
         let conflicting = coordinator(Some(trust(&ca(0), 2_000)), Ok(trust(&ca(5), 3_000))).0;
         assert_eq!(
             conflicting
+                .prepare_connect("overalls.example", 443, 30_000, 1_000)
+                .unwrap_err(),
+            RuntimeError::InvalidInput
+        );
+
+        let malformed_fetch =
+            coordinator(Some(trust(&ca(0), 2_000)), Err(RuntimeError::InvalidInput)).0;
+        assert_eq!(
+            malformed_fetch
                 .prepare_connect("overalls.example", 443, 30_000, 1_000)
                 .unwrap_err(),
             RuntimeError::InvalidInput
