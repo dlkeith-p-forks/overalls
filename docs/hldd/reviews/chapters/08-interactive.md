@@ -1,5 +1,5 @@
 ---
-digest: 7c6b8b5ae82f8ce18d880f2eec44fee08ac72e91d7686cda80d0af3f4b010fc4
+digest: 1e15789debde415e96cc1de2cbb136beb77a332330001bf8ae9c134a4c8238b3
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document Linux authenticated notification device list, remove and preference controls, their unauthenticated refusal boundary, and the remaining provider registration and live transport gap.
+Document the Linux HostPtyTransport generation binding, stale-operation refusal and remaining Porsche SSH/PTY backend and GTK wiring gaps.

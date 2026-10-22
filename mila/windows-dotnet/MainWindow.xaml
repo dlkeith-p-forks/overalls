@@ -86,6 +86,7 @@
             <Button x:Name="TerminalResize" Click="ValidateTerminalResize" />
             <Button x:Name="TerminalInput" Click="ValidateTerminalInput" />
           </StackPanel>
+          <TextBox x:Name="TerminalOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="80" FontFamily="Consolas" />
           <TextBlock x:Name="TerminalStatus" Opacity="0.7" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Spacing="8">

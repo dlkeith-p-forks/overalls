@@ -238,6 +238,8 @@ public sealed partial class MainWindow : Window
         _terminalGeneration = DateTime.UtcNow.Ticks;
         TerminalStatus.Text = result.IsValid && _terminal.BeginAttach(_terminalGeneration, true) > 0
             ? S("terminalAttaching", "Attaching…") : S("terminalRefused", "Terminal refused");
+        if (result.IsValid && _terminal.Append(_terminalGeneration, "Mila terminal ready\r\n"))
+            TerminalOutput.Text = _terminal.Output;
     }
     private void ValidateTerminalResize(object sender, RoutedEventArgs args)
     {

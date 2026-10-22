@@ -1389,6 +1389,13 @@ logic evidence; native terminal adapters, SSH stderr/header delivery, actual
 resize/input refusal, server revocation and screen rendering remain separate
 integration gaps. The reducer stores lengths and positions rather than bytes.
 
+The Linux native adapter adds [`HostPtyTransport`](repo:mila/native/linux/src/terminal.rs),
+which accepts a host-owned backend, binds its channel to the authenticated
+session generation, and refuses stale-generation operations before reaching the
+backend. Its tests cover decoded output projection, input/resize/kill lifecycle,
+and second-channel refusal. Porsche SSH/PTY backend wiring and GTK stream
+attachment remain open.
+
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
 lists threads across machines. Every action is an ordinary Porsche command

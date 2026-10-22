@@ -176,6 +176,11 @@ pub enum PtyError {
 /// session generation; PTY bytes stay inside the host transport.
 pub trait PtyTransport {
     fn attach(&mut self, request: &PtyAttachRequest) -> Result<(), PtyError>;
+    /// Binds the host channel opened by `attach` to the reducer generation.
+    /// Implementations that do not need a host handle may retain the default.
+    fn bind_generation(&mut self, _generation: u64) -> Result<(), PtyError> {
+        Ok(())
+    }
     fn read_output(&mut self, generation: u64) -> Result<String, PtyError>;
     fn send_input(&mut self, generation: u64, length: usize) -> Result<(), PtyError>;
     fn resize(&mut self, generation: u64, columns: u16, rows: u16) -> Result<(), PtyError>;
@@ -235,6 +240,7 @@ impl<'a, A: SessionAuthority, T: PtyTransport> AuthenticatedPty<'a, A, T> {
         .map_err(|_| PtyError::InvalidRequest)?;
         let generation = self.stream.attach().map_err(|_| PtyError::InvalidRequest)?;
         self.transport.attach(&request)?;
+        self.transport.bind_generation(generation)?;
         self.stream
             .connected(generation, request.from, request.read_write)
             .map_err(|_| PtyError::InvalidRequest)?;
@@ -280,9 +286,111 @@ impl<'a, A: SessionAuthority, T: PtyTransport> AuthenticatedPty<'a, A, T> {
     }
 }
 
+/// Operations supplied by the host's authenticated Porsche/PTY runtime.
+/// The backend exposes decoded display text and lengths only; PTY bytes stay
+/// inside the host transport and never enter GTK state.
+pub trait HostPtyBackend {
+    fn attach(&mut self, request: &PtyAttachRequest) -> Result<u64, PtyError>;
+    fn read_output(&mut self, channel: u64) -> Result<String, PtyError>;
+    fn send_input(&mut self, channel: u64, length: usize) -> Result<(), PtyError>;
+    fn resize(&mut self, channel: u64, columns: u16, rows: u16) -> Result<(), PtyError>;
+    fn kill(&mut self, channel: u64) -> Result<(), PtyError>;
+}
+
+/// Host-owned PTY transport that binds every operation to one session and
+/// authenticated reducer generation. A runtime supplies the backend to keep
+/// SSH credentials and raw PTY bytes outside the native presentation crate.
+/// @cc [owner:ghuntley,label=security;terminal] linux-host-pty-binding
+/// A host channel MUST be used only after `bind_generation`, and every
+/// operation with a different generation MUST be refused before the backend.
+pub struct HostPtyTransport<B> {
+    backend: B,
+    session_id: Option<String>,
+    pending_channel: Option<u64>,
+    active: Option<(u64, u64)>,
+}
+
+impl<B> HostPtyTransport<B> {
+    pub const fn new(backend: B) -> Self {
+        Self {
+            backend,
+            session_id: None,
+            pending_channel: None,
+            active: None,
+        }
+    }
+
+    pub fn backend_mut(&mut self) -> &mut B {
+        &mut self.backend
+    }
+
+    fn channel_for(&self, generation: u64) -> Result<u64, PtyError> {
+        self.active
+            .filter(|(_, current)| *current == generation)
+            .map(|(channel, _)| channel)
+            .ok_or(PtyError::InvalidRequest)
+    }
+}
+
+impl<B: HostPtyBackend> PtyTransport for HostPtyTransport<B> {
+    fn attach(&mut self, request: &PtyAttachRequest) -> Result<(), PtyError> {
+        if self.pending_channel.is_some() || self.active.is_some() {
+            return Err(PtyError::Transport);
+        }
+        if self
+            .session_id
+            .as_deref()
+            .is_some_and(|session| session != request.session_id)
+        {
+            return Err(PtyError::Unauthenticated);
+        }
+        let channel = self.backend.attach(request)?;
+        self.session_id = Some(request.session_id.clone());
+        self.pending_channel = Some(channel);
+        Ok(())
+    }
+
+    fn bind_generation(&mut self, generation: u64) -> Result<(), PtyError> {
+        let channel = self
+            .pending_channel
+            .take()
+            .ok_or(PtyError::InvalidRequest)?;
+        self.active = Some((channel, generation));
+        Ok(())
+    }
+
+    fn read_output(&mut self, generation: u64) -> Result<String, PtyError> {
+        let channel = self.channel_for(generation)?;
+        self.backend.read_output(channel)
+    }
+
+    fn send_input(&mut self, generation: u64, length: usize) -> Result<(), PtyError> {
+        let channel = self.channel_for(generation)?;
+        self.backend.send_input(channel, length)
+    }
+
+    fn resize(&mut self, generation: u64, columns: u16, rows: u16) -> Result<(), PtyError> {
+        let channel = self.channel_for(generation)?;
+        self.backend.resize(channel, columns, rows)
+    }
+
+    fn kill(&mut self, generation: u64) -> Result<(), PtyError> {
+        let channel = self.channel_for(generation)?;
+        let result = self.backend.kill(channel);
+        if result.is_ok() {
+            self.active = None;
+            self.pending_channel = None;
+        }
+        result
+    }
+}
+
 #[cfg(test)]
 mod transport_tests {
-    use super::{AuthenticatedPty, PtyAttachRequest, PtyError, PtyTransport, SessionAuthority};
+    use super::{
+        AuthenticatedPty, HostPtyBackend, HostPtyTransport, PtyAttachRequest, PtyError,
+        PtyTransport, SessionAuthority,
+    };
 
     struct Authority(bool);
     impl SessionAuthority for Authority {
@@ -345,5 +453,81 @@ mod transport_tests {
         let authority = Authority(false);
         let mut pty = AuthenticatedPty::new(&authority, FakeTransport::default(), 80, 24).unwrap();
         assert_eq!(pty.attach(request()), Err(PtyError::Unauthenticated));
+    }
+
+    #[derive(Default)]
+    struct HostBackend {
+        calls: usize,
+        killed: bool,
+    }
+
+    impl HostPtyBackend for HostBackend {
+        fn attach(&mut self, _: &PtyAttachRequest) -> Result<u64, PtyError> {
+            self.calls += 1;
+            Ok(41)
+        }
+
+        fn read_output(&mut self, channel: u64) -> Result<String, PtyError> {
+            self.calls += 1;
+            (channel == 41)
+                .then_some("host-ready".to_owned())
+                .ok_or(PtyError::Transport)
+        }
+
+        fn send_input(&mut self, channel: u64, _: usize) -> Result<(), PtyError> {
+            self.calls += 1;
+            (channel == 41).then_some(()).ok_or(PtyError::Transport)
+        }
+
+        fn resize(&mut self, channel: u64, _: u16, _: u16) -> Result<(), PtyError> {
+            self.calls += 1;
+            (channel == 41).then_some(()).ok_or(PtyError::Transport)
+        }
+
+        fn kill(&mut self, channel: u64) -> Result<(), PtyError> {
+            self.calls += 1;
+            if channel == 41 {
+                self.killed = true;
+                Ok(())
+            } else {
+                Err(PtyError::Transport)
+            }
+        }
+    }
+
+    #[test]
+    fn host_transport_binds_channel_to_generation_and_session() {
+        let authority = Authority(true);
+        let mut pty = AuthenticatedPty::new(
+            &authority,
+            HostPtyTransport::new(HostBackend::default()),
+            80,
+            24,
+        )
+        .unwrap();
+        let generation = pty.attach(request()).unwrap();
+        assert_eq!(pty.read_output(generation).unwrap(), "host-ready");
+        assert_eq!(
+            pty.read_output(generation + 1),
+            Err(PtyError::InvalidRequest)
+        );
+        pty.send_input(generation, 4).unwrap();
+        pty.resize(generation, 100, 30).unwrap();
+        pty.kill(generation).unwrap();
+        assert_eq!(pty.renderer().lines()[0], "host-ready");
+        assert!(pty.transport.backend_mut().killed);
+    }
+
+    #[test]
+    fn host_transport_refuses_second_channel_before_backend() {
+        let mut transport = HostPtyTransport::new(HostBackend::default());
+        let first = request();
+        let second = PtyAttachRequest {
+            session_id: "other-session".to_owned(),
+            ..first.clone()
+        };
+        transport.attach(&first).unwrap();
+        assert_eq!(transport.attach(&second), Err(PtyError::Transport));
+        assert_eq!(transport.backend_mut().calls, 1);
     }
 }
