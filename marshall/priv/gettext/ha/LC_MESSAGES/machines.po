@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1425
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " da kirgawa"
 
-#: lib/marshall_web/live/machines_live.ex:1313
+#: lib/marshall_web/live/machines_live.ex:1421
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "dakiku %{seconds}%{suffix}"
@@ -29,10 +29,10 @@ msgstr "dakiku %{seconds}%{suffix}"
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
 
-#: lib/marshall_web/live/machines_live.ex:1081
-#: lib/marshall_web/live/machines_live.ex:1084
-#: lib/marshall_web/live/overview_live.ex:321
-#: lib/marshall_web/live/overview_live.ex:326
+#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1192
+#: lib/marshall_web/live/overview_live.ex:351
+#: lib/marshall_web/live/overview_live.ex:356
 #: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -43,20 +43,20 @@ msgstr "%{value1} GiB"
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:1078
-#: lib/marshall_web/live/overview_live.ex:318
+#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/overview_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:160
-#: lib/marshall_web/live/machines_live.ex:823
-#: lib/marshall_web/live/overview_live.ex:197
+#: lib/marshall_web/live/machines_live.ex:908
+#: lib/marshall_web/live/overview_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB faifai"
 
-#: lib/marshall_web/live/machines_live.ex:1026
+#: lib/marshall_web/live/machines_live.ex:1131
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB ƙwaƙwalwa · %{value3} GiB faifai"
@@ -79,47 +79,47 @@ msgstr "%{value1} → %{value2} GiB"
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:765
-#: lib/marshall_web/live/overview_live.ex:161
+#: lib/marshall_web/live/machines_live.ex:850
+#: lib/marshall_web/live/overview_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "+ Create machine"
 msgstr "+ Ƙirƙiri inji"
 
-#: lib/marshall_web/live/machines_live.ex:1385
+#: lib/marshall_web/live/machines_live.ex:1493
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ kwafi mai layi"
 
-#: lib/marshall_web/live/machines_live.ex:617
+#: lib/marshall_web/live/machines_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
 msgstr "Yanayin haɓaka Overalls don injunan gida. Yana amfani da hoton da aka keɓe, ƙarin faifan bayanan GiB 256, da mafi ƙarancin albarkatu. Wakilin AI na iya fara wakilan yara."
 
-#: lib/marshall_web/live/overview_live.ex:156
+#: lib/marshall_web/live/overview_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "A good day to make something."
 msgstr "Kyakkyawan rana don yin wani abu."
 
-#: lib/marshall_web/live/overview_live.ex:229
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "Karamin samfoti. Duk injunan da zaku iya samu suna ciki"
 
-#: lib/marshall_web/live/machines_live.ex:799
-#: lib/marshall_web/live/machines_live.ex:837
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:884
+#: lib/marshall_web/live/machines_live.ex:922
+#: lib/marshall_web/live/machines_live.ex:1225
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "Shiga"
 
-#: lib/marshall_web/live/machines_live.ex:381
+#: lib/marshall_web/live/machines_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "Access updated."
 msgstr "An sabunta damar shiga."
 
-#: lib/marshall_web/live/machines_live.ex:1131
-#: lib/marshall_web/live/machines_live.ex:1138
-#: lib/marshall_web/live/machines_live.ex:1157
+#: lib/marshall_web/live/machines_live.ex:1239
+#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1265
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Asusu"
@@ -134,14 +134,14 @@ msgstr "Tabbatar da gudanarwa ya ƙare. Zaɓi injin ɗin a cikin ayyukan runduna
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr "Tabbatar da gudanarwa ya ƙare. Ana ajiye daftarin girman girman ku a adireshin wannan shafin."
 
-#: lib/marshall_web/live/machines_live.ex:739
+#: lib/marshall_web/live/machines_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "All retained copies deleted"
 msgstr "An share duk kwafin da aka riƙe"
 
-#: lib/marshall_web/live/machines_live.ex:1133
-#: lib/marshall_web/live/machines_live.ex:1150
-#: lib/marshall_web/live/machines_live.ex:1169
+#: lib/marshall_web/live/machines_live.ex:1241
+#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1277
 #, elixir-autogen, elixir-format
 msgid "Allows"
 msgstr "Bada izini"
@@ -176,13 +176,13 @@ msgstr "Komawa zuwa bayyani"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "A taƙaice dakatar da tushen don a iya kama faifan sa cikin aminci."
 
-#: lib/marshall_web/live/overview_live.ex:301
+#: lib/marshall_web/live/overview_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr "Kawo ma'ajiyar GitHub, GitLab, Codeberg ko Bitbucket cikin Overalls tare da kari na Chrome ko Firefox."
 
-#: lib/marshall_web/live/machines_live.ex:1077
-#: lib/marshall_web/live/overview_live.ex:317
+#: lib/marshall_web/live/machines_live.ex:1185
+#: lib/marshall_web/live/overview_live.ex:347
 #: lib/marshall_web/live/resize_live.ex:315
 #: lib/marshall_web/live/resize_live.ex:359
 #: lib/marshall_web/live/resize_live.ex:447
@@ -191,7 +191,7 @@ msgstr "Kawo ma'ajiyar GitHub, GitLab, Codeberg ko Bitbucket cikin Overalls tare
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/machines_live.ex:996
+#: lib/marshall_web/live/machines_live.ex:1101
 #, elixir-autogen, elixir-format
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
@@ -202,7 +202,7 @@ msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU da ƙwaƙwalwar ajiya na iya ƙaruwa ko raguwa. Girman diski zai iya girma kawai."
 
 #: lib/marshall_web/components/clone_components.ex:116
-#: lib/marshall_web/live/machines_live.ex:1045
+#: lib/marshall_web/live/machines_live.ex:1153
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Soke"
@@ -212,7 +212,7 @@ msgstr "Soke"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "An kasa karɓar sokewa. An riga an yi amfani da masu girma dabam ko kuma ba a tabbatar da yanayin injin ba."
 
-#: lib/marshall_web/live/machines_live.ex:1331
+#: lib/marshall_web/live/machines_live.ex:1439
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "Soke motsi"
@@ -222,7 +222,7 @@ msgstr "Soke motsi"
 msgid "Cancel resize"
 msgstr "Soke girman girman"
 
-#: lib/marshall_web/live/machines_live.ex:319
+#: lib/marshall_web/live/machines_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "An nemi sokewa Ana iya ci gaba da tsaftacewa bayan murmurewa."
@@ -244,7 +244,7 @@ msgstr "An soke kafin a fara daukar hoton."
 msgid "Cancelling"
 msgstr "Sokewa"
 
-#: lib/marshall_web/live/machines_live.ex:734
+#: lib/marshall_web/live/machines_live.ex:819
 #, elixir-autogen, elixir-format
 msgid "Cancelling and restoring the source"
 msgstr "Sokewa da dawo da tushen"
@@ -264,12 +264,12 @@ msgstr "Sokewa: jira tasha don tabbatarwa, sannan sake farawa tare da masu girma
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Sokewa: jiran tsayawa don tabbatarwa; masu girma dabam suna tsayawa ba canzawa."
 
-#: lib/marshall_web/live/machines_live.ex:1329
+#: lib/marshall_web/live/machines_live.ex:1437
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "Ana sokewa…"
 
-#: lib/marshall_web/live/overview_live.ex:332
+#: lib/marshall_web/live/overview_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "Ana sake duba ƙarfin lokacin da ka ƙirƙiri na'ura."
@@ -279,32 +279,32 @@ msgstr "Ana sake duba ƙarfin lokacin da ka ƙirƙiri na'ura."
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "Ɗaukar faifan tushen. Ana fara kwafi bayan an shirya hoton hoto."
 
-#: lib/marshall_web/live/overview_live.ex:279
+#: lib/marshall_web/live/overview_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "Duba akwatin saƙon saƙo naka kuma danna hanyar haɗin don tabbatar da biyan kuɗin ku."
 
-#: lib/marshall_web/live/machines_live.ex:729
+#: lib/marshall_web/live/machines_live.ex:814
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Duba shirye-shiryen manufa"
 
-#: lib/marshall_web/live/machines_live.ex:724
+#: lib/marshall_web/live/machines_live.ex:809
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "Ana duba haɗin kai na canja wuri"
 
-#: lib/marshall_web/live/machines_live.ex:937
+#: lib/marshall_web/live/machines_live.ex:1042
 #, elixir-autogen, elixir-format
 msgid "Choose an image"
 msgstr "Zaɓi hoto"
 
-#: lib/marshall_web/live/machines_live.ex:895
+#: lib/marshall_web/live/machines_live.ex:980
 #, elixir-autogen, elixir-format
 msgid "Choose an image and the resources for your environment."
 msgstr "Zaɓi hoto da albarkatun don mahallin ku."
 
-#: lib/marshall_web/live/machines_live.ex:930
+#: lib/marshall_web/live/machines_live.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Choose your environment"
 msgstr "Zaɓi yanayin ku"
@@ -319,7 +319,7 @@ msgstr "An soke kwafi"
 msgid "Clone complete"
 msgstr "kwafi cikakke"
 
-#: lib/marshall_web/live/machines_live.ex:1351
+#: lib/marshall_web/live/machines_live.ex:1459
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "kwafi inji"
@@ -329,17 +329,17 @@ msgstr "kwafi inji"
 msgid "Clone needs attention"
 msgstr "kwafi yana buƙatar kulawa"
 
-#: lib/marshall_web/live/machines_live.ex:262
+#: lib/marshall_web/live/machines_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Clone queued. You can queue another copy."
 msgstr "kwafi yayi layi. Kuna iya yin layi na wani kwafin."
 
-#: lib/marshall_web/live/machines_live.ex:1402
+#: lib/marshall_web/live/machines_live.ex:1510
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "Buƙatun kwafi"
 
-#: lib/marshall_web/live/machines_live.ex:1413
+#: lib/marshall_web/live/machines_live.ex:1521
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "Ba a samun buƙatun kwafi na ɗan lokaci. Ana sake gwadawa ta atomatik."
@@ -349,7 +349,7 @@ msgstr "Ba a samun buƙatun kwafi na ɗan lokaci. Ana sake gwadawa ta atomatik."
 msgid "Clone stages"
 msgstr "Matakan kwafi"
 
-#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1363
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Sharhi"
@@ -364,13 +364,13 @@ msgstr "Cikakkun"
 msgid "Confirmed resources"
 msgstr "Tabbatar da albarkatu"
 
-#: lib/marshall_web/live/machines_live.ex:800
-#: lib/marshall_web/live/machines_live.ex:851
+#: lib/marshall_web/live/machines_live.ex:885
+#: lib/marshall_web/live/machines_live.ex:936
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Haɗa"
 
-#: lib/marshall_web/live/overview_live.ex:346
+#: lib/marshall_web/live/overview_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "Haɗa haɗin kai ↗"
@@ -385,7 +385,7 @@ msgstr "Ana kwafi"
 msgid "Copying files"
 msgstr "Ana kwafi fayiloli"
 
-#: lib/marshall_web/live/machines_live.ex:726
+#: lib/marshall_web/live/machines_live.ex:811
 #, elixir-autogen, elixir-format
 msgid "Copying the stopped disks"
 msgstr "Ana kwafin fayafai da aka dakatar"
@@ -395,19 +395,19 @@ msgstr "Ana kwafin fayafai da aka dakatar"
 msgid "Create a machine"
 msgstr "Ƙirƙiri inji"
 
-#: lib/marshall_web/live/machines_live.ex:1359
+#: lib/marshall_web/live/machines_live.ex:1467
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr "Ƙirƙiri mai zaman kansa, kwafin wannan na'ura. Injin gudu suna tsayawa kaɗan don kowane hoto, sannan sake farawa yayin da ake ci gaba da kwafi. Ana sarrafa kwafi bisa tsari kuma sun dace da yanayin ƙarfin tushen lokacin da lokacinsu ya fara."
 
-#: lib/marshall_web/live/machines_live.ex:93
-#: lib/marshall_web/live/machines_live.ex:894
-#: lib/marshall_web/live/machines_live.ex:1043
+#: lib/marshall_web/live/machines_live.ex:106
+#: lib/marshall_web/live/machines_live.ex:979
+#: lib/marshall_web/live/machines_live.ex:1151
 #, elixir-autogen, elixir-format
 msgid "Create machine"
 msgstr "Ƙirƙiri inji"
 
-#: lib/marshall_web/live/overview_live.ex:182
+#: lib/marshall_web/live/overview_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "Ƙirƙiri injin ku na farko"
@@ -422,90 +422,90 @@ msgstr "Ƙirƙirar faifai mai zaman kansa daga hoton hoto. Farfadowar tushen yan
 msgid "Creating cloned machine"
 msgstr "Ƙirƙirar injin cloned"
 
-#: lib/marshall_web/live/machines_live.ex:1041
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Creating…"
 msgstr "Ƙirƙirar…"
 
-#: lib/marshall_web/live/machines_live.ex:779
+#: lib/marshall_web/live/machines_live.ex:864
 #, elixir-autogen, elixir-format
 msgid "Current headroom is temporarily unavailable."
 msgstr "Ba shi da dakin kai na yanzu na ɗan lokaci."
 
-#: lib/marshall_web/live/machines_live.ex:771
-#: lib/marshall_web/live/machines_live.ex:913
+#: lib/marshall_web/live/machines_live.ex:856
+#: lib/marshall_web/live/machines_live.ex:998
 #, elixir-autogen, elixir-format
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "Wurin kai na yanzu: %{value1} vCPU · %{value2} GiB ƙwaƙwalwar ajiya · %{value3} GiB faifai"
 
-#: lib/marshall_web/live/overview_live.ex:313
+#: lib/marshall_web/live/overview_live.ex:343
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "Babban dakin tanadi na yanzu"
 
-#: lib/marshall_web/live/machines_live.ex:583
-#: lib/marshall_web/live/machines_live.ex:671
+#: lib/marshall_web/live/machines_live.ex:647
+#: lib/marshall_web/live/machines_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "Abokin ciniki"
 
-#: lib/marshall_web/live/machines_live.ex:1103
+#: lib/marshall_web/live/machines_live.ex:1211
 #, elixir-autogen, elixir-format
 msgid "Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled."
 msgstr "Injin abokin ciniki suna ba da damar mai shi kawai SSH da shiga tasha. Hanyoyin sadarwar da ke waje, raba filin aiki, da bayyanar sabis na yanar gizo an kashe su."
 
-#: lib/marshall_web/live/machines_live.ex:1457
+#: lib/marshall_web/live/machines_live.ex:1565
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Share"
 
-#: lib/marshall_web/live/machines_live.ex:1440
+#: lib/marshall_web/live/machines_live.ex:1548
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "Share inji"
 
-#: lib/marshall_web/live/machines_live.ex:1454
+#: lib/marshall_web/live/machines_live.ex:1562
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "A goge wannan injin da faifan ta? Ba za a iya soke wannan ba."
 
-#: lib/marshall_web/live/machines_live.ex:675
+#: lib/marshall_web/live/machines_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Deleting"
 msgstr "Ana sharewa"
 
-#: lib/marshall_web/live/machines_live.ex:736
+#: lib/marshall_web/live/machines_live.ex:821
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "Share kwafin da aka riƙe"
 
-#: lib/marshall_web/live/machines_live.ex:730
+#: lib/marshall_web/live/machines_live.ex:815
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "farawa ɗin ya gaza; ana ajiye kwafin tushe"
 
-#: lib/marshall_web/live/machines_live.ex:732
+#: lib/marshall_web/live/machines_live.ex:817
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "Shirye-shiryen zuwa ya kasa; ana ajiye kwafin tushe"
 
-#: lib/marshall_web/live/machines_live.ex:733
+#: lib/marshall_web/live/machines_live.ex:818
 #, elixir-autogen, elixir-format
 msgid "Destination ready; cleaning up the source"
 msgstr "Manufa a shirye; tsaftace tushen"
 
-#: lib/marshall_web/live/machines_live.ex:348
+#: lib/marshall_web/live/machines_live.ex:386
 #, elixir-autogen, elixir-format
 msgid "Destination restart requested. The source copy remains retained until readiness succeeds."
 msgstr "An nemi sake farawa makoma. Ana ajiye kwafin tushen har sai an yi nasara a shirye."
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1228
 #, elixir-autogen, elixir-format
 msgid "Direct machine grants"
 msgstr "Tallafin injin kai tsaye"
 
-#: lib/marshall_web/live/machines_live.ex:1083
-#: lib/marshall_web/live/overview_live.ex:325
+#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/overview_live.ex:355
 #: lib/marshall_web/live/resize_live.ex:321
 #: lib/marshall_web/live/resize_live.ex:375
 #: lib/marshall_web/live/resize_live.ex:484
@@ -513,7 +513,7 @@ msgstr "Tallafin injin kai tsaye"
 msgid "Disk"
 msgstr "Faifai"
 
-#: lib/marshall_web/live/machines_live.ex:1015
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB)"
 msgstr "Faifai (GiB)"
@@ -523,12 +523,12 @@ msgstr "Faifai (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "faifai (GiB) - Matsakaicin 500 GiB"
 
-#: lib/marshall_web/live/overview_live.ex:251
+#: lib/marshall_web/live/overview_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "Korar"
 
-#: lib/marshall_web/live/overview_live.ex:269
+#: lib/marshall_web/live/overview_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "Adireshin i-mel"
@@ -538,42 +538,42 @@ msgstr "Adireshin i-mel"
 msgid "Enable JavaScript to open a repository link, or"
 msgstr "Kunna JavaScript don buɗe hanyar haɗin yanar gizo, ko"
 
-#: lib/marshall_web/live/machines_live.ex:668
+#: lib/marshall_web/live/machines_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Ends that person's access to this machine."
 msgstr "Yana ƙare damar wannan mutumin zuwa wannan injin."
 
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "Shigar da ingantaccen adireshin imel."
 
-#: lib/marshall_web/live/machines_live.ex:159
+#: lib/marshall_web/live/machines_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "Enter whole numbers for CPU, memory and disk size."
 msgstr "Shigar da duka lambobi don CPU , ƙwaƙwalwar ajiya da girman diski."
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1259
 #, elixir-autogen, elixir-format
 msgid "Everything; cannot be changed here."
 msgstr "Komai; ba za a iya canza a nan."
 
-#: lib/marshall_web/live/overview_live.ex:355
+#: lib/marshall_web/live/overview_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "Bincika amfanin ku ↗"
 
-#: lib/marshall_web/live/machines_live.ex:1352
+#: lib/marshall_web/live/machines_live.ex:1460
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "Ana haɗa fayiloli da takaddun shaida da aka adana a cikin kwafin"
 
-#: lib/marshall_web/live/machines_live.ex:1392
+#: lib/marshall_web/live/machines_live.ex:1500
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "Ana haɗa fayiloli da takaddun shaida da aka adana a cikin kwafin."
 
-#: lib/marshall_web/live/overview_live.ex:352
+#: lib/marshall_web/live/overview_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "Nemo mutanen ku ↗"
@@ -588,17 +588,17 @@ msgstr "Ƙarshe"
 msgid "Finishing up"
 msgstr "Kammalawa"
 
-#: lib/marshall_web/live/overview_live.ex:254
+#: lib/marshall_web/live/overview_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Samu nasihu, dabaru da sabuntawa game da Overalls da AI ta imel."
 
-#: lib/marshall_web/live/machines_live.ex:990
+#: lib/marshall_web/live/machines_live.ex:1095
 #, elixir-autogen, elixir-format
 msgid "Give it room to grow"
 msgstr "Ka ba shi dakin girma"
 
-#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1297
 #, elixir-autogen, elixir-format
 msgid "Grant, change or remove access"
 msgstr "Bada, canza ko cire damar shiga"
@@ -608,40 +608,40 @@ msgstr "Bada, canza ko cire damar shiga"
 msgid "Grow the filesystem on next boot"
 msgstr "Shuka tsarin fayil akan taya na gaba"
 
-#: lib/marshall_web/live/overview_live.ex:336
+#: lib/marshall_web/live/overview_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "Ba a samun babban ɗakin kai na ɗan lokaci."
 
-#: lib/marshall_web/live/machines_live.ex:798
-#: lib/marshall_web/live/machines_live.ex:833
-#: lib/marshall_web/live/machines_live.ex:1086
+#: lib/marshall_web/live/machines_live.ex:883
+#: lib/marshall_web/live/machines_live.ex:918
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "Mai watsa shiri"
 
-#: lib/marshall_web/live/machines_live.ex:936
+#: lib/marshall_web/live/machines_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "Hoto"
 
-#: lib/marshall_web/live/machines_live.ex:899
+#: lib/marshall_web/live/machines_live.ex:984
 #, elixir-autogen, elixir-format
 msgid "Images and capacity are temporarily unavailable. Your choices are retained."
 msgstr "Hotuna da iya aiki ba su da samuwa na ɗan lokaci. Zaɓuɓɓukan ku suna riƙe."
 
-#: lib/marshall_web/live/machines_live.ex:589
-#: lib/marshall_web/live/machines_live.ex:672
+#: lib/marshall_web/live/machines_live.ex:653
+#: lib/marshall_web/live/machines_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Inception"
 msgstr "Ƙaddamarwa"
 
-#: lib/marshall_web/live/machines_live.ex:404
+#: lib/marshall_web/live/machines_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "nema mara inganci."
 
-#: lib/marshall_web/live/machines_live.ex:1249
+#: lib/marshall_web/live/machines_live.ex:1357
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "Lakabi"
@@ -667,12 +667,12 @@ msgstr "Ƙaddamarwa"
 msgid "Launching repository"
 msgstr "Ƙaddamar da ma'ajiyar"
 
-#: lib/marshall_web/live/machines_live.ex:1375
+#: lib/marshall_web/live/machines_live.ex:1483
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "Bar fanko don samar da suna"
 
-#: lib/marshall_web/live/machines_live.ex:1389
+#: lib/marshall_web/live/machines_live.ex:1497
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "Bar fanko don samar da suna."
@@ -684,77 +684,72 @@ msgstr "Bar fanko don samar da suna."
 msgid "Leave stopped"
 msgstr "An tsaya"
 
-#: lib/marshall_web/live/machines_live.ex:794
+#: lib/marshall_web/live/machines_live.ex:879
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Inji"
 
-#: lib/marshall_web/live/machines_live.ex:228
+#: lib/marshall_web/live/machines_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
 msgstr "Ajiye metadata na inji."
 
-#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:965
 #, elixir-autogen, elixir-format
 msgid "Machine pages"
 msgstr "Shafukan inji"
 
-#: lib/marshall_web/live/machines_live.ex:148
-#, elixir-autogen, elixir-format
-msgid "Machine requested."
-msgstr "An nema inji"
-
-#: lib/marshall_web/live/machines_live.ex:210
+#: lib/marshall_web/live/machines_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Machine update requested."
 msgstr "An nemi sabunta na'ura."
 
-#: lib/marshall_web/live/machines_live.ex:108
-#: lib/marshall_web/live/machines_live.ex:760
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/machines_live.ex:121
+#: lib/marshall_web/live/machines_live.ex:845
+#: lib/marshall_web/live/overview_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Injina"
 
-#: lib/marshall_web/live/machines_live.ex:464
+#: lib/marshall_web/live/machines_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "Machines are temporarily unavailable."
 msgstr "Babu injina na ɗan lokaci."
 
-#: lib/marshall_web/live/overview_live.ex:235
+#: lib/marshall_web/live/overview_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "An kasa loda injina. Sake sake gwadawa."
 
-#: lib/marshall_web/live/machines_live.ex:973
+#: lib/marshall_web/live/machines_live.ex:1078
 #, elixir-autogen, elixir-format
 msgid "Make it yours"
 msgstr "Maida shi naku"
 
-#: lib/marshall_web/live/overview_live.ex:340
+#: lib/marshall_web/live/overview_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "Ku shakata gidanku ne"
 
-#: lib/marshall_web/live/machines_live.ex:1100
+#: lib/marshall_web/live/machines_live.ex:1208
 #, elixir-autogen, elixir-format
 msgid "Management access is required to change the remaining settings."
 msgstr "Ana buƙatar samun damar gudanarwa don canza sauran saitunan."
 
-#: lib/marshall_web/live/machines_live.ex:655
-#: lib/marshall_web/live/machines_live.ex:1212
-#: lib/marshall_web/live/machines_live.ex:1221
+#: lib/marshall_web/live/machines_live.ex:719
+#: lib/marshall_web/live/machines_live.ex:1320
+#: lib/marshall_web/live/machines_live.ex:1329
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "Manaja"
 
-#: lib/marshall_web/live/machines_live.ex:1307
+#: lib/marshall_web/live/machines_live.ex:1415
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "An auna tsakanin dakatarwar jirgin sama mai sarrafawa da lura da shirye-shiryen; kasancewar baƙo na iya bambanta."
 
-#: lib/marshall_web/live/machines_live.ex:1080
-#: lib/marshall_web/live/overview_live.ex:320
+#: lib/marshall_web/live/machines_live.ex:1188
+#: lib/marshall_web/live/overview_live.ex:350
 #: lib/marshall_web/live/resize_live.ex:318
 #: lib/marshall_web/live/resize_live.ex:365
 #: lib/marshall_web/live/resize_live.ex:478
@@ -762,33 +757,33 @@ msgstr "An auna tsakanin dakatarwar jirgin sama mai sarrafawa da lura da shirye-
 msgid "Memory"
 msgstr "Ƙwaƙwalwar ajiya"
 
-#: lib/marshall_web/live/machines_live.ex:1004
+#: lib/marshall_web/live/machines_live.ex:1109
 #: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Ƙwaƙwalwar ajiya (MiB)"
 
-#: lib/marshall_web/live/machines_live.ex:1295
+#: lib/marshall_web/live/machines_live.ex:1403
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Yanayin"
 
-#: lib/marshall_web/live/machines_live.ex:737
+#: lib/marshall_web/live/machines_live.ex:822
 #, elixir-autogen, elixir-format
 msgid "Move cancelled; cleanup complete"
 msgstr "An soke motsi; tsaftacewa cikakke"
 
-#: lib/marshall_web/live/machines_live.ex:738
+#: lib/marshall_web/live/machines_live.ex:823
 #, elixir-autogen, elixir-format
 msgid "Move complete"
 msgstr "Matsar cikakke"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1383
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "Matsar da wannan na'ura zuwa wurin da aka zaɓa ta atomatik? Maiyuwa ba za a iya samun na'urar a ɗan lokaci ba."
 
-#: lib/marshall_web/live/machines_live.ex:1281
+#: lib/marshall_web/live/machines_live.ex:1389
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "Matsar zuwa wani mai masaukin baki"
@@ -799,7 +794,7 @@ msgstr "Matsar zuwa wani mai masaukin baki"
 msgid "Needs attention"
 msgstr "Yana buƙatar kulawa"
 
-#: lib/marshall_web/live/machines_live.ex:1374
+#: lib/marshall_web/live/machines_live.ex:1482
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "Sabon sunan inji (na zaɓi)"
@@ -809,54 +804,54 @@ msgstr "Sabon sunan inji (na zaɓi)"
 msgid "New sizes"
 msgstr "Sabbin girma dabam"
 
-#: lib/marshall_web/live/machines_live.ex:885
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:970
+#: lib/marshall_web/live/machines_live.ex:1292
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "shafi na gaba →"
 
-#: lib/marshall_web/live/overview_live.ex:343
+#: lib/marshall_web/live/overview_live.ex:375
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "Matakai na gaba"
 
-#: lib/marshall_web/live/machines_live.ex:1407
+#: lib/marshall_web/live/machines_live.ex:1515
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "Babu buƙatun kwafi tukuna. Yi layi kwafi kuma ku bi ci gabansa anan."
 
-#: lib/marshall_web/live/machines_live.ex:1177
+#: lib/marshall_web/live/machines_live.ex:1285
 #, elixir-autogen, elixir-format
 msgid "No direct machine grants."
 msgstr "Babu tallafin inji kai tsaye."
 
-#: lib/marshall_web/live/machines_live.ex:910
+#: lib/marshall_web/live/machines_live.ex:995
 #, elixir-autogen, elixir-format
 msgid "No images are available on ready hosts right now."
 msgstr "Babu hotuna akan shirye-shiryen runduna a yanzu."
 
-#: lib/marshall_web/live/overview_live.ex:177
+#: lib/marshall_web/live/overview_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "No machines in this preview yet. Create one or ask an owner to share access."
 msgstr "Babu injuna a cikin wannan samfoti tukuna. Ƙirƙiri ɗaya ko tambayi mai shi don raba damar shiga."
 
-#: lib/marshall_web/live/machines_live.ex:785
+#: lib/marshall_web/live/machines_live.ex:870
 #, elixir-autogen, elixir-format
 msgid "No machines on this page. Create a machine or ask an owner to share access."
 msgstr "Babu inji a wannan shafin. Ƙirƙiri inji ko tambayi mai shi don raba hanyar shiga."
 
-#: lib/marshall_web/live/machines_live.ex:703
+#: lib/marshall_web/live/machines_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "No registered account matches that email address."
 msgstr "Babu wani asusu mai rijista da ya dace da wannan adireshin imel."
 
-#: lib/marshall_web/live/machines_live.ex:327
-#: lib/marshall_web/live/machines_live.ex:359
+#: lib/marshall_web/live/machines_live.ex:365
+#: lib/marshall_web/live/machines_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "No relocation is available."
 msgstr "Babu ƙaura da akwai."
 
-#: lib/marshall_web/live/machines_live.ex:1303
+#: lib/marshall_web/live/machines_live.ex:1411
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "An lura da raguwar lokaci"
@@ -871,44 +866,44 @@ msgstr "Ma'ajiyar jama'a kawai akan GitHub , GitLab , Codeberg ko Bitbucket za a
 msgid "Open clone"
 msgstr "Bude kwafi"
 
-#: lib/marshall_web/live/overview_live.ex:297
+#: lib/marshall_web/live/overview_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "Bude ma'ajin ajiya daga burauzar ku"
 
-#: lib/marshall_web/live/machines_live.ex:864
+#: lib/marshall_web/live/machines_live.ex:949
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "Buɗe tasha"
 
-#: lib/marshall_web/live/machines_live.ex:862
+#: lib/marshall_web/live/machines_live.ex:947
 #, elixir-autogen, elixir-format
 msgid "Open terminal for %{value1}"
 msgstr "Buɗe tasha don %{value1}"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "Buɗe tasha ↗"
 
-#: lib/marshall_web/live/machines_live.ex:660
+#: lib/marshall_web/live/machines_live.ex:724
 #, elixir-autogen, elixir-format
 msgid "Open this machine's web apps. No terminal."
 msgstr "Bude aikace-aikacen gidan yanar gizon wannan injin. Babu tasha."
 
-#: lib/marshall_web/live/machines_live.ex:1073
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "Operating system"
 msgstr "Tsarin aiki"
 
-#: lib/marshall_web/live/machines_live.ex:654
-#: lib/marshall_web/live/machines_live.ex:1211
-#: lib/marshall_web/live/machines_live.ex:1220
+#: lib/marshall_web/live/machines_live.ex:718
+#: lib/marshall_web/live/machines_live.ex:1319
+#: lib/marshall_web/live/machines_live.ex:1328
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Mai aiki"
 
-#: lib/marshall_web/live/machines_live.ex:603
+#: lib/marshall_web/live/machines_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents."
 msgstr "Haɗin waje, rabawa, aikace-aikacen gidan yanar gizo, SSH, tasha, da kayan aikin wakilin AI. Wakilin ba zai iya fara wakilan yara ba."
@@ -918,9 +913,9 @@ msgstr "Haɗin waje, rabawa, aikace-aikacen gidan yanar gizo, SSH, tasha, da kay
 msgid "Overview"
 msgstr "Dubawa"
 
-#: lib/marshall_web/live/machines_live.ex:839
-#: lib/marshall_web/live/machines_live.ex:977
-#: lib/marshall_web/live/machines_live.ex:1148
+#: lib/marshall_web/live/machines_live.ex:924
+#: lib/marshall_web/live/machines_live.ex:1082
+#: lib/marshall_web/live/machines_live.ex:1256
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Mai shi"
@@ -932,7 +927,7 @@ msgstr "Mai shi"
 msgid "Pending"
 msgstr "Ana jiran"
 
-#: lib/marshall_web/live/machines_live.ex:1467
+#: lib/marshall_web/live/machines_live.ex:1575
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Cire wannan na'ura da diski na dindindin. Ba za a iya soke wannan ba."
@@ -942,13 +937,13 @@ msgstr "Cire wannan na'ura da diski na dindindin. Ba za a iya soke wannan ba."
 msgid "Permission to clone this machine is no longer available."
 msgstr "Izinin rufe wannan injin ya daina samuwa."
 
-#: lib/marshall_web/live/machines_live.ex:979
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/machines_live.ex:1084
+#: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "Na sirri"
 
-#: lib/marshall_web/live/machines_live.ex:1292
+#: lib/marshall_web/live/machines_live.ex:1400
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "Mataki"
@@ -978,7 +973,7 @@ msgstr "Ana shirya kwafi"
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "Ana shirya sarari da bincika tushen kafin ɗaukar hoto."
 
-#: lib/marshall_web/live/machines_live.ex:723
+#: lib/marshall_web/live/machines_live.ex:808
 #, elixir-autogen, elixir-format
 msgid "Preparing transfer"
 msgstr "Ana shirya canja wuri"
@@ -993,20 +988,20 @@ msgstr "Ana shirya injin ku…"
 msgid "Preparing your repository…"
 msgstr "Ana shirya ma'ajiyar ku…"
 
-#: lib/marshall_web/live/machines_live.ex:596
+#: lib/marshall_web/live/machines_live.ex:660
 #, elixir-autogen, elixir-format
 msgid "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
 msgstr "Mai zaman kansa da mai shi kaɗai. SSH da shiga tasha; babu haɗin waje mai fita, rabawa, aikace-aikacen yanar gizo, ko wakilin AI."
 
-#: lib/marshall_web/live/machines_live.ex:797
-#: lib/marshall_web/live/machines_live.ex:829
-#: lib/marshall_web/live/machines_live.ex:952
-#: lib/marshall_web/live/machines_live.ex:1089
+#: lib/marshall_web/live/machines_live.ex:882
+#: lib/marshall_web/live/machines_live.ex:914
+#: lib/marshall_web/live/machines_live.ex:1057
+#: lib/marshall_web/live/machines_live.ex:1197
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Bayanan martaba"
 
-#: lib/marshall_web/live/machines_live.ex:958
+#: lib/marshall_web/live/machines_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "Profiles choose access and agent features. Machines remain isolated from one another."
 msgstr "Bayanan martaba suna zaɓar dama da fasalulluka na wakili. Injin sun kasance a ware daga juna."
@@ -1023,47 +1018,47 @@ msgstr "Matsayin layi %{value1}"
 msgid "Queued"
 msgstr "An yi layi"
 
-#: lib/marshall_web/live/machines_live.ex:1383
+#: lib/marshall_web/live/machines_live.ex:1491
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "Ana yin layi…"
 
-#: lib/marshall_web/live/machines_live.ex:662
+#: lib/marshall_web/live/machines_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "Read and write in the terminal."
 msgstr "Karanta kuma rubuta a cikin tashar."
 
-#: lib/marshall_web/live/overview_live.ex:358
+#: lib/marshall_web/live/overview_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "Karanta bayanin filin ↗"
 
-#: lib/marshall_web/live/machines_live.ex:661
+#: lib/marshall_web/live/machines_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Read the terminal."
 msgstr "Karanta tashar."
 
-#: lib/marshall_web/live/machines_live.ex:1024
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Ready when you are"
 msgstr "Shirya lokacin da kuke"
 
-#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1354
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "Tunani metadata"
 
-#: lib/marshall_web/live/overview_live.ex:374
+#: lib/marshall_web/live/overview_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "Sake sabuntawa"
 
-#: lib/marshall_web/live/overview_live.ex:372
+#: lib/marshall_web/live/overview_live.ex:404
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "Na wartsake…"
 
-#: lib/marshall_web/live/machines_live.ex:1201
+#: lib/marshall_web/live/machines_live.ex:1309
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Imel mai rijista"
@@ -1073,12 +1068,12 @@ msgstr "Imel mai rijista"
 msgid "Registering the copied disk as your private machine."
 msgstr "Yin rijistar faifan da aka kwafi azaman na'ura mai zaman kansa."
 
-#: lib/marshall_web/live/machines_live.ex:1264
+#: lib/marshall_web/live/machines_live.ex:1372
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "Mayar da injin"
 
-#: lib/marshall_web/live/machines_live.ex:298
+#: lib/marshall_web/live/machines_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "An nemi ƙaura. Ana zaɓar wuri ta atomatik."
@@ -1088,8 +1083,8 @@ msgstr "An nemi ƙaura. Ana zaɓar wuri ta atomatik."
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "An tsaya; tsarin fayil yana girma akan taya na gaba"
 
-#: lib/marshall_web/live/machines_live.ex:1213
-#: lib/marshall_web/live/machines_live.ex:1222
+#: lib/marshall_web/live/machines_live.ex:1321
+#: lib/marshall_web/live/machines_live.ex:1330
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "Cire shiga"
@@ -1104,7 +1099,7 @@ msgstr "Ana neman sokewa…"
 msgid "Requesting resize…"
 msgstr "Neman girma…"
 
-#: lib/marshall_web/live/machines_live.ex:1337
+#: lib/marshall_web/live/machines_live.ex:1445
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "Ana neman sake farawa…"
@@ -1114,12 +1109,12 @@ msgstr "Ana neman sake farawa…"
 msgid "Requesting retry…"
 msgstr "Ana neman sake gwadawa…"
 
-#: lib/marshall_web/live/machines_live.ex:1273
+#: lib/marshall_web/live/machines_live.ex:1381
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "Neman…"
 
-#: lib/marshall_web/live/machines_live.ex:1069
+#: lib/marshall_web/live/machines_live.ex:1177
 #: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
@@ -1172,9 +1167,9 @@ msgstr "Maimaita matakai"
 msgid "Resizing"
 msgstr "Ana canza girman"
 
-#: lib/marshall_web/live/machines_live.ex:796
-#: lib/marshall_web/live/machines_live.ex:822
-#: lib/marshall_web/live/machines_live.ex:1060
+#: lib/marshall_web/live/machines_live.ex:881
+#: lib/marshall_web/live/machines_live.ex:907
+#: lib/marshall_web/live/machines_live.ex:1168
 #, elixir-autogen, elixir-format
 msgid "Resources"
 msgstr "Albarkatu"
@@ -1216,7 +1211,7 @@ msgstr "Sake gwadawa"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "An kasa karɓan sake gwadawa. Ƙila ko yanayin injin ya canza."
 
-#: lib/marshall_web/live/machines_live.ex:1339
+#: lib/marshall_web/live/machines_live.ex:1447
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "Sake gwada taya inda ake nufi"
@@ -1231,30 +1226,30 @@ msgstr "Sake gwada girman girman"
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "Koma zuwa aikin runduna kuma tabbatar da maɓallan kalmar wucewa don sake buɗe injin →"
 
-#: lib/marshall_web/live/machines_live.ex:656
+#: lib/marshall_web/live/machines_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "An soke"
 
-#: lib/marshall_web/live/machines_live.ex:1132
-#: lib/marshall_web/live/machines_live.ex:1147
-#: lib/marshall_web/live/machines_live.ex:1166
-#: lib/marshall_web/live/machines_live.ex:1207
+#: lib/marshall_web/live/machines_live.ex:1240
+#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1274
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Matsayi"
 
-#: lib/marshall_web/live/overview_live.ex:175
+#: lib/marshall_web/live/overview_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Room for your next idea"
 msgstr "Daki don ra'ayin ku na gaba"
 
-#: lib/marshall_web/live/overview_live.ex:312
+#: lib/marshall_web/live/overview_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "Dakin girma"
 
-#: lib/marshall_web/live/machines_live.ex:1014
+#: lib/marshall_web/live/machines_live.ex:1119
 #, elixir-autogen, elixir-format
 msgid "Root disk (GiB)"
 msgstr "Tushen faifai (GiB)"
@@ -1264,42 +1259,42 @@ msgstr "Tushen faifai (GiB)"
 msgid "Running"
 msgstr "Gudu"
 
-#: lib/marshall_web/live/machines_live.ex:1230
+#: lib/marshall_web/live/machines_live.ex:1338
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "Ajiye shiga"
 
-#: lib/marshall_web/live/machines_live.ex:1261
+#: lib/marshall_web/live/machines_live.ex:1369
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "Ajiye metadata"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1336
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "Ana ajiyewa…"
 
-#: lib/marshall_web/live/machines_live.ex:645
+#: lib/marshall_web/live/machines_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "Selected image unavailable"
 msgstr "Babu hoton da aka zaɓa"
 
-#: lib/marshall_web/live/overview_live.ex:310
+#: lib/marshall_web/live/overview_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "Saita tsawo na mai bincike ↗"
 
-#: lib/marshall_web/live/overview_live.ex:205
+#: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "Raba"
 
-#: lib/marshall_web/live/machines_live.ex:841
+#: lib/marshall_web/live/machines_live.ex:926
 #, elixir-autogen, elixir-format
 msgid "Shared by"
 msgstr "Rabawa"
 
-#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1366
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "Short bayanin ga wakilai"
@@ -1344,7 +1339,7 @@ msgstr "Farfadowa tushen yana buƙatar kulawa."
 msgid "Source recovery retry requested."
 msgstr "An nemi sake gwadawar tushen tushe."
 
-#: lib/marshall_web/live/machines_live.ex:735
+#: lib/marshall_web/live/machines_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Source restored; destination cleanup pending"
 msgstr "Madogararsa; tsaftar wuri yana jiran"
@@ -1364,13 +1359,13 @@ msgstr "An kiyaye tushen, daidai da yanayin lokacin da aka fara wannan buƙatar.
 msgid "Source was stopped when this request began."
 msgstr "An dakatar da tushen lokacin da aka fara wannan bukata."
 
-#: lib/marshall_web/live/machines_live.ex:584
-#: lib/marshall_web/live/machines_live.ex:673
+#: lib/marshall_web/live/machines_live.ex:648
+#: lib/marshall_web/live/machines_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "Daidaitawa"
 
-#: lib/marshall_web/live/machines_live.ex:681
+#: lib/marshall_web/live/machines_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Starting"
 msgstr "farawa"
@@ -1380,13 +1375,13 @@ msgstr "farawa"
 msgid "Starting the machine with its new resources."
 msgstr "Fara injin tare da sabbin albarkatun sa."
 
-#: lib/marshall_web/live/machines_live.ex:795
-#: lib/marshall_web/live/machines_live.ex:814
+#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Matsayi"
 
-#: lib/marshall_web/live/overview_live.ex:243
+#: lib/marshall_web/live/overview_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "Tsaya a cikin madauki"
@@ -1413,7 +1408,7 @@ msgstr "Tsaida inji"
 msgid "Stopped"
 msgstr "Tsaya"
 
-#: lib/marshall_web/live/machines_live.ex:678
+#: lib/marshall_web/live/machines_live.ex:742
 #: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
@@ -1434,17 +1429,17 @@ msgstr "Tsaida kwafin da cire albarkatun wucin gadi. Ana bibiyar dawo da tushe d
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Tsaida na'ura don albarkatunsa su iya canzawa cikin aminci."
 
-#: lib/marshall_web/live/machines_live.ex:725
+#: lib/marshall_web/live/machines_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "Tsayawa tushen"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "Yi rijista"
 
-#: lib/marshall_web/live/machines_live.ex:728
+#: lib/marshall_web/live/machines_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "Canja wurin wuri"
@@ -1454,17 +1449,17 @@ msgstr "Canja wurin wuri"
 msgid "Taking snapshot"
 msgstr "Ɗaukar hoto"
 
-#: lib/marshall_web/live/machines_live.ex:1122
+#: lib/marshall_web/live/machines_live.ex:1230
 #, elixir-autogen, elixir-format
 msgid "Team membership and thread sharing can also grant machine access."
 msgstr "Kasancewar membobin ƙungiya da raba zaren na iya ba da damar na'ura."
 
-#: lib/marshall_web/live/machines_live.ex:871
+#: lib/marshall_web/live/machines_live.ex:956
 #, elixir-autogen, elixir-format
 msgid "Terminal unavailable"
 msgstr "Babu tashar tashar"
 
-#: lib/marshall_web/live/machines_live.ex:665
+#: lib/marshall_web/live/machines_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "Terminal, sake zagayowar rayuwa, sake girman, kwafi da rabawa."
@@ -1489,7 +1484,7 @@ msgstr "Wannan ma'adanar suna ba ta aiki."
 msgid "That repository reference cannot be launched."
 msgstr "Ba za a iya ƙaddamar da bayanin ma'ajin ajiya ba."
 
-#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/machines_live.ex:1299
 #, elixir-autogen, elixir-format
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr "Dole ne a riga an yi rijistar asusun. Ajiye matsayi yana maye gurbin aikin injin kai tsaye na mutumin; zaɓi Cire damar don cire wannan tallafin kai tsaye."
@@ -1534,17 +1529,17 @@ msgstr "Ba za a iya sabunta na'urar ba. Sake sake gwadawa."
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Na'urar ta canza tun lokacin da aka ƙirƙiri wannan daftarin. Yi nazarin albarkatun da aka tabbatar a sama."
 
-#: lib/marshall_web/live/machines_live.ex:1285
+#: lib/marshall_web/live/machines_live.ex:1393
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr "An dakatar da injin ɗin, ana kwafi sau ɗaya kuma an fara shi akan mai masaukin da aka zaɓa ta atomatik. Rundunar ci gaban mu tana amfani da haɗin 1 Gbit / s tsakanin runduna, don haka motsi na iya ɗaukar ɗan lokaci kaɗan; Ana tsammanin motsi zai yi sauri sosai lokacin da Overalls ke gudana akan AWS a samarwa."
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1405
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "An dakatar da injin, an kwafi sau ɗaya kuma an fara kan inda aka nufa."
 
-#: lib/marshall_web/live/machines_live.ex:704
+#: lib/marshall_web/live/machines_live.ex:789
 #, elixir-autogen, elixir-format
 msgid "The owner's access cannot be changed."
 msgstr "Ba za a iya canza hanyar mai shi ba."
@@ -1559,7 +1554,7 @@ msgstr "An kasa canza fil. Sake sake gwadawa."
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Kwafin da ya gabata na wannan na'ura yana ci gaba da sakin hotonta. Sake gwadawa anjima."
 
-#: lib/marshall_web/live/machines_live.ex:714
+#: lib/marshall_web/live/machines_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "The request could not be completed. Check the values and try again."
 msgstr "Ba a iya kammala buƙatar ba. Duba dabi'u kuma a sake gwadawa."
@@ -1574,12 +1569,13 @@ msgstr "Buƙatar ta ci karo da matsala. Yi amfani da ayyukan da ke akwai don mur
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "An kammala girman girman; wannan shafin yana wartsakewa tare da ingantattun masu girma dabam."
 
-#: lib/marshall_web/live/machines_live.ex:610
+#: lib/marshall_web/live/machines_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "The same network and access options as Standard, with AI agents that can start child agents."
 msgstr "Cibiyar sadarwa iri ɗaya da zaɓuɓɓukan samun dama kamar Standard, tare da wakilan AI waɗanda zasu iya fara wakilan yara."
 
-#: lib/marshall_web/live/machines_live.ex:700
+#: lib/marshall_web/live/machines_live.ex:768
+#: lib/marshall_web/live/machines_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "The selected image needs more memory or disk space."
 msgstr "Hoton da aka zaɓa yana buƙatar ƙarin ƙwaƙwalwar ajiya ko sarari diski."
@@ -1609,7 +1605,7 @@ msgstr "Tushen ya kasance mai aiki ko canza kafin fara cloning. Sake gwadawa lok
 msgid "There is not enough available capacity for a new machine right now."
 msgstr "Babu isassun iya aiki don sabon na'ura a yanzu."
 
-#: lib/marshall_web/live/machines_live.ex:693
+#: lib/marshall_web/live/machines_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "There is not enough available capacity for this machine."
 msgstr "Babu isassun ƙarfin wannan injin."
@@ -1619,7 +1615,8 @@ msgstr "Babu isassun ƙarfin wannan injin."
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "Babu isasshen ƙarfin wannan kwafin. Sake gwada lokacin da sarari yake."
 
-#: lib/marshall_web/live/machines_live.ex:695
+#: lib/marshall_web/live/machines_live.ex:765
+#: lib/marshall_web/live/machines_live.ex:780
 #, elixir-autogen, elixir-format
 msgid "This image is no longer available. Refresh and choose another image."
 msgstr "Wannan hoton baya samuwa. Sake sabunta kuma zaɓi wani hoto."
@@ -1644,7 +1641,7 @@ msgstr "Wannan hanyar ƙaddamarwa ta ƙare. Bude shi kuma."
 msgid "This machine is being deleted and cannot be pinned."
 msgstr "Ana share wannan injin kuma ba za a iya liƙa shi ba."
 
-#: lib/marshall_web/live/machines_live.ex:706
+#: lib/marshall_web/live/machines_live.ex:791
 #, elixir-autogen, elixir-format
 msgid "This machine is being deleted."
 msgstr "Ana goge wannan injin."
@@ -1659,7 +1656,7 @@ msgstr "Babu wannan injin ko kuma ba ku da damar gudanarwa."
 msgid "This machine is unavailable or your access has ended."
 msgstr "Babu wannan injin ko samun damar ku ya ƙare."
 
-#: lib/marshall_web/live/machines_live.ex:701
+#: lib/marshall_web/live/machines_live.ex:786
 #, elixir-autogen, elixir-format
 msgid "This machine's host is currently unavailable."
 msgstr "A halin yanzu babu mai masaukin wannan injin."
@@ -1674,7 +1671,7 @@ msgstr "Ba za a iya ƙaddamar da wannan hanyar haɗin yanar gizon ba. Bude hanya
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "Wannan bukata ta kasa gamawa. Yi nazarin batun da ke ƙasa da ayyukan da ake da su."
 
-#: lib/marshall_web/live/machines_live.ex:709
+#: lib/marshall_web/live/machines_live.ex:794
 #, elixir-autogen, elixir-format
 msgid "This request has already been used. Refresh before trying again."
 msgstr "An riga an yi amfani da wannan buƙatar. A wartsake kafin a sake gwadawa."
@@ -1684,39 +1681,39 @@ msgstr "An riga an yi amfani da wannan buƙatar. A wartsake kafin a sake gwadawa
 msgid "This request has ended without publishing a clone."
 msgstr "Wannan buƙatar ta ƙare ba tare da buga kwafi ba."
 
-#: lib/marshall_web/live/machines_live.ex:835
-#: lib/marshall_web/live/machines_live.ex:1075
-#: lib/marshall_web/live/machines_live.ex:1087
+#: lib/marshall_web/live/machines_live.ex:920
+#: lib/marshall_web/live/machines_live.ex:1183
+#: lib/marshall_web/live/machines_live.ex:1195
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Babu"
 
-#: lib/marshall_web/live/machines_live.ex:657
+#: lib/marshall_web/live/machines_live.ex:721
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Ba a sani ba"
 
-#: lib/marshall_web/live/machines_live.ex:707
+#: lib/marshall_web/live/machines_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Unpin this machine before deleting it."
 msgstr "Cire wannan injin kafin a goge ta."
 
-#: lib/marshall_web/live/machines_live.ex:1461
+#: lib/marshall_web/live/machines_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "Cire don sharewa. Yayin da kuke da wannan na'ura, babu abin da zai iya share ta."
 
-#: lib/marshall_web/live/overview_live.ex:291
+#: lib/marshall_web/live/overview_live.ex:321
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "Cire rajista kowane lokaci."
 
-#: lib/marshall_web/live/overview_live.ex:367
+#: lib/marshall_web/live/overview_live.ex:399
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "An sabunta"
 
-#: lib/marshall_web/live/machines_live.ex:1403
+#: lib/marshall_web/live/machines_live.ex:1511
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "Sabuntawa ta atomatik"
@@ -1726,19 +1723,19 @@ msgstr "Sabuntawa ta atomatik"
 msgid "Use current machine state, keeping these sizes"
 msgstr "Yi amfani da yanayin inji na yanzu, kiyaye waɗannan girman"
 
-#: lib/marshall_web/live/machines_live.ex:727
+#: lib/marshall_web/live/machines_live.ex:812
 #, elixir-autogen, elixir-format
 msgid "Verifying the destination disks"
 msgstr "Ana tabbatar da faifan wurin da za a kai"
 
-#: lib/marshall_web/live/overview_live.ex:168
+#: lib/marshall_web/live/overview_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "View all →"
 msgstr "Duba duka →"
 
-#: lib/marshall_web/live/machines_live.ex:653
-#: lib/marshall_web/live/machines_live.ex:1210
-#: lib/marshall_web/live/machines_live.ex:1219
+#: lib/marshall_web/live/machines_live.ex:717
+#: lib/marshall_web/live/machines_live.ex:1318
+#: lib/marshall_web/live/machines_live.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "Mai kallo"
@@ -1768,7 +1765,7 @@ msgstr "Ana jiran kwafin wannan injin na baya ya saki hoton yanayinsa."
 msgid "Waiting for the source to stop."
 msgstr "Ana jiran tushen ya tsaya."
 
-#: lib/marshall_web/live/overview_live.ex:286
+#: lib/marshall_web/live/overview_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "Ba mu iya tuntuɓar sabis ɗin wasiƙar labarai ba. Sake gwadawa daga baya."
@@ -1778,13 +1775,13 @@ msgstr "Ba mu iya tuntuɓar sabis ɗin wasiƙar labarai ba. Sake gwadawa daga ba
 msgid "We couldn't launch that repository"
 msgstr "Ba mu iya ƙaddamar da wannan ma'ajiyar lamba ba"
 
-#: lib/marshall_web/live/machines_live.ex:652
+#: lib/marshall_web/live/machines_live.ex:716
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "Manhajojin yanar gizo"
 
-#: lib/marshall_web/live/machines_live.ex:1209
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Web apps only"
 msgstr "Manhajojin yanar gizo kaɗai"
@@ -1794,7 +1791,7 @@ msgstr "Manhajojin yanar gizo kaɗai"
 msgid "What happens"
 msgstr "Abin da zai faru"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1226
 #, elixir-autogen, elixir-format
 msgid "Who can reach this machine, and what each role allows."
 msgstr "Wa zai iya shiga wannan injin, da abin da kowace rawa ta yarda."
@@ -1804,7 +1801,7 @@ msgstr "Wa zai iya shiga wannan injin, da abin da kowace rawa ta yarda."
 msgid "You can pin up to %{value1} machines. Unpin one before pinning another."
 msgstr "Za ka iya riƙe injina har zuwa %{value1}. Saki ɗaya kafin riƙe wani."
 
-#: lib/marshall_web/live/machines_live.ex:705
+#: lib/marshall_web/live/machines_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "You no longer have permission for this action."
 msgstr "Ba ka da izinin wannan aikin kuma."
@@ -1814,17 +1811,17 @@ msgstr "Ba ka da izinin wannan aikin kuma."
 msgid "Your account cannot create machines."
 msgstr "Asusunka ba zai iya ƙirƙirar injina ba."
 
-#: lib/marshall_web/live/machines_live.ex:761
+#: lib/marshall_web/live/machines_live.ex:846
 #, elixir-autogen, elixir-format
 msgid "Your development environments, personal and shared."
 msgstr "Muhallin haɓakawarka, na kanka da wanda aka raba."
 
-#: lib/marshall_web/live/machines_live.ex:1092
+#: lib/marshall_web/live/machines_live.ex:1200
 #, elixir-autogen, elixir-format
 msgid "Your disk is retained when the machine is stopped."
 msgstr "Ana adana faifanka idan an tsayar da injin."
 
-#: lib/marshall_web/live/machines_live.ex:1033
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "Faifanka yana nan tare da kai idan an tsayar da injin."
@@ -1839,7 +1836,7 @@ msgstr "Injinka zai ci gaba da zama a tsaye. Girman tsarin fayil ɗin faifai zai
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "Injinka zai tsaya yayin sauya albarkatu, sannan ya sake farawa. Ka sa ran katsewar aiki."
 
-#: lib/marshall_web/live/overview_live.ex:166
+#: lib/marshall_web/live/overview_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your machines"
 msgstr "Injinanka"
@@ -1854,7 +1851,7 @@ msgstr "An ƙirƙiri kwafinka na kanka kuma an share albarkatun ɗan lokaci."
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr "An ƙirƙiri kwafinka na kanka. Har yanzu ana sakin hoton yanayin tushen; tushen zai ci gaba da samun kariya har sai an gama."
 
-#: lib/marshall_web/live/overview_live.ex:157
+#: lib/marshall_web/live/overview_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Your workspace, with a little room to breathe."
 msgstr "Muhallin aikinka, tare da ɗan sararin jin daɗi."
@@ -1864,18 +1861,18 @@ msgstr "Muhallin aikinka, tare da ɗan sararin jin daɗi."
 msgid "continue to Overalls"
 msgstr "ci gaba zuwa Overalls"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1359
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "na aiki, sunan-aikin"
 
-#: lib/marshall_web/live/machines_live.ex:881
-#: lib/marshall_web/live/machines_live.ex:1181
+#: lib/marshall_web/live/machines_live.ex:966
+#: lib/marshall_web/live/machines_live.ex:1289
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Shafin farko"
 
-#: lib/marshall_web/live/machines_live.ex:892
+#: lib/marshall_web/live/machines_live.ex:977
 #, elixir-autogen, elixir-format
 msgid "← Machines"
 msgstr "← Injina"
@@ -1969,7 +1966,52 @@ msgstr "Tabbatar"
 msgid "A new machine will clone the repository when it boots."
 msgstr "Sabuwar na'ura za ta kwafi ma'ajiyar lamba idan ta tashi."
 
-#: lib/marshall_web/live/machines_live.ex:638
+#: lib/marshall_web/live/machines_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Android (API 36)"
 msgstr "Android (API 36)"
+
+#: lib/marshall_web/live/machines_live.ex:1029
+#, elixir-autogen, elixir-format
+msgid "Leave this blank to create the machine without making setup changes."
+msgstr "Bar wannan babu komai don ƙirƙirar injin ba tare da canje-canjen saiti ba."
+
+#: lib/marshall_web/live/machines_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Machine and setup thread requested."
+msgstr "An nemi inji da zaren saiti."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:48
+#, elixir-autogen, elixir-format
+msgid "Provisioning is in progress. This page will open the machine when it is ready."
+msgstr "Ana shirya injin. Wannan shafin zai buɗe injin idan ya shirya."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "Provisioning request unavailable."
+msgstr "Ba a samun buƙatar shiryawa."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Retry is unavailable."
+msgstr "Ba a iya sake gwadawa."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Retry setup"
+msgstr "Sake gwada saitin"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:42
+#, elixir-autogen, elixir-format
+msgid "Setting up your machine"
+msgstr "Ana saita injin ka"
+
+#: lib/marshall_web/live/machines_live.ex:1019
+#, elixir-autogen, elixir-format
+msgid "The machine agent will execute this instruction automatically in Work mode."
+msgstr "Wakilin injin zai aiwatar da wannan umarni kai tsaye a yanayin Aiki."
+
+#: lib/marshall_web/live/machines_live.ex:1017
+#, elixir-autogen, elixir-format
+msgid "What should this machine do when it is ready?"
+msgstr "Me ya kamata wannan injin ya yi idan ya shirya?"

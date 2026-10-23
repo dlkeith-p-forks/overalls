@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1425
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " そして数えます"
 
-#: lib/marshall_web/live/machines_live.ex:1313
+#: lib/marshall_web/live/machines_live.ex:1421
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} 秒%{suffix}"
@@ -29,10 +29,10 @@ msgstr "%{seconds} 秒%{suffix}"
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
 
-#: lib/marshall_web/live/machines_live.ex:1081
-#: lib/marshall_web/live/machines_live.ex:1084
-#: lib/marshall_web/live/overview_live.ex:321
-#: lib/marshall_web/live/overview_live.ex:326
+#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1192
+#: lib/marshall_web/live/overview_live.ex:351
+#: lib/marshall_web/live/overview_live.ex:356
 #: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -43,20 +43,20 @@ msgstr "%{value1} GiB"
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:1078
-#: lib/marshall_web/live/overview_live.ex:318
+#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/overview_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:160
-#: lib/marshall_web/live/machines_live.ex:823
-#: lib/marshall_web/live/overview_live.ex:197
+#: lib/marshall_web/live/machines_live.ex:908
+#: lib/marshall_web/live/overview_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB ディスク"
 
-#: lib/marshall_web/live/machines_live.ex:1026
+#: lib/marshall_web/live/machines_live.ex:1131
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB メモリ · %{value3} GiB ディスク"
@@ -79,49 +79,49 @@ msgstr "%{value1} → %{value2} GiB"
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:765
-#: lib/marshall_web/live/overview_live.ex:161
+#: lib/marshall_web/live/machines_live.ex:850
+#: lib/marshall_web/live/overview_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "+ Create machine"
 msgstr "+ マシンの作成"
 
-#: lib/marshall_web/live/machines_live.ex:1385
+#: lib/marshall_web/live/machines_live.ex:1493
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ キュークローン"
 
-#: lib/marshall_web/live/machines_live.ex:617
+#: lib/marshall_web/live/machines_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
 msgstr ""
 "ネストされたマシン用のオーバーオール開発環境。専用のイメージ、追加の 256 GiB データ ディスク、およびより高い最小リソースを使用します。その "
 "AI エージェントは子エージェントを起動できます。"
 
-#: lib/marshall_web/live/overview_live.ex:156
+#: lib/marshall_web/live/overview_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "A good day to make something."
 msgstr "何かを作るのに良い日。"
 
-#: lib/marshall_web/live/overview_live.ex:229
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "ちょっとしたプレビュー。アクセス可能なすべてのマシンが入っています"
 
-#: lib/marshall_web/live/machines_live.ex:799
-#: lib/marshall_web/live/machines_live.ex:837
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:884
+#: lib/marshall_web/live/machines_live.ex:922
+#: lib/marshall_web/live/machines_live.ex:1225
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "アクセス"
 
-#: lib/marshall_web/live/machines_live.ex:381
+#: lib/marshall_web/live/machines_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "Access updated."
 msgstr "アクセスを更新しました。"
 
-#: lib/marshall_web/live/machines_live.ex:1131
-#: lib/marshall_web/live/machines_live.ex:1138
-#: lib/marshall_web/live/machines_live.ex:1157
+#: lib/marshall_web/live/machines_live.ex:1239
+#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1265
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "アカウント"
@@ -136,14 +136,14 @@ msgstr "管理者認証の期限が切れました。フリート ワークロ�
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr "管理者認証の期限が切れました。サイズ変更の下書きは、このページのアドレスに保存されます。"
 
-#: lib/marshall_web/live/machines_live.ex:739
+#: lib/marshall_web/live/machines_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "All retained copies deleted"
 msgstr "保持されているすべてのコピーが削除されました"
 
-#: lib/marshall_web/live/machines_live.ex:1133
-#: lib/marshall_web/live/machines_live.ex:1150
-#: lib/marshall_web/live/machines_live.ex:1169
+#: lib/marshall_web/live/machines_live.ex:1241
+#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1277
 #, elixir-autogen, elixir-format
 msgid "Allows"
 msgstr "許可します"
@@ -178,15 +178,15 @@ msgstr "概要に戻る"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "ソースを一時的に停止して、ディスクを安全にキャプチャできるようにします。"
 
-#: lib/marshall_web/live/overview_live.ex:301
+#: lib/marshall_web/live/overview_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr ""
 "Chrome または Firefox 拡張機能を使用して、GitHub、GitLab、Codeberg、または Bitbucket リポジトリを "
 "Overalls に導入します。"
 
-#: lib/marshall_web/live/machines_live.ex:1077
-#: lib/marshall_web/live/overview_live.ex:317
+#: lib/marshall_web/live/machines_live.ex:1185
+#: lib/marshall_web/live/overview_live.ex:347
 #: lib/marshall_web/live/resize_live.ex:315
 #: lib/marshall_web/live/resize_live.ex:359
 #: lib/marshall_web/live/resize_live.ex:447
@@ -195,7 +195,7 @@ msgstr ""
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/machines_live.ex:996
+#: lib/marshall_web/live/machines_live.ex:1101
 #, elixir-autogen, elixir-format
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
@@ -206,7 +206,7 @@ msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU とメモリは増減する可能性があります。ディスク サイズは増加する可能性があります。"
 
 #: lib/marshall_web/components/clone_components.ex:116
-#: lib/marshall_web/live/machines_live.ex:1045
+#: lib/marshall_web/live/machines_live.ex:1153
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "キャンセル"
@@ -216,7 +216,7 @@ msgstr "キャンセル"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "キャンセルはお受けできませんでした。サイズがすでに適用されているか、マシンの状態が未確認です。"
 
-#: lib/marshall_web/live/machines_live.ex:1331
+#: lib/marshall_web/live/machines_live.ex:1439
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "移動をキャンセルする"
@@ -226,7 +226,7 @@ msgstr "移動をキャンセルする"
 msgid "Cancel resize"
 msgstr "サイズ変更をキャンセル"
 
-#: lib/marshall_web/live/machines_live.ex:319
+#: lib/marshall_web/live/machines_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "キャンセルが要求されました。リカバリ後もクリーンアップが続行される場合があります。"
@@ -248,7 +248,7 @@ msgstr "スナップショットが開始される前にキャンセルされま
 msgid "Cancelling"
 msgstr "キャンセルする"
 
-#: lib/marshall_web/live/machines_live.ex:734
+#: lib/marshall_web/live/machines_live.ex:819
 #, elixir-autogen, elixir-format
 msgid "Cancelling and restoring the source"
 msgstr "ソースのキャンセルと復元"
@@ -268,12 +268,12 @@ msgstr "キャンセル: 停止が確認されるのを待ってから、現在�
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "キャンセル中: 停止が確認されるのを待っています。サイズは変わりません。"
 
-#: lib/marshall_web/live/machines_live.ex:1329
+#: lib/marshall_web/live/machines_live.ex:1437
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "キャンセル中…"
 
-#: lib/marshall_web/live/overview_live.ex:332
+#: lib/marshall_web/live/overview_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "マシンを作成するときに容量が再度チェックされます。"
@@ -283,32 +283,32 @@ msgstr "マシンを作成するときに容量が再度チェックされます
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "ソースディスクをキャプチャしています。スナップショットの準備が完了すると、コピーが開始されます。"
 
-#: lib/marshall_web/live/overview_live.ex:279
+#: lib/marshall_web/live/overview_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "受信トレイを確認し、リンクをクリックして購読を確定してください。"
 
-#: lib/marshall_web/live/machines_live.ex:729
+#: lib/marshall_web/live/machines_live.ex:814
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "目的地の準備状況を確認する"
 
-#: lib/marshall_web/live/machines_live.ex:724
+#: lib/marshall_web/live/machines_live.ex:809
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "転送接続を確認しています"
 
-#: lib/marshall_web/live/machines_live.ex:937
+#: lib/marshall_web/live/machines_live.ex:1042
 #, elixir-autogen, elixir-format
 msgid "Choose an image"
 msgstr "画像を選択してください"
 
-#: lib/marshall_web/live/machines_live.ex:895
+#: lib/marshall_web/live/machines_live.ex:980
 #, elixir-autogen, elixir-format
 msgid "Choose an image and the resources for your environment."
 msgstr "環境に合わせてイメージとリソースを選択します。"
 
-#: lib/marshall_web/live/machines_live.ex:930
+#: lib/marshall_web/live/machines_live.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Choose your environment"
 msgstr "環境を選択してください"
@@ -323,7 +323,7 @@ msgstr "クローンがキャンセルされました"
 msgid "Clone complete"
 msgstr "クローンの完成"
 
-#: lib/marshall_web/live/machines_live.ex:1351
+#: lib/marshall_web/live/machines_live.ex:1459
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "クローンマシン"
@@ -333,17 +333,17 @@ msgstr "クローンマシン"
 msgid "Clone needs attention"
 msgstr "クローンには注意が必要です"
 
-#: lib/marshall_web/live/machines_live.ex:262
+#: lib/marshall_web/live/machines_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Clone queued. You can queue another copy."
 msgstr "クローンがキューに入れられました。別のコピーをキューに入れることができます。"
 
-#: lib/marshall_web/live/machines_live.ex:1402
+#: lib/marshall_web/live/machines_live.ex:1510
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "クローンリクエスト"
 
-#: lib/marshall_web/live/machines_live.ex:1413
+#: lib/marshall_web/live/machines_live.ex:1521
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "クローン リクエストは一時的に利用できなくなります。自動的に再試行します。"
@@ -353,7 +353,7 @@ msgstr "クローン リクエストは一時的に利用できなくなりま�
 msgid "Clone stages"
 msgstr "クローンステージ"
 
-#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1363
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "コメント"
@@ -368,13 +368,13 @@ msgstr "完了"
 msgid "Confirmed resources"
 msgstr "確認されたリソース"
 
-#: lib/marshall_web/live/machines_live.ex:800
-#: lib/marshall_web/live/machines_live.ex:851
+#: lib/marshall_web/live/machines_live.ex:885
+#: lib/marshall_web/live/machines_live.ex:936
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "接続する"
 
-#: lib/marshall_web/live/overview_live.ex:346
+#: lib/marshall_web/live/overview_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "インテグレーションを接続する ↗"
@@ -389,7 +389,7 @@ msgstr "コピーする"
 msgid "Copying files"
 msgstr "ファイルのコピー"
 
-#: lib/marshall_web/live/machines_live.ex:726
+#: lib/marshall_web/live/machines_live.ex:811
 #, elixir-autogen, elixir-format
 msgid "Copying the stopped disks"
 msgstr "停止したディスクをコピーする"
@@ -399,20 +399,20 @@ msgstr "停止したディスクをコピーする"
 msgid "Create a machine"
 msgstr "マシンを作成する"
 
-#: lib/marshall_web/live/machines_live.ex:1359
+#: lib/marshall_web/live/machines_live.ex:1467
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr ""
 "このマシンのプライベートで独立したコピーを作成します。実行中のマシンはスナップショットごとに一時的に停止し、コピーを続行しながら再起動します。コピーは順番に処理され、ターン開始時のソースの電源状態と一致します。"
 
-#: lib/marshall_web/live/machines_live.ex:93
-#: lib/marshall_web/live/machines_live.ex:894
-#: lib/marshall_web/live/machines_live.ex:1043
+#: lib/marshall_web/live/machines_live.ex:106
+#: lib/marshall_web/live/machines_live.ex:979
+#: lib/marshall_web/live/machines_live.ex:1151
 #, elixir-autogen, elixir-format
 msgid "Create machine"
 msgstr "マシンの作成"
 
-#: lib/marshall_web/live/overview_live.ex:182
+#: lib/marshall_web/live/overview_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "最初のマシンを作成する"
@@ -427,92 +427,92 @@ msgstr "スナップショットから独立したディスクを作成します
 msgid "Creating cloned machine"
 msgstr "クローンマシンの作成"
 
-#: lib/marshall_web/live/machines_live.ex:1041
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Creating…"
 msgstr "作成…"
 
-#: lib/marshall_web/live/machines_live.ex:779
+#: lib/marshall_web/live/machines_live.ex:864
 #, elixir-autogen, elixir-format
 msgid "Current headroom is temporarily unavailable."
 msgstr "現在のヘッドルームは一時的に利用できません。"
 
-#: lib/marshall_web/live/machines_live.ex:771
-#: lib/marshall_web/live/machines_live.ex:913
+#: lib/marshall_web/live/machines_live.ex:856
+#: lib/marshall_web/live/machines_live.ex:998
 #, elixir-autogen, elixir-format
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "現在のヘッドルーム: %{value1} vCPU · %{value2} GiB メモリ · %{value3} GiB ディスク"
 
-#: lib/marshall_web/live/overview_live.ex:313
+#: lib/marshall_web/live/overview_live.ex:343
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "現在のプロビジョニングのヘッドルーム"
 
-#: lib/marshall_web/live/machines_live.ex:583
-#: lib/marshall_web/live/machines_live.ex:671
+#: lib/marshall_web/live/machines_live.ex:647
+#: lib/marshall_web/live/machines_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "お客様"
 
-#: lib/marshall_web/live/machines_live.ex:1103
+#: lib/marshall_web/live/machines_live.ex:1211
 #, elixir-autogen, elixir-format
 msgid "Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled."
 msgstr ""
 "顧客のマシンでは、所有者の SSH および端末アクセスのみが許可されます。アウトバウンド ネットワーキング、ワークスペース共有、および Web "
 "サービスの公開は無効になります。"
 
-#: lib/marshall_web/live/machines_live.ex:1457
+#: lib/marshall_web/live/machines_live.ex:1565
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "消去"
 
-#: lib/marshall_web/live/machines_live.ex:1440
+#: lib/marshall_web/live/machines_live.ex:1548
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "マシンの削除"
 
-#: lib/marshall_web/live/machines_live.ex:1454
+#: lib/marshall_web/live/machines_live.ex:1562
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "このマシンとそのディスクを削除しますか?これを元に戻すことはできません。"
 
-#: lib/marshall_web/live/machines_live.ex:675
+#: lib/marshall_web/live/machines_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Deleting"
 msgstr "削除中"
 
-#: lib/marshall_web/live/machines_live.ex:736
+#: lib/marshall_web/live/machines_live.ex:821
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "保存されたコピーを削除する"
 
-#: lib/marshall_web/live/machines_live.ex:730
+#: lib/marshall_web/live/machines_live.ex:815
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "宛先のブートに失敗しました。ソースコピーが保持される"
 
-#: lib/marshall_web/live/machines_live.ex:732
+#: lib/marshall_web/live/machines_live.ex:817
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "宛先の準備ができませんでした。ソースコピーが保持される"
 
-#: lib/marshall_web/live/machines_live.ex:733
+#: lib/marshall_web/live/machines_live.ex:818
 #, elixir-autogen, elixir-format
 msgid "Destination ready; cleaning up the source"
 msgstr "目的地準備完了。ソースをクリーンアップする"
 
-#: lib/marshall_web/live/machines_live.ex:348
+#: lib/marshall_web/live/machines_live.ex:386
 #, elixir-autogen, elixir-format
 msgid "Destination restart requested. The source copy remains retained until readiness succeeds."
 msgstr "宛先の再起動が要求されました。ソース コピーは、準備が完了するまで保持されます。"
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1228
 #, elixir-autogen, elixir-format
 msgid "Direct machine grants"
 msgstr "直接マシン許可"
 
-#: lib/marshall_web/live/machines_live.ex:1083
-#: lib/marshall_web/live/overview_live.ex:325
+#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/overview_live.ex:355
 #: lib/marshall_web/live/resize_live.ex:321
 #: lib/marshall_web/live/resize_live.ex:375
 #: lib/marshall_web/live/resize_live.ex:484
@@ -520,7 +520,7 @@ msgstr "直接マシン許可"
 msgid "Disk"
 msgstr "ディスク"
 
-#: lib/marshall_web/live/machines_live.ex:1015
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB)"
 msgstr "ディスク (GiB)"
@@ -530,12 +530,12 @@ msgstr "ディスク (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "ディスク (GiB) - 最大 500 GiB"
 
-#: lib/marshall_web/live/overview_live.ex:251
+#: lib/marshall_web/live/overview_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "閉じる"
 
-#: lib/marshall_web/live/overview_live.ex:269
+#: lib/marshall_web/live/overview_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "電子メールアドレス"
@@ -545,42 +545,42 @@ msgstr "電子メールアドレス"
 msgid "Enable JavaScript to open a repository link, or"
 msgstr "JavaScript を有効にしてリポジトリ リンクを開くか、"
 
-#: lib/marshall_web/live/machines_live.ex:668
+#: lib/marshall_web/live/machines_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Ends that person's access to this machine."
 msgstr "その人のこのマシンへのアクセスを終了します。"
 
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "有効なメールアドレスを入力してください。"
 
-#: lib/marshall_web/live/machines_live.ex:159
+#: lib/marshall_web/live/machines_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "Enter whole numbers for CPU, memory and disk size."
 msgstr "CPU、メモリ、ディスク サイズには整数を入力します。"
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1259
 #, elixir-autogen, elixir-format
 msgid "Everything; cannot be changed here."
 msgstr "すべて;ここでは変更できません。"
 
-#: lib/marshall_web/live/overview_live.ex:355
+#: lib/marshall_web/live/overview_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "使い方を探る ↗"
 
-#: lib/marshall_web/live/machines_live.ex:1352
+#: lib/marshall_web/live/machines_live.ex:1460
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "ファイルと保存された認証情報はコピーに含まれます"
 
-#: lib/marshall_web/live/machines_live.ex:1392
+#: lib/marshall_web/live/machines_live.ex:1500
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "ファイルと保存された認証情報はコピーに含まれます。"
 
-#: lib/marshall_web/live/overview_live.ex:352
+#: lib/marshall_web/live/overview_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "仲間を見つける ↗"
@@ -595,17 +595,17 @@ msgstr "仕上げ"
 msgid "Finishing up"
 msgstr "仕上げ中"
 
-#: lib/marshall_web/live/overview_live.ex:254
+#: lib/marshall_web/live/overview_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "OverallsとAIに関するヒント、活用法、最新情報をメールでお届けします。"
 
-#: lib/marshall_web/live/machines_live.ex:990
+#: lib/marshall_web/live/machines_live.ex:1095
 #, elixir-autogen, elixir-format
 msgid "Give it room to grow"
 msgstr "成長の余地を与える"
 
-#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1297
 #, elixir-autogen, elixir-format
 msgid "Grant, change or remove access"
 msgstr "アクセス権の付与、変更、削除"
@@ -615,40 +615,40 @@ msgstr "アクセス権の付与、変更、削除"
 msgid "Grow the filesystem on next boot"
 msgstr "次回起動時にファイルシステムを拡張する"
 
-#: lib/marshall_web/live/overview_live.ex:336
+#: lib/marshall_web/live/overview_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "ヘッドルームは一時的に利用できません。"
 
-#: lib/marshall_web/live/machines_live.ex:798
-#: lib/marshall_web/live/machines_live.ex:833
-#: lib/marshall_web/live/machines_live.ex:1086
+#: lib/marshall_web/live/machines_live.ex:883
+#: lib/marshall_web/live/machines_live.ex:918
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "ホスト"
 
-#: lib/marshall_web/live/machines_live.ex:936
+#: lib/marshall_web/live/machines_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "画像"
 
-#: lib/marshall_web/live/machines_live.ex:899
+#: lib/marshall_web/live/machines_live.ex:984
 #, elixir-autogen, elixir-format
 msgid "Images and capacity are temporarily unavailable. Your choices are retained."
 msgstr "画像と容量が一時的に利用できなくなります。選択内容は保持されます。"
 
-#: lib/marshall_web/live/machines_live.ex:589
-#: lib/marshall_web/live/machines_live.ex:672
+#: lib/marshall_web/live/machines_live.ex:653
+#: lib/marshall_web/live/machines_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Inception"
 msgstr "インセプション"
 
-#: lib/marshall_web/live/machines_live.ex:404
+#: lib/marshall_web/live/machines_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "無効なリクエストです。"
 
-#: lib/marshall_web/live/machines_live.ex:1249
+#: lib/marshall_web/live/machines_live.ex:1357
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "ラベル"
@@ -674,12 +674,12 @@ msgstr "打ち上げ中"
 msgid "Launching repository"
 msgstr "リポジトリの起動"
 
-#: lib/marshall_web/live/machines_live.ex:1375
+#: lib/marshall_web/live/machines_live.ex:1483
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "名前を生成するには空白のままにしてください"
 
-#: lib/marshall_web/live/machines_live.ex:1389
+#: lib/marshall_web/live/machines_live.ex:1497
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "名前を生成するには空白のままにします。"
@@ -691,77 +691,72 @@ msgstr "名前を生成するには空白のままにします。"
 msgid "Leave stopped"
 msgstr "停止したままにする"
 
-#: lib/marshall_web/live/machines_live.ex:794
+#: lib/marshall_web/live/machines_live.ex:879
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "機械"
 
-#: lib/marshall_web/live/machines_live.ex:228
+#: lib/marshall_web/live/machines_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
 msgstr "マシンのメタデータを保存しました。"
 
-#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:965
 #, elixir-autogen, elixir-format
 msgid "Machine pages"
 msgstr "マシンページ"
 
-#: lib/marshall_web/live/machines_live.ex:148
-#, elixir-autogen, elixir-format
-msgid "Machine requested."
-msgstr "マシンがリクエストされました。"
-
-#: lib/marshall_web/live/machines_live.ex:210
+#: lib/marshall_web/live/machines_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Machine update requested."
 msgstr "マシンの更新が要求されました。"
 
-#: lib/marshall_web/live/machines_live.ex:108
-#: lib/marshall_web/live/machines_live.ex:760
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/machines_live.ex:121
+#: lib/marshall_web/live/machines_live.ex:845
+#: lib/marshall_web/live/overview_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "機械"
 
-#: lib/marshall_web/live/machines_live.ex:464
+#: lib/marshall_web/live/machines_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "Machines are temporarily unavailable."
 msgstr "マシンは一時的に利用できなくなります。"
 
-#: lib/marshall_web/live/overview_live.ex:235
+#: lib/marshall_web/live/overview_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "マシンをロードできませんでした。更新して再試行してください。"
 
-#: lib/marshall_web/live/machines_live.ex:973
+#: lib/marshall_web/live/machines_live.ex:1078
 #, elixir-autogen, elixir-format
 msgid "Make it yours"
 msgstr "それをあなたのものにしてください"
 
-#: lib/marshall_web/live/overview_live.ex:340
+#: lib/marshall_web/live/overview_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "お寛ぎ下さい"
 
-#: lib/marshall_web/live/machines_live.ex:1100
+#: lib/marshall_web/live/machines_live.ex:1208
 #, elixir-autogen, elixir-format
 msgid "Management access is required to change the remaining settings."
 msgstr "残りの設定を変更するには管理アクセスが必要です。"
 
-#: lib/marshall_web/live/machines_live.ex:655
-#: lib/marshall_web/live/machines_live.ex:1212
-#: lib/marshall_web/live/machines_live.ex:1221
+#: lib/marshall_web/live/machines_live.ex:719
+#: lib/marshall_web/live/machines_live.ex:1320
+#: lib/marshall_web/live/machines_live.ex:1329
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "マネージャー"
 
-#: lib/marshall_web/live/machines_live.ex:1307
+#: lib/marshall_web/live/machines_live.ex:1415
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "コントロール プレーンの停止と準備状況の観察の間に測定されます。ゲストの空き状況は異なる場合があります。"
 
-#: lib/marshall_web/live/machines_live.ex:1080
-#: lib/marshall_web/live/overview_live.ex:320
+#: lib/marshall_web/live/machines_live.ex:1188
+#: lib/marshall_web/live/overview_live.ex:350
 #: lib/marshall_web/live/resize_live.ex:318
 #: lib/marshall_web/live/resize_live.ex:365
 #: lib/marshall_web/live/resize_live.ex:478
@@ -769,33 +764,33 @@ msgstr "コントロール プレーンの停止と準備状況の観察の間�
 msgid "Memory"
 msgstr "メモリ"
 
-#: lib/marshall_web/live/machines_live.ex:1004
+#: lib/marshall_web/live/machines_live.ex:1109
 #: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "メモリ (MiB)"
 
-#: lib/marshall_web/live/machines_live.ex:1295
+#: lib/marshall_web/live/machines_live.ex:1403
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "モード"
 
-#: lib/marshall_web/live/machines_live.ex:737
+#: lib/marshall_web/live/machines_live.ex:822
 #, elixir-autogen, elixir-format
 msgid "Move cancelled; cleanup complete"
 msgstr "移動がキャンセルされました。クリーンアップが完了しました"
 
-#: lib/marshall_web/live/machines_live.ex:738
+#: lib/marshall_web/live/machines_live.ex:823
 #, elixir-autogen, elixir-format
 msgid "Move complete"
 msgstr "移動完了"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1383
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "このマシンを自動的に選択されたホストに移動しますか?マシンが一時的に利用できなくなる場合があります。"
 
-#: lib/marshall_web/live/machines_live.ex:1281
+#: lib/marshall_web/live/machines_live.ex:1389
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "別のホストに移動する"
@@ -806,7 +801,7 @@ msgstr "別のホストに移動する"
 msgid "Needs attention"
 msgstr "注意が必要です"
 
-#: lib/marshall_web/live/machines_live.ex:1374
+#: lib/marshall_web/live/machines_live.ex:1482
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "新しいマシン名 (オプション)"
@@ -816,54 +811,54 @@ msgstr "新しいマシン名 (オプション)"
 msgid "New sizes"
 msgstr "新しいサイズ"
 
-#: lib/marshall_web/live/machines_live.ex:885
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:970
+#: lib/marshall_web/live/machines_live.ex:1292
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "次のページ→"
 
-#: lib/marshall_web/live/overview_live.ex:343
+#: lib/marshall_web/live/overview_live.ex:375
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "次のステップ"
 
-#: lib/marshall_web/live/machines_live.ex:1407
+#: lib/marshall_web/live/machines_live.ex:1515
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "クローンリクエストはまだありません。コピーをキューに入れて、ここで進行状況を確認します。"
 
-#: lib/marshall_web/live/machines_live.ex:1177
+#: lib/marshall_web/live/machines_live.ex:1285
 #, elixir-autogen, elixir-format
 msgid "No direct machine grants."
 msgstr "直接のマシン許可はありません。"
 
-#: lib/marshall_web/live/machines_live.ex:910
+#: lib/marshall_web/live/machines_live.ex:995
 #, elixir-autogen, elixir-format
 msgid "No images are available on ready hosts right now."
 msgstr "現在、準備ができたホストで利用できるイメージはありません。"
 
-#: lib/marshall_web/live/overview_live.ex:177
+#: lib/marshall_web/live/overview_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "No machines in this preview yet. Create one or ask an owner to share access."
 msgstr "このプレビューにはまだマシンがありません。作成するか、所有者にアクセスを共有するよう依頼します。"
 
-#: lib/marshall_web/live/machines_live.ex:785
+#: lib/marshall_web/live/machines_live.ex:870
 #, elixir-autogen, elixir-format
 msgid "No machines on this page. Create a machine or ask an owner to share access."
 msgstr "このページにはマシンがありません。マシンを作成するか、所有者にアクセスを共有するよう依頼します。"
 
-#: lib/marshall_web/live/machines_live.ex:703
+#: lib/marshall_web/live/machines_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "No registered account matches that email address."
 msgstr "その電子メール アドレスに一致する登録アカウントはありません。"
 
-#: lib/marshall_web/live/machines_live.ex:327
-#: lib/marshall_web/live/machines_live.ex:359
+#: lib/marshall_web/live/machines_live.ex:365
+#: lib/marshall_web/live/machines_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "No relocation is available."
 msgstr "転居は対応しておりません。"
 
-#: lib/marshall_web/live/machines_live.ex:1303
+#: lib/marshall_web/live/machines_live.ex:1411
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "観察されたダウンタイム"
@@ -878,44 +873,44 @@ msgstr "GitHub、GitLab、Codeberg、または Bitbucket 上のパブリック �
 msgid "Open clone"
 msgstr "クローンを開く"
 
-#: lib/marshall_web/live/overview_live.ex:297
+#: lib/marshall_web/live/overview_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "ブラウザからリポジトリを開く"
 
-#: lib/marshall_web/live/machines_live.ex:864
+#: lib/marshall_web/live/machines_live.ex:949
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "ターミナルを開く"
 
-#: lib/marshall_web/live/machines_live.ex:862
+#: lib/marshall_web/live/machines_live.ex:947
 #, elixir-autogen, elixir-format
 msgid "Open terminal for %{value1}"
 msgstr "%{value1}のオープン端子"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "ターミナルを開く ↗"
 
-#: lib/marshall_web/live/machines_live.ex:660
+#: lib/marshall_web/live/machines_live.ex:724
 #, elixir-autogen, elixir-format
 msgid "Open this machine's web apps. No terminal."
 msgstr "このマシンの Web アプリを開きます。端子はありません。"
 
-#: lib/marshall_web/live/machines_live.ex:1073
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "Operating system"
 msgstr "オペレーティング·システム"
 
-#: lib/marshall_web/live/machines_live.ex:654
-#: lib/marshall_web/live/machines_live.ex:1211
-#: lib/marshall_web/live/machines_live.ex:1220
+#: lib/marshall_web/live/machines_live.ex:718
+#: lib/marshall_web/live/machines_live.ex:1319
+#: lib/marshall_web/live/machines_live.ex:1328
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "オペレーター"
 
-#: lib/marshall_web/live/machines_live.ex:603
+#: lib/marshall_web/live/machines_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents."
 msgstr "アウトバウンド接続、共有、Web アプリ、SSH、ターミナル、AI エージェント ツール。エージェントは子エージェントを起動できません。"
@@ -925,9 +920,9 @@ msgstr "アウトバウンド接続、共有、Web アプリ、SSH、ターミ�
 msgid "Overview"
 msgstr "概要"
 
-#: lib/marshall_web/live/machines_live.ex:839
-#: lib/marshall_web/live/machines_live.ex:977
-#: lib/marshall_web/live/machines_live.ex:1148
+#: lib/marshall_web/live/machines_live.ex:924
+#: lib/marshall_web/live/machines_live.ex:1082
+#: lib/marshall_web/live/machines_live.ex:1256
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "所有者"
@@ -939,7 +934,7 @@ msgstr "所有者"
 msgid "Pending"
 msgstr "保留中"
 
-#: lib/marshall_web/live/machines_live.ex:1467
+#: lib/marshall_web/live/machines_live.ex:1575
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "このマシンとそのディスクを完全に削除します。これを元に戻すことはできません。"
@@ -949,13 +944,13 @@ msgstr "このマシンとそのディスクを完全に削除します。これ
 msgid "Permission to clone this machine is no longer available."
 msgstr "このマシンのクローンを作成する権限はもう利用できません。"
 
-#: lib/marshall_web/live/machines_live.ex:979
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/machines_live.ex:1084
+#: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "個人的"
 
-#: lib/marshall_web/live/machines_live.ex:1292
+#: lib/marshall_web/live/machines_live.ex:1400
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "段階"
@@ -985,7 +980,7 @@ msgstr "クローンの準備中"
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "スナップショットを作成する前に、スペースを準備し、ソースを確認します。"
 
-#: lib/marshall_web/live/machines_live.ex:723
+#: lib/marshall_web/live/machines_live.ex:808
 #, elixir-autogen, elixir-format
 msgid "Preparing transfer"
 msgstr "転送の準備中"
@@ -1000,20 +995,20 @@ msgstr "マシンを準備しています…"
 msgid "Preparing your repository…"
 msgstr "リポジトリを準備しています…"
 
-#: lib/marshall_web/live/machines_live.ex:596
+#: lib/marshall_web/live/machines_live.ex:660
 #, elixir-autogen, elixir-format
 msgid "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
 msgstr "プライベートかつ所有者限定。 SSH と端末アクセス。アウトバウンド接続、共有、Web アプリ、AI エージェントはありません。"
 
-#: lib/marshall_web/live/machines_live.ex:797
-#: lib/marshall_web/live/machines_live.ex:829
-#: lib/marshall_web/live/machines_live.ex:952
-#: lib/marshall_web/live/machines_live.ex:1089
+#: lib/marshall_web/live/machines_live.ex:882
+#: lib/marshall_web/live/machines_live.ex:914
+#: lib/marshall_web/live/machines_live.ex:1057
+#: lib/marshall_web/live/machines_live.ex:1197
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "プロフィール"
 
-#: lib/marshall_web/live/machines_live.ex:958
+#: lib/marshall_web/live/machines_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "Profiles choose access and agent features. Machines remain isolated from one another."
 msgstr "プロファイルはアクセスとエージェントの機能を選択します。マシンは互いに分離されたままになります。"
@@ -1030,47 +1025,47 @@ msgstr "キュー位置 %{value1}"
 msgid "Queued"
 msgstr "キューに入れられました"
 
-#: lib/marshall_web/live/machines_live.ex:1383
+#: lib/marshall_web/live/machines_live.ex:1491
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "キュー中…"
 
-#: lib/marshall_web/live/machines_live.ex:662
+#: lib/marshall_web/live/machines_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "Read and write in the terminal."
 msgstr "ターミナルでの読み取りと書き込み。"
 
-#: lib/marshall_web/live/overview_live.ex:358
+#: lib/marshall_web/live/overview_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "フィールドノートを読む ↗"
 
-#: lib/marshall_web/live/machines_live.ex:661
+#: lib/marshall_web/live/machines_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Read the terminal."
 msgstr "ターミナルを読んでください。"
 
-#: lib/marshall_web/live/machines_live.ex:1024
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Ready when you are"
 msgstr "いつでも準備完了"
 
-#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1354
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "リフレクション用メタデータ"
 
-#: lib/marshall_web/live/overview_live.ex:374
+#: lib/marshall_web/live/overview_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "リフレッシュ"
 
-#: lib/marshall_web/live/overview_live.ex:372
+#: lib/marshall_web/live/overview_live.ex:404
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "爽やか…"
 
-#: lib/marshall_web/live/machines_live.ex:1201
+#: lib/marshall_web/live/machines_live.ex:1309
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "登録メールアドレス"
@@ -1080,12 +1075,12 @@ msgstr "登録メールアドレス"
 msgid "Registering the copied disk as your private machine."
 msgstr "コピーしたディスクをプライベートマシンとして登録します。"
 
-#: lib/marshall_web/live/machines_live.ex:1264
+#: lib/marshall_web/live/machines_live.ex:1372
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "マシンを移設する"
 
-#: lib/marshall_web/live/machines_live.ex:298
+#: lib/marshall_web/live/machines_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "引っ越しを要求されました。目的地は自動的に選択されます。"
@@ -1095,8 +1090,8 @@ msgstr "引っ越しを要求されました。目的地は自動的に選択さ
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "止まったままです。次回の起動時にファイルシステムが拡張される"
 
-#: lib/marshall_web/live/machines_live.ex:1213
-#: lib/marshall_web/live/machines_live.ex:1222
+#: lib/marshall_web/live/machines_live.ex:1321
+#: lib/marshall_web/live/machines_live.ex:1330
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "アクセス権の削除"
@@ -1111,7 +1106,7 @@ msgstr "キャンセルをリクエスト中…"
 msgid "Requesting resize…"
 msgstr "サイズ変更をリクエスト中…"
 
-#: lib/marshall_web/live/machines_live.ex:1337
+#: lib/marshall_web/live/machines_live.ex:1445
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "再起動をリクエスト中…"
@@ -1121,12 +1116,12 @@ msgstr "再起動をリクエスト中…"
 msgid "Requesting retry…"
 msgstr "再試行を要求しています…"
 
-#: lib/marshall_web/live/machines_live.ex:1273
+#: lib/marshall_web/live/machines_live.ex:1381
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "リクエスト中…"
 
-#: lib/marshall_web/live/machines_live.ex:1069
+#: lib/marshall_web/live/machines_live.ex:1177
 #: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
@@ -1179,9 +1174,9 @@ msgstr "ステージのサイズ変更"
 msgid "Resizing"
 msgstr "サイズ変更"
 
-#: lib/marshall_web/live/machines_live.ex:796
-#: lib/marshall_web/live/machines_live.ex:822
-#: lib/marshall_web/live/machines_live.ex:1060
+#: lib/marshall_web/live/machines_live.ex:881
+#: lib/marshall_web/live/machines_live.ex:907
+#: lib/marshall_web/live/machines_live.ex:1168
 #, elixir-autogen, elixir-format
 msgid "Resources"
 msgstr "リソース"
@@ -1223,7 +1218,7 @@ msgstr "リトライ"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "リトライは受け付けられませんでした。容量またはマシンの状態が変更された可能性があります。"
 
-#: lib/marshall_web/live/machines_live.ex:1339
+#: lib/marshall_web/live/machines_live.ex:1447
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "宛先ブートを再試行します"
@@ -1238,30 +1233,30 @@ msgstr "サイズ変更を再試行してください"
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "フリートのワークロードに戻り、パスキーを確認してマシンを再度開きます →"
 
-#: lib/marshall_web/live/machines_live.ex:656
+#: lib/marshall_web/live/machines_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "取り消されました"
 
-#: lib/marshall_web/live/machines_live.ex:1132
-#: lib/marshall_web/live/machines_live.ex:1147
-#: lib/marshall_web/live/machines_live.ex:1166
-#: lib/marshall_web/live/machines_live.ex:1207
+#: lib/marshall_web/live/machines_live.ex:1240
+#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1274
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "役割"
 
-#: lib/marshall_web/live/overview_live.ex:175
+#: lib/marshall_web/live/overview_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Room for your next idea"
 msgstr "次のアイデアのための余地"
 
-#: lib/marshall_web/live/overview_live.ex:312
+#: lib/marshall_web/live/overview_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "成長の余地"
 
-#: lib/marshall_web/live/machines_live.ex:1014
+#: lib/marshall_web/live/machines_live.ex:1119
 #, elixir-autogen, elixir-format
 msgid "Root disk (GiB)"
 msgstr "ルートディスク (GiB)"
@@ -1271,42 +1266,42 @@ msgstr "ルートディスク (GiB)"
 msgid "Running"
 msgstr "ランニング"
 
-#: lib/marshall_web/live/machines_live.ex:1230
+#: lib/marshall_web/live/machines_live.ex:1338
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "保存アクセス"
 
-#: lib/marshall_web/live/machines_live.ex:1261
+#: lib/marshall_web/live/machines_live.ex:1369
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "メタデータを保存"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1336
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "保存中…"
 
-#: lib/marshall_web/live/machines_live.ex:645
+#: lib/marshall_web/live/machines_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "Selected image unavailable"
 msgstr "選択した画像は利用できません"
 
-#: lib/marshall_web/live/overview_live.ex:310
+#: lib/marshall_web/live/overview_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "ブラウザ拡張機能のセットアップ ↗"
 
-#: lib/marshall_web/live/overview_live.ex:205
+#: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "共有"
 
-#: lib/marshall_web/live/machines_live.ex:841
+#: lib/marshall_web/live/machines_live.ex:926
 #, elixir-autogen, elixir-format
 msgid "Shared by"
 msgstr "共有者"
 
-#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1366
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "エージェント向けの短い説明"
@@ -1351,7 +1346,7 @@ msgstr "ソースの回復には注意が必要です。"
 msgid "Source recovery retry requested."
 msgstr "ソースリカバリの再試行が要求されました。"
 
-#: lib/marshall_web/live/machines_live.ex:735
+#: lib/marshall_web/live/machines_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Source restored; destination cleanup pending"
 msgstr "ソースが復元されました。宛先のクリーンアップが保留中"
@@ -1371,13 +1366,13 @@ msgstr "ソースは停止されたままであり、このリクエストが開
 msgid "Source was stopped when this request began."
 msgstr "このリクエストの開始時にソースが停止されました。"
 
-#: lib/marshall_web/live/machines_live.ex:584
-#: lib/marshall_web/live/machines_live.ex:673
+#: lib/marshall_web/live/machines_live.ex:648
+#: lib/marshall_web/live/machines_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "標準"
 
-#: lib/marshall_web/live/machines_live.ex:681
+#: lib/marshall_web/live/machines_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Starting"
 msgstr "起動"
@@ -1387,13 +1382,13 @@ msgstr "起動"
 msgid "Starting the machine with its new resources."
 msgstr "新しいリソースを使用してマシンを起動します。"
 
-#: lib/marshall_web/live/machines_live.ex:795
-#: lib/marshall_web/live/machines_live.ex:814
+#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "状態"
 
-#: lib/marshall_web/live/overview_live.ex:243
+#: lib/marshall_web/live/overview_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "最新情報を受け取る"
@@ -1420,7 +1415,7 @@ msgstr "機械を停止してください"
 msgid "Stopped"
 msgstr "停止しました"
 
-#: lib/marshall_web/live/machines_live.ex:678
+#: lib/marshall_web/live/machines_live.ex:742
 #: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
@@ -1441,17 +1436,17 @@ msgstr "コピーを停止し、一時リソースを削除します。ソース
 msgid "Stopping the machine so its resources can change safely."
 msgstr "リソースを安全に変更できるようにマシンを停止します。"
 
-#: lib/marshall_web/live/machines_live.ex:725
+#: lib/marshall_web/live/machines_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "ソースを停止する"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "購読する"
 
-#: lib/marshall_web/live/machines_live.ex:728
+#: lib/marshall_web/live/machines_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "配置を切り替える"
@@ -1461,17 +1456,17 @@ msgstr "配置を切り替える"
 msgid "Taking snapshot"
 msgstr "スナップショットの取得"
 
-#: lib/marshall_web/live/machines_live.ex:1122
+#: lib/marshall_web/live/machines_live.ex:1230
 #, elixir-autogen, elixir-format
 msgid "Team membership and thread sharing can also grant machine access."
 msgstr "チームのメンバーシップとスレッドの共有により、マシンへのアクセスを許可することもできます。"
 
-#: lib/marshall_web/live/machines_live.ex:871
+#: lib/marshall_web/live/machines_live.ex:956
 #, elixir-autogen, elixir-format
 msgid "Terminal unavailable"
 msgstr "端末が使用できません"
 
-#: lib/marshall_web/live/machines_live.ex:665
+#: lib/marshall_web/live/machines_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "ターミナル、ライフサイクル、サイズ変更、クローン、共有。"
@@ -1496,7 +1491,7 @@ msgstr "そのリポジトリの名前空間は無効です。"
 msgid "That repository reference cannot be launched."
 msgstr "そのリポジトリ参照は起動できません。"
 
-#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/machines_live.ex:1299
 #, elixir-autogen, elixir-format
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr ""
@@ -1543,7 +1538,7 @@ msgstr "マシンを更新できませんでした。更新して再試行して
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "このドラフトが作成されてからマシンが変更されました。上記の確認済みのリソースを確認してください。"
 
-#: lib/marshall_web/live/machines_live.ex:1285
+#: lib/marshall_web/live/machines_live.ex:1393
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr ""
@@ -1551,12 +1546,12 @@ msgstr ""
 "の接続を使用するため、移行には少し時間がかかる場合があります。本番環境の AWS 上で Overalls "
 "を実行すると、移動が大幅に高速化されることが期待されます。"
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1405
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "マシンが停止され、一度コピーされて、宛先で起動されます。"
 
-#: lib/marshall_web/live/machines_live.ex:704
+#: lib/marshall_web/live/machines_live.ex:789
 #, elixir-autogen, elixir-format
 msgid "The owner's access cannot be changed."
 msgstr "所有者のアクセス権は変更できません。"
@@ -1571,7 +1566,7 @@ msgstr "ピンは変更できませんでした。更新して再試行してく
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "このマシンの以前のコピーはまだスナップショットを解放中です。すぐに再試行してください。"
 
-#: lib/marshall_web/live/machines_live.ex:714
+#: lib/marshall_web/live/machines_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "The request could not be completed. Check the values and try again."
 msgstr "リクエストを完了できませんでした。値を確認して再試行してください。"
@@ -1586,12 +1581,13 @@ msgstr "リクエストで問題が発生しました。利用可能なアクシ
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "サイズ変更が完了しました。このページは確認されたサイズで更新されます。"
 
-#: lib/marshall_web/live/machines_live.ex:610
+#: lib/marshall_web/live/machines_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "The same network and access options as Standard, with AI agents that can start child agents."
 msgstr "Standard と同じネットワークおよびアクセス オプションで、子エージェントを開始できる AI エージェントを備えています。"
 
-#: lib/marshall_web/live/machines_live.ex:700
+#: lib/marshall_web/live/machines_live.ex:768
+#: lib/marshall_web/live/machines_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "The selected image needs more memory or disk space."
 msgstr "選択した画像には、より多くのメモリまたはディスク容量が必要です。"
@@ -1621,7 +1617,7 @@ msgstr "クローン作成が開始される前に、ソースがビジー状態
 msgid "There is not enough available capacity for a new machine right now."
 msgstr "現在、新しいマシンに使用できる十分な容量がありません。"
 
-#: lib/marshall_web/live/machines_live.ex:693
+#: lib/marshall_web/live/machines_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "There is not enough available capacity for this machine."
 msgstr "このマシンには十分な空き容量がありません。"
@@ -1631,7 +1627,8 @@ msgstr "このマシンには十分な空き容量がありません。"
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "このコピーには十分な容量がありません。空きがあるときに再試行してください。"
 
-#: lib/marshall_web/live/machines_live.ex:695
+#: lib/marshall_web/live/machines_live.ex:765
+#: lib/marshall_web/live/machines_live.ex:780
 #, elixir-autogen, elixir-format
 msgid "This image is no longer available. Refresh and choose another image."
 msgstr "この画像はもう入手できません。更新して別の画像を選択します。"
@@ -1656,7 +1653,7 @@ msgstr "この起動リンクは有効期限が切れています。もう一度
 msgid "This machine is being deleted and cannot be pinned."
 msgstr "このマシンは削除中のため固定できません。"
 
-#: lib/marshall_web/live/machines_live.ex:706
+#: lib/marshall_web/live/machines_live.ex:791
 #, elixir-autogen, elixir-format
 msgid "This machine is being deleted."
 msgstr "このマシンは削除中です。"
@@ -1671,7 +1668,7 @@ msgstr "このマシンは利用できないか、管理アクセス権があり
 msgid "This machine is unavailable or your access has ended."
 msgstr "このマシンは利用できないか、アクセスが終了しています。"
 
-#: lib/marshall_web/live/machines_live.ex:701
+#: lib/marshall_web/live/machines_live.ex:786
 #, elixir-autogen, elixir-format
 msgid "This machine's host is currently unavailable."
 msgstr "このマシンのホストは現在利用できません。"
@@ -1686,7 +1683,7 @@ msgstr "このリポジトリリンクから起動できませんでした。リ
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "このリクエストは完了できませんでした。以下の問題と実行可能なアクションを確認してください。"
 
-#: lib/marshall_web/live/machines_live.ex:709
+#: lib/marshall_web/live/machines_live.ex:794
 #, elixir-autogen, elixir-format
 msgid "This request has already been used. Refresh before trying again."
 msgstr "このリクエストはすでに使用されています。再試行する前に更新してください。"
@@ -1696,39 +1693,39 @@ msgstr "このリクエストはすでに使用されています。再試行す
 msgid "This request has ended without publishing a clone."
 msgstr "このリクエストはクローンを公開せずに終了しました。"
 
-#: lib/marshall_web/live/machines_live.ex:835
-#: lib/marshall_web/live/machines_live.ex:1075
-#: lib/marshall_web/live/machines_live.ex:1087
+#: lib/marshall_web/live/machines_live.ex:920
+#: lib/marshall_web/live/machines_live.ex:1183
+#: lib/marshall_web/live/machines_live.ex:1195
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "利用不可"
 
-#: lib/marshall_web/live/machines_live.ex:657
+#: lib/marshall_web/live/machines_live.ex:721
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
 
-#: lib/marshall_web/live/machines_live.ex:707
+#: lib/marshall_web/live/machines_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Unpin this machine before deleting it."
 msgstr "削除する前に、このマシンの固定を解除してください。"
 
-#: lib/marshall_web/live/machines_live.ex:1461
+#: lib/marshall_web/live/machines_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "削除するには固定を解除します。このマシンを固定している間は、何も削除できません。"
 
-#: lib/marshall_web/live/overview_live.ex:291
+#: lib/marshall_web/live/overview_live.ex:321
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "いつでも購読を解除できます。"
 
-#: lib/marshall_web/live/overview_live.ex:367
+#: lib/marshall_web/live/overview_live.ex:399
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "更新されました"
 
-#: lib/marshall_web/live/machines_live.ex:1403
+#: lib/marshall_web/live/machines_live.ex:1511
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "自動的に更新されます"
@@ -1738,19 +1735,19 @@ msgstr "自動的に更新されます"
 msgid "Use current machine state, keeping these sizes"
 msgstr "これらのサイズを維持したまま、現在のマシンの状態を使用します"
 
-#: lib/marshall_web/live/machines_live.ex:727
+#: lib/marshall_web/live/machines_live.ex:812
 #, elixir-autogen, elixir-format
 msgid "Verifying the destination disks"
 msgstr "宛先ディスクの確認"
 
-#: lib/marshall_web/live/overview_live.ex:168
+#: lib/marshall_web/live/overview_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "View all →"
 msgstr "すべて見る→"
 
-#: lib/marshall_web/live/machines_live.ex:653
-#: lib/marshall_web/live/machines_live.ex:1210
-#: lib/marshall_web/live/machines_live.ex:1219
+#: lib/marshall_web/live/machines_live.ex:717
+#: lib/marshall_web/live/machines_live.ex:1318
+#: lib/marshall_web/live/machines_live.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "ビューア"
@@ -1780,7 +1777,7 @@ msgstr "このマシンの以前のコピーがスナップショットを解放
 msgid "Waiting for the source to stop."
 msgstr "ソースが停止するのを待っています。"
 
-#: lib/marshall_web/live/overview_live.ex:286
+#: lib/marshall_web/live/overview_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "ニュースレターサービスに接続できませんでした。後でもう一度お試しください。"
@@ -1790,13 +1787,13 @@ msgstr "ニュースレターサービスに接続できませんでした。後
 msgid "We couldn't launch that repository"
 msgstr "そのリポジトリを起動できませんでした"
 
-#: lib/marshall_web/live/machines_live.ex:652
+#: lib/marshall_web/live/machines_live.ex:716
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "ウェブアプリ"
 
-#: lib/marshall_web/live/machines_live.ex:1209
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Web apps only"
 msgstr "ウェブアプリのみ"
@@ -1806,7 +1803,7 @@ msgstr "ウェブアプリのみ"
 msgid "What happens"
 msgstr "何が起こるのですか"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1226
 #, elixir-autogen, elixir-format
 msgid "Who can reach this machine, and what each role allows."
 msgstr "誰がこのマシンに到達できるのか、そしてそれぞれの役割で何が許可されるのか。"
@@ -1816,7 +1813,7 @@ msgstr "誰がこのマシンに到達できるのか、そしてそれぞれの
 msgid "You can pin up to %{value1} machines. Unpin one before pinning another."
 msgstr "最大 %{value1} マシンをピン留めできます。別の固定を行う前に、一方の固定を解除してください。"
 
-#: lib/marshall_web/live/machines_live.ex:705
+#: lib/marshall_web/live/machines_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "You no longer have permission for this action."
 msgstr "このアクションに対する権限はもうありません。"
@@ -1826,17 +1823,17 @@ msgstr "このアクションに対する権限はもうありません。"
 msgid "Your account cannot create machines."
 msgstr "あなたのアカウントではマシンを作成できません。"
 
-#: lib/marshall_web/live/machines_live.ex:761
+#: lib/marshall_web/live/machines_live.ex:846
 #, elixir-autogen, elixir-format
 msgid "Your development environments, personal and shared."
 msgstr "個人用および共有の開発環境。"
 
-#: lib/marshall_web/live/machines_live.ex:1092
+#: lib/marshall_web/live/machines_live.ex:1200
 #, elixir-autogen, elixir-format
 msgid "Your disk is retained when the machine is stopped."
 msgstr "マシンが停止してもディスクは保持されます。"
 
-#: lib/marshall_web/live/machines_live.ex:1033
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "マシンが停止している間、ディスクは手元に残ります。"
@@ -1851,7 +1848,7 @@ msgstr "マシンは停止したままになります。ディスク ファイ�
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "リソースが変更される間、マシンは停止し、その後再起動します。ダウンタイムが予想されます。"
 
-#: lib/marshall_web/live/overview_live.ex:166
+#: lib/marshall_web/live/overview_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your machines"
 msgstr "あなたのマシン"
@@ -1866,7 +1863,7 @@ msgstr "プライベート コピーが作成され、一時リソースがク�
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr "プライベートコピーが作成されました。ソース スナップショットはまだリリース中です。それまでソースは保護されたままになります。"
 
-#: lib/marshall_web/live/overview_live.ex:157
+#: lib/marshall_web/live/overview_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Your workspace, with a little room to breathe."
 msgstr "あなたのワークスペースに、ちょっとした息抜きのスペースを。"
@@ -1876,18 +1873,18 @@ msgstr "あなたのワークスペースに、ちょっとした息抜きのス
 msgid "continue to Overalls"
 msgstr "オーバーオールへ続く"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1359
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "本番環境, プロジェクト名"
 
-#: lib/marshall_web/live/machines_live.ex:881
-#: lib/marshall_web/live/machines_live.ex:1181
+#: lib/marshall_web/live/machines_live.ex:966
+#: lib/marshall_web/live/machines_live.ex:1289
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← 最初のページ"
 
-#: lib/marshall_web/live/machines_live.ex:892
+#: lib/marshall_web/live/machines_live.ex:977
 #, elixir-autogen, elixir-format
 msgid "← Machines"
 msgstr "← 機械"
@@ -1981,7 +1978,52 @@ msgstr "確認"
 msgid "A new machine will clone the repository when it boots."
 msgstr "新しいマシンは起動時にリポジトリをクローンします。"
 
-#: lib/marshall_web/live/machines_live.ex:638
+#: lib/marshall_web/live/machines_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Android (API 36)"
 msgstr "Android (API 36)"
+
+#: lib/marshall_web/live/machines_live.ex:1029
+#, elixir-autogen, elixir-format
+msgid "Leave this blank to create the machine without making setup changes."
+msgstr "セットアップの変更を行わずにマシンを作成する場合は、空欄のままにしてください。"
+
+#: lib/marshall_web/live/machines_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Machine and setup thread requested."
+msgstr "マシンとセットアップスレッドをリクエストしました。"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:48
+#, elixir-autogen, elixir-format
+msgid "Provisioning is in progress. This page will open the machine when it is ready."
+msgstr "プロビジョニング中です。準備ができると、このページでマシンが開きます。"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "Provisioning request unavailable."
+msgstr "プロビジョニングリクエストを利用できません。"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Retry is unavailable."
+msgstr "再試行できません。"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Retry setup"
+msgstr "セットアップを再試行"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:42
+#, elixir-autogen, elixir-format
+msgid "Setting up your machine"
+msgstr "マシンをセットアップしています"
+
+#: lib/marshall_web/live/machines_live.ex:1019
+#, elixir-autogen, elixir-format
+msgid "The machine agent will execute this instruction automatically in Work mode."
+msgstr "マシンエージェントは「仕事」モードでこの指示を自動的に実行します。"
+
+#: lib/marshall_web/live/machines_live.ex:1017
+#, elixir-autogen, elixir-format
+msgid "What should this machine do when it is ready?"
+msgstr "準備ができたら、このマシンで何をしますか？"

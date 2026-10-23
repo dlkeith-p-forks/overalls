@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1425
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " dan terus bertambah"
 
-#: lib/marshall_web/live/machines_live.ex:1313
+#: lib/marshall_web/live/machines_live.ex:1421
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} detik%{suffix}"
@@ -29,10 +29,10 @@ msgstr "%{seconds} detik%{suffix}"
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
 
-#: lib/marshall_web/live/machines_live.ex:1081
-#: lib/marshall_web/live/machines_live.ex:1084
-#: lib/marshall_web/live/overview_live.ex:321
-#: lib/marshall_web/live/overview_live.ex:326
+#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1192
+#: lib/marshall_web/live/overview_live.ex:351
+#: lib/marshall_web/live/overview_live.ex:356
 #: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -43,20 +43,20 @@ msgstr "%{value1} GiB"
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:1078
-#: lib/marshall_web/live/overview_live.ex:318
+#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/overview_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:160
-#: lib/marshall_web/live/machines_live.ex:823
-#: lib/marshall_web/live/overview_live.ex:197
+#: lib/marshall_web/live/machines_live.ex:908
+#: lib/marshall_web/live/overview_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · disk %{value3} GiB"
 
-#: lib/marshall_web/live/machines_live.ex:1026
+#: lib/marshall_web/live/machines_live.ex:1131
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB memori · %{value3} GiB disk"
@@ -79,47 +79,47 @@ msgstr "%{value1} → %{value2} GiB"
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:765
-#: lib/marshall_web/live/overview_live.ex:161
+#: lib/marshall_web/live/machines_live.ex:850
+#: lib/marshall_web/live/overview_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "+ Create machine"
 msgstr "+ Buat mesin"
 
-#: lib/marshall_web/live/machines_live.ex:1385
+#: lib/marshall_web/live/machines_live.ex:1493
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ Masukkan klona ke antrean"
 
-#: lib/marshall_web/live/machines_live.ex:617
+#: lib/marshall_web/live/machines_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
 msgstr "Lingkungan pengembangan Overalls untuk mesin bertingkat. Menggunakan image khusus, disk data tambahan 256 GiB, dan batas minimum sumber daya lebih tinggi. Agen AI dapat menjalankan agen anak."
 
-#: lib/marshall_web/live/overview_live.ex:156
+#: lib/marshall_web/live/overview_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "A good day to make something."
 msgstr "Hari yang baik untuk membuat sesuatu."
 
-#: lib/marshall_web/live/overview_live.ex:229
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "Pratinjau kecil. Semua mesin yang dapat Anda akses ada di "
 
-#: lib/marshall_web/live/machines_live.ex:799
-#: lib/marshall_web/live/machines_live.ex:837
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:884
+#: lib/marshall_web/live/machines_live.ex:922
+#: lib/marshall_web/live/machines_live.ex:1225
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "Akses"
 
-#: lib/marshall_web/live/machines_live.ex:381
+#: lib/marshall_web/live/machines_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "Access updated."
 msgstr "Akses diperbarui."
 
-#: lib/marshall_web/live/machines_live.ex:1131
-#: lib/marshall_web/live/machines_live.ex:1138
-#: lib/marshall_web/live/machines_live.ex:1157
+#: lib/marshall_web/live/machines_live.ex:1239
+#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1265
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Akun"
@@ -134,14 +134,14 @@ msgstr "Verifikasi administratif kedaluwarsa. Pilih mesin di beban kerja Fleet d
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr "Verifikasi administratif kedaluwarsa. Draf pengubahan ukuran Anda disimpan di alamat halaman ini."
 
-#: lib/marshall_web/live/machines_live.ex:739
+#: lib/marshall_web/live/machines_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "All retained copies deleted"
 msgstr "Semua salinan tersimpan dihapus"
 
-#: lib/marshall_web/live/machines_live.ex:1133
-#: lib/marshall_web/live/machines_live.ex:1150
-#: lib/marshall_web/live/machines_live.ex:1169
+#: lib/marshall_web/live/machines_live.ex:1241
+#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1277
 #, elixir-autogen, elixir-format
 msgid "Allows"
 msgstr "Mengizinkan"
@@ -176,13 +176,13 @@ msgstr "Kembali ke ringkasan"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "Menghentikan sumber sebentar agar disknya dapat direkam dengan aman."
 
-#: lib/marshall_web/live/overview_live.ex:301
+#: lib/marshall_web/live/overview_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr "Bawa repositori GitHub, GitLab, Codeberg, atau Bitbucket ke Overalls dengan ekstensi Chrome atau Firefox."
 
-#: lib/marshall_web/live/machines_live.ex:1077
-#: lib/marshall_web/live/overview_live.ex:317
+#: lib/marshall_web/live/machines_live.ex:1185
+#: lib/marshall_web/live/overview_live.ex:347
 #: lib/marshall_web/live/resize_live.ex:315
 #: lib/marshall_web/live/resize_live.ex:359
 #: lib/marshall_web/live/resize_live.ex:447
@@ -191,7 +191,7 @@ msgstr "Bawa repositori GitHub, GitLab, Codeberg, atau Bitbucket ke Overalls den
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/machines_live.ex:996
+#: lib/marshall_web/live/machines_live.ex:1101
 #, elixir-autogen, elixir-format
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
@@ -202,7 +202,7 @@ msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU dan memori dapat ditambah atau dikurangi. Ukuran disk hanya dapat diperbesar."
 
 #: lib/marshall_web/components/clone_components.ex:116
-#: lib/marshall_web/live/machines_live.ex:1045
+#: lib/marshall_web/live/machines_live.ex:1153
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Batalkan"
@@ -212,7 +212,7 @@ msgstr "Batalkan"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "Pembatalan tidak dapat diterima. Ukuran sedang diterapkan atau keadaan mesin belum dikonfirmasi."
 
-#: lib/marshall_web/live/machines_live.ex:1331
+#: lib/marshall_web/live/machines_live.ex:1439
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "Batalkan pemindahan"
@@ -222,7 +222,7 @@ msgstr "Batalkan pemindahan"
 msgid "Cancel resize"
 msgstr "Batalkan perubahan ukuran"
 
-#: lib/marshall_web/live/machines_live.ex:319
+#: lib/marshall_web/live/machines_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "Pembatalan diminta. Pembersihan dapat berlanjut setelah pemulihan."
@@ -244,7 +244,7 @@ msgstr "Dibatalkan sebelum snapshot dimulai."
 msgid "Cancelling"
 msgstr "Membatalkan"
 
-#: lib/marshall_web/live/machines_live.ex:734
+#: lib/marshall_web/live/machines_live.ex:819
 #, elixir-autogen, elixir-format
 msgid "Cancelling and restoring the source"
 msgstr "Membatalkan dan memulihkan sumber"
@@ -264,12 +264,12 @@ msgstr "Membatalkan: menunggu penghentian dikonfirmasi, lalu memulai kembali den
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Membatalkan: menunggu penghentian dikonfirmasi; ukuran tidak berubah."
 
-#: lib/marshall_web/live/machines_live.ex:1329
+#: lib/marshall_web/live/machines_live.ex:1437
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "Membatalkan…"
 
-#: lib/marshall_web/live/overview_live.ex:332
+#: lib/marshall_web/live/overview_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "Kapasitas diperiksa kembali saat Anda membuat mesin."
@@ -279,32 +279,32 @@ msgstr "Kapasitas diperiksa kembali saat Anda membuat mesin."
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "Merekam disk sumber. Penyalinan dimulai setelah snapshot siap."
 
-#: lib/marshall_web/live/overview_live.ex:279
+#: lib/marshall_web/live/overview_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "Periksa kotak masuk Anda dan klik tautan untuk mengonfirmasi langganan Anda."
 
-#: lib/marshall_web/live/machines_live.ex:729
+#: lib/marshall_web/live/machines_live.ex:814
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Memeriksa kesiapan tujuan"
 
-#: lib/marshall_web/live/machines_live.ex:724
+#: lib/marshall_web/live/machines_live.ex:809
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "Memeriksa konektivitas transfer"
 
-#: lib/marshall_web/live/machines_live.ex:937
+#: lib/marshall_web/live/machines_live.ex:1042
 #, elixir-autogen, elixir-format
 msgid "Choose an image"
 msgstr "Pilih citra"
 
-#: lib/marshall_web/live/machines_live.ex:895
+#: lib/marshall_web/live/machines_live.ex:980
 #, elixir-autogen, elixir-format
 msgid "Choose an image and the resources for your environment."
 msgstr "Pilih citra dan sumber daya untuk lingkungan Anda."
 
-#: lib/marshall_web/live/machines_live.ex:930
+#: lib/marshall_web/live/machines_live.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Choose your environment"
 msgstr "Pilih lingkungan Anda"
@@ -319,7 +319,7 @@ msgstr "Kloning dibatalkan"
 msgid "Clone complete"
 msgstr "Kloning selesai"
 
-#: lib/marshall_web/live/machines_live.ex:1351
+#: lib/marshall_web/live/machines_live.ex:1459
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "Kloning mesin"
@@ -329,17 +329,17 @@ msgstr "Kloning mesin"
 msgid "Clone needs attention"
 msgstr "Kloning memerlukan perhatian"
 
-#: lib/marshall_web/live/machines_live.ex:262
+#: lib/marshall_web/live/machines_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Clone queued. You can queue another copy."
 msgstr "Kloning diantrekan. Anda dapat mengantrekan salinan lain."
 
-#: lib/marshall_web/live/machines_live.ex:1402
+#: lib/marshall_web/live/machines_live.ex:1510
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "Permintaan kloning"
 
-#: lib/marshall_web/live/machines_live.ex:1413
+#: lib/marshall_web/live/machines_live.ex:1521
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "Permintaan kloning sementara tidak tersedia. Mencoba kembali secara otomatis."
@@ -349,7 +349,7 @@ msgstr "Permintaan kloning sementara tidak tersedia. Mencoba kembali secara otom
 msgid "Clone stages"
 msgstr "Tahap kloning"
 
-#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1363
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Komentar"
@@ -364,13 +364,13 @@ msgstr "Selesai"
 msgid "Confirmed resources"
 msgstr "Sumber daya terkonfirmasi"
 
-#: lib/marshall_web/live/machines_live.ex:800
-#: lib/marshall_web/live/machines_live.ex:851
+#: lib/marshall_web/live/machines_live.ex:885
+#: lib/marshall_web/live/machines_live.ex:936
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Sambungkan"
 
-#: lib/marshall_web/live/overview_live.ex:346
+#: lib/marshall_web/live/overview_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "Sambungkan integrasi ↗"
@@ -385,7 +385,7 @@ msgstr "Menyalin"
 msgid "Copying files"
 msgstr "Menyalin berkas"
 
-#: lib/marshall_web/live/machines_live.ex:726
+#: lib/marshall_web/live/machines_live.ex:811
 #, elixir-autogen, elixir-format
 msgid "Copying the stopped disks"
 msgstr "Menyalin disk yang dihentikan"
@@ -395,19 +395,19 @@ msgstr "Menyalin disk yang dihentikan"
 msgid "Create a machine"
 msgstr "Buat mesin"
 
-#: lib/marshall_web/live/machines_live.ex:1359
+#: lib/marshall_web/live/machines_live.ex:1467
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr "Buat salinan pribadi yang independen dari mesin ini. Mesin yang berjalan berhenti sebentar untuk setiap snapshot, lalu dimulai kembali sementara penyalinan berlanjut. Salinan diproses berurutan dan mengikuti keadaan daya sumber saat gilirannya dimulai."
 
-#: lib/marshall_web/live/machines_live.ex:93
-#: lib/marshall_web/live/machines_live.ex:894
-#: lib/marshall_web/live/machines_live.ex:1043
+#: lib/marshall_web/live/machines_live.ex:106
+#: lib/marshall_web/live/machines_live.ex:979
+#: lib/marshall_web/live/machines_live.ex:1151
 #, elixir-autogen, elixir-format
 msgid "Create machine"
 msgstr "Buat mesin"
 
-#: lib/marshall_web/live/overview_live.ex:182
+#: lib/marshall_web/live/overview_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "Buat mesin pertama Anda"
@@ -422,90 +422,90 @@ msgstr "Membuat disk independen dari snapshot. Pemulihan sumber berlangsung terp
 msgid "Creating cloned machine"
 msgstr "Membuat mesin hasil kloning"
 
-#: lib/marshall_web/live/machines_live.ex:1041
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Creating…"
 msgstr "Membuat…"
 
-#: lib/marshall_web/live/machines_live.ex:779
+#: lib/marshall_web/live/machines_live.ex:864
 #, elixir-autogen, elixir-format
 msgid "Current headroom is temporarily unavailable."
 msgstr "Kapasitas tersisa saat ini sementara tidak tersedia."
 
-#: lib/marshall_web/live/machines_live.ex:771
-#: lib/marshall_web/live/machines_live.ex:913
+#: lib/marshall_web/live/machines_live.ex:856
+#: lib/marshall_web/live/machines_live.ex:998
 #, elixir-autogen, elixir-format
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "Kapasitas tersisa saat ini: %{value1} vCPU · %{value2} GiB memori · %{value3} GiB disk"
 
-#: lib/marshall_web/live/overview_live.ex:313
+#: lib/marshall_web/live/overview_live.ex:343
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "Kapasitas penyediaan tersisa saat ini"
 
-#: lib/marshall_web/live/machines_live.ex:583
-#: lib/marshall_web/live/machines_live.ex:671
+#: lib/marshall_web/live/machines_live.ex:647
+#: lib/marshall_web/live/machines_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "Pelanggan"
 
-#: lib/marshall_web/live/machines_live.ex:1103
+#: lib/marshall_web/live/machines_live.ex:1211
 #, elixir-autogen, elixir-format
 msgid "Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled."
 msgstr "Mesin pelanggan hanya mengizinkan akses SSH dan terminal pemilik. Jaringan keluar, berbagi ruang kerja, dan pemaparan layanan web dinonaktifkan."
 
-#: lib/marshall_web/live/machines_live.ex:1457
+#: lib/marshall_web/live/machines_live.ex:1565
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Hapus"
 
-#: lib/marshall_web/live/machines_live.ex:1440
+#: lib/marshall_web/live/machines_live.ex:1548
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "Hapus mesin"
 
-#: lib/marshall_web/live/machines_live.ex:1454
+#: lib/marshall_web/live/machines_live.ex:1562
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "Hapus mesin ini dan disknya? Tindakan ini tidak dapat dibatalkan."
 
-#: lib/marshall_web/live/machines_live.ex:675
+#: lib/marshall_web/live/machines_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Deleting"
 msgstr "Menghapus"
 
-#: lib/marshall_web/live/machines_live.ex:736
+#: lib/marshall_web/live/machines_live.ex:821
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "Menghapus salinan yang disimpan"
 
-#: lib/marshall_web/live/machines_live.ex:730
+#: lib/marshall_web/live/machines_live.ex:815
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Boot tujuan gagal; salinan sumber disimpan"
 
-#: lib/marshall_web/live/machines_live.ex:732
+#: lib/marshall_web/live/machines_live.ex:817
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "Kesiapan tujuan gagal; salinan sumber disimpan"
 
-#: lib/marshall_web/live/machines_live.ex:733
+#: lib/marshall_web/live/machines_live.ex:818
 #, elixir-autogen, elixir-format
 msgid "Destination ready; cleaning up the source"
 msgstr "Tujuan siap; membersihkan sumber"
 
-#: lib/marshall_web/live/machines_live.ex:348
+#: lib/marshall_web/live/machines_live.ex:386
 #, elixir-autogen, elixir-format
 msgid "Destination restart requested. The source copy remains retained until readiness succeeds."
 msgstr "Mulai ulang tujuan diminta. Salinan sumber tetap disimpan hingga pemeriksaan kesiapan berhasil."
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1228
 #, elixir-autogen, elixir-format
 msgid "Direct machine grants"
 msgstr "Pemberian akses langsung ke mesin"
 
-#: lib/marshall_web/live/machines_live.ex:1083
-#: lib/marshall_web/live/overview_live.ex:325
+#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/overview_live.ex:355
 #: lib/marshall_web/live/resize_live.ex:321
 #: lib/marshall_web/live/resize_live.ex:375
 #: lib/marshall_web/live/resize_live.ex:484
@@ -513,7 +513,7 @@ msgstr "Pemberian akses langsung ke mesin"
 msgid "Disk"
 msgstr "Disk penyimpanan"
 
-#: lib/marshall_web/live/machines_live.ex:1015
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB)"
 msgstr "Disk penyimpanan (GiB)"
@@ -523,12 +523,12 @@ msgstr "Disk penyimpanan (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Disk (GiB) — Maksimal 500 GiB"
 
-#: lib/marshall_web/live/overview_live.ex:251
+#: lib/marshall_web/live/overview_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "Tutup"
 
-#: lib/marshall_web/live/overview_live.ex:269
+#: lib/marshall_web/live/overview_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "Alamat email"
@@ -538,42 +538,42 @@ msgstr "Alamat email"
 msgid "Enable JavaScript to open a repository link, or"
 msgstr "Aktifkan JavaScript untuk membuka tautan repositori, atau"
 
-#: lib/marshall_web/live/machines_live.ex:668
+#: lib/marshall_web/live/machines_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Ends that person's access to this machine."
 msgstr "Mengakhiri akses orang tersebut ke mesin ini."
 
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "Masukkan alamat email yang valid."
 
-#: lib/marshall_web/live/machines_live.ex:159
+#: lib/marshall_web/live/machines_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "Enter whole numbers for CPU, memory and disk size."
 msgstr "Masukkan bilangan bulat untuk CPU, memori, dan ukuran disk."
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1259
 #, elixir-autogen, elixir-format
 msgid "Everything; cannot be changed here."
 msgstr "Semuanya; tidak dapat diubah di sini."
 
-#: lib/marshall_web/live/overview_live.ex:355
+#: lib/marshall_web/live/overview_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "Jelajahi penggunaan Anda ↗"
 
-#: lib/marshall_web/live/machines_live.ex:1352
+#: lib/marshall_web/live/machines_live.ex:1460
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "Berkas dan kredensial tersimpan disertakan dalam salinan"
 
-#: lib/marshall_web/live/machines_live.ex:1392
+#: lib/marshall_web/live/machines_live.ex:1500
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "Berkas dan kredensial tersimpan disertakan dalam salinan."
 
-#: lib/marshall_web/live/overview_live.ex:352
+#: lib/marshall_web/live/overview_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "Temukan rekan Anda ↗"
@@ -588,17 +588,17 @@ msgstr "Menyelesaikan"
 msgid "Finishing up"
 msgstr "Menuntaskan"
 
-#: lib/marshall_web/live/overview_live.ex:254
+#: lib/marshall_web/live/overview_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Dapatkan kiat, trik, dan kabar terbaru tentang Overalls dan AI melalui email."
 
-#: lib/marshall_web/live/machines_live.ex:990
+#: lib/marshall_web/live/machines_live.ex:1095
 #, elixir-autogen, elixir-format
 msgid "Give it room to grow"
 msgstr "Beri ruang untuk berkembang"
 
-#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1297
 #, elixir-autogen, elixir-format
 msgid "Grant, change or remove access"
 msgstr "Beri, ubah, atau hapus akses"
@@ -608,40 +608,40 @@ msgstr "Beri, ubah, atau hapus akses"
 msgid "Grow the filesystem on next boot"
 msgstr "Perbesar sistem berkas pada boot berikutnya"
 
-#: lib/marshall_web/live/overview_live.ex:336
+#: lib/marshall_web/live/overview_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "Kapasitas tersisa sementara tidak tersedia."
 
-#: lib/marshall_web/live/machines_live.ex:798
-#: lib/marshall_web/live/machines_live.ex:833
-#: lib/marshall_web/live/machines_live.ex:1086
+#: lib/marshall_web/live/machines_live.ex:883
+#: lib/marshall_web/live/machines_live.ex:918
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "Mesin host"
 
-#: lib/marshall_web/live/machines_live.ex:936
+#: lib/marshall_web/live/machines_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "Citra"
 
-#: lib/marshall_web/live/machines_live.ex:899
+#: lib/marshall_web/live/machines_live.ex:984
 #, elixir-autogen, elixir-format
 msgid "Images and capacity are temporarily unavailable. Your choices are retained."
 msgstr "Citra dan kapasitas sementara tidak tersedia. Pilihan Anda disimpan."
 
-#: lib/marshall_web/live/machines_live.ex:589
-#: lib/marshall_web/live/machines_live.ex:672
+#: lib/marshall_web/live/machines_live.ex:653
+#: lib/marshall_web/live/machines_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Inception"
 msgstr "Inception"
 
-#: lib/marshall_web/live/machines_live.ex:404
+#: lib/marshall_web/live/machines_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Permintaan tidak valid."
 
-#: lib/marshall_web/live/machines_live.ex:1249
+#: lib/marshall_web/live/machines_live.ex:1357
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "Label"
@@ -667,12 +667,12 @@ msgstr "Meluncurkan"
 msgid "Launching repository"
 msgstr "Meluncurkan repositori"
 
-#: lib/marshall_web/live/machines_live.ex:1375
+#: lib/marshall_web/live/machines_live.ex:1483
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "Biarkan kosong untuk membuat nama secara otomatis"
 
-#: lib/marshall_web/live/machines_live.ex:1389
+#: lib/marshall_web/live/machines_live.ex:1497
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "Biarkan kosong untuk membuat nama secara otomatis."
@@ -684,77 +684,72 @@ msgstr "Biarkan kosong untuk membuat nama secara otomatis."
 msgid "Leave stopped"
 msgstr "Biarkan berhenti"
 
-#: lib/marshall_web/live/machines_live.ex:794
+#: lib/marshall_web/live/machines_live.ex:879
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Mesin"
 
-#: lib/marshall_web/live/machines_live.ex:228
+#: lib/marshall_web/live/machines_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
 msgstr "Metadata mesin disimpan."
 
-#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:965
 #, elixir-autogen, elixir-format
 msgid "Machine pages"
 msgstr "Halaman mesin"
 
-#: lib/marshall_web/live/machines_live.ex:148
-#, elixir-autogen, elixir-format
-msgid "Machine requested."
-msgstr "Mesin diminta."
-
-#: lib/marshall_web/live/machines_live.ex:210
+#: lib/marshall_web/live/machines_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Machine update requested."
 msgstr "Pembaruan mesin diminta."
 
-#: lib/marshall_web/live/machines_live.ex:108
-#: lib/marshall_web/live/machines_live.ex:760
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/machines_live.ex:121
+#: lib/marshall_web/live/machines_live.ex:845
+#: lib/marshall_web/live/overview_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Mesin"
 
-#: lib/marshall_web/live/machines_live.ex:464
+#: lib/marshall_web/live/machines_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "Machines are temporarily unavailable."
 msgstr "Mesin sementara tidak tersedia."
 
-#: lib/marshall_web/live/overview_live.ex:235
+#: lib/marshall_web/live/overview_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "Mesin tidak dapat dimuat. Muat ulang untuk mencoba lagi."
 
-#: lib/marshall_web/live/machines_live.ex:973
+#: lib/marshall_web/live/machines_live.ex:1078
 #, elixir-autogen, elixir-format
 msgid "Make it yours"
 msgstr "Jadikan milik Anda"
 
-#: lib/marshall_web/live/overview_live.ex:340
+#: lib/marshall_web/live/overview_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "Anggap seperti rumah sendiri"
 
-#: lib/marshall_web/live/machines_live.ex:1100
+#: lib/marshall_web/live/machines_live.ex:1208
 #, elixir-autogen, elixir-format
 msgid "Management access is required to change the remaining settings."
 msgstr "Akses pengelolaan diperlukan untuk mengubah pengaturan lainnya."
 
-#: lib/marshall_web/live/machines_live.ex:655
-#: lib/marshall_web/live/machines_live.ex:1212
-#: lib/marshall_web/live/machines_live.ex:1221
+#: lib/marshall_web/live/machines_live.ex:719
+#: lib/marshall_web/live/machines_live.ex:1320
+#: lib/marshall_web/live/machines_live.ex:1329
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "Pengelola"
 
-#: lib/marshall_web/live/machines_live.ex:1307
+#: lib/marshall_web/live/machines_live.ex:1415
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "Diukur antara pengamatan penghentian dan kesiapan bidang kontrol; ketersediaan tamu dapat berbeda."
 
-#: lib/marshall_web/live/machines_live.ex:1080
-#: lib/marshall_web/live/overview_live.ex:320
+#: lib/marshall_web/live/machines_live.ex:1188
+#: lib/marshall_web/live/overview_live.ex:350
 #: lib/marshall_web/live/resize_live.ex:318
 #: lib/marshall_web/live/resize_live.ex:365
 #: lib/marshall_web/live/resize_live.ex:478
@@ -762,33 +757,33 @@ msgstr "Diukur antara pengamatan penghentian dan kesiapan bidang kontrol; keters
 msgid "Memory"
 msgstr "Memori"
 
-#: lib/marshall_web/live/machines_live.ex:1004
+#: lib/marshall_web/live/machines_live.ex:1109
 #: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Memori (MiB)"
 
-#: lib/marshall_web/live/machines_live.ex:1295
+#: lib/marshall_web/live/machines_live.ex:1403
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Modus"
 
-#: lib/marshall_web/live/machines_live.ex:737
+#: lib/marshall_web/live/machines_live.ex:822
 #, elixir-autogen, elixir-format
 msgid "Move cancelled; cleanup complete"
 msgstr "Pemindahan dibatalkan; pembersihan selesai"
 
-#: lib/marshall_web/live/machines_live.ex:738
+#: lib/marshall_web/live/machines_live.ex:823
 #, elixir-autogen, elixir-format
 msgid "Move complete"
 msgstr "Pemindahan selesai"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1383
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "Pindahkan mesin ini ke host yang dipilih otomatis? Mesin mungkin tidak tersedia sebentar."
 
-#: lib/marshall_web/live/machines_live.ex:1281
+#: lib/marshall_web/live/machines_live.ex:1389
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "Pindahkan ke host lain"
@@ -799,7 +794,7 @@ msgstr "Pindahkan ke host lain"
 msgid "Needs attention"
 msgstr "Memerlukan perhatian"
 
-#: lib/marshall_web/live/machines_live.ex:1374
+#: lib/marshall_web/live/machines_live.ex:1482
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "Nama mesin baru (opsional)"
@@ -809,54 +804,54 @@ msgstr "Nama mesin baru (opsional)"
 msgid "New sizes"
 msgstr "Ukuran baru"
 
-#: lib/marshall_web/live/machines_live.ex:885
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:970
+#: lib/marshall_web/live/machines_live.ex:1292
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Halaman berikutnya →"
 
-#: lib/marshall_web/live/overview_live.ex:343
+#: lib/marshall_web/live/overview_live.ex:375
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "Langkah berikutnya"
 
-#: lib/marshall_web/live/machines_live.ex:1407
+#: lib/marshall_web/live/machines_live.ex:1515
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "Belum ada permintaan kloning. Antrekan salinan dan ikuti kemajuannya di sini."
 
-#: lib/marshall_web/live/machines_live.ex:1177
+#: lib/marshall_web/live/machines_live.ex:1285
 #, elixir-autogen, elixir-format
 msgid "No direct machine grants."
 msgstr "Tidak ada pemberian akses langsung ke mesin."
 
-#: lib/marshall_web/live/machines_live.ex:910
+#: lib/marshall_web/live/machines_live.ex:995
 #, elixir-autogen, elixir-format
 msgid "No images are available on ready hosts right now."
 msgstr "Tidak ada citra yang tersedia pada host siap saat ini."
 
-#: lib/marshall_web/live/overview_live.ex:177
+#: lib/marshall_web/live/overview_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "No machines in this preview yet. Create one or ask an owner to share access."
 msgstr "Belum ada mesin dalam pratinjau ini. Buat mesin atau minta pemilik membagikan akses."
 
-#: lib/marshall_web/live/machines_live.ex:785
+#: lib/marshall_web/live/machines_live.ex:870
 #, elixir-autogen, elixir-format
 msgid "No machines on this page. Create a machine or ask an owner to share access."
 msgstr "Tidak ada mesin pada halaman ini. Buat mesin atau minta pemilik membagikan akses."
 
-#: lib/marshall_web/live/machines_live.ex:703
+#: lib/marshall_web/live/machines_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "No registered account matches that email address."
 msgstr "Tidak ada akun terdaftar yang cocok dengan alamat email tersebut."
 
-#: lib/marshall_web/live/machines_live.ex:327
-#: lib/marshall_web/live/machines_live.ex:359
+#: lib/marshall_web/live/machines_live.ex:365
+#: lib/marshall_web/live/machines_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "No relocation is available."
 msgstr "Tidak ada relokasi yang tersedia."
 
-#: lib/marshall_web/live/machines_live.ex:1303
+#: lib/marshall_web/live/machines_live.ex:1411
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "Waktu henti teramati"
@@ -871,44 +866,44 @@ msgstr "Hanya repositori publik pada GitHub, GitLab, Codeberg, atau Bitbucket ya
 msgid "Open clone"
 msgstr "Buka klon"
 
-#: lib/marshall_web/live/overview_live.ex:297
+#: lib/marshall_web/live/overview_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "Buka repositori dari peramban Anda"
 
-#: lib/marshall_web/live/machines_live.ex:864
+#: lib/marshall_web/live/machines_live.ex:949
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "Buka terminal"
 
-#: lib/marshall_web/live/machines_live.ex:862
+#: lib/marshall_web/live/machines_live.ex:947
 #, elixir-autogen, elixir-format
 msgid "Open terminal for %{value1}"
 msgstr "Buka terminal untuk %{value1}"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "Buka terminal ↗"
 
-#: lib/marshall_web/live/machines_live.ex:660
+#: lib/marshall_web/live/machines_live.ex:724
 #, elixir-autogen, elixir-format
 msgid "Open this machine's web apps. No terminal."
 msgstr "Buka aplikasi web mesin ini. Tanpa terminal."
 
-#: lib/marshall_web/live/machines_live.ex:1073
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "Operating system"
 msgstr "Sistem operasi"
 
-#: lib/marshall_web/live/machines_live.ex:654
-#: lib/marshall_web/live/machines_live.ex:1211
-#: lib/marshall_web/live/machines_live.ex:1220
+#: lib/marshall_web/live/machines_live.ex:718
+#: lib/marshall_web/live/machines_live.ex:1319
+#: lib/marshall_web/live/machines_live.ex:1328
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Pelaksana"
 
-#: lib/marshall_web/live/machines_live.ex:603
+#: lib/marshall_web/live/machines_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents."
 msgstr "Koneksi keluar, berbagi, aplikasi web, SSH, terminal, dan alat agen AI. Agen tidak dapat memulai agen anak."
@@ -918,9 +913,9 @@ msgstr "Koneksi keluar, berbagi, aplikasi web, SSH, terminal, dan alat agen AI. 
 msgid "Overview"
 msgstr "Ringkasan"
 
-#: lib/marshall_web/live/machines_live.ex:839
-#: lib/marshall_web/live/machines_live.ex:977
-#: lib/marshall_web/live/machines_live.ex:1148
+#: lib/marshall_web/live/machines_live.ex:924
+#: lib/marshall_web/live/machines_live.ex:1082
+#: lib/marshall_web/live/machines_live.ex:1256
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Pemilik"
@@ -932,7 +927,7 @@ msgstr "Pemilik"
 msgid "Pending"
 msgstr "Tertunda"
 
-#: lib/marshall_web/live/machines_live.ex:1467
+#: lib/marshall_web/live/machines_live.ex:1575
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Hapus permanen mesin ini dan disknya. Tindakan ini tidak dapat dibatalkan."
@@ -942,13 +937,13 @@ msgstr "Hapus permanen mesin ini dan disknya. Tindakan ini tidak dapat dibatalka
 msgid "Permission to clone this machine is no longer available."
 msgstr "Izin untuk mengkloning mesin ini tidak lagi tersedia."
 
-#: lib/marshall_web/live/machines_live.ex:979
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/machines_live.ex:1084
+#: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "Pribadi"
 
-#: lib/marshall_web/live/machines_live.ex:1292
+#: lib/marshall_web/live/machines_live.ex:1400
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "Tahap"
@@ -978,7 +973,7 @@ msgstr "Menyiapkan klon"
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "Menyiapkan ruang dan memeriksa sumber sebelum mengambil snapshot."
 
-#: lib/marshall_web/live/machines_live.ex:723
+#: lib/marshall_web/live/machines_live.ex:808
 #, elixir-autogen, elixir-format
 msgid "Preparing transfer"
 msgstr "Menyiapkan transfer"
@@ -993,20 +988,20 @@ msgstr "Menyiapkan mesin Anda…"
 msgid "Preparing your repository…"
 msgstr "Menyiapkan repositori Anda…"
 
-#: lib/marshall_web/live/machines_live.ex:596
+#: lib/marshall_web/live/machines_live.ex:660
 #, elixir-autogen, elixir-format
 msgid "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
 msgstr "Pribadi dan hanya untuk pemilik. Akses SSH dan terminal; tanpa koneksi keluar, berbagi, aplikasi web, atau agen AI."
 
-#: lib/marshall_web/live/machines_live.ex:797
-#: lib/marshall_web/live/machines_live.ex:829
-#: lib/marshall_web/live/machines_live.ex:952
-#: lib/marshall_web/live/machines_live.ex:1089
+#: lib/marshall_web/live/machines_live.ex:882
+#: lib/marshall_web/live/machines_live.ex:914
+#: lib/marshall_web/live/machines_live.ex:1057
+#: lib/marshall_web/live/machines_live.ex:1197
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Profil"
 
-#: lib/marshall_web/live/machines_live.ex:958
+#: lib/marshall_web/live/machines_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "Profiles choose access and agent features. Machines remain isolated from one another."
 msgstr "Profil menentukan fitur akses dan agen. Mesin tetap terisolasi satu sama lain."
@@ -1023,47 +1018,47 @@ msgstr "Posisi antrean %{value1}"
 msgid "Queued"
 msgstr "Diantrekan"
 
-#: lib/marshall_web/live/machines_live.ex:1383
+#: lib/marshall_web/live/machines_live.ex:1491
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "Mengantrekan…"
 
-#: lib/marshall_web/live/machines_live.ex:662
+#: lib/marshall_web/live/machines_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "Read and write in the terminal."
 msgstr "Baca dan tulis di terminal."
 
-#: lib/marshall_web/live/overview_live.ex:358
+#: lib/marshall_web/live/overview_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "Baca catatan lapangan ↗"
 
-#: lib/marshall_web/live/machines_live.ex:661
+#: lib/marshall_web/live/machines_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Read the terminal."
 msgstr "Baca terminal."
 
-#: lib/marshall_web/live/machines_live.ex:1024
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Ready when you are"
 msgstr "Siap saat Anda siap"
 
-#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1354
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "Metadata refleksi"
 
-#: lib/marshall_web/live/overview_live.ex:374
+#: lib/marshall_web/live/overview_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "Segarkan"
 
-#: lib/marshall_web/live/overview_live.ex:372
+#: lib/marshall_web/live/overview_live.ex:404
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "Menyegarkan…"
 
-#: lib/marshall_web/live/machines_live.ex:1201
+#: lib/marshall_web/live/machines_live.ex:1309
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Email terdaftar"
@@ -1073,12 +1068,12 @@ msgstr "Email terdaftar"
 msgid "Registering the copied disk as your private machine."
 msgstr "Mendaftarkan disk yang disalin sebagai mesin pribadi Anda."
 
-#: lib/marshall_web/live/machines_live.ex:1264
+#: lib/marshall_web/live/machines_live.ex:1372
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "Relokasi mesin"
 
-#: lib/marshall_web/live/machines_live.ex:298
+#: lib/marshall_web/live/machines_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "Relokasi diminta. Tujuan dipilih secara otomatis."
@@ -1088,8 +1083,8 @@ msgstr "Relokasi diminta. Tujuan dipilih secara otomatis."
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "Tetap berhenti; sistem berkas diperbesar pada boot berikutnya"
 
-#: lib/marshall_web/live/machines_live.ex:1213
-#: lib/marshall_web/live/machines_live.ex:1222
+#: lib/marshall_web/live/machines_live.ex:1321
+#: lib/marshall_web/live/machines_live.ex:1330
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "Hapus akses"
@@ -1104,7 +1099,7 @@ msgstr "Meminta pembatalan…"
 msgid "Requesting resize…"
 msgstr "Meminta perubahan ukuran…"
 
-#: lib/marshall_web/live/machines_live.ex:1337
+#: lib/marshall_web/live/machines_live.ex:1445
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "Meminta mulai ulang…"
@@ -1114,12 +1109,12 @@ msgstr "Meminta mulai ulang…"
 msgid "Requesting retry…"
 msgstr "Meminta percobaan ulang…"
 
-#: lib/marshall_web/live/machines_live.ex:1273
+#: lib/marshall_web/live/machines_live.ex:1381
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "Meminta…"
 
-#: lib/marshall_web/live/machines_live.ex:1069
+#: lib/marshall_web/live/machines_live.ex:1177
 #: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
@@ -1172,9 +1167,9 @@ msgstr "Tahap perubahan ukuran"
 msgid "Resizing"
 msgstr "Mengubah ukuran"
 
-#: lib/marshall_web/live/machines_live.ex:796
-#: lib/marshall_web/live/machines_live.ex:822
-#: lib/marshall_web/live/machines_live.ex:1060
+#: lib/marshall_web/live/machines_live.ex:881
+#: lib/marshall_web/live/machines_live.ex:907
+#: lib/marshall_web/live/machines_live.ex:1168
 #, elixir-autogen, elixir-format
 msgid "Resources"
 msgstr "Sumber daya"
@@ -1216,7 +1211,7 @@ msgstr "Coba lagi"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "Percobaan ulang tidak dapat diterima. Kapasitas atau keadaan mesin mungkin telah berubah."
 
-#: lib/marshall_web/live/machines_live.ex:1339
+#: lib/marshall_web/live/machines_live.ex:1447
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "Coba lagi boot tujuan"
@@ -1231,30 +1226,30 @@ msgstr "Coba ulang perubahan ukuran"
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "Kembali ke Beban kerja armada dan verifikasi kunci sandi Anda untuk membuka kembali mesin →"
 
-#: lib/marshall_web/live/machines_live.ex:656
+#: lib/marshall_web/live/machines_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "Dicabut"
 
-#: lib/marshall_web/live/machines_live.ex:1132
-#: lib/marshall_web/live/machines_live.ex:1147
-#: lib/marshall_web/live/machines_live.ex:1166
-#: lib/marshall_web/live/machines_live.ex:1207
+#: lib/marshall_web/live/machines_live.ex:1240
+#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1274
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Peran"
 
-#: lib/marshall_web/live/overview_live.ex:175
+#: lib/marshall_web/live/overview_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Room for your next idea"
 msgstr "Ruang untuk ide Anda berikutnya"
 
-#: lib/marshall_web/live/overview_live.ex:312
+#: lib/marshall_web/live/overview_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "Ruang untuk berkembang"
 
-#: lib/marshall_web/live/machines_live.ex:1014
+#: lib/marshall_web/live/machines_live.ex:1119
 #, elixir-autogen, elixir-format
 msgid "Root disk (GiB)"
 msgstr "Disk akar (GiB)"
@@ -1264,42 +1259,42 @@ msgstr "Disk akar (GiB)"
 msgid "Running"
 msgstr "Berjalan"
 
-#: lib/marshall_web/live/machines_live.ex:1230
+#: lib/marshall_web/live/machines_live.ex:1338
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "Simpan akses"
 
-#: lib/marshall_web/live/machines_live.ex:1261
+#: lib/marshall_web/live/machines_live.ex:1369
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "Simpan metadata"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1336
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "Menyimpan…"
 
-#: lib/marshall_web/live/machines_live.ex:645
+#: lib/marshall_web/live/machines_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "Selected image unavailable"
 msgstr "Citra terpilih tidak tersedia"
 
-#: lib/marshall_web/live/overview_live.ex:310
+#: lib/marshall_web/live/overview_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "Siapkan ekstensi peramban ↗"
 
-#: lib/marshall_web/live/overview_live.ex:205
+#: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "Dibagikan"
 
-#: lib/marshall_web/live/machines_live.ex:841
+#: lib/marshall_web/live/machines_live.ex:926
 #, elixir-autogen, elixir-format
 msgid "Shared by"
 msgstr "Dibagikan oleh"
 
-#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1366
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "Deskripsi singkat untuk agen"
@@ -1344,7 +1339,7 @@ msgstr "Pemulihan sumber memerlukan perhatian."
 msgid "Source recovery retry requested."
 msgstr "Percobaan ulang pemulihan sumber diminta."
 
-#: lib/marshall_web/live/machines_live.ex:735
+#: lib/marshall_web/live/machines_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Source restored; destination cleanup pending"
 msgstr "Sumber dipulihkan; pembersihan tujuan tertunda"
@@ -1364,13 +1359,13 @@ msgstr "Sumber tetap dihentikan, sesuai keadaannya saat permintaan ini dimulai."
 msgid "Source was stopped when this request began."
 msgstr "Sumber berhenti saat permintaan ini dimulai."
 
-#: lib/marshall_web/live/machines_live.ex:584
-#: lib/marshall_web/live/machines_live.ex:673
+#: lib/marshall_web/live/machines_live.ex:648
+#: lib/marshall_web/live/machines_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "Standar"
 
-#: lib/marshall_web/live/machines_live.ex:681
+#: lib/marshall_web/live/machines_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Starting"
 msgstr "Memulai"
@@ -1380,13 +1375,13 @@ msgstr "Memulai"
 msgid "Starting the machine with its new resources."
 msgstr "Memulai mesin dengan sumber daya barunya."
 
-#: lib/marshall_web/live/machines_live.ex:795
-#: lib/marshall_web/live/machines_live.ex:814
+#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status keadaan"
 
-#: lib/marshall_web/live/overview_live.ex:243
+#: lib/marshall_web/live/overview_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "Ikuti kabar terbaru"
@@ -1413,7 +1408,7 @@ msgstr "Hentikan mesin"
 msgid "Stopped"
 msgstr "Berhenti"
 
-#: lib/marshall_web/live/machines_live.ex:678
+#: lib/marshall_web/live/machines_live.ex:742
 #: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
@@ -1434,17 +1429,17 @@ msgstr "Menghentikan penyalinan dan menghapus sumber daya sementara. Pemulihan s
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Menghentikan mesin agar sumber dayanya dapat diubah dengan aman."
 
-#: lib/marshall_web/live/machines_live.ex:725
+#: lib/marshall_web/live/machines_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "Menghentikan sumber"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "Berlangganan"
 
-#: lib/marshall_web/live/machines_live.ex:728
+#: lib/marshall_web/live/machines_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "Mengalihkan penempatan"
@@ -1454,17 +1449,17 @@ msgstr "Mengalihkan penempatan"
 msgid "Taking snapshot"
 msgstr "Mengambil cuplikan"
 
-#: lib/marshall_web/live/machines_live.ex:1122
+#: lib/marshall_web/live/machines_live.ex:1230
 #, elixir-autogen, elixir-format
 msgid "Team membership and thread sharing can also grant machine access."
 msgstr "Keanggotaan tim dan berbagi utas juga dapat memberikan akses mesin."
 
-#: lib/marshall_web/live/machines_live.ex:871
+#: lib/marshall_web/live/machines_live.ex:956
 #, elixir-autogen, elixir-format
 msgid "Terminal unavailable"
 msgstr "Terminal tidak tersedia"
 
-#: lib/marshall_web/live/machines_live.ex:665
+#: lib/marshall_web/live/machines_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "Terminal, siklus hidup, perubahan ukuran, kloning, dan berbagi."
@@ -1489,7 +1484,7 @@ msgstr "Ruang nama repositori tersebut tidak valid."
 msgid "That repository reference cannot be launched."
 msgstr "Referensi repositori tersebut tidak dapat diluncurkan."
 
-#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/machines_live.ex:1299
 #, elixir-autogen, elixir-format
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr "Akun harus sudah terdaftar. Menyimpan peran mengganti peran mesin langsung orang tersebut; pilih Hapus akses untuk menghapus izin langsung itu."
@@ -1534,17 +1529,17 @@ msgstr "Mesin tidak dapat diperbarui. Muat ulang dan coba lagi."
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Mesin telah berubah sejak draf ini dibuat. Tinjau sumber daya terkonfirmasi di atas."
 
-#: lib/marshall_web/live/machines_live.ex:1285
+#: lib/marshall_web/live/machines_live.ex:1393
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr "Mesin dihentikan, disalin sekali, dan dimulai pada host yang dipilih otomatis. Armada pengembangan kami menggunakan koneksi 1 Gbit/s antarhost, sehingga pemindahan dapat memakan waktu sedikit lebih lama; pemindahan diperkirakan jauh lebih cepat saat Overalls berjalan pada AWS di produksi."
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1405
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "Mesin dihentikan, disalin sekali, dan dimulai pada tujuan."
 
-#: lib/marshall_web/live/machines_live.ex:704
+#: lib/marshall_web/live/machines_live.ex:789
 #, elixir-autogen, elixir-format
 msgid "The owner's access cannot be changed."
 msgstr "Akses pemilik tidak dapat diubah."
@@ -1559,7 +1554,7 @@ msgstr "Sematan tidak dapat diubah. Muat ulang dan coba lagi."
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Salinan mesin ini sebelumnya masih melepaskan cuplikannya. Coba lagi sebentar lagi."
 
-#: lib/marshall_web/live/machines_live.ex:714
+#: lib/marshall_web/live/machines_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "The request could not be completed. Check the values and try again."
 msgstr "Permintaan tidak dapat diselesaikan. Periksa nilai dan coba lagi."
@@ -1574,12 +1569,13 @@ msgstr "Permintaan mengalami masalah. Gunakan tindakan yang tersedia untuk memul
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "Perubahan ukuran telah selesai; halaman ini diperbarui dengan ukuran terkonfirmasi."
 
-#: lib/marshall_web/live/machines_live.ex:610
+#: lib/marshall_web/live/machines_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "The same network and access options as Standard, with AI agents that can start child agents."
 msgstr "Pilihan jaringan dan akses yang sama seperti Standar, dengan agen AI yang dapat memulai agen anak."
 
-#: lib/marshall_web/live/machines_live.ex:700
+#: lib/marshall_web/live/machines_live.ex:768
+#: lib/marshall_web/live/machines_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "The selected image needs more memory or disk space."
 msgstr "Citra terpilih membutuhkan lebih banyak memori atau ruang disk."
@@ -1609,7 +1605,7 @@ msgstr "Sumber sibuk atau berubah sebelum kloning dimulai. Coba lagi saat siap."
 msgid "There is not enough available capacity for a new machine right now."
 msgstr "Kapasitas yang tersedia tidak cukup untuk mesin baru saat ini."
 
-#: lib/marshall_web/live/machines_live.ex:693
+#: lib/marshall_web/live/machines_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "There is not enough available capacity for this machine."
 msgstr "Kapasitas yang tersedia tidak cukup untuk mesin ini."
@@ -1619,7 +1615,8 @@ msgstr "Kapasitas yang tersedia tidak cukup untuk mesin ini."
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "Kapasitas tidak cukup untuk salinan ini. Coba lagi saat ruang tersedia."
 
-#: lib/marshall_web/live/machines_live.ex:695
+#: lib/marshall_web/live/machines_live.ex:765
+#: lib/marshall_web/live/machines_live.ex:780
 #, elixir-autogen, elixir-format
 msgid "This image is no longer available. Refresh and choose another image."
 msgstr "Citra ini tidak lagi tersedia. Muat ulang dan pilih citra lain."
@@ -1644,7 +1641,7 @@ msgstr "Tautan peluncuran ini telah kedaluwarsa. Buka kembali."
 msgid "This machine is being deleted and cannot be pinned."
 msgstr "Mesin ini sedang dihapus dan tidak dapat disematkan."
 
-#: lib/marshall_web/live/machines_live.ex:706
+#: lib/marshall_web/live/machines_live.ex:791
 #, elixir-autogen, elixir-format
 msgid "This machine is being deleted."
 msgstr "Mesin ini sedang dihapus."
@@ -1659,7 +1656,7 @@ msgstr "Mesin ini tidak tersedia atau Anda tidak lagi memiliki akses pengelolaan
 msgid "This machine is unavailable or your access has ended."
 msgstr "Mesin ini tidak tersedia atau akses Anda telah berakhir."
 
-#: lib/marshall_web/live/machines_live.ex:701
+#: lib/marshall_web/live/machines_live.ex:786
 #, elixir-autogen, elixir-format
 msgid "This machine's host is currently unavailable."
 msgstr "Host mesin ini saat ini tidak tersedia."
@@ -1674,7 +1671,7 @@ msgstr "Tautan repositori ini tidak dapat diluncurkan. Buka tautan lagi."
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "Permintaan ini tidak dapat selesai. Tinjau masalah di bawah dan tindakan yang tersedia."
 
-#: lib/marshall_web/live/machines_live.ex:709
+#: lib/marshall_web/live/machines_live.ex:794
 #, elixir-autogen, elixir-format
 msgid "This request has already been used. Refresh before trying again."
 msgstr "Permintaan ini sudah digunakan. Muat ulang sebelum mencoba lagi."
@@ -1684,39 +1681,39 @@ msgstr "Permintaan ini sudah digunakan. Muat ulang sebelum mencoba lagi."
 msgid "This request has ended without publishing a clone."
 msgstr "Permintaan ini berakhir tanpa menerbitkan klon."
 
-#: lib/marshall_web/live/machines_live.ex:835
-#: lib/marshall_web/live/machines_live.ex:1075
-#: lib/marshall_web/live/machines_live.ex:1087
+#: lib/marshall_web/live/machines_live.ex:920
+#: lib/marshall_web/live/machines_live.ex:1183
+#: lib/marshall_web/live/machines_live.ex:1195
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Tidak tersedia"
 
-#: lib/marshall_web/live/machines_live.ex:657
+#: lib/marshall_web/live/machines_live.ex:721
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Tidak diketahui"
 
-#: lib/marshall_web/live/machines_live.ex:707
+#: lib/marshall_web/live/machines_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Unpin this machine before deleting it."
 msgstr "Lepas sematan mesin ini sebelum menghapusnya."
 
-#: lib/marshall_web/live/machines_live.ex:1461
+#: lib/marshall_web/live/machines_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "Lepas sematan untuk menghapus. Selama Anda menyematkan mesin ini, tidak ada yang dapat menghapusnya."
 
-#: lib/marshall_web/live/overview_live.ex:291
+#: lib/marshall_web/live/overview_live.ex:321
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "Berhenti berlangganan kapan saja."
 
-#: lib/marshall_web/live/overview_live.ex:367
+#: lib/marshall_web/live/overview_live.ex:399
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "Diperbarui"
 
-#: lib/marshall_web/live/machines_live.ex:1403
+#: lib/marshall_web/live/machines_live.ex:1511
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "Diperbarui otomatis"
@@ -1726,19 +1723,19 @@ msgstr "Diperbarui otomatis"
 msgid "Use current machine state, keeping these sizes"
 msgstr "Gunakan keadaan mesin saat ini, pertahankan ukuran ini"
 
-#: lib/marshall_web/live/machines_live.ex:727
+#: lib/marshall_web/live/machines_live.ex:812
 #, elixir-autogen, elixir-format
 msgid "Verifying the destination disks"
 msgstr "Memverifikasi disk tujuan"
 
-#: lib/marshall_web/live/overview_live.ex:168
+#: lib/marshall_web/live/overview_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "View all →"
 msgstr "Lihat semua →"
 
-#: lib/marshall_web/live/machines_live.ex:653
-#: lib/marshall_web/live/machines_live.ex:1210
-#: lib/marshall_web/live/machines_live.ex:1219
+#: lib/marshall_web/live/machines_live.ex:717
+#: lib/marshall_web/live/machines_live.ex:1318
+#: lib/marshall_web/live/machines_live.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "Penonton"
@@ -1768,7 +1765,7 @@ msgstr "Menunggu salinan mesin ini sebelumnya melepaskan cuplikannya."
 msgid "Waiting for the source to stop."
 msgstr "Menunggu sumber berhenti."
 
-#: lib/marshall_web/live/overview_live.ex:286
+#: lib/marshall_web/live/overview_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "Kami tidak dapat menghubungi layanan buletin. Coba lagi nanti."
@@ -1778,13 +1775,13 @@ msgstr "Kami tidak dapat menghubungi layanan buletin. Coba lagi nanti."
 msgid "We couldn't launch that repository"
 msgstr "Kami tidak dapat meluncurkan repositori tersebut"
 
-#: lib/marshall_web/live/machines_live.ex:652
+#: lib/marshall_web/live/machines_live.ex:716
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "Aplikasi web"
 
-#: lib/marshall_web/live/machines_live.ex:1209
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Web apps only"
 msgstr "Hanya aplikasi web"
@@ -1794,7 +1791,7 @@ msgstr "Hanya aplikasi web"
 msgid "What happens"
 msgstr "Yang terjadi"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1226
 #, elixir-autogen, elixir-format
 msgid "Who can reach this machine, and what each role allows."
 msgstr "Siapa yang dapat mengakses mesin ini, dan izin setiap peran."
@@ -1804,7 +1801,7 @@ msgstr "Siapa yang dapat mengakses mesin ini, dan izin setiap peran."
 msgid "You can pin up to %{value1} machines. Unpin one before pinning another."
 msgstr "Anda dapat menyematkan hingga %{value1} mesin. Lepas satu sematan sebelum menyematkan yang lain."
 
-#: lib/marshall_web/live/machines_live.ex:705
+#: lib/marshall_web/live/machines_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "You no longer have permission for this action."
 msgstr "Anda tidak lagi memiliki izin untuk tindakan ini."
@@ -1814,17 +1811,17 @@ msgstr "Anda tidak lagi memiliki izin untuk tindakan ini."
 msgid "Your account cannot create machines."
 msgstr "Akun Anda tidak dapat membuat mesin."
 
-#: lib/marshall_web/live/machines_live.ex:761
+#: lib/marshall_web/live/machines_live.ex:846
 #, elixir-autogen, elixir-format
 msgid "Your development environments, personal and shared."
 msgstr "Lingkungan pengembangan Anda, pribadi dan bersama."
 
-#: lib/marshall_web/live/machines_live.ex:1092
+#: lib/marshall_web/live/machines_live.ex:1200
 #, elixir-autogen, elixir-format
 msgid "Your disk is retained when the machine is stopped."
 msgstr "Disk Anda disimpan saat mesin berhenti."
 
-#: lib/marshall_web/live/machines_live.ex:1033
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "Disk Anda tetap bersama Anda saat mesin berhenti."
@@ -1839,7 +1836,7 @@ msgstr "Mesin Anda tetap berhenti. Pembesaran sistem berkas disk selesai pada bo
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "Mesin Anda akan berhenti saat sumber daya berubah, lalu dimulai ulang. Perkirakan adanya waktu henti."
 
-#: lib/marshall_web/live/overview_live.ex:166
+#: lib/marshall_web/live/overview_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your machines"
 msgstr "Mesin Anda"
@@ -1854,7 +1851,7 @@ msgstr "Salinan pribadi Anda telah dibuat dan sumber daya sementara telah dibers
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr "Salinan pribadi Anda telah dibuat. Cuplikan sumber masih dilepaskan; sumber tetap dilindungi sampai selesai."
 
-#: lib/marshall_web/live/overview_live.ex:157
+#: lib/marshall_web/live/overview_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Your workspace, with a little room to breathe."
 msgstr "Ruang kerja Anda, dengan sedikit ruang untuk bernapas."
@@ -1864,18 +1861,18 @@ msgstr "Ruang kerja Anda, dengan sedikit ruang untuk bernapas."
 msgid "continue to Overalls"
 msgstr "lanjutkan ke Overalls"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1359
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "produksi, nama-proyek"
 
-#: lib/marshall_web/live/machines_live.ex:881
-#: lib/marshall_web/live/machines_live.ex:1181
+#: lib/marshall_web/live/machines_live.ex:966
+#: lib/marshall_web/live/machines_live.ex:1289
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Halaman pertama"
 
-#: lib/marshall_web/live/machines_live.ex:892
+#: lib/marshall_web/live/machines_live.ex:977
 #, elixir-autogen, elixir-format
 msgid "← Machines"
 msgstr "← Mesin"
@@ -1969,7 +1966,52 @@ msgstr "Konfirmasi"
 msgid "A new machine will clone the repository when it boots."
 msgstr "Mesin baru akan mengkloning repositori saat melakukan boot."
 
-#: lib/marshall_web/live/machines_live.ex:638
+#: lib/marshall_web/live/machines_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Android (API 36)"
 msgstr "Android (API 36)"
+
+#: lib/marshall_web/live/machines_live.ex:1029
+#, elixir-autogen, elixir-format
+msgid "Leave this blank to create the machine without making setup changes."
+msgstr "Biarkan kosong untuk membuat mesin tanpa perubahan penyiapan."
+
+#: lib/marshall_web/live/machines_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Machine and setup thread requested."
+msgstr "Mesin dan utas penyiapan diminta."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:48
+#, elixir-autogen, elixir-format
+msgid "Provisioning is in progress. This page will open the machine when it is ready."
+msgstr "Penyediaan sedang berlangsung. Halaman ini akan membuka mesin saat sudah siap."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "Provisioning request unavailable."
+msgstr "Permintaan penyediaan tidak tersedia."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Retry is unavailable."
+msgstr "Coba lagi tidak tersedia."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Retry setup"
+msgstr "Coba lagi penyiapan"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:42
+#, elixir-autogen, elixir-format
+msgid "Setting up your machine"
+msgstr "Menyiapkan mesin Anda"
+
+#: lib/marshall_web/live/machines_live.ex:1019
+#, elixir-autogen, elixir-format
+msgid "The machine agent will execute this instruction automatically in Work mode."
+msgstr "Agen mesin akan menjalankan instruksi ini secara otomatis dalam mode Kerja."
+
+#: lib/marshall_web/live/machines_live.ex:1017
+#, elixir-autogen, elixir-format
+msgid "What should this machine do when it is ready?"
+msgstr "Apa yang harus dilakukan mesin ini saat sudah siap?"
