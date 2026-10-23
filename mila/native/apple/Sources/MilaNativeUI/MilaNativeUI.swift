@@ -122,6 +122,10 @@ private struct MachineDetailView: View {
     @State private var showWeb = false
     @State private var sharePrincipal = ""
     @State private var shareRole: MilaShareRole = .viewer
+    @State private var resizeCPU = "2"
+    @State private var resizeMemory = "2048"
+    @State private var resizeDisk = "20"
+    @State private var resizeStatus = ""
     @StateObject private var sharing: MilaMachineSharingController
     init(machine: MilaMachinePresentation?, adapter: any MilaFFIAdapter) {
         self.machine = machine
@@ -135,6 +139,13 @@ private struct MachineDetailView: View {
                 Text(machine.machine.name).font(.title)
                 Text(machine.id.uuidString).font(.caption)
                 Text(machine.machine.observedState ?? "unknown").foregroundStyle(.secondary)
+                HStack {
+                    TextField("CPU", text: $resizeCPU).frame(width: 60)
+                    TextField("Memory MiB", text: $resizeMemory).frame(width: 110)
+                    TextField("Disk GiB", text: $resizeDisk).frame(width: 100)
+                    Button("Resize") { resize(machine) }.disabled(!machine.machine.write)
+                }
+                Text(resizeStatus).font(.caption).foregroundStyle(.secondary)
                 Button(MilaStrings.text(.openTerminal)) { showTerminal = true }.disabled(!machine.machine.write)
                 HStack {
                     TextField(MilaStrings.text(.sharePrincipal), text: $sharePrincipal)
@@ -198,6 +209,15 @@ private struct MachineDetailView: View {
         case .submitting: return MilaStrings.text(.connecting)
         case .applied: return MilaStrings.text(.actionSubmitted)
         case .failed: return MilaStrings.text(.actionNotSubmitted)
+        }
+    }
+
+    private func resize(_ machine: MilaMachinePresentation) {
+        guard let cpu = UInt32(resizeCPU), let memory = UInt64(resizeMemory), let disk = UInt64(resizeDisk), cpu > 0, memory > 0, disk > 0 else { resizeStatus = MilaStrings.text(.actionNotSubmitted); return }
+        resizeStatus = MilaStrings.text(.connecting)
+        Task {
+            do { try await adapter.resize(machine: machine, cpu: cpu, memory: memory, disk: disk, requestID: UUID()); resizeStatus = MilaStrings.text(.actionSubmitted) }
+            catch { resizeStatus = MilaStrings.text(.actionNotSubmitted) }
         }
     }
 

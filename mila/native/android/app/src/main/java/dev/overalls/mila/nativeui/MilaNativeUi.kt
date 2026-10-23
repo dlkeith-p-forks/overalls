@@ -199,7 +199,7 @@ fun MilaNativeRoot(
         }
         if (signInState is MilaSignInState.SignedIn) Text(MilaStrings.text(MilaMessage.Connected), style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
-            MilaRoute.Machines -> MachineList(sessionAdapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
+            MilaRoute.Machines -> MachineList(sessionAdapter, status, listing, signInState is MilaSignInState.SignedIn, ::refresh) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
             is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, sessionAdapter, signInState is MilaSignInState.SignedIn, listing)
             MilaRoute.Threads -> ThreadList(threadListing) { route = MilaRoute.Thread(it); threadDetail.select(it) }
             is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
@@ -349,13 +349,14 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
     }
 }
 
-@Composable private fun MachineList(adapter: MilaFfiAdapter, status: String, listing: MilaSessionListing?, onSelect: (MilaMachineRow) -> Unit) {
+@Composable private fun MachineList(adapter: MilaFfiAdapter, status: String, listing: MilaSessionListing?, signedIn: Boolean, onCreated: () -> Unit, onSelect: (MilaMachineRow) -> Unit) {
     var classified by remember { mutableStateOf<MilaMachineCommand?>(null) }
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(status, style = MaterialTheme.typography.bodyMedium)
         listing?.machines?.forEach { machine ->
             Button({ onSelect(machine) }) { Text("${machine.name} · ${machine.status}", style = MaterialTheme.typography.bodyMedium) }
         }
+        if (signedIn) MachineCreateControls(adapter, onCreated)
         Text(MilaStrings.text(MilaMessage.MachineActions), style = MaterialTheme.typography.titleMedium)
         machineCommandChoices.chunked(3).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -367,6 +368,37 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
             }
         }
         Text(classified?.name ?: MilaStrings.text(MilaMessage.NoAction), style = MaterialTheme.typography.labelSmall)
+    }
+}
+
+@Composable private fun MachineCreateControls(adapter: MilaFfiAdapter, onCreated: () -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var cpu by remember { mutableStateOf("2") }
+    var memory by remember { mutableStateOf("1024") }
+    var disk by remember { mutableStateOf("20") }
+    var result by remember { mutableStateOf("") }
+    var submitting by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(MilaStrings.text(MilaMessage.MachineCreate), style = MaterialTheme.typography.titleMedium)
+        OutlinedTextField(name, { name = it }, label = { Text(MilaStrings.text(MilaMessage.MachineName)) }, singleLine = true)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(cpu, { cpu = it.filter(Char::isDigit) }, label = { Text(MilaStrings.text(MilaMessage.MachineCpu)) }, singleLine = true, modifier = Modifier.weight(1f))
+            OutlinedTextField(memory, { memory = it.filter(Char::isDigit) }, label = { Text(MilaStrings.text(MilaMessage.MachineMemory)) }, singleLine = true, modifier = Modifier.weight(1f))
+            OutlinedTextField(disk, { disk = it.filter(Char::isDigit) }, label = { Text(MilaStrings.text(MilaMessage.MachineDisk)) }, singleLine = true, modifier = Modifier.weight(1f))
+        }
+        Button(enabled = !submitting, onClick = {
+            val request = runCatching { MilaMachineCreateRequest(name, cpu.toInt(), memory.toInt(), disk.toInt()) }
+            scope.launch {
+                submitting = true
+                result = request.fold(
+                    onSuccess = { value -> adapter.createMachine(value).fold({ onCreated(); MilaStrings.text(MilaMessage.MachineCreated) }, { MilaStrings.text(MilaMessage.MachineCreateFailed) }) },
+                    onFailure = { MilaStrings.text(MilaMessage.MachineCreateFailed) },
+                )
+                submitting = false
+            }
+        }) { Text(MilaStrings.text(MilaMessage.MachineCreate)) }
+        if (result.isNotEmpty()) Text(result, style = MaterialTheme.typography.labelSmall)
     }
 }
 

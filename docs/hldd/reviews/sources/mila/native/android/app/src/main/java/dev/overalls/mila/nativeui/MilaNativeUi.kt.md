@@ -1,5 +1,5 @@
 ---
-digest: dbb9c41d7ce457a85c260f15dae486f020eef71c89a042ac93e391ad58ee6182
+digest: 37e16f45033bd4b84f6403f178789e88c5448cafbb3c3988388fa50eacf4c43f
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Android locale selector preserves existing documented settings behavior and does not alter HLDD chapters.
+UI wiring preserves existing documented native machine lifecycle contracts.

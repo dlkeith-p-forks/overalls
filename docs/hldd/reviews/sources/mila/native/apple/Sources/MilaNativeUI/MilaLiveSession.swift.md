@@ -1,5 +1,5 @@
 ---
-digest: 15cce96928eeb6ed4067245011329f318d755c2254a25aa57201c0ade8fbbbc7
+digest: 553bb4adf0717b6e8b244dfa3d0f85bc43261c018edce10f9a25675d5db249ea
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Rust FFI implementation preserves existing documented native architecture and requires no chapter update.
+Concurrent Apple FFI edits preserve existing native contracts; reviewed for receipt freshness.

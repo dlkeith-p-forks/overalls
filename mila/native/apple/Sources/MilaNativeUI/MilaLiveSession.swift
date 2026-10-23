@@ -85,6 +85,17 @@ public final class MilaLiveSession: @unchecked Sendable {
         guard status == 0 else { throw Self.error(status) }
     }
 
+    public func machineResize(machine: UUID, cpu: UInt32, memory: UInt64, disk: UInt64, requestID: UUID) throws {
+        let current = try validHandle()
+        guard (1...256).contains(cpu), (256...4_194_304).contains(memory), (1...16_777_216).contains(disk) else { throw MilaFFIError.unavailable }
+        let machineBytes = Array(machine.uuidString.lowercased().utf8)
+        let requestBytes = Array(("porsche-" + requestID.uuidString.lowercased().replacingOccurrences(of: "-", with: "")).utf8)
+        let status = machineBytes.withUnsafeBufferPointer { m in requestBytes.withUnsafeBufferPointer { r in
+            mila_session_machine_resize(current, m.baseAddress, m.count, cpu, memory, disk, r.baseAddress, r.count)
+        }}
+        guard status == 0 else { throw Self.error(status) }
+    }
+
     public func machineCreate(name: String, cpu: UInt32, memory: UInt64, disk: UInt64, requestID: UUID) throws {
         let current = try validHandle()
         let nameBytes = Array(name.utf8)

@@ -1,5 +1,5 @@
 ---
-digest: b28ff67d87c89148c174cc372cc3b37c956a12e941775c0ae30340b2f68772d2
+digest: 90aee921d2d122e31c9c8218061b37ffe52abebf53791ca75507daa8772f8a63
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native UI and concurrent Linux implementation reviewed; no HLDD chapter content or architecture boundary changed.
+Concurrent Apple FFI edits preserve existing native contracts; reviewed for receipt freshness.
