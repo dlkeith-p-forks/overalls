@@ -36,4 +36,9 @@ class MilaDeploymentSelection(initial: List<MilaDeployment> = emptyList()) {
     var selected: MilaDeployment? = entries.firstOrNull(); private set
     fun add(deployment: MilaDeployment) { if (entries.none { it.host == deployment.host && it.port == deployment.port }) entries += deployment; if (selected == null) selected = deployment }
     fun select(host: String, port: Int = 22): Boolean = entries.firstOrNull { it.host == host && it.port == port }?.let { selected = it; true } ?: false
+    fun remove(host: String, port: Int = 22): Boolean {
+        val removed = entries.removeIf { it.host == host && it.port == port }
+        if (removed && selected?.host == host && selected?.port == port) selected = entries.firstOrNull()
+        return removed
+    }
 }

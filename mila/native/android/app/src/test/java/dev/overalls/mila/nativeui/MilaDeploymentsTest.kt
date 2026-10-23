@@ -22,6 +22,12 @@ class MilaDeploymentsTest {
   assertTrue(model.select("mila.example"))
   assertFalse(model.select("other.example"))
  }
+ @Test fun forgetRemovesSelectedDeploymentAndSelectsNext() {
+  val model = MilaDeploymentSelection(listOf(MilaDeployment("one.example"), MilaDeployment("two.example")))
+  assertTrue(model.remove("one.example"))
+  assertEquals("two.example", model.selected?.host)
+  assertFalse(model.remove("missing.example"))
+ }
  @Test(expected = IllegalArgumentException::class) fun invalidHostRejected() { MilaDeployment("localhost") }
  @Test(expected = IllegalArgumentException::class) fun invalidPortRejected() { MilaDeployment("mila.example", 70000) }
 }
