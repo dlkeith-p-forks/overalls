@@ -97,6 +97,7 @@
           <Button x:Name="WebOpen" Click="OpenWebControl" />
           <Button x:Name="WebCopy" Click="CopyWebAddress" />
           <TextBox x:Name="WebPort" Width="90" PlaceholderText="Port" InputScope="Number" />
+          <TextBox x:Name="WebRevision" Width="110" PlaceholderText="Revision" InputScope="Number" />
           <CheckBox x:Name="WebPublic" Content="Public" />
           <Button x:Name="WebSet" Click="SetWebControl" />
           <TextBlock x:Name="WebStatus" Opacity="0.7" />

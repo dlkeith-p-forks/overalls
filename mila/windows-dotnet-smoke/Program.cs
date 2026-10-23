@@ -67,6 +67,11 @@ internal static class Program
         MilaNativeSessionActionResult invalidWebSet = RustNative.TrySessionWebSet(
             0, machineId, 8080, false, 0, "porsche-0123456789abcdef0123456789abcdef");
         Require(invalidWebSet.Status == MilaNativeStatus.InvalidRequest, "missing authenticated web mutation refusal");
+        MilaWebEndpoint endpoint = MilaWebEndpointDecoder.Decode(Encoding.UTF8.GetBytes($"{{\"machine_id\":\"{machineId:D}\",\"port\":8080,\"visibility\":\"public\",\"policy_revision\":4,\"url\":\"https://web.example.test\"}}"), machineId);
+        Require(endpoint.Revision == 4 && endpoint.IsPublic && endpoint.Url?.Scheme == "https", "web endpoint revision projection");
+        bool badWeb = false;
+        try { _ = MilaWebEndpointDecoder.Decode(Encoding.UTF8.GetBytes($"{{\"machine_id\":\"{machineId:D}\",\"port\":8080,\"visibility\":\"public\",\"policy_revision\":4,\"url\":\"http://web.example.test\"}}"), machineId); } catch (InvalidDataException) { badWeb = true; }
+        Require(badWeb, "insecure web endpoint refusal");
         MilaNativeSessionBytesResult invalidKeys = RustNative.TrySessionSshKeys(0);
         Require(invalidKeys.Status == MilaNativeStatus.InvalidRequest && invalidKeys.Data is null, "missing authenticated SSH key listing refusal");
         MilaNativeSessionBytesResult invalidListing = RustNative.TrySessionListing(0);

@@ -18,6 +18,7 @@ public sealed partial class MainWindow : Window
     private readonly MilaSessionConnection _session = new();
     private readonly MilaTerminalSession _terminal = new();
     private long _terminalGeneration;
+    private ulong _webRevision;
     private readonly MilaSignInFlow _signIn = new();
     private bool _closed;
     public MainWindow(string? activation = null)
@@ -188,9 +189,17 @@ public sealed partial class MainWindow : Window
             return;
         }
         MilaNativeSessionBytesResult result = await Task.Run(() => RustNative.TrySessionWebShow(handle, machine.Id));
-        WebStatus.Text = result.Succeeded
-            ? S("webVisibility", "Web control validated")
-            : S("webFailed", "Web control unavailable");
+        if (!result.Succeeded || result.Data is null) { WebStatus.Text = S("webFailed", "Web control unavailable"); return; }
+        try
+        {
+            MilaWebEndpoint endpoint = MilaWebEndpointDecoder.Decode(result.Data, machine.Id);
+            _webRevision = endpoint.Revision;
+            WebRevision.Text = endpoint.Revision.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            WebPort.Text = endpoint.Port.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            WebPublic.IsChecked = endpoint.IsPublic;
+            WebStatus.Text = endpoint.Url is { } url ? url.ToString() : S("webVisibility", "Web control validated");
+        }
+        catch (InvalidDataException) { WebStatus.Text = S("webFailed", "Web control unavailable"); }
     }
     private async void CopyWebAddress(object sender, RoutedEventArgs args) => OpenWebControl(sender, args);
     private async void SetWebControl(object sender, RoutedEventArgs args)
@@ -205,15 +214,24 @@ public sealed partial class MainWindow : Window
             WebStatus.Text = S("webInvalidPort", "Enter a valid web port.");
             return;
         }
+        if (!ulong.TryParse(WebRevision.Text.Trim(), out ulong revision) || revision == 0)
+        {
+            WebStatus.Text = S("webInvalidRevision", "Enter the current web policy revision.");
+            return;
+        }
         WebSet.IsEnabled = false;
         try
         {
             MilaNativeSessionActionResult result = await Task.Run(() => RustNative.TrySessionWebSet(
-                handle, machine.Id, port, WebPublic.IsChecked == true, 0,
+                handle, machine.Id, port, WebPublic.IsChecked == true, revision,
                 "porsche-" + Guid.NewGuid().ToString("N")));
-            WebStatus.Text = result.Succeeded
-                ? S("webSaved", "Web settings saved")
-                : S("webFailed", "Web control unavailable");
+            if (result.Succeeded)
+            {
+                _webRevision = revision == ulong.MaxValue ? revision : revision + 1;
+                WebRevision.Text = _webRevision.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                WebStatus.Text = S("webSaved", "Web settings saved");
+            }
+            else WebStatus.Text = S("webFailed", "Web control unavailable");
         }
         finally { WebSet.IsEnabled = true; }
     }

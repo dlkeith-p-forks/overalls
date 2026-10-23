@@ -42,6 +42,7 @@ value class MilaFfiOperation private constructor(val value: String) {
         val Refresh: MilaFfiOperation = MilaFfiOperation("refresh")
         val MachineAction: MilaFfiOperation = MilaFfiOperation("machine_action")
         val ThreadAction: MilaFfiOperation = MilaFfiOperation("thread_action")
+        val MachineCreate: MilaFfiOperation = MilaFfiOperation("machine_create")
     }
 }
 
