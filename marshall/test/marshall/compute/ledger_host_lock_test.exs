@@ -55,4 +55,22 @@ defmodule Marshall.Compute.LedgerHostLockTest do
     assert length(locks) == 1
     assert Enum.all?(locks, &(&1 =~ "FOR NO KEY UPDATE"))
   end
+
+  test "guest-credential readers share the host row and fences exclude them" do
+    %{host: host} = host_fixture()
+
+    queries =
+      capture_queries(fn ->
+        assert {:ok, _} =
+                 Ledger.transaction(fn ->
+                   assert %Host{} = Ledger.share_host!(host.id)
+                   assert %Host{} = Ledger.fence_host!(host.id)
+                 end)
+      end)
+
+    locks = Enum.filter(queries, &(&1 =~ ~s(FROM "compute_hosts") and &1 =~ "FOR "))
+    assert [share, fence] = locks
+    assert share =~ "FOR KEY SHARE"
+    assert fence =~ "FOR UPDATE" and not (fence =~ "NO KEY")
+  end
 end

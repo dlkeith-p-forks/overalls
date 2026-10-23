@@ -1,5 +1,5 @@
 ---
-digest: ce477a814129bca69ae03d8680a5b733f8375fa358c35de1e6c5553c807383f5
+digest: 6add2f7867f312cd68ae490fde81b4ef34066d0cf88b7f366ae82a8cce788e8b
 disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-Reviewed 17, 19-22: the new ADR-0259 and incident review add no new coverage claim, security boundary, domain or topology element; reader-visible facts they describe are in 02-control-plane and 15-monitoring, which link the review.
+Review finding 2 records the share/fence host lock fix already documented in 02-control-plane; no coverage, security-boundary, domain or topology claim changes.

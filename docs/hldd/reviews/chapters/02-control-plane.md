@@ -1,5 +1,5 @@
 ---
-digest: 0d8f4b1980a3f07fca0ecce68f14b2da97a6ea4f843e64c0360e0edbfdecf254
+digest: 6ca9a834408a12e1c9a666920927dc154ea406239616809492defdb1e6b1bbfe
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Host rows lock FOR NO KEY UPDATE so foreign-key KEY SHARE checks no longer queue behind or deadlock with exchanges (02-control-plane); Threads and Machines refresh fail closed on database/authorization errors; failed marshall.live.callback spans carry a closed reason (15-monitoring signal table).
+Guest-credential authentication (inference, Galileo, Peach) now locks hosts FOR KEY SHARE so it never queues behind exchanges; host enable, drain, retire and those credentials issue/rotate/revoke take a FOR UPDATE fence that excludes in-flight readers (02-control-plane host lock paragraph).

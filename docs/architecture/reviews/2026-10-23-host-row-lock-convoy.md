@@ -54,7 +54,26 @@ Prometheus and Tempo:
      another, while `FOR KEY SHARE` no longer conflicts.
    - **Guard.** Contract `ledger-host-lock-no-key`;
      `test/marshall/compute/ledger_host_lock_test.exs`.
-2. **High, resolved. LiveViews crashed instead of degrading.**
+2. **High, resolved. Guest RPCs held `FOR SHARE` across their work.**
+   - **Problem.** After the first fix deployed, `pg_stat_activity` still showed
+     15 of 22 connections queued on the host rows. The holders were
+     `idle in transaction`, running user, thread and agent-root reads.
+     - Inference, Galileo and Peach authentication held the host `FOR SHARE`
+       across the whole RPC.
+     - Each exchange's `FOR NO KEY UPDATE` waited for those readers.
+     - New `FOR SHARE` readers then queued behind the exchange.
+   - **Fix.**
+     - Those readers take `Ledger.share_host!/1` (`FOR KEY SHARE`).
+     - Writers that change what the readers check take `Ledger.fence_host!/1`
+       (`FOR UPDATE`): admin enable/disable, drain, retire, and the credential
+       issue, rotation and revocation paths.
+     - `FOR UPDATE` waits for and excludes every reader, so the fence is
+       preserved.
+     - Ingress readers keep `FOR SHARE`, because they also check connection
+       liveness fields that exchanges update.
+   - **Guard.** Contract `ledger-host-guest-fence`; tests in
+     `ledger_host_lock_test.exs`.
+3. **High, resolved. LiveViews crashed instead of degrading.**
    - **Problem.** Bang reads and Ash generic actions re-raise database errors, so
      the `{:error, _}` fallbacks never ran.
    - **Fix.** `ThreadsLive` and `MachinesLive` refresh rescue Ash, DBConnection
@@ -64,16 +83,16 @@ Prometheus and Tempo:
      longer refreshes in both `mount` and `handle_params`.
    - **Guard.** Contracts `threads-refresh-fails-closed` and
      `machines-refresh-fails-closed`.
-3. **Medium, resolved. Failure cause was not observable.** Failed callback spans
+4. **Medium, resolved. Failure cause was not observable.** Failed callback spans
    now carry a closed `reason` attribute, never a message. Contract
    `live-callback-exception-reason`; tests in `live_observability_test.exs`.
-4. **Medium, resolved. Pool undersized for one replica.** The production
+5. **Medium, resolved. Pool undersized for one replica.** The production
    `poolSize` rises from 10 to 20. The budget is 1 × (20 + 3) + 10 = 33 of 64
    PostgreSQL connections.
-5. **Medium, open. `ModelCalls.queue/3` holds the turn, thread and VM locks
+6. **Medium, open. `ModelCalls.queue/3` holds the turn, thread and VM locks
    during CPU-heavy context projection.** The projection reads under those locks
    on purpose. Moving it out needs a recheck design, so it is deferred.
-6. **Low, open.**
+7. **Low, open.**
    - Threads authorization still runs one Cedar decision per row without the
      `DecisionSnapshot` memoization used by `Compute.Views`.
    - No PostgreSQL lock/deadlock exporter feeds Grafana yet.

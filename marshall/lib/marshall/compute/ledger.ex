@@ -152,6 +152,28 @@ defmodule Marshall.Compute.Ledger do
   # foreign-key FOR KEY SHARE checks MUST NOT queue behind (or deadlock with) the
   # host lock that serializes exchanges, rotation and placement. Host keys are
   # immutable, so the weaker mode still serializes every host mutation.
+  # @cc [owner:ghuntley,label:concurrency;security] ledger-host-guest-fence
+  # Guest-credential authentication (inference, Galileo, Peach) MUST take
+  # share_host!/1 (FOR KEY SHARE), which never queues behind host exchanges.
+  # Every change those readers depend on (host enabled or maintenance state and
+  # their credential issue, rotation or revocation) MUST take fence_host!/1
+  # (FOR UPDATE), which waits for and excludes every in-flight reader.
+  @doc "Locks a host row for guest-credential authentication."
+  @spec share_host!(String.t()) :: Ash.Resource.Record.t() | nil
+  def share_host!(id), do: lock_host!(id, "FOR KEY SHARE")
+
+  @doc "Locks a host row exclusively, excluding share_host!/1 readers."
+  @spec fence_host!(String.t()) :: Ash.Resource.Record.t() | nil
+  def fence_host!(id), do: lock_host!(id, :for_update)
+
+  @spec lock_host!(String.t(), :for_update | String.t()) :: Ash.Resource.Record.t() | nil
+  defp lock_host!(id, mode) do
+    Marshall.Compute.Host
+    |> Ash.Query.filter(id == ^id)
+    |> Ash.Query.lock(mode)
+    |> Ash.read_one!(actor: SystemActor.compute())
+  end
+
   @doc "The row lock mode `lock!/2` and `lock_history!/2` take for a resource."
   @spec lock_mode(module()) :: :for_update | String.t()
   def lock_mode(Marshall.Compute.Host), do: "FOR NO KEY UPDATE"

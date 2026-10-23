@@ -1,11 +1,11 @@
 ---
-digest: 7e9088509bb0fb7892768005320fede633917028ef246b760f95ae2568683c5b
-disposition: no-impact
+digest: d81eb318b8f16def0c64568c158b00419c1c8f648c021c6709dbbd9c1d0be4dc
+disposition: updated
 kind: source
 mapping_digest: c5d6b9e33b777c90bbc22e5608c825ce6977ecc6384e262a6c79b99b4af3d9a2
 path: marshall/lib/marshall/compute/ledger.ex
 reviewed_chapters:
-  marshall/priv/hldd/02-control-plane.md: 0d8f4b1980a3f07fca0ecce68f14b2da97a6ea4f843e64c0360e0edbfdecf254
+  marshall/priv/hldd/02-control-plane.md: 6ca9a834408a12e1c9a666920927dc154ea406239616809492defdb1e6b1bbfe
   marshall/priv/hldd/03-access.md: 5e197b8346180c9f65c712048048da17934c117a500fe63cfca781cd8933dae6
   marshall/priv/hldd/04-lifecycle.md: f3c40798f402b553640bb25852bcb205c327c87d7ad6735b4f1b243c5616b4a2
   marshall/priv/hldd/06-workflows.md: ad304114da706e2daaf6296aac5c058376e50742cc378ad4fc2a9d475d485124
@@ -21,4 +21,4 @@ state: present
 version: 2
 ---
 
-Re-review after moving the ledger-host-lock-no-key contract into its own comment block on lock_mode/1; behavior (FOR NO KEY UPDATE host locks) is unchanged from the recorded 02-control-plane update.
+Guest-credential authentication (inference, Galileo, Peach) now locks hosts FOR KEY SHARE so it never queues behind exchanges; host enable, drain, retire and those credentials issue/rotate/revoke take a FOR UPDATE fence that excludes in-flight readers (02-control-plane host lock paragraph).
