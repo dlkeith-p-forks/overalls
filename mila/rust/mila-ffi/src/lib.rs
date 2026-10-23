@@ -1211,6 +1211,26 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSession
     session_copy(&mut env, handle as u64, true)
 }
 #[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionDeviceList(mut env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong) -> jni::sys::jbyteArray {
+    let mut size = 0usize;
+    let status = unsafe { session::mila_session_device_ls(handle as u64, std::ptr::null_mut(), 0, &mut size) };
+    if status != session::SessionStatus::SmallBuffer || size == 0 || size > 256 * 1024 { return std::ptr::null_mut(); }
+    let mut data = vec![0u8; size];
+    let status = unsafe { session::mila_session_device_ls(handle as u64, data.as_mut_ptr(), size, &mut size) };
+    if status != session::SessionStatus::Ok { return std::ptr::null_mut(); }
+    env.byte_array_from_slice(&data[..size]).map_or(std::ptr::null_mut(), |a| a.into_raw())
+}
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionDeviceRemove(mut env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong, device: jni::objects::JString<'_>) -> jni::sys::jint {
+    let value = match env.get_string(&device) { Ok(v) => v.to_bytes().to_vec(), Err(_) => return -2 };
+    unsafe { session::mila_session_device_rm(handle as u64, value.as_ptr(), value.len()) as jni::sys::jint }
+}
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionDevicePreferences(mut env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong, device: jni::objects::JString<'_>, enabled: jni::sys::jboolean) -> jni::sys::jint {
+    let value = match env.get_string(&device) { Ok(v) => v.to_bytes().to_vec(), Err(_) => return -2 };
+    unsafe { session::mila_session_device_prefs(handle as u64, value.as_ptr(), value.len(), if enabled == 0 { 0 } else { 1 }) as jni::sys::jint }
+}
+#[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionClose(
     _env: jni::JNIEnv<'_>,
     _class: jni::objects::JClass<'_>,

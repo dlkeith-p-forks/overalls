@@ -324,7 +324,10 @@ pub struct PorschePtyBackend<C> {
 
 impl<C> PorschePtyBackend<C> {
     pub const fn new(client: C) -> Self {
-        Self { client, session_id: None }
+        Self {
+            client,
+            session_id: None,
+        }
     }
 
     pub fn client_mut(&mut self) -> &mut C {
@@ -334,7 +337,11 @@ impl<C> PorschePtyBackend<C> {
 
 impl<C: PorschePtyClient> HostPtyBackend for PorschePtyBackend<C> {
     fn attach(&mut self, request: &PtyAttachRequest) -> Result<u64, PtyError> {
-        if self.session_id.as_deref().is_some_and(|id| id != request.session_id) {
+        if self
+            .session_id
+            .as_deref()
+            .is_some_and(|id| id != request.session_id)
+        {
             return Err(PtyError::Unauthenticated);
         }
         let channel = self.client.open(request)?;
@@ -607,8 +614,12 @@ mod transport_tests {
         fn output(&mut self, _: u64) -> Result<String, PtyError> {
             Ok("porsche-ready".to_owned())
         }
-        fn input(&mut self, _: u64, _: usize) -> Result<(), PtyError> { Ok(()) }
-        fn dimensions(&mut self, _: u64, _: u16, _: u16) -> Result<(), PtyError> { Ok(()) }
+        fn input(&mut self, _: u64, _: usize) -> Result<(), PtyError> {
+            Ok(())
+        }
+        fn dimensions(&mut self, _: u64, _: u16, _: u16) -> Result<(), PtyError> {
+            Ok(())
+        }
         fn close(&mut self, _: u64) -> Result<(), PtyError> {
             self.closes += 1;
             Ok(())
@@ -619,7 +630,10 @@ mod transport_tests {
     fn porsche_backend_binds_session_before_opening_second_channel() {
         let mut backend = PorschePtyBackend::new(PorscheClient::default());
         backend.attach(&request()).expect("first session");
-        let other = PtyAttachRequest { session_id: "other".to_owned(), ..request() };
+        let other = PtyAttachRequest {
+            session_id: "other".to_owned(),
+            ..request()
+        };
         assert_eq!(backend.attach(&other), Err(PtyError::Unauthenticated));
         assert_eq!(backend.client_mut().opens, 1);
         assert_eq!(backend.read_output(73).expect("output"), "porsche-ready");

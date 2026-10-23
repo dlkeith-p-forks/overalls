@@ -544,9 +544,115 @@ pub trait TrustStore {
     fn write(&self, host: &str, document: &[u8]) -> Result<(), RuntimeError>;
 }
 
+/// Owner-only trust store used by the GTK host. Files are keyed by a reversible
+/// hexadecimal encoding of the authority, so deployment input can never become
+/// a path component or traversal sequence.
+#[derive(Clone, Debug, Default)]
+pub struct XdgTrustStore;
+
+impl XdgTrustStore {
+    fn path(host: &str) -> Result<std::path::PathBuf, RuntimeError> {
+        validate_session_endpoint(host, 443, 1_000)?;
+        let root = std::env::var_os("XDG_CONFIG_HOME")
+            .map(std::path::PathBuf::from)
+            .or_else(|| {
+                std::env::var_os("HOME").map(|home| std::path::PathBuf::from(home).join(".config"))
+            })
+            .ok_or(RuntimeError::Unavailable)?;
+        let key = host
+            .bytes()
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>();
+        Ok(root.join("mila").join("trust").join(key))
+    }
+}
+
+impl TrustStore for XdgTrustStore {
+    fn read(&self, host: &str) -> Result<Option<Vec<u8>>, RuntimeError> {
+        let path = Self::path(host)?;
+        let metadata = match std::fs::symlink_metadata(&path) {
+            Ok(metadata) => metadata,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+            Err(_) => return Err(RuntimeError::Unavailable),
+        };
+        if !metadata.file_type().is_file() {
+            return Err(RuntimeError::InvalidInput);
+        }
+        let bytes = std::fs::read(path).map_err(|_| RuntimeError::Unavailable)?;
+        if bytes.is_empty() || bytes.len() > MAX_TRUST_BYTES {
+            return Err(RuntimeError::InvalidInput);
+        }
+        Ok(Some(bytes))
+    }
+
+    fn write(&self, host: &str, document: &[u8]) -> Result<(), RuntimeError> {
+        if document.is_empty() || document.len() > MAX_TRUST_BYTES {
+            return Err(RuntimeError::InvalidInput);
+        }
+        let path = Self::path(host)?;
+        let parent = path.parent().ok_or(RuntimeError::Unavailable)?;
+        std::fs::create_dir_all(parent).map_err(|_| RuntimeError::Unavailable)?;
+        let temporary = path.with_extension("tmp");
+        std::fs::write(&temporary, document).map_err(|_| RuntimeError::Unavailable)?;
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            std::fs::set_permissions(&temporary, std::fs::Permissions::from_mode(0o600))
+                .map_err(|_| RuntimeError::Unavailable)?;
+        }
+        std::fs::rename(temporary, path).map_err(|_| RuntimeError::Unavailable)
+    }
+}
+
 /// Fetches `/bin/ssh-trust.json` over HTTPS with redirects refused.
 pub trait TrustFetcher {
     fn fetch(&self, host: &str) -> Result<Vec<u8>, RuntimeError>;
+}
+
+/// Production Linux HTTPS trust fetcher.  `curl` is used from the host image so
+/// certificate validation, proxy policy, and CA updates remain owned by the
+/// distribution.  Redirects are explicitly disabled: a deployment authority
+/// may only serve its trust document from its own HTTPS origin.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct CurlTrustFetcher {
+    pub timeout_seconds: u32,
+}
+
+impl TrustFetcher for CurlTrustFetcher {
+    fn fetch(&self, host: &str) -> Result<Vec<u8>, RuntimeError> {
+        if host.contains(['/', '?', '#', ':']) {
+            return Err(RuntimeError::InvalidInput);
+        }
+        validate_session_endpoint(
+            host,
+            443,
+            self.timeout_seconds.saturating_mul(1_000).max(1_000),
+        )?;
+        let timeout = self.timeout_seconds.clamp(1, 120);
+        let url = format!("https://{host}/bin/ssh-trust.json");
+        let output = std::process::Command::new("curl")
+            .args([
+                "--fail",
+                "--silent",
+                "--show-error",
+                "--proto",
+                "=https",
+                "--max-redirs",
+                "0",
+                "--max-time",
+                &timeout.to_string(),
+                &url,
+            ])
+            .output()
+            .map_err(|_| RuntimeError::Unavailable)?;
+        if !output.status.success() {
+            return Err(RuntimeError::Unavailable);
+        }
+        if output.stdout.is_empty() || output.stdout.len() > MAX_TRUST_BYTES {
+            return Err(RuntimeError::InvalidInput);
+        }
+        Ok(output.stdout)
+    }
 }
 
 /// Rust-owned trust enrollment. Only canonical bytes selected by the FFI are persisted.
@@ -1234,5 +1340,15 @@ mod tests {
         assert!(ApprovalInfo::validate("https://?approval", "fp", 0).is_err());
         assert!(ApprovalInfo::validate("https://:443/a", "fp", 0).is_err());
         assert!(ApprovalInfo::validate("https://example.test/a", "fp", 0).is_ok());
+    }
+
+    #[test]
+    fn curl_fetcher_rejects_invalid_authority_before_spawning_transport() {
+        let fetcher = CurlTrustFetcher { timeout_seconds: 5 };
+        assert_eq!(fetcher.fetch("bad host"), Err(RuntimeError::InvalidInput));
+        assert_eq!(
+            fetcher.fetch("example.test/path"),
+            Err(RuntimeError::InvalidInput)
+        );
     }
 }

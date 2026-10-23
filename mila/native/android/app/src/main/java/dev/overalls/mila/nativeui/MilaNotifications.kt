@@ -122,3 +122,17 @@ class MilaAuthenticatedNotificationController(
     fun remove(id: String): Boolean = delegate.remove(id)
     fun setEnabled(id: String, enabled: Boolean): Boolean = delegate.setEnabled(id, enabled)
 }
+
+/**
+ * Small FCM-facing boundary. Firebase callbacks supply an opaque registration id;
+ * this class deliberately does not retain the token and requires the authenticated
+ * controller to validate it through Rust before it enters the local projection.
+ */
+class MilaFcmRegistration(private val controller: MilaAuthenticatedNotificationController) {
+    fun onToken(token: String?, os: MilaNotificationOs): Boolean {
+        val provider = token?.let(MilaNotificationProviderId::parse) ?: return false
+        return controller.register(object : MilaNotificationProvider {
+            override fun registrationId(): MilaNotificationProviderId = provider
+        }, os)
+    }
+}

@@ -185,6 +185,10 @@ interface MilaRustBindings {
     fun sessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray? = null
     /** Returns the validated `ssh-key list --json` result for an authenticated session. */
     fun sessionSshKeys(handle: Long): ByteArray? = null
+    /** Authenticated Porsche notification-device CRUD. Tokens never cross this boundary. */
+    fun sessionDeviceList(handle: Long): ByteArray? = null
+    fun sessionDeviceRemove(handle: Long, device: String): Int = -12
+    fun sessionDevicePreferences(handle: Long, device: String, enabled: Boolean): Int = -12
     /** Opens a PTY through the authenticated session; terminal bytes stay outside this ABI. */
     fun sessionTerminalAttach(handle: Long, from: Long, columns: Int, rows: Int, readWrite: Boolean): Int = -12
     /** Validates a bounded PTY input write against the authenticated session. */
@@ -243,6 +247,9 @@ internal object MilaRustFfi : MilaRustBindings {
     override fun sessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int = nativeSessionWebSet(handle, machine, port, public, revision, requestId)
     override fun sessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray? = nativeSessionThreadAction(handle, thread, command, secondary, input, requestId)
     override fun sessionSshKeys(handle: Long): ByteArray? = nativeSessionSshKeys(handle)
+    override fun sessionDeviceList(handle: Long): ByteArray? = nativeSessionDeviceList(handle)
+    override fun sessionDeviceRemove(handle: Long, device: String): Int = nativeSessionDeviceRemove(handle, device)
+    override fun sessionDevicePreferences(handle: Long, device: String, enabled: Boolean): Int = nativeSessionDevicePreferences(handle, device, enabled)
     override fun sessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int = nativeSessionSshKeyRevoke(handle, key, requestId)
     override fun sessionClose(handle: Long): Int = nativeSessionClose(handle)
     override fun pushRegistrationValidate(provider: Int, environment: Int, token: String, appId: String, deployment: String, endpoint: String?): Int =
@@ -286,6 +293,9 @@ internal object MilaRustFfi : MilaRustBindings {
     @JvmStatic external fun nativeSessionWebSet(handle: Long, machine: String, port: Int, public: Boolean, revision: Long, requestId: String): Int
     @JvmStatic external fun nativeSessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray?
     @JvmStatic external fun nativeSessionSshKeys(handle: Long): ByteArray?
+    @JvmStatic external fun nativeSessionDeviceList(handle: Long): ByteArray?
+    @JvmStatic external fun nativeSessionDeviceRemove(handle: Long, device: String): Int
+    @JvmStatic external fun nativeSessionDevicePreferences(handle: Long, device: String, enabled: Boolean): Int
     @JvmStatic external fun nativeSessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int
     @JvmStatic external fun nativePushRegistrationValidate(provider: Int, environment: Int, token: String, appId: String, deployment: String, endpoint: String?): Int
     @JvmStatic
@@ -377,6 +387,18 @@ class MilaSessionHandle internal constructor(
         check(!closed)
         bindings.sessionSshKeys(nativeHandle) ?: error("SSH key listing unavailable")
     }
+    @Synchronized fun notificationDevices(): Result<ByteArray> = runCatching {
+        check(!closed)
+        bindings.sessionDeviceList(nativeHandle) ?: error("notification devices unavailable")
+    }
+    @Synchronized fun notificationDeviceRemove(device: String): Result<Unit> = runCatching {
+        check(!closed); require(device.matches(Regex("^[A-Za-z0-9._:-]{1,128}$")))
+        check(bindings.sessionDeviceRemove(nativeHandle, device) == 0)
+    }
+    @Synchronized fun notificationDevicePreferences(device: String, enabled: Boolean): Result<Unit> = runCatching {
+        check(!closed); require(device.matches(Regex("^[A-Za-z0-9._:-]{1,128}$")))
+        check(bindings.sessionDevicePreferences(nativeHandle, device, enabled) == 0)
+    }
     /** Revokes one opaque key identity exactly once on this session. */
     @Synchronized fun sshKeyRevoke(key: String, requestId: String): Result<Unit> = runCatching {
         check(!closed)
@@ -431,6 +453,13 @@ class LinkedMilaFfiAdapter(
     override fun sshKeyStore(): MilaSshKeyStore? = authenticatedSession?.let {
         MilaSessionSshKeyStore(it, authenticatedFingerprint)
     }
+
+    fun notificationDevices(): Result<ByteArray> = authenticatedSession?.notificationDevices()
+        ?: Result.failure(IllegalStateException("session unavailable"))
+    fun notificationDeviceRemove(device: String): Result<Unit> = authenticatedSession?.notificationDeviceRemove(device)
+        ?: Result.failure(IllegalStateException("session unavailable"))
+    fun notificationDevicePreferences(device: String, enabled: Boolean): Result<Unit> = authenticatedSession?.notificationDevicePreferences(device, enabled)
+        ?: Result.failure(IllegalStateException("session unavailable"))
 
     override fun validatePushRegistration(token: String, appId: String, deployment: String, endpoint: String?): Result<Unit> = runCatching {
         check(authenticatedSession != null) { "authenticated session unavailable" }
