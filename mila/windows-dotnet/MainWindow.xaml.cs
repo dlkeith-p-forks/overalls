@@ -503,7 +503,7 @@ public sealed partial class MainWindow : Window
         MachineCommandStatus.Text = $"{machine.Name} ({machine.DesiredState}) — {access}";
     }
 
-    private void RefreshThreads()
+    private async void RefreshThreads()
     {
         if (_activeHost is null)
         {
@@ -512,12 +512,34 @@ public sealed partial class MainWindow : Window
             ThreadDetail.Text = S("signInFirst", "Sign in first");
             return;
         }
-        // The Rust session supplies this bounded envelope when connected. Keep an empty
-        // typed listing until that envelope arrives; no unvalidated JSON enters the UI.
-        MilaThreadListing listing = new(Array.Empty<MilaThreadRow>(), false);
-        _threadController.SetSession(true, listing);
-        ThreadRows.ItemsSource = listing.Threads;
-        ThreadDetail.Text = S("threadsEmpty", "No threads");
+        if (_session.Handle is not { } handle)
+        {
+            _threadController.SetSession(false, null);
+            ThreadRows.ItemsSource = Array.Empty<MilaThreadRow>();
+            ThreadDetail.Text = S("signInFirst", "Sign in first");
+            return;
+        }
+        MilaNativeSessionBytesResult result = await Task.Run(() => RustNative.TrySessionThreadAction(handle, null, "ls", null, null, null));
+        if (!result.Succeeded || result.Data is not { } bytes)
+        {
+            _threadController.SetSession(false, null);
+            ThreadRows.ItemsSource = Array.Empty<MilaThreadRow>();
+            ThreadDetail.Text = S("requestFailed", "Unable to load threads.");
+            return;
+        }
+        try
+        {
+            MilaThreadListing listing = MilaThreadListing.Decode(bytes);
+            _threadController.SetSession(true, listing);
+            ThreadRows.ItemsSource = listing.Threads;
+            ThreadDetail.Text = listing.Threads.Count == 0 ? S("threadsEmpty", "No threads") : string.Format(S("threadsLoaded", "{0} threads."), listing.Threads.Count);
+        }
+        catch (InvalidDataException)
+        {
+            _threadController.SetSession(false, null);
+            ThreadRows.ItemsSource = Array.Empty<MilaThreadRow>();
+            ThreadDetail.Text = S("requestFailed", "Unable to load threads.");
+        }
     }
 
     private void OnThreadSelected(object sender, SelectionChangedEventArgs args)
@@ -530,10 +552,27 @@ public sealed partial class MainWindow : Window
     private void SubmitThreadAnswer(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.Answer);
     private void SubmitThreadApprove(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.PlanApprove);
     private void SubmitThreadRevise(object sender, RoutedEventArgs args) => SubmitThread(MilaThreadAction.PlanRevise);
-    private void SubmitThread(MilaThreadAction action)
+    private async void SubmitThread(MilaThreadAction action)
     {
-        bool applied = _threadController.Submit(action);
-        ThreadCommandStatus.Text = applied ? S("requestSucceeded", "Request submitted") : S("requestFailed", "Request refused");
+        if (_session.Handle is not { } handle)
+        {
+            ThreadCommandStatus.Text = S("signInFirst", "Sign in first");
+            return;
+        }
+        ThreadPrompt.IsEnabled = ThreadAnswer.IsEnabled = ThreadApprove.IsEnabled = ThreadRevise.IsEnabled = false;
+        try
+        {
+            string? input = string.IsNullOrWhiteSpace(ThreadInput.Text) ? null : ThreadInput.Text.Trim();
+            string? secondary = action is MilaThreadAction.PlanApprove or MilaThreadAction.PlanRevise ? input : null;
+            string? payload = action is MilaThreadAction.Prompt or MilaThreadAction.Answer ? input : null;
+            bool applied = await Task.Run(() => _threadController.SubmitLive(handle, action, secondary, payload));
+            ThreadCommandStatus.Text = applied ? S("requestSucceeded", "Request submitted") : S("requestFailed", "Request refused");
+            if (applied) ThreadInput.Text = string.Empty;
+        }
+        finally
+        {
+            ThreadPrompt.IsEnabled = ThreadAnswer.IsEnabled = ThreadApprove.IsEnabled = ThreadRevise.IsEnabled = true;
+        }
     }
 
     private void ClassifyThreadList(object sender, RoutedEventArgs args) => ClassifyThread("thread ls");

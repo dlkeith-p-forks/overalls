@@ -3,7 +3,7 @@ use adw::{Application, ApplicationWindow};
 use gtk::{gio, glib, Align, Box, Button, Entry, Label, Orientation};
 use mila_native_linux::adapter::{
     decode_listing, decode_notification_devices, decode_web_endpoint, format_machine_action,
-    format_ssh_key_revoke, format_web_command, TerminalStream,
+    format_ssh_key_revoke, format_thread_response, format_web_command, TerminalStream,
 };
 use mila_native_linux::machine_view::{project_detail, project_listing};
 use mila_native_linux::notifications::NotificationState;
@@ -822,7 +822,10 @@ impl NativeState {
                     "thread show"
                 };
                 match live.thread_action(id.as_deref(), command, None, None, None) {
-                    Ok(_) => status.set_label("Thread request accepted."),
+                    Ok(bytes) => match format_thread_response(&bytes) {
+                        Ok(response) => status.set_label(&response),
+                        Err(_) => status.set_label("Thread response rejected by Rust policy."),
+                    },
                     Err(_) => status.set_label("Thread command rejected by Rust policy."),
                 }
             });
@@ -845,7 +848,10 @@ impl NativeState {
                 None,
                 None,
             ) {
-                Ok(_) => turns_status.set_label("Thread turns request accepted."),
+                Ok(bytes) => match format_thread_response(&bytes) {
+                    Ok(response) => turns_status.set_label(&response),
+                    Err(_) => turns_status.set_label("Thread response rejected by Rust policy."),
+                },
                 Err(_) => turns_status.set_label("Thread turns rejected by Rust policy."),
             }
         });
@@ -885,7 +891,10 @@ impl NativeState {
                     Some(input.text().as_str()),
                     request_value.as_deref(),
                 ) {
-                    Ok(_) => status.set_label("Thread mutation accepted."),
+                    Ok(bytes) => match format_thread_response(&bytes) {
+                        Ok(response) => status.set_label(&response),
+                        Err(_) => status.set_label("Thread response rejected by Rust policy."),
+                    },
                     Err(_) => status.set_label("Thread mutation rejected by Rust policy."),
                 }
             });
@@ -926,7 +935,10 @@ impl NativeState {
                     input_value.as_deref(),
                     request_value.as_deref(),
                 ) {
-                    Ok(_) => status.set_label("Thread mutation accepted."),
+                    Ok(bytes) => match format_thread_response(&bytes) {
+                        Ok(response) => status.set_label(&response),
+                        Err(_) => status.set_label("Thread response rejected by Rust policy."),
+                    },
                     Err(_) => status.set_label("Thread mutation rejected by Rust policy."),
                 }
             });

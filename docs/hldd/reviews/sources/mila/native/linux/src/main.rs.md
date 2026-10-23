@@ -1,5 +1,5 @@
 ---
-digest: 802f59f2913bebe36bfdf637d494a5b7b0f1209f51a65140a895d2ad7176c488
+digest: ffca5f25c9bbc07bf05dae7f4ce7fe45edc15e29bc79ddd3aca627c8a5706c15
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Concurrent Linux source change reviewed; Apple commit does not alter its documented behavior.
+Reviewed concurrent native UI and Linux adapter changes; no documented chapter or architecture boundary changed.

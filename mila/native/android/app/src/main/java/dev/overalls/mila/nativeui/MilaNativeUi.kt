@@ -201,8 +201,12 @@ fun MilaNativeRoot(
         when (val selected = route) {
             MilaRoute.Machines -> MachineList(sessionAdapter, status, listing, signInState is MilaSignInState.SignedIn, ::refresh) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
             is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, sessionAdapter, signInState is MilaSignInState.SignedIn, listing)
-            MilaRoute.Threads -> ThreadList(threadListing) { route = MilaRoute.Thread(it); threadDetail.select(it) }
-            is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
+            MilaRoute.Threads -> ThreadList(sessionAdapter, signInState is MilaSignInState.SignedIn, threadListing, onRefresh = {
+                scope.launch { threadListing = sessionAdapter.threadListing().getOrNull() }
+            }) { route = MilaRoute.Thread(it); threadDetail.select(it) }
+            is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id) {
+                scope.launch { threadListing = sessionAdapter.threadListing().getOrNull() }
+            }
             MilaRoute.Settings -> MilaSettingsScreen(sessionAdapter, signInState is MilaSignInState.SignedIn)
         }
         if (route == MilaRoute.Machines && signInState is MilaSignInState.SignedIn) TerminalControls(sessionAdapter)
@@ -489,7 +493,11 @@ private fun controllerSelect(controller: MilaMachineDetailController, command: S
     scope.launch { controller.submit(value); onComplete() }
 }
 
-@Composable private fun ThreadDetail(controller: MilaThreadDetailController, id: java.util.UUID) {
+@Composable private fun ThreadDetail(
+    controller: MilaThreadDetailController,
+    id: java.util.UUID,
+    onActionApplied: () -> Unit,
+) {
     val scope = rememberCoroutineScope()
     var input by remember { mutableStateOf("") }
     var actionState by remember { mutableStateOf(controller.state) }
@@ -512,11 +520,12 @@ private fun controllerSelect(controller: MilaMachineDetailController, command: S
                             "thread mode" -> MilaThreadCommand.Mode
                             "thread read" -> MilaThreadCommand.Read
                             else -> null
-                        }
-                        if (command != null) scope.launch {
+                        } ?: return@Button
+                        scope.launch {
                             val payload = input.takeIf { command == MilaThreadCommand.Prompt || command == MilaThreadCommand.Answer || command == MilaThreadCommand.PlanRevise }
                             controller.submit(command, payload)
                             actionState = controller.state
+                            if (actionState is MilaThreadActionState.Applied) onActionApplied()
                         }
                     }) { Text(label) }
                 }
@@ -526,28 +535,34 @@ private fun controllerSelect(controller: MilaMachineDetailController, command: S
             when (val state = actionState) {
                 MilaThreadActionState.SignedOut -> MilaStrings.text(MilaMessage.RuntimeUnavailable)
                 MilaThreadActionState.Idle -> MilaStrings.text(MilaMessage.NoCommand)
-                is MilaThreadActionState.Ready -> "Ready"
-                is MilaThreadActionState.Submitting -> "Submitting ${state.command.name}"
-                is MilaThreadActionState.Applied -> "Applied ${state.command.name}"
+                is MilaThreadActionState.Ready -> "${state.thread.title} · ${state.thread.status}"
+                is MilaThreadActionState.Submitting -> "${MilaStrings.text(MilaMessage.Connecting)} ${state.command.name}"
+                is MilaThreadActionState.Applied -> "${MilaStrings.text(MilaMessage.Connected)} ${state.command.name}"
                 is MilaThreadActionState.Failed -> state.reason
             }, style = MaterialTheme.typography.labelSmall,
         )
     }
 }
-@Composable private fun ThreadList(listing: MilaThreadListing?, onSelect: (java.util.UUID) -> Unit) {
+
+@Composable private fun ThreadList(
+    adapter: MilaFfiAdapter,
+    signedIn: Boolean,
+    listing: MilaThreadListing?,
+    onRefresh: () -> Unit,
+    onSelect: (java.util.UUID) -> Unit,
+) {
     var classified by remember { mutableStateOf<MilaThreadCommand?>(null) }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(MilaStrings.text(MilaMessage.ThreadCommands), style = MaterialTheme.typography.titleLarge)
+        Button(onClick = onRefresh, enabled = signedIn) { Text(MilaStrings.text(MilaMessage.Refresh)) }
         listing?.threads?.forEach { thread ->
             Button({ onSelect(thread.id) }) { Text("${thread.title} · ${thread.status}") }
         }
-        Text("Commands are classified by Rust before execution.", style = MaterialTheme.typography.bodyMedium)
+        if (!signedIn) Text(MilaStrings.text(MilaMessage.RuntimeUnavailable), style = MaterialTheme.typography.labelSmall)
         threadCommandChoices.chunked(3).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 row.forEach { (label, command) ->
-                    Button({ classified = adapter.threadCommandKind(command).getOrNull() }) {
-                        Text(label)
-                    }
+                    Button({ classified = adapter.threadCommandKind(command).getOrNull() }, enabled = signedIn) { Text(label) }
                 }
             }
         }

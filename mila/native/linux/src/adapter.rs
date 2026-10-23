@@ -263,6 +263,29 @@ pub fn decode_thread_list(bytes: &[u8]) -> Result<Vec<ThreadSummary>, RuntimeErr
     Ok(envelope.threads)
 }
 
+/// Render a bounded thread response for the GTK status view.  The native host
+/// must never interpolate untrusted server bytes directly into a widget: parse
+/// JSON first, then cap the compact representation before handing it to GTK.
+pub fn format_thread_response(bytes: &[u8]) -> Result<String, RuntimeError> {
+    if bytes.is_empty() || bytes.len() > 256 * 1024 {
+        return Err(RuntimeError::InvalidInput);
+    }
+    let value: serde_json::Value =
+        serde_json::from_slice(bytes).map_err(|_| RuntimeError::InvalidInput)?;
+    let compact = serde_json::to_string(&value).map_err(|_| RuntimeError::Unavailable)?;
+    const MAX_DISPLAY: usize = 4096;
+    if compact.len() > MAX_DISPLAY {
+        let end = compact
+            .char_indices()
+            .take_while(|(index, _)| *index < MAX_DISPLAY.saturating_sub(1))
+            .map(|(index, _)| index)
+            .last()
+            .unwrap_or(0);
+        return Ok(format!("{}…", &compact[..end]));
+    }
+    Ok(compact)
+}
+
 /// Format the read-only turn history operation through the shared protocol parser.
 pub fn format_thread_turns(thread_id: &str, after: Option<&str>) -> Result<String, RuntimeError> {
     if thread_id.is_empty()
@@ -308,6 +331,16 @@ mod thread_tests {
             "x".repeat(513)
         );
         assert!(decode_thread_list(bad.as_bytes()).is_err());
+    }
+
+    #[test]
+    fn response_renderer_is_json_checked_and_bounded() {
+        assert_eq!(format_thread_response(br#"{"ok":true}"#).unwrap(), r#"{"ok":true}"#);
+        assert!(format_thread_response(b"not-json").is_err());
+        let large = format!(r#"{{"value":"{}"}}"#, "x".repeat(8_000));
+        let rendered = format_thread_response(large.as_bytes()).unwrap();
+        assert!(rendered.len() <= 4_099);
+        assert!(rendered.ends_with('…'));
     }
 }
 
