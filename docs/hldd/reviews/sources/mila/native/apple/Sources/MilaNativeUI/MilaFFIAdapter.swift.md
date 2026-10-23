@@ -1,6 +1,6 @@
 ---
-digest: af89091039f5cec66b795adf0ff0b2b63d56098a86da96830d30e120fee8f998
-disposition: updated
+digest: b0d9eadc1f098b70df7eac4cbf58bb1b5f735802ec13e647413a66e3f1079811
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/apple/Sources/MilaNativeUI/MilaFFIAdapter.swift
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple SwiftUI now dispatches authenticated thread operations through the Rust live session and exposes bounded responses.
+Reviewed concurrent native FFI changes; no HLDD chapter behavior changes in this receipt.

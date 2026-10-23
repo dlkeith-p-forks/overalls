@@ -1,5 +1,5 @@
 ---
-digest: c61a66c4d6de6d40995ec2997b275395a606f0f3980f9152de4915c4ba270745
+digest: b7b56b5093ff211458fdbebb415f2c1060af639f369254dcd20b0171fab9a037
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Concurrent Windows interop edits preserve existing documented boundaries; reviewed for this commit.
+Reviewed native Windows notification CRUD wrappers; no HLDD chapter behavior changes.

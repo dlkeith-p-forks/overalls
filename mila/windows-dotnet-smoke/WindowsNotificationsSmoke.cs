@@ -16,5 +16,18 @@ internal static class WindowsNotificationsSmoke
             MilaWindowsNotificationState.Invalid, "foreign WNS channel refusal");
         controller.Disable();
         Program.Require(controller.State == MilaWindowsNotificationState.Disabled, "notification disable");
+
+        Guid id = Guid.NewGuid();
+        byte[] listing = System.Text.Encoding.UTF8.GetBytes($"{{\"devices\":[{{\"id\":\"{id:D}\",\"platform\":\"wns\",\"enabled\":true}}]}}");
+        IReadOnlyList<MilaWindowsNotificationDevice> devices = MilaWindowsNotificationDevicesController.DecodeListing(listing);
+        Program.Require(devices.Count == 1 && devices[0].Id == id.ToString("D") && devices[0].Enabled, "device listing projection");
+        bool removed = false;
+        var devicesController = new MilaWindowsNotificationDevicesController(
+            _ => Task.FromResult<IReadOnlyList<MilaWindowsNotificationDevice>>(devices),
+            (device, _) => { removed = device == id.ToString("D"); return Task.CompletedTask; },
+            (_, _, _) => Task.CompletedTask);
+        devicesController.LoadAsync(true).GetAwaiter().GetResult();
+        devicesController.RemoveAsync(devices[0]).GetAwaiter().GetResult();
+        Program.Require(removed && devicesController.Status == MilaWindowsNotificationDevicesStatus.Loaded, "authenticated device removal workflow");
     }
 }

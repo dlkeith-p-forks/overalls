@@ -1,5 +1,52 @@
 namespace Mila.Windows.Interop;
 
+internal sealed record MilaWindowsNotificationDevice(string Id, string Platform, bool Enabled);
+internal enum MilaWindowsNotificationDevicesStatus { SignedOut, Loading, Loaded, Failed }
+
+internal sealed class MilaWindowsNotificationDevicesController
+{
+    private readonly Func<CancellationToken, Task<IReadOnlyList<MilaWindowsNotificationDevice>>> load;
+    private readonly Func<string, CancellationToken, Task> remove;
+    private readonly Func<string, bool, CancellationToken, Task> preferences;
+    private long generation;
+    internal MilaWindowsNotificationDevicesStatus Status { get; private set; } = MilaWindowsNotificationDevicesStatus.SignedOut;
+    internal IReadOnlyList<MilaWindowsNotificationDevice> Devices { get; private set; } = Array.Empty<MilaWindowsNotificationDevice>();
+    internal MilaWindowsNotificationDevicesController(
+        Func<CancellationToken, Task<IReadOnlyList<MilaWindowsNotificationDevice>>> load,
+        Func<string, CancellationToken, Task> remove,
+        Func<string, bool, CancellationToken, Task> preferences) { this.load = load; this.remove = remove; this.preferences = preferences; }
+
+    internal async Task LoadAsync(bool signedIn, CancellationToken cancellationToken = default)
+    {
+        long current = Interlocked.Increment(ref generation);
+        if (!signedIn) { Devices = Array.Empty<MilaWindowsNotificationDevice>(); Status = MilaWindowsNotificationDevicesStatus.SignedOut; return; }
+        Status = MilaWindowsNotificationDevicesStatus.Loading;
+        try { IReadOnlyList<MilaWindowsNotificationDevice> result = await load(cancellationToken); if (current == Volatile.Read(ref generation)) { Devices = result; Status = MilaWindowsNotificationDevicesStatus.Loaded; } }
+        catch { if (current == Volatile.Read(ref generation)) Status = MilaWindowsNotificationDevicesStatus.Failed; }
+    }
+    internal async Task RemoveAsync(MilaWindowsNotificationDevice device, CancellationToken cancellationToken = default)
+    { if (Status != MilaWindowsNotificationDevicesStatus.Loaded || device.Id.Length == 0) return; await remove(device.Id, cancellationToken); await LoadAsync(true, cancellationToken); }
+    internal async Task SetEnabledAsync(MilaWindowsNotificationDevice device, bool enabled, CancellationToken cancellationToken = default)
+    { if (Status != MilaWindowsNotificationDevicesStatus.Loaded || device.Id.Length == 0) return; await preferences(device.Id, enabled, cancellationToken); await LoadAsync(true, cancellationToken); }
+
+    internal static IReadOnlyList<MilaWindowsNotificationDevice> DecodeListing(ReadOnlySpan<byte> bytes)
+    {
+        if (bytes.Length > 256 * 1024) throw new InvalidDataException("Notification listing too large");
+        using JsonDocument document = JsonDocument.Parse(bytes);
+        JsonElement devices = document.RootElement.GetProperty("devices");
+        if (devices.ValueKind != JsonValueKind.Array || devices.GetArrayLength() > 256) throw new InvalidDataException("Invalid notification listing");
+        List<MilaWindowsNotificationDevice> result = new(devices.GetArrayLength());
+        foreach (JsonElement item in devices.EnumerateArray())
+        {
+            string id = item.GetProperty("id").GetString() ?? throw new InvalidDataException("Missing device id");
+            string platform = item.GetProperty("platform").GetString() ?? throw new InvalidDataException("Missing device platform");
+            if (id.Length is 0 or > 128 || platform.Length is 0 or > 32) throw new InvalidDataException("Invalid device metadata");
+            result.Add(new(id, platform, item.GetProperty("enabled").GetBoolean()));
+        }
+        return result;
+    }
+}
+
 internal enum MilaWindowsNotificationState { Disabled, Registered, Unavailable, Invalid }
 
 /// <summary>

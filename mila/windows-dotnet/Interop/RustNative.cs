@@ -517,6 +517,32 @@ internal static partial class RustNative
             SessionSshKeysNative(handle, bytes, capacity, written));
     }
 
+    internal static MilaNativeSessionBytesResult TrySessionDevices(ulong handle)
+    {
+        if (handle == 0) return new(MilaNativeStatus.InvalidRequest, null);
+        return TrySessionBytes((bytes, capacity, written) => SessionDevicesNative(handle, bytes, capacity, written));
+    }
+
+    internal static MilaNativeSessionActionResult TrySessionDeviceRemove(ulong handle, string deviceId)
+    {
+        if (handle == 0 || string.IsNullOrWhiteSpace(deviceId) || deviceId.Length > 128) return new(MilaNativeStatus.InvalidRequest);
+        IntPtr id = Marshal.StringToCoTaskMemUTF8(deviceId);
+        try { return new((MilaNativeStatus)SessionDeviceRemoveNative(handle, id, (nuint)Encoding.UTF8.GetByteCount(deviceId))); }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        finally { Marshal.FreeCoTaskMem(id); }
+    }
+
+    internal static MilaNativeSessionActionResult TrySessionDevicePreferences(ulong handle, string deviceId, bool enabled)
+    {
+        if (handle == 0 || string.IsNullOrWhiteSpace(deviceId) || deviceId.Length > 128) return new(MilaNativeStatus.InvalidRequest);
+        IntPtr id = Marshal.StringToCoTaskMemUTF8(deviceId);
+        try { return new((MilaNativeStatus)SessionDevicePreferencesNative(handle, id, (nuint)Encoding.UTF8.GetByteCount(deviceId), enabled ? (byte)1 : (byte)0)); }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); }
+        finally { Marshal.FreeCoTaskMem(id); }
+    }
+
     /// <summary>Copies the bounded machine listing from an authenticated Rust session.</summary>
     internal static MilaNativeSessionBytesResult TrySessionListing(ulong handle)
     {
@@ -733,6 +759,13 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_ssh_keys")]
     private static partial MilaNativeStatus SessionSshKeysNative(
         ulong handle, IntPtr output, nuint capacity, IntPtr written);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_device_ls")]
+    private static partial MilaNativeStatus SessionDevicesNative(ulong handle, IntPtr output, nuint capacity, IntPtr written);
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_device_rm")]
+    private static partial MilaNativeStatus SessionDeviceRemoveNative(ulong handle, IntPtr device, nuint length);
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_device_prefs")]
+    private static partial MilaNativeStatus SessionDevicePreferencesNative(ulong handle, IntPtr device, nuint length, byte enabled);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_session_listing")]
     private static partial MilaNativeStatus SessionListingNative(

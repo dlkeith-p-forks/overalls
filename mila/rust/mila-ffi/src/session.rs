@@ -605,9 +605,25 @@ pub unsafe extern "C" fn mila_session_listing(
             .session
             .listing()
             .ok_or(SessionStatus::NotLoaded)?;
-        let data = serde_json::to_vec(
-            &serde_json::json!({"machines": listing.machines(), "has_more": listing.has_more()}),
-        )
+        // Include the Rust policy projection with each live row so native clients
+        // cannot accidentally present actions based on duplicated UI rules.
+        let machines: Vec<_> = listing
+            .machines()
+            .iter()
+            .map(|machine| serde_json::json!({
+                "id": machine.id,
+                "name": machine.name,
+                "desired_state": machine.desired_state,
+                "observed_state": machine.observed_state,
+                "pinned": machine.pinned,
+                "owner": machine.owner,
+                "read": machine.read,
+                "write": machine.write,
+                "manage": machine.manage,
+                "action_bits": machine.available_actions().into_iter().fold(0u16, |bits, action| bits | (1 << action as u16)),
+            }))
+            .collect();
+        let data = serde_json::to_vec(&serde_json::json!({"machines": machines, "has_more": listing.has_more()}))
         .map_err(|_| SessionStatus::Internal)?;
         output(&data, out, capacity, written)
     })
