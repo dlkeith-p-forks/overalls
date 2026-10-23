@@ -1,5 +1,5 @@
 ---
-digest: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
+digest: 23fdebc69e8bdbe970942ca43234274500c4f4382f074a590e9238b1762939af
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-ADR-0256 records batched page authorization over one read-only repeatable-read snapshot, its measured effect and gaps; the 2026-10-22 LiveView load review records findings and security assessment; the security chapter links the batched decision layers to them.
+Two additional SOPS-held operator source grants (geoffreyHuntleySecondary, geoffreyHuntleyTertiary) share ADR-0247 scope; 20-security authorization row now names primary, secondary and tertiary operator sources

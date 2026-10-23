@@ -351,7 +351,7 @@ logs. The container form mounts the same file names at `/run/secrets/susan`
 | `OVERALLS_SERVICE_IPV4`, `DUNGAREES_SERVICE_IPV4` | Audi and Audi DNS listeners |
 | `OVERALLS_PREFIX`, `OVERALLS_GATEWAY_IPV4`, `DUNGAREES_PREFIX`, `DUNGAREES_GATEWAY_IPV4` | each dedicated host's own uplink prefix and gateway |
 | `SALOPETTES_IPV4` | the Susan listener and the Salopettes WireGuard endpoint |
-| `GEOFFREY_HUNTLEY_IPV4` | the operator's reviewed source grant to every fleet host (ADR-0247) |
+| `GEOFFREY_HUNTLEY_IPV4`, `GEOFFREY_HUNTLEY_SECONDARY_IPV4`, `GEOFFREY_HUNTLEY_TERTIARY_IPV4` | the operator's reviewed source grants to every fleet host (ADR-0247) |
 
 Its recipients are the recovery users, Overalls, Dungarees and Salopettes; each
 host selects only the names its configuration uses. The repository holds no

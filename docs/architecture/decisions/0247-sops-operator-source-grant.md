@@ -80,6 +80,12 @@ runtime chain. The [firewall evaluation](../../../nix/verification/tests/evaluat
 checks that grants name SOPS-delivered addresses. No production packet-level
 check has been recorded.
 
+On 2026-10-23 the user authorized two further operator sources under this
+decision, `geoffreyHuntleySecondary` (`GEOFFREY_HUNTLEY_SECONDARY_IPV4`) and
+`geoffreyHuntleyTertiary` (`GEOFFREY_HUNTLEY_TERTIARY_IPV4`), after the operator's
+egress address changed and the public origin became unreachable to them. They
+use the same document, scope and runtime chain as `geoffreyHuntley`.
+
 ## Open questions
 
 None.
