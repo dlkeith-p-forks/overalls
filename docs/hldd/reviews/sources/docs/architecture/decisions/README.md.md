@@ -1,5 +1,5 @@
 ---
-digest: 08ddb69591e56ffe00175190bfde5c43e7e938fe6c1c3f7cfd7a7aeb04533a9e
+digest: 024d39cebff39bc658b8ad0c42159405b1ff8051dc30db25c3d1322a3756016e
 disposition: no-impact
 kind: source
 mapping_digest: f07446cbdc8e81ddaa4a97fd6d9b0bbde96c7b8a70f872c586949a0d4268de43
@@ -14,4 +14,4 @@ state: present
 version: 2
 ---
 
-Reviewed 17, 19-22: the new ADR-0259 and incident review add no new coverage claim, security boundary, domain or topology element; reader-visible facts they describe are in 02-control-plane and 15-monitoring, which link the review.
+ADR index: ADR-0190 status text notes the later a96f291b OmniOS promotion with 45983bb7 retained; adds the ADR-0259 deployment-revision telemetry row; no decision change
