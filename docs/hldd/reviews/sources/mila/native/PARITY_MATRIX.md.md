@@ -1,5 +1,5 @@
 ---
-digest: ea8c00165e57ae25b3845a82e971baffdc398f3bc62ab706fa6323e11e0c9e1c
+digest: a053c3fc3d7c47f3503b2eab30c597e5b4469057957a84eee472a1d2cceaf544
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed native Linux HTTPS trust enrollment; no HLDD chapter content changes are required.
+Parity matrix evidence updated; no HLDD chapter content changed.
