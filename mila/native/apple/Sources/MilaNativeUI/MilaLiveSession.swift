@@ -85,6 +85,16 @@ public final class MilaLiveSession: @unchecked Sendable {
         guard status == 0 else { throw Self.error(status) }
     }
 
+    public func machineCreate(name: String, cpu: UInt32, memory: UInt64, disk: UInt64, requestID: UUID) throws {
+        let current = try validHandle()
+        let nameBytes = Array(name.utf8)
+        let requestBytes = Array(("porsche-" + requestID.uuidString.lowercased().replacingOccurrences(of: "-", with: "")).utf8)
+        let status = nameBytes.withUnsafeBufferPointer { n in requestBytes.withUnsafeBufferPointer { r in
+            mila_session_machine_create(current, n.baseAddress, n.count, cpu, memory, disk, r.baseAddress, r.count)
+        }}
+        guard status == 0 else { throw Self.error(status) }
+    }
+
     public func shareMutation(machine: UUID, email: String, role: String?, add: Bool, requestID: UUID) throws {
         let current = try validHandle()
         let machineBytes = Array(machine.uuidString.lowercased().utf8)
