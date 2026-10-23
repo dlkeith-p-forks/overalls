@@ -14,6 +14,9 @@ pub enum NotificationUnavailable {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum NotificationCapability {
     Unsupported(NotificationUnavailable),
+    /// Desktop notifications are available through the freedesktop portal,
+    /// even though Linux has no Susan push registration provider.
+    LocalDesktop,
 }
 
 /// Native notification state owned by the Linux presentation host.
@@ -34,12 +37,32 @@ impl NotificationState {
         }
     }
 
+    pub const fn desktop() -> Self {
+        Self {
+            capability: NotificationCapability::LocalDesktop,
+            enabled: false,
+        }
+    }
+
     pub const fn capability(&self) -> NotificationCapability {
         self.capability
     }
 
     pub const fn enabled(&self) -> bool {
         self.enabled
+    }
+
+    /// Attempts to register this host with the platform push provider.
+    ///
+    /// Linux has no provider in the shared Susan protocol. Keeping a distinct
+    /// registration operation prevents the GTK host from treating a local
+    /// toggle as a completed server registration.
+    /// @cc [owner:ghuntley,label:security;desktop] linux-notifications-registration
+    /// Registration MUST fail closed when the platform has no push provider,
+    /// and a failed attempt MUST leave the state disabled.
+    pub fn register(&mut self) -> Result<(), NotificationUnavailable> {
+        self.enabled = false;
+        Err(NotificationUnavailable::NoPushProvider)
     }
 
     /// @cc [owner:ghuntley,label:security;desktop] linux-notifications-no-provider
@@ -51,7 +74,16 @@ impl NotificationState {
                 self.enabled = false;
                 Err(reason)
             }
+            NotificationCapability::LocalDesktop => {
+                self.enabled = true;
+                Ok(())
+            }
         }
+    }
+
+    /// Returns whether this host can display a local desktop notification.
+    pub const fn can_display_locally(&self) -> bool {
+        matches!(self.capability, NotificationCapability::LocalDesktop)
     }
 }
 
@@ -68,6 +100,18 @@ mod tests {
         );
         assert!(!state.enabled());
         assert_eq!(state.enable(), Err(NotificationUnavailable::NoPushProvider));
+        assert!(!state.enabled());
+        assert_eq!(state.register(), Err(NotificationUnavailable::NoPushProvider));
+        assert!(!state.enabled());
+    }
+
+    #[test]
+    fn desktop_capability_can_be_enabled_without_push_registration() {
+        let mut state = NotificationState::desktop();
+        assert!(state.can_display_locally());
+        assert_eq!(state.enable(), Ok(()));
+        assert!(state.enabled());
+        assert_eq!(state.register(), Err(NotificationUnavailable::NoPushProvider));
         assert!(!state.enabled());
     }
 }

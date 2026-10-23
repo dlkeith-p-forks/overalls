@@ -1,5 +1,5 @@
 ---
-digest: b0e19f222adec6af5b6b90246d6035523a3b2883663ec5f5b6e5f99f5d14f8da
+digest: 83434c6fbb629bdaab57b7f621a4494e8fd9c57905a1cf06f42cfb656979406a
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent parity and Windows changes; Android WebView origin fence does not alter documented architecture or deployment behavior.
+Reviewed local desktop notification capability and fail-closed push registration; behavior remains within existing native notification chapter.

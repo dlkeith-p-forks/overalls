@@ -378,7 +378,9 @@ impl NativeState {
             lock_status.set_label(&format!("{unavailable}\n{explanation}"));
         });
         root.append(&lock_button);
-        let notification_state = Rc::new(RefCell::new(NotificationState::linux()));
+        // Linux can show local desktop notifications through the desktop
+        // environment, while Susan push registration remains unavailable.
+        let notification_state = Rc::new(RefCell::new(NotificationState::desktop()));
         let notification_button =
             Button::with_label(&strings::text(strings::Message::NotificationsTitle));
         let notification_status = content.clone();
@@ -387,10 +389,8 @@ impl NativeState {
             let mut state = notification_state_for_action.borrow_mut();
             match state.enable() {
                 Ok(()) => notification_status.set_label("Notifications enabled."),
-                Err(_) => notification_status.set_label(&format!(
-                    "{}\n{}",
-                    strings::text(strings::Message::PushUnsupported),
-                    strings::text(strings::Message::NotificationsExplain)
+                Err(_) => notification_status.set_label(&strings::text(
+                    strings::Message::NotificationsExplain,
                 )),
             }
         });
