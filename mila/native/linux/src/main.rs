@@ -312,6 +312,35 @@ impl NativeState {
         sign_in_controls.append(&approval_button);
 
         let sign_in = self.sign_in.clone();
+        let session = self.session.clone();
+        let sign_in_status = content.clone();
+        let check_approval = Button::with_label("Check approval");
+        check_approval.connect_clicked(move |_| {
+            let generation = sign_in.borrow().generation;
+            let outcome = match session.borrow().session() {
+                Some(live) => live.whoami(),
+                None => Err(mila_native_linux::session::SessionError::StaleHandle),
+            };
+            let mut flow = sign_in.borrow_mut();
+            match outcome {
+                Ok(outcome) => {
+                    *flow = flow.clone().apply(SignInEvent::Whoami {
+                        generation,
+                        outcome,
+                        at: 0,
+                    });
+                    sign_in_status.set_label(match flow.phase {
+                        SignInPhase::SignedIn => "Deployment approved and signed in.",
+                        SignInPhase::AwaitingApproval => "Approval is still pending.",
+                        _ => "Deployment identity check refused.",
+                    });
+                }
+                Err(_) => sign_in_status.set_label("No authenticated deployment session."),
+            }
+        });
+        sign_in_controls.append(&check_approval);
+
+        let sign_in = self.sign_in.clone();
         let sign_in_status = content.clone();
         let open_approval = Button::with_label(&strings::text(strings::Message::SignInOpenBrowser));
         open_approval.connect_clicked(move |_| {

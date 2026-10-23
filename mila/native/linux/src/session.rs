@@ -199,6 +199,17 @@ impl LiveSession {
         })
     }
 
+    /// Poll the authenticated deployment for its bounded identity/approval
+    /// envelope.  The response is decoded in Rust so GTK never interprets
+    /// untrusted JSON or decides whether approval is required.
+    pub fn whoami(&self) -> Result<WhoamiOutcome, SessionError> {
+        let handle = self.handle()?;
+        let bytes = copy_output(|out, capacity, written| unsafe {
+            mila_ffi::session::mila_session_whoami(handle, out, capacity, written)
+        })?;
+        parse_whoami(&bytes).ok_or(SessionError::InvalidInput)
+    }
+
     pub fn read_more(&mut self) -> Result<Vec<u8>, SessionError> {
         let handle = self.handle()?;
         let status = mila_ffi::session::mila_session_read_machines(handle, 1);
@@ -540,6 +551,36 @@ impl LiveSession {
 
     fn handle(&self) -> Result<u64, SessionError> {
         self.handle.ok_or(SessionError::StaleHandle)
+    }
+}
+
+fn parse_whoami(bytes: &[u8]) -> Option<WhoamiOutcome> {
+    let value: serde_json::Value = serde_json::from_slice(bytes).ok()?;
+    if value.get("version").and_then(serde_json::Value::as_u64) != Some(1) {
+        return None;
+    }
+    match value.get("status").and_then(serde_json::Value::as_str)? {
+        "authenticated" => {
+            let account = value.get("account").and_then(serde_json::Value::as_str)?;
+            ( !account.is_empty() && account.len() <= 320).then(|| WhoamiOutcome::Authenticated {
+                account: account.to_owned(),
+            })
+        }
+        "approval_required" => {
+            let url = value.get("url").and_then(serde_json::Value::as_str)?;
+            let fingerprint = value
+                .get("fingerprint")
+                .and_then(serde_json::Value::as_str)?;
+            ApprovalInfo::validate(url, fingerprint, 0)
+                .ok()
+                .map(|_| WhoamiOutcome::Approval {
+                    url: url.to_owned(),
+                    fingerprint: fingerprint.to_owned(),
+                })
+        }
+        "refused" => Some(WhoamiOutcome::Refused),
+        "unavailable" => Some(WhoamiOutcome::Unavailable),
+        _ => Some(WhoamiOutcome::Protocol),
     }
 }
 
@@ -1416,6 +1457,27 @@ mod tests {
         assert!(ApprovalInfo::validate("https://?approval", "fp", 0).is_err());
         assert!(ApprovalInfo::validate("https://:443/a", "fp", 0).is_err());
         assert!(ApprovalInfo::validate("https://example.test/a", "fp", 0).is_ok());
+    }
+
+    #[test]
+    fn whoami_envelope_is_decoded_with_bounded_approval_fields() {
+        let authenticated = parse_whoami(
+            br#"{"version":1,"status":"authenticated","account":"alice@example.test"}"#,
+        )
+        .expect("authenticated envelope");
+        assert_eq!(
+            authenticated,
+            WhoamiOutcome::Authenticated {
+                account: "alice@example.test".into()
+            }
+        );
+        let approval = parse_whoami(
+            br#"{"version":1,"status":"approval_required","url":"https://example.test/approve","fingerprint":"SHA256:test"}"#,
+        )
+        .expect("approval envelope");
+        assert!(matches!(approval, WhoamiOutcome::Approval { .. }));
+        assert!(parse_whoami(br#"{"version":2,"status":"authenticated","account":"x"}"#).is_none());
+        assert!(parse_whoami(br#"{"version":1,"status":"approval_required","url":"http://example.test","fingerprint":"x"}"#).is_none());
     }
 
     #[test]

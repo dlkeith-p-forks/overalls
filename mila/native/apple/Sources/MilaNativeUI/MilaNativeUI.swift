@@ -7,6 +7,7 @@ public struct MilaNativeRootView: View {
     @State private var selection: MilaRoute = .machines
     @State private var machines: [MilaMachinePresentation] = []
     @State private var status = MilaStrings.text(.ready)
+    @State private var showCreate = false
     @StateObject private var appLock = MilaAppLockController()
     @Environment(\.scenePhase) private var scenePhase
 
@@ -30,7 +31,7 @@ public struct MilaNativeRootView: View {
         } detail: {
             Group {
                 switch selection {
-                case .machines: MachinesView(machines: machines) { selection = .machine(id: $0) }
+                case .machines: MachinesView(machines: machines, create: { showCreate = true }) { selection = .machine(id: $0) }
                 case .machine(let id): MachineDetailView(machine: machines.first { $0.id == id }, adapter: session.adapter() ?? adapter)
                 case .threads: ThreadsView(adapter: session.adapter() ?? adapter, select: { selection = .thread(id: $0) })
                 case .thread(let id): ThreadDetailView(id: id, adapter: session.adapter() ?? adapter)
@@ -39,6 +40,11 @@ public struct MilaNativeRootView: View {
             }
             .toolbar { ToolbarItem { Button(MilaStrings.text(.refresh)) { Task { await refresh() } } } }
             .safeAreaInset(edge: .bottom) { Text(status).font(.caption).foregroundStyle(.secondary).padding(4) }
+        }.sheet(isPresented: $showCreate) {
+            MilaMachineCreateView(adapter: session.adapter() ?? adapter) { result in
+                status = result ? MilaStrings.text(.actionSubmitted) : MilaStrings.text(.actionNotSubmitted)
+                if result { Task { await refresh() } }
+            }
         }.milaDesignSystem().onChange(of: scenePhase) { _, phase in
             switch phase {
             case .background: appLock.sceneDidEnterBackground()
@@ -59,6 +65,7 @@ public struct MilaNativeRootView: View {
 
 private struct MachinesView: View {
     let machines: [MilaMachinePresentation]
+    let create: () -> Void
     let select: (UUID) -> Void
     var body: some View {
         List {
@@ -68,7 +75,39 @@ private struct MachinesView: View {
                     VStack(alignment: .leading) { Text(machine.machine.name); Text(machine.machine.observedState ?? "unknown").font(.caption).foregroundStyle(.secondary) }
                 }
             }
-        }.navigationTitle(MilaStrings.text(.machines))
+        }.navigationTitle(MilaStrings.text(.machines)).toolbar { ToolbarItem(placement: .primaryAction) { Button("＋") { create() }.accessibilityLabel("Create machine") } }
+    }
+}
+
+private struct MilaMachineCreateView: View {
+    let adapter: any MilaFFIAdapter
+    let completed: (Bool) -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var name = ""
+    @State private var cpu = "2"
+    @State private var memory = "2048"
+    @State private var disk = "20"
+    @State private var busy = false
+    @State private var error = false
+    var body: some View {
+        NavigationStack { Form {
+            TextField("Name", text: $name).textContentType(.nickname)
+            TextField("CPU", text: $cpu)
+            TextField("Memory (MiB)", text: $memory)
+            TextField("Disk (GiB)", text: $disk)
+            if error { Text(MilaStrings.text(.actionNotSubmitted)).foregroundStyle(.secondary) }
+        }.navigationTitle("Create machine").toolbar {
+            ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+            ToolbarItem(placement: .confirmationAction) { Button("Create") { submit() }.disabled(busy || name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }
+        }}
+    }
+    private func submit() {
+        guard let c = UInt32(cpu), let m = UInt64(memory), let d = UInt64(disk), c > 0, m > 0, d > 0 else { error = true; return }
+        busy = true
+        Task {
+            do { try await adapter.createMachine(name: name.trimmingCharacters(in: .whitespacesAndNewlines), cpu: c, memory: m, disk: d, requestID: UUID()); completed(true); dismiss() }
+            catch { busy = false; error = true; completed(false) }
+        }
     }
 }
 
