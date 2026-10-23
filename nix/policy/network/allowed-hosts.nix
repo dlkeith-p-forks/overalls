@@ -16,4 +16,12 @@
     name = "geoffreyHuntley";
     comment = "Geoffrey Huntley operator access";
   };
+  geoffreyHuntleySecondary = {
+    name = "geoffreyHuntleySecondary";
+    comment = "Geoffrey Huntley secondary operator access";
+  };
+  geoffreyHuntleyTertiary = {
+    name = "geoffreyHuntleyTertiary";
+    comment = "Geoffrey Huntley tertiary operator access";
+  };
 }

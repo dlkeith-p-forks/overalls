@@ -9,4 +9,6 @@
   panterloonsPrimary = "PANTERLOONS_PRIMARY_IPV4";
   panterloonsService = "PANTERLOONS_SERVICE_IPV4";
   geoffreyHuntley = "GEOFFREY_HUNTLEY_IPV4";
+  geoffreyHuntleySecondary = "GEOFFREY_HUNTLEY_SECONDARY_IPV4";
+  geoffreyHuntleyTertiary = "GEOFFREY_HUNTLEY_TERTIARY_IPV4";
 }
