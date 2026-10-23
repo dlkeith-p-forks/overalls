@@ -185,6 +185,12 @@ interface MilaRustBindings {
     fun sessionThreadAction(handle: Long, thread: String, command: String, secondary: String?, input: String?, requestId: String?): ByteArray? = null
     /** Returns the validated `ssh-key list --json` result for an authenticated session. */
     fun sessionSshKeys(handle: Long): ByteArray? = null
+    /** Opens a PTY through the authenticated session; terminal bytes stay outside this ABI. */
+    fun sessionTerminalAttach(handle: Long, from: Long, columns: Int, rows: Int, readWrite: Boolean): Int = -12
+    /** Validates a bounded PTY input write against the authenticated session. */
+    fun sessionTerminalInput(handle: Long, length: Int, readWrite: Boolean): Int = -12
+    /** Resizes a PTY owned by the authenticated session. */
+    fun sessionTerminalResize(handle: Long, columns: Int, rows: Int, readWrite: Boolean): Int = -12
     /** Revokes one opaque key id using a caller-supplied at-most-once request id. */
     fun sessionSshKeyRevoke(handle: Long, key: String, requestId: String): Int = -12
     fun sessionClose(handle: Long): Int = -12
@@ -255,6 +261,9 @@ internal object MilaRustFfi : MilaRustBindings {
     override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Int = nativeTerminalAttach(from, columns, rows, readWrite)
     override fun terminalInput(length: Int, readWrite: Boolean): Int = nativeTerminalInput(length, readWrite)
     override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Int = nativeTerminalResize(columns, rows, readWrite)
+    override fun sessionTerminalAttach(handle: Long, from: Long, columns: Int, rows: Int, readWrite: Boolean): Int = nativeSessionTerminalAttach(handle, from, columns, rows, readWrite)
+    override fun sessionTerminalInput(handle: Long, length: Int, readWrite: Boolean): Int = nativeSessionTerminalInput(handle, length, readWrite)
+    override fun sessionTerminalResize(handle: Long, columns: Int, rows: Int, readWrite: Boolean): Int = nativeSessionTerminalResize(handle, columns, rows, readWrite)
 
     @JvmStatic
     external fun nativeAbiVersion(): Int
@@ -292,6 +301,9 @@ internal object MilaRustFfi : MilaRustBindings {
     @JvmStatic external fun nativeTerminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Int
     @JvmStatic external fun nativeTerminalInput(length: Int, readWrite: Boolean): Int
     @JvmStatic external fun nativeTerminalResize(columns: Int, rows: Int, readWrite: Boolean): Int
+    @JvmStatic external fun nativeSessionTerminalAttach(handle: Long, from: Long, columns: Int, rows: Int, readWrite: Boolean): Int
+    @JvmStatic external fun nativeSessionTerminalInput(handle: Long, length: Int, readWrite: Boolean): Int
+    @JvmStatic external fun nativeSessionTerminalResize(handle: Long, columns: Int, rows: Int, readWrite: Boolean): Int
 }
 
 /** Opaque, one-shot authority for a live Rust session. */
@@ -349,6 +361,18 @@ class MilaSessionHandle internal constructor(
             ?: error("thread listing unavailable")
     }
     /** Reads keys through the same authenticated, certificate-pinned session handle. */
+    @Synchronized fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = runCatching {
+        check(!closed)
+        check(bindings.sessionTerminalAttach(nativeHandle, from, columns, rows, readWrite) == 0)
+    }
+    @Synchronized fun terminalInput(length: Int, readWrite: Boolean): Result<Unit> = runCatching {
+        check(!closed)
+        check(bindings.sessionTerminalInput(nativeHandle, length, readWrite) == 0)
+    }
+    @Synchronized fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = runCatching {
+        check(!closed)
+        check(bindings.sessionTerminalResize(nativeHandle, columns, rows, readWrite) == 0)
+    }
     @Synchronized fun sshKeys(): Result<ByteArray> = runCatching {
         check(!closed)
         bindings.sessionSshKeys(nativeHandle) ?: error("SSH key listing unavailable")
@@ -443,9 +467,9 @@ class LinkedMilaFfiAdapter(
             ?: throw IllegalArgumentException("unknown machine command")
     }
 
-    override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { status(bindings.terminalAttach(from, columns, rows, readWrite)) }
-    override fun terminalInput(length: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { status(bindings.terminalInput(length, readWrite)) }
-    override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { status(bindings.terminalResize(columns, rows, readWrite)) }
+    override fun terminalAttach(from: Long, columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { authenticatedSession!!.terminalAttach(from, columns, rows, readWrite) }
+    override fun terminalInput(length: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { authenticatedSession!!.terminalInput(length, readWrite) }
+    override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Result<Unit> = authenticatedTerminal { authenticatedSession!!.terminalResize(columns, rows, readWrite) }
 
     private fun authenticatedTerminal(operation: () -> Result<Unit>): Result<Unit> =
         if (authenticatedSession == null) Result.failure(IllegalStateException("authenticated session unavailable")) else operation()

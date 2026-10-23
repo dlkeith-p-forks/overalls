@@ -1418,6 +1418,36 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTermina
     ))
 }
 
+/// Session-scoped terminal validation. The PTY transport remains owned by the
+/// authenticated session; this JNI seam rejects detached or malformed requests.
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionTerminalAttach(
+    _env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong,
+    from: jni::sys::jlong, columns: jni::sys::jint, rows: jni::sys::jint,
+    read_write: jni::sys::jboolean,
+) -> jni::sys::jint {
+    if handle <= 0 { return -4; }
+    Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTerminalAttach(_env, _class, from, columns, rows, read_write)
+}
+
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionTerminalInput(
+    _env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong,
+    length: jni::sys::jint, read_write: jni::sys::jboolean,
+) -> jni::sys::jint {
+    if handle <= 0 { return -4; }
+    Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTerminalInput(_env, _class, length, read_write)
+}
+
+#[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionTerminalResize(
+    _env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong,
+    columns: jni::sys::jint, rows: jni::sys::jint, read_write: jni::sys::jboolean,
+) -> jni::sys::jint {
+    if handle <= 0 { return -4; }
+    Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeTerminalResize(_env, _class, columns, rows, read_write)
+}
+
 /// JNI projection of the bounded machine action policy.  The returned value is
 /// a bit mask (one bit per `MachineAction` discriminant), or `-1` when the
 /// snapshot, deployment, or index is invalid.  Machine records never cross

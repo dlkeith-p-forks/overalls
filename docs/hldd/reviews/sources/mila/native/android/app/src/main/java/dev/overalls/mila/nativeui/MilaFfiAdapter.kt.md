@@ -1,5 +1,5 @@
 ---
-digest: f64fc9a584cc1a0490d840dca4f08223ecd129e8c6b8f689d4e75e06deb54f7e
+digest: 9aa93d7730838f187798f99ba1a8b520fc49d098f65a805fbefff9a62b2e5a77
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Typed Android boundary preserves existing architecture and contracts; UI-only capability addition.
+Reviewed bounded native adapter change; no documented behavior or topology chapter requires revision.

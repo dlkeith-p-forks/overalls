@@ -41,6 +41,13 @@ public final class MilaLiveSession: @unchecked Sendable {
 
     deinit { close() }
 
+    /// Returns whether the authenticated Rust session is still live.
+    /// This is used by host transports to fence terminal operations after sign-out or close.
+    public var isAuthenticated: Bool {
+        lock.lock(); defer { lock.unlock() }
+        return handle != 0
+    }
+
     public func refresh() throws -> Data {
         let current = try validHandle()
         let status = mila_session_read_machines(current, 0)

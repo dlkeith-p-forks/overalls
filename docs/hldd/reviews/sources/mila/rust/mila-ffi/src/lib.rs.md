@@ -1,11 +1,11 @@
 ---
-digest: bbfd9c3db9a704a1ebfd7ea92924d641e50a282fefa787f302ba42e00fb66e51
+digest: cc3bdc1c144347e57f581eccfba97853ef37bf83c724a89a3a84bd3d8f881fca
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-ffi/src/lib.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: d1210da76cefdad36e8e57ad8dcc19cb557d8ca390979c2efcdb7075b02d60b7
+  marshall/priv/hldd/08-interactive.md: 3b2f40d7d3004923a6bfaa3b6b27287b36731de73182032b29a392be6daf8c0a
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux sign-in FFI export changes; no domain or topology change.
+Reviewed bounded native adapter change; no documented behavior or topology chapter requires revision.

@@ -1,5 +1,5 @@
 ---
-digest: ac771d6b7b4d7b09ee28bfbc617207217b682f8f391e787a3f36aa7731a665f8
+digest: 31f1d6d9eb90981bea41b90d4a34198ac0aed8581604a7ddf00a75671c5a0c89
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Typed Apple web transport remains within existing authenticated session boundary and changes no documented chapter behavior.
+Apple terminal transport binds host PTY operations to authenticated session; documented parity row already covers this behavior.

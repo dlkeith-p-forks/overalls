@@ -192,3 +192,42 @@ final class MilaTerminalControllerTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(transport.closed, 2)
     }
 }
+
+@MainActor
+final class MilaAuthenticatedTerminalTransportTests: XCTestCase {
+    private final class Transport: MilaTerminalTransport, @unchecked Sendable {
+        var attaches = 0
+        var inputs = 0
+        var resizes = 0
+        func attach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) async throws { attaches += 1 }
+        func sendInput(_ input: Data) async throws { inputs += 1 }
+        func resize(columns: UInt16, rows: UInt16) async throws { resizes += 1 }
+        func close() async {}
+    }
+
+    func testUnauthenticatedSessionNeverReachesHostTransport() async {
+        let host = Transport()
+        let transport = MilaAuthenticatedTerminalTransport(authorized: { false }, transport: host)
+        do {
+            try await transport.attach(from: 0, columns: 80, rows: 24, readWrite: true)
+            XCTFail("unauthenticated attach must be refused")
+        } catch { XCTAssertEqual(error as? MilaTerminalError, .unavailable) }
+        XCTAssertEqual(host.attaches, 0)
+        do {
+            try await transport.sendInput(Data("pwd\n".utf8))
+            XCTFail("unauthenticated input must be refused")
+        } catch { XCTAssertEqual(error as? MilaTerminalError, .unavailable) }
+        XCTAssertEqual(host.inputs, 0)
+    }
+
+    func testAuthenticatedSessionDelegatesValidatedOperations() async throws {
+        let host = Transport()
+        let transport = MilaAuthenticatedTerminalTransport(authorized: { true }, transport: host)
+        try await transport.attach(from: 7, columns: 80, rows: 24, readWrite: true)
+        try await transport.sendInput(Data("pwd\n".utf8))
+        try await transport.resize(columns: 100, rows: 30)
+        XCTAssertEqual(host.attaches, 1)
+        XCTAssertEqual(host.inputs, 1)
+        XCTAssertEqual(host.resizes, 1)
+    }
+}

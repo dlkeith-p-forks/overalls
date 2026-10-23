@@ -27,6 +27,51 @@ public protocol MilaTerminalTransport: Sendable {
     func close() async
 }
 
+/// An authenticated host PTY transport. The actual socket/PTY remains owned by the
+/// native host, while the Rust session fences every operation to a live authenticated
+/// deployment session. Bytes never cross this authorization wrapper.
+public final class MilaAuthenticatedTerminalTransport: MilaTerminalTransport, @unchecked Sendable {
+    private let authorized: @Sendable () -> Bool
+    private let transport: any MilaTerminalTransport
+
+    public init(session: MilaLiveSession, transport: any MilaTerminalTransport) {
+        self.authorized = { session.isAuthenticated }
+        self.transport = transport
+    }
+
+    /// Internal seam for native host tests; production callers must provide a live session.
+    init(authorized: @escaping @Sendable () -> Bool, transport: any MilaTerminalTransport) {
+        self.authorized = authorized
+        self.transport = transport
+    }
+
+    public func attach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) async throws {
+        guard authorized() else { throw MilaTerminalError.unavailable }
+        guard mila_terminal_attach_validate(from, columns, rows, readWrite ? 1 : 0).rawValue == 0 else {
+            throw MilaTerminalError.invalidRequest
+        }
+        try await transport.attach(from: from, columns: columns, rows: rows, readWrite: readWrite)
+    }
+
+    public func sendInput(_ input: Data) async throws {
+        guard authorized() else { throw MilaTerminalError.unavailable }
+        guard mila_terminal_input_validate(input.count, 1).rawValue == 0 else {
+            throw MilaTerminalError.invalidRequest
+        }
+        try await transport.sendInput(input)
+    }
+
+    public func resize(columns: UInt16, rows: UInt16) async throws {
+        guard authorized() else { throw MilaTerminalError.unavailable }
+        guard mila_terminal_resize_validate(columns, rows, 1).rawValue == 0 else {
+            throw MilaTerminalError.invalidRequest
+        }
+        try await transport.resize(columns: columns, rows: rows)
+    }
+
+    public func close() async { await transport.close() }
+}
+
 public struct MilaNoopTerminalTransport: MilaTerminalTransport {
     public init() {}
     public func attach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) async throws {}

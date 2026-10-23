@@ -314,3 +314,37 @@ class MilaAppLockTest {
         assertTrue(!c.state.obscured)
     }
 }
+
+private class TerminalSessionBindings : FakeRustBindings() {
+    val calls = mutableListOf<String>()
+    override fun sessionTerminalAttach(handle: Long, from: Long, columns: Int, rows: Int, readWrite: Boolean): Int {
+        calls += "attach:$handle:$from:$columns:$rows:$readWrite"; return 0
+    }
+    override fun sessionTerminalInput(handle: Long, length: Int, readWrite: Boolean): Int {
+        calls += "input:$handle:$length:$readWrite"; return 0
+    }
+    override fun sessionTerminalResize(handle: Long, columns: Int, rows: Int, readWrite: Boolean): Int {
+        calls += "resize:$handle:$columns:$rows:$readWrite"; return 0
+    }
+    override fun sessionClose(handle: Long): Int = 0
+}
+
+class MilaAuthenticatedTerminalTest {
+    @Test
+    fun terminalOperationsUseTheBoundAuthenticatedSession() {
+        val bindings = TerminalSessionBindings()
+        val adapter = LinkedMilaFfiAdapter(bindings)
+        val session = MilaSessionHandle(91L, bindings)
+        adapter.bindSession(session)
+
+        assertTrue(adapter.terminalAttach(7L, 120, 40, true).isSuccess)
+        assertTrue(adapter.terminalInput(4, true).isSuccess)
+        assertTrue(adapter.terminalResize(100, 30, true).isSuccess)
+        assertEquals(
+            listOf("attach:91:7:120:40:true", "input:91:4:true", "resize:91:100:30:true"),
+            bindings.calls,
+        )
+        adapter.bindSession(null)
+        assertTrue(adapter.terminalAttach(0, 80, 24, false).isFailure)
+    }
+}
