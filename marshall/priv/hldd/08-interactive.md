@@ -1403,10 +1403,11 @@ verifies signatures without exposing private bytes. Hardware-backed signer
 integration and the live HTTPS approval transport remain open.
 
 The Linux deployment surface validates and stores one canonical host selection
-under XDG configuration, restores it on launch, and exposes an idempotent
-Forget deployment action. Forget removes only that selection; trust, key and
-remote device records remain under their separate authorities. A multi-deployment
-list and complete sign-in UI are still open.
+under XDG configuration, restores it on launch, and exposes Reload and an
+idempotent Forget deployment action. Reload reflects the persisted selection in
+the GTK field; Forget clears that field and removes only the selection. Trust,
+key and remote device records remain under their separate authorities. A
+multi-deployment list and complete sign-in UI are still open.
 
 The GTK sign-in action refuses to start until the deployment field passes the
 same canonical host validator used by persistence, then saves that selection

@@ -155,14 +155,31 @@ impl NativeState {
         });
         root.append(&deployment);
         root.append(&select);
+        let reload = Button::with_label(&strings::text(strings::Message::ReloadDeployment));
+        let reload_status = content.clone();
+        let reload_input = deployment.clone();
+        reload.connect_clicked(move |_| match persistence::load() {
+            Ok(Some(selection)) => {
+                reload_input.set_text(&selection.host);
+                reload_status.set_label(&format!("Deployment loaded\n{}", selection.host));
+            }
+            Ok(None) => {
+                reload_input.set_text("");
+                reload_status.set_label("No deployment is selected.");
+            }
+            Err(_) => reload_status.set_label("Deployment could not be loaded."),
+        });
+        root.append(&reload);
         let forget = Button::with_label(&strings::text(strings::Message::ForgetDeployment));
         let forget_status = content.clone();
+        let forget_input = deployment.clone();
         forget.connect_clicked(move |_| match persistence::forget() {
             Ok(()) => {
-                forget_status.set_label(&strings::text(strings::Message::DeploymentForgotten))
+                forget_input.set_text("");
+                forget_status.set_label(&strings::text(strings::Message::DeploymentForgotten));
             }
             Err(_) => {
-                forget_status.set_label(&strings::text(strings::Message::DeploymentForgetFailed))
+                forget_status.set_label(&strings::text(strings::Message::DeploymentForgetFailed));
             }
         });
         root.append(&forget);

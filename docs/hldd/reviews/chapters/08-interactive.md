@@ -1,5 +1,5 @@
 ---
-digest: 428c36a7618237e7107d6630f3ceceb325fc80a03fd29c2e3377ae0ec469e7fd
+digest: bfa9953693cb15c38c3205a3f6c0f5d3a594f7438444864c383807f51e0185f5
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document GTK thread prompt, answer, plan approval and plan revision controls with authenticated session, canonical request IDs and bounded stdin.
+Document Linux GTK deployment Reload and Forget controls, including persistence reflection and field clearing.
