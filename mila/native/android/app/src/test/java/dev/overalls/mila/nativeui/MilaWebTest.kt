@@ -4,6 +4,18 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class MilaWebTest {
+ @Test fun webViewStaysOnEndpointOrigin() {
+  assertTrue(isAllowedMilaWebTarget("https://box.example.test/app", "https://box.example.test/next"))
+  assertFalse(isAllowedMilaWebTarget("https://box.example.test/app", "https://other.example.test/next"))
+  assertFalse(isAllowedMilaWebTarget("https://box.example.test/app", "http://box.example.test/next"))
+  assertFalse(isAllowedMilaWebTarget("https://box.example.test/app", "https://box.example.test:444/next"))
+ }
+
+ @Test fun webViewRejectsCredentialAndFragmentTargets() {
+  assertFalse(isAllowedMilaWebTarget("https://box.example.test/app", "https://user:pass@box.example.test/next"))
+  assertFalse(isAllowedMilaWebTarget("https://box.example.test/app", "https://box.example.test/next#secret"))
+ }
+
  @Test fun parsesSafeEndpoint() {
   val result = parseMilaWebEndpoint("{\"machine_id\":\"00000000-0000-0000-0000-000000000001\",\"port\":8080,\"visibility\":\"public\",\"policy_revision\":2,\"url\":\"https://box.example.test\"}")
   assertTrue(result.isSuccess); assertEquals(8080, result.getOrThrow().port)

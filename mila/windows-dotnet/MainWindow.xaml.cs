@@ -263,21 +263,41 @@ public sealed partial class MainWindow : Window
     }
     private void ValidateTerminalAttach(object sender, RoutedEventArgs args)
     {
+        if (_session.Handle is not { } sessionHandle || sessionHandle == 0)
+        {
+            TerminalStatus.Text = S("signInFirst", "Sign in first");
+            return;
+        }
         MilaNativeTerminalResult result = RustNative.TryValidateTerminalAttach(0, 80, 24, true);
         _terminalGeneration = DateTime.UtcNow.Ticks;
-        TerminalStatus.Text = result.IsValid && _terminal.BeginAttach(_terminalGeneration, true) > 0
+        TerminalStatus.Text = result.IsValid && _terminal.BeginAuthenticatedAttach(sessionHandle, _terminalGeneration, true) > 0
             ? S("terminalAttaching", "Attaching…") : S("terminalRefused", "Terminal refused");
-        if (result.IsValid && _terminal.Append(_terminalGeneration, "Mila terminal ready\r\n"))
+        // This is the bounded renderer acknowledgement. Actual PTY frames
+        // arrive through the authenticated transport and must be projected by
+        // Rust before being appended with AppendReceived.
+        if (result.IsValid && _terminal.AppendReceived(_terminalGeneration, "Mila terminal ready\r\n"))
             TerminalOutput.Text = _terminal.Output;
     }
     private void ValidateTerminalResize(object sender, RoutedEventArgs args)
     {
+        if (_session.Handle is not { } sessionHandle || sessionHandle == 0 ||
+            !_terminal.Reconnect(_terminalGeneration))
+        {
+            TerminalStatus.Text = S("signInFirst", "Sign in first");
+            return;
+        }
         MilaNativeTerminalResult result = RustNative.TryValidateTerminalResize(80, 24, true);
         TerminalStatus.Text = result.IsValid && _terminal.Resize(_terminalGeneration, 80, 24)
             ? S("terminalLive", "Terminal live") : S("terminalInvalid", "Invalid terminal dimensions");
     }
     private void ValidateTerminalInput(object sender, RoutedEventArgs args)
     {
+        if (_session.Handle is not { } sessionHandle || sessionHandle == 0 ||
+            !_terminal.Reconnect(_terminalGeneration))
+        {
+            TerminalStatus.Text = S("signInFirst", "Sign in first");
+            return;
+        }
         MilaNativeTerminalResult result = RustNative.TryValidateTerminalInput(0, true);
         TerminalStatus.Text = result.IsValid ? S("terminalLive", "Terminal live") : S("terminalReadOnly", "Terminal is read only");
     }

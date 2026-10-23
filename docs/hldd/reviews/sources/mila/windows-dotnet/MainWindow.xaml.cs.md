@@ -1,5 +1,5 @@
 ---
-digest: 4403abae7b703e2362cbb2f9c241a3c6419e47ad3e36cf97469de2b588246040
+digest: 97cf5bffb1a6c4c9cee68551dc5f836a1401bc1c83e43fe2196c469b181f56fb
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed typed Windows machine creation bridge; existing native architecture chapters remain accurate.
+Reviewed concurrent parity and Windows changes; Android WebView origin fence does not alter documented architecture or deployment behavior.

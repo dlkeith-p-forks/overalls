@@ -37,6 +37,21 @@ private fun validateHttps(value: String) {
     require(uri.host != null && uri.host.matches(Regex("^[A-Za-z0-9.-]+$")))
 }
 
+/**
+ * @cc [owner:mila,label:security] webview-origin-fence
+ * Embedded navigation remains on the exact HTTPS origin returned by Rust.
+ */
+internal fun isAllowedMilaWebTarget(base: String, target: String): Boolean = runCatching {
+    validateHttps(base)
+    validateHttps(target)
+    val origin = URI(base)
+    val candidate = URI(target)
+    origin.host.equals(candidate.host, ignoreCase = true) &&
+        effectivePort(origin) == effectivePort(candidate)
+}.getOrDefault(false)
+
+private fun effectivePort(uri: URI): Int = if (uri.port == -1) 443 else uri.port
+
 class MilaWebController(private val adapter: MilaFfiAdapter) {
     var endpoint by mutableStateOf<MilaWebEndpoint?>(null); private set
     var error by mutableStateOf<String?>(null); private set
@@ -61,11 +76,11 @@ fun MilaWebView(url: String, modifier: Modifier = Modifier) {
             settings.javaScriptEnabled = true
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView, target: String): Boolean =
-                    runCatching { URI(target).scheme == "https" }.getOrDefault(false).not()
+                    !isAllowedMilaWebTarget(url, target)
             }
             loadUrl(url)
         }
-    }, update = { it.loadUrl(url) })
+    }, update = { if (it.url != url) it.loadUrl(url) })
 }
 
 @Composable
@@ -75,6 +90,9 @@ fun MilaWebControls(adapter: MilaFfiAdapter, machine: MilaMachineRow) {
     LaunchedEffect(machine.id) { controller.show(machine.id) }
     var port by remember { mutableStateOf("") }
     var public by remember { mutableStateOf(true) }
+    LaunchedEffect(controller.endpoint?.revision) {
+        controller.endpoint?.let { port = it.port.toString(); public = it.public }
+    }
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(MilaStrings.text(MilaMessage.WebEndpoint))
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
