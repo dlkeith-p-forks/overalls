@@ -457,6 +457,16 @@ internal static partial class RustNative
         finally { Marshal.FreeCoTaskMem(machine); Marshal.FreeCoTaskMem(operation); Marshal.FreeCoTaskMem(request); }
     }
 
+    internal static MilaNativeSessionActionResult TrySessionMachineCreate(ulong handle, string name, uint cpu, ulong memory, ulong disk, string requestId)
+    {
+        if (handle == 0 || string.IsNullOrWhiteSpace(name) || name.Length > 128 || !name.All(c => char.IsAsciiLetterOrDigit(c) || c is '-' or '_') ||
+            cpu is < 1 or > 256 || memory is < 256 or > 4_194_304 || disk is < 1 or > 500 || !IsCanonicalRequestId(requestId)) return new(MilaNativeStatus.InvalidRequest);
+        IntPtr namePtr = Marshal.StringToCoTaskMemUTF8(name), requestPtr = Marshal.StringToCoTaskMemUTF8(requestId);
+        try { return new((MilaNativeStatus)SessionMachineCreateNative(handle, namePtr, (nuint)Encoding.UTF8.GetByteCount(name), cpu, memory, disk, requestPtr, (nuint)Encoding.UTF8.GetByteCount(requestId))); }
+        catch (DllNotFoundException) { return new(MilaNativeStatus.Unavailable); } catch (EntryPointNotFoundException) { return new(MilaNativeStatus.Unavailable); } catch (BadImageFormatException) { return new(MilaNativeStatus.Unavailable); }
+        finally { Marshal.FreeCoTaskMem(namePtr); Marshal.FreeCoTaskMem(requestPtr); }
+    }
+
     internal static MilaNativeSessionActionResult TrySessionMachineResize(
         ulong handle, Guid machineId, uint cpu, ulong memory, ulong disk, string requestId)
     {
@@ -743,6 +753,9 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_action")]
     private static partial int SessionMachineActionNative(ulong handle, IntPtr machine, nuint machineLength,
         IntPtr action, nuint actionLength, IntPtr requestId, nuint requestIdLength);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_create")]
+    private static partial int SessionMachineCreateNative(ulong handle, IntPtr name, nuint nameLength, uint cpu, ulong memory, ulong disk, IntPtr requestId, nuint requestIdLength);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_session_machine_resize")]
     private static partial int SessionMachineResizeNative(ulong handle, IntPtr machine, nuint machineLength,

@@ -243,6 +243,21 @@ pub unsafe extern "C" fn mila_session_machine_action(
     })
 }
 
+/// Execute an authenticated bounded machine creation.
+#[no_mangle]
+pub unsafe extern "C" fn mila_session_machine_create(handle: u64, name: *const u8, name_len: usize, cpu: u32, memory: u64, disk: u64, request_id: *const u8, request_id_len: usize) -> SessionStatus {
+    guarded(|| {
+        let name = std::str::from_utf8(bytes(name, name_len, 128)?).map_err(|_| SessionStatus::Invalid)?;
+        let request_id = std::str::from_utf8(bytes(request_id, request_id_len, 64)?).map_err(|_| SessionStatus::Invalid)?;
+        let runtime = runtime()?; let entry = entry(handle)?; let mut locked = entry.try_lock().map_err(|_| SessionStatus::Busy)?;
+        let session = &mut locked.as_mut().ok_or(SessionStatus::InvalidHandle)?.session;
+        runtime.block_on(session.machine_create(name, cpu, memory, disk, request_id)).map_err(|error| match error {
+            mila_session::SessionError::Transport(_) => SessionStatus::Transport,
+            _ => SessionStatus::Invalid,
+        })
+    })
+}
+
 /// Execute a bounded authenticated machine resize.
 #[no_mangle]
 pub unsafe extern "C" fn mila_session_machine_resize(

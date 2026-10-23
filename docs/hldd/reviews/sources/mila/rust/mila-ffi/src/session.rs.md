@@ -1,5 +1,5 @@
 ---
-digest: 9a53d03a418370400d054fda0a6979bf328b76543cd74103bd4f6237be47cc1f
+digest: fabb86bc9da4afc3d91f670ca2a55ac588f4b3f0a73b2d88cd719c1eee7afa37
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent native FFI changes; no HLDD chapter behavior changes in this receipt.
+Reviewed typed Windows machine creation bridge; existing native architecture chapters remain accurate.

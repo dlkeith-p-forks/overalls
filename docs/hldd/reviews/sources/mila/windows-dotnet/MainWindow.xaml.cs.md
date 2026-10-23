@@ -1,5 +1,5 @@
 ---
-digest: bfb6557dfa70a29004b06bfd8026819dc50648ef28087c16c2a68a15571d263c
+digest: 4403abae7b703e2362cbb2f9c241a3c6419e47ad3e36cf97469de2b588246040
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Windows native external activation routing and smoke coverage; no new domain or protocol boundary.
+Reviewed typed Windows machine creation bridge; existing native architecture chapters remain accurate.

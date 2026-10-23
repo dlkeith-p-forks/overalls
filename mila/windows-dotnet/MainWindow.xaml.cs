@@ -180,8 +180,11 @@ public sealed partial class MainWindow : Window
             return;
         }
         MilaMachineCommandKind? kind = RustNative.TryClassifyMachineCommand("new");
-        MachineCommandStatus.Text = kind == MilaMachineCommandKind.New
-            ? S("requestWaiting", "Create request validated by Rust")
+        if (kind != MilaMachineCommandKind.New) { MachineCommandStatus.Text = S("requestRefused", "Create request refused"); return; }
+        MilaNativeSessionActionResult result = RustNative.TrySessionMachineCreate(
+            handle, "mila-machine", 1, 256, 1, "porsche-" + Guid.NewGuid().ToString("N"));
+        MachineCommandStatus.Text = result.Succeeded
+            ? S("requestWaiting", "Create request submitted")
             : S("requestRefused", "Create request refused");
     }
     private async void OpenWebControl(object sender, RoutedEventArgs args)

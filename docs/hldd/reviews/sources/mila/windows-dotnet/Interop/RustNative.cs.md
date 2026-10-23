@@ -1,5 +1,5 @@
 ---
-digest: b7b56b5093ff211458fdbebb415f2c1060af639f369254dcd20b0171fab9a037
+digest: cf6f8ee9aeaa84d713ae3e2a763eda8622383cf8b9104447386eaf95c6cce8ae
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed native Windows notification CRUD wrappers; no HLDD chapter behavior changes.
+Reviewed typed Windows machine creation bridge; existing native architecture chapters remain accurate.
