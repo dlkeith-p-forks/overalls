@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1425
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " ja arv kasvab"
 
-#: lib/marshall_web/live/machines_live.ex:1313
+#: lib/marshall_web/live/machines_live.ex:1421
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} sekundit%{suffix}"
@@ -29,10 +29,10 @@ msgstr "%{seconds} sekundit%{suffix}"
 msgid "%{value1} CPU"
 msgstr "%{value1} protsessorit"
 
-#: lib/marshall_web/live/machines_live.ex:1081
-#: lib/marshall_web/live/machines_live.ex:1084
-#: lib/marshall_web/live/overview_live.ex:321
-#: lib/marshall_web/live/overview_live.ex:326
+#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1192
+#: lib/marshall_web/live/overview_live.ex:351
+#: lib/marshall_web/live/overview_live.ex:356
 #: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -43,20 +43,20 @@ msgstr "%{value1} GiB"
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:1078
-#: lib/marshall_web/live/overview_live.ex:318
+#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/overview_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:160
-#: lib/marshall_web/live/machines_live.ex:823
-#: lib/marshall_web/live/overview_live.ex:197
+#: lib/marshall_web/live/machines_live.ex:908
+#: lib/marshall_web/live/overview_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB mälu · %{value3} GiB kettaruumi"
 
-#: lib/marshall_web/live/machines_live.ex:1026
+#: lib/marshall_web/live/machines_live.ex:1131
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB mälu · %{value3} GiB kettaruumi"
@@ -79,47 +79,47 @@ msgstr "%{value1} → %{value2} GiB"
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:765
-#: lib/marshall_web/live/overview_live.ex:161
+#: lib/marshall_web/live/machines_live.ex:850
+#: lib/marshall_web/live/overview_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "+ Create machine"
 msgstr "+ Loo masin"
 
-#: lib/marshall_web/live/machines_live.ex:1385
+#: lib/marshall_web/live/machines_live.ex:1493
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ Lisa kloon järjekorda"
 
-#: lib/marshall_web/live/machines_live.ex:617
+#: lib/marshall_web/live/machines_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
 msgstr "Overallsi arenduskeskkond pesastatud masinatele. See kasutab eraldi tõmmist, täiendavat 256 GiB andmeketast ja suuremaid ressursimiinimume. Selle tehisintellektiagent saab käivitada alamagente."
 
-#: lib/marshall_web/live/overview_live.ex:156
+#: lib/marshall_web/live/overview_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "A good day to make something."
 msgstr "Hea päev millegi loomiseks."
 
-#: lib/marshall_web/live/overview_live.ex:229
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "Väike eelvaade. Kõik sulle kättesaadavad masinad asuvad"
 
-#: lib/marshall_web/live/machines_live.ex:799
-#: lib/marshall_web/live/machines_live.ex:837
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:884
+#: lib/marshall_web/live/machines_live.ex:922
+#: lib/marshall_web/live/machines_live.ex:1225
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "Juurdepääs"
 
-#: lib/marshall_web/live/machines_live.ex:381
+#: lib/marshall_web/live/machines_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "Access updated."
 msgstr "Juurdepääs uuendatud."
 
-#: lib/marshall_web/live/machines_live.ex:1131
-#: lib/marshall_web/live/machines_live.ex:1138
-#: lib/marshall_web/live/machines_live.ex:1157
+#: lib/marshall_web/live/machines_live.ex:1239
+#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1265
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Konto"
@@ -134,14 +134,14 @@ msgstr "Haldustoimingute kinnitus aegus. Vali masin masinapargi töökoormustest
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr "Haldustoimingute kinnitus aegus. Suuruse muutmise mustand säilib selle lehe aadressis."
 
-#: lib/marshall_web/live/machines_live.ex:739
+#: lib/marshall_web/live/machines_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "All retained copies deleted"
 msgstr "Kõik säilitatud koopiad kustutatud"
 
-#: lib/marshall_web/live/machines_live.ex:1133
-#: lib/marshall_web/live/machines_live.ex:1150
-#: lib/marshall_web/live/machines_live.ex:1169
+#: lib/marshall_web/live/machines_live.ex:1241
+#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1277
 #, elixir-autogen, elixir-format
 msgid "Allows"
 msgstr "Lubab"
@@ -176,13 +176,13 @@ msgstr "Tagasi ülevaatesse"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "Lähteallikas peatatakse korraks, et selle kettast saaks turvaliselt tõmmise teha."
 
-#: lib/marshall_web/live/overview_live.ex:301
+#: lib/marshall_web/live/overview_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr "Too GitHubi, GitLabi, Codebergi või Bitbucketi hoidla Overallsi Chrome'i või Firefoxi laiendusega."
 
-#: lib/marshall_web/live/machines_live.ex:1077
-#: lib/marshall_web/live/overview_live.ex:317
+#: lib/marshall_web/live/machines_live.ex:1185
+#: lib/marshall_web/live/overview_live.ex:347
 #: lib/marshall_web/live/resize_live.ex:315
 #: lib/marshall_web/live/resize_live.ex:359
 #: lib/marshall_web/live/resize_live.ex:447
@@ -191,7 +191,7 @@ msgstr "Too GitHubi, GitLabi, Codebergi või Bitbucketi hoidla Overallsi Chrome'
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/machines_live.ex:996
+#: lib/marshall_web/live/machines_live.ex:1101
 #, elixir-autogen, elixir-format
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
@@ -202,7 +202,7 @@ msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "Protsessori ja mälu mahtu saab suurendada või vähendada. Ketta suurust saab ainult kasvatada."
 
 #: lib/marshall_web/components/clone_components.ex:116
-#: lib/marshall_web/live/machines_live.ex:1045
+#: lib/marshall_web/live/machines_live.ex:1153
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Tühista"
@@ -212,7 +212,7 @@ msgstr "Tühista"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "Tühistamist ei saanud vastu võtta. Suurusi juba rakendatakse või masina olek pole kinnitatud."
 
-#: lib/marshall_web/live/machines_live.ex:1331
+#: lib/marshall_web/live/machines_live.ex:1439
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "Tühista teisaldamine"
@@ -222,7 +222,7 @@ msgstr "Tühista teisaldamine"
 msgid "Cancel resize"
 msgstr "Tühista suuruse muutmine"
 
-#: lib/marshall_web/live/machines_live.ex:319
+#: lib/marshall_web/live/machines_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "Tühistamine taotletud. Puhastamine võib jätkuda pärast taastamist."
@@ -244,7 +244,7 @@ msgstr "Tühistatud enne hetktõmmise alustamist."
 msgid "Cancelling"
 msgstr "Tühistamine"
 
-#: lib/marshall_web/live/machines_live.ex:734
+#: lib/marshall_web/live/machines_live.ex:819
 #, elixir-autogen, elixir-format
 msgid "Cancelling and restoring the source"
 msgstr "Tühistamine ja lähteallika taastamine"
@@ -264,12 +264,12 @@ msgstr "Tühistamine: oodatakse peatumise kinnitust, seejärel taaskäivitatakse
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Tühistamine: oodatakse peatumise kinnitust; suurused jäävad muutmata."
 
-#: lib/marshall_web/live/machines_live.ex:1329
+#: lib/marshall_web/live/machines_live.ex:1437
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "Tühistamine…"
 
-#: lib/marshall_web/live/overview_live.ex:332
+#: lib/marshall_web/live/overview_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "Mahutavust kontrollitakse masina loomisel uuesti."
@@ -279,32 +279,32 @@ msgstr "Mahutavust kontrollitakse masina loomisel uuesti."
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "Lähteketast salvestatakse. Kopeerimine algab hetktõmmise valmimisel."
 
-#: lib/marshall_web/live/overview_live.ex:279
+#: lib/marshall_web/live/overview_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "Kontrolli oma postkasti ja klõpsa tellimuse kinnitamiseks lingil."
 
-#: lib/marshall_web/live/machines_live.ex:729
+#: lib/marshall_web/live/machines_live.ex:814
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Sihtkoha valmisoleku kontroll"
 
-#: lib/marshall_web/live/machines_live.ex:724
+#: lib/marshall_web/live/machines_live.ex:809
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "Ülekandeühenduse kontroll"
 
-#: lib/marshall_web/live/machines_live.ex:937
+#: lib/marshall_web/live/machines_live.ex:1042
 #, elixir-autogen, elixir-format
 msgid "Choose an image"
 msgstr "Vali tõmmis"
 
-#: lib/marshall_web/live/machines_live.ex:895
+#: lib/marshall_web/live/machines_live.ex:980
 #, elixir-autogen, elixir-format
 msgid "Choose an image and the resources for your environment."
 msgstr "Vali oma keskkonnale tõmmis ja ressursid."
 
-#: lib/marshall_web/live/machines_live.ex:930
+#: lib/marshall_web/live/machines_live.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Choose your environment"
 msgstr "Vali oma keskkond"
@@ -319,7 +319,7 @@ msgstr "Kloonimine tühistatud"
 msgid "Clone complete"
 msgstr "Kloonimine lõpetatud"
 
-#: lib/marshall_web/live/machines_live.ex:1351
+#: lib/marshall_web/live/machines_live.ex:1459
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "Klooni masin"
@@ -329,17 +329,17 @@ msgstr "Klooni masin"
 msgid "Clone needs attention"
 msgstr "Kloonimine vajab tähelepanu"
 
-#: lib/marshall_web/live/machines_live.ex:262
+#: lib/marshall_web/live/machines_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Clone queued. You can queue another copy."
 msgstr "Kloonimine lisatud järjekorda. Võid lisada järjekorda veel ühe koopia."
 
-#: lib/marshall_web/live/machines_live.ex:1402
+#: lib/marshall_web/live/machines_live.ex:1510
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "Kloonimistaotlused"
 
-#: lib/marshall_web/live/machines_live.ex:1413
+#: lib/marshall_web/live/machines_live.ex:1521
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "Kloonimistaotlused pole ajutiselt saadaval. Proovitakse automaatselt uuesti."
@@ -349,7 +349,7 @@ msgstr "Kloonimistaotlused pole ajutiselt saadaval. Proovitakse automaatselt uue
 msgid "Clone stages"
 msgstr "Kloonimise etapid"
 
-#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1363
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Kommentaar"
@@ -364,13 +364,13 @@ msgstr "Valmis"
 msgid "Confirmed resources"
 msgstr "Kinnitatud ressursid"
 
-#: lib/marshall_web/live/machines_live.ex:800
-#: lib/marshall_web/live/machines_live.ex:851
+#: lib/marshall_web/live/machines_live.ex:885
+#: lib/marshall_web/live/machines_live.ex:936
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Ühenda"
 
-#: lib/marshall_web/live/overview_live.ex:346
+#: lib/marshall_web/live/overview_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "Ühenda integratsioon ↗"
@@ -385,7 +385,7 @@ msgstr "Kopeerimine"
 msgid "Copying files"
 msgstr "Failide kopeerimine"
 
-#: lib/marshall_web/live/machines_live.ex:726
+#: lib/marshall_web/live/machines_live.ex:811
 #, elixir-autogen, elixir-format
 msgid "Copying the stopped disks"
 msgstr "Peatatud ketaste kopeerimine"
@@ -395,19 +395,19 @@ msgstr "Peatatud ketaste kopeerimine"
 msgid "Create a machine"
 msgstr "Loo masin"
 
-#: lib/marshall_web/live/machines_live.ex:1359
+#: lib/marshall_web/live/machines_live.ex:1467
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr "Loo sellest masinast privaatne iseseisev koopia. Töötavad masinad peatuvad iga hetktõmmise jaoks korraks ja käivituvad seejärel uuesti, samal ajal kui kopeerimine jätkub. Koopiad töödeldakse järjekorras ja nende toiteolek vastab lähteallika olekule nende järjekorra alguses."
 
-#: lib/marshall_web/live/machines_live.ex:93
-#: lib/marshall_web/live/machines_live.ex:894
-#: lib/marshall_web/live/machines_live.ex:1043
+#: lib/marshall_web/live/machines_live.ex:106
+#: lib/marshall_web/live/machines_live.ex:979
+#: lib/marshall_web/live/machines_live.ex:1151
 #, elixir-autogen, elixir-format
 msgid "Create machine"
 msgstr "Loo masin"
 
-#: lib/marshall_web/live/overview_live.ex:182
+#: lib/marshall_web/live/overview_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "Loo oma esimene masin"
@@ -422,90 +422,90 @@ msgstr "Hetktõmmisest luuakse iseseisev ketas. Lähteallika taastamine toimub e
 msgid "Creating cloned machine"
 msgstr "Kloonitud masina loomine"
 
-#: lib/marshall_web/live/machines_live.ex:1041
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Creating…"
 msgstr "Loomine…"
 
-#: lib/marshall_web/live/machines_live.ex:779
+#: lib/marshall_web/live/machines_live.ex:864
 #, elixir-autogen, elixir-format
 msgid "Current headroom is temporarily unavailable."
 msgstr "Praegune vaba maht pole ajutiselt saadaval."
 
-#: lib/marshall_web/live/machines_live.ex:771
-#: lib/marshall_web/live/machines_live.ex:913
+#: lib/marshall_web/live/machines_live.ex:856
+#: lib/marshall_web/live/machines_live.ex:998
 #, elixir-autogen, elixir-format
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "Praegune vaba maht: %{value1} vCPU · %{value2} GiB mälu · %{value3} GiB kettaruumi"
 
-#: lib/marshall_web/live/overview_live.ex:313
+#: lib/marshall_web/live/overview_live.ex:343
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "Praegune vaba ettevalmistusmaht"
 
-#: lib/marshall_web/live/machines_live.ex:583
-#: lib/marshall_web/live/machines_live.ex:671
+#: lib/marshall_web/live/machines_live.ex:647
+#: lib/marshall_web/live/machines_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "Klient"
 
-#: lib/marshall_web/live/machines_live.ex:1103
+#: lib/marshall_web/live/machines_live.ex:1211
 #, elixir-autogen, elixir-format
 msgid "Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled."
 msgstr "Kliendimasinad lubavad ainult omaniku SSH- ja terminalijuurdepääsu. Väljuv võrk, tööruumi jagamine ja veebiteenuste avaldamine on keelatud."
 
-#: lib/marshall_web/live/machines_live.ex:1457
+#: lib/marshall_web/live/machines_live.ex:1565
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Kustuta"
 
-#: lib/marshall_web/live/machines_live.ex:1440
+#: lib/marshall_web/live/machines_live.ex:1548
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "Kustuta masin"
 
-#: lib/marshall_web/live/machines_live.ex:1454
+#: lib/marshall_web/live/machines_live.ex:1562
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "Kas kustutada see masin ja selle ketas? Seda ei saa tagasi võtta."
 
-#: lib/marshall_web/live/machines_live.ex:675
+#: lib/marshall_web/live/machines_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Deleting"
 msgstr "Kustutamine"
 
-#: lib/marshall_web/live/machines_live.ex:736
+#: lib/marshall_web/live/machines_live.ex:821
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "Säilitatud koopiate kustutamine"
 
-#: lib/marshall_web/live/machines_live.ex:730
+#: lib/marshall_web/live/machines_live.ex:815
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Sihtkoha käivitamine ebaõnnestus; lähtekoopia säilitatud"
 
-#: lib/marshall_web/live/machines_live.ex:732
+#: lib/marshall_web/live/machines_live.ex:817
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "Sihtkoha valmisoleku kontroll ebaõnnestus; lähtekoopia säilitatud"
 
-#: lib/marshall_web/live/machines_live.ex:733
+#: lib/marshall_web/live/machines_live.ex:818
 #, elixir-autogen, elixir-format
 msgid "Destination ready; cleaning up the source"
 msgstr "Sihtkoht valmis; lähteallika puhastamine"
 
-#: lib/marshall_web/live/machines_live.ex:348
+#: lib/marshall_web/live/machines_live.ex:386
 #, elixir-autogen, elixir-format
 msgid "Destination restart requested. The source copy remains retained until readiness succeeds."
 msgstr "Sihtkoha taaskäivitus taotletud. Lähtekoopia säilitatakse kuni valmisoleku kontrolli õnnestumiseni."
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1228
 #, elixir-autogen, elixir-format
 msgid "Direct machine grants"
 msgstr "Otsesed masina juurdepääsuõigused"
 
-#: lib/marshall_web/live/machines_live.ex:1083
-#: lib/marshall_web/live/overview_live.ex:325
+#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/overview_live.ex:355
 #: lib/marshall_web/live/resize_live.ex:321
 #: lib/marshall_web/live/resize_live.ex:375
 #: lib/marshall_web/live/resize_live.ex:484
@@ -513,7 +513,7 @@ msgstr "Otsesed masina juurdepääsuõigused"
 msgid "Disk"
 msgstr "Ketas"
 
-#: lib/marshall_web/live/machines_live.ex:1015
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB)"
 msgstr "Ketas (GiB)"
@@ -523,12 +523,12 @@ msgstr "Ketas (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Ketas (GiB) — kuni 500 GiB"
 
-#: lib/marshall_web/live/overview_live.ex:251
+#: lib/marshall_web/live/overview_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "Sulge"
 
-#: lib/marshall_web/live/overview_live.ex:269
+#: lib/marshall_web/live/overview_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "E-posti aadress"
@@ -538,42 +538,42 @@ msgstr "E-posti aadress"
 msgid "Enable JavaScript to open a repository link, or"
 msgstr "Luba JavaScript hoidla lingi avamiseks või"
 
-#: lib/marshall_web/live/machines_live.ex:668
+#: lib/marshall_web/live/machines_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Ends that person's access to this machine."
 msgstr "Lõpetab selle inimese juurdepääsu sellele masinale."
 
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "Sisesta kehtiv e-posti aadress."
 
-#: lib/marshall_web/live/machines_live.ex:159
+#: lib/marshall_web/live/machines_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "Enter whole numbers for CPU, memory and disk size."
 msgstr "Sisesta protsessori, mälu ja ketta suurus täisarvudena."
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1259
 #, elixir-autogen, elixir-format
 msgid "Everything; cannot be changed here."
 msgstr "Kõik; siin ei saa muuta."
 
-#: lib/marshall_web/live/overview_live.ex:355
+#: lib/marshall_web/live/overview_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "Uuri oma kasutust ↗"
 
-#: lib/marshall_web/live/machines_live.ex:1352
+#: lib/marshall_web/live/machines_live.ex:1460
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "Failid ja salvestatud autentimisandmed kaasatakse koopiasse"
 
-#: lib/marshall_web/live/machines_live.ex:1392
+#: lib/marshall_web/live/machines_live.ex:1500
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "Failid ja salvestatud autentimisandmed kaasatakse koopiasse."
 
-#: lib/marshall_web/live/overview_live.ex:352
+#: lib/marshall_web/live/overview_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "Leia oma inimesed ↗"
@@ -588,17 +588,17 @@ msgstr "Lõpetamine"
 msgid "Finishing up"
 msgstr "Viimistlemine"
 
-#: lib/marshall_web/live/overview_live.ex:254
+#: lib/marshall_web/live/overview_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Saa e-postiga näpunäiteid, nippe ja uudiseid Overallsi ning tehisintellekti kohta."
 
-#: lib/marshall_web/live/machines_live.ex:990
+#: lib/marshall_web/live/machines_live.ex:1095
 #, elixir-autogen, elixir-format
 msgid "Give it room to grow"
 msgstr "Anna sellele kasvuruumi"
 
-#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1297
 #, elixir-autogen, elixir-format
 msgid "Grant, change or remove access"
 msgstr "Anna, muuda või eemalda juurdepääs"
@@ -608,40 +608,40 @@ msgstr "Anna, muuda või eemalda juurdepääs"
 msgid "Grow the filesystem on next boot"
 msgstr "Suurenda failisüsteemi järgmisel käivitamisel"
 
-#: lib/marshall_web/live/overview_live.ex:336
+#: lib/marshall_web/live/overview_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "Vaba maht pole ajutiselt saadaval."
 
-#: lib/marshall_web/live/machines_live.ex:798
-#: lib/marshall_web/live/machines_live.ex:833
-#: lib/marshall_web/live/machines_live.ex:1086
+#: lib/marshall_web/live/machines_live.ex:883
+#: lib/marshall_web/live/machines_live.ex:918
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "Hostarvuti"
 
-#: lib/marshall_web/live/machines_live.ex:936
+#: lib/marshall_web/live/machines_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "Tõmmis"
 
-#: lib/marshall_web/live/machines_live.ex:899
+#: lib/marshall_web/live/machines_live.ex:984
 #, elixir-autogen, elixir-format
 msgid "Images and capacity are temporarily unavailable. Your choices are retained."
 msgstr "Tõmmised ja mahutavus pole ajutiselt saadaval. Sinu valikud säilitatakse."
 
-#: lib/marshall_web/live/machines_live.ex:589
-#: lib/marshall_web/live/machines_live.ex:672
+#: lib/marshall_web/live/machines_live.ex:653
+#: lib/marshall_web/live/machines_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Inception"
 msgstr "Inception"
 
-#: lib/marshall_web/live/machines_live.ex:404
+#: lib/marshall_web/live/machines_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Vigane taotlus."
 
-#: lib/marshall_web/live/machines_live.ex:1249
+#: lib/marshall_web/live/machines_live.ex:1357
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "Sildid"
@@ -667,12 +667,12 @@ msgstr "Käivitamine"
 msgid "Launching repository"
 msgstr "Hoidla käivitamine"
 
-#: lib/marshall_web/live/machines_live.ex:1375
+#: lib/marshall_web/live/machines_live.ex:1483
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "Jäta tühjaks nime automaatseks loomiseks"
 
-#: lib/marshall_web/live/machines_live.ex:1389
+#: lib/marshall_web/live/machines_live.ex:1497
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "Jäta tühjaks nime automaatseks loomiseks."
@@ -684,77 +684,72 @@ msgstr "Jäta tühjaks nime automaatseks loomiseks."
 msgid "Leave stopped"
 msgstr "Jäta peatatuks"
 
-#: lib/marshall_web/live/machines_live.ex:794
+#: lib/marshall_web/live/machines_live.ex:879
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Masin"
 
-#: lib/marshall_web/live/machines_live.ex:228
+#: lib/marshall_web/live/machines_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
 msgstr "Masina metaandmed salvestatud."
 
-#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:965
 #, elixir-autogen, elixir-format
 msgid "Machine pages"
 msgstr "Masina lehed"
 
-#: lib/marshall_web/live/machines_live.ex:148
-#, elixir-autogen, elixir-format
-msgid "Machine requested."
-msgstr "Masin taotletud."
-
-#: lib/marshall_web/live/machines_live.ex:210
+#: lib/marshall_web/live/machines_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Machine update requested."
 msgstr "Masina uuendamine taotletud."
 
-#: lib/marshall_web/live/machines_live.ex:108
-#: lib/marshall_web/live/machines_live.ex:760
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/machines_live.ex:121
+#: lib/marshall_web/live/machines_live.ex:845
+#: lib/marshall_web/live/overview_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Masinad"
 
-#: lib/marshall_web/live/machines_live.ex:464
+#: lib/marshall_web/live/machines_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "Machines are temporarily unavailable."
 msgstr "Masinad pole ajutiselt saadaval."
 
-#: lib/marshall_web/live/overview_live.ex:235
+#: lib/marshall_web/live/overview_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "Masinaid ei saanud laadida. Uuesti proovimiseks värskenda lehte."
 
-#: lib/marshall_web/live/machines_live.ex:973
+#: lib/marshall_web/live/machines_live.ex:1078
 #, elixir-autogen, elixir-format
 msgid "Make it yours"
 msgstr "Tee see enda omaks"
 
-#: lib/marshall_web/live/overview_live.ex:340
+#: lib/marshall_web/live/overview_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "Tunne end nagu kodus"
 
-#: lib/marshall_web/live/machines_live.ex:1100
+#: lib/marshall_web/live/machines_live.ex:1208
 #, elixir-autogen, elixir-format
 msgid "Management access is required to change the remaining settings."
 msgstr "Ülejäänud seadete muutmiseks on vaja haldusõigust."
 
-#: lib/marshall_web/live/machines_live.ex:655
-#: lib/marshall_web/live/machines_live.ex:1212
-#: lib/marshall_web/live/machines_live.ex:1221
+#: lib/marshall_web/live/machines_live.ex:719
+#: lib/marshall_web/live/machines_live.ex:1320
+#: lib/marshall_web/live/machines_live.ex:1329
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "Haldur"
 
-#: lib/marshall_web/live/machines_live.ex:1307
+#: lib/marshall_web/live/machines_live.ex:1415
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "Mõõdetud juhtkihi peatumise ja valmisoleku vaatluste vahel; külalismasina saadavus võib erineda."
 
-#: lib/marshall_web/live/machines_live.ex:1080
-#: lib/marshall_web/live/overview_live.ex:320
+#: lib/marshall_web/live/machines_live.ex:1188
+#: lib/marshall_web/live/overview_live.ex:350
 #: lib/marshall_web/live/resize_live.ex:318
 #: lib/marshall_web/live/resize_live.ex:365
 #: lib/marshall_web/live/resize_live.ex:478
@@ -762,33 +757,33 @@ msgstr "Mõõdetud juhtkihi peatumise ja valmisoleku vaatluste vahel; külalisma
 msgid "Memory"
 msgstr "Mälu"
 
-#: lib/marshall_web/live/machines_live.ex:1004
+#: lib/marshall_web/live/machines_live.ex:1109
 #: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Mälu (MiB)"
 
-#: lib/marshall_web/live/machines_live.ex:1295
+#: lib/marshall_web/live/machines_live.ex:1403
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Režiim"
 
-#: lib/marshall_web/live/machines_live.ex:737
+#: lib/marshall_web/live/machines_live.ex:822
 #, elixir-autogen, elixir-format
 msgid "Move cancelled; cleanup complete"
 msgstr "Teisaldamine tühistatud; puhastamine lõpetatud"
 
-#: lib/marshall_web/live/machines_live.ex:738
+#: lib/marshall_web/live/machines_live.ex:823
 #, elixir-autogen, elixir-format
 msgid "Move complete"
 msgstr "Teisaldamine lõpetatud"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1383
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "Kas teisaldada see masin automaatselt valitud hosti? Masin võib olla lühikest aega kättesaamatu."
 
-#: lib/marshall_web/live/machines_live.ex:1281
+#: lib/marshall_web/live/machines_live.ex:1389
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "Teisalda teise hosti"
@@ -799,7 +794,7 @@ msgstr "Teisalda teise hosti"
 msgid "Needs attention"
 msgstr "Vajab tähelepanu"
 
-#: lib/marshall_web/live/machines_live.ex:1374
+#: lib/marshall_web/live/machines_live.ex:1482
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "Uue masina nimi (valikuline)"
@@ -809,54 +804,54 @@ msgstr "Uue masina nimi (valikuline)"
 msgid "New sizes"
 msgstr "Uued suurused"
 
-#: lib/marshall_web/live/machines_live.ex:885
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:970
+#: lib/marshall_web/live/machines_live.ex:1292
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Järgmine leht →"
 
-#: lib/marshall_web/live/overview_live.ex:343
+#: lib/marshall_web/live/overview_live.ex:375
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "Järgmised sammud"
 
-#: lib/marshall_web/live/machines_live.ex:1407
+#: lib/marshall_web/live/machines_live.ex:1515
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "Kloonimistaotlusi veel pole. Lisa koopia järjekorda ja jälgi selle edenemist siin."
 
-#: lib/marshall_web/live/machines_live.ex:1177
+#: lib/marshall_web/live/machines_live.ex:1285
 #, elixir-autogen, elixir-format
 msgid "No direct machine grants."
 msgstr "Otseseid masina juurdepääsuõigusi pole."
 
-#: lib/marshall_web/live/machines_live.ex:910
+#: lib/marshall_web/live/machines_live.ex:995
 #, elixir-autogen, elixir-format
 msgid "No images are available on ready hosts right now."
 msgstr "Valmis hostides pole praegu tõmmiseid saadaval."
 
-#: lib/marshall_web/live/overview_live.ex:177
+#: lib/marshall_web/live/overview_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "No machines in this preview yet. Create one or ask an owner to share access."
 msgstr "Selles eelvaates pole veel masinaid. Loo masin või palu omanikul juurdepääsu jagada."
 
-#: lib/marshall_web/live/machines_live.ex:785
+#: lib/marshall_web/live/machines_live.ex:870
 #, elixir-autogen, elixir-format
 msgid "No machines on this page. Create a machine or ask an owner to share access."
 msgstr "Sellel lehel pole masinaid. Loo masin või palu omanikul juurdepääsu jagada."
 
-#: lib/marshall_web/live/machines_live.ex:703
+#: lib/marshall_web/live/machines_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "No registered account matches that email address."
 msgstr "Ükski registreeritud konto ei vasta sellele e-posti aadressile."
 
-#: lib/marshall_web/live/machines_live.ex:327
-#: lib/marshall_web/live/machines_live.ex:359
+#: lib/marshall_web/live/machines_live.ex:365
+#: lib/marshall_web/live/machines_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "No relocation is available."
 msgstr "Teisaldamist pole saadaval."
 
-#: lib/marshall_web/live/machines_live.ex:1303
+#: lib/marshall_web/live/machines_live.ex:1411
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "Täheldatud seisak"
@@ -871,44 +866,44 @@ msgstr "Käivitada saab ainult GitHubi, GitLabi, Codebergi või Bitbucketi avali
 msgid "Open clone"
 msgstr "Ava kloon"
 
-#: lib/marshall_web/live/overview_live.ex:297
+#: lib/marshall_web/live/overview_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "Ava hoidlaid oma brauserist"
 
-#: lib/marshall_web/live/machines_live.ex:864
+#: lib/marshall_web/live/machines_live.ex:949
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "Ava terminal"
 
-#: lib/marshall_web/live/machines_live.ex:862
+#: lib/marshall_web/live/machines_live.ex:947
 #, elixir-autogen, elixir-format
 msgid "Open terminal for %{value1}"
 msgstr "Ava terminal: %{value1}"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "Ava terminal ↗"
 
-#: lib/marshall_web/live/machines_live.ex:660
+#: lib/marshall_web/live/machines_live.ex:724
 #, elixir-autogen, elixir-format
 msgid "Open this machine's web apps. No terminal."
 msgstr "Ava selle masina veebirakendused. Terminal puudub."
 
-#: lib/marshall_web/live/machines_live.ex:1073
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "Operating system"
 msgstr "Operatsioonisüsteem"
 
-#: lib/marshall_web/live/machines_live.ex:654
-#: lib/marshall_web/live/machines_live.ex:1211
-#: lib/marshall_web/live/machines_live.ex:1220
+#: lib/marshall_web/live/machines_live.ex:718
+#: lib/marshall_web/live/machines_live.ex:1319
+#: lib/marshall_web/live/machines_live.ex:1328
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Operaator"
 
-#: lib/marshall_web/live/machines_live.ex:603
+#: lib/marshall_web/live/machines_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents."
 msgstr "Väljuvad ühendused, jagamine, veebirakendused, SSH, terminal ja tehisintellektiagendi tööriistad. Agent ei saa alamagente käivitada."
@@ -918,9 +913,9 @@ msgstr "Väljuvad ühendused, jagamine, veebirakendused, SSH, terminal ja tehisi
 msgid "Overview"
 msgstr "Ülevaade"
 
-#: lib/marshall_web/live/machines_live.ex:839
-#: lib/marshall_web/live/machines_live.ex:977
-#: lib/marshall_web/live/machines_live.ex:1148
+#: lib/marshall_web/live/machines_live.ex:924
+#: lib/marshall_web/live/machines_live.ex:1082
+#: lib/marshall_web/live/machines_live.ex:1256
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Omanik"
@@ -932,7 +927,7 @@ msgstr "Omanik"
 msgid "Pending"
 msgstr "Ootel"
 
-#: lib/marshall_web/live/machines_live.ex:1467
+#: lib/marshall_web/live/machines_live.ex:1575
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Eemalda see masin ja selle ketas jäädavalt. Seda ei saa tagasi võtta."
@@ -942,13 +937,13 @@ msgstr "Eemalda see masin ja selle ketas jäädavalt. Seda ei saa tagasi võtta.
 msgid "Permission to clone this machine is no longer available."
 msgstr "Selle masina kloonimise õigus pole enam saadaval."
 
-#: lib/marshall_web/live/machines_live.ex:979
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/machines_live.ex:1084
+#: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "Isiklik"
 
-#: lib/marshall_web/live/machines_live.ex:1292
+#: lib/marshall_web/live/machines_live.ex:1400
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "Etapp"
@@ -978,7 +973,7 @@ msgstr "Klooni ettevalmistamine"
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "Enne hetktõmmise tegemist valmistatakse ruumi ette ja kontrollitakse lähteallikat."
 
-#: lib/marshall_web/live/machines_live.ex:723
+#: lib/marshall_web/live/machines_live.ex:808
 #, elixir-autogen, elixir-format
 msgid "Preparing transfer"
 msgstr "Ülekande ettevalmistamine"
@@ -993,20 +988,20 @@ msgstr "Sinu masina ettevalmistamine…"
 msgid "Preparing your repository…"
 msgstr "Sinu hoidla ettevalmistamine…"
 
-#: lib/marshall_web/live/machines_live.ex:596
+#: lib/marshall_web/live/machines_live.ex:660
 #, elixir-autogen, elixir-format
 msgid "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
 msgstr "Privaatne ja ainult omanikule. SSH- ja terminalijuurdepääs; väljuvad ühendused, jagamine, veebirakendused ja tehisintellektiagent puuduvad."
 
-#: lib/marshall_web/live/machines_live.ex:797
-#: lib/marshall_web/live/machines_live.ex:829
-#: lib/marshall_web/live/machines_live.ex:952
-#: lib/marshall_web/live/machines_live.ex:1089
+#: lib/marshall_web/live/machines_live.ex:882
+#: lib/marshall_web/live/machines_live.ex:914
+#: lib/marshall_web/live/machines_live.ex:1057
+#: lib/marshall_web/live/machines_live.ex:1197
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Profiil"
 
-#: lib/marshall_web/live/machines_live.ex:958
+#: lib/marshall_web/live/machines_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "Profiles choose access and agent features. Machines remain isolated from one another."
 msgstr "Profiilid määravad juurdepääsu ja agendi funktsioonid. Masinad jäävad üksteisest eraldatuks."
@@ -1023,47 +1018,47 @@ msgstr "Koht järjekorras %{value1}"
 msgid "Queued"
 msgstr "Järjekorras"
 
-#: lib/marshall_web/live/machines_live.ex:1383
+#: lib/marshall_web/live/machines_live.ex:1491
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "Järjekorda lisamine…"
 
-#: lib/marshall_web/live/machines_live.ex:662
+#: lib/marshall_web/live/machines_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "Read and write in the terminal."
 msgstr "Loe ja kirjuta terminalis."
 
-#: lib/marshall_web/live/overview_live.ex:358
+#: lib/marshall_web/live/overview_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "Loe välimärkmeid ↗"
 
-#: lib/marshall_web/live/machines_live.ex:661
+#: lib/marshall_web/live/machines_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Read the terminal."
 msgstr "Loe terminali."
 
-#: lib/marshall_web/live/machines_live.ex:1024
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Ready when you are"
 msgstr "Valmis, kui sina oled"
 
-#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1354
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "Refleksiooni metaandmed"
 
-#: lib/marshall_web/live/overview_live.ex:374
+#: lib/marshall_web/live/overview_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "Värskenda"
 
-#: lib/marshall_web/live/overview_live.ex:372
+#: lib/marshall_web/live/overview_live.ex:404
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "Värskendamine…"
 
-#: lib/marshall_web/live/machines_live.ex:1201
+#: lib/marshall_web/live/machines_live.ex:1309
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Registreeritud e-posti aadress"
@@ -1073,12 +1068,12 @@ msgstr "Registreeritud e-posti aadress"
 msgid "Registering the copied disk as your private machine."
 msgstr "Kopeeritud ketas registreeritakse sinu privaatse masinana."
 
-#: lib/marshall_web/live/machines_live.ex:1264
+#: lib/marshall_web/live/machines_live.ex:1372
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "Teisalda masin"
 
-#: lib/marshall_web/live/machines_live.ex:298
+#: lib/marshall_web/live/machines_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "Teisaldamine taotletud. Sihtkoht valitakse automaatselt."
@@ -1088,8 +1083,8 @@ msgstr "Teisaldamine taotletud. Sihtkoht valitakse automaatselt."
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "Jääb peatatuks; failisüsteem suureneb järgmisel käivitamisel"
 
-#: lib/marshall_web/live/machines_live.ex:1213
-#: lib/marshall_web/live/machines_live.ex:1222
+#: lib/marshall_web/live/machines_live.ex:1321
+#: lib/marshall_web/live/machines_live.ex:1330
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "Eemalda juurdepääs"
@@ -1104,7 +1099,7 @@ msgstr "Tühistamise taotlemine…"
 msgid "Requesting resize…"
 msgstr "Suuruse muutmise taotlemine…"
 
-#: lib/marshall_web/live/machines_live.ex:1337
+#: lib/marshall_web/live/machines_live.ex:1445
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "Taaskäivituse taotlemine…"
@@ -1114,12 +1109,12 @@ msgstr "Taaskäivituse taotlemine…"
 msgid "Requesting retry…"
 msgstr "Uue katse taotlemine…"
 
-#: lib/marshall_web/live/machines_live.ex:1273
+#: lib/marshall_web/live/machines_live.ex:1381
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "Taotlemine…"
 
-#: lib/marshall_web/live/machines_live.ex:1069
+#: lib/marshall_web/live/machines_live.ex:1177
 #: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
@@ -1172,9 +1167,9 @@ msgstr "Suuruse muutmise etapid"
 msgid "Resizing"
 msgstr "Suuruse muutmine"
 
-#: lib/marshall_web/live/machines_live.ex:796
-#: lib/marshall_web/live/machines_live.ex:822
-#: lib/marshall_web/live/machines_live.ex:1060
+#: lib/marshall_web/live/machines_live.ex:881
+#: lib/marshall_web/live/machines_live.ex:907
+#: lib/marshall_web/live/machines_live.ex:1168
 #, elixir-autogen, elixir-format
 msgid "Resources"
 msgstr "Ressursid"
@@ -1216,7 +1211,7 @@ msgstr "Proovi uuesti"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "Uut katset ei saanud vastu võtta. Mahutavus või masina olek võis muutuda."
 
-#: lib/marshall_web/live/machines_live.ex:1339
+#: lib/marshall_web/live/machines_live.ex:1447
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "Proovi sihtkohta uuesti käivitada"
@@ -1231,30 +1226,30 @@ msgstr "Proovi suurust uuesti muuta"
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "Naase masinapargi töökoormustesse ja kinnita pääsuvõti, et masin uuesti avada →"
 
-#: lib/marshall_web/live/machines_live.ex:656
+#: lib/marshall_web/live/machines_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "Tühistatud"
 
-#: lib/marshall_web/live/machines_live.ex:1132
-#: lib/marshall_web/live/machines_live.ex:1147
-#: lib/marshall_web/live/machines_live.ex:1166
-#: lib/marshall_web/live/machines_live.ex:1207
+#: lib/marshall_web/live/machines_live.ex:1240
+#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1274
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Roll"
 
-#: lib/marshall_web/live/overview_live.ex:175
+#: lib/marshall_web/live/overview_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Room for your next idea"
 msgstr "Ruumi sinu järgmisele ideele"
 
-#: lib/marshall_web/live/overview_live.ex:312
+#: lib/marshall_web/live/overview_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "Kasvuruum"
 
-#: lib/marshall_web/live/machines_live.ex:1014
+#: lib/marshall_web/live/machines_live.ex:1119
 #, elixir-autogen, elixir-format
 msgid "Root disk (GiB)"
 msgstr "Juurketas (GiB)"
@@ -1264,42 +1259,42 @@ msgstr "Juurketas (GiB)"
 msgid "Running"
 msgstr "Töötab"
 
-#: lib/marshall_web/live/machines_live.ex:1230
+#: lib/marshall_web/live/machines_live.ex:1338
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "Salvesta juurdepääs"
 
-#: lib/marshall_web/live/machines_live.ex:1261
+#: lib/marshall_web/live/machines_live.ex:1369
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "Salvesta metaandmed"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1336
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "Salvestamine…"
 
-#: lib/marshall_web/live/machines_live.ex:645
+#: lib/marshall_web/live/machines_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "Selected image unavailable"
 msgstr "Valitud tõmmis pole saadaval"
 
-#: lib/marshall_web/live/overview_live.ex:310
+#: lib/marshall_web/live/overview_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "Seadista brauserilaiendus ↗"
 
-#: lib/marshall_web/live/overview_live.ex:205
+#: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "Jagatud"
 
-#: lib/marshall_web/live/machines_live.ex:841
+#: lib/marshall_web/live/machines_live.ex:926
 #, elixir-autogen, elixir-format
 msgid "Shared by"
 msgstr "Jagaja"
 
-#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1366
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "Lühikirjeldus agentidele"
@@ -1344,7 +1339,7 @@ msgstr "Lähteallika taastamine vajab tähelepanu."
 msgid "Source recovery retry requested."
 msgstr "Lähteallika taastamise uus katse taotletud."
 
-#: lib/marshall_web/live/machines_live.ex:735
+#: lib/marshall_web/live/machines_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Source restored; destination cleanup pending"
 msgstr "Lähteallikas taastatud; sihtkoha puhastamine ootel"
@@ -1364,13 +1359,13 @@ msgstr "Lähteallikas hoiti peatatuna, nagu see oli taotluse alguses."
 msgid "Source was stopped when this request began."
 msgstr "Lähteallikas oli taotluse alguses peatatud."
 
-#: lib/marshall_web/live/machines_live.ex:584
-#: lib/marshall_web/live/machines_live.ex:673
+#: lib/marshall_web/live/machines_live.ex:648
+#: lib/marshall_web/live/machines_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "Standardne"
 
-#: lib/marshall_web/live/machines_live.ex:681
+#: lib/marshall_web/live/machines_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Starting"
 msgstr "Käivitamine"
@@ -1380,13 +1375,13 @@ msgstr "Käivitamine"
 msgid "Starting the machine with its new resources."
 msgstr "Masina käivitamine uute ressurssidega."
 
-#: lib/marshall_web/live/machines_live.ex:795
-#: lib/marshall_web/live/machines_live.ex:814
+#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Olek"
 
-#: lib/marshall_web/live/overview_live.ex:243
+#: lib/marshall_web/live/overview_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "Ole kursis"
@@ -1413,7 +1408,7 @@ msgstr "Peata masin"
 msgid "Stopped"
 msgstr "Peatatud"
 
-#: lib/marshall_web/live/machines_live.ex:678
+#: lib/marshall_web/live/machines_live.ex:742
 #: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
@@ -1434,17 +1429,17 @@ msgstr "Kopeerimine peatatakse ja ajutised ressursid eemaldatakse. Lähteallika 
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Masin peatatakse, et selle ressursse saaks turvaliselt muuta."
 
-#: lib/marshall_web/live/machines_live.ex:725
+#: lib/marshall_web/live/machines_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "Lähteallika peatamine"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "Telli"
 
-#: lib/marshall_web/live/machines_live.ex:728
+#: lib/marshall_web/live/machines_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "Paigutuse vahetamine"
@@ -1454,17 +1449,17 @@ msgstr "Paigutuse vahetamine"
 msgid "Taking snapshot"
 msgstr "Hetktõmmise tegemine"
 
-#: lib/marshall_web/live/machines_live.ex:1122
+#: lib/marshall_web/live/machines_live.ex:1230
 #, elixir-autogen, elixir-format
 msgid "Team membership and thread sharing can also grant machine access."
 msgstr "Ka meeskonna liikmesus ja vestluse jagamine võivad anda masinale juurdepääsu."
 
-#: lib/marshall_web/live/machines_live.ex:871
+#: lib/marshall_web/live/machines_live.ex:956
 #, elixir-autogen, elixir-format
 msgid "Terminal unavailable"
 msgstr "Terminal pole saadaval"
 
-#: lib/marshall_web/live/machines_live.ex:665
+#: lib/marshall_web/live/machines_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "Terminal, elutsükkel, suuruse muutmine, kloonimine ja jagamine."
@@ -1489,7 +1484,7 @@ msgstr "Hoidla nimeruum pole sobiv."
 msgid "That repository reference cannot be launched."
 msgstr "Seda hoidla viidet ei saa käivitada."
 
-#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/machines_live.ex:1299
 #, elixir-autogen, elixir-format
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr "Konto peab olema juba registreeritud. Rolli salvestamine asendab inimese otsese masinarolli; otsese õiguse eemaldamiseks vali Eemalda juurdepääs."
@@ -1534,17 +1529,17 @@ msgstr "Masinat ei saanud uuendada. Värskenda ja proovi uuesti."
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Masin on pärast mustandi loomist muutunud. Vaata üle ülal kinnitatud ressursid."
 
-#: lib/marshall_web/live/machines_live.ex:1285
+#: lib/marshall_web/live/machines_live.ex:1393
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr "Masin peatatakse, kopeeritakse üks kord ja käivitatakse automaatselt valitud hostis. Meie arenduspargis on hostide vahel 1 Gbit/s ühendus, mistõttu teisaldamine võib kauem võtta; tootmises AWS-is töötava Overallsi teisaldamised peaksid olema märksa kiiremad."
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1405
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "Masin peatatakse, kopeeritakse üks kord ja käivitatakse sihtkohas."
 
-#: lib/marshall_web/live/machines_live.ex:704
+#: lib/marshall_web/live/machines_live.ex:789
 #, elixir-autogen, elixir-format
 msgid "The owner's access cannot be changed."
 msgstr "Omaniku juurdepääsu ei saa muuta."
@@ -1559,7 +1554,7 @@ msgstr "Kinnitust ei saanud muuta. Värskenda ja proovi uuesti."
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Selle masina eelmine koopia vabastab veel oma hetktõmmist. Proovi peagi uuesti."
 
-#: lib/marshall_web/live/machines_live.ex:714
+#: lib/marshall_web/live/machines_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "The request could not be completed. Check the values and try again."
 msgstr "Taotlust ei saanud lõpule viia. Kontrolli väärtusi ja proovi uuesti."
@@ -1574,12 +1569,13 @@ msgstr "Taotlus kohtas probleemi. Kasuta saadaolevaid toiminguid selle taastamis
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "Suuruse muutmine on lõpetatud; see leht värskendatakse kinnitatud suurustega."
 
-#: lib/marshall_web/live/machines_live.ex:610
+#: lib/marshall_web/live/machines_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "The same network and access options as Standard, with AI agents that can start child agents."
 msgstr "Samad võrgu- ja juurdepääsuvalikud nagu standardprofiilil, lisaks tehisintellektiagendid, mis saavad alamagente käivitada."
 
-#: lib/marshall_web/live/machines_live.ex:700
+#: lib/marshall_web/live/machines_live.ex:768
+#: lib/marshall_web/live/machines_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "The selected image needs more memory or disk space."
 msgstr "Valitud tõmmis vajab rohkem mälu või kettaruumi."
@@ -1609,7 +1605,7 @@ msgstr "Lähteallikas oli hõivatud või muutus enne kloonimise algust. Proovi u
 msgid "There is not enough available capacity for a new machine right now."
 msgstr "Uue masina jaoks pole praegu piisavalt vaba mahtu."
 
-#: lib/marshall_web/live/machines_live.ex:693
+#: lib/marshall_web/live/machines_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "There is not enough available capacity for this machine."
 msgstr "Selle masina jaoks pole piisavalt vaba mahtu."
@@ -1619,7 +1615,8 @@ msgstr "Selle masina jaoks pole piisavalt vaba mahtu."
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "Selle koopia jaoks pole piisavalt mahtu. Proovi uuesti, kui ruumi on saadaval."
 
-#: lib/marshall_web/live/machines_live.ex:695
+#: lib/marshall_web/live/machines_live.ex:765
+#: lib/marshall_web/live/machines_live.ex:780
 #, elixir-autogen, elixir-format
 msgid "This image is no longer available. Refresh and choose another image."
 msgstr "See tõmmis pole enam saadaval. Värskenda ja vali teine tõmmis."
@@ -1644,7 +1641,7 @@ msgstr "See käivituslink on aegunud. Ava see uuesti."
 msgid "This machine is being deleted and cannot be pinned."
 msgstr "Seda masinat kustutatakse ja seda ei saa kinnitada."
 
-#: lib/marshall_web/live/machines_live.ex:706
+#: lib/marshall_web/live/machines_live.ex:791
 #, elixir-autogen, elixir-format
 msgid "This machine is being deleted."
 msgstr "Seda masinat kustutatakse."
@@ -1659,7 +1656,7 @@ msgstr "See masin pole saadaval või sul pole enam haldusõigust."
 msgid "This machine is unavailable or your access has ended."
 msgstr "See masin pole saadaval või sinu juurdepääs on lõppenud."
 
-#: lib/marshall_web/live/machines_live.ex:701
+#: lib/marshall_web/live/machines_live.ex:786
 #, elixir-autogen, elixir-format
 msgid "This machine's host is currently unavailable."
 msgstr "Selle masina host pole praegu saadaval."
@@ -1674,7 +1671,7 @@ msgstr "Seda hoidlalinki ei saanud käivitada. Avage link uuesti."
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "See taotlus ei saanud lõppeda. Vaata üle allolev probleem ja saadaolevad toimingud."
 
-#: lib/marshall_web/live/machines_live.ex:709
+#: lib/marshall_web/live/machines_live.ex:794
 #, elixir-autogen, elixir-format
 msgid "This request has already been used. Refresh before trying again."
 msgstr "Seda taotlust on juba kasutatud. Enne uut katset värskenda."
@@ -1684,39 +1681,39 @@ msgstr "Seda taotlust on juba kasutatud. Enne uut katset värskenda."
 msgid "This request has ended without publishing a clone."
 msgstr "See taotlus lõppes klooni avaldamata."
 
-#: lib/marshall_web/live/machines_live.ex:835
-#: lib/marshall_web/live/machines_live.ex:1075
-#: lib/marshall_web/live/machines_live.ex:1087
+#: lib/marshall_web/live/machines_live.ex:920
+#: lib/marshall_web/live/machines_live.ex:1183
+#: lib/marshall_web/live/machines_live.ex:1195
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Pole saadaval"
 
-#: lib/marshall_web/live/machines_live.ex:657
+#: lib/marshall_web/live/machines_live.ex:721
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Teadmata"
 
-#: lib/marshall_web/live/machines_live.ex:707
+#: lib/marshall_web/live/machines_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Unpin this machine before deleting it."
 msgstr "Enne kustutamist eemalda selle masina kinnitus."
 
-#: lib/marshall_web/live/machines_live.ex:1461
+#: lib/marshall_web/live/machines_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "Kustutamiseks eemalda kinnitus. Kuni oled selle masina kinnitanud, ei saa miski seda kustutada."
 
-#: lib/marshall_web/live/overview_live.ex:291
+#: lib/marshall_web/live/overview_live.ex:321
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "Loobu tellimusest igal ajal."
 
-#: lib/marshall_web/live/overview_live.ex:367
+#: lib/marshall_web/live/overview_live.ex:399
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "Uuendatud"
 
-#: lib/marshall_web/live/machines_live.ex:1403
+#: lib/marshall_web/live/machines_live.ex:1511
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "Uuendatakse automaatselt"
@@ -1726,19 +1723,19 @@ msgstr "Uuendatakse automaatselt"
 msgid "Use current machine state, keeping these sizes"
 msgstr "Kasuta masina praegust olekut, säilitades need suurused"
 
-#: lib/marshall_web/live/machines_live.ex:727
+#: lib/marshall_web/live/machines_live.ex:812
 #, elixir-autogen, elixir-format
 msgid "Verifying the destination disks"
 msgstr "Sihtketaste kontrollimine"
 
-#: lib/marshall_web/live/overview_live.ex:168
+#: lib/marshall_web/live/overview_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "View all →"
 msgstr "Vaata kõiki →"
 
-#: lib/marshall_web/live/machines_live.ex:653
-#: lib/marshall_web/live/machines_live.ex:1210
-#: lib/marshall_web/live/machines_live.ex:1219
+#: lib/marshall_web/live/machines_live.ex:717
+#: lib/marshall_web/live/machines_live.ex:1318
+#: lib/marshall_web/live/machines_live.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "Vaataja"
@@ -1768,7 +1765,7 @@ msgstr "Oodatakse, et selle masina eelmine koopia vabastaks oma hetktõmmise."
 msgid "Waiting for the source to stop."
 msgstr "Lähteallika peatumise ootamine."
 
-#: lib/marshall_web/live/overview_live.ex:286
+#: lib/marshall_web/live/overview_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "Me ei saanud uudiskirjateenusega ühendust. Proovi hiljem uuesti."
@@ -1778,13 +1775,13 @@ msgstr "Me ei saanud uudiskirjateenusega ühendust. Proovi hiljem uuesti."
 msgid "We couldn't launch that repository"
 msgstr "Hoidlat ei saanud käivitada"
 
-#: lib/marshall_web/live/machines_live.ex:652
+#: lib/marshall_web/live/machines_live.ex:716
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "Veebirakendused"
 
-#: lib/marshall_web/live/machines_live.ex:1209
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Web apps only"
 msgstr "Ainult veebirakendused"
@@ -1794,7 +1791,7 @@ msgstr "Ainult veebirakendused"
 msgid "What happens"
 msgstr "Mis toimub"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1226
 #, elixir-autogen, elixir-format
 msgid "Who can reach this machine, and what each role allows."
 msgstr "Kes pääseb sellele masinale ligi ja mida iga roll lubab."
@@ -1804,7 +1801,7 @@ msgstr "Kes pääseb sellele masinale ligi ja mida iga roll lubab."
 msgid "You can pin up to %{value1} machines. Unpin one before pinning another."
 msgstr "Saad kinnitada kuni %{value1} masinat. Enne uue kinnitamist eemalda ühe masina kinnitus."
 
-#: lib/marshall_web/live/machines_live.ex:705
+#: lib/marshall_web/live/machines_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "You no longer have permission for this action."
 msgstr "Sul pole enam selle toimingu õigust."
@@ -1814,17 +1811,17 @@ msgstr "Sul pole enam selle toimingu õigust."
 msgid "Your account cannot create machines."
 msgstr "Sinu konto ei saa masinaid luua."
 
-#: lib/marshall_web/live/machines_live.ex:761
+#: lib/marshall_web/live/machines_live.ex:846
 #, elixir-autogen, elixir-format
 msgid "Your development environments, personal and shared."
 msgstr "Sinu isiklikud ja jagatud arenduskeskkonnad."
 
-#: lib/marshall_web/live/machines_live.ex:1092
+#: lib/marshall_web/live/machines_live.ex:1200
 #, elixir-autogen, elixir-format
 msgid "Your disk is retained when the machine is stopped."
 msgstr "Sinu ketas säilitatakse masina peatamisel."
 
-#: lib/marshall_web/live/machines_live.ex:1033
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "Sinu ketas jääb sulle alles masina peatamisel."
@@ -1839,7 +1836,7 @@ msgstr "Sinu masin jääb peatatuks. Ketta failisüsteemi suurendamine lõpeb j�
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "Sinu masin peatub ressursside muutmise ajaks ja taaskäivitub seejärel. Arvesta seisakuga."
 
-#: lib/marshall_web/live/overview_live.ex:166
+#: lib/marshall_web/live/overview_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your machines"
 msgstr "Sinu masinad"
@@ -1854,7 +1851,7 @@ msgstr "Sinu privaatne koopia on loodud ja ajutised ressursid on puhastatud."
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr "Sinu privaatne koopia on loodud. Lähteallika hetktõmmist veel vabastatakse; seni jääb lähteallikas kaitstuks."
 
-#: lib/marshall_web/live/overview_live.ex:157
+#: lib/marshall_web/live/overview_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Your workspace, with a little room to breathe."
 msgstr "Sinu tööruum, kus on veidi hingamisruumi."
@@ -1864,18 +1861,18 @@ msgstr "Sinu tööruum, kus on veidi hingamisruumi."
 msgid "continue to Overalls"
 msgstr "jätka Overallsi"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1359
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "tootmine, projekti-nimi"
 
-#: lib/marshall_web/live/machines_live.ex:881
-#: lib/marshall_web/live/machines_live.ex:1181
+#: lib/marshall_web/live/machines_live.ex:966
+#: lib/marshall_web/live/machines_live.ex:1289
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Esimene leht"
 
-#: lib/marshall_web/live/machines_live.ex:892
+#: lib/marshall_web/live/machines_live.ex:977
 #, elixir-autogen, elixir-format
 msgid "← Machines"
 msgstr "← Masinad"
@@ -1969,7 +1966,52 @@ msgstr "Kinnita"
 msgid "A new machine will clone the repository when it boots."
 msgstr "Uus masin kloonib käivitumisel hoidla."
 
-#: lib/marshall_web/live/machines_live.ex:638
+#: lib/marshall_web/live/machines_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Android (API 36)"
 msgstr "Android (API 36)"
+
+#: lib/marshall_web/live/machines_live.ex:1029
+#, elixir-autogen, elixir-format
+msgid "Leave this blank to create the machine without making setup changes."
+msgstr "Jäta see tühjaks, et luua masin ilma seadistusmuudatusteta."
+
+#: lib/marshall_web/live/machines_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Machine and setup thread requested."
+msgstr "Masin ja seadistusvestlus on taotletud."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:48
+#, elixir-autogen, elixir-format
+msgid "Provisioning is in progress. This page will open the machine when it is ready."
+msgstr "Ettevalmistamine on pooleli. See leht avab masina, kui see on valmis."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "Provisioning request unavailable."
+msgstr "Ettevalmistamise taotlus pole saadaval."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Retry is unavailable."
+msgstr "Uuesti proovimine pole saadaval."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Retry setup"
+msgstr "Proovi seadistamist uuesti"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:42
+#, elixir-autogen, elixir-format
+msgid "Setting up your machine"
+msgstr "Masina seadistamine"
+
+#: lib/marshall_web/live/machines_live.ex:1019
+#, elixir-autogen, elixir-format
+msgid "The machine agent will execute this instruction automatically in Work mode."
+msgstr "Masina agent täidab selle juhise automaatselt režiimis „Töö“."
+
+#: lib/marshall_web/live/machines_live.ex:1017
+#, elixir-autogen, elixir-format
+msgid "What should this machine do when it is ready?"
+msgstr "Mida see masin valmis olles tegema peaks?"

@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1425
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " na kuhesabu"
 
-#: lib/marshall_web/live/machines_live.ex:1313
+#: lib/marshall_web/live/machines_live.ex:1421
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "sekunde %{seconds}%{suffix}"
@@ -29,10 +29,10 @@ msgstr "sekunde %{seconds}%{suffix}"
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
 
-#: lib/marshall_web/live/machines_live.ex:1081
-#: lib/marshall_web/live/machines_live.ex:1084
-#: lib/marshall_web/live/overview_live.ex:321
-#: lib/marshall_web/live/overview_live.ex:326
+#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1192
+#: lib/marshall_web/live/overview_live.ex:351
+#: lib/marshall_web/live/overview_live.ex:356
 #: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -43,20 +43,20 @@ msgstr "%{value1} GiB"
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:1078
-#: lib/marshall_web/live/overview_live.ex:318
+#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/overview_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:160
-#: lib/marshall_web/live/machines_live.ex:823
-#: lib/marshall_web/live/overview_live.ex:197
+#: lib/marshall_web/live/machines_live.ex:908
+#: lib/marshall_web/live/overview_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · diski %{value3} GiB"
 
-#: lib/marshall_web/live/machines_live.ex:1026
+#: lib/marshall_web/live/machines_live.ex:1131
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · kumbukumbu %{value2} MiB · diski %{value3} GiB"
@@ -79,47 +79,47 @@ msgstr "%{value1} → %{value2} GiB"
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
 
-#: lib/marshall_web/live/machines_live.ex:765
-#: lib/marshall_web/live/overview_live.ex:161
+#: lib/marshall_web/live/machines_live.ex:850
+#: lib/marshall_web/live/overview_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "+ Create machine"
 msgstr "+ Unda mashine"
 
-#: lib/marshall_web/live/machines_live.ex:1385
+#: lib/marshall_web/live/machines_live.ex:1493
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ Weka nakala kwenye foleni"
 
-#: lib/marshall_web/live/machines_live.ex:617
+#: lib/marshall_web/live/machines_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
 msgstr "Mazingira ya ukuzaji ya Overalls kwa mashine zilizowekwa kiota. Inatumia picha maalum, diski ya data ya GiB 256 zaidi, na kiwango cha chini cha rasilimali cha juu zaidi. Wakala wake wa AI anaweza kuanzisha mawakala wa watoto."
 
-#: lib/marshall_web/live/overview_live.ex:156
+#: lib/marshall_web/live/overview_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "A good day to make something."
 msgstr "Siku nzuri ya kufanya kitu."
 
-#: lib/marshall_web/live/overview_live.ex:229
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "Muhtasari mdogo. Mashine zako zote zinazoweza kufikiwa ziko ndani"
 
-#: lib/marshall_web/live/machines_live.ex:799
-#: lib/marshall_web/live/machines_live.ex:837
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:884
+#: lib/marshall_web/live/machines_live.ex:922
+#: lib/marshall_web/live/machines_live.ex:1225
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "Ufikiaji"
 
-#: lib/marshall_web/live/machines_live.ex:381
+#: lib/marshall_web/live/machines_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "Access updated."
 msgstr "Ufikiaji umesasishwa."
 
-#: lib/marshall_web/live/machines_live.ex:1131
-#: lib/marshall_web/live/machines_live.ex:1138
-#: lib/marshall_web/live/machines_live.ex:1157
+#: lib/marshall_web/live/machines_live.ex:1239
+#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1265
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Akaunti"
@@ -134,14 +134,14 @@ msgstr "Muda wa uthibitishaji wa usimamizi umeisha. Chagua mashine katika mizigo
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr "Muda wa uthibitishaji wa kiutawala umekwisha. Rasimu yako ya kubadilisha ukubwa imehifadhiwa katika anwani ya ukurasa huu."
 
-#: lib/marshall_web/live/machines_live.ex:739
+#: lib/marshall_web/live/machines_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "All retained copies deleted"
 msgstr "Nakala zote zilizobaki zimefutwa"
 
-#: lib/marshall_web/live/machines_live.ex:1133
-#: lib/marshall_web/live/machines_live.ex:1150
-#: lib/marshall_web/live/machines_live.ex:1169
+#: lib/marshall_web/live/machines_live.ex:1241
+#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1277
 #, elixir-autogen, elixir-format
 msgid "Allows"
 msgstr "Inaruhusu"
@@ -176,13 +176,13 @@ msgstr "Rudi kwa muhtasari"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "Inasimamisha kwa ufupi chanzo ili diski yake iweze kunaswa kwa usalama."
 
-#: lib/marshall_web/live/overview_live.ex:301
+#: lib/marshall_web/live/overview_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr "Leta hazina ya GitHub , GitLab , Codeberg au Bitbucket kwenye Overalls ukitumia kiendelezi cha Chrome au Firefox."
 
-#: lib/marshall_web/live/machines_live.ex:1077
-#: lib/marshall_web/live/overview_live.ex:317
+#: lib/marshall_web/live/machines_live.ex:1185
+#: lib/marshall_web/live/overview_live.ex:347
 #: lib/marshall_web/live/resize_live.ex:315
 #: lib/marshall_web/live/resize_live.ex:359
 #: lib/marshall_web/live/resize_live.ex:447
@@ -191,7 +191,7 @@ msgstr "Leta hazina ya GitHub , GitLab , Codeberg au Bitbucket kwenye Overalls u
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/machines_live.ex:996
+#: lib/marshall_web/live/machines_live.ex:1101
 #, elixir-autogen, elixir-format
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
@@ -202,7 +202,7 @@ msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU na kumbukumbu inaweza kuongezeka au kupungua. Ukubwa wa diski unaweza kukua tu."
 
 #: lib/marshall_web/components/clone_components.ex:116
-#: lib/marshall_web/live/machines_live.ex:1045
+#: lib/marshall_web/live/machines_live.ex:1153
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Ghairi"
@@ -212,7 +212,7 @@ msgstr "Ghairi"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "Ghairi haikukubaliwa. Ukubwa tayari unatumika au hali ya mashine haijathibitishwa."
 
-#: lib/marshall_web/live/machines_live.ex:1331
+#: lib/marshall_web/live/machines_live.ex:1439
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "Ghairi uhamishaji"
@@ -222,7 +222,7 @@ msgstr "Ghairi uhamishaji"
 msgid "Cancel resize"
 msgstr "Ghairi kubadilisha ukubwa"
 
-#: lib/marshall_web/live/machines_live.ex:319
+#: lib/marshall_web/live/machines_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "Umeomba kughairiwa. Usafishaji unaweza kuendelea baada ya kurejesha."
@@ -244,7 +244,7 @@ msgstr "Imeghairiwa kabla ya nakala ya hali kuanza."
 msgid "Cancelling"
 msgstr "Inaghairi"
 
-#: lib/marshall_web/live/machines_live.ex:734
+#: lib/marshall_web/live/machines_live.ex:819
 #, elixir-autogen, elixir-format
 msgid "Cancelling and restoring the source"
 msgstr "Kughairi na kurejesha chanzo"
@@ -264,12 +264,12 @@ msgstr "Kughairi: kusubiri kusimama ili kuthibitisha, kisha kuanza upya na ukubw
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Kughairi: kusubiri kusimama ili kuthibitisha; saizi hukaa bila kubadilika."
 
-#: lib/marshall_web/live/machines_live.ex:1329
+#: lib/marshall_web/live/machines_live.ex:1437
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "Inaghairi..."
 
-#: lib/marshall_web/live/overview_live.ex:332
+#: lib/marshall_web/live/overview_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "Uwezo huangaliwa tena unapounda mashine."
@@ -279,32 +279,32 @@ msgstr "Uwezo huangaliwa tena unapounda mashine."
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "Inarekodi hali ya diski ya chanzo. Kunakili huanza baada ya nakala ya hali kuwa tayari."
 
-#: lib/marshall_web/live/overview_live.ex:279
+#: lib/marshall_web/live/overview_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "Angalia kisanduku pokezi chako na ubofye kiungo ili kuthibitisha usajili wako."
 
-#: lib/marshall_web/live/machines_live.ex:729
+#: lib/marshall_web/live/machines_live.ex:814
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Inakagua utayari wa lengwa"
 
-#: lib/marshall_web/live/machines_live.ex:724
+#: lib/marshall_web/live/machines_live.ex:809
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "Inakagua muunganisho wa uhamishaji"
 
-#: lib/marshall_web/live/machines_live.ex:937
+#: lib/marshall_web/live/machines_live.ex:1042
 #, elixir-autogen, elixir-format
 msgid "Choose an image"
 msgstr "Chagua picha"
 
-#: lib/marshall_web/live/machines_live.ex:895
+#: lib/marshall_web/live/machines_live.ex:980
 #, elixir-autogen, elixir-format
 msgid "Choose an image and the resources for your environment."
 msgstr "Chagua picha na rasilimali za mazingira yako."
 
-#: lib/marshall_web/live/machines_live.ex:930
+#: lib/marshall_web/live/machines_live.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Choose your environment"
 msgstr "Chagua mazingira yako"
@@ -319,7 +319,7 @@ msgstr "Kunakili kumeghairiwa"
 msgid "Clone complete"
 msgstr "Kunakili kumekamilika"
 
-#: lib/marshall_web/live/machines_live.ex:1351
+#: lib/marshall_web/live/machines_live.ex:1459
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "Nakili mashine"
@@ -329,17 +329,17 @@ msgstr "Nakili mashine"
 msgid "Clone needs attention"
 msgstr "Kunakili kunahitaji uangalizi"
 
-#: lib/marshall_web/live/machines_live.ex:262
+#: lib/marshall_web/live/machines_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Clone queued. You can queue another copy."
 msgstr "Kunakili kumewekwa kwenye foleni. Unaweza kuweka nakala nyingine kwenye foleni."
 
-#: lib/marshall_web/live/machines_live.ex:1402
+#: lib/marshall_web/live/machines_live.ex:1510
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "Maombi ya kunakili"
 
-#: lib/marshall_web/live/machines_live.ex:1413
+#: lib/marshall_web/live/machines_live.ex:1521
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "Maombi ya kunakili hayapatikani kwa sasa. Inajaribu tena kiotomatiki."
@@ -349,7 +349,7 @@ msgstr "Maombi ya kunakili hayapatikani kwa sasa. Inajaribu tena kiotomatiki."
 msgid "Clone stages"
 msgstr "Hatua za kunakili"
 
-#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1363
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Maoni"
@@ -364,13 +364,13 @@ msgstr "Kamilisha"
 msgid "Confirmed resources"
 msgstr "Rasilimali zilizothibitishwa"
 
-#: lib/marshall_web/live/machines_live.ex:800
-#: lib/marshall_web/live/machines_live.ex:851
+#: lib/marshall_web/live/machines_live.ex:885
+#: lib/marshall_web/live/machines_live.ex:936
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Unganisha"
 
-#: lib/marshall_web/live/overview_live.ex:346
+#: lib/marshall_web/live/overview_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "Unganisha muunganisho ↗"
@@ -385,7 +385,7 @@ msgstr "Kunakili"
 msgid "Copying files"
 msgstr "Kunakili faili"
 
-#: lib/marshall_web/live/machines_live.ex:726
+#: lib/marshall_web/live/machines_live.ex:811
 #, elixir-autogen, elixir-format
 msgid "Copying the stopped disks"
 msgstr "Kunakili diski zilizosimamishwa"
@@ -395,19 +395,19 @@ msgstr "Kunakili diski zilizosimamishwa"
 msgid "Create a machine"
 msgstr "Tengeneza mashine"
 
-#: lib/marshall_web/live/machines_live.ex:1359
+#: lib/marshall_web/live/machines_live.ex:1467
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr "Unda nakala ya faragha inayojitegemea ya mashine hii. Mashine zinazofanya kazi husimama kwa muda mfupi kwa kila nakala ya hali, kisha huwaka tena huku kunakili kukiendelea. Nakala huchakatwa kwa mpangilio na hulingana na hali ya kuwaka ya chanzo zamu yake inapoanza."
 
-#: lib/marshall_web/live/machines_live.ex:93
-#: lib/marshall_web/live/machines_live.ex:894
-#: lib/marshall_web/live/machines_live.ex:1043
+#: lib/marshall_web/live/machines_live.ex:106
+#: lib/marshall_web/live/machines_live.ex:979
+#: lib/marshall_web/live/machines_live.ex:1151
 #, elixir-autogen, elixir-format
 msgid "Create machine"
 msgstr "Tengeneza mashine"
 
-#: lib/marshall_web/live/overview_live.ex:182
+#: lib/marshall_web/live/overview_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "Unda mashine yako ya kwanza"
@@ -422,90 +422,90 @@ msgstr "Inaunda diski inayojitegemea kutoka nakala ya hali. Urejeshaji wa chanzo
 msgid "Creating cloned machine"
 msgstr "Inaunda mashine iliyonakiliwa"
 
-#: lib/marshall_web/live/machines_live.ex:1041
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Creating…"
 msgstr "Inaunda..."
 
-#: lib/marshall_web/live/machines_live.ex:779
+#: lib/marshall_web/live/machines_live.ex:864
 #, elixir-autogen, elixir-format
 msgid "Current headroom is temporarily unavailable."
 msgstr "Taarifa ya uwezo uliobaki haipatikani kwa sasa."
 
-#: lib/marshall_web/live/machines_live.ex:771
-#: lib/marshall_web/live/machines_live.ex:913
+#: lib/marshall_web/live/machines_live.ex:856
+#: lib/marshall_web/live/machines_live.ex:998
 #, elixir-autogen, elixir-format
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "Uwezo uliobaki sasa: %{value1} vCPU · kumbukumbu %{value2} GiB · diski %{value3} GiB"
 
-#: lib/marshall_web/live/overview_live.ex:313
+#: lib/marshall_web/live/overview_live.ex:343
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "Uwezo uliobaki wa kutoa rasilimali kwa sasa"
 
-#: lib/marshall_web/live/machines_live.ex:583
-#: lib/marshall_web/live/machines_live.ex:671
+#: lib/marshall_web/live/machines_live.ex:647
+#: lib/marshall_web/live/machines_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "Customer"
 
-#: lib/marshall_web/live/machines_live.ex:1103
+#: lib/marshall_web/live/machines_live.ex:1211
 #, elixir-autogen, elixir-format
 msgid "Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled."
 msgstr "Mashine za Customer huruhusu ufikiaji wa SSH na terminali wa mmiliki pekee. Mtandao unaotoka, kushiriki eneo la kazi na kufichua huduma za wavuti vimezimwa."
 
-#: lib/marshall_web/live/machines_live.ex:1457
+#: lib/marshall_web/live/machines_live.ex:1565
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Futa"
 
-#: lib/marshall_web/live/machines_live.ex:1440
+#: lib/marshall_web/live/machines_live.ex:1548
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "Futa mashine"
 
-#: lib/marshall_web/live/machines_live.ex:1454
+#: lib/marshall_web/live/machines_live.ex:1562
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "Ungependa kufuta mashine hii na diski yake? Hili haliwezi kutenduliwa."
 
-#: lib/marshall_web/live/machines_live.ex:675
+#: lib/marshall_web/live/machines_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Deleting"
 msgstr "Inafuta"
 
-#: lib/marshall_web/live/machines_live.ex:736
+#: lib/marshall_web/live/machines_live.ex:821
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "Inafuta nakala zilizohifadhiwa"
 
-#: lib/marshall_web/live/machines_live.ex:730
+#: lib/marshall_web/live/machines_live.ex:815
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Uanzishaji wa lengwa umeshindwa; nakala ya chanzo imehifadhiwa"
 
-#: lib/marshall_web/live/machines_live.ex:732
+#: lib/marshall_web/live/machines_live.ex:817
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "Utayari wa lengwa umeshindwa; nakala ya chanzo imehifadhiwa"
 
-#: lib/marshall_web/live/machines_live.ex:733
+#: lib/marshall_web/live/machines_live.ex:818
 #, elixir-autogen, elixir-format
 msgid "Destination ready; cleaning up the source"
 msgstr "Lengwa liko tayari; inasafisha chanzo"
 
-#: lib/marshall_web/live/machines_live.ex:348
+#: lib/marshall_web/live/machines_live.ex:386
 #, elixir-autogen, elixir-format
 msgid "Destination restart requested. The source copy remains retained until readiness succeeds."
 msgstr "Umeomba kuanzisha upya lengwa. Nakala ya chanzo inabaki kubakizwa hadi utayari ufanikiwe."
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1228
 #, elixir-autogen, elixir-format
 msgid "Direct machine grants"
 msgstr "Ruhusa za moja kwa moja za mashine"
 
-#: lib/marshall_web/live/machines_live.ex:1083
-#: lib/marshall_web/live/overview_live.ex:325
+#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/overview_live.ex:355
 #: lib/marshall_web/live/resize_live.ex:321
 #: lib/marshall_web/live/resize_live.ex:375
 #: lib/marshall_web/live/resize_live.ex:484
@@ -513,7 +513,7 @@ msgstr "Ruhusa za moja kwa moja za mashine"
 msgid "Disk"
 msgstr "Diski"
 
-#: lib/marshall_web/live/machines_live.ex:1015
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB)"
 msgstr "Diski (GiB)"
@@ -523,12 +523,12 @@ msgstr "Diski (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Diski (GiB) — Kiwango cha juu 500 GiB"
 
-#: lib/marshall_web/live/overview_live.ex:251
+#: lib/marshall_web/live/overview_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "Ondoa"
 
-#: lib/marshall_web/live/overview_live.ex:269
+#: lib/marshall_web/live/overview_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "Anwani ya barua pepe"
@@ -538,42 +538,42 @@ msgstr "Anwani ya barua pepe"
 msgid "Enable JavaScript to open a repository link, or"
 msgstr "Washa JavaScript ili kufungua kiungo cha hazina, au"
 
-#: lib/marshall_web/live/machines_live.ex:668
+#: lib/marshall_web/live/machines_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Ends that person's access to this machine."
 msgstr "Hukomesha ufikiaji wa mtu huyo kwa mashine hii."
 
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "Weka barua pepe halali."
 
-#: lib/marshall_web/live/machines_live.ex:159
+#: lib/marshall_web/live/machines_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "Enter whole numbers for CPU, memory and disk size."
 msgstr "Weka nambari nzima za CPU , kumbukumbu na saizi ya diski."
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1259
 #, elixir-autogen, elixir-format
 msgid "Everything; cannot be changed here."
 msgstr "Kila kitu; haiwezi kubadilishwa hapa."
 
-#: lib/marshall_web/live/overview_live.ex:355
+#: lib/marshall_web/live/overview_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "Gundua matumizi yako ↗"
 
-#: lib/marshall_web/live/machines_live.ex:1352
+#: lib/marshall_web/live/machines_live.ex:1460
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "Faili na vitambulisho vilivyohifadhiwa vimejumuishwa kwenye nakala"
 
-#: lib/marshall_web/live/machines_live.ex:1392
+#: lib/marshall_web/live/machines_live.ex:1500
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "Faili na vitambulisho vilivyohifadhiwa vimejumuishwa kwenye nakala."
 
-#: lib/marshall_web/live/overview_live.ex:352
+#: lib/marshall_web/live/overview_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "Tafuta watu wako ↗"
@@ -588,17 +588,17 @@ msgstr "Kumaliza"
 msgid "Finishing up"
 msgstr "Kumaliza"
 
-#: lib/marshall_web/live/overview_live.ex:254
+#: lib/marshall_web/live/overview_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Pata vidokezo, mbinu na masasisho kuhusu Overalls na AI kupitia barua pepe."
 
-#: lib/marshall_web/live/machines_live.ex:990
+#: lib/marshall_web/live/machines_live.ex:1095
 #, elixir-autogen, elixir-format
 msgid "Give it room to grow"
 msgstr "Ipe nafasi ya kukua"
 
-#: lib/marshall_web/live/machines_live.ex:1189
+#: lib/marshall_web/live/machines_live.ex:1297
 #, elixir-autogen, elixir-format
 msgid "Grant, change or remove access"
 msgstr "Toa, badilisha au ondoa ufikiaji"
@@ -608,40 +608,40 @@ msgstr "Toa, badilisha au ondoa ufikiaji"
 msgid "Grow the filesystem on next boot"
 msgstr "Panua mfumo wa faili mashine inapowashwa tena"
 
-#: lib/marshall_web/live/overview_live.ex:336
+#: lib/marshall_web/live/overview_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "Uwezo uliobaki haupatikani kwa sasa."
 
-#: lib/marshall_web/live/machines_live.ex:798
-#: lib/marshall_web/live/machines_live.ex:833
-#: lib/marshall_web/live/machines_live.ex:1086
+#: lib/marshall_web/live/machines_live.ex:883
+#: lib/marshall_web/live/machines_live.ex:918
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "Seva pangishi"
 
-#: lib/marshall_web/live/machines_live.ex:936
+#: lib/marshall_web/live/machines_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "Picha"
 
-#: lib/marshall_web/live/machines_live.ex:899
+#: lib/marshall_web/live/machines_live.ex:984
 #, elixir-autogen, elixir-format
 msgid "Images and capacity are temporarily unavailable. Your choices are retained."
 msgstr "Picha na uwezo hazipatikani kwa sasa. Chaguo zako zimehifadhiwa."
 
-#: lib/marshall_web/live/machines_live.ex:589
-#: lib/marshall_web/live/machines_live.ex:672
+#: lib/marshall_web/live/machines_live.ex:653
+#: lib/marshall_web/live/machines_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Inception"
 msgstr "Inception"
 
-#: lib/marshall_web/live/machines_live.ex:404
+#: lib/marshall_web/live/machines_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Ombi batili."
 
-#: lib/marshall_web/live/machines_live.ex:1249
+#: lib/marshall_web/live/machines_live.ex:1357
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "Lebo"
@@ -667,12 +667,12 @@ msgstr "Inazindua"
 msgid "Launching repository"
 msgstr "Inazindua hazina"
 
-#: lib/marshall_web/live/machines_live.ex:1375
+#: lib/marshall_web/live/machines_live.ex:1483
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "Acha wazi ili kutengeneza jina"
 
-#: lib/marshall_web/live/machines_live.ex:1389
+#: lib/marshall_web/live/machines_live.ex:1497
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "Acha wazi ili kutengeneza jina."
@@ -684,77 +684,72 @@ msgstr "Acha wazi ili kutengeneza jina."
 msgid "Leave stopped"
 msgstr "Acha ikiwa imesimamishwa"
 
-#: lib/marshall_web/live/machines_live.ex:794
+#: lib/marshall_web/live/machines_live.ex:879
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Mashine"
 
-#: lib/marshall_web/live/machines_live.ex:228
+#: lib/marshall_web/live/machines_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
 msgstr "Metadata ya mashine imehifadhiwa."
 
-#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:965
 #, elixir-autogen, elixir-format
 msgid "Machine pages"
 msgstr "Kurasa za mashine"
 
-#: lib/marshall_web/live/machines_live.ex:148
-#, elixir-autogen, elixir-format
-msgid "Machine requested."
-msgstr "Mashine imeombwa."
-
-#: lib/marshall_web/live/machines_live.ex:210
+#: lib/marshall_web/live/machines_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Machine update requested."
 msgstr "Umeomba sasisho la mashine."
 
-#: lib/marshall_web/live/machines_live.ex:108
-#: lib/marshall_web/live/machines_live.ex:760
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/machines_live.ex:121
+#: lib/marshall_web/live/machines_live.ex:845
+#: lib/marshall_web/live/overview_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Mashine"
 
-#: lib/marshall_web/live/machines_live.ex:464
+#: lib/marshall_web/live/machines_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "Machines are temporarily unavailable."
 msgstr "Mashine hazipatikani kwa sasa."
 
-#: lib/marshall_web/live/overview_live.ex:235
+#: lib/marshall_web/live/overview_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "Mashine hazikuweza kupakiwa. Onyesha upya ili ujaribu tena."
 
-#: lib/marshall_web/live/machines_live.ex:973
+#: lib/marshall_web/live/machines_live.ex:1078
 #, elixir-autogen, elixir-format
 msgid "Make it yours"
 msgstr "Fanya iwe yako"
 
-#: lib/marshall_web/live/overview_live.ex:340
+#: lib/marshall_web/live/overview_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "Jifanye nyumbani"
 
-#: lib/marshall_web/live/machines_live.ex:1100
+#: lib/marshall_web/live/machines_live.ex:1208
 #, elixir-autogen, elixir-format
 msgid "Management access is required to change the remaining settings."
 msgstr "Ufikiaji wa usimamizi unahitajika ili kubadilisha mipangilio iliyobaki."
 
-#: lib/marshall_web/live/machines_live.ex:655
-#: lib/marshall_web/live/machines_live.ex:1212
-#: lib/marshall_web/live/machines_live.ex:1221
+#: lib/marshall_web/live/machines_live.ex:719
+#: lib/marshall_web/live/machines_live.ex:1320
+#: lib/marshall_web/live/machines_live.ex:1329
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "Meneja"
 
-#: lib/marshall_web/live/machines_live.ex:1307
+#: lib/marshall_web/live/machines_live.ex:1415
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "Hupimwa kati ya matukio ya kusimama na utayari yaliyoonekana katika mfumo wa udhibiti; upatikanaji wa mashine unaweza kutofautiana."
 
-#: lib/marshall_web/live/machines_live.ex:1080
-#: lib/marshall_web/live/overview_live.ex:320
+#: lib/marshall_web/live/machines_live.ex:1188
+#: lib/marshall_web/live/overview_live.ex:350
 #: lib/marshall_web/live/resize_live.ex:318
 #: lib/marshall_web/live/resize_live.ex:365
 #: lib/marshall_web/live/resize_live.ex:478
@@ -762,33 +757,33 @@ msgstr "Hupimwa kati ya matukio ya kusimama na utayari yaliyoonekana katika mfum
 msgid "Memory"
 msgstr "Kumbukumbu"
 
-#: lib/marshall_web/live/machines_live.ex:1004
+#: lib/marshall_web/live/machines_live.ex:1109
 #: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Kumbukumbu (MiB)"
 
-#: lib/marshall_web/live/machines_live.ex:1295
+#: lib/marshall_web/live/machines_live.ex:1403
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Hali"
 
-#: lib/marshall_web/live/machines_live.ex:737
+#: lib/marshall_web/live/machines_live.ex:822
 #, elixir-autogen, elixir-format
 msgid "Move cancelled; cleanup complete"
 msgstr "Uhamisho umeghairiwa; usafishaji umekamilika"
 
-#: lib/marshall_web/live/machines_live.ex:738
+#: lib/marshall_web/live/machines_live.ex:823
 #, elixir-autogen, elixir-format
 msgid "Move complete"
 msgstr "Uhamisho umekamilika"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1383
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "Ungependa kuhamisha mashine hii hadi kwa seva pangishi iliyochaguliwa kiotomatiki? Huenda mashine haipatikani kwa muda mfupi."
 
-#: lib/marshall_web/live/machines_live.ex:1281
+#: lib/marshall_web/live/machines_live.ex:1389
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "Hamisha hadi kwa mwenyeji mwingine"
@@ -799,7 +794,7 @@ msgstr "Hamisha hadi kwa mwenyeji mwingine"
 msgid "Needs attention"
 msgstr "Inahitaji umakini"
 
-#: lib/marshall_web/live/machines_live.ex:1374
+#: lib/marshall_web/live/machines_live.ex:1482
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "Jina la mashine mpya (si lazima)"
@@ -809,54 +804,54 @@ msgstr "Jina la mashine mpya (si lazima)"
 msgid "New sizes"
 msgstr "Saizi mpya"
 
-#: lib/marshall_web/live/machines_live.ex:885
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:970
+#: lib/marshall_web/live/machines_live.ex:1292
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Ukurasa unaofuata →"
 
-#: lib/marshall_web/live/overview_live.ex:343
+#: lib/marshall_web/live/overview_live.ex:375
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "Hatua zinazofuata"
 
-#: lib/marshall_web/live/machines_live.ex:1407
+#: lib/marshall_web/live/machines_live.ex:1515
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "Bado hakuna maombi ya kunakili. Weka nakala kwenye foleni na ufuatilie maendeleo yake hapa."
 
-#: lib/marshall_web/live/machines_live.ex:1177
+#: lib/marshall_web/live/machines_live.ex:1285
 #, elixir-autogen, elixir-format
 msgid "No direct machine grants."
 msgstr "Hakuna ruhusa za moja kwa moja za mashine."
 
-#: lib/marshall_web/live/machines_live.ex:910
+#: lib/marshall_web/live/machines_live.ex:995
 #, elixir-autogen, elixir-format
 msgid "No images are available on ready hosts right now."
 msgstr "Hakuna picha zinazopatikana kwenye seva pangishi tayari kwa sasa."
 
-#: lib/marshall_web/live/overview_live.ex:177
+#: lib/marshall_web/live/overview_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "No machines in this preview yet. Create one or ask an owner to share access."
 msgstr "Bado hakuna mashine katika onyesho hili la kuchungulia. Unda moja au umwombe mmiliki ashiriki ufikiaji."
 
-#: lib/marshall_web/live/machines_live.ex:785
+#: lib/marshall_web/live/machines_live.ex:870
 #, elixir-autogen, elixir-format
 msgid "No machines on this page. Create a machine or ask an owner to share access."
 msgstr "Hakuna mashine kwenye ukurasa huu. Unda mashine au umwombe mmiliki ashiriki ufikiaji."
 
-#: lib/marshall_web/live/machines_live.ex:703
+#: lib/marshall_web/live/machines_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "No registered account matches that email address."
 msgstr "Hakuna akaunti iliyosajiliwa inayolingana na barua pepe hiyo."
 
-#: lib/marshall_web/live/machines_live.ex:327
-#: lib/marshall_web/live/machines_live.ex:359
+#: lib/marshall_web/live/machines_live.ex:365
+#: lib/marshall_web/live/machines_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "No relocation is available."
 msgstr "Hakuna uhamishaji unaopatikana."
 
-#: lib/marshall_web/live/machines_live.ex:1303
+#: lib/marshall_web/live/machines_live.ex:1411
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "Muda wa kusimama ulioonekana"
@@ -871,44 +866,44 @@ msgstr "Ni hazina za umma kwenye GitHub , GitLab , Codeberg au Bitbucket pekee n
 msgid "Open clone"
 msgstr "Fungua nakala"
 
-#: lib/marshall_web/live/overview_live.ex:297
+#: lib/marshall_web/live/overview_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "Fungua hazina kutoka kivinjari chako"
 
-#: lib/marshall_web/live/machines_live.ex:864
+#: lib/marshall_web/live/machines_live.ex:949
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "Fungua terminali"
 
-#: lib/marshall_web/live/machines_live.ex:862
+#: lib/marshall_web/live/machines_live.ex:947
 #, elixir-autogen, elixir-format
 msgid "Open terminal for %{value1}"
 msgstr "Fungua terminali ya %{value1}"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "Fungua terminali ↗"
 
-#: lib/marshall_web/live/machines_live.ex:660
+#: lib/marshall_web/live/machines_live.ex:724
 #, elixir-autogen, elixir-format
 msgid "Open this machine's web apps. No terminal."
 msgstr "Fungua programu za wavuti za mashine hii. Hakuna terminali."
 
-#: lib/marshall_web/live/machines_live.ex:1073
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "Operating system"
 msgstr "Mfumo wa uendeshaji"
 
-#: lib/marshall_web/live/machines_live.ex:654
-#: lib/marshall_web/live/machines_live.ex:1211
-#: lib/marshall_web/live/machines_live.ex:1220
+#: lib/marshall_web/live/machines_live.ex:718
+#: lib/marshall_web/live/machines_live.ex:1319
+#: lib/marshall_web/live/machines_live.ex:1328
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Mwendeshaji"
 
-#: lib/marshall_web/live/machines_live.ex:603
+#: lib/marshall_web/live/machines_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents."
 msgstr "Miunganisho inayotoka, kushiriki, programu za wavuti, SSH, terminali na zana za wakala wa AI. Wakala hawezi kuanzisha mawakala tanzu."
@@ -918,9 +913,9 @@ msgstr "Miunganisho inayotoka, kushiriki, programu za wavuti, SSH, terminali na 
 msgid "Overview"
 msgstr "Muhtasari"
 
-#: lib/marshall_web/live/machines_live.ex:839
-#: lib/marshall_web/live/machines_live.ex:977
-#: lib/marshall_web/live/machines_live.ex:1148
+#: lib/marshall_web/live/machines_live.ex:924
+#: lib/marshall_web/live/machines_live.ex:1082
+#: lib/marshall_web/live/machines_live.ex:1256
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Mmiliki"
@@ -932,7 +927,7 @@ msgstr "Mmiliki"
 msgid "Pending"
 msgstr "Inasubiri"
 
-#: lib/marshall_web/live/machines_live.ex:1467
+#: lib/marshall_web/live/machines_live.ex:1575
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Ondoa kabisa mashine hii na diski yake. Hili haliwezi kutenduliwa."
@@ -942,13 +937,13 @@ msgstr "Ondoa kabisa mashine hii na diski yake. Hili haliwezi kutenduliwa."
 msgid "Permission to clone this machine is no longer available."
 msgstr "Ruhusa ya kunakili mashine hii haipatikani tena."
 
-#: lib/marshall_web/live/machines_live.ex:979
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/machines_live.ex:1084
+#: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "Binafsi"
 
-#: lib/marshall_web/live/machines_live.ex:1292
+#: lib/marshall_web/live/machines_live.ex:1400
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "Awamu"
@@ -978,7 +973,7 @@ msgstr "Inaandaa nakala"
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "Inaandaa nafasi na kukagua chanzo kabla ya kuchukua nakala ya hali."
 
-#: lib/marshall_web/live/machines_live.ex:723
+#: lib/marshall_web/live/machines_live.ex:808
 #, elixir-autogen, elixir-format
 msgid "Preparing transfer"
 msgstr "Inaandaa uhamishaji"
@@ -993,20 +988,20 @@ msgstr "Inaandaa mashine yako…"
 msgid "Preparing your repository…"
 msgstr "Inaandaa hazina yako…"
 
-#: lib/marshall_web/live/machines_live.ex:596
+#: lib/marshall_web/live/machines_live.ex:660
 #, elixir-autogen, elixir-format
 msgid "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
 msgstr "Ya faragha na ya mmiliki pekee. Ufikiaji wa SSH na terminali; hakuna miunganisho inayotoka, kushiriki, programu za wavuti wala wakala wa AI."
 
-#: lib/marshall_web/live/machines_live.ex:797
-#: lib/marshall_web/live/machines_live.ex:829
-#: lib/marshall_web/live/machines_live.ex:952
-#: lib/marshall_web/live/machines_live.ex:1089
+#: lib/marshall_web/live/machines_live.ex:882
+#: lib/marshall_web/live/machines_live.ex:914
+#: lib/marshall_web/live/machines_live.ex:1057
+#: lib/marshall_web/live/machines_live.ex:1197
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Wasifu"
 
-#: lib/marshall_web/live/machines_live.ex:958
+#: lib/marshall_web/live/machines_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "Profiles choose access and agent features. Machines remain isolated from one another."
 msgstr "Wasifu huchagua vipengele vya ufikiaji na wakala. Mashine hubaki zimetengwa na nyingine."
@@ -1023,47 +1018,47 @@ msgstr "Nafasi ya foleni %{value1}"
 msgid "Queued"
 msgstr "Imewekwa kwenye foleni"
 
-#: lib/marshall_web/live/machines_live.ex:1383
+#: lib/marshall_web/live/machines_live.ex:1491
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "Inaweka foleni..."
 
-#: lib/marshall_web/live/machines_live.ex:662
+#: lib/marshall_web/live/machines_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "Read and write in the terminal."
 msgstr "Soma na uandike kwenye terminal."
 
-#: lib/marshall_web/live/overview_live.ex:358
+#: lib/marshall_web/live/overview_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "Soma vidokezo vya matumizi ↗"
 
-#: lib/marshall_web/live/machines_live.ex:661
+#: lib/marshall_web/live/machines_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Read the terminal."
 msgstr "Soma terminal."
 
-#: lib/marshall_web/live/machines_live.ex:1024
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Ready when you are"
 msgstr "Tayari wakati wewe ni"
 
-#: lib/marshall_web/live/machines_live.ex:1246
+#: lib/marshall_web/live/machines_live.ex:1354
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "Metadata ya Reflection"
 
-#: lib/marshall_web/live/overview_live.ex:374
+#: lib/marshall_web/live/overview_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "Onyesha upya"
 
-#: lib/marshall_web/live/overview_live.ex:372
+#: lib/marshall_web/live/overview_live.ex:404
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "Inaonyesha upya..."
 
-#: lib/marshall_web/live/machines_live.ex:1201
+#: lib/marshall_web/live/machines_live.ex:1309
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Barua pepe iliyosajiliwa"
@@ -1073,12 +1068,12 @@ msgstr "Barua pepe iliyosajiliwa"
 msgid "Registering the copied disk as your private machine."
 msgstr "Kusajili diski iliyonakiliwa kama mashine yako ya kibinafsi."
 
-#: lib/marshall_web/live/machines_live.ex:1264
+#: lib/marshall_web/live/machines_live.ex:1372
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "Hamisha mashine"
 
-#: lib/marshall_web/live/machines_live.ex:298
+#: lib/marshall_web/live/machines_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "Uhamisho umeombwa. Lengwa huchaguliwa kiotomatiki."
@@ -1088,8 +1083,8 @@ msgstr "Uhamisho umeombwa. Lengwa huchaguliwa kiotomatiki."
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "Hubaki imesimamishwa; mfumo wa faili hupanuliwa inapowashwa tena"
 
-#: lib/marshall_web/live/machines_live.ex:1213
-#: lib/marshall_web/live/machines_live.ex:1222
+#: lib/marshall_web/live/machines_live.ex:1321
+#: lib/marshall_web/live/machines_live.ex:1330
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "Ondoa ufikiaji"
@@ -1104,7 +1099,7 @@ msgstr "Inaomba kughairiwa..."
 msgid "Requesting resize…"
 msgstr "Inaomba kubadilisha ukubwa..."
 
-#: lib/marshall_web/live/machines_live.ex:1337
+#: lib/marshall_web/live/machines_live.ex:1445
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "Inaomba kuanzishwa upya..."
@@ -1114,12 +1109,12 @@ msgstr "Inaomba kuanzishwa upya..."
 msgid "Requesting retry…"
 msgstr "Inaomba kujaribu tena..."
 
-#: lib/marshall_web/live/machines_live.ex:1273
+#: lib/marshall_web/live/machines_live.ex:1381
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "Inaomba..."
 
-#: lib/marshall_web/live/machines_live.ex:1069
+#: lib/marshall_web/live/machines_live.ex:1177
 #: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
@@ -1172,9 +1167,9 @@ msgstr "Hatua za kubadilisha ukubwa"
 msgid "Resizing"
 msgstr "Kubadilisha ukubwa"
 
-#: lib/marshall_web/live/machines_live.ex:796
-#: lib/marshall_web/live/machines_live.ex:822
-#: lib/marshall_web/live/machines_live.ex:1060
+#: lib/marshall_web/live/machines_live.ex:881
+#: lib/marshall_web/live/machines_live.ex:907
+#: lib/marshall_web/live/machines_live.ex:1168
 #, elixir-autogen, elixir-format
 msgid "Resources"
 msgstr "Rasilimali"
@@ -1216,7 +1211,7 @@ msgstr "Jaribu tena"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "Jaribu tena haikukubaliwa. Uwezo au hali ya mashine inaweza kuwa imebadilika."
 
-#: lib/marshall_web/live/machines_live.ex:1339
+#: lib/marshall_web/live/machines_live.ex:1447
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "Jaribu tena kuwasha lengwa"
@@ -1231,30 +1226,30 @@ msgstr "Jaribu kubadilisha ukubwa tena"
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "Rudi kwenye mizigo ya kazi ya kundi na uthibitishe ufunguo wako wa kuingia kufungua mashine tena →"
 
-#: lib/marshall_web/live/machines_live.ex:656
+#: lib/marshall_web/live/machines_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "Imebatilishwa"
 
-#: lib/marshall_web/live/machines_live.ex:1132
-#: lib/marshall_web/live/machines_live.ex:1147
-#: lib/marshall_web/live/machines_live.ex:1166
-#: lib/marshall_web/live/machines_live.ex:1207
+#: lib/marshall_web/live/machines_live.ex:1240
+#: lib/marshall_web/live/machines_live.ex:1255
+#: lib/marshall_web/live/machines_live.ex:1274
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Jukumu"
 
-#: lib/marshall_web/live/overview_live.ex:175
+#: lib/marshall_web/live/overview_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Room for your next idea"
 msgstr "Chumba cha wazo lako linalofuata"
 
-#: lib/marshall_web/live/overview_live.ex:312
+#: lib/marshall_web/live/overview_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "Chumba cha kukua"
 
-#: lib/marshall_web/live/machines_live.ex:1014
+#: lib/marshall_web/live/machines_live.ex:1119
 #, elixir-autogen, elixir-format
 msgid "Root disk (GiB)"
 msgstr "Diski kuu (GiB)"
@@ -1264,42 +1259,42 @@ msgstr "Diski kuu (GiB)"
 msgid "Running"
 msgstr "Inafanya kazi"
 
-#: lib/marshall_web/live/machines_live.ex:1230
+#: lib/marshall_web/live/machines_live.ex:1338
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "Hifadhi ufikiaji"
 
-#: lib/marshall_web/live/machines_live.ex:1261
+#: lib/marshall_web/live/machines_live.ex:1369
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "Hifadhi metadata"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1336
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "Inahifadhi..."
 
-#: lib/marshall_web/live/machines_live.ex:645
+#: lib/marshall_web/live/machines_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "Selected image unavailable"
 msgstr "Picha iliyochaguliwa haipatikani"
 
-#: lib/marshall_web/live/overview_live.ex:310
+#: lib/marshall_web/live/overview_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "Sanidi kiendelezi cha kivinjari ↗"
 
-#: lib/marshall_web/live/overview_live.ex:205
+#: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "Imeshirikiwa"
 
-#: lib/marshall_web/live/machines_live.ex:841
+#: lib/marshall_web/live/machines_live.ex:926
 #, elixir-autogen, elixir-format
 msgid "Shared by"
 msgstr "Imeshirikiwa na"
 
-#: lib/marshall_web/live/machines_live.ex:1258
+#: lib/marshall_web/live/machines_live.ex:1366
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "Maelezo mafupi kwa mawakala"
@@ -1344,7 +1339,7 @@ msgstr "Urejeshaji wa chanzo unahitaji umakini."
 msgid "Source recovery retry requested."
 msgstr "Jaribio la kurejesha chanzo limeombwa."
 
-#: lib/marshall_web/live/machines_live.ex:735
+#: lib/marshall_web/live/machines_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Source restored; destination cleanup pending"
 msgstr "Chanzo kimerejeshwa; usafishaji wa lengwa unasubiri"
@@ -1364,13 +1359,13 @@ msgstr "Chanzo kilisimamishwa, kikilingana na hali yake wakati ombi hili lilipoa
 msgid "Source was stopped when this request began."
 msgstr "Chanzo kilisimamishwa wakati ombi hili lilipoanza."
 
-#: lib/marshall_web/live/machines_live.ex:584
-#: lib/marshall_web/live/machines_live.ex:673
+#: lib/marshall_web/live/machines_live.ex:648
+#: lib/marshall_web/live/machines_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "Kawaida"
 
-#: lib/marshall_web/live/machines_live.ex:681
+#: lib/marshall_web/live/machines_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Starting"
 msgstr "Inawasha"
@@ -1380,13 +1375,13 @@ msgstr "Inawasha"
 msgid "Starting the machine with its new resources."
 msgstr "Kuanzisha mashine na rasilimali zake mpya."
 
-#: lib/marshall_web/live/machines_live.ex:795
-#: lib/marshall_web/live/machines_live.ex:814
+#: lib/marshall_web/live/machines_live.ex:880
+#: lib/marshall_web/live/machines_live.ex:899
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Hali"
 
-#: lib/marshall_web/live/overview_live.ex:243
+#: lib/marshall_web/live/overview_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "Kaa kwenye kitanzi"
@@ -1413,7 +1408,7 @@ msgstr "Simamisha mashine"
 msgid "Stopped"
 msgstr "Imesimamishwa"
 
-#: lib/marshall_web/live/machines_live.ex:678
+#: lib/marshall_web/live/machines_live.ex:742
 #: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
@@ -1434,17 +1429,17 @@ msgstr "Kusimamisha nakala na kuondoa rasilimali za muda. Urejeshaji wa chanzo u
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Kusimamisha mashine ili rasilimali zake ziweze kubadilika kwa usalama."
 
-#: lib/marshall_web/live/machines_live.ex:725
+#: lib/marshall_web/live/machines_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "Kusimamisha chanzo"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "Jisajili"
 
-#: lib/marshall_web/live/machines_live.ex:728
+#: lib/marshall_web/live/machines_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "Kubadilisha uwekaji"
@@ -1454,17 +1449,17 @@ msgstr "Kubadilisha uwekaji"
 msgid "Taking snapshot"
 msgstr "Kuchukua picha"
 
-#: lib/marshall_web/live/machines_live.ex:1122
+#: lib/marshall_web/live/machines_live.ex:1230
 #, elixir-autogen, elixir-format
 msgid "Team membership and thread sharing can also grant machine access."
 msgstr "Uanachama wa timu na kushiriki mazungumzo pia kunaweza kutoa ufikiaji wa mashine."
 
-#: lib/marshall_web/live/machines_live.ex:871
+#: lib/marshall_web/live/machines_live.ex:956
 #, elixir-autogen, elixir-format
 msgid "Terminal unavailable"
 msgstr "Kituo hakipatikani"
 
-#: lib/marshall_web/live/machines_live.ex:665
+#: lib/marshall_web/live/machines_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "Terminal, lifecycle, resize, clone na kushiriki."
@@ -1489,7 +1484,7 @@ msgstr "Nafasi hiyo ya jina ya hazina si sahihi."
 msgid "That repository reference cannot be launched."
 msgstr "Rejeleo hilo la hazina haliwezi kuzinduliwa."
 
-#: lib/marshall_web/live/machines_live.ex:1191
+#: lib/marshall_web/live/machines_live.ex:1299
 #, elixir-autogen, elixir-format
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr "Akaunti lazima iwe tayari imesajiliwa. Kuhifadhi jukumu kunachukua nafasi ya jukumu la mashine moja kwa moja la mtu huyo; chagua Ondoa ufikiaji ili kuondoa ruzuku hiyo ya moja kwa moja."
@@ -1534,17 +1529,17 @@ msgstr "Mashine haikuweza kusasishwa. Onyesha upya na ujaribu tena."
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Mashine imebadilika tangu rasimu hii ilipoundwa. Kagua nyenzo zilizothibitishwa hapo juu."
 
-#: lib/marshall_web/live/machines_live.ex:1285
+#: lib/marshall_web/live/machines_live.ex:1393
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr "Mashine imesimamishwa, kunakiliwa mara moja na kuanza kwenye seva pangishi iliyochaguliwa kiotomatiki. Meli zetu za maendeleo hutumia muunganisho wa Gbit 1/s kati ya wapangishaji, kwa hivyo hatua inaweza kuchukua muda mrefu zaidi; hatua zinatarajiwa kuwa haraka zaidi wakati Overalls inaendeshwa kwenye AWS katika uzalishaji."
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1405
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "Mashine imesimamishwa, kunakiliwa mara moja na kuanza kwenye marudio."
 
-#: lib/marshall_web/live/machines_live.ex:704
+#: lib/marshall_web/live/machines_live.ex:789
 #, elixir-autogen, elixir-format
 msgid "The owner's access cannot be changed."
 msgstr "Idhini ya mmiliki haiwezi kubadilishwa."
@@ -1559,7 +1554,7 @@ msgstr "Pini haikuweza kubadilishwa. Onyesha upya na ujaribu tena."
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Nakala ya awali ya mashine hii bado inatoa muhtasari wake. Jaribu tena baada ya muda mfupi."
 
-#: lib/marshall_web/live/machines_live.ex:714
+#: lib/marshall_web/live/machines_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "The request could not be completed. Check the values and try again."
 msgstr "Ombi halikuweza kukamilika. Angalia thamani na ujaribu tena."
@@ -1574,12 +1569,13 @@ msgstr "Ombi limekumbana na tatizo. Tumia vitendo vinavyopatikana ili kurejesha 
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "Urekebishaji wa ukubwa umekamilika; ukurasa huu huonyeshwa upya kwa saizi zilizothibitishwa."
 
-#: lib/marshall_web/live/machines_live.ex:610
+#: lib/marshall_web/live/machines_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "The same network and access options as Standard, with AI agents that can start child agents."
 msgstr "Mtandao sawa na chaguo za ufikiaji kama Kawaida, na mawakala wa AI ambao wanaweza kuanzisha mawakala wa watoto."
 
-#: lib/marshall_web/live/machines_live.ex:700
+#: lib/marshall_web/live/machines_live.ex:768
+#: lib/marshall_web/live/machines_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "The selected image needs more memory or disk space."
 msgstr "Picha iliyochaguliwa inahitaji kumbukumbu zaidi au nafasi ya diski."
@@ -1609,7 +1605,7 @@ msgstr "Chanzo kilikuwa na shughuli nyingi au kilibadilishwa kabla ya kuunda clo
 msgid "There is not enough available capacity for a new machine right now."
 msgstr "Hakuna uwezo wa kutosha wa mashine mpya kwa sasa."
 
-#: lib/marshall_web/live/machines_live.ex:693
+#: lib/marshall_web/live/machines_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "There is not enough available capacity for this machine."
 msgstr "Hakuna uwezo wa kutosha wa mashine hii."
@@ -1619,7 +1615,8 @@ msgstr "Hakuna uwezo wa kutosha wa mashine hii."
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "Hakuna uwezo wa kutosha wa nakala hii. Jaribu tena wakati nafasi inapatikana."
 
-#: lib/marshall_web/live/machines_live.ex:695
+#: lib/marshall_web/live/machines_live.ex:765
+#: lib/marshall_web/live/machines_live.ex:780
 #, elixir-autogen, elixir-format
 msgid "This image is no longer available. Refresh and choose another image."
 msgstr "Picha hii haipatikani tena. Onyesha upya na uchague picha nyingine."
@@ -1644,7 +1641,7 @@ msgstr "Kiungo hiki cha uzinduzi kimeisha muda wake. Fungua tena."
 msgid "This machine is being deleted and cannot be pinned."
 msgstr "Mashine hii inafutwa na haiwezi kubandikwa."
 
-#: lib/marshall_web/live/machines_live.ex:706
+#: lib/marshall_web/live/machines_live.ex:791
 #, elixir-autogen, elixir-format
 msgid "This machine is being deleted."
 msgstr "Mashine hii inafutwa."
@@ -1659,7 +1656,7 @@ msgstr "Mashine hii haipatikani au huna tena ufikiaji wa usimamizi."
 msgid "This machine is unavailable or your access has ended."
 msgstr "Mashine hii haipatikani au ufikiaji wako umekwisha."
 
-#: lib/marshall_web/live/machines_live.ex:701
+#: lib/marshall_web/live/machines_live.ex:786
 #, elixir-autogen, elixir-format
 msgid "This machine's host is currently unavailable."
 msgstr "Mwenyeji wa mashine hii hapatikani kwa sasa."
@@ -1674,7 +1671,7 @@ msgstr "Kiungo hiki cha hazina hakikuweza kuzinduliwa. Fungua kiungo tena."
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "Ombi hili halikuweza kumaliza. Kagua suala hapa chini na vitendo vinavyopatikana."
 
-#: lib/marshall_web/live/machines_live.ex:709
+#: lib/marshall_web/live/machines_live.ex:794
 #, elixir-autogen, elixir-format
 msgid "This request has already been used. Refresh before trying again."
 msgstr "Ombi hili tayari limetumika. Onyesha upya kabla ya kujaribu tena."
@@ -1684,39 +1681,39 @@ msgstr "Ombi hili tayari limetumika. Onyesha upya kabla ya kujaribu tena."
 msgid "This request has ended without publishing a clone."
 msgstr "Ombi hili limeisha bila kuchapisha nakala."
 
-#: lib/marshall_web/live/machines_live.ex:835
-#: lib/marshall_web/live/machines_live.ex:1075
-#: lib/marshall_web/live/machines_live.ex:1087
+#: lib/marshall_web/live/machines_live.ex:920
+#: lib/marshall_web/live/machines_live.ex:1183
+#: lib/marshall_web/live/machines_live.ex:1195
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Haipatikani"
 
-#: lib/marshall_web/live/machines_live.ex:657
+#: lib/marshall_web/live/machines_live.ex:721
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Haijulikani"
 
-#: lib/marshall_web/live/machines_live.ex:707
+#: lib/marshall_web/live/machines_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Unpin this machine before deleting it."
 msgstr "Bandua mashine hii kabla ya kuifuta."
 
-#: lib/marshall_web/live/machines_live.ex:1461
+#: lib/marshall_web/live/machines_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "Bandua ili ufute. Ingawa umebandika mashine hii, hakuna kinachoweza kuifuta."
 
-#: lib/marshall_web/live/overview_live.ex:291
+#: lib/marshall_web/live/overview_live.ex:321
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "Jiondoe wakati wowote."
 
-#: lib/marshall_web/live/overview_live.ex:367
+#: lib/marshall_web/live/overview_live.ex:399
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "Imesasishwa"
 
-#: lib/marshall_web/live/machines_live.ex:1403
+#: lib/marshall_web/live/machines_live.ex:1511
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "Inasasisha kiotomatiki"
@@ -1726,19 +1723,19 @@ msgstr "Inasasisha kiotomatiki"
 msgid "Use current machine state, keeping these sizes"
 msgstr "Tumia hali ya mashine ya sasa, kuweka saizi hizi"
 
-#: lib/marshall_web/live/machines_live.ex:727
+#: lib/marshall_web/live/machines_live.ex:812
 #, elixir-autogen, elixir-format
 msgid "Verifying the destination disks"
 msgstr "Inathibitisha diski lengwa"
 
-#: lib/marshall_web/live/overview_live.ex:168
+#: lib/marshall_web/live/overview_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "View all →"
 msgstr "Tazama zote →"
 
-#: lib/marshall_web/live/machines_live.ex:653
-#: lib/marshall_web/live/machines_live.ex:1210
-#: lib/marshall_web/live/machines_live.ex:1219
+#: lib/marshall_web/live/machines_live.ex:717
+#: lib/marshall_web/live/machines_live.ex:1318
+#: lib/marshall_web/live/machines_live.ex:1327
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "Mtazamaji"
@@ -1768,7 +1765,7 @@ msgstr "Inasubiri nakala ya awali ya mashine hii kutoa muhtasari wake."
 msgid "Waiting for the source to stop."
 msgstr "Inasubiri chanzo kisimame."
 
-#: lib/marshall_web/live/overview_live.ex:286
+#: lib/marshall_web/live/overview_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "Hatukuweza kufikia huduma ya majarida. Jaribu tena baadaye."
@@ -1778,13 +1775,13 @@ msgstr "Hatukuweza kufikia huduma ya majarida. Jaribu tena baadaye."
 msgid "We couldn't launch that repository"
 msgstr "Hatukuweza kuzindua hazina hiyo"
 
-#: lib/marshall_web/live/machines_live.ex:652
+#: lib/marshall_web/live/machines_live.ex:716
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "Programu za wavuti"
 
-#: lib/marshall_web/live/machines_live.ex:1209
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1317
+#: lib/marshall_web/live/machines_live.ex:1326
 #, elixir-autogen, elixir-format
 msgid "Web apps only"
 msgstr "Programu za wavuti pekee"
@@ -1794,7 +1791,7 @@ msgstr "Programu za wavuti pekee"
 msgid "What happens"
 msgstr "Nini kinatokea"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1226
 #, elixir-autogen, elixir-format
 msgid "Who can reach this machine, and what each role allows."
 msgstr "Nani anaweza kufikia mashine hii, na kila jukumu linaruhusu nini."
@@ -1804,7 +1801,7 @@ msgstr "Nani anaweza kufikia mashine hii, na kila jukumu linaruhusu nini."
 msgid "You can pin up to %{value1} machines. Unpin one before pinning another."
 msgstr "Unaweza kubandika hadi mashine za %{value1}. Bandua moja kabla ya kubandika nyingine."
 
-#: lib/marshall_web/live/machines_live.ex:705
+#: lib/marshall_web/live/machines_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "You no longer have permission for this action."
 msgstr "Huna tena ruhusa ya kitendo hiki."
@@ -1814,17 +1811,17 @@ msgstr "Huna tena ruhusa ya kitendo hiki."
 msgid "Your account cannot create machines."
 msgstr "Akaunti yako haiwezi kuunda mashine."
 
-#: lib/marshall_web/live/machines_live.ex:761
+#: lib/marshall_web/live/machines_live.ex:846
 #, elixir-autogen, elixir-format
 msgid "Your development environments, personal and shared."
 msgstr "Mazingira yako ya ukuzaji, ya kibinafsi na ya pamoja."
 
-#: lib/marshall_web/live/machines_live.ex:1092
+#: lib/marshall_web/live/machines_live.ex:1200
 #, elixir-autogen, elixir-format
 msgid "Your disk is retained when the machine is stopped."
 msgstr "Diski yako huhifadhiwa wakati mashine imesimamishwa."
 
-#: lib/marshall_web/live/machines_live.ex:1033
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "Diski yako inakaa nawe wakati mashine imesimamishwa."
@@ -1839,7 +1836,7 @@ msgstr "Mashine yako itasalia imesimamishwa. Ukuaji wa mfumo wa faili wa diski u
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "Mashine yako itasimama wakati rasilimali zinabadilika, kisha itawaka tena. Tarajia muda wa kutopatikana."
 
-#: lib/marshall_web/live/overview_live.ex:166
+#: lib/marshall_web/live/overview_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Your machines"
 msgstr "Mashine zako"
@@ -1854,7 +1851,7 @@ msgstr "Nakala yako ya kibinafsi imeundwa na rasilimali za muda zimesafishwa."
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr "Nakala yako ya faragha imeundwa. Nakala ya hali ya chanzo bado inaondolewa; chanzo hubaki kimelindwa hadi hapo."
 
-#: lib/marshall_web/live/overview_live.ex:157
+#: lib/marshall_web/live/overview_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Your workspace, with a little room to breathe."
 msgstr "Nafasi yako ya kazi, iliyo na chumba kidogo cha kupumua."
@@ -1864,18 +1861,18 @@ msgstr "Nafasi yako ya kazi, iliyo na chumba kidogo cha kupumua."
 msgid "continue to Overalls"
 msgstr "nenda kwa Overalls"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1359
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "uzalishaji, jina la mradi"
 
-#: lib/marshall_web/live/machines_live.ex:881
-#: lib/marshall_web/live/machines_live.ex:1181
+#: lib/marshall_web/live/machines_live.ex:966
+#: lib/marshall_web/live/machines_live.ex:1289
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Ukurasa wa kwanza"
 
-#: lib/marshall_web/live/machines_live.ex:892
+#: lib/marshall_web/live/machines_live.ex:977
 #, elixir-autogen, elixir-format
 msgid "← Machines"
 msgstr "← Mashine"
@@ -1969,7 +1966,52 @@ msgstr "Thibitisha"
 msgid "A new machine will clone the repository when it boots."
 msgstr "Mashine mpya itanakili hazina itakapowashwa."
 
-#: lib/marshall_web/live/machines_live.ex:638
+#: lib/marshall_web/live/machines_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Android (API 36)"
 msgstr "Android (API 36)"
+
+#: lib/marshall_web/live/machines_live.ex:1029
+#, elixir-autogen, elixir-format
+msgid "Leave this blank to create the machine without making setup changes."
+msgstr "Acha hapa wazi ili kuunda mashine bila kubadilisha maandalizi."
+
+#: lib/marshall_web/live/machines_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Machine and setup thread requested."
+msgstr "Mashine na mazungumzo ya maandalizi yameombwa."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:48
+#, elixir-autogen, elixir-format
+msgid "Provisioning is in progress. This page will open the machine when it is ready."
+msgstr "Utayarishaji unaendelea. Ukurasa huu utafungua mashine ikiwa tayari."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "Provisioning request unavailable."
+msgstr "Ombi la utayarishaji halipatikani."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Retry is unavailable."
+msgstr "Kujaribu tena hakupatikani."
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Retry setup"
+msgstr "Jaribu kuandaa tena"
+
+#: lib/marshall_web/live/machine_provisioning_live.ex:42
+#, elixir-autogen, elixir-format
+msgid "Setting up your machine"
+msgstr "Inaandaa mashine yako"
+
+#: lib/marshall_web/live/machines_live.ex:1019
+#, elixir-autogen, elixir-format
+msgid "The machine agent will execute this instruction automatically in Work mode."
+msgstr "Wakala wa mashine atatekeleza maagizo haya kiotomatiki katika hali ya Kazi."
+
+#: lib/marshall_web/live/machines_live.ex:1017
+#, elixir-autogen, elixir-format
+msgid "What should this machine do when it is ready?"
+msgstr "Mashine hii ifanye nini ikiwa tayari?"
