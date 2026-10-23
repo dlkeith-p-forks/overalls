@@ -1,6 +1,6 @@
 ---
-digest: 4f3c4e04b03d6a9501e5345b48002da21b3b597e0a75e5ec012c131ea67a4969
-disposition: updated
+digest: 03cc257614f12d9fbf0743301b69f56728d9f96b85b4d47d447a3df23df45895
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Document Linux GTK deployment Reload and Forget controls, including persistence reflection and field clearing.
+The parity row records Android approval/reconnect evidence without changing the handbook chapters, domains, topology or security boundaries.
