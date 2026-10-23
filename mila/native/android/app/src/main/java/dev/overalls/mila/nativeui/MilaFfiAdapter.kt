@@ -168,6 +168,12 @@ interface MilaRustBindings {
     /** Returns the closed machine-action bit mask, or null for invalid input. */
     fun machineActions(snapshot: ByteArray, host: String, port: Int?, index: Int): Int?
     fun sessionConnect(trust: ByteArray, host: String, publicKey: String, port: Int, timeoutMs: Int, signer: MilaDeviceKey): MilaSessionHandle?
+    /** Reads one bounded machine page from the authenticated session. */
+    fun sessionRead(handle: Long, more: Boolean): Int = -12
+    /** Returns the latest validated machine listing for the authenticated session. */
+    fun sessionListing(handle: Long): ByteArray? = null
+    /** Returns the latest complete machine snapshot for the authenticated session. */
+    fun sessionSnapshot(handle: Long): ByteArray? = null
     /** Returns the bounded `whoami --json` envelope, including pending approval links. */
     fun sessionWhoami(handle: Long): ByteArray? = null
     /** Returns the canonical Rust-selected trust document, or null on refusal. */
@@ -217,6 +223,9 @@ internal object MilaRustFfi : MilaRustBindings {
         check(loaded) { "mila_ffi is unavailable" }
         return nativeSessionConnect(trust, host, publicKey, port, timeoutMs, signer)?.let(::MilaSessionHandle)
     }
+    override fun sessionRead(handle: Long, more: Boolean): Int = nativeSessionRead(handle, more)
+    override fun sessionListing(handle: Long): ByteArray? = nativeSessionListing(handle)
+    override fun sessionSnapshot(handle: Long): ByteArray? = nativeSessionSnapshot(handle)
     override fun sessionWhoami(handle: Long): ByteArray? = nativeSessionWhoami(handle)
     override fun reconcileTrust(pinned: ByteArray?, fetched: ByteArray?, host: String, now: Long): ByteArray? {
         check(loaded) { "mila_ffi is unavailable" }
@@ -285,31 +294,37 @@ internal object MilaRustFfi : MilaRustBindings {
 }
 
 /** Opaque, one-shot authority for a live Rust session. */
+/**
+ * @cc [owner:ghuntley,label:architecture] mila-android-session-binding-parity
+ * Every operation on a packaged Android session handle MUST dispatch through the binding supplied
+ * by its adapter, so injected bindings and the production JNI implementation observe the same
+ * authenticated machine-list lifecycle.
+ */
 class MilaSessionHandle internal constructor(
     private val nativeHandle: Long,
     private val bindings: MilaRustBindings = MilaRustFfi,
 ) : AutoCloseable {
     private var closed = false
-    @Synchronized fun readMachines(more: Boolean = false): Int { check(!closed); return MilaRustFfi.nativeSessionRead(nativeHandle, more) }
-    @Synchronized fun listing(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionListing(nativeHandle) ?: error("listing unavailable") }
+    @Synchronized fun readMachines(more: Boolean = false): Int { check(!closed); return bindings.sessionRead(nativeHandle, more) }
+    @Synchronized fun listing(): ByteArray { check(!closed); return bindings.sessionListing(nativeHandle) ?: error("listing unavailable") }
     @Synchronized fun whoami(): ByteArray {
         check(!closed)
         return bindings.sessionWhoami(nativeHandle) ?: error("whoami unavailable")
     }
-    @Synchronized fun snapshot(): ByteArray { check(!closed); return MilaRustFfi.nativeSessionSnapshot(nativeHandle) ?: error("snapshot unavailable") }
+    @Synchronized fun snapshot(): ByteArray { check(!closed); return bindings.sessionSnapshot(nativeHandle) ?: error("snapshot unavailable") }
     @Synchronized fun machineAction(machine: UUID, command: MilaMachineCommand, requestId: String): Result<Unit> = runCatching {
         check(!closed)
         val action = when (command) { MilaMachineCommand.Start -> "start"; MilaMachineCommand.Stop -> "stop"; MilaMachineCommand.Pause -> "pause"; MilaMachineCommand.Resume -> "resume"; MilaMachineCommand.Delete -> "rm"; else -> throw IllegalArgumentException("command is not a mutation") }
-        val status = MilaRustFfi.nativeSessionMachineAction(nativeHandle, machine.toString(), action, requestId)
+        val status = bindings.sessionMachineAction(nativeHandle, machine.toString(), action, requestId)
         if (status != 0) error("machine action rejected")
     }
     @Synchronized fun webShow(machine: UUID): Result<ByteArray> = runCatching {
         check(!closed)
-        MilaRustFfi.nativeSessionWebShow(nativeHandle, machine.toString()) ?: error("web endpoint unavailable")
+        bindings.sessionWebShow(nativeHandle, machine.toString()) ?: error("web endpoint unavailable")
     }
     @Synchronized fun webSet(machine: UUID, port: Int, public: Boolean, revision: Long, requestId: String): Result<Unit> = runCatching {
         check(!closed)
-        check(MilaRustFfi.nativeSessionWebSet(nativeHandle, machine.toString(), port, public, revision, requestId) == 0)
+        check(bindings.sessionWebSet(nativeHandle, machine.toString(), port, public, revision, requestId) == 0)
     }
     @Synchronized fun threadAction(thread: UUID, command: MilaThreadCommand, secondary: UUID? = null, input: String? = null, requestId: String? = null): Result<ByteArray> = runCatching {
         check(!closed)
@@ -324,12 +339,12 @@ class MilaSessionHandle internal constructor(
             MilaThreadCommand.Mode -> "thread mode"
             MilaThreadCommand.Read -> "thread read"
         }
-        MilaRustFfi.nativeSessionThreadAction(nativeHandle, thread.toString(), wire, secondary?.toString(), input, requestId)
+        bindings.sessionThreadAction(nativeHandle, thread.toString(), wire, secondary?.toString(), input, requestId)
             ?: error("thread action rejected")
     }
     @Synchronized fun threadListing(): Result<ByteArray> = runCatching {
         check(!closed)
-        MilaRustFfi.nativeSessionThreadAction(nativeHandle, "", "thread ls", null, null, null)
+        bindings.sessionThreadAction(nativeHandle, "", "thread ls", null, null, null)
             ?: error("thread listing unavailable")
     }
     /** Reads keys through the same authenticated, certificate-pinned session handle. */

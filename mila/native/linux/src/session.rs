@@ -1168,6 +1168,16 @@ mod tests {
             ),
             Err(SessionError::InvalidInput)
         );
+        assert_eq!(
+            session.thread_action(
+                Some("01234567-89ab-cdef-0123-456789abcdef"),
+                "thread plan approve",
+                None,
+                None,
+                None,
+            ),
+            Err(SessionError::InvalidInput)
+        );
     }
 
     #[test]

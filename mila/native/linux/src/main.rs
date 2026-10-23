@@ -765,6 +765,46 @@ impl NativeState {
             });
             thread_actions.append(&button);
         }
+        for (message, command, needs_input) in [
+            (
+                strings::Message::ThreadPlanApprove,
+                "thread plan approve",
+                false,
+            ),
+            (
+                strings::Message::ThreadPlanRevise,
+                "thread plan revise",
+                true,
+            ),
+        ] {
+            let button = Button::with_label(&strings::text(message));
+            let thread = thread_id.clone();
+            let input = thread_input.clone();
+            let request = request_id.clone();
+            let session = self.session.clone();
+            let status = content.clone();
+            button.connect_clicked(move |_| {
+                let mut binding = session.borrow_mut();
+                let Some(live) = binding.session_mut() else {
+                    status.set_label("Thread controls require sign-in.");
+                    return;
+                };
+                let request_value =
+                    (!request.text().trim().is_empty()).then(|| request.text().trim().to_owned());
+                let input_value = needs_input.then(|| input.text().to_owned());
+                match live.thread_action(
+                    Some(thread.text().trim()),
+                    command,
+                    None,
+                    input_value.as_deref(),
+                    request_value.as_deref(),
+                ) {
+                    Ok(_) => status.set_label("Thread mutation accepted."),
+                    Err(_) => status.set_label("Thread mutation rejected by Rust policy."),
+                }
+            });
+            thread_actions.append(&button);
+        }
         root.append(&thread_id);
         root.append(&thread_secondary);
         root.append(&thread_input);

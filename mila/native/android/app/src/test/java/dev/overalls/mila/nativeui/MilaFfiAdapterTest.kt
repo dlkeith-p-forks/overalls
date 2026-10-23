@@ -81,6 +81,45 @@ private open class FakeRustBindings(
     override fun terminalResize(columns: Int, rows: Int, readWrite: Boolean): Int = 0
 }
 
+private class SessionReadBindings : FakeRustBindings() {
+    val pages = mutableListOf<Boolean>()
+    var closeCalls = 0
+
+    override fun sessionRead(handle: Long, more: Boolean): Int {
+        pages += more
+        return 0
+    }
+
+    override fun sessionListing(handle: Long): ByteArray =
+        "{\"machines\":[],\"has_more\":false}".toByteArray()
+
+    override fun sessionSnapshot(handle: Long): ByteArray =
+        "{\"machines\":[],\"has_more\":false}".toByteArray()
+
+    override fun sessionClose(handle: Long): Int {
+        closeCalls++
+        return 0
+    }
+}
+
+class MilaSessionHandleTest {
+    @Test
+    fun machineReadsUseTheInjectedAuthenticatedBinding() {
+        val bindings = SessionReadBindings()
+        val session = MilaSessionHandle(42L, bindings)
+
+        assertEquals(0, session.readMachines())
+        assertEquals(0, session.readMachines(more = true))
+        assertEquals("{\"machines\":[],\"has_more\":false}", session.listing().toString(Charsets.UTF_8))
+        assertEquals("{\"machines\":[],\"has_more\":false}", session.snapshot().toString(Charsets.UTF_8))
+        session.close()
+
+        assertEquals(listOf(false, true), bindings.pages)
+        assertEquals(1, bindings.closeCalls)
+        assertThrows(IllegalStateException::class.java) { session.listing() }
+    }
+}
+
 private class TrustBindings : FakeRustBindings() {
     var seenPinned: ByteArray? = null
     var seenFetched: ByteArray? = null

@@ -1,5 +1,5 @@
 ---
-digest: 26498e38f735c0a495fc94d87c41a2d4a46986c858ad4275899ea1737c5b1fc3
+digest: 428c36a7618237e7107d6630f3ceceb325fc80a03fd29c2e3377ae0ec469e7fd
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document Linux GTK thread Prompt/Answer session gating, request IDs, bounded stdin, and remaining plan controls.
+Document GTK thread prompt, answer, plan approval and plan revision controls with authenticated session, canonical request IDs and bounded stdin.

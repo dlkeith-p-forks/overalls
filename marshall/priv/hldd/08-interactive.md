@@ -1433,9 +1433,11 @@ Linux thread list, show and turns controls now call the authenticated session
 and keep bounded response bytes inside Rust. Prompt and answer controls also
 require that session, pass the thread and (for an answer) question/turn ID,
 and send at most 64 KiB of stdin text. Rust requires a canonical Porsche
-request ID for each prompt or answer mutation, so an unsigned-in window or a
-missing/invalid request ID is refused before the backend. Plan approval and
-revision controls and the live deployment journey remain open in the GTK shell.
+request ID for each prompt, answer, plan approval or plan revision mutation,
+so an unsigned-in window or a missing/invalid request ID is refused before the
+backend. Plan approval and revision buttons use the same bounded input field
+(revision text is limited to 64 KiB); the live deployment journey remains open
+in the GTK shell.
 
 
 Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid

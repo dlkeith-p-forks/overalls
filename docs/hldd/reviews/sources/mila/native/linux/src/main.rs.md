@@ -1,11 +1,11 @@
 ---
-digest: 9651f6e81b6aaabcf9df5c914732a7874c2054abdf0935edda638d8c9bd347d6
+digest: f66e435baefab76898b95fc8f2a704252417c0de5edd3c735f77a51af4707eb1
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/main.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: a358df551859708f2c5c67dadda9e0c4dbec3a86663884e320d541acec9ec719
+  marshall/priv/hldd/08-interactive.md: 428c36a7618237e7107d6630f3ceceb325fc80a03fd29c2e3377ae0ec469e7fd
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent Linux thread control changes; no new domain or topology impact.
+Reviewed Linux thread plan approval/revision controls; no new domain or topology impact.
