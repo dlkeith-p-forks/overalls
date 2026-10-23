@@ -1,5 +1,5 @@
 ---
-digest: f23caa36ac854324499e17ac36dd0418cd7bb61f25818343b37b6d28d758865e
+digest: cb8a063fd2803b66404423335bb76765ad16555a5b01c28ea465bfafed2e9a8a
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-PTY bridge preserves existing documented Linux terminal boundaries; no HLDD chapter content or scenario coverage changes.
+Concurrent native platform edits reviewed; no HLDD chapter content changes are required.

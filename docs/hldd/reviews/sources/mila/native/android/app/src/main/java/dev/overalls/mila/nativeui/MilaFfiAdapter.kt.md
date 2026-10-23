@@ -1,5 +1,5 @@
 ---
-digest: 9aa93d7730838f187798f99ba1a8b520fc49d098f65a805fbefff9a62b2e5a77
+digest: 4c6cc5e595335365af48b52e255bf8897f81daca004388a2a0ce6776678ef73d
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed bounded native adapter change; no documented behavior or topology chapter requires revision.
+Concurrent native platform edits reviewed; no HLDD chapter content changes are required.

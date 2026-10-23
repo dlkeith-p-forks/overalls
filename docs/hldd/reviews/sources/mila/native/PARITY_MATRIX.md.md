@@ -1,5 +1,5 @@
 ---
-digest: a189995ac649b1602394536cb28e64a45270f0880d875ce7ab54a0975df90f21
+digest: ea8c00165e57ae25b3845a82e971baffdc398f3bc62ab706fa6323e11e0c9e1c
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android intent routing is an implementation-only extension of existing documented navigation and does not alter deployment, security, or operational contracts.
+Reviewed native Linux HTTPS trust enrollment; no HLDD chapter content changes are required.
