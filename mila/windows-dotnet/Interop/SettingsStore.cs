@@ -1,10 +1,19 @@
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace Mila.Windows.Interop;
 
 internal sealed record MilaSettings(string Locale, bool DarkMode)
 {
     internal static MilaSettings Defaults => new("en", false);
+
+    internal static bool IsValidLocale(string locale)
+    {
+        string normalized = locale.Trim().Replace('_', '-');
+        return normalized.Length is >= 2 and <= 35 && Regex.IsMatch(normalized, "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$", RegexOptions.CultureInvariant);
+    }
+
+    internal MilaSettings Normalize() => this with { Locale = Locale.Trim().Replace('_', '-') };
 }
 
 internal static class MilaSettingsStore
@@ -16,15 +25,16 @@ internal static class MilaSettingsStore
         {
             if (!File.Exists(FilePath)) return MilaSettings.Defaults;
             MilaSettings? value = JsonSerializer.Deserialize<MilaSettings>(File.ReadAllText(FilePath));
-            return value is { Locale.Length: >= 2 and <= 16 } ? value : MilaSettings.Defaults;
+            return value is not null && MilaSettings.IsValidLocale(value.Locale) ? value.Normalize() : MilaSettings.Defaults;
         }
         catch (IOException) { return MilaSettings.Defaults; }
         catch (JsonException) { return MilaSettings.Defaults; }
     }
     internal static void Save(MilaSettings settings)
     {
-        if (settings.Locale.Length is < 2 or > 16 || settings.Locale.Any(char.IsWhiteSpace)) throw new ArgumentException("Invalid locale", nameof(settings));
+        MilaSettings normalized = settings.Normalize();
+        if (!MilaSettings.IsValidLocale(normalized.Locale)) throw new ArgumentException("Invalid locale", nameof(settings));
         Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
-        File.WriteAllText(FilePath, JsonSerializer.Serialize(settings));
+        File.WriteAllText(FilePath, JsonSerializer.Serialize(normalized));
     }
 }

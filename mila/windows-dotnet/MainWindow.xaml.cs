@@ -27,6 +27,7 @@ public sealed partial class MainWindow : Window
         _sshKeys = new MilaSshKeysController(LoadSshKeysAsync, RevokeSshKeyAsync);
         Closed += (_, _) => { _closed = true; _signIn.SignOut(); _session.Dispose(); };
         ApplyStrings();
+        LoadSettings();
         if (MilaDeploymentStore.Load() is { } deployment)
         {
             DeploymentHost.Text = deployment.Host;
@@ -100,6 +101,10 @@ public sealed partial class MainWindow : Window
         Refresh.Content = S("refresh", "Refresh");
         LockButton.Content = S("lockTitle", "Lock app");
         LockStatus.Text = S("lockUnavailable", "App lock is unavailable until Windows Hello is configured.");
+        SettingsHelp.Text = S("settingsOffline", "Runtime settings are managed by the core library.");
+        LocalePicker.ItemsSource = new[] { "en", "en-GB", "fr", "de", "es", "ja" };
+        SaveSettings.Content = S("settingsSave", "Save settings");
+        SettingsStatus.Text = S("ready", "Ready");
         _ = RefreshLockAvailabilityAsync();
         TerminalTitle.Text = S("tabTerminals", "Terminal");
         TerminalAttach.Content = S("terminalAttach", "Attach");
@@ -426,6 +431,25 @@ public sealed partial class MainWindow : Window
         LockButton.Click -= UnlockApp;
         LockButton.Click += LockApp;
     }
+    private void LoadSettings()
+    {
+        MilaSettings settings = MilaSettingsStore.Load();
+        LocalePicker.SelectedItem = settings.Locale;
+        if (LocalePicker.SelectedItem is null) LocalePicker.SelectedItem = "en";
+        DarkModeToggle.IsOn = settings.DarkMode;
+    }
+
+    private void SaveSettingsClicked(object sender, RoutedEventArgs args)
+    {
+        string locale = LocalePicker.SelectedItem?.ToString() ?? "en";
+        try
+        {
+            MilaSettingsStore.Save(new MilaSettings(locale, DarkModeToggle.IsOn));
+            SettingsStatus.Text = S("settingsSaved", "Settings saved");
+        }
+        catch (ArgumentException) { SettingsStatus.Text = S("settingsInvalid", "Locale rejected by core policy."); }
+    }
+
     private void OnNavigationChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         if (args.SelectedItem is NavigationViewItem item) {
@@ -433,6 +457,7 @@ public sealed partial class MainWindow : Window
             PageTitle.Text = item.Content?.ToString() ?? "Mila";
             PageBody.Text = tag switch { "threads" => S("threadsRecentTitle", "Recent conversations appear here."), "settings" => S("settingsOffline", "Runtime settings are managed by the core library."), _ => S("machinesEmpty", "Select a machine to view its status.") };
             ThreadPanel.Visibility = tag == "threads" ? Visibility.Visible : Visibility.Collapsed;
+            SettingsPanel.Visibility = tag == "settings" ? Visibility.Visible : Visibility.Collapsed;
             if (tag == "threads") RefreshThreads();
             MachineRows.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;
             MachinePanel.Visibility = tag == "machines" ? Visibility.Visible : Visibility.Collapsed;

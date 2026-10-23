@@ -8,6 +8,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../windows-dotnet/Interop/SettingsStore.cs" Link="Interop/SettingsStore.cs" />
     <Compile Include="../windows-dotnet/Interop/SessionConnection.cs" Link="Interop/SessionConnection.cs" />
     <Compile Include="../windows-dotnet/Interop/SignInFlow.cs" Link="Interop/SignInFlow.cs" />
     <Compile Include="../windows-dotnet/Interop/WindowsNotifications.cs" Link="Interop/WindowsNotifications.cs" />

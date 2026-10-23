@@ -10,6 +10,13 @@
         <TextBlock x:Name="PageTitle" FontSize="28" />
         <TextBlock x:Name="PageBody" TextWrapping="Wrap" />
         <TextBlock x:Name="StatusText" Opacity="0.7" />
+        <StackPanel x:Name="SettingsPanel" Visibility="Collapsed" Spacing="8">
+          <TextBlock x:Name="SettingsHelp" TextWrapping="Wrap" Opacity="0.7" />
+          <ComboBox x:Name="LocalePicker" Header="Locale" Width="220" />
+          <ToggleSwitch x:Name="DarkModeToggle" Header="Dark mode" />
+          <Button x:Name="SaveSettings" Click="SaveSettingsClicked" HorizontalAlignment="Left" />
+          <TextBlock x:Name="SettingsStatus" Opacity="0.7" />
+        </StackPanel>
         <StackPanel Spacing="6">
           <TextBlock x:Name="DeploymentHostLabel" />
           <TextBox x:Name="DeploymentHost" PlaceholderText="overalls.example" />
