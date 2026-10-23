@@ -1,6 +1,6 @@
 ---
-digest: a00059ee49b2b5555244ede15fd62c0bb19ebc999e4e9ca5eba2f7f15d770e4c
-disposition: updated
+digest: a189995ac649b1602394536cb28e64a45270f0880d875ce7ab54a0975df90f21
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple SwiftUI now dispatches authenticated thread operations through the Rust live session and exposes bounded responses.
+Android intent routing is an implementation-only extension of existing documented navigation and does not alter deployment, security, or operational contracts.

@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
@@ -70,6 +71,7 @@ fun MilaNativeRoot(
     adapter: MilaFfiAdapter? = null,
     materialProvider: MilaSessionMaterialProvider? = null,
     initialRoute: MilaRoute? = null,
+    routeState: State<MilaRoute>? = null,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -81,6 +83,7 @@ fun MilaNativeRoot(
     }
     val approvalBrowser = remember(context) { AndroidMilaApprovalBrowser(context) }
     var route by remember { mutableStateOf(initialRoute ?: MilaRoute.Machines) }
+    LaunchedEffect(routeState?.value) { routeState?.value?.let { route = it } }
     LaunchedEffect(initialRoute) { initialRoute?.let { route = it } }
     var connection by remember { mutableStateOf<MilaSessionConnection>(MilaSessionConnection.Idle) }
     val localContext = LocalContext.current

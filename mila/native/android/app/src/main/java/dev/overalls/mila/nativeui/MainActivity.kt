@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
 import androidx.core.content.ContextCompat
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.material3.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
@@ -19,8 +20,14 @@ class MainActivity : FragmentActivity() {
     private lateinit var lockController: MilaAppLockController
     private var lockState = mutableStateOf<MilaAppLockState?>(null)
     private var prompt: BiometricPrompt? = null
+    private val deepLinks = MilaDeepLinkController()
+    private val routeState = mutableStateOf<MilaRoute>(MilaRoute.Machines)
+    private var deepLinkGeneration: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        deepLinkGeneration = deepLinks.beginSession()
+        acceptExternalIntent(deepLinks, intent, deepLinkGeneration)
+        routeState.value = deepLinks.target
         MilaStrings.configure(this)
         lockController = MilaAppLockController(MilaAppLockPreferencesStore(getSharedPreferences("mila.app-lock", MODE_PRIVATE)))
         val capability = BiometricManager.from(this).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)
@@ -39,8 +46,16 @@ class MainActivity : FragmentActivity() {
                     Text(MilaStrings.text(MilaMessage.LockExplain))
                     Button(onClick = ::authenticate) { Text(MilaStrings.text(MilaMessage.LockUnlock)) }
                     if (state.lastFailed) Text(MilaStrings.text(MilaMessage.LockFailed))
-                } else MilaNativeRoot(adapter = nativeAdapter)
+                } else MilaNativeRoot(adapter = nativeAdapter, routeState = routeState)
             }
+        }
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (acceptExternalIntent(deepLinks, intent, deepLinkGeneration)) {
+            routeState.value = deepLinks.target
         }
     }
 
