@@ -1,6 +1,6 @@
 ---
-digest: 05642e965a85597a071c4d6a1c8cf3267a676ef7f92a8cdab770efaa156264d8
-disposition: updated
+digest: 83fcd18a8b7384777d20d4c37cf097d4de31321b9d8b5831f62855751554ee87
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/main.rs
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Gate GTK terminal controls on authenticated session before reducer operations.
+GTK browser launch is a presentation-only wiring change; existing native web transport and security chapters already cover the authenticated endpoint contract.

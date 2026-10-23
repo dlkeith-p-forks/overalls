@@ -869,6 +869,11 @@ impl NativeState {
             .hexpand(true)
             .build();
         let web_actions = Box::new(Orientation::Horizontal, 8);
+        // Keep the last authenticated endpoint in memory only.  The URL is
+        // accepted from the Rust decoder after machine/route and HTTPS
+        // validation; GTK never constructs or persists browser destinations.
+        let web_endpoint: Rc<RefCell<Option<mila_native_linux::adapter::WebEndpoint>>> =
+            Rc::new(RefCell::new(None));
         for (label_text, operation, public) in [
             (strings::text(strings::Message::WebShow), "show", false),
             (strings::text(strings::Message::WebPublic), "set", true),
@@ -881,6 +886,7 @@ impl NativeState {
             let revision = web_revision.clone();
             let session = self.session.clone();
             let status = content.clone();
+            let endpoint_state = web_endpoint.clone();
             button.connect_clicked(move |_| {
                 let machine_id = machine.text().trim().to_owned();
                 let parsed_port = (!port.text().is_empty())
@@ -896,10 +902,11 @@ impl NativeState {
                     return;
                 };
                 if operation == "show" {
-                    match live.web_show(&machine_id).and_then(|bytes| {
+                    let result = live.web_show(&machine_id).and_then(|bytes| {
                         decode_web_endpoint(&bytes)
                             .map_err(|_| mila_native_linux::session::SessionError::InvalidInput)
-                    }) {
+                    });
+                    match result.as_ref() {
                         Ok(endpoint) => status.set_label(&format!(
                             "Web endpoint\n{}:{} ({}, revision {})",
                             endpoint.label,
@@ -908,6 +915,9 @@ impl NativeState {
                             endpoint.policy_revision
                         )),
                         Err(_) => status.set_label("Web endpoint read rejected."),
+                    }
+                    if let Ok(endpoint) = result {
+                        *endpoint_state.borrow_mut() = Some(endpoint);
                     }
                 } else {
                     let Some(port) = parsed_port else {
@@ -946,6 +956,31 @@ impl NativeState {
         root.append(&web_request);
         root.append(&web_revision);
         root.append(&web_actions);
+        let open_web = Button::with_label("Open web endpoint");
+        let open_web_status = content.clone();
+        let endpoint_state = web_endpoint.clone();
+        open_web.connect_clicked(move |_| {
+            let Some(endpoint) = endpoint_state.borrow().as_ref().cloned() else {
+                open_web_status.set_label("Load a web endpoint before opening it.");
+                return;
+            };
+            let Some(url) = endpoint.url else {
+                open_web_status.set_label("This machine has no public web endpoint.");
+                return;
+            };
+            // decode_web_endpoint already enforces HTTPS and the canonical
+            // machine route. Re-check the scheme at the launch boundary so a
+            // future state refactor cannot turn this into an open redirect.
+            if !url.starts_with("https://") {
+                open_web_status.set_label("Browser destination rejected by Rust policy.");
+                return;
+            }
+            match gio::AppInfo::launch_default_for_uri(&url, None::<&gio::AppLaunchContext>) {
+                Ok(()) => open_web_status.set_label("Web endpoint opened in the browser."),
+                Err(_) => open_web_status.set_label("The browser could not open the endpoint."),
+            }
+        });
+        root.append(&open_web);
         let key_id = Entry::builder()
             .placeholder_text("SSH key ID")
             .hexpand(true)
