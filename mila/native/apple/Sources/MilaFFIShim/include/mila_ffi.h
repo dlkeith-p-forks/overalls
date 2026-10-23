@@ -82,6 +82,10 @@ int32_t mila_session_ssh_key_revoke(uint64_t handle, const uint8_t *key, size_t 
 int32_t mila_session_share_mutation(uint64_t handle, const uint8_t *machine, size_t machine_len,
     const uint8_t *email, size_t email_len, const uint8_t *role, size_t role_len, uint8_t add,
     const uint8_t *request_id, size_t request_id_len);
+int32_t mila_session_thread_action(uint64_t handle, const uint8_t *thread, size_t thread_len,
+    const uint8_t *command, size_t command_len, const uint8_t *secondary, size_t secondary_len,
+    const uint8_t *input, size_t input_len, const uint8_t *request_id, size_t request_id_len,
+    uint8_t *output, size_t capacity, size_t *written);
 int32_t mila_session_listing(uint64_t handle, uint8_t *output, size_t capacity,
     size_t *written);
 int32_t mila_session_close(uint64_t handle);

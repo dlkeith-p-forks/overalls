@@ -90,6 +90,27 @@ public final class MilaLiveSession: @unchecked Sendable {
         guard status == 0 else { throw Self.error(status) }
     }
 
+    public func threadAction(thread: UUID?, command: String, secondary: String? = nil, input: String? = nil, requestID: UUID? = nil) throws -> Data {
+        let current = try validHandle()
+        let threadBytes = Array((thread?.uuidString.lowercased() ?? "").utf8)
+        let commandBytes = Array(command.utf8)
+        let secondaryBytes = Array((secondary ?? "").utf8)
+        let inputBytes = Array((input ?? "").utf8)
+        let requestBytes = Array((requestID.map { "porsche-" + $0.uuidString.lowercased().replacingOccurrences(of: "-", with: "") } ?? "").utf8)
+        func call(_ output: UnsafeMutablePointer<UInt8>?, _ capacity: Int, _ written: UnsafeMutablePointer<Int>) -> Int32 {
+            threadBytes.withUnsafeBufferPointer { t in commandBytes.withUnsafeBufferPointer { c in secondaryBytes.withUnsafeBufferPointer { s in inputBytes.withUnsafeBufferPointer { i in requestBytes.withUnsafeBufferPointer { r in
+                mila_session_thread_action(current, t.baseAddress, t.count, c.baseAddress, c.count, s.baseAddress, s.count, i.baseAddress, i.count, r.baseAddress, r.count, output, capacity, written)
+            }}}}}
+        }
+        var required = 0
+        let first = call(nil, 0, &required)
+        guard first == -3, required > 0, required <= 1_048_576 else { throw Self.error(first) }
+        var bytes = [UInt8](repeating: 0, count: required)
+        let status = bytes.withUnsafeMutableBufferPointer { call($0.baseAddress, $0.count, &required) }
+        guard status == 0 else { throw Self.error(status) }
+        return Data(bytes.prefix(required))
+    }
+
     public func readMore() throws -> Data {
         let current = try validHandle()
         let status = mila_session_read_machines(current, 1)

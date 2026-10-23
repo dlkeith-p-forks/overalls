@@ -1,6 +1,6 @@
 ---
-digest: a358df551859708f2c5c67dadda9e0c4dbec3a86663884e320d541acec9ec719
-disposition: no-impact
+digest: 26498e38f735c0a495fc94d87c41a2d4a46986c858ad4275899ea1737c5b1fc3
+disposition: updated
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/08-interactive.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux authenticated thread controls documentation; no Marshall domain impact.
+Document Linux GTK thread Prompt/Answer session gating, request IDs, bounded stdin, and remaining plan controls.

@@ -1,11 +1,11 @@
 ---
-digest: 94fee172eb3c146002340b7869835b8e1656cc14234b1f1cf53c0f45171028e5
-disposition: no-impact
+digest: d35c589e4abaa31fa36b5048fc32c3df36c59b1ac2b9b91977e7dfb04385a28b
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/PARITY_MATRIX.md
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: a358df551859708f2c5c67dadda9e0c4dbec3a86663884e320d541acec9ec719
+  marshall/priv/hldd/08-interactive.md: 26498e38f735c0a495fc94d87c41a2d4a46986c858ad4275899ea1737c5b1fc3
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux thread parity update; no new domain or topology impact.
+Record Linux authenticated thread Prompt/Answer controls and bounded mutation inputs in the parity matrix.
