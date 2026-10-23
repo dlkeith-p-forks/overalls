@@ -1,5 +1,5 @@
 ---
-digest: c7f55418b30c514f6ee5a5a799ce011d72426bd2d248b4c56c817fe96c09284c
+digest: 448ad87e525316a4a84d2d7fef9b54a13e3070a21625a9896c5c42fa63e86fb9
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Typed Linux UI wiring reuses documented machine session boundary; behavior remains within existing native scope.
+Reviewed local desktop notification capability and fail-closed push registration; behavior remains within existing native notification chapter.
