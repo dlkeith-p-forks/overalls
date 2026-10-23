@@ -488,6 +488,57 @@ impl NativeState {
         root.append(&machine_id);
         root.append(&request_id);
         root.append(&actions);
+        let create_name = Entry::builder()
+            .placeholder_text("New machine name")
+            .hexpand(true)
+            .build();
+        let create_button = Button::with_label("Create machine");
+        let create_status = content.clone();
+        let create_session = self.session.clone();
+        let create_request = request_id.clone();
+        let create_name_input = create_name.clone();
+        create_button.connect_clicked(move |_| {
+            let mut binding = create_session.borrow_mut();
+            let Some(live) = binding.session_mut() else {
+                create_status.set_label("Machine creation requires sign-in.");
+                return;
+            };
+            match live.machine_create(
+                create_name_input.text().trim(),
+                1,
+                1024,
+                10_240,
+                create_request.text().trim(),
+            ) {
+                Ok(()) => create_status.set_label("Machine creation accepted."),
+                Err(_) => create_status.set_label("Machine creation rejected by Rust policy."),
+            }
+        });
+        root.append(&create_name);
+        root.append(&create_button);
+        let resize_button = Button::with_label("Resize machine");
+        let resize_status = content.clone();
+        let resize_session = self.session.clone();
+        let resize_machine = machine_id.clone();
+        let resize_request = request_id.clone();
+        resize_button.connect_clicked(move |_| {
+            let mut binding = resize_session.borrow_mut();
+            let Some(live) = binding.session_mut() else {
+                resize_status.set_label("Machine resize requires sign-in.");
+                return;
+            };
+            match live.machine_resize(
+                resize_machine.text().trim(),
+                1,
+                1024,
+                10_240,
+                resize_request.text().trim(),
+            ) {
+                Ok(()) => resize_status.set_label("Machine resize accepted."),
+                Err(_) => resize_status.set_label("Machine resize rejected by Rust policy."),
+            }
+        });
+        root.append(&resize_button);
         let share_email = Entry::builder()
             .placeholder_text(&strings::text(strings::Message::ShareEmail))
             .hexpand(true)

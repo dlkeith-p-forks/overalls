@@ -241,6 +241,76 @@ impl LiveSession {
             .ok_or_else(|| status.into())
     }
 
+    /// Create a machine using the authenticated Porsche session.
+    pub fn machine_create(
+        &mut self,
+        name: &str,
+        cpu: u32,
+        memory: u64,
+        disk: u64,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
+        if name.is_empty()
+            || name.len() > 128
+            || name.bytes().any(|b| b.is_ascii_control())
+            || !(1..=256).contains(&cpu)
+            || !(128..=4_194_304).contains(&memory)
+            || !(1..=16_777_216).contains(&disk)
+            || !valid_request_id(request_id)
+        {
+            return Err(SessionError::InvalidInput);
+        }
+        let status = unsafe {
+            mila_ffi::session::mila_session_machine_create(
+                self.handle()?,
+                name.as_bytes().as_ptr(),
+                name.len(),
+                cpu,
+                memory,
+                disk,
+                request_id.as_bytes().as_ptr(),
+                request_id.len(),
+            )
+        };
+        (status == mila_ffi::session::SessionStatus::Ok)
+            .then_some(())
+            .ok_or_else(|| status.into())
+    }
+
+    /// Resize a machine using the authenticated Porsche session.
+    pub fn machine_resize(
+        &mut self,
+        machine_id: &str,
+        cpu: u32,
+        memory: u64,
+        disk: u64,
+        request_id: &str,
+    ) -> Result<(), SessionError> {
+        validate_session_identifier(machine_id)?;
+        if !(1..=256).contains(&cpu)
+            || !(128..=4_194_304).contains(&memory)
+            || !(1..=16_777_216).contains(&disk)
+            || !valid_request_id(request_id)
+        {
+            return Err(SessionError::InvalidInput);
+        }
+        let status = unsafe {
+            mila_ffi::session::mila_session_machine_resize(
+                self.handle()?,
+                machine_id.as_bytes().as_ptr(),
+                machine_id.len(),
+                cpu,
+                memory,
+                disk,
+                request_id.as_bytes().as_ptr(),
+                request_id.len(),
+            )
+        };
+        (status == mila_ffi::session::SessionStatus::Ok)
+            .then_some(())
+            .ok_or_else(|| status.into())
+    }
+
     /// Execute an authenticated sharing add/remove mutation with typed role and
     /// request-id validation before crossing the native boundary.
     pub fn share_mutation(
@@ -509,6 +579,12 @@ fn validate_session_identifier(value: &str) -> Result<(), SessionError> {
         return Err(SessionError::InvalidInput);
     }
     Ok(())
+}
+
+fn valid_request_id(value: &str) -> bool {
+    value.len() == 40
+        && value.starts_with("porsche-")
+        && value[8..].bytes().all(|byte| byte.is_ascii_hexdigit())
 }
 
 /// The one session authority presented to the rest of the native UI.

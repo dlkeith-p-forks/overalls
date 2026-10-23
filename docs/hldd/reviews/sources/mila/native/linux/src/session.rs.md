@@ -1,5 +1,5 @@
 ---
-digest: 55fc38ae39e617598d13268edbd3d774d28edbca55ec6f77ada41b725fe61d33
+digest: 5b2d8c6d72300bb836c236ee6d3340eb4ec777f1952b51ecfe5b4b0a16bca954
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed native Linux HTTPS trust enrollment; no HLDD chapter content changes are required.
+Typed Linux UI wiring reuses documented machine session boundary; behavior remains within existing native scope.
