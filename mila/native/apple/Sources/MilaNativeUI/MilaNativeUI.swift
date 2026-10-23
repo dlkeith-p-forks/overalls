@@ -7,8 +7,8 @@ public struct MilaNativeRootView: View {
     @State private var selection: MilaRoute = .machines
     @State private var machines: [MilaMachinePresentation] = []
     @State private var status = MilaStrings.text(.ready)
-    @AppStorage("mila.appLockEnabled") private var appLockEnabled = false
     @StateObject private var appLock = MilaAppLockController()
+    @Environment(\.scenePhase) private var scenePhase
 
     public init(adapter: any MilaFFIAdapter = LinkedMilaFFIAdapter(), snapshot: MilaValidatedSnapshot? = nil) {
         self.adapter = adapter
@@ -39,8 +39,13 @@ public struct MilaNativeRootView: View {
             }
             .toolbar { ToolbarItem { Button(MilaStrings.text(.refresh)) { Task { await refresh() } } } }
             .safeAreaInset(edge: .bottom) { Text(status).font(.caption).foregroundStyle(.secondary).padding(4) }
-        }.milaDesignSystem().task {
-            if appLockEnabled { await appLock.setEnabled(true) }
+        }.milaDesignSystem().onChange(of: scenePhase) { _, phase in
+            switch phase {
+            case .background: appLock.sceneDidEnterBackground()
+            case .active: Task { await appLock.sceneWillEnterForeground() }
+            default: break
+            }
+        }.task {
             await refresh()
         }
         }

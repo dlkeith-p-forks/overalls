@@ -30,4 +30,31 @@ final class MilaAppLockTests: XCTestCase {
         await controller.unlock()
         XCTAssertEqual(controller.state, .unlocked)
     }
+
+    func testEnabledPreferenceSurvivesControllerRecreationAndBackgroundLocks() async {
+        let suite = "MilaAppLockTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let first = MilaAppLockController(evaluator: FakeEvaluator(), defaults: defaults)
+        await first.setEnabled(true)
+        XCTAssertTrue(defaults.bool(forKey: "mila.appLockEnabled"))
+        XCTAssertEqual(first.state, .unlocked)
+        first.sceneDidEnterBackground()
+        XCTAssertEqual(first.state, .locked)
+        let recreated = MilaAppLockController(evaluator: FakeEvaluator(), defaults: defaults)
+        XCTAssertEqual(recreated.state, .locked)
+        await recreated.sceneWillEnterForeground()
+        XCTAssertEqual(recreated.state, .unlocked)
+    }
+
+    func testDisablingLockClearsDurablePreference() async {
+        let suite = "MilaAppLockTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let controller = MilaAppLockController(evaluator: FakeEvaluator(), defaults: defaults)
+        await controller.setEnabled(true)
+        await controller.setEnabled(false)
+        XCTAssertFalse(defaults.bool(forKey: "mila.appLockEnabled"))
+        XCTAssertEqual(controller.state, .unlocked)
+    }
 }
