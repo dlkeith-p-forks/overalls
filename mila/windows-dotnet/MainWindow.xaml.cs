@@ -19,6 +19,7 @@ public sealed partial class MainWindow : Window
     private readonly MilaTerminalSession _terminal = new();
     private long _terminalGeneration;
     private ulong _webRevision;
+    private Uri? _webUrl;
     private readonly MilaSignInFlow _signIn = new();
     private bool _closed;
     public MainWindow(string? activation = null)
@@ -210,11 +211,58 @@ public sealed partial class MainWindow : Window
             WebRevision.Text = endpoint.Revision.ToString(System.Globalization.CultureInfo.InvariantCulture);
             WebPort.Text = endpoint.Port.ToString(System.Globalization.CultureInfo.InvariantCulture);
             WebPublic.IsChecked = endpoint.IsPublic;
+            _webUrl = endpoint.Url;
             WebStatus.Text = endpoint.Url is { } url ? url.ToString() : S("webVisibility", "Web control validated");
+            if (endpoint.Url is { } address)
+            {
+                await WebBrowser.EnsureCoreWebView2Async();
+                WebBrowser.Source = address;
+                WebBrowser.Visibility = Visibility.Visible;
+            }
         }
         catch (InvalidDataException) { WebStatus.Text = S("webFailed", "Web control unavailable"); }
     }
-    private async void CopyWebAddress(object sender, RoutedEventArgs args) => OpenWebControl(sender, args);
+    private async void CopyWebAddress(object sender, RoutedEventArgs args)
+    {
+        if (_webUrl is not { } address)
+        {
+            await OpenWebControlAsync();
+            if (_webUrl is not { } loaded) return;
+            address = loaded;
+        }
+        var package = new Windows.ApplicationModel.DataTransfer.DataPackage();
+        package.SetText(address.ToString());
+        Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(package);
+        WebStatus.Text = S("webCopied", "Web address copied");
+    }
+
+    private async Task OpenWebControlAsync()
+    {
+        if (_selectedMachine is not { } machine || _session.Handle is not { } handle)
+        {
+            WebStatus.Text = S("signInFirst", "Sign in first");
+            return;
+        }
+        MilaNativeSessionBytesResult result = await Task.Run(() => RustNative.TrySessionWebShow(handle, machine.Id));
+        if (!result.Succeeded || result.Data is null) { WebStatus.Text = S("webFailed", "Web control unavailable"); return; }
+        try
+        {
+            MilaWebEndpoint endpoint = MilaWebEndpointDecoder.Decode(result.Data, machine.Id);
+            _webRevision = endpoint.Revision;
+            WebRevision.Text = endpoint.Revision.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            WebPort.Text = endpoint.Port.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            WebPublic.IsChecked = endpoint.IsPublic;
+            _webUrl = endpoint.Url;
+            WebStatus.Text = endpoint.Url is { } url ? url.ToString() : S("webVisibility", "Web control validated");
+            if (endpoint.Url is { } address)
+            {
+                await WebBrowser.EnsureCoreWebView2Async();
+                WebBrowser.Source = address;
+                WebBrowser.Visibility = Visibility.Visible;
+            }
+        }
+        catch (InvalidDataException) { WebStatus.Text = S("webFailed", "Web control unavailable"); }
+    }
     private async void SetWebControl(object sender, RoutedEventArgs args)
     {
         if (_selectedMachine is not { } machine || _session.Handle is not { } handle)

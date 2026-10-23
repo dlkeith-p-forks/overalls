@@ -120,6 +120,7 @@ private struct MachineDetailView: View {
     @State private var webURL = ""
     @StateObject private var webControls = MilaWebControlsController()
     @State private var showWeb = false
+    @State private var webLoading = false
     @State private var sharePrincipal = ""
     @State private var shareRole: MilaShareRole = .viewer
     @State private var resizeCPU = "2"
@@ -161,7 +162,8 @@ private struct MachineDetailView: View {
                 Text(shareStatus).font(.caption).foregroundStyle(.secondary)
                 HStack {
                     TextField(MilaStrings.text(.webPlaceholder), text: $webURL).textContentType(.URL).autocorrectionDisabled()
-                    Button(MilaStrings.text(.webOpen)) { showWeb = webControls.set(webURL) }.disabled(webURL.isEmpty)
+                    Button(MilaStrings.text(.webOpen)) { openAuthenticatedWeb(machine.id) }
+                        .disabled(webLoading || !machine.machine.read)
                 }
                 if webControls.error != nil { Text(MilaStrings.text(.webInvalid)).font(.caption).foregroundStyle(.secondary) }
                 ForEach(machine.actions.values, id: \.self) { action in
@@ -186,6 +188,21 @@ private struct MachineDetailView: View {
         #if canImport(WebKit)
         .sheet(isPresented: $showWeb) { if let endpoint = webControls.endpoint { MilaWebView(endpoint: endpoint) } }
         #endif
+    }
+
+    private func openAuthenticatedWeb(_ machineID: UUID) {
+        webLoading = true
+        Task {
+            defer { webLoading = false }
+            do {
+                let endpoint = try await adapter.webEndpoint(machine: machineID)
+                webControls.open(endpoint)
+                showWeb = true
+            } catch {
+                webControls.clear()
+                _ = webControls.set("invalid")
+            }
+        }
     }
 
     private var isIdle: Bool {

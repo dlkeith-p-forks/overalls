@@ -12,7 +12,37 @@ public struct MilaWebEndpoint: Equatable, Sendable {
     }
 }
 
-public enum MilaWebEndpointError: Error, Equatable, Sendable { case invalid }
+public enum MilaWebEndpointError: Error, Equatable, Sendable {
+    case invalid
+    case unavailable
+}
+
+/// Authenticated projection returned by Rust's `web show --json` command.
+/// The endpoint is bound to the requested machine before it can reach WebKit.
+public struct MilaWebEndpointProjection: Codable, Equatable, Sendable {
+    public let machineID: UUID
+    public let label: String
+    public let port: UInt16
+    public let visibility: String
+    public let policyRevision: UInt64
+    public let url: String?
+    public let route: String
+
+    enum CodingKeys: String, CodingKey {
+        case machineID = "machine_id"
+        case label, port, visibility
+        case policyRevision = "policy_revision"
+        case url, route
+    }
+
+    public func endpoint(for machine: UUID) throws -> MilaWebEndpoint {
+        guard machineID == machine, !label.isEmpty, label.utf8.count <= 256,
+              (visibility == "private" || visibility == "public"),
+              route == "overalls://machines/\(machine.uuidString.lowercased())/web",
+              let value = url else { throw MilaWebEndpointError.unavailable }
+        return try MilaWebEndpoint(value)
+    }
+}
 
 @MainActor public final class MilaWebControlsController: ObservableObject {
     @Published public private(set) var endpoint: MilaWebEndpoint?
@@ -22,6 +52,7 @@ public enum MilaWebEndpointError: Error, Equatable, Sendable { case invalid }
         do { endpoint = try MilaWebEndpoint(value); error = nil; return true }
         catch { endpoint = nil; self.error = MilaWebEndpointError.invalid; return false }
     }
+    public func open(_ endpoint: MilaWebEndpoint) { self.endpoint = endpoint; error = nil }
     public func clear() { endpoint = nil; error = nil }
 }
 

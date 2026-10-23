@@ -115,6 +115,7 @@
           <Button x:Name="WebSet" Click="SetWebControl" />
           <TextBlock x:Name="WebStatus" Opacity="0.7" />
         </StackPanel>
+        <WebView2 x:Name="WebBrowser" Visibility="Collapsed" MinHeight="360" />
       </StackPanel>
     </Grid>
   </NavigationView>

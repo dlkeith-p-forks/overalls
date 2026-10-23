@@ -1,5 +1,5 @@
 ---
-digest: 43c332370530f6f67d1809d3ccb6367a5182f86106c7154f9c015e9f5761159e
+digest: b987a345cf774107ac038f404ce883d3e969a4d0e47a6ceca038cd2c463f2ae1
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Apple presentation and typed command tests preserve documented behavior; no HLDD chapter change.
+Native FCM bridge remains within existing Android notification boundary; no documented chapter behavior changes.

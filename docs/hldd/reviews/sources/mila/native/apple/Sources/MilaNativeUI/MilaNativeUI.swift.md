@@ -1,5 +1,5 @@
 ---
-digest: 02fbd00445668ac54bc7226070e225f5fc9706ce78688054201016b2ff707a42
+digest: 7d3aaa867a3ebe9bab8a321baa8aa0ee6466596e2ce8b809321ec324c25741fe
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Native Apple presentation and typed command tests preserve documented behavior; no HLDD chapter change.
+Apple web integration preserves existing documented web endpoint and security behavior; implementation evidence only.

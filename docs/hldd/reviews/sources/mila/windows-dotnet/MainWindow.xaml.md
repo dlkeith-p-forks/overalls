@@ -1,5 +1,5 @@
 ---
-digest: 200f7f5a7ae90b8a6a75dfe43212d12bc0c4ef5e76688d161c917fa3c455c678
+digest: d312d914a281ce8369d2ba5c7321fcfe0f16355f317764acafd22e2124c9465c
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows thread UI changes preserve documented native client behavior and require no chapter update.
+Windows WebView2 UI wiring preserves existing documented native web controls and requires no chapter change.
