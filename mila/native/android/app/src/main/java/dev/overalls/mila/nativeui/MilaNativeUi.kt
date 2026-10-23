@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import java.util.Locale
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 
@@ -270,6 +271,9 @@ private fun MilaSettingsScreen(adapter: MilaFfiAdapter, signedIn: Boolean) {
     val context = LocalContext.current
     val controller = remember { MilaSettingsController(MilaSharedPreferencesStore(context.getSharedPreferences("mila.settings", 0))) }
     var settings by remember { mutableStateOf(controller.load()) }
+    // Keep locale choices finite and sourced from the shared catalog bundles. A user supplied
+    // locale is still validated by MilaSettings before it reaches persistence.
+    val localeChoices = MilaStrings.supportedLocales
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(MilaStrings.text(MilaMessage.Settings), style = MaterialTheme.typography.titleLarge)
         Text("${MilaStrings.text(MilaMessage.Appearance)}: ${settings.appearance}")
@@ -279,6 +283,18 @@ private fun MilaSettingsScreen(adapter: MilaFfiAdapter, signedIn: Boolean) {
             }
         }
         Text("${MilaStrings.text(MilaMessage.Locale)}: ${settings.locale}")
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            localeChoices.forEach { localeTag ->
+                Button(onClick = {
+                    val canonical = canonicalMilaLocale(localeTag) ?: return@Button
+                    settings = settings.copy(locale = canonical)
+                    controller.save(settings)
+                    MilaStrings.configure(context, Locale.forLanguageTag(canonical))
+                }, enabled = settings.locale != localeTag) {
+                    Text(localeTag)
+                }
+            }
+        }
         MilaSshKeysPanel(adapter, signedIn)
     }
 }
