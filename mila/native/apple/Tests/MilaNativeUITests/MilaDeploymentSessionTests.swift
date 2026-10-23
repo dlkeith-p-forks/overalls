@@ -16,4 +16,3 @@ final class MilaDeploymentSessionTests: XCTestCase {
         let coordinator = MilaDeploymentSessionCoordinator(store: store, defaults: defaults) { _ in UnavailableMilaFFIAdapter() }; XCTAssertTrue(coordinator.signIn(value)); let generation = coordinator.currentGeneration(); coordinator.signOut(); XCTAssertNil(coordinator.adapter(for: generation)); XCTAssertEqual(coordinator.state, .signedOut)
     }
 }
-
