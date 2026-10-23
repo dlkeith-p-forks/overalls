@@ -1,5 +1,5 @@
 ---
-digest: 37b9702b0e0041a75b5bd95abccf92397e033f4f3b9e0bacad37052c6bbfeff9
+digest: 802f59f2913bebe36bfdf637d494a5b7b0f1209f51a65140a895d2ad7176c488
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -8,11 +8,11 @@ reviewed_chapters:
   marshall/priv/hldd/08-interactive.md: 3b2f40d7d3004923a6bfaa3b6b27287b36731de73182032b29a392be6daf8c0a
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eec1a8133a836361d14be300a11c987603986208eafcb1cf9930c9fbc0e8d91a
-  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
+  marshall/priv/hldd/20-security.md: 23fdebc69e8bdbe970942ca43234274500c4f4382f074a590e9238b1762939af
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Native UI and concurrent Linux implementation reviewed; no HLDD chapter content or architecture boundary changed.
+Concurrent Linux source change reviewed; Apple commit does not alter its documented behavior.

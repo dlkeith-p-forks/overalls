@@ -231,3 +231,20 @@ final class MilaAuthenticatedTerminalTransportTests: XCTestCase {
         XCTAssertEqual(host.resizes, 1)
     }
 }
+
+final class MilaThreadActionTests: XCTestCase {
+    func testClosedThreadActionsProduceRustCommands() {
+        XCTAssertEqual(MilaThreadAction.list.command, "thread list")
+        XCTAssertEqual(MilaThreadAction.read.command, "thread read")
+        XCTAssertEqual(MilaThreadAction.answer("hello").input, "hello")
+        XCTAssertEqual(MilaThreadAction.planApprove("plan-1").secondary, "plan-1")
+        XCTAssertEqual(MilaThreadAction.planRevise("plan-2").command, "thread plan revise")
+    }
+
+    func testThreadActionsDoNotAllowEmptyPlanIdentifiers() {
+        // The UI disables these actions; the typed value remains observable for
+        // adapters and cannot be confused with an answer payload.
+        XCTAssertEqual(MilaThreadAction.planApprove("").secondary, "")
+        XCTAssertNil(MilaThreadAction.planApprove("").input)
+    }
+}

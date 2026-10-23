@@ -148,6 +148,38 @@ public enum MilaThreadCommandKind: Int32, CaseIterable, Sendable {
 }
 public enum MilaMachineCommandKind: Int32, Sendable { case unknown = 0, list, show, new, resize, start, stop, pause, resume, delete, shareAdd, shareRemove, webShow, webSet }
 
+/// Closed set of authenticated thread mutations exposed to native presentation.
+/// The command text is only assembled here and is always reclassified by Rust.
+public enum MilaThreadAction: Sendable, Equatable {
+    case list
+    case read
+    case answer(String)
+    case planApprove(String)
+    case planRevise(String)
+
+    public var command: String {
+        switch self {
+        case .list: return "thread list"
+        case .read: return "thread read"
+        case .answer: return "thread answer"
+        case .planApprove: return "thread plan approve"
+        case .planRevise: return "thread plan revise"
+        }
+    }
+
+    public var secondary: String? {
+        switch self {
+        case .planApprove(let value), .planRevise(let value): return value
+        default: return nil
+        }
+    }
+
+    public var input: String? {
+        if case .answer(let value) = self { return value }
+        return nil
+    }
+}
+
 public enum MilaWebCommand: Sendable, Equatable {
     case show(machineID: UUID)
     case set(machineID: UUID, url: String)

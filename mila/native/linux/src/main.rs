@@ -418,9 +418,8 @@ impl NativeState {
             let mut state = notification_state_for_action.borrow_mut();
             match state.enable() {
                 Ok(()) => notification_status.set_label("Notifications enabled."),
-                Err(_) => notification_status.set_label(&strings::text(
-                    strings::Message::NotificationsExplain,
-                )),
+                Err(_) => notification_status
+                    .set_label(&strings::text(strings::Message::NotificationsExplain)),
             }
         });
         root.append(&notification_button);
@@ -906,6 +905,7 @@ impl NativeState {
         ] {
             let button = Button::with_label(&strings::text(message));
             let thread = thread_id.clone();
+            let secondary = thread_secondary.clone();
             let input = thread_input.clone();
             let request = request_id.clone();
             let session = self.session.clone();
@@ -922,7 +922,7 @@ impl NativeState {
                 match live.thread_action(
                     Some(thread.text().trim()),
                     command,
-                    None,
+                    Some(secondary.text().trim()),
                     input_value.as_deref(),
                     request_value.as_deref(),
                 ) {
