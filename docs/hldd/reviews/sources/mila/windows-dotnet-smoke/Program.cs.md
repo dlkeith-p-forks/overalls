@@ -1,5 +1,5 @@
 ---
-digest: 005412f1449067daed836f640c946d5b8751f20fbc71a8b015ac6ee5fd194c9c
+digest: 6e3f158d5e7f25559d28828422f6cbabc3059aa04639e3b5cf78a51c14938709
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows settings locale controls preserve existing native UI boundaries and add no architecture change.
+Windows SSH smoke adds verification only; documented behavior and chapter content are unchanged.

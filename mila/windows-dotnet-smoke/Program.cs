@@ -106,10 +106,17 @@ internal static class Program
         Require(refused, "invalid listing refusal");
         MilaSshKey key = MilaSshKeysController.DecodeListing(Encoding.UTF8.GetBytes($"{{\"keys\":[{{\"id\":\"{keyId:D}\",\"fingerprint\":\"SHA256:test\",\"algorithm\":\"ed25519\",\"current_device\":false}}]}}"))[0];
         Require(key.Id == keyId && key.Algorithm == "ed25519", "SSH key listing projection");
+        Require(MilaSshKeysController.Fingerprint("ssh-ed25519 !!!") is null,
+            "invalid SSH base64 fingerprint refusal");
         bool revoked = false;
         var keys = new MilaSshKeysController(_ => Task.FromResult<IReadOnlyList<MilaSshKey>>(new[] { key }), (id, _) => { revoked = id == keyId; return Task.CompletedTask; });
         keys.LoadAsync(true).GetAwaiter().GetResult(); keys.RevokeAsync(key).GetAwaiter().GetResult();
         Require(revoked && keys.Status == MilaSshKeysStatus.Loaded, "SSH key revoke workflow");
+        MilaSshKey current = key with { IsCurrentDevice = true };
+        bool currentRevoked = false;
+        var currentKeys = new MilaSshKeysController(_ => Task.FromResult<IReadOnlyList<MilaSshKey>>(new[] { current }), (id, _) => { currentRevoked = true; return Task.CompletedTask; });
+        currentKeys.LoadAsync(true).GetAwaiter().GetResult(); currentKeys.RevokeAsync(current).GetAwaiter().GetResult();
+        Require(!currentRevoked && currentKeys.Status == MilaSshKeysStatus.Loaded, "current device revoke refusal");
         bool malformed = false; try { _ = MilaSshKeysController.DecodeListing(Encoding.UTF8.GetBytes("{\"keys\":[{\"id\":\"bad\"}]}")); } catch (InvalidDataException) { malformed = true; }
         Require(malformed, "invalid SSH key listing refusal");
         var hello = new FakeHello(MilaWindowsHelloAvailability.Available, MilaWindowsHelloVerification.Verified);
