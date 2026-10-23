@@ -577,8 +577,13 @@ impl NativeState {
         let terminal_status = content.clone();
         let stream = terminal_stream.clone();
         let session_input = terminal.clone();
+        let session_binding = self.session.clone();
         let attach = Button::with_label(&strings::text(strings::Message::AttachTerminal));
         attach.connect_clicked(move |_| {
+            if session_binding.borrow().session().is_none() {
+                terminal_status.set_label("Terminal controls require sign-in.");
+                return;
+            }
             let session = session_input.text().trim().to_owned();
             if session.is_empty() || session.len() > 128 {
                 terminal_status.set_label("Terminal session rejected by Rust policy.");
@@ -596,8 +601,13 @@ impl NativeState {
 
         let terminal_status = content.clone();
         let stream = terminal_stream.clone();
+        let session_binding = self.session.clone();
         let connect = Button::with_label("Connect");
         connect.connect_clicked(move |_| {
+            if session_binding.borrow().session().is_none() {
+                terminal_status.set_label("Terminal controls require sign-in.");
+                return;
+            }
             let mut stream = stream.borrow_mut();
             let generation = stream.state().generation();
             let cursor = stream.state().resume_cursor().unwrap_or(0);
@@ -612,8 +622,13 @@ impl NativeState {
 
         let terminal_status = content.clone();
         let stream = terminal_stream.clone();
+        let session_binding = self.session.clone();
         let reconnect = Button::with_label("Reconnect");
         reconnect.connect_clicked(move |_| {
+            if session_binding.borrow().session().is_none() {
+                terminal_status.set_label("Terminal controls require sign-in.");
+                return;
+            }
             let mut stream = stream.borrow_mut();
             match stream.reconnect() {
                 Ok(generation) => terminal_status
@@ -626,8 +641,13 @@ impl NativeState {
         let terminal_status = content.clone();
         let stream = terminal_stream.clone();
         let input = terminal_input.clone();
+        let session_binding = self.session.clone();
         let input_button = Button::with_label("Send input");
         input_button.connect_clicked(move |_| {
+            if session_binding.borrow().session().is_none() {
+                terminal_status.set_label("Terminal controls require sign-in.");
+                return;
+            }
             let length = input.text().trim().parse::<usize>().ok();
             let Some(length) = length else {
                 terminal_status.set_label("Terminal input length rejected.");
@@ -646,8 +666,13 @@ impl NativeState {
         let stream = terminal_stream.clone();
         let columns = terminal_columns.clone();
         let rows = terminal_rows.clone();
+        let session_binding = self.session.clone();
         let resize = Button::with_label("Resize");
         resize.connect_clicked(move |_| {
+            if session_binding.borrow().session().is_none() {
+                terminal_status.set_label("Terminal controls require sign-in.");
+                return;
+            }
             let parsed = columns
                 .text()
                 .trim()
@@ -668,8 +693,13 @@ impl NativeState {
 
         let terminal_status = content.clone();
         let stream = terminal_stream.clone();
+        let session_binding = self.session.clone();
         let kill = Button::with_label("Kill");
         kill.connect_clicked(move |_| {
+            if session_binding.borrow().session().is_none() {
+                terminal_status.set_label("Terminal controls require sign-in.");
+                return;
+            }
             let generation = stream.borrow().state().generation();
             match stream.borrow_mut().kill(generation) {
                 Ok(()) => {

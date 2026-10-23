@@ -2,6 +2,7 @@ package dev.overalls.mila.nativeui
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import java.security.KeyStore
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -62,7 +63,7 @@ private class ApprovalStore : MilaDeploymentStore {
 class MilaSignInApprovalTest {
     @Test
     fun approvalPollingReusesSessionAndPackagedReconnectCreatesOneFreshSession() = runBlocking {
-        val deployment = MilaDeployment("approval-${System.nanoTime()}.mila.example", 443)
+        val deployment = MilaDeployment("approval-${UUID.randomUUID()}.mila.example", 443)
         val bindings = ApprovalBindings(deployment.host)
         val adapter = ApprovalAdapter(bindings)
         val store = ApprovalStore()
