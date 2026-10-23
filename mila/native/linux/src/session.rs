@@ -317,6 +317,13 @@ impl LiveSession {
                 return Err(SessionError::InvalidInput);
             }
         }
+        if matches!(
+            command,
+            "thread prompt" | "thread answer" | "thread plan approve" | "thread plan revise"
+        ) && request_id.is_none()
+        {
+            return Err(SessionError::InvalidInput);
+        }
         let handle = self.handle()?;
         let empty = std::ptr::null();
         let (thread_ptr, thread_len) =

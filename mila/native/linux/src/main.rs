@@ -724,7 +724,50 @@ impl NativeState {
             }
         });
         thread_actions.append(&turns);
+        let thread_secondary = Entry::builder()
+            .placeholder_text("Turn or question ID")
+            .hexpand(true)
+            .build();
+        let thread_input = Entry::builder()
+            .placeholder_text("Thread input (stdin)")
+            .hexpand(true)
+            .build();
+        for (message, command, needs_secondary) in [
+            (strings::Message::ThreadPrompt, "thread prompt", false),
+            (strings::Message::ThreadAnswer, "thread answer", true),
+        ] {
+            let button = Button::with_label(&strings::text(message));
+            let thread = thread_id.clone();
+            let secondary = thread_secondary.clone();
+            let input = thread_input.clone();
+            let request = request_id.clone();
+            let session = self.session.clone();
+            let status = content.clone();
+            button.connect_clicked(move |_| {
+                let mut binding = session.borrow_mut();
+                let Some(live) = binding.session_mut() else {
+                    status.set_label("Thread controls require sign-in.");
+                    return;
+                };
+                let secondary_value = needs_secondary.then(|| secondary.text().trim().to_owned());
+                let request_value =
+                    (!request.text().trim().is_empty()).then(|| request.text().trim().to_owned());
+                match live.thread_action(
+                    Some(thread.text().trim()),
+                    command,
+                    secondary_value.as_deref(),
+                    Some(input.text().as_str()),
+                    request_value.as_deref(),
+                ) {
+                    Ok(_) => status.set_label("Thread mutation accepted."),
+                    Err(_) => status.set_label("Thread mutation rejected by Rust policy."),
+                }
+            });
+            thread_actions.append(&button);
+        }
         root.append(&thread_id);
+        root.append(&thread_secondary);
+        root.append(&thread_input);
         root.append(&thread_actions);
         let web_port = Entry::builder()
             .placeholder_text("Web port (1-65535)")
