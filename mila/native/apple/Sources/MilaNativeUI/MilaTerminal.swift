@@ -22,9 +22,17 @@ public enum MilaTerminalError: Error, Equatable, Sendable {
 /// transport and are never copied into Rust FFI calls.
 public protocol MilaTerminalTransport: Sendable {
     func attach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) async throws
+    /// Wait for the next bounded PTY output chunk. `nil` means the remote stream ended.
+    /// The default keeps existing host transports source compatible while they are being
+    /// upgraded to a real PTY reader.
+    func receiveOutput() async throws -> Data?
     func sendInput(_ input: Data) async throws
     func resize(columns: UInt16, rows: UInt16) async throws
     func close() async
+}
+
+public extension MilaTerminalTransport {
+    func receiveOutput() async throws -> Data? { nil }
 }
 
 /// An authenticated host PTY transport. The actual socket/PTY remains owned by the
@@ -75,6 +83,7 @@ public final class MilaAuthenticatedTerminalTransport: MilaTerminalTransport, @u
 public struct MilaNoopTerminalTransport: MilaTerminalTransport {
     public init() {}
     public func attach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) async throws {}
+    public func receiveOutput() async throws -> Data? { nil }
     public func sendInput(_ input: Data) async throws { _ = input }
     public func resize(columns: UInt16, rows: UInt16) async throws {}
     public func close() async {}
@@ -90,6 +99,7 @@ public final class MilaTerminalController: ObservableObject {
     @Published public private(set) var rows: UInt16 = 24
     private let transport: any MilaTerminalTransport
     private var lastAttach: (from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool)?
+    private var receiveTask: Task<Void, Never>?
 
     public init(transport: any MilaTerminalTransport = MilaNoopTerminalTransport()) {
         self.transport = transport
@@ -105,16 +115,19 @@ public final class MilaTerminalController: ObservableObject {
             self.columns = columns; self.rows = rows
             lastAttach = (from, columns, rows, readWrite)
             state = .attached
+            startReceiving()
         } catch { state = .failed }
     }
 
     public func reconnect() async {
         guard let request = lastAttach else { state = .failed; return }
         state = .reconnecting
+        receiveTask?.cancel()
         await transport.close()
         do {
             try await transport.attach(from: request.from, columns: request.columns, rows: request.rows, readWrite: request.readWrite)
             state = .attached
+            startReceiving()
         } catch { state = .failed }
     }
 
@@ -141,7 +154,30 @@ public final class MilaTerminalController: ObservableObject {
     }
 
     public func close() async {
+        receiveTask?.cancel(); receiveTask = nil
         await transport.close(); state = .detached; lastAttach = nil; output.removeAll(keepingCapacity: true)
+    }
+
+    private func startReceiving() {
+        receiveTask?.cancel()
+        let transport = self.transport
+        receiveTask = Task { [weak self] in
+            do {
+                while !Task.isCancelled {
+                    guard let bytes = try await transport.receiveOutput() else { break }
+                    guard !bytes.isEmpty else { continue }
+                    await MainActor.run { [weak self] in
+                        guard let self, self.state == .attached else { return }
+                        self.appendOutput(bytes)
+                    }
+                }
+            } catch {
+                await MainActor.run { [weak self] in
+                    guard let self, self.state == .attached else { return }
+                    self.state = .failed
+                }
+            }
+        }
     }
 
     private func validateAttach(from: UInt64, columns: UInt16, rows: UInt16, readWrite: Bool) -> Bool {

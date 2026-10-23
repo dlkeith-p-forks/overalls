@@ -1,18 +1,18 @@
 ---
-digest: 9c6faa72ffb3c8ebe4380a73a44bde5d7ebb8441714c25c0fd74a83baba4d7ea
+digest: 5b79b3f38fa0d595b55f147a951909ba29b196791a4ca6a8a11ed24a9eeeaaf0
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/main/java/dev/overalls/mila/nativeui/MilaMachineControls.kt
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 1e15789debde415e96cc1de2cbb136beb77a332330001bf8ae9c134a4c8238b3
+  marshall/priv/hldd/08-interactive.md: 3b2f40d7d3004923a6bfaa3b6b27287b36731de73182032b29a392be6daf8c0a
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
-  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
+  marshall/priv/hldd/19-coverage.md: eec1a8133a836361d14be300a11c987603986208eafcb1cf9930c9fbc0e8d91a
+  marshall/priv/hldd/20-security.md: 23fdebc69e8bdbe970942ca43234274500c4f4382f074a590e9238b1762939af
   marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
   marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Android terminal renderer now accepts only lifecycle-valid bounded receive data alongside authenticated transport gating
+PTY polling stays inside existing native Android terminal boundary and adds no documented architecture or behavior surface.

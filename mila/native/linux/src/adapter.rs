@@ -335,7 +335,10 @@ mod thread_tests {
 
     #[test]
     fn response_renderer_is_json_checked_and_bounded() {
-        assert_eq!(format_thread_response(br#"{"ok":true}"#).unwrap(), r#"{"ok":true}"#);
+        assert_eq!(
+            format_thread_response(br#"{"ok":true}"#).unwrap(),
+            r#"{"ok":true}"#
+        );
         assert!(format_thread_response(b"not-json").is_err());
         let large = format!(r#"{{"value":"{}"}}"#, "x".repeat(8_000));
         let rendered = format_thread_response(large.as_bytes()).unwrap();
@@ -603,13 +606,28 @@ pub fn validate_terminal_operation(operation: TerminalOperation) -> Result<(), R
 #[derive(Debug)]
 pub struct TerminalStream {
     state: mila_runtime::TerminalAttach,
+    renderer: crate::terminal::TerminalRenderer,
 }
 
 impl TerminalStream {
     pub fn new() -> Self {
         Self {
             state: mila_runtime::TerminalAttach::initial(),
+            renderer: crate::terminal::TerminalRenderer::new(80, 24)
+                .expect("fixed terminal dimensions are valid"),
         }
+    }
+    pub fn renderer(&self) -> &crate::terminal::TerminalRenderer {
+        &self.renderer
+    }
+    pub fn render_output(&mut self, generation: u64, text: &str) -> Result<(), RuntimeError> {
+        if !self.state.output(generation, text.chars().count()).then_some(()).is_some() {
+            return Err(RuntimeError::InvalidInput);
+        }
+        self.renderer.append_text(text).map_err(|_| RuntimeError::InvalidInput)
+    }
+    pub fn rendered_text(&self) -> String {
+        self.renderer.lines().join("\n")
     }
     pub fn state(&self) -> &mila_runtime::TerminalAttach {
         &self.state
