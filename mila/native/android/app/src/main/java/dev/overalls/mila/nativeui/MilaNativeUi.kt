@@ -199,7 +199,7 @@ fun MilaNativeRoot(
         if (signInState is MilaSignInState.SignedIn) Text(MilaStrings.text(MilaMessage.Connected), style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {
             MilaRoute.Machines -> MachineList(sessionAdapter, status, listing) { route = MilaRoute.Machine(it.id); machineDetail.select(it.id) }
-            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, sessionAdapter)
+            is MilaRoute.Machine -> MachineDetail(machineDetail, selected.id, sessionAdapter, signInState is MilaSignInState.SignedIn, listing)
             MilaRoute.Threads -> ThreadList(threadListing) { route = MilaRoute.Thread(it); threadDetail.select(it) }
             is MilaRoute.Thread -> ThreadDetail(threadDetail, selected.id)
             MilaRoute.Settings -> MilaSettingsScreen(sessionAdapter, signInState is MilaSignInState.SignedIn)
@@ -354,7 +354,7 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
     }
 }
 
-@Composable private fun MachineDetail(controller: MilaMachineDetailController, id: java.util.UUID, adapter: MilaFfiAdapter) {
+@Composable private fun MachineDetail(controller: MilaMachineDetailController, id: java.util.UUID, adapter: MilaFfiAdapter, signedIn: Boolean, listing: MilaSessionListing?) {
     val scope = rememberCoroutineScope()
     var state by remember { mutableStateOf(controller.state) }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -378,7 +378,7 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
                 }
             }
         }
-        MachineSharingControls(adapter, machine)
+        MachineSharingControls(adapter, machine, signedIn, listing)
         if (machine != null) MilaWebControls(adapter, machine)
         Text(
             when (val current = controller.state) {
@@ -395,18 +395,21 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
 }
 
 @Composable
-private fun MachineSharingControls(adapter: MilaFfiAdapter, machine: MilaMachineRow?) {
+private fun MachineSharingControls(adapter: MilaFfiAdapter, machine: MilaMachineRow?, signedIn: Boolean, listing: MilaSessionListing?) {
     var principal by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     // Sharing commands are classified and submitted by the typed controller.
     val controller = remember { MilaMachineSharingController(adapter) }
-    if (machine != null) { controller.setSession(true, MilaSessionListing(listOf(machine), false)); controller.setMachine(machine) }
+    LaunchedEffect(controller, signedIn, listing, machine?.id) {
+        controller.setSession(signedIn, listing)
+        if (machine != null) controller.setMachine(machine)
+    }
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         OutlinedTextField(value = principal, onValueChange = { principal = it }, label = { Text(MilaStrings.text(MilaMessage.SharePrincipal)) })
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button({ scope.launch { result = if (controller.submit(principal)) MilaStrings.text(MilaMessage.ShareAdded) else MilaStrings.text(MilaMessage.ShareRejected) } }) { Text(MilaStrings.text(MilaMessage.ShareAdd)) }
-            Button({ scope.launch { result = if (controller.submit(principal, remove = true)) MilaStrings.text(MilaMessage.ShareRemoved) else MilaStrings.text(MilaMessage.ShareRejected) } }) { Text(MilaStrings.text(MilaMessage.ShareRemove)) }
+            Button(enabled = signedIn && machine != null, onClick = { scope.launch { result = if (controller.submit(principal)) MilaStrings.text(MilaMessage.ShareAdded) else MilaStrings.text(MilaMessage.ShareRejected) } }) { Text(MilaStrings.text(MilaMessage.ShareAdd)) }
+            Button(enabled = signedIn && machine != null, onClick = { scope.launch { result = if (controller.submit(principal, remove = true)) MilaStrings.text(MilaMessage.ShareRemoved) else MilaStrings.text(MilaMessage.ShareRejected) } }) { Text(MilaStrings.text(MilaMessage.ShareRemove)) }
         }
         if (result.isNotEmpty()) Text(result, style = MaterialTheme.typography.labelSmall)
     }

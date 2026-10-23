@@ -32,9 +32,11 @@ class MilaMachineSharingController(private val adapter: MilaFfiAdapter) {
     var state: MilaMachineSharingState = MilaMachineSharingState.SignedOut
         private set
     private var machine: MilaMachineRow? = null
+    private var listing: MilaSessionListing? = null
     private var authenticated = false
 
     fun setSession(signedIn: Boolean, listing: MilaSessionListing?) {
+        this.listing = listing
         authenticated = signedIn && listing != null
         machine = if (authenticated) machine?.let { current -> listing!!.machines.firstOrNull { it.id == current.id } } else null
         state = if (!authenticated) MilaMachineSharingState.SignedOut else machine?.let { MilaMachineSharingState.Ready(it) } ?: MilaMachineSharingState.Idle
@@ -48,7 +50,7 @@ class MilaMachineSharingController(private val adapter: MilaFfiAdapter) {
     }
 
     fun setMachine(selected: MilaMachineRow): Boolean {
-        if (!authenticated) return false
+        if (!authenticated || listing?.machines?.none { it.id == selected.id } == true) return false
         machine = selected
         state = MilaMachineSharingState.Ready(selected)
         return true

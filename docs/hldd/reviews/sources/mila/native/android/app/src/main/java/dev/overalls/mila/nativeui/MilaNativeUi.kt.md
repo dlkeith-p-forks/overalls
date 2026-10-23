@@ -1,5 +1,5 @@
 ---
-digest: edeb8df6f88e15916bcb192d94712b5aa96213dccf7fa5a2d471a8fc4da5d466
+digest: 13b5562a3c242de31eae12a7da8aa83c9460f83d3f8e9278f2126d9954456a24
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Android intent routing is an implementation-only extension of existing documented navigation and does not alter deployment, security, or operational contracts.
+Native UI SSH signer guard and tests preserve documented native boundary; no HLDD behavior change.

@@ -33,6 +33,9 @@ public enum MilaSSHKeysState: Equatable, Sendable { case signedOut, loading, loa
     /// Revocation targets only the selected opaque key identity and refreshes the list after success.
     public func revoke(_ key: MilaSSHKey) async {
         guard case .loaded = state else { return }
+        // The signer currently in use cannot be revoked from this session: doing
+        // so would strand the authenticated device and differs across platforms.
+        guard !key.isCurrentDevice else { return }
         do { try await revoker(key.id); await load(signedIn: true) } catch { state = .failed }
     }
 }

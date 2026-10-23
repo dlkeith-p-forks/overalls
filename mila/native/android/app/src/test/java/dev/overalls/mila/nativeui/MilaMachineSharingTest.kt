@@ -34,6 +34,14 @@ class MilaMachineSharingTest {
         assertTrue((c.state as MilaMachineSharingState.Applied).remove)
     }
 
+    @Test fun cannotShareMachineOutsideAuthenticatedListing() = runBlocking {
+        val c = MilaMachineSharingController(SharingAdapter())
+        c.setSession(true, listing)
+        val other = MilaMachineRow(UUID.fromString("00000000-0000-0000-0000-000000000002"), "other", "running")
+        assertFalse(c.setMachine(other))
+        assertFalse(c.submit("person@example.test"))
+    }
+
     @Test fun malformedPrincipalIsRejectedBeforeRustCall() = runBlocking {
         val c = MilaMachineSharingController(SharingAdapter())
         c.setSession(true, listing)

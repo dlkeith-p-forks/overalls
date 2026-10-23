@@ -18,4 +18,14 @@ import XCTest
         await controller.load(signedIn: false)
         XCTAssertEqual(controller.state, .signedOut); XCTAssertFalse(loaded)
     }
+
+    func testCurrentDeviceKeyCannotBeRevoked() async {
+        let key = MilaSSHKey(id: UUID(), fingerprint: "SHA256:device", algorithm: "ecdsa-sha2-nistp256", isCurrentDevice: true)
+        var revoked = false
+        let controller = MilaSSHKeysController(loader: { [key] }, revoker: { _ in revoked = true })
+        await controller.load(signedIn: true)
+        await controller.revoke(key)
+        XCTAssertFalse(revoked)
+        XCTAssertEqual(controller.state, .loaded([key]))
+    }
 }
