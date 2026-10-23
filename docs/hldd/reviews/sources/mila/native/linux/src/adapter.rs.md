@@ -1,5 +1,5 @@
 ---
-digest: 64a67235e9b33a0de4cb4f9964a8d5c9ea80200fb2675fe4014707b0c8aafe76
+digest: e3b3dce496894dd617d98bd2be23830e37ec81fef5e63e0c0902285efa9ba488
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent native UI and Linux adapter changes; no documented chapter or architecture boundary changed.
+Concurrent Linux implementation reviewed by its owner; no-impact receipt required for shared worktree.
