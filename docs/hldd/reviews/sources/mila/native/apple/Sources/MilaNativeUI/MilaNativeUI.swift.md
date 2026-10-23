@@ -1,5 +1,5 @@
 ---
-digest: 7d3aaa867a3ebe9bab8a321baa8aa0ee6466596e2ce8b809321ec324c25741fe
+digest: e7fb3d9a6a1913a03f347acf3f639ce118815278193d13062b79cf0f16ee0990
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple web integration preserves existing documented web endpoint and security behavior; implementation evidence only.
+Reviewed native deployment lifecycle UI and tests; accepted architecture preserved.

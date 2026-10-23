@@ -140,15 +140,23 @@ impl NativeState {
         let select = Button::with_label(&strings::text(strings::Message::SelectDeployment));
         let deployment_status = content.clone();
         let deployment_input = deployment.clone();
+        let deployment_session = self.session.clone();
+        let deployment_sign_in = self.sign_in.clone();
         select.connect_clicked(move |_| {
             let host = deployment_input.text().trim().to_owned();
             match persistence::DeploymentSelection::validate(&host) {
                 Ok(selection) => {
                     let route = selection.route();
                     let _ = persistence::save(&selection);
+                    // A deployment switch invalidates every authenticated handle and
+                    // approval generation. Keep the GTK shell from accidentally
+                    // presenting authority from the previous host.
+                    deployment_session.borrow_mut().clear();
+                    let mut flow = deployment_sign_in.borrow_mut();
+                    *flow = flow.clone().apply(SignInEvent::SignOut);
                     let parsed = ActivationRoute::parse(&route).expect("validated route");
                     deployment_status
-                        .set_label(&format!("Deployment selected\n{}", parsed.canonical()))
+                        .set_label(&format!("Deployment selected\n{}\nSign in required.", parsed.canonical()))
                 }
                 Err(_) => deployment_status.set_label("Deployment host rejected by Rust policy."),
             }
@@ -173,9 +181,14 @@ impl NativeState {
         let forget = Button::with_label(&strings::text(strings::Message::ForgetDeployment));
         let forget_status = content.clone();
         let forget_input = deployment.clone();
+        let forget_session = self.session.clone();
+        let forget_sign_in = self.sign_in.clone();
         forget.connect_clicked(move |_| match persistence::forget() {
             Ok(()) => {
                 forget_input.set_text("");
+                forget_session.borrow_mut().clear();
+                let mut flow = forget_sign_in.borrow_mut();
+                *flow = flow.clone().apply(SignInEvent::SignOut);
                 forget_status.set_label(&strings::text(strings::Message::DeploymentForgotten));
             }
             Err(_) => {

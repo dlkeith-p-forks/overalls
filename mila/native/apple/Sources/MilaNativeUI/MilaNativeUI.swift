@@ -313,7 +313,6 @@ private struct SettingsView: View {
     @State private var deploymentPort = "22"
     @State private var deploymentTrust = ""
     @State private var deploymentStatus = ""
-    @State private var deployments: [MilaDeployment] = MilaDeploymentStore().list()
     var body: some View {
         Form {
             Section("Deployment sign-in") {
@@ -333,11 +332,17 @@ private struct SettingsView: View {
                 TextField("Port", text: $deploymentPort)
                 TextField("Pinned trust", text: $deploymentTrust)
                 Button("Save deployment") {
-                    guard let port = UInt16(deploymentPort), let trust = Data(base64Encoded: deploymentTrust), MilaDeploymentStore().upsert(MilaDeployment(host: deploymentHost, port: port, trust: trust)) else { deploymentStatus = "Invalid deployment"; return }
-                    deployments = MilaDeploymentStore().list(); deploymentStatus = "Deployment saved"
+                    guard let port = UInt16(deploymentPort), let trust = Data(base64Encoded: deploymentTrust), session.upsert(MilaDeployment(host: deploymentHost, port: port, trust: trust)) else { deploymentStatus = "Invalid deployment"; return }
+                    deploymentStatus = "Deployment saved"
                 }
-                ForEach(deployments) { deployment in
-                    HStack { Text("\(deployment.host):\(deployment.port)"); Spacer(); Button("Remove") { MilaDeploymentStore().remove(deployment.id); deployments = MilaDeploymentStore().list() } }
+                ForEach(session.deployments) { deployment in
+                    HStack {
+                        Button { session.select(deployment) } label: {
+                            VStack(alignment: .leading) { Text("\(deployment.host):\(deployment.port)"); Text(deployment.id == session.selectedDeployment?.id ? "Selected" : "") .font(.caption).foregroundStyle(.secondary) }
+                        }.buttonStyle(.plain)
+                        Spacer()
+                        Button("Remove") { _ = session.remove(deployment.id) }
+                    }
                 }
                 Text(deploymentStatus).font(.caption)
             }

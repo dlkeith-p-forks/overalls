@@ -38,6 +38,21 @@ public final class MilaDeploymentSessionCoordinator: @unchecked Sendable {
         guard store.list().contains(where: { $0.id == deployment.id }) else { return false }
         lock.lock(); defer { lock.unlock() }; defaults.set(deployment.id.uuidString, forKey: selectionKey); return true
     }
+    /// Removes a persisted deployment and fences any session that was using it.
+    @discardableResult public func remove(_ id: UUID) -> Bool {
+        guard store.list().contains(where: { $0.id == id }) else { return false }
+        let selected = selectedDeployment?.id == id
+        store.remove(id)
+        lock.lock()
+        if selected {
+            generation &+= 1
+            adapter = nil
+            currentState = .signedOut
+            defaults.removeObject(forKey: selectionKey)
+        }
+        lock.unlock()
+        return true
+    }
     @discardableResult public func signIn(_ deployment: MilaDeployment) -> Bool {
         guard Self.valid(deployment), store.list().contains(where: { $0.id == deployment.id }) else { return false }
         lock.lock(); generation &+= 1; let next = generation; currentState = .connecting(deployment.id); lock.unlock()
@@ -89,4 +104,16 @@ public final class MilaDeploymentSessionController: ObservableObject {
         return coordinator.adapter(for: generation)
     }
     public func reload() { deployments = store.list() }
+    /// Persists a validated deployment and refreshes the observable list.
+    @discardableResult public func upsert(_ deployment: MilaDeployment) -> Bool {
+        let result = store.upsert(deployment)
+        if result { reload() }
+        return result
+    }
+    /// Forgets a deployment, fencing the authenticated session when necessary.
+    @discardableResult public func remove(_ id: UUID) -> Bool {
+        let result = coordinator.remove(id)
+        if result { state = coordinator.state; reload() }
+        return result
+    }
 }

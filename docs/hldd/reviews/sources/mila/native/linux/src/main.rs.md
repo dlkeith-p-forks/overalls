@@ -1,5 +1,5 @@
 ---
-digest: ffca5f25c9bbc07bf05dae7f4ce7fe45edc15e29bc79ddd3aca627c8a5706c15
+digest: 5234c800822c208ca554fc2ed574ddd204a8f8c58f0cce4fe922ba0cb4a993a4
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent native UI and Linux adapter changes; no documented chapter or architecture boundary changed.
+Deployment switching and forgetting now clear authenticated Linux session authority; documented native lifecycle boundary.

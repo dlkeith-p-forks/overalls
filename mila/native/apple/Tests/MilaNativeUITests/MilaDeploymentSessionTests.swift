@@ -15,4 +15,11 @@ final class MilaDeploymentSessionTests: XCTestCase {
         let store = MilaDeploymentStore(defaults: defaults); let value = deployment(); XCTAssertTrue(store.upsert(value));
         let coordinator = MilaDeploymentSessionCoordinator(store: store, defaults: defaults) { _ in UnavailableMilaFFIAdapter() }; XCTAssertTrue(coordinator.signIn(value)); let generation = coordinator.currentGeneration(); coordinator.signOut(); XCTAssertNil(coordinator.adapter(for: generation)); XCTAssertEqual(coordinator.state, .signedOut)
     }
+    func testForgettingSelectedDeploymentSignsOutAndClearsSelection() {
+        let suite = "mila.session.\(UUID().uuidString)"; let defaults = UserDefaults(suiteName: suite)!; defer { defaults.removePersistentDomain(forName: suite) }
+        let store = MilaDeploymentStore(defaults: defaults); let value = deployment(); XCTAssertTrue(store.upsert(value))
+        let coordinator = MilaDeploymentSessionCoordinator(store: store, defaults: defaults) { _ in UnavailableMilaFFIAdapter() }
+        XCTAssertTrue(coordinator.signIn(value)); let generation = coordinator.currentGeneration()
+        XCTAssertTrue(coordinator.remove(value.id)); XCTAssertNil(coordinator.selectedDeployment); XCTAssertEqual(coordinator.state, .signedOut); XCTAssertNil(coordinator.adapter(for: generation)); XCTAssertTrue(store.list().isEmpty)
+    }
 }
