@@ -1,5 +1,5 @@
 ---
-digest: 1bae1bad854818bef88fdfd908f1361464a7429385e70ee7dfb536aafa31a685
+digest: 1ad80a6d48d38fa234ddd6f98e703845ee5e6d42d37608f4f25239fd886a9123
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Typed Apple UI role selection preserves documented sharing behavior and changes no HLDD chapter content.
+Reviewed Apple deployment coordinator and native root sign-in lifecycle; no HLDD chapter content changed.

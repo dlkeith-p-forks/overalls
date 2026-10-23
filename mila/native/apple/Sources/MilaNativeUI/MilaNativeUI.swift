@@ -3,6 +3,7 @@ import SwiftUI
 /// Native presentation shell. Machine records are supplied by the validated Rust snapshot boundary.
 public struct MilaNativeRootView: View {
     private let adapter: any MilaFFIAdapter
+    @StateObject private var session: MilaDeploymentSessionController
     @State private var selection: MilaRoute = .machines
     @State private var machines: [MilaMachinePresentation] = []
     @State private var status = MilaStrings.text(.ready)
@@ -12,6 +13,10 @@ public struct MilaNativeRootView: View {
     public init(adapter: any MilaFFIAdapter = LinkedMilaFFIAdapter(), snapshot: MilaValidatedSnapshot? = nil) {
         self.adapter = adapter
         _machines = State(initialValue: snapshot?.machines ?? [])
+        _session = StateObject(wrappedValue: MilaDeploymentSessionController { deployment in
+            let signer = try MilaDeviceSigner(deploymentHost: deployment.host)
+            return try LinkedMilaFFIAdapter(trust: deployment.trust, host: deployment.host, port: deployment.port, signer: signer)
+        })
     }
 
     public var body: some View {
@@ -26,10 +31,10 @@ public struct MilaNativeRootView: View {
             Group {
                 switch selection {
                 case .machines: MachinesView(machines: machines) { selection = .machine(id: $0) }
-                case .machine(let id): MachineDetailView(machine: machines.first { $0.id == id }, adapter: adapter)
-                case .threads: ThreadsView(adapter: adapter, select: { selection = .thread(id: $0) })
-                case .thread(let id): ThreadDetailView(id: id, adapter: adapter)
-                case .settings: SettingsView(adapter: adapter, lockController: appLock)
+                case .machine(let id): MachineDetailView(machine: machines.first { $0.id == id }, adapter: session.adapter() ?? adapter)
+                case .threads: ThreadsView(adapter: session.adapter() ?? adapter, select: { selection = .thread(id: $0) })
+                case .thread(let id): ThreadDetailView(id: id, adapter: session.adapter() ?? adapter)
+                case .settings: SettingsView(adapter: session.adapter() ?? adapter, lockController: appLock, session: session)
                 }
             }
             .toolbar { ToolbarItem { Button(MilaStrings.text(.refresh)) { Task { await refresh() } } } }
@@ -42,7 +47,7 @@ public struct MilaNativeRootView: View {
     }
 
     private func refresh() async {
-        do { let snapshot = try await adapter.refreshSnapshot(); machines = snapshot.machines; status = MilaStrings.text(.snapshotLoaded) }
+        do { let active = session.adapter() ?? adapter; let snapshot = try await active.refreshSnapshot(); machines = snapshot.machines; status = MilaStrings.text(.snapshotLoaded) }
         catch { status = MilaStrings.text(.noSnapshotLoaded); machines = [] }
     }
 }
@@ -206,6 +211,7 @@ private struct ThreadDetailView: View {
 private struct SettingsView: View {
     let adapter: any MilaFFIAdapter
     let lockController: MilaAppLockController
+    @ObservedObject var session: MilaDeploymentSessionController
     @AppStorage("mila.appearance") private var appearance = "system"
     @AppStorage("mila.appLockEnabled") private var appLockEnabled = false
     @State private var notificationToken = ""
@@ -219,6 +225,18 @@ private struct SettingsView: View {
     @State private var deployments: [MilaDeployment] = MilaDeploymentStore().list()
     var body: some View {
         Form {
+            Section("Deployment sign-in") {
+                Picker("Deployment", selection: Binding(get: { session.selectedDeployment?.id }, set: { id in if let id, let value = session.deployments.first(where: { $0.id == id }) { session.select(value) } })) {
+                    Text("Select deployment").tag(Optional<UUID>.none)
+                    ForEach(session.deployments) { deployment in Text("\(deployment.host):\(deployment.port)").tag(Optional(deployment.id)) }
+                }
+                HStack {
+                    Button("Sign in") { if let value = session.selectedDeployment { _ = session.signIn(value) } }.disabled(session.selectedDeployment == nil)
+                    Button("Reconnect") { _ = session.reconnect() }.disabled(session.selectedDeployment == nil)
+                    Button("Sign out") { session.signOut() }.disabled(session.state == .signedOut)
+                }
+                Text(String(describing: session.state)).font(.caption).foregroundStyle(.secondary)
+            }
             Section("Deployment") {
                 TextField("Host", text: $deploymentHost)
                 TextField("Port", text: $deploymentPort)
@@ -313,6 +331,7 @@ public struct MilaSSHKeysView: View {
 
 @MainActor public struct MilaNativeApp: App {
     private let adapter: any MilaFFIAdapter
+    @StateObject private var session: MilaDeploymentSessionController
     public init() { adapter = LinkedMilaFFIAdapter() }
     public init(adapter: any MilaFFIAdapter) { self.adapter = adapter }
     public var body: some Scene { WindowGroup { MilaNativeRootView(adapter: adapter) } }

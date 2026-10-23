@@ -1,5 +1,5 @@
 ---
-digest: a6b5b976e7ac79259d97707dfd0484f1ae26d6e09207dee54fece186480d0136
+digest: 98d6248c54aa0b300632fdceaf20e7580ba24e344666c1c64d722c3f8f6fc083
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple deployment session coordinator is native UI lifecycle plumbing; it does not alter documented domains, protocols, operations or verification.
+Reviewed Apple deployment coordinator and native root sign-in lifecycle; no HLDD chapter content changed.

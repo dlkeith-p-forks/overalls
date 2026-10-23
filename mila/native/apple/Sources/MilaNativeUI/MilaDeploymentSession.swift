@@ -59,3 +59,34 @@ public final class MilaDeploymentSessionCoordinator: @unchecked Sendable {
     public func currentGeneration() -> UInt64 { lock.lock(); defer { lock.unlock() }; return generation }
     private static func valid(_ value: MilaDeployment) -> Bool { !value.host.isEmpty && value.host.count <= 253 && value.port > 0 && !value.trust.isEmpty }
 }
+
+/// Main-actor observable bridge used by SwiftUI to render durable deployment sign-in.
+@MainActor
+public final class MilaDeploymentSessionController: ObservableObject {
+    @Published public private(set) var state: MilaDeploymentSessionState = .signedOut
+    @Published public private(set) var deployments: [MilaDeployment] = []
+    private let coordinator: MilaDeploymentSessionCoordinator
+    private let store: MilaDeploymentStore
+
+    public init(store: MilaDeploymentStore = MilaDeploymentStore(), defaults: UserDefaults = .standard,
+                factory: @escaping MilaDeploymentSessionCoordinator.AdapterFactory) {
+        self.store = store
+        self.coordinator = MilaDeploymentSessionCoordinator(store: store, defaults: defaults, factory: factory)
+        self.deployments = store.list()
+        self.state = coordinator.state
+    }
+
+    public var selectedDeployment: MilaDeployment? { coordinator.selectedDeployment }
+    public var generation: UInt64 { coordinator.currentGeneration() }
+    public func select(_ deployment: MilaDeployment) { _ = coordinator.select(deployment); state = coordinator.state }
+    @discardableResult public func signIn(_ deployment: MilaDeployment) -> Bool {
+        let result = coordinator.signIn(deployment); state = coordinator.state; return result
+    }
+    @discardableResult public func reconnect() -> Bool { let result = coordinator.reconnect(); state = coordinator.state; return result }
+    public func signOut() { coordinator.signOut(); state = coordinator.state }
+    public func adapter() -> (any MilaFFIAdapter)? {
+        guard case .signedIn(_, let generation) = state else { return nil }
+        return coordinator.adapter(for: generation)
+    }
+    public func reload() { deployments = store.list() }
+}
