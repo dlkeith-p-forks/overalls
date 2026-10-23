@@ -1,0 +1,43 @@
+namespace Mila.Windows.Interop;
+
+/// <summary>Typed external activation accepted by the Windows host.</summary>
+internal readonly record struct MilaExternalActivation(MilaRoute Route, bool IsShareTarget);
+
+internal static class MilaExternalActivationParser
+{
+    private const int MaxShareText = 4096;
+
+    /// <summary>
+    /// Parses protocol activation or a share payload. Share payloads are treated
+    /// as navigation only after the Rust-aligned canonical route parser accepts
+    /// them; arbitrary text and command-like query strings are rejected.
+    /// </summary>
+    internal static MilaExternalActivation? Parse(string? value, bool shareTarget = false)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return null;
+        string candidate = value.Trim().Trim('"');
+        if (shareTarget && candidate.Length > MaxShareText) return null;
+        MilaRoute? route = MilaRouteParser.Parse(candidate);
+        return route is null ? null : new MilaExternalActivation(route.Value, shareTarget);
+    }
+
+    /// <summary>Parses the bounded command line supplied by WinUI activation.</summary>
+    /// <remarks>
+    /// Protocol activation is a single URI. Share/open activation uses the
+    /// explicit <c>--share</c> marker so arbitrary command-line text cannot be
+    /// interpreted as a route. The payload is still accepted only by the same
+    /// canonical route grammar.
+    /// </remarks>
+    internal static MilaExternalActivation? ParseArguments(string? arguments)
+    {
+        if (string.IsNullOrWhiteSpace(arguments)) return null;
+        string value = arguments.Trim();
+        const string marker = "--share";
+        if (value.StartsWith(marker, StringComparison.Ordinal))
+        {
+            if (value.Length == marker.Length || !char.IsWhiteSpace(value[marker.Length])) return null;
+            return Parse(value[marker.Length..], shareTarget: true);
+        }
+        return Parse(value);
+    }
+}

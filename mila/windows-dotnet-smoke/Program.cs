@@ -118,6 +118,7 @@ internal static class Program
         Require(unavailable.RefreshAvailabilityAsync().GetAwaiter().GetResult() == MilaAppLockState.Unavailable, "Hello unavailable state");
         RustNative.CheckOutputBounds(route);
         AssertRoutes();
+        AssertExternalActivation();
         Console.WriteLine("Windows Rust FFI smoke passed.");
     }
 
@@ -129,6 +130,21 @@ internal static class Program
         Require(machine is { Kind: MilaRouteKind.Machine } && machine.Value.Id.HasValue, "machine activation route");
         foreach (string invalid in new[] { "https://mgmt.example.test/machines", "overalls://MGMT.example.test/machines", "overalls://mgmt.example.test/machines?x=1", "overalls://mgmt.example.test/unknown", "overalls://mgmt.example.test/machines/new" })
             Require(MilaRouteParser.Parse(invalid) is null, "invalid activation route refusal");
+    }
+
+    private static void AssertExternalActivation()
+    {
+        MilaExternalActivation? deepLink = MilaExternalActivationParser.ParseArguments(
+            "overalls://mgmt.example.test/machines");
+        Require(deepLink is { Route.Kind: MilaRouteKind.Machines, IsShareTarget: false },
+            "protocol activation routing");
+        MilaExternalActivation? shared = MilaExternalActivationParser.ParseArguments(
+            "--share overalls://mgmt.example.test/threads");
+        Require(shared is { Route.Kind: MilaRouteKind.Threads, IsShareTarget: true },
+            "share activation routing");
+        foreach (string invalid in new[] { "--share", "--sharex overalls://mgmt.example.test/machines", "--share https://example.test" })
+            Require(MilaExternalActivationParser.ParseArguments(invalid) is null,
+                "invalid external activation refusal");
     }
 
     private static void AssertDeploymentPorts()

@@ -1,5 +1,5 @@
 ---
-digest: ff43bd4aaabe789602c26f80b5bf33cb63306ac7e5575e8b52194d67edd296bd
+digest: b9fcb5535666725e43e293342f186433ec6480da808607d730acac6e183f2cc1
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Concurrent Windows UI edits reviewed; no architecture impact.
+Reviewed Windows native external activation routing and smoke coverage; no new domain or protocol boundary.

@@ -33,11 +33,12 @@ public sealed partial class MainWindow : Window
             _deploymentPort = deployment.Port;
         }
         Navigation.SelectedItem = Navigation.MenuItems[0];
-        if (!string.IsNullOrWhiteSpace(activation)) ApplyActivation(activation);
+        if (!string.IsNullOrWhiteSpace(activation)) HandleExternalActivation(activation);
     }
-    private void ApplyActivation(string activation)
+    internal void HandleExternalActivation(string activation)
     {
-        MilaRoute? route = MilaRouteParser.Parse(activation.Trim().Trim('"'));
+        MilaExternalActivation? external = MilaExternalActivationParser.ParseArguments(activation);
+        MilaRoute? route = external?.Route;
         if (route is null)
         {
             StatusText.Text = S("invalidRoute", "This link is not a valid Mila route.");
@@ -57,6 +58,8 @@ public sealed partial class MainWindow : Window
             MilaRouteKind.Thread => $"{S("routeThread", "Thread")}: {route.Value.Id?.ToString("D")}",
             _ => $"{S("routeOpened", "Opened")}: {route.Value.Path}"
         };
+        if (external.Value.IsShareTarget)
+            StatusText.Text += $" ({S("routeShared", "shared")})";
     }
     private static string S(string id, string fallback) => MilaStrings.Text(id, fallback);
     private void ApplyStrings()
