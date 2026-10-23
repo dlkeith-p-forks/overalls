@@ -1083,3 +1083,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0256](0256-batched-page-authorization-snapshots.md) | accepted | partial | Batched page authorization over one read-only snapshot |
 | [ADR-0257](0257-liveview-callback-observability.md) | accepted | partial | Trace every Marshall LiveView callback |
 | [ADR-0258](0258-marshall-page-service-levels.md) | accepted | partial | Marshall page interaction service levels |
+| [ADR-0259](0259-deployment-revision-telemetry.md) | accepted | partial | Deployment revision in telemetry provenance |
