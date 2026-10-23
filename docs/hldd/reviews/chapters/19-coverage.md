@@ -1,6 +1,6 @@
 ---
-digest: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
-disposition: no-impact
+digest: eec1a8133a836361d14be300a11c987603986208eafcb1cf9930c9fbc0e8d91a
+disposition: updated
 kind: chapter
 mapping_digest: null
 path: marshall/priv/hldd/19-coverage.md
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Refreshed PTY transport and Windows web parity evidence.
+Batched relocation downtime is now asserted against the per-row read in the relocation source test; the batched-machine-page-decisions scenario cites it and 19-coverage is regenerated from it.

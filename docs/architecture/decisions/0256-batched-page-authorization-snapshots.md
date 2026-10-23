@@ -223,6 +223,7 @@ exactly what the per-row `latest/1` returns.
 | Indexes | [`20261022091921_liveview_load_indexes.exs`](../../../marshall/priv/repo/migrations/20261022091921_liveview_load_indexes.exs) |
 | Refresh measurement and query counting | [`observability.ex`](../../../marshall/lib/marshall/observability.ex) |
 | Library spans, annotation and metric | [`tracing.ex`](../../../elixir/diagnostics/lib/overalls/diagnostics/tracing.ex), [`metrics.ex`](../../../elixir/diagnostics/lib/overalls/diagnostics/metrics.ex) |
+| Batched relocation downtime | [`relocation_sources_test.exs`](../../../marshall/test/marshall/compute/relocation_sources_test.exs) (`assert_batched_relocation/2`) |
 | Dashboard and gauges | [`operations-dashboard.nix`](../../../nix/domains/system/otel-fleet/operations-dashboard.nix), [`default.nix`](../../../nix/domains/system/otel-fleet/default.nix), [`default.nix`](../../../nix/domains/system/logging/default.nix) |
 
 Remaining gaps:
@@ -231,9 +232,6 @@ Remaining gaps:
   thread and team tables), not on production data.
 - An owner of very many machines sorts all of them before the limit. That is
   cheaper than the old walk, but not keyset-bounded.
-- The batched relocation downtime branch is covered only by the unchanged
-  per-row logic it shares. The equivalence test's relocation has no completed
-  stop outcome.
 - The per-view refresh panels (`live_<view>_*`) need signed-in machine-page
   refreshes and have not yet shown live values.
 

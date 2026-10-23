@@ -160,6 +160,12 @@ Returning nil from the batch makes that test fail. The affected suites pass:
 66 tests, including views, relocation capacity, evacuations, thread access,
 overview, pins and the relocation LiveView test.
 
+The relocation source test also reaches recorded stop evidence. At the ongoing
+interval and after destination readiness, it now compares `latest_many/1` and
+the `list_vms` row with `latest/1`, including downtime: ongoing seconds may
+advance by one, finished seconds must be equal. Relocation sources, relocation
+batch and batched views suites: 41 tests passed on 2026-10-23.
+
 ## Follow-up
 
 - Repeat the `EXPLAIN` on production data.

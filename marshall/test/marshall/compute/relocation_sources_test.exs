@@ -1945,6 +1945,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
                Marshall.Compute.get_vm(%{vm_id: vm.id}, actor: c.owner)
 
       assert seconds >= 0
+      assert_batched_relocation(vm.id, c.owner)
 
       refute RelocationCoordinator.stop_confirmed?(relocation, %{
                vm
@@ -2208,6 +2209,8 @@ defmodule Marshall.Compute.RelocationSourcesTest do
 
         assert {:ok, %{relocation: %{downtime: %{ongoing: false, seconds: elapsed}}}} =
                  Marshall.Compute.get_vm(%{vm_id: vm.id}, actor: c.owner)
+
+        assert_batched_relocation(vm.id, c.owner)
 
         [stop_proof] = Ledger.read!(Marshall.Compute.PhysicalOutcome, id: event.id)
         [ready_proof] = Ledger.read!(Marshall.Compute.ReadinessRequest, id: request.id)
@@ -2693,6 +2696,31 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       assert [%{disk_held: false, compute_held: false, temporary_disk_bytes: 0}] =
                Ledger.read!(Reservation, placement_id: c.relocation.source_placement_id)
     end
+  end
+
+  # @cc [owner:ghuntley,label:verification;observability] relocation-downtime-batch-equivalence
+  # With stop evidence present, the batched relocation status and the listed page
+  # MUST report the same downtime as the per-row read. An ongoing interval is
+  # measured against database time, so its seconds may advance by one between reads.
+  @spec assert_batched_relocation(String.t(), Marshall.Accounts.User.t()) :: :ok
+  defp assert_batched_relocation(vm_id, owner) do
+    alias Marshall.Compute.RelocationStatus
+    single = RelocationStatus.latest(vm_id)
+    assert %{downtime: %{seconds: _}} = single
+    %{^vm_id => batched} = RelocationStatus.latest_many([vm_id])
+    {:ok, page} = Marshall.Compute.list_vms(%{limit: 50}, actor: owner)
+    listed = Enum.find_value(page.items, &(&1.id == vm_id && &1.relocation))
+
+    for status <- [batched, listed] do
+      assert Map.delete(status, :downtime) == Map.delete(single, :downtime)
+      assert status.downtime.ongoing == single.downtime.ongoing
+
+      if single.downtime.ongoing,
+        do: assert((status.downtime.seconds - single.downtime.seconds) in 0..1),
+        else: assert(status.downtime.seconds == single.downtime.seconds)
+    end
+
+    :ok
   end
 
   @spec checkpoint(VirtualMachine.t()) :: OverallsProtocol.Checkpoint.t()
