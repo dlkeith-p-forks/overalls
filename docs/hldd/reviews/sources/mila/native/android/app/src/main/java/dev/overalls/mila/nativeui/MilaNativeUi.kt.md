@@ -1,5 +1,5 @@
 ---
-digest: 37e16f45033bd4b84f6403f178789e88c5448cafbb3c3988388fa50eacf4c43f
+digest: 3d41d9d4389dfcc592313c25dd4c462ddbe5777518c4ab172d4fd4b8efe324bb
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-UI wiring preserves existing documented native machine lifecycle contracts.
+Concurrent native Android and Rust changes reviewed; no impact to Windows resize slice.

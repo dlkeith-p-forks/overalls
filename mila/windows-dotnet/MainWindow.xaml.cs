@@ -80,6 +80,8 @@ public sealed partial class MainWindow : Window
         MachineCommandsHelp.Text = S("machineAccess", "Commands are classified by the Rust core before execution.");
         MachineList.Content = S("tabInfo", "List"); MachineShow.Content = S("machineLoading", "Show");
         MachineNew.Content = S("actionNew", "New"); MachineResize.Content = S("actionResize", "Resize");
+        ResizeCpu.Header = S("machineCpu", "CPU"); ResizeMemory.Header = S("machineMemory", "Memory MiB"); ResizeDisk.Header = S("machineDisk", "Disk GiB");
+        ResizeCpu.Text = "2"; ResizeMemory.Text = "2048"; ResizeDisk.Text = "20";
         MachineStart.Content = S("actionStart", "Start"); MachineStop.Content = S("actionStop", "Stop");
         MachinePause.Content = S("actionPause", "Pause"); MachineResume.Content = S("actionResume", "Resume");
         MachineDelete.Content = S("actionDelete", "Delete"); MachineShareAdd.Content = S("sharingAdd", "Share add");
@@ -558,7 +560,14 @@ public sealed partial class MainWindow : Window
             MachineCommandStatus.Text = S("machineNotSelected", "Select a machine first.");
             return;
         }
-        bool applied = _machineMutation.Resize(machine.Id, 2, 2048, 20_480,
+        if (!uint.TryParse(ResizeCpu.Text, out uint cpu) || !ulong.TryParse(ResizeMemory.Text, out ulong memory) ||
+            !ulong.TryParse(ResizeDisk.Text, out ulong disk) || cpu is < 1 or > 256 || memory is < 256 or > 4_194_304 ||
+            disk is < 1 or > 16_777_216)
+        {
+            MachineCommandStatus.Text = S("resizeInvalid", "Enter valid CPU, memory and disk sizes.");
+            return;
+        }
+        bool applied = _machineMutation.Resize(machine.Id, cpu, memory, disk,
             "porsche-" + Guid.NewGuid().ToString("N"));
         MachineCommandStatus.Text = applied
             ? S("requestSucceeded", "Request submitted")

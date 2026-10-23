@@ -470,7 +470,10 @@ internal static partial class RustNative
     internal static MilaNativeSessionActionResult TrySessionMachineResize(
         ulong handle, Guid machineId, uint cpu, ulong memory, ulong disk, string requestId)
     {
-        if (handle == 0 || cpu is < 1 or > 256 || memory is < 256 or > 4_194_304 ||
+        // Empty IDs are never valid machine targets. Reject them before crossing
+        // the ABI so a signed-in UI cannot accidentally mutate an unspecified
+        // resource when selection state is stale.
+        if (handle == 0 || machineId == Guid.Empty || cpu is < 1 or > 256 || memory is < 256 or > 4_194_304 ||
             disk is < 1 or > 16_777_216 || !IsCanonicalRequestId(requestId))
             return new(MilaNativeStatus.InvalidRequest);
         string machine = machineId.ToString("D");

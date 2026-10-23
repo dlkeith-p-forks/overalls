@@ -50,6 +50,13 @@ public final class MilaUserDefaultsNotificationStore: MilaNotificationDeviceStor
 #if canImport(UserNotifications)
 /// Thin platform bridge. The app delegate supplies the APNs token to `register`.
 public final class MilaAppleNotificationService: NSObject {
+    /// APNs delivers the token as opaque bytes. Encode it deterministically for
+    /// the Rust validation boundary and never retain the bytes in this object.
+    public static func tokenString(from deviceToken: Data) -> String? {
+        guard !deviceToken.isEmpty else { return nil }
+        return deviceToken.map { String(format: "%02x", $0) }.joined()
+    }
+
     public func requestAuthorization() async throws -> Bool {
         try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
     }
@@ -78,6 +85,17 @@ public final class MilaAppleNotificationService: NSObject {
     public func register(token: String, endpoint: String, environment: MilaPushEnvironment = .production) {
         guard !token.isEmpty else { state = .failed; return }; state = .registering
         do { try adapter.validatePushRegistration(provider: MilaPushProvider.apple.rawValue, environment: environment.rawValue, token: token, appID: appID, deployment: deployment, endpoint: endpoint); _ = store.upsert(MilaNotificationDevice(id: appID, deployment: deployment, enabled: true)); refreshDevices(); state = .on } catch { state = .failed }
+    }
+
+    /// Handles the token callback from APNs without exposing token bytes to UI
+    /// state. The token is converted and immediately passed to the validator.
+    public func register(deviceToken: Data, endpoint: String, environment: MilaPushEnvironment = .production) {
+        #if canImport(UserNotifications)
+        guard let token = MilaAppleNotificationService.tokenString(from: deviceToken) else { state = .failed; return }
+        register(token: token, endpoint: endpoint, environment: environment)
+        #else
+        _ = deviceToken; _ = endpoint; _ = environment; state = .failed
+        #endif
     }
     public func disable() { _ = store.upsert(MilaNotificationDevice(id: appID, deployment: deployment, enabled: false)); refreshDevices(); state = .off }
 }

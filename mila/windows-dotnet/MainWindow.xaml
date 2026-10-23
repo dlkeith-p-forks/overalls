@@ -40,6 +40,11 @@
             <Button x:Name="MachineResume" Click="ClassifyMachineResume" />
           </StackPanel>
           <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBox x:Name="ResizeCpu" Width="80" InputScope="Number" />
+            <TextBox x:Name="ResizeMemory" Width="110" InputScope="Number" />
+            <TextBox x:Name="ResizeDisk" Width="110" InputScope="Number" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="8">
             <Button x:Name="MachineDelete" Click="ClassifyMachineDelete" />
             <Button x:Name="MachineShareAdd" Click="ClassifyMachineShareAdd" />
             <Button x:Name="MachineShareRemove" Click="ClassifyMachineShareRemove" />

@@ -3,6 +3,13 @@ import XCTest
 
 @MainActor
 final class MilaNotificationsTests: XCTestCase {
+    #if canImport(UserNotifications)
+    func testAPNsTokenEncodingIsStableAndEmptyTokensAreRejected() {
+        XCTAssertEqual(MilaAppleNotificationService.tokenString(from: Data([0x00, 0xab, 0xff])), "00abff")
+        XCTAssertNil(MilaAppleNotificationService.tokenString(from: Data()))
+    }
+    #endif
+
     private final class Adapter: MilaFFIAdapter, @unchecked Sendable {
         var calls: [(UInt8, UInt8, String, String, String, String)] = []
         var error: Error?

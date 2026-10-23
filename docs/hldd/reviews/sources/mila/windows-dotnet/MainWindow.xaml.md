@@ -1,5 +1,5 @@
 ---
-digest: 0b9905a73b33608ba043c47afd4a53668242be02a122c347d13103a081afe09d
+digest: 4688b63fb1aab2abec19661b9cf4a5e65af46a8b521b327d0d3aefc149b84d30
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Windows settings locale controls preserve existing native UI boundaries and add no architecture change.
+Typed Windows UI validation preserves existing native boundary and documented behavior.

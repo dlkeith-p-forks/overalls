@@ -926,6 +926,16 @@ pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSession
 }
 
 #[no_mangle]
+pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionMachineResize(
+    mut env: jni::JNIEnv<'_>, _class: jni::objects::JClass<'_>, handle: jni::sys::jlong,
+    machine: jni::objects::JString<'_>, cpu: jni::sys::jint, memory: jni::sys::jint,
+    disk: jni::sys::jint, request_id: jni::objects::JString<'_>) -> jni::sys::jint {
+    let machine = match env.get_string(&machine) { Ok(v) => v.to_bytes().to_vec(), Err(_) => return -4 };
+    let request_id = match env.get_string(&request_id) { Ok(v) => v.to_bytes().to_vec(), Err(_) => return -4 };
+    unsafe { session::mila_session_machine_resize(handle as u64, machine.as_ptr(), machine.len(), cpu as u32, memory as u64, disk as u64, request_id.as_ptr(), request_id.len()) as jni::sys::jint }
+}
+
+#[no_mangle]
 pub extern "system" fn Java_dev_overalls_mila_nativeui_MilaRustFfi_nativeSessionWebShow(
     mut env: jni::JNIEnv<'_>,
     _class: jni::objects::JClass<'_>,

@@ -405,6 +405,10 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
 @Composable private fun MachineDetail(controller: MilaMachineDetailController, id: java.util.UUID, adapter: MilaFfiAdapter, signedIn: Boolean, listing: MilaSessionListing?) {
     val scope = rememberCoroutineScope()
     var state by remember { mutableStateOf(controller.state) }
+    var resizeCpu by remember { mutableStateOf("2") }
+    var resizeMemory by remember { mutableStateOf("1024") }
+    var resizeDisk by remember { mutableStateOf("20") }
+    var resizeResult by remember { mutableStateOf("") }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(MilaStrings.text(MilaMessage.MachineActions), style = MaterialTheme.typography.titleLarge)
         Text(id.toString(), style = MaterialTheme.typography.labelSmall)
@@ -425,6 +429,16 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
                     }) { Text(choice.label) }
                 }
             }
+        }
+        if (machine != null) {
+            Text(MilaStrings.text(MilaMessage.Resize), style = MaterialTheme.typography.titleMedium)
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                OutlinedTextField(resizeCpu, { resizeCpu = it.filter(Char::isDigit) }, label = { Text(MilaStrings.text(MilaMessage.MachineCpu)) }, singleLine = true, modifier = Modifier.weight(1f))
+                OutlinedTextField(resizeMemory, { resizeMemory = it.filter(Char::isDigit) }, label = { Text(MilaStrings.text(MilaMessage.MachineMemory)) }, singleLine = true, modifier = Modifier.weight(1f))
+                OutlinedTextField(resizeDisk, { resizeDisk = it.filter(Char::isDigit) }, label = { Text(MilaStrings.text(MilaMessage.MachineDisk)) }, singleLine = true, modifier = Modifier.weight(1f))
+                Button(enabled = signedIn, onClick = { scope.launch { resizeResult = adapter.machineResize(id, resizeCpu.toIntOrNull() ?: 0, resizeMemory.toIntOrNull() ?: 0, resizeDisk.toIntOrNull() ?: 0).fold({ "Resize submitted" }, { "Resize rejected" }) } }) { Text(MilaStrings.text(MilaMessage.Resize)) }
+            }
+            if (resizeResult.isNotEmpty()) Text(resizeResult, style = MaterialTheme.typography.labelSmall)
         }
         MachineSharingControls(adapter, machine, signedIn, listing)
         if (machine != null) MilaWebControls(adapter, machine)
