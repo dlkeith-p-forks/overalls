@@ -1,5 +1,5 @@
 ---
-digest: 1ad80a6d48d38fa234ddd6f98e703845ee5e6d42d37608f4f25239fd886a9123
+digest: 497a80ab0099e47b19729e913735a9d937279dcf568d1b425120dcc74c41970f
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Apple deployment coordinator and native root sign-in lifecycle; no HLDD chapter content changed.
+Apple app-lock lifecycle is a native UI verification improvement; no documented behavior, topology, or protocol chapter changes are required.

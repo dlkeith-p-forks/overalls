@@ -36,12 +36,18 @@ public final class MilaAppLockController: ObservableObject {
     @Published public private(set) var state: MilaAppLockState
     private let evaluator: any MilaBiometricEvaluator
     private let reason: String
+    private let defaults: UserDefaults
+    private let enabledKey = "mila.appLockEnabled"
 
-    public init(enabled: Bool = false, reason: String = MilaStrings.text(.lockExplain), evaluator: any MilaBiometricEvaluator = LocalAuthenticationEvaluator()) {
+    /// The controller is the single lifecycle boundary for app locking. The enabled preference
+    /// is durable, while an unlocked state is deliberately process-scoped and never persisted.
+    public init(enabled: Bool? = nil, reason: String = MilaStrings.text(.lockExplain), evaluator: any MilaBiometricEvaluator = LocalAuthenticationEvaluator(), defaults: UserDefaults = .standard) {
         self.evaluator = evaluator
         self.reason = reason
-        guard enabled, evaluator.availability() else {
-            self.state = enabled ? .unavailable : .unlocked
+        self.defaults = defaults
+        let configured = enabled ?? defaults.bool(forKey: enabledKey)
+        guard configured, evaluator.availability() else {
+            self.state = configured ? .unavailable : .unlocked
             return
         }
         self.state = .locked
@@ -51,6 +57,7 @@ public final class MilaAppLockController: ObservableObject {
     public var canEnable: Bool { evaluator.availability() }
 
     public func setEnabled(_ enabled: Bool) async {
+        defaults.set(enabled, forKey: enabledKey)
         guard enabled else { state = .unlocked; return }
         guard evaluator.availability() else { state = .unavailable; return }
         state = .locked
@@ -65,6 +72,21 @@ public final class MilaAppLockController: ObservableObject {
     public func lock() {
         guard canEnable else { state = .unavailable; return }
         state = .locked
+    }
+
+    /// Called when the scene leaves the foreground. Locking is synchronous so no protected
+    /// content remains visible while an authentication request is pending.
+    public func sceneDidEnterBackground() {
+        guard defaults.bool(forKey: enabledKey) else { return }
+        lock()
+    }
+
+    /// Called when the scene returns to the foreground. Authentication is explicit and remains
+    /// asynchronous, allowing the view to present a stable locked state immediately.
+    public func sceneWillEnterForeground() async {
+        guard defaults.bool(forKey: enabledKey), state != .unavailable else { return }
+        if state == .unlocked { lock() }
+        await unlock()
     }
 }
 
