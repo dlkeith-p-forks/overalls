@@ -297,6 +297,68 @@ pub trait HostPtyBackend {
     fn kill(&mut self, channel: u64) -> Result<(), PtyError>;
 }
 
+/// Porsche's authenticated PTY channel as exposed by the Linux host runtime.
+///
+/// The native presentation crate deliberately depends on this narrow client
+/// contract rather than an SSH implementation.  Porsche owns credentials,
+/// channel bytes, and reconnect policy; only decoded display text crosses the
+/// boundary.  `PorschePtyBackend` adds the session binding that the generic
+/// `HostPtyTransport` requires.
+pub trait PorschePtyClient {
+    fn open(&mut self, request: &PtyAttachRequest) -> Result<u64, PtyError>;
+    fn output(&mut self, channel: u64) -> Result<String, PtyError>;
+    fn input(&mut self, channel: u64, length: usize) -> Result<(), PtyError>;
+    fn dimensions(&mut self, channel: u64, columns: u16, rows: u16) -> Result<(), PtyError>;
+    fn close(&mut self, channel: u64) -> Result<(), PtyError>;
+}
+
+/// Concrete bridge from Porsche's host PTY client to the authenticated native
+/// terminal transport.  A channel cannot be reused for a different session.
+/// @cc [owner:ghuntley,label=security;terminal] porsche-pty-session-binding
+/// `open` MUST be called with the same authenticated session for the lifetime
+/// of this backend; operations for another session are refused before client.
+pub struct PorschePtyBackend<C> {
+    client: C,
+    session_id: Option<String>,
+}
+
+impl<C> PorschePtyBackend<C> {
+    pub const fn new(client: C) -> Self {
+        Self { client, session_id: None }
+    }
+
+    pub fn client_mut(&mut self) -> &mut C {
+        &mut self.client
+    }
+}
+
+impl<C: PorschePtyClient> HostPtyBackend for PorschePtyBackend<C> {
+    fn attach(&mut self, request: &PtyAttachRequest) -> Result<u64, PtyError> {
+        if self.session_id.as_deref().is_some_and(|id| id != request.session_id) {
+            return Err(PtyError::Unauthenticated);
+        }
+        let channel = self.client.open(request)?;
+        self.session_id = Some(request.session_id.clone());
+        Ok(channel)
+    }
+
+    fn read_output(&mut self, channel: u64) -> Result<String, PtyError> {
+        self.client.output(channel)
+    }
+
+    fn send_input(&mut self, channel: u64, length: usize) -> Result<(), PtyError> {
+        self.client.input(channel, length)
+    }
+
+    fn resize(&mut self, channel: u64, columns: u16, rows: u16) -> Result<(), PtyError> {
+        self.client.dimensions(channel, columns, rows)
+    }
+
+    fn kill(&mut self, channel: u64) -> Result<(), PtyError> {
+        self.client.close(channel)
+    }
+}
+
 /// Host-owned PTY transport that binds every operation to one session and
 /// authenticated reducer generation. A runtime supplies the backend to keep
 /// SSH credentials and raw PTY bytes outside the native presentation crate.
@@ -388,8 +450,8 @@ impl<B: HostPtyBackend> PtyTransport for HostPtyTransport<B> {
 #[cfg(test)]
 mod transport_tests {
     use super::{
-        AuthenticatedPty, HostPtyBackend, HostPtyTransport, PtyAttachRequest, PtyError,
-        PtyTransport, SessionAuthority,
+        AuthenticatedPty, HostPtyBackend, HostPtyTransport, PorschePtyBackend, PorschePtyClient,
+        PtyAttachRequest, PtyError, PtyTransport, SessionAuthority,
     };
 
     struct Authority(bool);
@@ -529,5 +591,39 @@ mod transport_tests {
         transport.attach(&first).unwrap();
         assert_eq!(transport.attach(&second), Err(PtyError::Transport));
         assert_eq!(transport.backend_mut().calls, 1);
+    }
+
+    #[derive(Default)]
+    struct PorscheClient {
+        opens: usize,
+        closes: usize,
+    }
+
+    impl PorschePtyClient for PorscheClient {
+        fn open(&mut self, _: &PtyAttachRequest) -> Result<u64, PtyError> {
+            self.opens += 1;
+            Ok(73)
+        }
+        fn output(&mut self, _: u64) -> Result<String, PtyError> {
+            Ok("porsche-ready".to_owned())
+        }
+        fn input(&mut self, _: u64, _: usize) -> Result<(), PtyError> { Ok(()) }
+        fn dimensions(&mut self, _: u64, _: u16, _: u16) -> Result<(), PtyError> { Ok(()) }
+        fn close(&mut self, _: u64) -> Result<(), PtyError> {
+            self.closes += 1;
+            Ok(())
+        }
+    }
+
+    #[test]
+    fn porsche_backend_binds_session_before_opening_second_channel() {
+        let mut backend = PorschePtyBackend::new(PorscheClient::default());
+        backend.attach(&request()).expect("first session");
+        let other = PtyAttachRequest { session_id: "other".to_owned(), ..request() };
+        assert_eq!(backend.attach(&other), Err(PtyError::Unauthenticated));
+        assert_eq!(backend.client_mut().opens, 1);
+        assert_eq!(backend.read_output(73).expect("output"), "porsche-ready");
+        backend.kill(73).expect("close");
+        assert_eq!(backend.client_mut().closes, 1);
     }
 }
