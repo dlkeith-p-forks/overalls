@@ -103,6 +103,16 @@ fun MilaNativeRoot(
         connection = MilaSessionConnection.Refreshing
         connection = MilaSessionRefresher.refresh(sessionAdapter)
     } }
+    fun reconnect(selected: MilaDeployment) { scope.launch {
+        signInState = MilaSignInState.Connecting(selected)
+        sessionMaterialProvider.resolve(selected).fold(
+            onSuccess = { material ->
+                signIn.reconnect(material.config, material.signer)
+                signInState = signIn.state
+            },
+            onFailure = { signInState = MilaSignInState.Failed(selected, MilaFfiError.Unavailable) },
+        )
+    } }
     val status = when (connection) {
         MilaSessionConnection.Idle -> MilaStrings.text(MilaMessage.Ready)
         MilaSessionConnection.Refreshing -> MilaStrings.text(MilaMessage.Connecting)
@@ -179,6 +189,9 @@ fun MilaNativeRoot(
         }
         if (signInState is MilaSignInState.Expired) {
             Text(MilaStrings.text(MilaMessage.ApprovalExpired), style = MaterialTheme.typography.bodyMedium)
+            selectedDeployment?.let { selected ->
+                Button({ reconnect(selected) }) { Text(MilaStrings.text(MilaMessage.Reconnect)) }
+            }
         }
         if (signInState is MilaSignInState.SignedIn) Text(MilaStrings.text(MilaMessage.Connected), style = MaterialTheme.typography.labelSmall)
         when (val selected = route) {

@@ -224,6 +224,7 @@ mod tests {
         let selection = DeploymentSelection::validate("example.com:443").unwrap();
         save(&selection).unwrap();
         assert!(path.exists());
+        assert_eq!(load().unwrap(), Some(selection.clone()));
         forget().unwrap();
         forget().unwrap();
         assert!(!path.exists());

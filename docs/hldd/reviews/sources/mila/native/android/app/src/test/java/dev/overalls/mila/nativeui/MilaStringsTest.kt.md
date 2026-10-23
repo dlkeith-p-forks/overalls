@@ -1,18 +1,18 @@
 ---
-digest: c3cab40c22f2ea1a2f378c0a035459d56341b0887aa857ec65b043a3165e9500
-disposition: updated
+digest: a8a830f1b2db21ec10709fb85641dd922cd9fee9d7daee60cc14ea6e94442b8f
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/android/app/src/test/java/dev/overalls/mila/nativeui/MilaStringsTest.kt
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 368f33fbb31c849c8558e3988b6199db2635f59e76065042873e1de42c9eaef3
+  marshall/priv/hldd/08-interactive.md: bfa9953693cb15c38c3205a3f6c0f5d3a594f7438444864c383807f51e0185f5
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
-  marshall/priv/hldd/19-coverage.md: 71e87db236f081db996db1cf017c727f434e86aab079ac414a8d87ca411ac278
-  marshall/priv/hldd/20-security.md: 92ef988a1a8679b0767fad1b355246a4e216ed59e25b0b43ea56ccce0c1e3e8b
-  marshall/priv/hldd/21-domains.md: 30873f1b247f2666ca7eb0f93f5a942394e733fb993ea599cba1392dc7d21bae
-  marshall/priv/hldd/22-topology.md: 03993ebc3b0c89183aa3eafd972187e92b346d929a61f22250e9e1b6774e0b4e
+  marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
+  marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
+  marshall/priv/hldd/21-domains.md: 64cf0af44004d07c4e5c3402225bb22e5f4f29ae1e8a15b5c7690de8b769efb7
+  marshall/priv/hldd/22-topology.md: b66172c618dc03b360046d5e1a6f2850265e5eb7acbe02e20c068a0efdf1569f
 state: present
 version: 2
 ---
 
-Centralized Mila locale policy and deterministic catalog generation; native shells now consume stable localized message identities with shared fallback behavior.
+Reviewed Android authenticated reconnect UI and localized status; no new domain or topology impact.

@@ -7,5 +7,6 @@ class MilaStringsTest {
     @Test fun stableMessageIdentityHasDeterministicFallback() {
         assertEquals("Mila", MilaStrings.text(MilaMessage.AppName))
         assertEquals("Machines", MilaStrings.text(MilaMessage.Machines))
+        assertEquals("Reconnect", MilaStrings.text(MilaMessage.Reconnect))
     }
 }

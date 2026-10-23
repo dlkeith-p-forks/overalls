@@ -1,11 +1,11 @@
 ---
-digest: 23caabdf56917e07e0020ad5cb3c2318bd7568b0541eaad7f6798813cce35b81
-disposition: no-impact
+digest: ee33881075da9036bdbe5537dc837c5465c976ced2f4d3286ca94cba4ec023b5
+disposition: updated
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/linux/src/persistence.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 1178920c68a6912b0a5886ba1611d85e849c8dd189027e4b5620fca70e652cf2
+  marshall/priv/hldd/08-interactive.md: bfa9953693cb15c38c3205a3f6c0f5d3a594f7438444864c383807f51e0185f5
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed Linux settings and locale persistence changes; no new domain or topology impact.
+Verify persisted deployment reload reads canonical selection before GTK reflection.
