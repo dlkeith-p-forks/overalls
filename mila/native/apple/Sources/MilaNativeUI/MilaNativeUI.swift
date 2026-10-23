@@ -28,7 +28,7 @@ public struct MilaNativeRootView: View {
                 case .machines: MachinesView(machines: machines) { selection = .machine(id: $0) }
                 case .machine(let id): MachineDetailView(machine: machines.first { $0.id == id }, adapter: adapter)
                 case .threads: ThreadsView(adapter: adapter, select: { selection = .thread(id: $0) })
-                case .thread(let id): ThreadDetailView(id: id)
+                case .thread(let id): ThreadDetailView(id: id, adapter: adapter)
                 case .settings: SettingsView(adapter: adapter, lockController: appLock)
                 }
             }
@@ -153,22 +153,52 @@ private struct ThreadsView: View {
     let adapter: any MilaFFIAdapter
     let select: (UUID) -> Void
     @State private var status = ""
+    @State private var input = ""
+    @State private var busy = false
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(MilaStrings.text(.threads)).font(.title)
             Text(MilaStrings.text(.commandsRust)).font(.caption).foregroundStyle(.secondary)
             ForEach(["threads list", "threads read"], id: \.self) { command in
                 Button(command) {
-                    do { status = String(describing: try adapter.classifyThreadCommand(command)) }
-                    catch { status = MilaStrings.text(.unavailable) }
+                    Task { await execute(command: command) }
                 }
             }
+            TextField(MilaStrings.text(.input), text: $input)
+                .textFieldStyle(.roundedBorder)
+            Button(MilaStrings.text(.send)) { Task { await execute(command: "thread answer", input: input) } }
+                .disabled(input.isEmpty || busy)
             Text(status).font(.caption)
             ContentUnavailableView(MilaStrings.text(.noThreads), systemImage: "bubble.left", description: Text(MilaStrings.text(.threadsHint)))
         }.padding()
     }
+    private func execute(command: String, input: String? = nil) async {
+        guard !busy else { return }; busy = true; defer { busy = false }
+        do {
+            _ = try adapter.classifyThreadCommand(command)
+            let data = try await adapter.threadAction(thread: nil, command: command, input: input, requestID: UUID())
+            status = String(decoding: data.prefix(4096), as: UTF8.self)
+        } catch { status = MilaStrings.text(.unavailable) }
+    }
 }
-private struct ThreadDetailView: View { let id: UUID; var body: some View { Text("\(MilaStrings.text(.threads)) \(id.uuidString)").padding() } }
+private struct ThreadDetailView: View {
+    let id: UUID
+    let adapter: any MilaFFIAdapter
+    @State private var input = ""
+    @State private var status = ""
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("\(MilaStrings.text(.threads)) \(id.uuidString)")
+            TextField(MilaStrings.text(.input), text: $input).textFieldStyle(.roundedBorder)
+            Button(MilaStrings.text(.send)) { Task { await send() } }.disabled(input.isEmpty)
+            Text(status).font(.caption).foregroundStyle(.secondary)
+        }.padding()
+    }
+    private func send() async {
+        do { let data = try await adapter.threadAction(thread: id, command: "thread answer", input: input, requestID: UUID()); status = String(decoding: data.prefix(4096), as: UTF8.self); input = "" }
+        catch { status = MilaStrings.text(.unavailable) }
+    }
+}
 private struct SettingsView: View {
     let adapter: any MilaFFIAdapter
     let lockController: MilaAppLockController

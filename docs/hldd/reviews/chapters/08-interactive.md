@@ -1,5 +1,5 @@
 ---
-digest: bfa9953693cb15c38c3205a3f6c0f5d3a594f7438444864c383807f51e0185f5
+digest: 3b2f40d7d3004923a6bfaa3b6b27287b36731de73182032b29a392be6daf8c0a
 disposition: updated
 kind: chapter
 mapping_digest: null
@@ -9,4 +9,4 @@ state: present
 version: 2
 ---
 
-Document Linux GTK deployment Reload and Forget controls, including persistence reflection and field clearing.
+Apple SwiftUI now dispatches authenticated thread operations through the Rust live session and exposes bounded responses.

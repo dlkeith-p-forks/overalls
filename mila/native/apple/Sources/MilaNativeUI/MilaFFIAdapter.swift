@@ -397,6 +397,12 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         catch { throw MilaMachineSharingError.unavailable }
     }
 
+    public func threadAction(thread: UUID?, command: String, secondary: String? = nil, input: String? = nil, requestID: UUID? = nil) async throws -> Data {
+        guard let liveSession else { throw MilaFFIError.unavailable }
+        do { return try liveSession.threadAction(thread: thread, command: command, secondary: secondary, input: input, requestID: requestID) }
+        catch { throw MilaFFIError.unavailable }
+    }
+
     private func abiCompatible() -> Bool {
         var version = MilaFfiAbiVersion(major: 0, minor: 0)
         return MilaRustFFI.getVersion(&version) == 0 && version.major == 1
@@ -437,6 +443,7 @@ public protocol MilaFFIAdapter: Sendable {
     func revokeSSHKey(_ key: MilaSSHKey, requestID: UUID) async throws
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
     func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws
+    func threadAction(thread: UUID?, command: String, secondary: String?, input: String?, requestID: UUID?) async throws -> Data
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind
     func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind
     func classifyWebCommand(_ command: MilaWebCommand) throws -> MilaMachineCommandKind
@@ -449,6 +456,7 @@ public extension MilaFFIAdapter {
     func refreshSnapshot() async throws -> MilaValidatedSnapshot { throw MilaFFIError.unavailable }
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
     func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws { _ = principal; _ = machine; _ = remove; _ = requestID; throw MilaMachineSharingError.unavailable }
+    func threadAction(thread: UUID?, command: String, secondary: String? = nil, input: String? = nil, requestID: UUID? = nil) async throws -> Data { _ = thread; _ = command; _ = secondary; _ = input; _ = requestID; throw MilaFFIError.unavailable }
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind { _ = line; throw MilaFFIError.unavailable }
     func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind { _ = line; throw MilaFFIError.unavailable }
     func classifyWebCommand(_ command: MilaWebCommand) throws -> MilaMachineCommandKind { _ = command; throw MilaFFIError.unavailable }

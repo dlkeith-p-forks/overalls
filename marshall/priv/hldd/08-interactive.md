@@ -1393,8 +1393,9 @@ The Linux native adapter adds [`HostPtyTransport`](repo:mila/native/linux/src/te
 which accepts a host-owned backend, binds its channel to the authenticated
 session generation, and refuses stale-generation operations before reaching the
 backend. Its tests cover decoded output projection, input/resize/kill lifecycle,
-and second-channel refusal. Porsche SSH/PTY backend wiring and GTK stream
-attachment remain open.
+and second-channel refusal. GTK attach, connect, reconnect, input, resize and
+kill controls now refuse before the reducer unless the session is signed in.
+Porsche SSH/PTY backend wiring and GTK stream attachment remain open.
 
 Linux sign-in also provides a [`FileDeviceSigner`](repo:mila/native/linux/src/session.rs)
 for owner-only development and release key files. It rejects symlinks and
