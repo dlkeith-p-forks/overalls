@@ -311,6 +311,11 @@ private fun MilaSshKeysPanel(adapter: MilaFfiAdapter, signedIn: Boolean) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(MilaStrings.text(MilaMessage.SshKeysTitle), style = MaterialTheme.typography.titleMedium)
         Text(MilaStrings.text(MilaMessage.SshKeysExplain), style = MaterialTheme.typography.bodySmall)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(onClick = { controller.refresh(); keys = controller.keys }, enabled = signedIn && store != null) {
+                Text(MilaStrings.text(MilaMessage.Refresh))
+            }
+        }
         if (!signedIn || store == null) {
             Text(MilaStrings.text(MilaMessage.RuntimeUnavailable), style = MaterialTheme.typography.labelSmall)
         } else if (keys.isEmpty()) {

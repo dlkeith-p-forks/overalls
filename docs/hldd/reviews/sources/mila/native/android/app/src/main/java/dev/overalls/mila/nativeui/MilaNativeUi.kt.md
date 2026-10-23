@@ -1,5 +1,5 @@
 ---
-digest: 3d41d9d4389dfcc592313c25dd4c462ddbe5777518c4ab172d4fd4b8efe324bb
+digest: 22dc912a6bd6c8fcae760fa90e99c092ab4c49ee69068cb77621807e872fc6fb
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Concurrent native Android and Rust changes reviewed; no impact to Windows resize slice.
+SSH refresh is a UI-only control; no documented behavior or architecture chapter changes.
