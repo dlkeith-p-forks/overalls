@@ -1,5 +1,5 @@
 ---
-digest: b0d9eadc1f098b70df7eac4cbf58bb1b5f735802ec13e647413a66e3f1079811
+digest: 1fe5cd5acba3b5e92cf6125b046fb02c23262ff7f342bab907acc1f37fb3a1bf
 disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Reviewed concurrent native FFI changes; no HLDD chapter behavior changes in this receipt.
+Typed Apple UI role selection preserves documented sharing behavior and changes no HLDD chapter content.

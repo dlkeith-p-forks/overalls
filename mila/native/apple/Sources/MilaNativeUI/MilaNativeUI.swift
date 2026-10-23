@@ -72,6 +72,7 @@ private struct MachineDetailView: View {
     @StateObject private var webControls = MilaWebControlsController()
     @State private var showWeb = false
     @State private var sharePrincipal = ""
+    @State private var shareRole: MilaShareRole = .viewer
     @StateObject private var sharing: MilaMachineSharingController
     init(machine: MilaMachinePresentation?, adapter: any MilaFFIAdapter) {
         self.machine = machine
@@ -89,7 +90,10 @@ private struct MachineDetailView: View {
                 HStack {
                     TextField(MilaStrings.text(.sharePrincipal), text: $sharePrincipal)
                         .autocorrectionDisabled()
-                    Button(MilaStrings.text(.shareAdd)) { sharing.submit(principal: sharePrincipal) }
+                    Picker("Role", selection: $shareRole) {
+                        ForEach(MilaShareRole.allCases) { role in Text(role.rawValue.capitalized).tag(role) }
+                    }.frame(maxWidth: 130)
+                    Button(MilaStrings.text(.shareAdd)) { sharing.submit(principal: sharePrincipal, role: shareRole) }
                         .disabled(!machine.machine.write || sharePrincipal.isEmpty)
                     Button(MilaStrings.text(.shareRemove)) { sharing.submit(principal: sharePrincipal, remove: true) }
                         .disabled(!machine.machine.write || sharePrincipal.isEmpty)

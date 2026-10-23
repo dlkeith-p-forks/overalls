@@ -1,6 +1,6 @@
 ---
-digest: d199467e02c02e8c211fb76806ac052cc215a8b02127c0e43d3c41da3b621407
-disposition: updated
+digest: 1bae1bad854818bef88fdfd908f1361464a7429385e70ee7dfb536aafa31a685
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/native/apple/Sources/MilaNativeUI/MilaNativeUI.swift
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Apple SwiftUI now dispatches authenticated thread operations through the Rust live session and exposes bounded responses.
+Typed Apple UI role selection preserves documented sharing behavior and changes no HLDD chapter content.

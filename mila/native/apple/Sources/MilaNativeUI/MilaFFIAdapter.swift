@@ -392,10 +392,10 @@ public struct LinkedMilaFFIAdapter: MilaFFIAdapter, Sendable {
         } catch { throw MilaFFIError.unavailable }
     }
 
-    public func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws {
+    public func submitShare(_ principal: MilaSharePrincipal, role: MilaShareRole?, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws {
         guard machine.machine.write else { throw MilaMachineSharingError.unavailable }
         guard let liveSession else { throw MilaMachineSharingError.unavailable }
-        do { try liveSession.shareMutation(machine: machine.id, email: principal.value, role: remove ? nil : "viewer", add: !remove, requestID: requestID) }
+        do { try liveSession.shareMutation(machine: machine.id, email: principal.value, role: remove ? nil : role?.rawValue, add: !remove, requestID: requestID) }
         catch { throw MilaMachineSharingError.unavailable }
     }
 
@@ -444,7 +444,7 @@ public protocol MilaFFIAdapter: Sendable {
     func listSSHKeys() async throws -> [MilaSSHKey]
     func revokeSSHKey(_ key: MilaSSHKey, requestID: UUID) async throws
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws
-    func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws
+    func submitShare(_ principal: MilaSharePrincipal, role: MilaShareRole?, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws
     func threadAction(thread: UUID?, command: String, secondary: String?, input: String?, requestID: UUID?) async throws -> Data
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind
     func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind
@@ -457,7 +457,7 @@ public extension MilaFFIAdapter {
     func revokeSSHKey(_ key: MilaSSHKey, requestID: UUID) async throws { _ = key; _ = requestID; throw MilaFFIError.unavailable }
     func refreshSnapshot() async throws -> MilaValidatedSnapshot { throw MilaFFIError.unavailable }
     func submit(_ action: MilaMachineAction, machine: MilaMachinePresentation, requestID: UUID) async throws { throw MilaFFIError.unavailable }
-    func submitShare(_ principal: MilaSharePrincipal, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws { _ = principal; _ = machine; _ = remove; _ = requestID; throw MilaMachineSharingError.unavailable }
+    func submitShare(_ principal: MilaSharePrincipal, role: MilaShareRole?, machine: MilaMachinePresentation, remove: Bool, requestID: UUID) async throws { _ = principal; _ = role; _ = machine; _ = remove; _ = requestID; throw MilaMachineSharingError.unavailable }
     func threadAction(thread: UUID?, command: String, secondary: String? = nil, input: String? = nil, requestID: UUID? = nil) async throws -> Data { _ = thread; _ = command; _ = secondary; _ = input; _ = requestID; throw MilaFFIError.unavailable }
     func classifyThreadCommand(_ line: String) throws -> MilaThreadCommandKind { _ = line; throw MilaFFIError.unavailable }
     func classifyMachineCommand(_ line: String) throws -> MilaMachineCommandKind { _ = line; throw MilaFFIError.unavailable }

@@ -12,6 +12,13 @@ public struct MilaSharePrincipal: Equatable, Sendable {
     }
 }
 
+/// Roles accepted by the authenticated sharing protocol. Keeping this closed prevents
+/// UI strings from becoming an unvalidated command argument at the FFI boundary.
+public enum MilaShareRole: String, CaseIterable, Identifiable, Sendable {
+    case viewer, operatorRole = "operator", manager
+    public var id: String { rawValue }
+}
+
 public enum MilaMachineSharingError: Error, Equatable, Sendable {
     case invalidPrincipal
     case signedOut
@@ -50,7 +57,7 @@ public final class MilaMachineSharingController: ObservableObject {
         state = .idle
     }
 
-    public func submit(principal raw: String, remove: Bool = false, requestID: UUID = UUID()) {
+    public func submit(principal raw: String, role: MilaShareRole = .viewer, remove: Bool = false, requestID: UUID = UUID()) {
         guard authenticated else { state = .failed(machineID: machine?.id, principal: nil, remove: remove, error: .signedOut); return }
         guard let machine else { state = .failed(machineID: nil, principal: nil, remove: remove, error: .noMachine); return }
         let principal: MilaSharePrincipal
@@ -59,7 +66,7 @@ public final class MilaMachineSharingController: ObservableObject {
         state = .submitting(machineID: machine.id, principal: principal, remove: remove)
         task = Task { [adapter] in
             do {
-                try await adapter.submitShare(principal, machine: machine, remove: remove, requestID: requestID)
+                try await adapter.submitShare(principal, role: remove ? nil : role, machine: machine, remove: remove, requestID: requestID)
                 guard !Task.isCancelled else { return }
                 state = .applied(machineID: machine.id, principal: principal, remove: remove)
             } catch {
