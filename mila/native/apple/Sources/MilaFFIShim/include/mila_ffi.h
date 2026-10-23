@@ -86,6 +86,11 @@ int32_t mila_session_thread_action(uint64_t handle, const uint8_t *thread, size_
     const uint8_t *command, size_t command_len, const uint8_t *secondary, size_t secondary_len,
     const uint8_t *input, size_t input_len, const uint8_t *request_id, size_t request_id_len,
     uint8_t *output, size_t capacity, size_t *written);
+int32_t mila_session_web_show(uint64_t handle, const uint8_t *machine, size_t machine_len,
+    uint8_t *output, size_t capacity, size_t *written);
+int32_t mila_session_web_set(uint64_t handle, const uint8_t *machine, size_t machine_len,
+    uint16_t port, uint8_t public_access, uint64_t revision,
+    const uint8_t *request_id, size_t request_id_len);
 int32_t mila_session_listing(uint64_t handle, uint8_t *output, size_t capacity,
     size_t *written);
 int32_t mila_session_close(uint64_t handle);

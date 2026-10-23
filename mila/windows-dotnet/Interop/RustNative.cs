@@ -524,6 +524,39 @@ internal static partial class RustNative
         return TrySessionBytes((bytes, capacity, written) => SessionListingNative(handle, bytes, capacity, written));
     }
 
+    /// <summary>Executes one authenticated, bounded thread operation in Rust.</summary>
+    internal static MilaNativeSessionBytesResult TrySessionThreadAction(
+        ulong handle, Guid? thread, string command, string? secondary, string? input, string? requestId)
+    {
+        if (handle == 0 || string.IsNullOrWhiteSpace(command) || command.Length > 64 ||
+            command.Contains('\0') || command.Split(' ').Any(string.IsNullOrEmpty) ||
+            (thread is null && command != "ls") ||
+            (thread is not null && command == "ls") ||
+            secondary?.Length > 128 || input?.Length > 64 * 1024 || requestId?.Length > 64 ||
+            (requestId is not null && !IsCanonicalRequestId(requestId)))
+            return new(MilaNativeStatus.InvalidRequest, null);
+        string? threadText = thread?.ToString("D");
+        IntPtr threadPtr = Marshal.StringToCoTaskMemUTF8(threadText ?? string.Empty);
+        IntPtr commandPtr = Marshal.StringToCoTaskMemUTF8(command);
+        IntPtr secondaryPtr = Marshal.StringToCoTaskMemUTF8(secondary ?? string.Empty);
+        IntPtr inputPtr = Marshal.StringToCoTaskMemUTF8(input ?? string.Empty);
+        IntPtr requestPtr = Marshal.StringToCoTaskMemUTF8(requestId ?? string.Empty);
+        try
+        {
+            return TrySessionBytes((bytes, capacity, written) => SessionThreadActionNative(
+                handle, threadPtr, (nuint)Encoding.UTF8.GetByteCount(threadText ?? string.Empty),
+                commandPtr, (nuint)Encoding.UTF8.GetByteCount(command), secondaryPtr,
+                (nuint)Encoding.UTF8.GetByteCount(secondary ?? string.Empty), inputPtr,
+                (nuint)Encoding.UTF8.GetByteCount(input ?? string.Empty), requestPtr,
+                (nuint)Encoding.UTF8.GetByteCount(requestId ?? string.Empty), bytes, capacity, written));
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(threadPtr); Marshal.FreeCoTaskMem(commandPtr);
+            Marshal.FreeCoTaskMem(secondaryPtr); Marshal.FreeCoTaskMem(inputPtr); Marshal.FreeCoTaskMem(requestPtr);
+        }
+    }
+
     /// <summary>Revokes one canonical approved-key identity through the Rust session.</summary>
     internal static MilaNativeSessionActionResult TrySessionSshKeyRevoke(
         ulong handle, Guid keyId, string requestId)
@@ -704,6 +737,12 @@ internal static partial class RustNative
     [LibraryImport(LibraryName, EntryPoint = "mila_session_listing")]
     private static partial MilaNativeStatus SessionListingNative(
         ulong handle, IntPtr output, nuint capacity, IntPtr written);
+
+    [LibraryImport(LibraryName, EntryPoint = "mila_session_thread_action")]
+    private static partial MilaNativeStatus SessionThreadActionNative(
+        ulong handle, IntPtr thread, nuint threadLength, IntPtr command, nuint commandLength,
+        IntPtr secondary, nuint secondaryLength, IntPtr input, nuint inputLength,
+        IntPtr requestId, nuint requestIdLength, IntPtr output, nuint capacity, IntPtr written);
 
     [LibraryImport(LibraryName, EntryPoint = "mila_session_ssh_key_revoke")]
     private static partial MilaNativeStatus SessionSshKeyRevokeNative(

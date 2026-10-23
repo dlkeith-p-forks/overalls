@@ -457,6 +457,7 @@ pub unsafe extern "C" fn mila_session_ssh_key_revoke(
     })
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn mila_session_web_show(
     handle: u64,
     machine: *const u8,
@@ -482,6 +483,7 @@ pub unsafe extern "C" fn mila_session_web_show(
     })
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn mila_session_web_set(
     handle: u64,
     machine: *const u8,

@@ -64,6 +64,14 @@ int32_t mila_session_machine_action(uint64_t handle, const uint8_t *machine,
                                     size_t machine_len, const uint8_t *action,
                                     size_t action_len, const uint8_t *request_id,
                                     size_t request_id_len);
+/* Executes one authenticated bounded thread operation and writes JSON output. */
+int32_t mila_session_thread_action(uint64_t handle, const uint8_t *thread,
+                                   size_t thread_len, const uint8_t *command,
+                                   size_t command_len, const uint8_t *secondary,
+                                   size_t secondary_len, const uint8_t *input,
+                                   size_t input_len, const uint8_t *request_id,
+                                   size_t request_id_len, uint8_t *output,
+                                   size_t capacity, size_t *written);
 MilaFfiStatus mila_terminal_attach_validate(uint64_t from, uint16_t columns,
                                            uint16_t rows, uint8_t read_write);
 MilaFfiStatus mila_terminal_input_validate(size_t length, uint8_t read_write);

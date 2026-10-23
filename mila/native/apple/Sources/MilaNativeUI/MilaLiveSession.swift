@@ -111,6 +111,40 @@ public final class MilaLiveSession: @unchecked Sendable {
         return Data(bytes.prefix(required))
     }
 
+    /// Fetches the authenticated machine web projection. Rust performs the
+    /// HTTPS request and bounds the returned JSON before it crosses the ABI.
+    public func webShow(machine: UUID) throws -> Data {
+        let current = try validHandle()
+        let machineBytes = Array(machine.uuidString.lowercased().utf8)
+        var required = 0
+        let first = machineBytes.withUnsafeBufferPointer { m in
+            mila_session_web_show(current, m.baseAddress, m.count, nil, 0, &required)
+        }
+        guard first == -3, required > 0, required <= 1_048_576 else { throw Self.error(first) }
+        var bytes = [UInt8](repeating: 0, count: required)
+        let status = bytes.withUnsafeMutableBufferPointer { output in
+            machineBytes.withUnsafeBufferPointer { m in
+                mila_session_web_show(current, m.baseAddress, m.count, output.baseAddress, output.count, &required)
+            }
+        }
+        guard status == 0 else { throw Self.error(status) }
+        return Data(bytes.prefix(required))
+    }
+
+    /// Mutates a machine web endpoint using the server-provided optimistic revision.
+    public func webSet(machine: UUID, port: UInt16, publicAccess: Bool, revision: UInt64, requestID: UUID) throws {
+        guard port > 0 else { throw MilaSessionError.invalidInput }
+        let current = try validHandle()
+        let machineBytes = Array(machine.uuidString.lowercased().utf8)
+        let requestBytes = Array(("porsche-" + requestID.uuidString.lowercased().replacingOccurrences(of: "-", with: "")).utf8)
+        let status = machineBytes.withUnsafeBufferPointer { m in
+            requestBytes.withUnsafeBufferPointer { r in
+                mila_session_web_set(current, m.baseAddress, m.count, port, publicAccess ? 1 : 0, revision, r.baseAddress, r.count)
+            }
+        }
+        guard status == 0 else { throw Self.error(status) }
+    }
+
     public func readMore() throws -> Data {
         let current = try validHandle()
         let status = mila_session_read_machines(current, 1)

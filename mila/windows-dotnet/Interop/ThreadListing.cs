@@ -84,4 +84,30 @@ internal sealed class MilaThreadController
         State = new(MilaThreadActionStateKind.Applied, State.Thread, action, null);
         return true;
     }
+
+    /// <summary>Dispatches the selected action through the authenticated Rust session.</summary>
+    internal bool SubmitLive(ulong handle, MilaThreadAction action, string? secondary = null, string? input = null)
+    {
+        if (!_authenticated || handle == 0 || State.Thread is null)
+        {
+            State = new(MilaThreadActionStateKind.SignedOut, null, action, null);
+            return false;
+        }
+        string command = action switch
+        {
+            MilaThreadAction.Show => "thread show", MilaThreadAction.Turns => "thread turns", MilaThreadAction.Read => "thread read",
+            MilaThreadAction.Prompt => "thread prompt", MilaThreadAction.Answer => "thread answer",
+            MilaThreadAction.PlanApprove => "thread plan approve", MilaThreadAction.PlanRevise => "thread plan revise",
+            _ => throw new ArgumentOutOfRangeException(nameof(action)),
+        };
+        string? request = action is MilaThreadAction.Prompt or MilaThreadAction.Answer or
+            MilaThreadAction.PlanApprove or MilaThreadAction.PlanRevise
+            ? "porsche-" + Guid.NewGuid().ToString("N") : null;
+        MilaNativeSessionBytesResult result = RustNative.TrySessionThreadAction(
+            handle, State.Thread.Id, command, secondary, input, request);
+        State = result.Succeeded
+            ? new(MilaThreadActionStateKind.Applied, State.Thread, action, null)
+            : new(MilaThreadActionStateKind.Failed, State.Thread, action, result.Status.ToString());
+        return result.Succeeded;
+    }
 }

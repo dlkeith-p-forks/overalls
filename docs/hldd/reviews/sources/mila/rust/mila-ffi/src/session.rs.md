@@ -1,11 +1,11 @@
 ---
-digest: 7385e432dcc30ae5ef6d9909c60f8d7f6b6b67799170cf5fb602a07a8a60f363
-disposition: updated
+digest: 285a54c5244612e9747bcef65dffedd18cd77d89210ef58fa20e935a16badb98
+disposition: no-impact
 kind: source
 mapping_digest: 7f8defe6ddb2c25e6497006dc0096f15a491c6b938a993419fabd8af89498825
 path: mila/rust/mila-ffi/src/session.rs
 reviewed_chapters:
-  marshall/priv/hldd/08-interactive.md: 7c6b8b5ae82f8ce18d880f2eec44fee08ac72e91d7686cda80d0af3f4b010fc4
+  marshall/priv/hldd/08-interactive.md: 3b2f40d7d3004923a6bfaa3b6b27287b36731de73182032b29a392be6daf8c0a
   marshall/priv/hldd/09-network.md: 225196b393bb0b27d8bdc3bac0a787b869f7d22e9d48ed72dc67ccec6d9ae79b
   marshall/priv/hldd/19-coverage.md: eaff781455bdda19eb9520b19e1eba636d2044ef0be7bafd6f1cbea1c043dbcb
   marshall/priv/hldd/20-security.md: 6f505682683ace1b4b948ed6df21f924df87fd5a71793a725906722e7601a211
@@ -15,4 +15,4 @@ state: present
 version: 2
 ---
 
-Add Linux authenticated notification device list, removal and preference projections, bounded command formatting, FFI/session wrappers, parity status and handbook evidence.
+Typed Apple web transport remains within existing authenticated session boundary and changes no documented chapter behavior.
